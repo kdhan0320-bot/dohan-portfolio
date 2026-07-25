@@ -1,7 +1,7 @@
 import { useRef } from 'react';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PORTFOLIO_PDF_URL, GITHUB_PROFILE_URL, CONTACT_EMAIL } from '../../constants/site';
-import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH, HOME_WIDE_MAX_WIDTH } from '../../theme';
+import { FONT_MONO, HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH } from '../../theme';
 import DMark from '../brand/DMark';
 import ActionIcon from '../ui/ActionIcon';
 import QhdAmbientSignal from '../ui/QhdAmbientSignal';
@@ -10,8 +10,16 @@ import useInViewOnce from '../../hooks/useInViewOnce';
 
 const APPLICATION_ROLES = ['UX/UI 웹디자인', '웹퍼블리싱', 'UI 구현'];
 
-const SPLIT_MQ = '@media (min-width:1100px)';
+// Figma Home 전용 한글 서체(Noto Sans KR). 전역 FONT_SANS(SUIT Variable)는
+// Projects·Detail 전용이라 바꾸지 않는다.
+const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
+// Figma Compact 1024(365:348)는 이미 Identity/Action 2-column split이다 —
+// 이전 1100px 임계값은 1024에서 split 대신 stacked 레이아웃을 보여줘 Figma와
+// 어긋났다. 다른 Home 섹션과 같은 1024 기준으로 낮춘다.
+const SPLIT_MQ = '@media (min-width:1024px)';
+const DESKTOP_MQ = '@media (min-width:1440px)';
 const QHD_MQ = '@media (min-width:1920px)';
+const MOBILE_ONLY_MQ = '@media (max-width:599.98px)';
 
 /* Phase 4B: QHD 2560 재실측(347:383) 결과 Contact의 32/68 분할은 뷰포트 끝까지
  * 늘어나지 않고, 다른 Home 섹션과 같은 1440(HOME_WIDE_MAX_WIDTH) shell 안에서만
@@ -78,7 +86,9 @@ const ContactSection = () => {
       <Box sx={{
         position: 'relative', width: '100vw', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw',
         display: 'block',
-        [SPLIT_MQ]: { display: 'grid', gridTemplateColumns: '32fr 68fr' },
+        [MOBILE_ONLY_MQ]: { height: '828px' },
+        [SPLIT_MQ]: { display: 'grid', gridTemplateColumns: '32fr 68fr', height: '520px' },
+        [DESKTOP_MQ]: { height: '560px' },
         [QHD_MQ]: { width: '100%', maxWidth: HOME_WIDE_MAX_WIDTH, left: 'auto', right: 'auto', marginLeft: 'auto', marginRight: 'auto' },
       }}>
         {/* 좌측 identity plane — Deep Harbor 32% */}
@@ -86,8 +96,8 @@ const ContactSection = () => {
           position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.deepHarbor,
           px: { xs: 3, sm: 6 }, py: { xs: 6, sm: 7 },
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          [MOBILE_ONLY_MQ]: { height: '288px' },
           [SPLIT_MQ]: { px: 6, py: 0 },
-          [QHD_MQ]: { px: 9 },
         }}>
           <Box aria-hidden="true" sx={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
             <Box sx={{
@@ -114,14 +124,13 @@ const ContactSection = () => {
                 tone="onDark"
                 sx={{
                   width: { xs: 72, md: 100, lg: 116 }, height: { xs: 72, md: 100, lg: 116 },
-                  '@media (min-width:1920px)': { width: 124, height: 124 },
-                  '@media (min-width:2300px)': { width: 130, height: 130 },
                 }}
               />
             </Box>
             <Typography
               data-contact-motion="identity"
               sx={{
+                fontFamily: FONT_KR,
                 fontWeight: 700, fontSize: '1rem', color: HUMAN_SIGNAL.softWhite,
                 opacity: show ? 1 : 0,
                 transform: show ? 'translateY(0)' : 'translateY(8px)',
@@ -133,6 +142,7 @@ const ContactSection = () => {
             <Typography
               data-contact-motion="identity"
               sx={{
+                fontFamily: FONT_KR,
                 fontSize: '0.9375rem', color: HUMAN_SIGNAL.steelMist,
                 opacity: show ? 1 : 0,
                 transform: show ? 'translateY(0)' : 'translateY(8px)',
@@ -165,8 +175,8 @@ const ContactSection = () => {
           sx={{
             position: 'relative', bgcolor: HUMAN_SIGNAL.softWhite,
             px: { xs: 3, sm: 6 }, py: { xs: 6, sm: 7 },
-            [SPLIT_MQ]: { px: 8, py: 9 },
-            [QHD_MQ]: { px: 11, py: 11 },
+            [MOBILE_ONLY_MQ]: { height: '540px' },
+            [SPLIT_MQ]: { px: 8, py: 9, height: '100%', minHeight: 0 },
             minWidth: 0,
             opacity: show ? 1 : 0,
             transform: show ? 'translateY(0)' : 'translateY(12px)',
@@ -178,10 +188,13 @@ const ContactSection = () => {
             CONTACT
           </Typography>
           <Typography component="h2" sx={{
-            fontWeight: 750, fontSize: { xs: '2rem', sm: '2.6rem', md: '3.2rem' }, lineHeight: 1.16, letterSpacing: '-0.02em',
+            fontFamily: FONT_KR, fontWeight: 700, wordBreak: 'keep-all',
+            // Figma Contact 제목: Mobile 390(32px/42px) · Compact 1024(42px/52px) ·
+            // Desktop 1440(48px/60px).
+            fontSize: '32px', lineHeight: '42px', letterSpacing: '-0.015em',
             color: HUMAN_SIGNAL.inkNavy, mb: 2.5,
-            '@media (min-width:1920px)': { fontSize: '3.75rem' },
-            '@media (min-width:2300px)': { fontSize: '4.25rem' },
+            [SPLIT_MQ]: { fontSize: '42px', lineHeight: '52px' },
+            [DESKTOP_MQ]: { fontSize: '48px', lineHeight: '60px' },
           }}>
             {/* 줄 끝 공백은 시각적으로 보이지 않지만 보조기술 textContent에서
              * 단어가 붙지 않게 한다(Phase 4B 접근성 재검사에서 발견). */}
@@ -189,8 +202,8 @@ const ContactSection = () => {
             <Box component="span" sx={{ display: 'block' }}>찾고 있습니다.</Box>
           </Typography>
           <Typography sx={{
+            fontFamily: FONT_KR,
             color: HUMAN_SIGNAL.inkText, fontSize: { xs: '0.9375rem', md: '1rem' }, lineHeight: 1.65, mb: { xs: 3.5, md: 4.5 }, maxWidth: { xs: '100%', md: 680 }, wordBreak: 'keep-all',
-            '@media (min-width:1920px)': { fontSize: '1.1875rem', maxWidth: 760 },
           }}>
             복잡한 정보를 정리하고, Figma 설계부터 반응형 UI 구현과 검증까지 연결합니다.
           </Typography>
@@ -206,7 +219,7 @@ const ContactSection = () => {
                 bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, height: 60, px: 3.5, minWidth: 208,
                 width: { xs: '100%', sm: 'auto' },
                 borderRadius: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-                textDecoration: 'none', fontWeight: 700, fontSize: '1.0625rem', whiteSpace: 'nowrap',
+                textDecoration: 'none', fontFamily: FONT_KR, fontWeight: 700, fontSize: '1.0625rem', whiteSpace: 'nowrap',
                 transition: 'transform 180ms ease, box-shadow 180ms ease',
                 boxShadow: '0 14px 30px rgba(12,20,32,0.22)',
                 '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 16px 34px rgba(12,20,32,0.3)' },
@@ -227,7 +240,7 @@ const ContactSection = () => {
                 bgcolor: 'transparent', color: HUMAN_SIGNAL.inkNavy, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, height: 48, px: 2.25, minWidth: 156,
                 width: { xs: '100%', sm: 'auto' },
                 borderRadius: '14px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-                textDecoration: 'none', fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
+                textDecoration: 'none', fontFamily: FONT_KR, fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
                 transition: 'border-color 180ms ease, color 180ms ease',
                 '&:hover': { borderColor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.burntOrange },
                 '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px', opacity: 1 },
@@ -263,44 +276,39 @@ const ContactSection = () => {
             <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.06em', color: HUMAN_SIGNAL.burntOrange, mb: 1 }}>
               지원 분야
             </Typography>
-            <Typography sx={{ fontSize: { xs: '0.9375rem', md: '1rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.6, wordBreak: 'keep-all' }}>
+            <Typography sx={{ fontFamily: FONT_KR, fontSize: { xs: '0.9375rem', md: '1rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.6, wordBreak: 'keep-all' }}>
               {APPLICATION_ROLES.join(' · ')}
+            </Typography>
+          </Box>
+
+          <Box
+            data-contact-motion="footer"
+            sx={{
+              mt: { xs: 3, md: 4 },
+              pt: 2.5,
+              borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
+              opacity: show ? 1 : 0,
+              transform: show ? 'translateY(0)' : 'translateY(6px)',
+              transition: t(0.6, 0.27),
+              [MOBILE_ONLY_MQ]: {
+                position: 'absolute', left: '24px', right: '24px', bottom: '24px',
+                mt: 0, pt: 0, borderTop: 0,
+              },
+              [SPLIT_MQ]: {
+                position: 'absolute', left: '56px', right: '56px', bottom: '24px',
+                mt: 0, pt: 0, borderTop: 0,
+              },
+              [DESKTOP_MQ]: { left: '76px', right: '76px', bottom: '30px' },
+            }}
+          >
+            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.mutedInk, fontSize: '10px', lineHeight: '18px', letterSpacing: '0.04em' }}>
+              DOHAN KIM · HUMAN SIGNAL / {new Date().getFullYear()} PORTFOLIO
             </Typography>
           </Box>
         </Box>
       </Box>
 
-      {/* Footer — 2-pane 분할과 별개로, 전체 폭 Deep Harbor 마무리 strip(사이트 서명). */}
-      <Box sx={{
-        position: 'relative', width: '100vw', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw',
-        bgcolor: HUMAN_SIGNAL.deepHarbor,
-      }}>
-        <Container
-          maxWidth={false}
-          sx={{
-            px: { xs: 3, sm: 6, md: 8 }, maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 }, mx: 'auto',
-            '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
-          }}
-        >
-          <Box
-            data-contact-motion="footer"
-            sx={{
-              py: { xs: 2.5, md: 3 },
-              opacity: show ? 1 : 0,
-              transform: show ? 'translateY(0)' : 'translateY(6px)',
-              transition: t(0.6, 0.27),
-            }}
-          >
-            {/* Figma Contact Footer(268:79)는 한 줄 문구다("DOHAN KIM · HUMAN SIGNAL /
-             * {year} PORTFOLIO") — 좌우로 분리했던 이전 구현을 한 줄로 맞춘다. */}
-            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.steelMist, fontSize: '0.75rem', letterSpacing: '0.04em' }}>
-              DOHAN KIM · HUMAN SIGNAL / {new Date().getFullYear()} PORTFOLIO
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
-
-      {/* QhdSectionIndex는 2-pane split·footer strip보다 DOM에서 뒤에 둔다 — 이
+      {/* QhdSectionIndex는 2-pane split보다 DOM에서 뒤에 둔다 — 이
        * section의 배경들도 opaque full-bleed(100vw)라 앞에 두면 QHD 여백의
        * 숫자가 가려진다(ProjectsSection과 동일 원인, Featured에서 재현·확인). */}
       <QhdSectionIndex id="contact" index="04" label="CONTACT / NEXT" side="right" indexTop={-5} labelTop={173} indexOffset={218} labelOffset={148} />

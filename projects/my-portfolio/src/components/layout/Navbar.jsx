@@ -148,8 +148,16 @@ const Navbar = () => {
     if (isHome) { scrollToSection('home'); } else { navigate('/'); }
   };
 
-  const headerBg = compact ? 'rgba(242,237,227,0.97)' : HUMAN_SIGNAL.softWhite;
-  const headerBorder = compact ? 'rgba(226,217,204,0.8)' : HUMAN_SIGNAL.paperDeep;
+  // Figma Home 1440·1024·390·2560(256:3 / 365:136 / 269:54)은 Home + 스크롤 전
+  // 최초 상태에서 Header가 Hero의 Ink Navy 배경과 이어지는 dark header다.
+  // sticky compact 상태와 /projects, /projects/:slug는 기존 밝은 Header를 그대로 쓴다.
+  const isDarkHeader = isHome && !compact;
+  const headerBg = isDarkHeader
+    ? HUMAN_SIGNAL.inkNavy
+    : (compact ? 'rgba(242,237,227,0.97)' : HUMAN_SIGNAL.softWhite);
+  const headerBorder = isDarkHeader
+    ? 'rgba(170,183,196,0.16)'
+    : (compact ? 'rgba(226,217,204,0.8)' : HUMAN_SIGNAL.paperDeep);
 
   return (
     <>
@@ -206,17 +214,17 @@ const Navbar = () => {
             >
               <DMark
                 size={compact ? 36 : 44}
-                tone="onLight"
+                tone={isDarkHeader ? 'onDark' : 'onLight'}
                 sx={{ '@media (min-width:1920px)': { width: compact ? 40 : 48, height: compact ? 40 : 48 } }}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
-                <Typography sx={{ color: HUMAN_SIGNAL.inkNavy, fontWeight: 500, fontSize: '0.875rem', '@media (min-width:1920px)': { fontSize: '0.9375rem' } }}>
+                <Typography sx={{ color: isDarkHeader ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.inkNavy, fontWeight: 500, fontSize: '0.875rem', '@media (min-width:1920px)': { fontSize: '0.9375rem' } }}>
                   DOHAN KIM
                 </Typography>
                 {!compact && (
                   <Typography
                     sx={{
-                      fontFamily: FONT_MONO, color: HUMAN_SIGNAL.inkNavy,
+                      fontFamily: FONT_MONO, color: isDarkHeader ? HUMAN_SIGNAL.steelMist : HUMAN_SIGNAL.inkNavy,
                       fontSize: '0.75rem', letterSpacing: '0.04em',
                     }}
                   >
@@ -246,7 +254,12 @@ const Navbar = () => {
                   '@media (min-width:1440px)': { fontSize: '0.8125rem' },
                   '@media (min-width:1920px)': { fontSize: '0.9375rem' },
                   letterSpacing: '0.04em',
-                  color: HUMAN_SIGNAL.inkNavy,
+                  // Figma Home dark header(256:14/256:15/256:16)는 PROJECTS를 Figma
+                  // orange, GITHUB·MAIL을 Soft White로 고정한다. sticky compact와
+                  // /projects 등 밝은 Header는 기존 Ink Navy를 그대로 쓴다.
+                  color: isDarkHeader
+                    ? (item.key === 'projects' ? HUMAN_SIGNAL.brightOrange : HUMAN_SIGNAL.softWhite)
+                    : HUMAN_SIGNAL.inkNavy,
                   textDecoration: 'none',
                   cursor: 'pointer',
                   position: 'relative',
@@ -261,7 +274,8 @@ const Navbar = () => {
                   font: 'inherit',
                   // hover는 Warm Paper 위 작은 텍스트라 대비가 낮은 brightOrange 대신
                   // burntOrange를 쓴다(active 기본 글자색은 Ink Navy 그대로 유지).
-                  '&:hover': { color: HUMAN_SIGNAL.burntOrange },
+                  // dark header에서는 어두운 배경 대비가 확보된 brightOrangeOnDark를 쓴다.
+                  '&:hover': { color: isDarkHeader ? HUMAN_SIGNAL.brightOrangeOnDark : HUMAN_SIGNAL.burntOrange },
                   '&::after': {
                     content: '""',
                     position: 'absolute',
@@ -295,7 +309,9 @@ const Navbar = () => {
                         '@media (min-width:1440px)': { fontSize: '0.8125rem' },
                         '@media (min-width:1920px)': { fontSize: '0.9375rem' },
                         letterSpacing: '0.04em',
-                        color: HUMAN_SIGNAL.deepSage,
+                        // dark header(Figma 303:105)는 muted #788593, 밝은 Header는
+                        // 기존 deepSage를 그대로 쓴다.
+                        color: isDarkHeader ? '#788593' : HUMAN_SIGNAL.deepSage,
                         minHeight: 44,
                         px: 1.5,
                         display: 'inline-flex',
@@ -313,8 +329,8 @@ const Navbar = () => {
                           fontSize: '0.5625rem',
                           letterSpacing: '0.04em',
                           color: HUMAN_SIGNAL.steelMist,
-                          bgcolor: HUMAN_SIGNAL.deepHarbor,
-                          border: `1px solid ${HUMAN_SIGNAL.mutedInk}`,
+                          bgcolor: isDarkHeader ? 'rgba(23,36,50,0.9)' : HUMAN_SIGNAL.deepHarbor,
+                          border: `1px solid ${isDarkHeader ? '#59636d' : HUMAN_SIGNAL.mutedInk}`,
                           borderRadius: '8px',
                           px: 0.75,
                           py: 0.25,
@@ -375,7 +391,7 @@ const Navbar = () => {
             <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
               <IconButton
                 ref={menuButtonRef}
-                sx={{ color: HUMAN_SIGNAL.inkNavy, minWidth: 44, minHeight: 44, ...focusVisibleSx }}
+                sx={{ color: isDarkHeader ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.inkNavy, minWidth: 44, minHeight: 44, ...focusVisibleSx }}
                 onClick={() => setMenuOpen(true)}
                 aria-label="메뉴 열기"
                 aria-expanded={menuOpen}

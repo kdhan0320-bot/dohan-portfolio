@@ -5,6 +5,14 @@ import QhdAmbientSignal from '../ui/QhdAmbientSignal';
 import QhdSectionIndex from '../ui/QhdSectionIndex';
 import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH, HOME_WIDE_MAX_WIDTH } from '../../theme';
 
+// Figma Home 전용 한글 서체(Noto Sans KR). 전역 FONT_SANS(SUIT Variable)는
+// Projects·Detail 전용이라 바꾸지 않는다.
+const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
+const TABLET_MQ = '@media (min-width:600px)';
+const COMPACT_MQ = '@media (min-width:1024px)';
+const COMPACT_ONLY_MQ = '@media (min-width:1024px) and (max-width:1439.98px)';
+const DESKTOP_MQ = '@media (min-width:1440px)';
+
 /* Home의 유일한 About 섹션(Figma Human Signal Home v8 About 266:53). 별도의
  * /about 페이지는 존재하지 않으며, `/about` 접근은 App.jsx의 <Navigate>를
  * 통해 이 섹션으로 연결된다.
@@ -57,7 +65,11 @@ const AboutSection = () => {
       component="section"
       id="about"
       aria-label="소개"
-      sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.softWhite, pt: { xs: 6.5, md: 13 }, pb: { xs: 6.5, md: 14 } }}
+      sx={{
+        position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.softWhite,
+        pt: { xs: '64px', md: 13 }, pb: { xs: '72px', md: 14 },
+        [COMPACT_ONLY_MQ]: { pt: '88px', pb: '96px' },
+      }}
     >
       {/* QHD(1920+) 전용 외곽 신호 — Figma 432:313, About 콘텐츠보다 강하지 않게 저대비.
        * top:260은 Figma About Right(432:313) section-relative 실측값(y=1120, About
@@ -72,6 +84,7 @@ const AboutSection = () => {
           px: { xs: 3, sm: 6, md: 8 },
           maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 },
           mx: 'auto', position: 'relative',
+          [COMPACT_ONLY_MQ]: { px: '48px' },
           '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
         }}
       >
@@ -79,22 +92,32 @@ const AboutSection = () => {
         <Box sx={{
           display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0,58fr) minmax(0,38fr)' },
           columnGap: { md: 6 }, rowGap: { xs: 4, md: 0 }, alignItems: 'end',
-          '@media (min-width:1920px)': { columnGap: 9 },
+          [COMPACT_ONLY_MQ]: {
+            gridTemplateColumns: '590px 306px',
+            columnGap: '32px',
+            height: '190px',
+          },
+          [DESKTOP_MQ]: {
+            gridTemplateColumns: '780px 440px',
+            columnGap: '92px',
+            height: '210px',
+          },
         }}>
           <Box>
-            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.75rem', letterSpacing: '0.06em', mb: { xs: 2, md: 3 } }}>
+            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.75rem', letterSpacing: '0.06em', mb: { xs: 4, md: 3 } }}>
               ABOUT / CAPABILITIES
             </Typography>
             <RevealOnScroll y={14} duration={0.45}>
               <Typography
                 component="h2"
                 sx={{
-                  fontWeight: 750,
-                  fontSize: { xs: '2.125rem', sm: '2.6rem', md: '2.75rem' },
-                  lineHeight: { xs: 1.28, md: 1.2 },
-                  letterSpacing: '-0.02em',
+                  fontFamily: FONT_KR, fontWeight: 700,
+                  // Figma About 제목: Mobile 390(30px/40px) · Compact 1024(37px/47px) ·
+                  // Desktop 1440(44px/56px).
+                  fontSize: '30px', lineHeight: '40px', letterSpacing: '-0.015em',
                   color: HUMAN_SIGNAL.inkNavy,
-                  '@media (min-width:1920px)': { fontSize: '3.75rem' },
+                  [COMPACT_MQ]: { fontSize: '37px', lineHeight: '47px' },
+                  [DESKTOP_MQ]: { fontSize: '44px', lineHeight: '56px' },
                 }}
               >
                 {ABOUT_HEADLINE.map((line) => (
@@ -107,7 +130,8 @@ const AboutSection = () => {
           <RevealOnScroll y={14} duration={0.45} delay={0.08}>
             <Box sx={{
               bgcolor: HUMAN_SIGNAL.warmPaper, borderRadius: '18px',
-              px: { xs: 2.5, md: 3 }, py: { xs: 2.25, md: 2.75 },
+              px: { xs: 2.5, md: 3 }, py: { xs: 2.5, md: 2.75 },
+              [DESKTOP_MQ]: { height: '160px' },
             }}>
               <Typography sx={{
                 fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.75rem',
@@ -116,6 +140,7 @@ const AboutSection = () => {
                 BACKGROUND / WHY I WORK THIS WAY
               </Typography>
               <Typography sx={{
+                fontFamily: FONT_KR,
                 color: HUMAN_SIGNAL.inkNavy, fontWeight: 450,
                 fontSize: { xs: '0.9375rem', md: '1rem' }, lineHeight: 1.7,
               }}>
@@ -126,40 +151,106 @@ const AboutSection = () => {
         </Box>
 
         {/* Skill Matrix — Warm Paper 카드 하나(좌 소개 + 우 Skill Card 3개) */}
-        <RevealOnScroll y={16} duration={0.45} delay={0.14} sx={{ mt: { xs: 6, md: 8 }, '@media (min-width:1920px)': { mt: 9 } }}>
-          <Box sx={{
+        <RevealOnScroll
+          y={16}
+          duration={0.45}
+          delay={0.14}
+          sx={{
+            mt: { xs: 4, md: 8 },
+            [COMPACT_ONLY_MQ]: { mt: '48px' },
+            [DESKTOP_MQ]: { mt: '56px' },
+          }}
+        >
+          <Box data-skill-matrix="true" sx={{
             position: 'relative', overflow: 'hidden',
-            bgcolor: HUMAN_SIGNAL.warmPaper, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '28px',
-            p: { xs: 3, sm: 4, md: 4.5 },
-            display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0,240px) 1fr' },
-            columnGap: { md: 5 }, rowGap: { xs: 4, md: 0 },
-            '@media (min-width:1920px)': { p: 6, columnGap: 7 },
+            bgcolor: HUMAN_SIGNAL.warmPaper, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '22px',
+            width: '100%', height: '650px', p: 0,
+            display: 'block',
+            [TABLET_MQ]: {
+              height: 'auto', p: 4, borderRadius: '28px',
+              display: 'grid', gridTemplateColumns: '1fr', rowGap: 4,
+            },
+            '@media (min-width:900px)': {
+              p: 4.5, gridTemplateColumns: 'minmax(0,240px) 1fr',
+              columnGap: 5, rowGap: 0,
+            },
+            [COMPACT_ONLY_MQ]: {
+              height: '340px',
+              p: '23px',
+              gridTemplateColumns: '202px 654px',
+              columnGap: '24px',
+            },
+            [DESKTOP_MQ]: { height: '380px' },
           }}>
             {/* 좌측 — CAPABILITIES / VERIFIED 소개. D2 watermark는 배경 장식용. */}
-            <Box sx={{ position: 'relative', minWidth: 0 }}>
+            <Box sx={{ position: 'static', minWidth: 0, [TABLET_MQ]: { position: 'relative' } }}>
               <Box
                 aria-hidden="true"
                 sx={{
                   position: 'absolute', left: { xs: -12, md: 0 }, bottom: { xs: -20, md: -10 },
                   width: 160, height: 160, opacity: 0.08, pointerEvents: 'none',
                   display: { xs: 'none', sm: 'block' },
+                  [COMPACT_ONLY_MQ]: {
+                    left: '22px', top: '126px', bottom: 'auto', width: 150, height: 150,
+                  },
                 }}
               >
                 <DMark size="100%" tone="onLight" sx={{ width: '100%', height: '100%' }} />
               </Box>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5, position: 'relative' }}>
+              <Typography sx={{
+                fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange,
+                position: 'absolute', left: '21px', top: '23px', width: '180px', height: '14px',
+                fontSize: '11.5px', lineHeight: '18px', letterSpacing: '0.012em', m: 0,
+                [TABLET_MQ]: {
+                  position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto',
+                  fontSize: '0.75rem', lineHeight: 'normal', letterSpacing: '0.06em', mb: 1.5,
+                },
+                [COMPACT_ONLY_MQ]: {
+                  position: 'absolute', left: 0, top: 0, width: '180px', height: '16px',
+                  fontSize: '12px', lineHeight: '18px', letterSpacing: 'normal', mb: 0,
+                },
+              }}>
                 CAPABILITIES / VERIFIED
               </Typography>
               <Typography sx={{
-                fontWeight: 750, fontSize: { xs: '1.5rem', md: '1.75rem' }, lineHeight: 1.25,
-                color: HUMAN_SIGNAL.inkNavy, mb: 1.75, position: 'relative',
-                '@media (min-width:1920px)': { fontSize: '2.125rem' },
+                fontFamily: FONT_KR, fontWeight: 700,
+                // Figma Skill Matrix 제목: Mobile 390(21px/30px) · Compact 1024(26px/34px) ·
+                // Desktop 1440(31px/40px).
+                position: 'absolute', left: '17px', top: '49px', width: '306px', height: '60px',
+                fontSize: '21px', lineHeight: '30px',
+                color: HUMAN_SIGNAL.inkNavy, m: 0,
+                [TABLET_MQ]: {
+                  position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto', mb: 1.75,
+                },
+                [COMPACT_MQ]: { fontSize: '26px', lineHeight: '34px' },
+                [DESKTOP_MQ]: { fontSize: '31px', lineHeight: '40px' },
+                [COMPACT_ONLY_MQ]: {
+                  position: 'absolute', left: 0, top: '34px', width: '190px', height: '108px', mb: 0,
+                },
               }}>
-                {SKILL_INTRO_LINES.map((line) => (
-                  <Box key={line} component="span" sx={{ display: 'block' }}>{line}</Box>
+                {SKILL_INTRO_LINES.map((line, index) => (
+                  <Box
+                    key={line}
+                    component="span"
+                    sx={{ display: index === 2 ? 'block' : 'inline', [TABLET_MQ]: { display: 'block' } }}
+                  >
+                    {line}
+                  </Box>
                 ))}
               </Typography>
-              <Typography sx={{ color: HUMAN_SIGNAL.mutedInk, fontSize: '0.875rem', lineHeight: 1.6, maxWidth: 280, position: 'relative' }}>
+              <Typography sx={{
+                fontFamily: FONT_KR, color: HUMAN_SIGNAL.mutedInk,
+                position: 'absolute', left: '17px', top: '115px', width: '306px', height: '44px',
+                fontSize: '13px', lineHeight: '22px', m: 0,
+                [TABLET_MQ]: {
+                  position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto',
+                  fontSize: '0.875rem', lineHeight: 1.6, maxWidth: 280,
+                },
+                [COMPACT_ONLY_MQ]: {
+                  position: 'absolute', left: 0, top: '184px', width: '190px', height: '52px',
+                  fontSize: '13px', lineHeight: '22px', maxWidth: 'none',
+                },
+              }}>
                 {SKILL_INTRO_BODY}
               </Typography>
             </Box>
@@ -167,37 +258,115 @@ const AboutSection = () => {
             {/* 우측 — Skill Card 3개. 카드 외곽 크기·제목 영역·설명 기준선·divider·
              * tools 시작점을 3개 카드가 반응형별로 동일하게 통일한다(동일 grid). */}
             <Box sx={{
-              display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
-              gap: { xs: 2, md: 2.5 },
+              position: 'absolute', left: '17px', top: '175px', width: '306px',
+              display: 'grid', gridTemplateColumns: '1fr', gridTemplateRows: 'repeat(3, 144px)', gap: '18px',
+              [TABLET_MQ]: {
+                position: 'static', width: 'auto',
+                gridTemplateColumns: 'repeat(2, 1fr)', gridTemplateRows: 'none', gap: 2,
+              },
+              '@media (min-width:900px)': { gridTemplateColumns: 'repeat(3, 1fr)', gap: 2.5 },
+              [COMPACT_ONLY_MQ]: {
+                gridTemplateColumns: 'repeat(3, 202px)', gap: '24px',
+              },
             }}>
               {SKILL_CARDS.map((card) => (
                 <Box
                   key={card.index}
+                  data-skill-card={card.index}
                   sx={{
                     position: 'relative', bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-                    borderRadius: '22px', p: { xs: 2.5, md: 2.75 }, display: 'flex', flexDirection: 'column',
-                    minHeight: { md: 300 },
+                    borderRadius: '18px', p: 0, display: 'block', overflow: 'hidden',
+                    width: '306px', height: '144px',
+                    [TABLET_MQ]: {
+                      borderRadius: '22px', p: 2.5, display: 'flex', flexDirection: 'column',
+                      overflow: 'visible', width: 'auto', height: 'auto',
+                    },
+                    '@media (min-width:900px)': { p: 2.75, minHeight: 300 },
+                    [COMPACT_ONLY_MQ]: {
+                      borderRadius: '20px', p: 0, display: 'block', overflow: 'hidden',
+                      width: '202px', height: '292px', minHeight: 0,
+                    },
                   }}
                 >
                   <Typography
                     aria-hidden="true"
                     sx={{
-                      fontFamily: FONT_MONO, fontWeight: 700, color: HUMAN_SIGNAL.inkNavy, opacity: 0.22,
-                      fontSize: { xs: '2.25rem', md: '2.75rem' }, lineHeight: 1, mb: 1.5,
+                      fontFamily: FONT_MONO, fontWeight: 700, color: HUMAN_SIGNAL.inkNavy, opacity: 0.28,
+                      position: 'absolute', left: '15px', top: '11px', width: '56px', height: '40px',
+                      fontSize: '34px', lineHeight: '40px', m: 0,
+                      [TABLET_MQ]: {
+                        position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto',
+                        opacity: 0.22, fontSize: '2.25rem', lineHeight: 1, mb: 1.5,
+                      },
+                      '@media (min-width:900px)': { fontSize: '2.75rem' },
+                      [COMPACT_ONLY_MQ]: {
+                        position: 'absolute', left: '19px', top: '13px', width: '100px', height: '64px',
+                        fontSize: '44px', lineHeight: '30px', mb: 0,
+                      },
                     }}
                   >
                     {card.index}
                   </Typography>
-                  <Box aria-hidden="true" sx={{ width: 48, height: 4, borderRadius: '2px', bgcolor: card.accent, mb: 2 }} />
-                  <Typography sx={{ fontWeight: 700, fontSize: '1.25rem', color: HUMAN_SIGNAL.inkNavy, mb: 1, wordBreak: 'keep-all' }}>
+                  <Box aria-hidden="true" sx={{
+                    position: 'absolute', left: '71px', top: '19px',
+                    width: 4, height: 104, borderRadius: '2px', bgcolor: card.accent,
+                    [TABLET_MQ]: {
+                      position: 'relative', left: 'auto', top: 'auto', width: 48, height: 4, mb: 2,
+                    },
+                    [COMPACT_ONLY_MQ]: {
+                      position: 'absolute', left: '17px', top: '79px', width: '44px', height: '4px', mb: 0,
+                    },
+                  }} />
+                  <Typography sx={{
+                    position: 'absolute', left: '89px', top: '15px', width: '196px', height: '28px',
+                    fontFamily: FONT_KR, fontWeight: 700, fontSize: '20px', lineHeight: '28px',
+                    color: HUMAN_SIGNAL.inkNavy, m: 0, wordBreak: 'keep-all',
+                    [TABLET_MQ]: {
+                      position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto',
+                      fontSize: '1.25rem', lineHeight: 'normal', mb: 1,
+                    },
+                    [COMPACT_ONLY_MQ]: {
+                      position: 'absolute', left: '19px', top: '107px', width: '166px', height: '54px',
+                      fontSize: card.index === '01' ? '20px' : '22px',
+                      lineHeight: card.index === '01' ? '27px' : '30px',
+                      mb: 0,
+                    },
+                  }}>
                     {card.title}
                   </Typography>
-                  <Typography sx={{ fontWeight: 500, fontSize: '0.875rem', color: HUMAN_SIGNAL.inkText, lineHeight: 1.6, wordBreak: 'keep-all', mb: 'auto' }}>
+                  <Typography sx={{
+                    position: 'absolute', left: '89px', top: '49px', width: '196px', height: '42px',
+                    fontFamily: FONT_KR, fontWeight: 500, fontSize: '13px', color: HUMAN_SIGNAL.inkText,
+                    lineHeight: '20px', wordBreak: 'keep-all', m: 0,
+                    [TABLET_MQ]: {
+                      position: 'relative', left: 'auto', top: 'auto', width: 'auto', height: 'auto',
+                      fontSize: '0.875rem', lineHeight: 1.6, mb: 'auto',
+                    },
+                    [COMPACT_ONLY_MQ]: {
+                      position: 'absolute', left: '19px', top: '173px', width: '166px', height: '44px',
+                      fontSize: '13px', lineHeight: '22px', mb: 0,
+                    },
+                  }}>
                     {card.purpose}
                   </Typography>
-                  <Box sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mt: 2.5, pt: 1.5 }}>
+                  <Box sx={{
+                    position: 'absolute', left: '89px', top: '93px', width: '196px',
+                    [TABLET_MQ]: {
+                      position: 'relative', left: 'auto', top: 'auto', width: 'auto',
+                      borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mt: 2.5, pt: 1.5,
+                    },
+                    [COMPACT_ONLY_MQ]: {
+                      position: 'absolute', left: '17px', top: '225px', width: '166px',
+                      mt: 0, pt: '15px',
+                    },
+                  }}>
                     {card.tools.map((line) => (
-                      <Typography key={line} sx={{ fontSize: '0.75rem', color: HUMAN_SIGNAL.mutedInk, lineHeight: 1.65, wordBreak: 'keep-all' }}>
+                      <Typography key={line} sx={{
+                        fontFamily: FONT_KR, fontSize: '11.5px', color: HUMAN_SIGNAL.mutedInk,
+                        lineHeight: '20px', wordBreak: 'keep-all',
+                        [TABLET_MQ]: { fontSize: '0.75rem', lineHeight: 1.65 },
+                        [COMPACT_ONLY_MQ]: { fontSize: '11.5px', lineHeight: '20px', letterSpacing: '-0.1px' },
+                      }}>
                         {line}
                       </Typography>
                     ))}
