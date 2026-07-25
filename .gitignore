@@ -1,14 +1,6 @@
 # MCP 설정 파일
 .mcp.json
 
-# Claude 로컬 설정
-.claude/*
-!.claude/skills/
-.claude/skills/*
-!.claude/skills/figma-fidelity/
-.claude/skills/figma-fidelity/*
-!.claude/skills/figma-fidelity/SKILL.md
-
 # Node.js
 node_modules/
 
