@@ -52,24 +52,16 @@ API·로그인·결제·스트리밍 기능은 없습니다.
 - `.github/` — GitHub Actions와 GitHub Pages 배포 workflow
 - `projects/` — 공개 배포하거나 공개 프로젝트로 관리하는 작업
   (`.github/workflows/deploy.yml`을 통해 GitHub Pages로 배포)
-- `docs/` — 디자인 시스템, 기획서, 회고 문서
-- `audits/` — Playwright·Claude 검사 과정에서 생성되는 로컬 보고서, 스크린샷,
-  ZIP 산출물 영역. 대용량·회차별 산출물은 기본적으로 Git 추적에서 제외하고,
-  장기 보관 가치가 있는 결론·기준만 선별해 `docs/`의 작은 Markdown 문서로 정리
 - `supabase/` — 실제 Supabase 연동 프로젝트의 로컬 설정과 migration
   (`.temp/`, `.branches/` 같은 CLI 내부 상태는 Git 추적 제외)
 - `tools/` — 검사 자동화 스크립트 (`tools/site-audit-kit` 등)
 
-`works`(실험·시안), `assets`(공용 자산), `archive`(과거 작업 보관),
-`_inbox`(미분류), `_private`(비공개, Git 추적 제외)는 현재 존재하지 않으며,
-필요해지는 시점에 만들 수 있는 선택 폴더입니다.
-
 ## 로컬 실행 방법
 
-각 프로젝트 폴더에서 다음을 실행합니다.
+각 Node.js 프로젝트에는 lockfile이 있으므로 프로젝트 폴더에서 다음을 실행합니다.
 
 ```bash
-npm install
+npm ci
 npm run dev
 npm run build
 ```
@@ -86,9 +78,9 @@ npm run build
 
 ## AI 협업 방식
 
-이 저장소는 ChatGPT, Figma, VS Code + Claude를 함께 사용해 관리합니다.
-Claude 운영 규칙은 저장소 루트 `CLAUDE.md` 하나이며, 프로젝트별 nested
-`CLAUDE.md`는 만들거나 쓰지 않습니다.
+이 저장소는 ChatGPT + Codex, Figma를 함께 사용해 관리합니다.
+공통 운영 규칙은 저장소 루트 `AGENTS.md`, 프로젝트별 목적·구조·명령·세부
+기준은 각 프로젝트의 `README.md`를 기준으로 합니다.
 
 ## 비공개 파일과 환경변수 관리
 

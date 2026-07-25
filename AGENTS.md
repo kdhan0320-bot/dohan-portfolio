@@ -11,10 +11,12 @@
 ## 작업 보호와 진행
 
 - 작업 시작과 종료 시 branch, HEAD, `git status`를 확인한다.
+- 작업 프롬프트는 이 `AGENTS.md`와 대상 프로젝트 `README.md`에 이미 있는 공통 규칙을 반복하지 않고, 작업별 목표·범위·Source of Truth·성공 기준·예외만 적는다.
 - 사용자가 이미 만든 수정, unstaged WIP, untracked 파일을 임의로 되돌리거나 덮어쓰거나 정리하지 않는다.
 - 요청과 관계없는 파일을 포맷하거나 수정하지 않는다. 다른 작업자의 변경으로 보이는 내용도 사용자 승인 없이 제거하지 않는다.
 - 사용자가 목표, Source of Truth, 변경 허용 범위와 성공 기준을 정한 뒤에는 허용 범위 안의 읽기·검색·수정, lint, build, 관련 test와 브라우저 검사를 사소한 단계마다 다시 묻지 않고 수정부터 최종 검사까지 수행한다.
 - 단, 이 문서에 명시된 승인 필수 작업이 필요하면 중단하고 승인받는다.
+- 시간 기록과 별도 진행 보고는 사용자가 요청한 경우에만 수행한다.
 
 ## Source of Truth
 
@@ -40,6 +42,9 @@
 - 실제 프로젝트 자산을 Figma media frame에 배치하고, 실제 자산을 가짜 placeholder UI로 대체하지 않는다.
 - 새 protocol, RUN 폴더, ZIP·report 생성 체계, skill, agent 체계를 임의로 만들지 않는다. 이미 존재하는 `site-audit-kit`의 ZIP, review, capture 기능은 작업에 필요하거나 사용자가 요청한 경우 재사용할 수 있다.
 - 작업 위험에 맞춰 필요한 lint, build, 관련 test와 필요한 viewport만 검사한다.
+- 검사 viewport는 브라우저를 실제로 렌더링·캡처하는 폭이고, CSS breakpoint는 레이아웃 규칙이 전환되는 경계값이므로 서로 구분한다.
+- routine UI 변경은 목표 viewport와 인접 폭을 검사하고, 페이지 마일스톤은 작업 위험에 맞는 대표 폭만 검사한다.
+- `audit:detailed` 전체 viewport 검사는 배포 전 또는 반응형 회귀 조사에만 실행한다.
 - 반응형 기준은 CSS viewport이며, 물리 모니터 해상도나 Windows 배율과 혼동하지 않는다.
 - 실행하지 않은 검사나 확인하지 않은 기능을 PASS로 보고하지 않는다.
 - UI 완료는 자동 검사 통과와 수동 시각 검토를 구분해 판단한다. 실제 로드된 폰트와 자산을 사용한 browser native-size PNG를 확인하고, 승인 Figma와 주요 geometry·bounding box·텍스트·overflow·clip을 비교한다.

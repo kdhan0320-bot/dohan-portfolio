@@ -45,11 +45,11 @@ const AIPromptPage = () => {
         <Typography variant="h5" fontWeight={700}>AI 프롬프트</Typography>
       </Box>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        입력값을 바탕으로 Claude / ChatGPT에 바로 넣을 수 있는 프롬프트를 생성합니다.
+        입력값을 바탕으로 ChatGPT 등 생성형 AI에 바로 넣을 수 있는 프롬프트를 생성합니다.
       </Typography>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        생성된 프롬프트를 복사해서 ChatGPT 또는 Claude에 붙여넣기 하세요.
+        생성된 프롬프트를 복사해서 ChatGPT 등 생성형 AI에 붙여넣기 하세요.
       </Alert>
 
       <Card sx={{ mb: 3 }}>
@@ -142,7 +142,7 @@ const AIPromptPage = () => {
               {generated}
             </Box>
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5, display: 'block' }}>
-              위 텍스트를 복사해서 ChatGPT 또는 Claude에 붙여넣기 하세요.
+              위 텍스트를 복사해서 ChatGPT 등 생성형 AI에 붙여넣기 하세요.
             </Typography>
           </CardContent>
         </Card>

@@ -136,7 +136,7 @@ export const SAMPLE_POSTS = [
   {
     id: 'sample-2',
     title: 'JobFlow Dashboard 프로젝트 설명 문구를 정리해봤습니다.',
-    content: 'AI-assisted Coding 프로젝트를 포트폴리오에 넣을 때 "Claude로 만들었다"는 표현이 어색하게 느껴질 수 있어서 어떻게 쓰면 좋을지 고민했습니다. "AI-assisted Coding"이라는 표현이 가장 자연스럽고 투명하게 보이는 것 같습니다.',
+    content: 'AI-assisted Coding 프로젝트를 포트폴리오에 넣을 때 "특정 AI 도구로 만들었다"는 표현이 어색하게 느껴질 수 있어서 어떻게 쓰면 좋을지 고민했습니다. "AI-assisted Coding"이라는 표현이 가장 자연스럽고 투명하게 보이는 것 같습니다.',
     hashtags: ['AI-assisted', '포트폴리오', '취업준비'],
     category: 'AI Coding',
     profiles: { username: '김도한_dev' },
@@ -146,7 +146,7 @@ export const SAMPLE_POSTS = [
   {
     id: 'sample-3',
     title: 'AI-assisted Coding 프로젝트를 포트폴리오에 어떻게 적으면 좋을까요?',
-    content: 'Claude나 GPT 같은 AI 도구를 활용해서 만든 프로젝트를 이력서나 포트폴리오에 어떻게 표현하면 좋을지 고민입니다. 솔직하게 쓰는 게 맞는 것 같긴 한데, 채용 담당자 입장에서 어떻게 볼지 궁금합니다.',
+    content: '생성형 AI 도구를 활용해서 만든 프로젝트를 이력서나 포트폴리오에 어떻게 표현하면 좋을지 고민입니다. 솔직하게 쓰는 게 맞는 것 같긴 한데, 채용 담당자 입장에서 어떻게 볼지 궁금합니다.',
     hashtags: ['AI-assisted', '이력서', '취업'],
     category: 'AI Coding',
     profiles: { username: 'UX학습자' },
@@ -247,7 +247,7 @@ export const SAMPLE_COMMENTS = {
     { id: 'sc-2-2', content: '저도 비슷한 고민을 했었는데, 도구 활용 능력을 강조하는 방향이 맞는 것 같더라고요.', profiles: { username: '취준생모임' }, created_at: ago(70), comment_likes: [], replies: [], user_id: 'sample' },
   ],
   'sample-3': [
-    { id: 'sc-3-1', content: '"Claude를 활용해 UI 구조와 기능 구현을 보조받았습니다" 정도면 충분합니다.', profiles: { username: '디자인멘토' }, created_at: ago(170), comment_likes: [], replies: [
+    { id: 'sc-3-1', content: '"생성형 AI 도구를 활용해 UI 구조와 기능 구현을 보조받았습니다" 정도면 충분합니다.', profiles: { username: '디자인멘토' }, created_at: ago(170), comment_likes: [], replies: [
       { id: 'sc-3-1-1', content: '이 표현 그대로 제 README에도 참고했어요, 감사합니다!', profiles: { username: 'UX학습자' }, created_at: ago(165), comment_likes: [], user_id: 'sample' },
     ], user_id: 'sample' },
     { id: 'sc-3-2', content: '포트폴리오에 AI 사용 사실을 투명하게 적었는데 채용 담당자가 긍정적으로 봐주셨어요!', profiles: { username: 'UX멘토' }, created_at: ago(160), comment_likes: [], replies: [], user_id: 'sample' },
