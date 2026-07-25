@@ -294,18 +294,47 @@ const HeroSection = () => {
         }}
       />
       <Box sx={{
-        position: 'absolute', top: '2%', right: '4%', width: 480, height: 480, opacity: 0.05,
+        position: 'absolute',
+        top: '150px',
+        left: 'calc(50% + 220px)',
+        width: 420,
+        height: 420,
+        opacity: 0.05,
         [SPLIT_MQ]: { display: 'block' }, display: 'none',
       }}>
         <DMark size="100%" tone="onDark" decorative sx={{ width: '100%', height: '100%' }} />
       </Box>
       <Box sx={{
-        position: 'absolute', top: '18%', right: '20%', width: 360, height: 360, borderRadius: '50%',
-        background: `radial-gradient(circle, ${HUMAN_SIGNAL.brightOrange} 0%, transparent 70%)`, opacity: 0.1, filter: 'blur(60px)',
+        position: 'absolute',
+        top: '52px',
+        left: '50%',
+        width: '1px',
+        height: 620,
+        bgcolor: 'rgba(170,183,196,0.16)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
       }} />
       <Box sx={{
-        position: 'absolute', top: '4%', right: '30%', width: 700, height: 700, borderRadius: '50%',
+        position: 'absolute',
+        top: '340px',
+        left: 'calc(50% + 340px)',
+        width: 360,
+        height: 360,
+        borderRadius: '50%',
+        background: `radial-gradient(circle, ${HUMAN_SIGNAL.brightOrange} 0%, transparent 70%)`, opacity: 0.1, filter: 'blur(60px)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
+      }} />
+      <Box sx={{
+        position: 'absolute',
+        top: '-10px',
+        left: 'calc(50% + 20px)',
+        width: 700,
+        height: 700,
+        borderRadius: '50%',
         background: `radial-gradient(circle, ${HUMAN_SIGNAL.mutedSage} 0%, transparent 70%)`, opacity: 0.06, filter: 'blur(70px)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
       }} />
     </Box>
 
@@ -320,7 +349,7 @@ const HeroSection = () => {
         // space-between + Copy·Stage 고정폭이다(1024: 480/400, 1440: 648/548).
         [SPLIT_MQ]: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minHeight: 500 },
         [COMPACT_MQ]: { gap: 0, minHeight: 620 },
-        [DESKTOP_MQ]: { minHeight: 684 },
+        [DESKTOP_MQ]: { minHeight: 684, px: '64px' },
       }}
     >
       {/* 좌측 — Identity Copy: Header에 이미 있는 D2+이름을 반복하지 않고 작은
@@ -330,7 +359,7 @@ const HeroSection = () => {
           position: 'relative', py: { xs: 0, sm: 0, md: 8 }, width: '100%',
           [SPLIT_MQ]: { py: 0, flexShrink: 0 },
           [COMPACT_MQ]: { width: 480 },
-          [DESKTOP_MQ]: { width: 648 },
+          [DESKTOP_MQ]: { width: 648, height: 560 },
         }}
       >
         <Typography
@@ -338,6 +367,7 @@ const HeroSection = () => {
           sx={{
             fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrange,
             fontSize: '0.75rem', letterSpacing: '0.04em', mb: { xs: 2, md: 2.5 },
+            [DESKTOP_MQ]: { mb: '34px' },
             opacity: isReviewCapture ? 1 : 0,
             animation: anim('heroCopyIn', 0.24, 0),
           }}

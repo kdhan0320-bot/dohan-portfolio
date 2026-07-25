@@ -6,7 +6,6 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import {
-  useStickyCompact,
   useActiveSection,
   scrollToSection,
 } from '../../hooks/useScrollNav';
@@ -71,10 +70,13 @@ const focusVisibleSx = {
   },
 };
 
+const STICKY_COMPACT_THRESHOLD = 120;
+
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [compact, setCompact] = useState(false);
   const menuButtonRef = useRef(null);
 
   const isHome = location.pathname === '/';
@@ -86,8 +88,25 @@ const Navbar = () => {
   // `/projects/:slug` Detail은 아직 Figma 동기화 전이라(본문이 1312 shell을
   // 그대로 씀) 여기서 넓히면 헤더/본문 폭이 어긋나 제외한다.
   const isProjectsIndexQhd = location.pathname === '/projects';
-  const { compact } = useStickyCompact();
   const activeSection = useActiveSection(location.pathname);
+
+  useEffect(() => {
+    let frameId = null;
+    const updateCompact = () => {
+      setCompact(window.scrollY > STICKY_COMPACT_THRESHOLD);
+      frameId = null;
+    };
+    const onScroll = () => {
+      if (frameId === null) frameId = window.requestAnimationFrame(updateCompact);
+    };
+
+    updateCompact();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frameId !== null) window.cancelAnimationFrame(frameId);
+    };
+  }, []);
 
   // 모바일 메뉴 진입/퇴장: 기본은 MUI Drawer의 슬라이드(이동) 트랜지션을 쓰지만,
   // reduced-motion 선호 시에는 이동 없이 opacity 트랜지션(Fade)으로 바꾼다.
@@ -182,6 +201,7 @@ const Navbar = () => {
           maxWidth={false}
           sx={{
             px: { xs: 3, sm: 6, md: 8 },
+            pt: isDarkHeader ? { xs: '18px', md: '24px' } : 0,
             maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 },
             mx: 'auto',
             '@media (min-width:1920px)': isProjectsIndexQhd
@@ -193,7 +213,9 @@ const Navbar = () => {
             disableGutters
             sx={{
               justifyContent: 'space-between',
-              minHeight: { xs: '72px !important', md: compact ? '68px !important' : '80px !important' },
+              minHeight: isDarkHeader
+                ? { xs: '54px !important', md: '58px !important' }
+                : { xs: '72px !important', md: compact ? '64px !important' : '80px !important' },
               transition: 'min-height 0.2s ease',
               '@media (prefers-reduced-motion: reduce)': { transition: 'none' },
             }}
@@ -213,19 +235,28 @@ const Navbar = () => {
               }}
             >
               <DMark
-                size={compact ? 36 : 44}
+                size={isDarkHeader || compact ? 36 : 44}
                 tone={isDarkHeader ? 'onDark' : 'onLight'}
-                sx={{ '@media (min-width:1920px)': { width: compact ? 40 : 48, height: compact ? 40 : 48 } }}
+                sx={{
+                  '@media (min-width:1920px)': isDarkHeader
+                    ? { width: 36, height: 36 }
+                    : { width: compact ? 40 : 48, height: compact ? 40 : 48 },
+                }}
               />
               <Box sx={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
-                <Typography sx={{ color: isDarkHeader ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.inkNavy, fontWeight: 500, fontSize: '0.875rem', '@media (min-width:1920px)': { fontSize: '0.9375rem' } }}>
+                <Typography sx={{
+                  color: isDarkHeader ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.inkNavy,
+                  fontWeight: isDarkHeader ? 700 : 500,
+                  fontSize: '0.875rem',
+                  '@media (min-width:1920px)': { fontSize: isDarkHeader ? '0.875rem' : '0.9375rem' },
+                }}>
                   DOHAN KIM
                 </Typography>
                 {!compact && (
                   <Typography
                     sx={{
                       fontFamily: FONT_MONO, color: isDarkHeader ? HUMAN_SIGNAL.steelMist : HUMAN_SIGNAL.inkNavy,
-                      fontSize: '0.75rem', letterSpacing: '0.04em',
+                      fontSize: isDarkHeader ? '0.625rem' : '0.75rem', letterSpacing: '0.04em',
                     }}
                   >
                     UX/UI · WEB PUBLISHING
