@@ -26,7 +26,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 |---|---|
 | my-portfolio | https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/ |
 | jobflow-dashboard | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
-| my-community | https://kdhan0320-bot.github.io/dohan-portfolio/my-community/ |
+| portfolio-feedback-hub | https://kdhan0320-bot.github.io/dohan-portfolio/my-community/ |
 | mini_sns | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
 | OTT Service | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
 
@@ -38,7 +38,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 **jobflow-dashboard** — Supabase Auth + PostgreSQL 실제 연동. 게스트
 모드에서는 샘플 데이터로 주요 화면을 체험할 수 있습니다.
 
-**my-community** — Supabase Auth + PostgreSQL 실제 연동. 테스트 계정으로
+**Portfolio Feedback Hub** (`projects/portfolio-feedback-hub`) — Supabase Auth + PostgreSQL 실제 연동. 테스트 계정으로
 로그인하거나, 게스트 모드로 로그인 없이 주요 화면을 확인할 수 있습니다.
 
 **mini_sns** — mock 데이터와 브라우저 메모리 상태로 동작합니다. 실제
@@ -73,7 +73,7 @@ npm run build
 
 `main` 브랜치에 push하면 `.github/workflows/deploy.yml`이 각 프로젝트를
 빌드해 GitHub Pages(`_site/`)로 배포합니다. Supabase를 사용하는
-프로젝트(my-community, jobflow-dashboard)는 빌드 시 저장소 Secrets 값을
+프로젝트(portfolio-feedback-hub, jobflow-dashboard)는 빌드 시 저장소 Secrets 값을
 환경변수로 주입받습니다.
 
 ## AI 협업 방식
