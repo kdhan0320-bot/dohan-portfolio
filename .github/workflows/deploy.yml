@@ -44,12 +44,12 @@ jobs:
         working-directory: projects/my-portfolio
         run: npm run build
 
-      - name: Install dependencies (my-community)
-        working-directory: projects/my-community
+      - name: Install dependencies (Portfolio Feedback Hub)
+        working-directory: projects/portfolio-feedback-hub
         run: npm ci
 
-      - name: Build my-community
-        working-directory: projects/my-community
+      - name: Build Portfolio Feedback Hub
+        working-directory: projects/portfolio-feedback-hub
         env:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -75,7 +75,7 @@ jobs:
           cp _site/mini-sns/index.html _site/mini-sns/404.html
           cp -r projects/my-portfolio/dist/. _site/my-portfolio
           cp _site/my-portfolio/index.html _site/my-portfolio/404.html
-          cp -r projects/my-community/dist/. _site/my-community
+          cp -r projects/portfolio-feedback-hub/dist/. _site/my-community
           cp _site/my-community/index.html _site/my-community/404.html
           cp -r projects/jobflow-dashboard/dist/. _site/jobflow-dashboard
           cp _site/jobflow-dashboard/index.html _site/jobflow-dashboard/404.html

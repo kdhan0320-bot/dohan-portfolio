@@ -38,7 +38,7 @@
 | Design | Figma |
 | Routing | React Router v7 |
 | Tool | GitHub, GitHub Pages, GitHub Actions |
-| Workflow | AI 도구(Claude 등)를 문장 정리·코드 점검·개선안 비교에 보조적으로 활용 |
+| Workflow | 생성형 AI 도구를 문장 정리·코드 점검·개선안 비교에 보조적으로 활용 |
 
 ---
 
@@ -113,5 +113,7 @@ npm run build
 - heading 계층(h1 → h2 → h3) 유지
 - 터치 영역 44px 이상, 모바일 본문 14px 이상, line-height 1.6 이상
 - 장식용 요소는 `aria-hidden`/`pointer-events:none` 처리, `prefers-reduced-motion` 대응
-- 390px ~ 2560px(390/430/768/820/1024/1366/1440/1920/2560 9개 기준 viewport) 반응형 확인 —
-  `tools/site-audit-kit`의 `npm run audit:detailed`가 이 9개를 자동 점검한다.
+- routine UI 변경은 목표 viewport와 인접 폭을 확인하고, 페이지 마일스톤은 작업
+  위험에 맞는 모바일·태블릿·데스크톱 대표 폭만 확인한다.
+- `tools/site-audit-kit`의 `npm run audit:detailed` 전체 검사는 배포 전 또는
+  반응형 회귀 조사에만 실행한다.

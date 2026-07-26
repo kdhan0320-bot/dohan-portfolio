@@ -1,0 +1,50 @@
+<!-- Portfolio Feedback Hub sample artwork. Created in-project with basic SVG geometry; no external image or logo assets. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">업무형 지원 현황 대시보드 작업 화면</title>
+  <desc id="desc">지원 현황, 일정, 체크리스트를 정리한 데스크톱 대시보드</desc>
+  <rect width="960" height="540" fill="#F2F3FF"/>
+  <rect x="38" y="38" width="884" height="464" rx="22" fill="#FFFFFF" stroke="#D5D9F2" stroke-width="2"/>
+  <rect x="38" y="38" width="178" height="464" rx="22" fill="#172554"/>
+  <rect x="38" y="96" width="178" height="406" fill="#172554"/>
+  <rect x="66" y="66" width="32" height="32" rx="8" fill="#4F46E5"/>
+  <rect x="108" y="70" width="70" height="8" rx="4" fill="#FFFFFF"/>
+  <rect x="108" y="86" width="48" height="6" rx="3" fill="#9FA9D7"/>
+  <rect x="58" y="130" width="138" height="38" rx="10" fill="#29376B"/>
+  <rect x="76" y="144" width="78" height="7" rx="3.5" fill="#FFFFFF"/>
+  <rect x="76" y="194" width="92" height="7" rx="3.5" fill="#AAB3D8"/>
+  <rect x="76" y="234" width="72" height="7" rx="3.5" fill="#AAB3D8"/>
+  <rect x="76" y="274" width="84" height="7" rx="3.5" fill="#AAB3D8"/>
+  <text x="252" y="82" fill="#1E293B" font-family="Arial, sans-serif" font-size="20" font-weight="700">APPLICATION REVIEW</text>
+  <text x="252" y="108" fill="#64748B" font-family="Arial, sans-serif" font-size="13">지원 현황과 다음 행동을 한 화면에서 확인합니다.</text>
+  <rect x="252" y="134" width="192" height="82" rx="14" fill="#EEF2FF" stroke="#D6DBFA"/>
+  <text x="270" y="160" fill="#64748B" font-family="Arial, sans-serif" font-size="11">진행 중</text>
+  <text x="270" y="195" fill="#3730A3" font-family="Arial, sans-serif" font-size="28" font-weight="700">12</text>
+  <rect x="460" y="134" width="192" height="82" rx="14" fill="#F0FDFA" stroke="#CDEDE6"/>
+  <text x="478" y="160" fill="#64748B" font-family="Arial, sans-serif" font-size="11">면접 예정</text>
+  <text x="478" y="195" fill="#0F766E" font-family="Arial, sans-serif" font-size="28" font-weight="700">04</text>
+  <rect x="668" y="134" width="216" height="82" rx="14" fill="#FFF7ED" stroke="#F6DEC1"/>
+  <text x="686" y="160" fill="#64748B" font-family="Arial, sans-serif" font-size="11">이번 주 마감</text>
+  <text x="686" y="195" fill="#9A3412" font-family="Arial, sans-serif" font-size="28" font-weight="700">03</text>
+  <rect x="252" y="238" width="402" height="222" rx="16" fill="#FFFFFF" stroke="#DCE2EC"/>
+  <text x="274" y="270" fill="#1E293B" font-family="Arial, sans-serif" font-size="13" font-weight="700">최근 지원</text>
+  <line x1="274" y1="290" x2="630" y2="290" stroke="#E2E8F0"/>
+  <rect x="274" y="309" width="112" height="8" rx="4" fill="#475569"/>
+  <rect x="274" y="327" width="68" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="540" y="306" width="88" height="24" rx="12" fill="#E0E7FF"/>
+  <text x="557" y="322" fill="#3730A3" font-family="Arial, sans-serif" font-size="10" font-weight="700">서류 검토</text>
+  <line x1="274" y1="350" x2="630" y2="350" stroke="#E2E8F0"/>
+  <rect x="274" y="369" width="96" height="8" rx="4" fill="#475569"/>
+  <rect x="274" y="387" width="76" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="540" y="366" width="88" height="24" rx="12" fill="#CCFBF1"/>
+  <text x="562" y="382" fill="#0F766E" font-family="Arial, sans-serif" font-size="10" font-weight="700">면접 예정</text>
+  <line x1="274" y1="410" x2="630" y2="410" stroke="#E2E8F0"/>
+  <rect x="680" y="238" width="204" height="222" rx="16" fill="#F8FAFC" stroke="#DCE2EC"/>
+  <text x="702" y="270" fill="#1E293B" font-family="Arial, sans-serif" font-size="13" font-weight="700">NEXT ACTION</text>
+  <circle cx="710" cy="311" r="8" fill="#4F46E5"/>
+  <path d="M706 311l3 3 6-7" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="728" y="306" width="118" height="8" rx="4" fill="#64748B"/>
+  <circle cx="710" cy="354" r="8" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="2"/>
+  <rect x="728" y="349" width="92" height="8" rx="4" fill="#94A3B8"/>
+  <circle cx="710" cy="397" r="8" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="2"/>
+  <rect x="728" y="392" width="106" height="8" rx="4" fill="#94A3B8"/>
+</svg>

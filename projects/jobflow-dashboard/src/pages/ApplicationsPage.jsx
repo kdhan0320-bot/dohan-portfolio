@@ -1,31 +1,40 @@
-import { useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import {
   Box, Button, TextField, Select, MenuItem, FormControl, InputLabel,
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Card, CardContent, Typography, Chip, Stack, IconButton,
+  Card, CardActionArea, CardActions, CardContent, Typography, Chip, Stack, IconButton, Link,
   Skeleton, Alert, useMediaQuery, useTheme, InputAdornment,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import useApplications from '../hooks/useApplications';
 import { useAuth } from '../context/AuthContext';
-import { APPLICATION_STATUSES } from '../constants';
+import { APPLICATION_STATUSES, PRIORITY_OPTIONS } from '../constants';
 import StatusChip from '../components/ui/StatusChip';
 import EmptyState from '../components/ui/EmptyState';
+import ActionFeedback from '../components/ui/ActionFeedback';
 
 const ApplicationsPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { isGuest } = useAuth();
-  const { applications, loading, error, remove } = useApplications();
+  const { applications, loading, error, refresh, remove } = useApplications();
 
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+  const [feedback, setFeedback] = useState(location.state?.feedback ?? null);
+
+  useEffect(() => {
+    if (!location.state?.feedback) return;
+    setFeedback(location.state.feedback);
+    navigate(location.pathname, { replace: true, state: {} });
+  }, [location.pathname, location.state, navigate]);
 
   const filtered = useMemo(() => {
     let list = [...applications];
@@ -41,13 +50,31 @@ const ApplicationsPage = () => {
     e.stopPropagation();
     if (isGuest) return;
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
-    try { await remove(id); } catch { /* ignore */ }
+    try {
+      await remove(id);
+      setFeedback({ severity: 'success', message: '지원 정보를 삭제했습니다.' });
+    } catch (deleteError) {
+      setFeedback({
+        severity: 'error',
+        message: deleteError.message || '지원 정보를 삭제하지 못했습니다.',
+      });
+    }
   };
 
-  if (error) return <Alert severity="error">{error}</Alert>;
+  const priorityColor = (priority) =>
+    PRIORITY_OPTIONS.find((option) => option.value === priority)?.color ?? '#475569';
 
   return (
     <Box>
+      {error && (
+        <Alert
+          severity="error"
+          sx={{ mb: 2 }}
+          action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
+        >
+          지원 정보를 불러오지 못했습니다. {error}
+        </Alert>
+      )}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
         <Typography variant="h5" fontWeight={700}>지원 회사 목록</Typography>
         {!isGuest && (
@@ -63,56 +90,74 @@ const ApplicationsPage = () => {
         )}
       </Box>
 
-      <Card sx={{ mb: 2 }}>
-        <CardContent sx={{ pb: '16px !important' }}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+      {!error && (
+        <>
+          <Card sx={{ mb: 2 }}>
+            <CardContent sx={{ pb: '16px !important' }}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               placeholder="회사명, 직무 검색"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               size="small"
               sx={{ flex: 1 }}
-              slotProps={{ input: { startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment> } }}
+              slotProps={{
+                htmlInput: { 'aria-label': '회사명 또는 직무 검색' },
+                input: {
+                  startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment>,
+                },
+              }}
             />
             <FormControl size="small" sx={{ minWidth: 140 }}>
-              <InputLabel>상태 필터</InputLabel>
-              <Select value={statusFilter} label="상태 필터" onChange={(e) => setStatusFilter(e.target.value)}>
+              <InputLabel id="application-status-filter-label">상태 필터</InputLabel>
+              <Select
+                labelId="application-status-filter-label"
+                value={statusFilter}
+                label="상태 필터"
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
                 <MenuItem value="">전체</MenuItem>
                 {APPLICATION_STATUSES.map((s) => <MenuItem key={s.value} value={s.value}>{s.label}</MenuItem>)}
               </Select>
             </FormControl>
             <FormControl size="small" sx={{ minWidth: 120 }}>
-              <InputLabel>정렬</InputLabel>
-              <Select value={sortBy} label="정렬" onChange={(e) => setSortBy(e.target.value)}>
+              <InputLabel id="application-sort-label">정렬</InputLabel>
+              <Select
+                labelId="application-sort-label"
+                value={sortBy}
+                label="정렬"
+                onChange={(e) => setSortBy(e.target.value)}
+              >
                 <MenuItem value="newest">최신순</MenuItem>
                 <MenuItem value="oldest">오래된순</MenuItem>
                 <MenuItem value="company">회사명순</MenuItem>
               </Select>
             </FormControl>
-          </Stack>
-        </CardContent>
-      </Card>
+              </Stack>
+            </CardContent>
+          </Card>
 
-      {loading ? (
-        <Stack spacing={1}>
-          {[...Array(4)].map((_, i) => <Skeleton key={i} height={60} variant="rounded" />)}
-        </Stack>
-      ) : filtered.length === 0 ? (
-        <EmptyState
-          title={search || statusFilter ? '해당 조건의 지원 내역이 없습니다' : '지원 내역이 없습니다'}
-          description={search || statusFilter ? '다른 검색어나 필터를 선택해보세요.' : '첫 번째 지원 회사를 등록해보세요.'}
-          action={!isGuest && !search && !statusFilter ? () => navigate('/applications/new') : undefined}
-          actionLabel="지원 회사 추가"
-        />
-      ) : isMobile ? (
+          {loading ? (
+            <Stack spacing={1}>
+              {[...Array(4)].map((_, i) => <Skeleton key={i} height={60} variant="rounded" />)}
+            </Stack>
+          ) : filtered.length === 0 ? (
+            <EmptyState
+              title={search || statusFilter ? '해당 조건의 지원 내역이 없습니다' : '지원 내역이 없습니다'}
+              description={search || statusFilter ? '다른 검색어나 필터를 선택해보세요.' : '첫 번째 지원 회사를 등록해보세요.'}
+              action={!isGuest && !search && !statusFilter ? () => navigate('/applications/new') : undefined}
+              actionLabel="지원 회사 추가"
+            />
+          ) : isMobile ? (
         <Stack spacing={1.5}>
           {filtered.map((app) => (
-            <Card
-              key={app.id}
-              sx={{ cursor: 'pointer', '&:hover': { boxShadow: 3 } }}
-              onClick={() => navigate(`/applications/${app.id}`)}
-            >
-              <CardContent>
+            <Card key={app.id}>
+              <CardActionArea
+                component={RouterLink}
+                to={`/applications/${app.id}`}
+                aria-label={`${app.company_name} 지원 상세 보기`}
+              >
+                <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                   <Box sx={{ flex: 1, mr: 1 }}>
                     <Typography variant="body1" fontWeight={700}>{app.company_name}</Typography>
@@ -121,23 +166,22 @@ const ApplicationsPage = () => {
                   </Box>
                   <StatusChip status={app.status} />
                 </Box>
-                <Box sx={{ display: 'flex', gap: 1, mt: 1, justifyContent: 'flex-end' }}>
-                  {!isGuest && (
-                    <>
-                      <IconButton size="small" onClick={(e) => { e.stopPropagation(); navigate(`/applications/${app.id}/edit`); }} aria-label="수정">
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton size="small" onClick={(e) => handleDelete(app.id, e)} aria-label="삭제" color="error">
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </>
-                  )}
-                </Box>
-              </CardContent>
+                </CardContent>
+              </CardActionArea>
+              {!isGuest && (
+                <CardActions sx={{ justifyContent: 'flex-end', pt: 0 }}>
+                  <IconButton size="small" onClick={() => navigate(`/applications/${app.id}/edit`)} aria-label={`${app.company_name} 수정`}>
+                    <EditIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton size="small" onClick={(e) => handleDelete(app.id, e)} aria-label={`${app.company_name} 삭제`} color="error">
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </CardActions>
+              )}
             </Card>
           ))}
         </Stack>
-      ) : (
+          ) : (
         <TableContainer component={Card}>
           <Table>
             <TableHead>
@@ -156,20 +200,27 @@ const ApplicationsPage = () => {
                 <TableRow
                   key={app.id}
                   hover
-                  sx={{ cursor: 'pointer' }}
-                  onClick={() => navigate(`/applications/${app.id}`)}
                 >
                   <TableCell>
-                    <Typography variant="body2" fontWeight={600}>{app.company_name}</Typography>
+                    <Link
+                      component={RouterLink}
+                      to={`/applications/${app.id}`}
+                      underline="hover"
+                      fontWeight={700}
+                      aria-label={`${app.company_name} 지원 상세 보기`}
+                      sx={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}
+                    >
+                      {app.company_name}
+                    </Link>
                   </TableCell>
                   <TableCell>
                     <Typography variant="body2" color="text.secondary">{app.position || '-'}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2" color="text.secondary">{app.location || '-'}</Typography>
+                    <Typography variant="body2" color="text.secondary">{app.location || '미등록'}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2" color="text.secondary">{app.applied_date || '-'}</Typography>
+                    <Typography variant="body2" color="text.secondary">{app.applied_date || '미등록'}</Typography>
                   </TableCell>
                   <TableCell>
                     <StatusChip status={app.status} />
@@ -181,7 +232,8 @@ const ApplicationsPage = () => {
                         size="small"
                         sx={{
                           fontWeight: 600,
-                          color: app.priority === '높음' ? '#EF4444' : app.priority === '보통' ? '#F59E0B' : '#94A3B8',
+                          color: priorityColor(app.priority),
+                          borderColor: priorityColor(app.priority),
                         }}
                         variant="outlined"
                       />
@@ -192,11 +244,11 @@ const ApplicationsPage = () => {
                       <IconButton
                         size="small"
                         onClick={(e) => { e.stopPropagation(); navigate(`/applications/${app.id}/edit`); }}
-                        aria-label="수정"
+                        aria-label={`${app.company_name} 수정`}
                       >
                         <EditIcon fontSize="small" />
                       </IconButton>
-                      <IconButton size="small" onClick={(e) => handleDelete(app.id, e)} aria-label="삭제" color="error">
+                      <IconButton size="small" onClick={(e) => handleDelete(app.id, e)} aria-label={`${app.company_name} 삭제`} color="error">
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </TableCell>
@@ -206,7 +258,10 @@ const ApplicationsPage = () => {
             </TableBody>
           </Table>
         </TableContainer>
+          )}
+        </>
       )}
+      <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
     </Box>
   );
 };

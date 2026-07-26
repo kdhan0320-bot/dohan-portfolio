@@ -1,4 +1,5 @@
-import { AppBar, Toolbar, IconButton, Typography, Box, Chip } from '@mui/material';
+import { useState } from 'react';
+import { Alert, AppBar, Toolbar, IconButton, Typography, Box, Chip, Snackbar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useAuth } from '../../context/AuthContext';
@@ -8,11 +9,11 @@ import { DRAWER_WIDTH } from './Sidebar';
 const PAGE_TITLES = {
   '/': '대시보드',
   '/applications': '지원 현황',
-  '/applications/new': '지원 회사 등록',
+  '/applications/new': '지원 정보 추가',
   '/kanban': '전형 보드',
   '/checklist': '체크리스트',
   '/interview': '면접 메모',
-  '/ai-prompt': 'AI 프롬프트',
+  '/ai-prompt': '문서 작성 도우미',
   '/settings': '설정',
 };
 
@@ -20,15 +21,28 @@ const Header = ({ onMenuClick }) => {
   const { signOut, isGuest } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const title = PAGE_TITLES[location.pathname] ?? 'JobFlow Dashboard';
+  const isApplicationEdit = /^\/applications\/[^/]+\/edit$/.test(location.pathname);
+  const isApplicationDetail = /^\/applications\/[^/]+(?:\/edit)?$/.test(location.pathname);
+  const title = PAGE_TITLES[location.pathname]
+    ?? (isApplicationEdit
+      ? '지원 정보 수정'
+      : isApplicationDetail
+        ? '지원 정보'
+        : '페이지를 찾을 수 없음');
+  const [logoutError, setLogoutError] = useState('');
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/login');
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (error) {
+      setLogoutError(error.message || '로그아웃하지 못했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
-    <AppBar
+    <>
+      <AppBar
       position="fixed"
       elevation={0}
       sx={{
@@ -39,7 +53,7 @@ const Header = ({ onMenuClick }) => {
         borderColor: 'divider',
         color: 'text.primary',
       }}
-    >
+      >
       <Toolbar
         sx={{
           minHeight: { xs: 56, sm: 64 },
@@ -76,7 +90,18 @@ const Header = ({ onMenuClick }) => {
           </IconButton>
         </Box>
       </Toolbar>
-    </AppBar>
+      </AppBar>
+      <Snackbar
+        open={Boolean(logoutError)}
+        autoHideDuration={4000}
+        onClose={() => setLogoutError('')}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert severity="error" variant="filled" onClose={() => setLogoutError('')}>
+          {logoutError}
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

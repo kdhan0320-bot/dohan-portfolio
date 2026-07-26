@@ -9,7 +9,7 @@
   script는 .NET System.IO.Compression.ZipArchive로 직접 엔트리를 만들어
   경로 구분자를 항상 /로 강제하고, 생성 직후 backslash 엔트리 0건을 자체
   검증한다. 이 저장소에서 ZIP을 만드는 유일한 공식 경로이며(`npm run zip`이
-  이 script만 호출한다), README/CLAUDE.md에 inline Compress-Archive 명령을
+  이 script만 호출한다), README/AGENTS.md에 inline Compress-Archive 명령을
   다시 복사해 적지 않는다.
 
 .PARAMETER SourceDir

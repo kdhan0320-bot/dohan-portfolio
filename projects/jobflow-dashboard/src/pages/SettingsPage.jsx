@@ -16,6 +16,7 @@ const SettingsPage = () => {
   const [targetRole, setTargetRole] = useState('');
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
   const profileWarning = location.state?.profileWarning ?? '';
 
   useEffect(() => {
@@ -49,32 +50,46 @@ const SettingsPage = () => {
   }, [user, isGuest]);
 
   const handleSave = async () => {
-    if (!user || isGuest) return;
+    if (!user || isGuest || saving) return;
     setError('');
-    const { error: err } = await supabase.from('jobflow_profiles').upsert({
-      id: user.id,
-      email: user.email,
-      display_name: displayName,
-      target_role: targetRole,
-      updated_at: new Date().toISOString(),
-    });
-    if (err) {
-      setError(err.message);
-      return;
+    setSaved(false);
+    setSaving(true);
+    try {
+      const { data, error: saveError } = await supabase
+        .from('jobflow_profiles')
+        .upsert({
+          id: user.id,
+          email: user.email,
+          display_name: displayName,
+          target_role: targetRole,
+          updated_at: new Date().toISOString(),
+        })
+        .select('id')
+        .maybeSingle();
+      if (saveError) throw saveError;
+      if (!data) throw new Error('저장할 프로필을 찾지 못했거나 권한이 없습니다.');
+
+      setSaved(true);
+
+      if (location.state?.profileWarning) {
+        navigate(location.pathname, { replace: true, state: {} });
+      }
+
+      setTimeout(() => setSaved(false), 2000);
+    } catch (saveError) {
+      setError(saveError.message || '설정을 저장하지 못했습니다. 다시 시도해주세요.');
+    } finally {
+      setSaving(false);
     }
-
-    setSaved(true);
-
-    if (location.state?.profileWarning) {
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-
-    setTimeout(() => setSaved(false), 2000);
   };
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/login');
+    try {
+      await signOut();
+      navigate('/login');
+    } catch (logoutError) {
+      setError(logoutError.message || '로그아웃하지 못했습니다. 다시 시도해주세요.');
+    }
   };
 
   if (isGuest) {
@@ -124,6 +139,7 @@ const SettingsPage = () => {
               fullWidth
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
+              disabled={saving}
               placeholder="홍길동"
             />
             <TextField
@@ -131,6 +147,7 @@ const SettingsPage = () => {
               fullWidth
               value={targetRole}
               onChange={(e) => setTargetRole(e.target.value)}
+              disabled={saving}
               placeholder="예: UX/UI 디자이너"
             />
             <TextField
@@ -140,8 +157,8 @@ const SettingsPage = () => {
               disabled
               helperText="이메일은 변경할 수 없습니다"
             />
-            <Button variant="contained" onClick={handleSave} sx={{ alignSelf: 'flex-start' }}>
-              저장
+            <Button variant="contained" onClick={handleSave} disabled={saving} sx={{ alignSelf: 'flex-start' }}>
+              {saving ? '저장 중...' : '저장'}
             </Button>
           </Stack>
         </CardContent>

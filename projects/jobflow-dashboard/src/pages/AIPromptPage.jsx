@@ -42,14 +42,14 @@ const AIPromptPage = () => {
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
         <AutoAwesomeIcon color="primary" />
-        <Typography variant="h5" fontWeight={700}>AI 프롬프트</Typography>
+        <Typography variant="h5" fontWeight={700}>문서 작성 도우미</Typography>
       </Box>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-        입력값을 바탕으로 Claude / ChatGPT에 바로 넣을 수 있는 프롬프트를 생성합니다.
+        입력 내용을 정리해 외부 생성형 AI에 붙여넣을 수 있는 문서 작성용 프롬프트를 만듭니다.
       </Typography>
 
       <Alert severity="info" sx={{ mb: 3 }}>
-        생성된 프롬프트를 복사해서 ChatGPT 또는 Claude에 붙여넣기 하세요.
+        이 기능은 외부 LLM이나 AI API를 호출하지 않습니다. 브라우저에서 만든 템플릿을 복사해 원하는 생성형 AI에 붙여넣으세요.
       </Alert>
 
       <Card sx={{ mb: 3 }}>
@@ -98,9 +98,9 @@ const AIPromptPage = () => {
               startIcon={<AutoAwesomeIcon />}
               onClick={handleGenerate}
               disabled={!role.trim()}
-              aria-label="프롬프트 생성"
+              aria-label="문서 작성용 프롬프트 생성"
             >
-              프롬프트 생성
+              문서용 프롬프트 만들기
             </Button>
           </Stack>
         </CardContent>
@@ -142,7 +142,7 @@ const AIPromptPage = () => {
               {generated}
             </Box>
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5, display: 'block' }}>
-              위 텍스트를 복사해서 ChatGPT 또는 Claude에 붙여넣기 하세요.
+              위 텍스트를 복사해서 ChatGPT 등 생성형 AI에 붙여넣기 하세요.
             </Typography>
           </CardContent>
         </Card>

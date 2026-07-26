@@ -218,28 +218,35 @@ const ProjectsHero = () => (
     <Box sx={{
       ...SHELL_SX, position: 'relative', display: 'flex', flexDirection: { xs: 'column', lg: 'row' }, alignItems: 'flex-start',
     }}>
-      <Box sx={{ minWidth: 0, flex: '1 1 auto' }}>
-        <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '11px', letterSpacing: '0.44px', mb: 2 }}>
+      <Box sx={{ position: 'relative', minWidth: 0, flex: '1 1 auto', width: '100%', height: { xs: 360, sm: 390, md: 360, lg: 430 } }}>
+        <Typography sx={{
+          position: 'absolute', left: 0, top: { xs: -16, sm: 6, md: -26 },
+          fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange,
+          width: 280,
+          fontSize: { xs: '10.5px', lg: '11px' }, letterSpacing: '0.44px',
+        }}>
           PROJECT LIBRARY
         </Typography>
         {/* Figma H1: mobile 32/40 · tablet 768 42/52(210:21, h=104=compact와 동일
          * 2줄) · compact 1024 42/52 · desktop 1440 52/64 · QHD 2560 56/68(5개
          * node 직접 실측, 모두 tracking -0.6~-1.1px). */}
         <Typography component="h1" sx={{
+          position: 'absolute', left: 0, top: { xs: 26, sm: 52, md: 20 },
           fontFamily: FONT_KR, fontWeight: 700,
           fontSize: { xs: '32px', sm: '42px', md: '42px', lg: '52px' },
           lineHeight: { xs: '40px', sm: '52px', md: '52px', lg: '64px' },
           letterSpacing: { xs: '-0.6px', sm: '-1.1px', md: '-1.1px' },
-          color: HUMAN_SIGNAL.inkNavy, mb: 2.5, wordBreak: 'keep-all',
-          maxWidth: { xs: '100%', md: 760, lg: 650 },
+          color: HUMAN_SIGNAL.inkNavy, wordBreak: 'keep-all',
+          width: { xs: '100%', md: 760, lg: 650 },
           '@media (min-width:1920px)': { fontSize: '56px', lineHeight: '68px' },
         }}>
           작업을 역할과 구현 범위로<br />정리했습니다.
         </Typography>
         <Typography sx={{
+          position: 'absolute', left: 0, top: { xs: 140, sm: 206, md: 174, lg: 178 },
           fontFamily: FONT_KR, color: HUMAN_SIGNAL.inkNavy,
           fontSize: { xs: '14.5px', lg: '16px' }, lineHeight: { xs: '24px', lg: '27px' },
-          maxWidth: { xs: '100%', lg: 610 }, mb: { xs: 4, md: 5 }, wordBreak: 'keep-all',
+          width: { xs: '100%', md: 760, lg: 610 }, wordBreak: 'keep-all',
         }}>
           대표 프로젝트와 추가 작업을 같은 기준으로 확인할 수 있습니다. Actual·Demo·Static·Mock 범위를 구분하고, 상세 페이지에서는 설계 판단과 화면 증거를 보여줍니다.
         </Typography>
@@ -247,11 +254,14 @@ const ProjectsHero = () => (
           component={RouterLink}
           to="/"
           sx={{
+            position: 'absolute',
+            left: { xs: 4, sm: 0 },
+            top: { xs: 270, sm: 324, md: 288, lg: 308 },
             bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.warmPaper, textDecoration: 'none',
             fontFamily: FONT_KR, height: { xs: 54, sm: 52, md: 52, lg: 56 }, px: 3, borderRadius: '14px',
-            minWidth: { xs: '100%', sm: 'auto' },
+            width: { xs: 'calc(100% - 8px)', sm: 176, lg: 196 },
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-            fontWeight: 700, fontSize: '0.9375rem',
+            fontWeight: 700, fontSize: { xs: '14px', sm: '0.9375rem' },
             transition: 'transform 180ms ease, box-shadow 180ms ease',
             '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 10px 24px rgba(12,20,32,0.24)' },
             '&:active': { transform: 'translateY(0)' },
@@ -435,7 +445,9 @@ const FeaturedCard = ({ card, index }) => {
 
 const FeaturedProjects = () => (
   <Box component="section" aria-label="대표 프로젝트" sx={{
-    position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy, py: { xs: 7, md: 9 },
+    position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy,
+    pt: { xs: '46px', sm: 7, md: 7, lg: 8 },
+    pb: { xs: 0, sm: 7, md: 7, lg: 8 },
     // Phase 5A-H: 210:38(Tablet 768) 실측 높이 2650(=1150~3800) — 카드 높이(740)·
     // 헤딩 타이포·gap을 아래에서 함께 맞춰 실제 콘텐츠로 채운다.
     minHeight: { xs: 2240, sm: 2650, md: 2000, lg: 1200 },
@@ -454,9 +466,20 @@ const FeaturedProjects = () => (
       indexColor={HUMAN_SIGNAL.softWhite} indexFontSize="150px" labelOpacity={0.55}
     />
     <Box sx={SHELL_SX}>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'flex-end' }, gap: { xs: 2, md: 6 }, mb: { xs: 4, md: 5 } }}>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', lg: 'row' },
+        alignItems: { lg: 'flex-start' },
+        gap: { xs: '14px', sm: '20px', lg: 6 },
+        mb: { xs: '36px', sm: '50px', lg: '38px' },
+        '@media (min-width:1920px)': { mb: '30px' },
+      }}>
         <Box sx={{ minWidth: 0, flex: '1 1 auto' }}>
-          <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrange, fontSize: '11px', letterSpacing: '0.44px', mb: 2 }}>
+          <Typography sx={{
+            fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrange,
+            fontSize: '11px', letterSpacing: '0.44px',
+            mb: { xs: '20px', sm: '22px', lg: '20px' },
+          }}>
             01 / FEATURED PROJECTS
           </Typography>
           {/* Figma Featured H2: mobile 30/40 · tablet 768 40/50(210:41, h=100=
@@ -484,12 +507,16 @@ const FeaturedProjects = () => (
           fontFamily: FONT_KR, color: HUMAN_SIGNAL.steelMist, flexShrink: 0, wordBreak: 'keep-all',
           fontSize: { xs: '14.5px', lg: '16px' }, lineHeight: { xs: '24px', lg: '27px' },
           maxWidth: 500,
+          mt: { lg: '84px' },
           '@media (min-width:1920px)': { maxWidth: 600 },
         }}>
           역할·문제·구현 범위가 다른 세 작업을 한눈에 비교할 수 있습니다.
         </Typography>
       </Box>
-      <Box sx={{ borderTop: `1px solid rgba(170,183,196,0.22)`, mb: { xs: 4, md: 5 } }} />
+      <Box sx={{
+        borderTop: `1px solid rgba(170,183,196,0.22)`,
+        mb: { xs: '47px', sm: '39px', md: '39px', lg: '59px' },
+      }} />
       {/* <900: 1-column 세로 카드. 900–1199: 1-column, 카드 자체가 가로형 row로
        * 바뀐다(FeaturedCard 내부 분기). 1200+: 3-column 세로 카드 — Figma 실측
        * 카드 폭(1440에서 396px, QHD에서 451.44px)을 고정폭으로 쓴다.
@@ -502,7 +529,7 @@ const FeaturedProjects = () => (
       <Box sx={{
         display: 'grid',
         gridTemplateColumns: { xs: '1fr', lg: 'repeat(3, 396px)' },
-        gap: { xs: 3, sm: 2.5, md: 2.5, lg: '32px' },
+        gap: { xs: '30px', sm: '20px', md: '40px', lg: '32px' },
         '@media (min-width:1920px)': { gridTemplateColumns: 'repeat(3, 451.44px)', gap: '99.56px' },
       }}>
         {FEATURED_CARDS.map((card, i) => <FeaturedCard key={card.id} card={card} index={i} />)}
@@ -540,8 +567,10 @@ const MoreWorkCard = ({ project }) => {
       data-project-kind="more-work"
       data-published="true"
       sx={{
+        position: 'relative',
         display: 'flex', flexDirection: { xs: 'column', md: 'row' },
         width: '100%', maxWidth: { xs: '100%', md: '100%', lg: 1180 }, borderRadius: '22px', overflow: 'hidden',
+        height: { xs: 390, sm: 425, md: 320, lg: 380 },
         textDecoration: 'none', color: 'inherit',
         bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
         cursor: isLink ? 'pointer' : 'default',
@@ -550,14 +579,21 @@ const MoreWorkCard = ({ project }) => {
         '&:active': isLink ? { transform: 'translateY(0)' } : undefined,
         ...focusVisibleSx,
         '@media (prefers-reduced-motion: reduce)': { transition: 'none', '&:hover': { transform: 'none' } },
-        '@media (min-width:1920px)': { maxWidth: 1312 },
+        '@media (min-width:1920px)': { maxWidth: 1312, height: 420 },
       }}
     >
-      <Box sx={{ p: 2.25, pb: { xs: 0, md: 2.25 }, width: { xs: '100%', md: '55%' }, flexShrink: 0 }}>
+      <Box sx={{
+        p: { xs: '13px', sm: '15px', md: '15px', lg: '17px' },
+        pb: { xs: 0, md: '15px', lg: '17px' },
+        width: { xs: '100%', md: '59.5%' },
+        height: { md: '100%' },
+        flexShrink: 0,
+        '@media (min-width:1920px)': { p: '19px' },
+      }}>
         <Box sx={{
           position: 'relative', width: '100%', borderRadius: '18px', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper,
-          height: { xs: 200, sm: 230, md: '100%' }, minHeight: { md: 286, lg: 346 },
-          '@media (min-width:1920px)': { minHeight: 382 },
+          height: { xs: 180, sm: 230, md: 288, lg: 344 },
+          '@media (min-width:1920px)': { height: 380 },
         }}>
           {project.thumbnailUrl ? (
             /* Phase 5A-F2 항목 7: ott-service.png 자체가 뷰포트 하단 근처에서
@@ -575,36 +611,86 @@ const MoreWorkCard = ({ project }) => {
           )}
         </Box>
       </Box>
-      <Box sx={{ p: 2.75, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 1, flex: 1, minWidth: 0 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}>
-          <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.04em', color: HUMAN_SIGNAL.burntOrange }}>
-            {scopeLabel}
-          </Typography>
-          <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, color: HUMAN_SIGNAL.softWhite, borderRadius: '10px', px: 1.5, py: 0.5 }}>
-            <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.04em' }}>{statusLabel}</Typography>
-          </Box>
-        </Box>
+      <Box sx={{ position: 'absolute', inset: 0, minWidth: 0 }}>
+        <Typography sx={{
+          position: 'absolute',
+          left: { xs: 15, sm: 17, md: '59.5%' },
+          right: { xs: 15, sm: 17, md: 17, lg: 19 },
+          top: { xs: 217, sm: 269, md: 109, lg: 129 },
+          fontFamily: FONT_MONO,
+          fontSize: { xs: '10.5px', sm: '10.5px', lg: '11px' },
+          lineHeight: { xs: '18px', lg: '18px' },
+          letterSpacing: '0.04em',
+          color: HUMAN_SIGNAL.burntOrange,
+          '@media (min-width:1920px)': { top: 144, lineHeight: '20.16px' },
+        }}>
+          {scopeLabel}
+        </Typography>
         <Typography component="h3" sx={{
+          position: 'absolute',
+          left: { xs: 15, sm: 17, md: '59.5%' },
+          right: { xs: 75, sm: 75, md: 17 },
+          top: { xs: 247, sm: 301, md: 137, lg: 159 },
           fontFamily: FONT_KR, fontWeight: 700, color: HUMAN_SIGNAL.inkNavy,
           fontSize: { xs: '22px', sm: '26px', md: '26px', lg: '28px' }, lineHeight: { xs: '30px', sm: '36px', md: '36px', lg: '36px' },
+          '@media (min-width:1920px)': { top: 177 },
         }}>
           {project.title}
         </Typography>
         <Typography sx={{
+          position: 'absolute',
+          left: { xs: 15, sm: 17, md: '59.5%' },
+          right: { xs: 15, sm: 17, md: 17 },
+          top: { xs: 285, sm: 339, md: 177, lg: 205 },
           fontFamily: FONT_KR, color: HUMAN_SIGNAL.inkNavy, wordBreak: 'keep-all',
           fontSize: { xs: '14px', md: '15px' }, lineHeight: { xs: '23px', md: '25px' },
+          '@media (min-width:1920px)': { top: 227 },
         }}>
           {PROJECTS_MORE_WORK_COPY[project.id] ?? project.description}
         </Typography>
         {project.tools?.length > 0 && (
-          <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.04em', color: HUMAN_SIGNAL.inkNavy, mt: 1 }}>
+          <Typography sx={{
+            position: 'absolute',
+            left: { xs: 15, sm: 17, md: '59.5%' },
+            right: { xs: 145, sm: 160, md: 165 },
+            top: { xs: 343, sm: 391, md: 227, lg: 263 },
+            fontFamily: FONT_MONO,
+            fontSize: { xs: '10.5px', sm: '11px' },
+            lineHeight: { xs: '18px', lg: '18px' },
+            letterSpacing: '0.04em',
+            color: HUMAN_SIGNAL.inkNavy,
+            '@media (min-width:1920px)': { top: 291, lineHeight: '20.16px' },
+          }}>
             {project.tools.join(' · ').toUpperCase()}
           </Typography>
         )}
+        <Box sx={{
+          position: 'absolute',
+          right: { xs: 17, sm: 19, md: 17, lg: 19 },
+          top: { xs: 337, sm: 385, md: 223, lg: 259 },
+          width: { xs: 126, sm: 132, md: 130, lg: 132 },
+          height: 28,
+          bgcolor: HUMAN_SIGNAL.deepHarbor,
+          color: HUMAN_SIGNAL.softWhite,
+          borderRadius: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          px: 1.75,
+          '@media (min-width:1920px)': { right: 21, top: 287, width: 148, height: '31.36px' },
+        }}>
+          <Typography sx={{ fontFamily: FONT_MONO, fontSize: '12px', letterSpacing: '0.04em' }}>{statusLabel}</Typography>
+        </Box>
         {isLink && (
-          <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.8125rem', fontWeight: 600, color: HUMAN_SIGNAL.burntOrange, mt: 0.5, display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-            VIEW PROJECT <ActionIcon variant="external" />
-          </Typography>
+          <ActionIcon
+            variant="external"
+            sx={{
+              position: 'absolute',
+              right: { xs: 17, sm: 27, md: 17, lg: 19 },
+              top: { xs: 247, sm: 341, md: 109, lg: 129 },
+              color: HUMAN_SIGNAL.burntOrange,
+              '@media (min-width:1920px)': { right: 21, top: 144 },
+            }}
+          />
         )}
       </Box>
     </Box>
@@ -615,7 +701,9 @@ const MoreWorks = () => {
   if (MORE_WORKS.length === 0) return null;
   return (
     <Box component="section" aria-label="더 많은 작업물" sx={{
-      position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper, py: { xs: 7, md: 9 },
+      position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper,
+      pt: { xs: '46px', sm: 7, md: 7, lg: 8 },
+      pb: { xs: 0, sm: 7, md: 7, lg: 8 },
       /* xs(390) More Works frame(212:102) 실측 800 — 실제 렌더 높이가 785로
        * 15px 짧아 Footer 시작·끝이 Figma 대비 밀렸다(measurements 대조로 확인).
        * Phase 5A-H: 210:98(Tablet 768)은 카드 높이(230 thumbnail)·헤딩
@@ -643,9 +731,20 @@ const MoreWorks = () => {
         indexColor={HUMAN_SIGNAL.deepHarbor} indexFontSize="150px" labelOpacity={0.55}
       />
       <Box sx={SHELL_SX}>
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'flex-end' }, gap: { xs: 2, md: 6 }, mb: { xs: 4, md: 5 } }}>
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', lg: 'row' },
+          alignItems: { lg: 'flex-start' },
+          gap: { xs: '28px', sm: '20px', lg: 6 },
+          mb: { xs: '40px', sm: '50px', lg: '36px' },
+          '@media (min-width:1920px)': { mb: '28px' },
+        }}>
           <Box sx={{ minWidth: 0, flex: '1 1 auto' }}>
-            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '11px', letterSpacing: '0.44px', mb: 2 }}>
+            <Typography sx={{
+              fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange,
+              fontSize: '11px', letterSpacing: '0.44px',
+              mb: { xs: '20px', sm: '22px', lg: '20px' },
+            }}>
               02 / MORE WORKS
             </Typography>
             <Typography component="h2" sx={{
@@ -663,12 +762,16 @@ const MoreWorks = () => {
             fontFamily: FONT_KR, color: HUMAN_SIGNAL.inkNavy, flexShrink: 0, wordBreak: 'keep-all',
             fontSize: { xs: '14.5px', lg: '16px' }, lineHeight: { xs: '24px', lg: '27px' },
             maxWidth: 500,
+            mt: { lg: '80px' },
             '@media (min-width:1920px)': { maxWidth: 600 },
           }}>
             {`대표 프로젝트와 역할이 다른 공개 작업 ${MORE_WORKS.length}개를 함께 정리했습니다.`}
           </Typography>
         </Box>
-        <Box sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mb: { xs: 4, md: 5 } }} />
+        <Box sx={{
+          borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
+          mb: { xs: '29px', sm: '39px', md: '39px', lg: '71px' },
+        }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {MORE_WORKS.map((project) => <MoreWorkCard key={project.id} project={project} />)}
         </Box>

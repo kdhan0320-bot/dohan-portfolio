@@ -1,37 +1,43 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Box, Card, CardContent, Typography, Stack, Chip, Select,
-  MenuItem, FormControl, Skeleton, Alert,
+  MenuItem, FormControl, Skeleton, Alert, Button, Link,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import useApplications from '../hooks/useApplications';
 import { useAuth } from '../context/AuthContext';
-import { APPLICATION_STATUSES } from '../constants';
+import { APPLICATION_STATUSES, PRIORITY_OPTIONS } from '../constants';
+import ActionFeedback from '../components/ui/ActionFeedback';
+import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
 
-const KANBAN_STATUSES = ['관심', '지원 예정', '지원 완료', '서류 진행', '면접 예정', '합격', '불합격'];
+const KANBAN_STATUSES = APPLICATION_STATUSES.map((status) => status.value);
 
 const PRIORITY_COLOR = {
-  '높음': '#EF4444',
-  '보통': '#F59E0B',
-  '낮음': '#94A3B8',
+  ...Object.fromEntries(PRIORITY_OPTIONS.map((option) => [option.value, option.color])),
 };
 
-const KanbanCard = ({ app, onStatusChange, isGuest }) => {
-  const navigate = useNavigate();
+const KanbanCard = ({ app, onStatusChange, isGuest, pending }) => {
   return (
-    <Card
-      sx={{ cursor: 'pointer', '&:hover': { boxShadow: 4 }, transition: 'box-shadow 0.2s' }}
-      onClick={() => navigate(`/applications/${app.id}`)}
-    >
+    <Card>
       <CardContent sx={{ pb: '12px !important', pt: 1.5, px: 1.5 }}>
         {/* 회사명 */}
-        <Typography
-          variant="body2"
-          fontWeight={700}
-          sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', mb: 0.5 }}
+        <Link
+          component={RouterLink}
+          to={`/applications/${app.id}`}
+          underline="hover"
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            minHeight: 44,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            mb: 0.5,
+          }}
+          aria-label={`${app.company_name} 지원 상세 보기`}
         >
           {app.company_name}
-        </Typography>
+        </Link>
 
         {/* 직무 */}
         {app.position && (
@@ -63,23 +69,25 @@ const KanbanCard = ({ app, onStatusChange, isGuest }) => {
               size="small"
               variant="outlined"
               sx={{
-                fontSize: '0.6rem',
-                height: 18,
-                color: PRIORITY_COLOR[app.priority] ?? '#94A3B8',
-                borderColor: PRIORITY_COLOR[app.priority] ?? '#94A3B8',
+                fontSize: '0.75rem',
+                height: 22,
+                color: PRIORITY_COLOR[app.priority] ?? '#475569',
+                borderColor: PRIORITY_COLOR[app.priority] ?? '#475569',
                 '& .MuiChip-label': { px: 0.8 },
               }}
             />
           ) : <Box />}
 
           {!isGuest && (
-            <FormControl size="small" onClick={(e) => e.stopPropagation()}>
+            <FormControl size="small">
               <Select
                 value={app.status}
                 onChange={(e) => onStatusChange(app.id, e.target.value)}
+                disabled={pending}
+                inputProps={{ 'aria-label': `${app.company_name} 지원 상태 변경` }}
                 variant="standard"
                 disableUnderline
-                sx={{ fontSize: '0.65rem', color: 'text.secondary', minWidth: 60 }}
+                sx={{ fontSize: '0.75rem', color: 'text.secondary', minWidth: 60 }}
               >
                 {APPLICATION_STATUSES.map((s) => (
                   <MenuItem key={s.value} value={s.value} sx={{ fontSize: '0.8rem' }}>{s.label}</MenuItem>
@@ -94,8 +102,10 @@ const KanbanCard = ({ app, onStatusChange, isGuest }) => {
 };
 
 const KanbanPage = () => {
-  const { applications, loading, error, update } = useApplications();
+  const { applications, loading, error, refresh, update } = useApplications();
   const { isGuest } = useAuth();
+  const [feedback, setFeedback] = useState(null);
+  const [pendingIds, setPendingIds] = useState(() => new Set());
 
   const columns = useMemo(() => {
     const map = {};
@@ -107,51 +117,79 @@ const KanbanPage = () => {
   }, [applications]);
 
   const handleStatusChange = async (id, status) => {
-    try { await update(id, { status }); } catch { /* ignore */ }
+    if (pendingIds.has(id)) return;
+    setPendingIds((prev) => new Set(prev).add(id));
+    try {
+      await update(id, { status });
+      setFeedback({ severity: 'success', message: `지원 상태를 "${status}"(으)로 변경했습니다.` });
+    } catch (updateError) {
+      setFeedback({
+        severity: 'error',
+        message: updateError.message || '지원 상태를 변경하지 못했습니다.',
+      });
+    } finally {
+      setPendingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
   };
-
-  if (error) return <Alert severity="error">{error}</Alert>;
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>칸반 보드</Typography>
+      <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>전형 보드</Typography>
+      {isGuest && (
+        <GuestReadOnlyNotice description="샘플 전형 보드는 조회만 할 수 있습니다. 로그인하면 각 카드의 상태를 변경하고 저장할 수 있습니다." />
+      )}
+      {error && (
+        <Alert
+          severity="error"
+          sx={{ mb: 2 }}
+          action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
+        >
+          전형 보드를 불러오지 못했습니다. {error}
+        </Alert>
+      )}
 
-      {/* 안내 문구 */}
-      <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
-        좌우로 스크롤하면 전체 컬럼을 볼 수 있습니다.
-      </Typography>
+      {!error && (
+        <>
+          {/* 안내 문구 */}
+          <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
+            좌우로 스크롤하면 전체 컬럼을 볼 수 있습니다.
+          </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 1.5,
-          overflowX: 'auto',
-          pb: 2,
-          minHeight: 500,
-          /* 스크롤바 스타일 */
-          '&::-webkit-scrollbar': { height: 6 },
-          '&::-webkit-scrollbar-track': { bgcolor: 'background.default' },
-          '&::-webkit-scrollbar-thumb': { bgcolor: 'divider', borderRadius: 3 },
-        }}
-      >
-        {KANBAN_STATUSES.map((status) => {
-          const found = APPLICATION_STATUSES.find((s) => s.value === status);
-          const items = columns[status] ?? [];
-          return (
-            <Box
-              key={status}
-              sx={{
-                minWidth: 195,
-                flex: '0 0 195px',
-                bgcolor: found?.bg ?? 'background.default',
-                borderRadius: 2,
-                border: '1px solid',
-                borderColor: `${found?.color ?? '#ccc'}30`,
-                p: 1.5,
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1.5,
+              overflowX: 'auto',
+              pb: 2,
+              minHeight: 500,
+              /* 스크롤바 스타일 */
+              '&::-webkit-scrollbar': { height: 6 },
+              '&::-webkit-scrollbar-track': { bgcolor: 'background.default' },
+              '&::-webkit-scrollbar-thumb': { bgcolor: 'divider', borderRadius: 3 },
+            }}
+          >
+            {KANBAN_STATUSES.map((status) => {
+              const found = APPLICATION_STATUSES.find((s) => s.value === status);
+              const items = columns[status] ?? [];
+              return (
+                <Box
+                  key={status}
+                  sx={{
+                    minWidth: 195,
+                    flex: '0 0 195px',
+                    bgcolor: found?.bg ?? 'background.default',
+                    borderRadius: 2,
+                    border: '1px solid',
+                    borderColor: `${found?.color ?? '#ccc'}30`,
+                    p: 1.5,
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
               {/* 컬럼 헤더 */}
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
                 <Typography
@@ -189,6 +227,7 @@ const KanbanPage = () => {
                       app={app}
                       onStatusChange={handleStatusChange}
                       isGuest={isGuest}
+                      pending={pendingIds.has(app.id)}
                     />
                   ))}
                   {items.length === 0 && (
@@ -209,10 +248,13 @@ const KanbanPage = () => {
                   )}
                 </Stack>
               )}
-            </Box>
-          );
-        })}
-      </Box>
+                </Box>
+              );
+            })}
+          </Box>
+        </>
+      )}
+      <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
     </Box>
   );
 };

@@ -111,7 +111,7 @@ Feedback Hub)를 실제 Chromium으로 캡처해서, ChatGPT 업로드용 검토
 확인했다고 쓰지 않는다.
 
 ## 다른 프로젝트 검사 방법
-기본 `tests/`는 my-portfolio 전용이므로, jobflow-dashboard·my-community·
+기본 `tests/`는 my-portfolio 전용이므로, jobflow-dashboard·portfolio-feedback-hub·
 mini_sns·OTT Service 등 다른 프로젝트를 검사할 때는 다음 중 하나로 진행한다.
 - 대상 프로젝트의 실제 섹션/텍스트/버튼에 맞는 selector·flow를 새로
   정의한다.

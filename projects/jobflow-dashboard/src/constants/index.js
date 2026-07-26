@@ -1,18 +1,18 @@
 export const APPLICATION_STATUSES = [
-  { value: '관심', label: '관심', color: '#94A3B8', bg: '#F1F5F9' },
-  { value: '지원 예정', label: '지원 예정', color: '#64748B', bg: '#F1F5F9' },
-  { value: '지원 완료', label: '지원 완료', color: '#2563EB', bg: '#EFF6FF' },
-  { value: '서류 진행', label: '서류 진행', color: '#2563EB', bg: '#DBEAFE' },
-  { value: '면접 예정', label: '면접 예정', color: '#D97706', bg: '#FEF3C7' },
-  { value: '합격', label: '합격', color: '#16A34A', bg: '#DCFCE7' },
-  { value: '불합격', label: '불합격', color: '#DC2626', bg: '#FEE2E2' },
-  { value: '보류', label: '보류', color: '#64748B', bg: '#F8FAFC' },
+  { value: '관심', label: '관심', color: '#475569', bg: '#F1F5F9' },
+  { value: '지원 예정', label: '지원 예정', color: '#475569', bg: '#F1F5F9' },
+  { value: '지원 완료', label: '지원 완료', color: '#1D4ED8', bg: '#EFF6FF' },
+  { value: '서류 진행', label: '서류 진행', color: '#1E40AF', bg: '#DBEAFE' },
+  { value: '면접 예정', label: '면접 예정', color: '#92400E', bg: '#FEF3C7' },
+  { value: '합격', label: '합격', color: '#166534', bg: '#DCFCE7' },
+  { value: '불합격', label: '불합격', color: '#991B1B', bg: '#FEE2E2' },
+  { value: '보류', label: '보류', color: '#475569', bg: '#F8FAFC' },
 ];
 
 export const PRIORITY_OPTIONS = [
-  { value: '낮음', label: '낮음', color: '#94A3B8' },
-  { value: '보통', label: '보통', color: '#F59E0B' },
-  { value: '높음', label: '높음', color: '#EF4444' },
+  { value: '낮음', label: '낮음', color: '#475569' },
+  { value: '보통', label: '보통', color: '#92400E' },
+  { value: '높음', label: '높음', color: '#B91C1C' },
 ];
 
 export const COMPANY_SIZE_OPTIONS = ['스타트업', '중소기업', '중견기업', '대기업', '공기업', '외국계'];
@@ -20,12 +20,12 @@ export const COMPANY_SIZE_OPTIONS = ['스타트업', '중소기업', '중견기�
 export const NOTE_TYPES = ['메모', '면접', '자기소개서', '포트폴리오', '연락'];
 
 export const IMPORTANCE_OPTIONS = [
-  { value: '낮음', label: '낮음', color: '#94A3B8' },
-  { value: '보통', label: '보통', color: '#F59E0B' },
-  { value: '높음', label: '높음', color: '#EF4444' },
+  { value: '낮음', label: '낮음', color: '#475569' },
+  { value: '보통', label: '보통', color: '#92400E' },
+  { value: '높음', label: '높음', color: '#B91C1C' },
 ];
 
-export const CHECKLIST_CATEGORIES = ['콘텐츠', '디자인', '반응형', '접근성', '링크', '배포', 'GitHub'];
+export const CHECKLIST_CATEGORIES = ['포트폴리오', '서류', '면접', '지원', '기타'];
 
 export const PROMPT_TYPES = ['자기소개서', '면접 답변', '포트폴리오 설명', '지원동기'];
 
@@ -35,7 +35,7 @@ export const NAV_ITEMS = [
   { path: '/kanban', label: '전형 보드' },
   { path: '/checklist', label: '체크리스트' },
   { path: '/interview', label: '면접 메모' },
-  { path: '/ai-prompt', label: 'AI 프롬프트' },
+  { path: '/ai-prompt', label: '문서 작성 도우미' },
   { path: '/settings', label: '설정' },
 ];
 
@@ -149,7 +149,7 @@ export const DEMO_APPLICATIONS = [
   {
     id: 'demo-8',
     company_name: '디자인웍스',
-    position: 'UXUI 디자이너',
+    position: 'UX/UI 디자이너',
     location: '서울',
     company_size: '중소기업',
     status: '보류',
@@ -165,7 +165,7 @@ export const DEMO_APPLICATIONS = [
 
 export const DEMO_CHECKLISTS = [
   { id: 'cl-1', title: '포트폴리오 대표 프로젝트 순서 정리', category: '포트폴리오', is_done: true, sort_order: 1 },
-  { id: 'cl-2', title: 'JobFlow Dashboard 설명 문구 수정', category: '포트폴리오', is_done: true, sort_order: 2 },
+  { id: 'cl-2', title: 'JobFlow 설명 문구 수정', category: '포트폴리오', is_done: true, sort_order: 2 },
   { id: 'cl-3', title: '자기소개서 1차 수정', category: '서류', is_done: false, sort_order: 3 },
   { id: 'cl-4', title: '면접 질문 5개 답변 작성', category: '면접', is_done: false, sort_order: 4 },
   { id: 'cl-5', title: '블루핀랩 면접 복장 준비', category: '면접', is_done: false, sort_order: 5 },
@@ -188,7 +188,7 @@ export const DEMO_INTERVIEW_NOTES = [
     id: 'in-2',
     question: '본인의 강점은 무엇인가요?',
     answer: '사용자 흐름을 정리하고 실무형 웹서비스 화면을 구현하는 능력이 강점입니다.',
-    related_project: 'JobFlow Dashboard',
+    related_project: 'JobFlow',
     importance: '높음',
     is_reviewed: false,
   },
@@ -196,7 +196,7 @@ export const DEMO_INTERVIEW_NOTES = [
     id: 'in-3',
     question: 'React를 선택한 이유는?',
     answer: '컴포넌트 기반 설계로 재사용성이 높고, MUI와 결합 시 빠르게 실무형 UI를 구현할 수 있기 때문입니다.',
-    related_project: 'Portfolio Feedback Hub',
+    related_project: 'my-community',
     importance: '보통',
     is_reviewed: false,
   },

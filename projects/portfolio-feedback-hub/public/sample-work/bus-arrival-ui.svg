@@ -1,0 +1,51 @@
+<!-- Portfolio Feedback Hub sample artwork. Created in-project with basic SVG geometry; no external image or logo assets. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" role="img" aria-labelledby="title desc">
+  <title id="title">버스 도착정보 모바일 UI 작업 화면</title>
+  <desc id="desc">정류장 검색, 도착 예정 시간, 노선 정보를 구성한 세 개의 모바일 화면</desc>
+  <rect width="960" height="540" fill="#EEF5FF"/>
+  <rect x="42" y="38" width="876" height="464" rx="24" fill="#F8FBFF" stroke="#C8DAF5" stroke-width="2"/>
+  <text x="78" y="86" fill="#1E3A5F" font-family="Arial, sans-serif" font-size="18" font-weight="700">ARRIVAL FLOW</text>
+  <text x="78" y="112" fill="#64748B" font-family="Arial, sans-serif" font-size="13">정류장 탐색부터 도착 정보 확인까지</text>
+  <rect x="78" y="140" width="222" height="316" rx="22" fill="#FFFFFF" stroke="#B7CBE8" stroke-width="2"/>
+  <rect x="94" y="162" width="190" height="48" rx="13" fill="#2563EB"/>
+  <circle cx="116" cy="186" r="7" fill="#FFFFFF"/>
+  <rect x="132" y="179" width="82" height="7" rx="3.5" fill="#FFFFFF" opacity=".92"/>
+  <rect x="132" y="192" width="54" height="5" rx="2.5" fill="#DBEAFE"/>
+  <rect x="94" y="226" width="190" height="56" rx="12" fill="#EFF6FF" stroke="#C9DDF8"/>
+  <rect x="110" y="242" width="94" height="8" rx="4" fill="#7A8CA5"/>
+  <rect x="110" y="258" width="62" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="220" y="240" width="48" height="24" rx="12" fill="#DCFCE7"/>
+  <text x="234" y="257" fill="#166534" font-family="Arial, sans-serif" font-size="11" font-weight="700">3분</text>
+  <rect x="94" y="294" width="190" height="56" rx="12" fill="#FFFFFF" stroke="#D9E3EF"/>
+  <rect x="110" y="310" width="108" height="8" rx="4" fill="#7A8CA5"/>
+  <rect x="110" y="326" width="72" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="220" y="308" width="48" height="24" rx="12" fill="#FEF3C7"/>
+  <text x="230" y="325" fill="#92400E" font-family="Arial, sans-serif" font-size="11" font-weight="700">12분</text>
+  <rect x="369" y="140" width="222" height="316" rx="22" fill="#FFFFFF" stroke="#B7CBE8" stroke-width="2"/>
+  <rect x="385" y="162" width="190" height="40" rx="12" fill="#F1F5F9" stroke="#D8E1EC"/>
+  <circle cx="406" cy="182" r="7" fill="none" stroke="#2563EB" stroke-width="2"/>
+  <line x1="411" y1="187" x2="417" y2="193" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  <rect x="428" y="178" width="84" height="7" rx="3.5" fill="#94A3B8"/>
+  <text x="385" y="232" fill="#1E3A5F" font-family="Arial, sans-serif" font-size="13" font-weight="700">가까운 정류장</text>
+  <line x1="409" y1="260" x2="409" y2="394" stroke="#93C5FD" stroke-width="3"/>
+  <circle cx="409" cy="270" r="7" fill="#2563EB"/>
+  <circle cx="409" cy="326" r="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <circle cx="409" cy="382" r="7" fill="#FFFFFF" stroke="#2563EB" stroke-width="3"/>
+  <rect x="432" y="260" width="112" height="8" rx="4" fill="#64748B"/>
+  <rect x="432" y="277" width="76" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="432" y="316" width="98" height="8" rx="4" fill="#64748B"/>
+  <rect x="432" y="333" width="64" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="432" y="372" width="106" height="8" rx="4" fill="#64748B"/>
+  <rect x="432" y="389" width="72" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="660" y="140" width="222" height="316" rx="22" fill="#FFFFFF" stroke="#B7CBE8" stroke-width="2"/>
+  <rect x="676" y="162" width="190" height="88" rx="14" fill="#1E40AF"/>
+  <text x="694" y="190" fill="#BFDBFE" font-family="Arial, sans-serif" font-size="11">ROUTE 127</text>
+  <text x="694" y="221" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="24" font-weight="700">3분 후 도착</text>
+  <rect x="676" y="266" width="190" height="76" rx="12" fill="#EFF6FF" stroke="#C9DDF8"/>
+  <rect x="694" y="284" width="72" height="8" rx="4" fill="#64748B"/>
+  <rect x="694" y="301" width="112" height="6" rx="3" fill="#CBD5E1"/>
+  <rect x="812" y="282" width="36" height="22" rx="11" fill="#DBEAFE"/>
+  <rect x="676" y="356" width="190" height="68" rx="12" fill="#FFFFFF" stroke="#D9E3EF"/>
+  <rect x="694" y="374" width="96" height="8" rx="4" fill="#64748B"/>
+  <rect x="694" y="391" width="132" height="6" rx="3" fill="#CBD5E1"/>
+</svg>

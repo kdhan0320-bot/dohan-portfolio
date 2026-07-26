@@ -21,10 +21,10 @@ const theme = createTheme({
       primary: '#0F172A',
       secondary: '#475569',
     },
-    success: { main: '#22C55E' },
-    warning: { main: '#F59E0B' },
-    error: { main: '#EF4444' },
-    info: { main: '#3B82F6' },
+    success: { main: '#15803D' },
+    warning: { main: '#B45309' },
+    error: { main: '#B91C1C' },
+    info: { main: '#1D4ED8' },
     divider: 'rgba(37, 99, 235, 0.10)',
   },
   typography: {
@@ -42,6 +42,14 @@ const theme = createTheme({
   spacing: 8,
   shape: { borderRadius: 8 },
   components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          minWidth: 44,
+          minHeight: 44,
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {

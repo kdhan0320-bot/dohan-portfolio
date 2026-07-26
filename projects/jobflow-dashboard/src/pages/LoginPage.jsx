@@ -14,7 +14,7 @@ const LoginPage = () => {
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, signUp, enterGuestMode } = useAuth();
+  const { authError, signIn, signUp, enterGuestMode } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,9 +45,18 @@ const LoginPage = () => {
     }
   };
 
-  const handleGuest = () => {
-    enterGuestMode();
-    navigate('/');
+  const handleGuest = async () => {
+    if (loading) return;
+    setError('');
+    setLoading(true);
+    try {
+      await enterGuestMode();
+      navigate('/');
+    } catch (guestError) {
+      setError(guestError.message || '게스트 모드로 전환하지 못했습니다. 다시 시도해주세요.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -85,11 +94,12 @@ const LoginPage = () => {
           fullWidth
           variant="contained"
           onClick={handleGuest}
+          disabled={loading}
           size="large"
           sx={{ py: 1.75, mb: 2, fontSize: '1rem', fontWeight: 700, borderRadius: 2 }}
           aria-label="로그인 없이 데모 대시보드 체험하기"
         >
-          데모로 둘러보기 (로그인 불필요)
+          {loading ? '전환 중...' : '데모로 둘러보기 (로그인 불필요)'}
         </Button>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mb: 3 }}>
           샘플 데이터를 바로 체험할 수 있으며, 저장/수정은 회원가입 후 가능합니다
@@ -101,7 +111,7 @@ const LoginPage = () => {
             <Tab label="회원가입" sx={{ flex: 1, fontWeight: 600 }} />
           </Tabs>
 
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          {(error || authError) && <Alert severity="error" sx={{ mb: 2 }}>{error || authError}</Alert>}
 
           <Box component="form" onSubmit={handleSubmit} noValidate>
             {tab === 1 && (

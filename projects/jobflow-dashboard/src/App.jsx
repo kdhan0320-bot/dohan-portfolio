@@ -11,6 +11,7 @@ import ChecklistPage from './pages/ChecklistPage';
 import InterviewPage from './pages/InterviewPage';
 import AIPromptPage from './pages/AIPromptPage';
 import SettingsPage from './pages/SettingsPage';
+import NotFoundPage from './pages/NotFoundPage';
 import { CircularProgress, Box } from '@mui/material';
 
 const AppRoutes = () => {
@@ -36,6 +37,7 @@ const AppRoutes = () => {
         <Route path="interview" element={<InterviewPage />} />
         <Route path="ai-prompt" element={<AIPromptPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

@@ -36,8 +36,17 @@ const EASE_OUT = 'cubic-bezier(0.22, 1, 0.36, 1)';
 const anim = (name, duration, delay, ease = EASE_OUT) =>
   isReviewCapture ? 'none' : `${name} ${duration}s ${ease} ${delay}s both`;
 
+// Figma Home 화면에 직접 표시된 한글 서체(Noto Sans KR). 전역 FONT_SANS(SUIT
+// Variable)는 Projects·Detail 전용이라 바꾸지 않고, Home 전용 지역 상수로
+// 둔다(ProjectsPage.jsx의 FONT_KR과 동일 문자열, 파일 간 import 없이 중복).
+const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
+
 const SPLIT_MQ = '@media (min-width:900px)';
-const QHD_MQ = '@media (min-width:1920px)';
+// Figma 승인 Home breakpoint(1024 Compact 365:126, 1440 Desktop 254:3)의 실제
+// bounding box에 맞춰 typography·geometry를 단계별로 고정한다.
+const COMPACT_MQ = '@media (min-width:1024px)';
+const COMPACT_ONLY_MQ = '@media (min-width:1024px) and (max-width:1439.95px)';
+const DESKTOP_MQ = '@media (min-width:1440px)';
 
 /* Signal Stage 좌표는 Figma "Hero / Human Signal Identity Stage"(257:16,
  * 396:252 — 두 프레임 모두 548x600 동일 좌표) 노드 트리를 548x600 기준
@@ -74,12 +83,16 @@ const BAR_SEGMENTS = [
 const HeroSignalStage = () => (
   <Box
     aria-hidden="true"
+    data-home-hero-stage="true"
     sx={{
-      position: 'relative', width: '100%', maxWidth: 460, mx: 'auto',
-      aspectRatio: '548 / 600', borderRadius: '28px', overflow: 'hidden',
+      // Figma Mobile 390(269:79)은 342×280(가로형)이고, Compact 1024(365:169)
+      // 400×438과 Desktop 1440(257:16) 548×600은 동일한 0.913 비율(세로형)이다.
+      position: 'relative', width: '100%', maxWidth: 342, mx: 'auto',
+      aspectRatio: '342 / 280', borderRadius: '28px', overflow: 'hidden',
       bgcolor: HUMAN_SIGNAL.deepHarbor, border: `1px solid rgba(170,183,196,0.16)`,
       boxShadow: '0 30px 60px rgba(12,20,32,0.35)',
-      [QHD_MQ]: { maxWidth: 500 },
+      [SPLIT_MQ]: { aspectRatio: '548 / 600', maxWidth: 400 },
+      [DESKTOP_MQ]: { maxWidth: 548 },
       '@keyframes stageFadeIn': {
         from: { opacity: 0 },
         to: { opacity: 1 },
@@ -250,8 +263,11 @@ const HeroSection = () => {
     sx={{
       position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy,
       width: '100vw', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw',
-      py: { xs: 7, sm: 9, md: 0 },
-      [SPLIT_MQ]: { display: 'flex', alignItems: 'center', minHeight: '88vh' },
+      // Figma Hero pt/pb: Mobile 390(18/48), Compact 1024(20/60), Desktop 1440(24/72).
+      pt: { xs: '18px', sm: 9 }, pb: { xs: '48px', sm: 9 },
+      [SPLIT_MQ]: { display: 'flex', alignItems: 'center' },
+      [COMPACT_MQ]: { pt: '20px', pb: '60px' },
+      [DESKTOP_MQ]: { pt: '24px', pb: '72px' },
       '@keyframes heroCopyIn': {
         from: { opacity: 0, transform: 'translateY(14px)' },
         to: { opacity: 1, transform: 'translateY(0)' },
@@ -278,18 +294,47 @@ const HeroSection = () => {
         }}
       />
       <Box sx={{
-        position: 'absolute', top: '2%', right: '4%', width: 480, height: 480, opacity: 0.05,
+        position: 'absolute',
+        top: '150px',
+        left: 'calc(50% + 220px)',
+        width: 420,
+        height: 420,
+        opacity: 0.05,
         [SPLIT_MQ]: { display: 'block' }, display: 'none',
       }}>
         <DMark size="100%" tone="onDark" decorative sx={{ width: '100%', height: '100%' }} />
       </Box>
       <Box sx={{
-        position: 'absolute', top: '18%', right: '20%', width: 360, height: 360, borderRadius: '50%',
-        background: `radial-gradient(circle, ${HUMAN_SIGNAL.brightOrange} 0%, transparent 70%)`, opacity: 0.1, filter: 'blur(60px)',
+        position: 'absolute',
+        top: '52px',
+        left: '50%',
+        width: '1px',
+        height: 620,
+        bgcolor: 'rgba(170,183,196,0.16)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
       }} />
       <Box sx={{
-        position: 'absolute', top: '4%', right: '30%', width: 700, height: 700, borderRadius: '50%',
+        position: 'absolute',
+        top: '340px',
+        left: 'calc(50% + 340px)',
+        width: 360,
+        height: 360,
+        borderRadius: '50%',
+        background: `radial-gradient(circle, ${HUMAN_SIGNAL.brightOrange} 0%, transparent 70%)`, opacity: 0.1, filter: 'blur(60px)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
+      }} />
+      <Box sx={{
+        position: 'absolute',
+        top: '-10px',
+        left: 'calc(50% + 20px)',
+        width: 700,
+        height: 700,
+        borderRadius: '50%',
         background: `radial-gradient(circle, ${HUMAN_SIGNAL.mutedSage} 0%, transparent 70%)`, opacity: 0.06, filter: 'blur(70px)',
+        [SPLIT_MQ]: { display: 'block' },
+        display: 'none',
       }} />
     </Box>
 
@@ -298,19 +343,31 @@ const HeroSection = () => {
         position: 'relative', width: '100%', mx: 'auto',
         px: { xs: 3, sm: 6, md: 8 },
         maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 },
+        [COMPACT_ONLY_MQ]: { px: '48px' },
         '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
-        [SPLIT_MQ]: { display: 'grid', gridTemplateColumns: '55fr 45fr', columnGap: 6, alignItems: 'center' },
-        [QHD_MQ]: { columnGap: 10 },
+        // Figma Hero/Main(365:155, 257:2)은 grid gap이 아니라 justify-content:
+        // space-between + Copy·Stage 고정폭이다(1024: 480/400, 1440: 648/548).
+        [SPLIT_MQ]: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minHeight: 500 },
+        [COMPACT_MQ]: { gap: 0, minHeight: 620 },
+        [DESKTOP_MQ]: { minHeight: 684, px: '64px' },
       }}
     >
       {/* 좌측 — Identity Copy: Header에 이미 있는 D2+이름을 반복하지 않고 작은
        * eyebrow 한 줄로만 정체성을 표시한다(최신 Figma 기준). */}
-      <Box sx={{ position: 'relative', py: { xs: 0, sm: 0, md: 8 }, [SPLIT_MQ]: { py: 0 } }}>
+      <Box
+        sx={{
+          position: 'relative', py: { xs: 0, sm: 0, md: 8 }, width: '100%',
+          [SPLIT_MQ]: { py: 0, flexShrink: 0 },
+          [COMPACT_MQ]: { width: 480 },
+          [DESKTOP_MQ]: { width: 648, height: 560 },
+        }}
+      >
         <Typography
           data-hero-reveal="true"
           sx={{
             fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrange,
             fontSize: '0.75rem', letterSpacing: '0.04em', mb: { xs: 2, md: 2.5 },
+            [DESKTOP_MQ]: { mb: '34px' },
             opacity: isReviewCapture ? 1 : 0,
             animation: anim('heroCopyIn', 0.24, 0),
           }}
@@ -323,12 +380,14 @@ const HeroSection = () => {
           component="h1"
           data-hero-reveal="true"
           sx={{
+            fontFamily: FONT_KR,
             fontWeight: 780, color: HUMAN_SIGNAL.softWhite,
-            fontSize: { xs: '2.25rem', sm: '2.6rem', md: '3.1rem', lg: '3.5rem' },
-            lineHeight: { xs: 1.28, md: 1.12 },
-            letterSpacing: '-0.02em',
+            // Figma H1: Mobile 390(40px/48px) · Compact 1024(58px/68px) ·
+            // Desktop 1440(76px/84px, Noto Sans KR Bold).
+            fontSize: '2.5rem', lineHeight: '48px', letterSpacing: '-0.8px',
             mb: { xs: 2.5, md: 3 },
-            [QHD_MQ]: { fontSize: 'clamp(4rem, 3.2vw, 5.25rem)' },
+            [COMPACT_MQ]: { fontSize: '58px', lineHeight: '68px', letterSpacing: '-1.2px' },
+            [DESKTOP_MQ]: { fontSize: '76px', lineHeight: '84px', letterSpacing: '-1.8px' },
             opacity: isReviewCapture ? 1 : 0,
             animation: anim('heroCopyIn', 0.3, 0.05),
           }}
@@ -349,9 +408,13 @@ const HeroSection = () => {
             <Typography
               key={line}
               sx={{
-                color: HUMAN_SIGNAL.steelMist, lineHeight: 1.75, maxWidth: 460,
-                fontSize: { xs: '0.9375rem', md: '1.0625rem' },
-                [QHD_MQ]: { fontSize: '1.125rem', maxWidth: 520 },
+                // Figma Description: Mobile 390(15px/25px, w342) · Compact
+                // 1024(13.5px/23px, w266) · Desktop 1440(17px/29px, w600).
+                fontFamily: FONT_KR,
+                color: HUMAN_SIGNAL.steelMist,
+                fontSize: '15px', lineHeight: '25px', letterSpacing: '-0.015px', maxWidth: 342,
+                [COMPACT_MQ]: { fontSize: '13.5px', lineHeight: '23px', letterSpacing: '-0.027px', maxWidth: 266 },
+                [DESKTOP_MQ]: { fontSize: '17px', lineHeight: '29px', letterSpacing: '-0.034px', maxWidth: 600 },
               }}
             >
               {line}
@@ -370,7 +433,7 @@ const HeroSection = () => {
               bgcolor: HUMAN_SIGNAL.softWhite, color: HUMAN_SIGNAL.inkNavy,
               border: 0, cursor: 'pointer', height: 56, px: 3, borderRadius: '14px',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-              fontWeight: 700, fontSize: '0.9375rem', fontFamily: 'inherit', whiteSpace: 'nowrap',
+              fontWeight: 700, fontSize: '0.9375rem', fontFamily: FONT_KR, whiteSpace: 'nowrap',
               opacity: isReviewCapture ? 1 : 0,
               animation: anim('heroCopyIn', 0.26, 0.16),
               transition: 'transform 180ms ease, box-shadow 180ms ease',
@@ -395,7 +458,7 @@ const HeroSection = () => {
               bgcolor: 'transparent', border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, cursor: 'pointer',
               height: 56, px: 3, borderRadius: '14px',
               display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-              color: HUMAN_SIGNAL.softWhite, fontWeight: 500, fontSize: '0.9375rem', fontFamily: 'inherit', whiteSpace: 'nowrap',
+              color: HUMAN_SIGNAL.softWhite, fontWeight: 500, fontSize: '0.9375rem', fontFamily: FONT_KR, whiteSpace: 'nowrap',
               opacity: isReviewCapture ? 1 : 0,
               animation: anim('heroCopyIn', 0.26, 0.2),
               transition: 'border-color 180ms ease, color 180ms ease',
@@ -417,7 +480,9 @@ const HeroSection = () => {
        * 확보해 CLS 없이 애니메이션이 그 안에서만 일어난다. */}
       <Box
         sx={{
-          mt: { xs: 6, sm: 7, md: 0 }, [SPLIT_MQ]: { mt: 0 },
+          mt: { xs: '15px', sm: 7, md: 0 }, width: '100%',
+          [SPLIT_MQ]: { mt: 0, width: 400, flexShrink: 0 },
+          [DESKTOP_MQ]: { width: 548 },
           opacity: isReviewCapture ? 1 : 0,
           animation: anim('heroStageIn', 0.4, 0.1),
         }}

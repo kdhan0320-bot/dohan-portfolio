@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import {
   Box, Card, CardContent, Typography, TextField, Button,
   Select, MenuItem, FormControl, InputLabel,
-  Alert, Grid, Switch, FormControlLabel, Stack,
+  Alert, Grid, Switch, FormControlLabel, Stack, Skeleton,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
 import useApplications from '../hooks/useApplications';
+import { useAuth } from '../context/AuthContext';
 import { APPLICATION_STATUSES, PRIORITY_OPTIONS, COMPANY_SIZE_OPTIONS } from '../constants';
+import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
 
 const INITIAL = {
   company_name: '',
@@ -27,19 +29,27 @@ const ApplicationFormPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
-  const { applications, add, update } = useApplications();
+  const { isGuest } = useAuth();
+  const {
+    applications,
+    loading: applicationsLoading,
+    error: applicationsError,
+    refresh,
+    add,
+    update,
+  } = useApplications();
+  const editingApplication = isEdit
+    ? applications.find((application) => String(application.id) === String(id))
+    : null;
 
   const [form, setForm] = useState(INITIAL);
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [apiError, setApiError] = useState('');
 
   useEffect(() => {
-    if (isEdit && applications.length > 0) {
-      const found = applications.find((a) => a.id === id);
-      if (found) setForm({ ...INITIAL, ...found });
-    }
-  }, [isEdit, id, applications]);
+    if (editingApplication) setForm({ ...INITIAL, ...editingApplication });
+  }, [editingApplication]);
 
   const handleChange = (field) => (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -55,20 +65,94 @@ const ApplicationFormPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (saving || (isEdit && !editingApplication)) return;
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setLoading(true);
+    setSaving(true);
     setApiError('');
     try {
       if (isEdit) await update(id, form);
       else await add(form);
-      navigate('/applications');
+      navigate('/applications', {
+        state: {
+          feedback: {
+            severity: 'success',
+            message: isEdit ? '지원 정보를 수정했습니다.' : '지원 회사를 등록했습니다.',
+          },
+        },
+      });
     } catch (err) {
       setApiError(err.message || '저장 중 오류가 발생했습니다');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (isGuest) {
+    return (
+      <Box>
+        <GuestReadOnlyNotice
+          title="로그인이 필요합니다"
+          description={isEdit
+            ? '게스트는 샘플 지원 정보만 조회할 수 있습니다. 로그인하면 지원 정보를 수정할 수 있습니다.'
+            : '게스트는 샘플 지원 정보만 조회할 수 있습니다. 로그인하면 지원 정보를 추가할 수 있습니다.'}
+        />
+        <Button variant="outlined" onClick={() => navigate('/applications')}>
+          지원 현황으로 돌아가기
+        </Button>
+      </Box>
+    );
+  }
+
+  if (isEdit && applicationsLoading) {
+    return (
+      <Box>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Skeleton variant="rounded" height={420} />
+      </Box>
+    );
+  }
+
+  if (isEdit && applicationsError) {
+    return (
+      <Box>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Alert
+          severity="error"
+          action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
+          sx={{ mb: 2 }}
+        >
+          지원 정보를 불러오지 못했습니다. {applicationsError}
+        </Alert>
+        <Button variant="outlined" onClick={() => navigate('/applications')}>
+          지원 현황으로 돌아가기
+        </Button>
+      </Box>
+    );
+  }
+
+  if (isEdit && !editingApplication) {
+    return (
+      <Box>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          수정할 지원 정보를 찾을 수 없습니다.
+        </Alert>
+        <Button variant="outlined" onClick={() => navigate('/applications')}>
+          지원 현황으로 돌아가기
+        </Button>
+      </Box>
+    );
+  }
+
+  if (isEdit && String(form.id) !== String(editingApplication.id)) {
+    return (
+      <Box>
+        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Skeleton variant="rounded" height={420} />
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -112,8 +196,13 @@ const ApplicationFormPage = () => {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>회사 규모</InputLabel>
-                  <Select value={form.company_size} label="회사 규모" onChange={handleChange('company_size')}>
+                  <InputLabel id="company-size-label">회사 규모</InputLabel>
+                  <Select
+                    labelId="company-size-label"
+                    value={form.company_size}
+                    label="회사 규모"
+                    onChange={handleChange('company_size')}
+                  >
                     <MenuItem value="">선택 안 함</MenuItem>
                     {COMPANY_SIZE_OPTIONS.map((s) => <MenuItem key={s} value={s}>{s}</MenuItem>)}
                   </Select>
@@ -121,16 +210,26 @@ const ApplicationFormPage = () => {
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>지원 상태 *</InputLabel>
-                  <Select value={form.status} label="지원 상태 *" onChange={handleChange('status')}>
+                  <InputLabel id="application-status-label">지원 상태 *</InputLabel>
+                  <Select
+                    labelId="application-status-label"
+                    value={form.status}
+                    label="지원 상태 *"
+                    onChange={handleChange('status')}
+                  >
                     {APPLICATION_STATUSES.map((s) => <MenuItem key={s.value} value={s.value}>{s.label}</MenuItem>)}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>우선순위</InputLabel>
-                  <Select value={form.priority} label="우선순위" onChange={handleChange('priority')}>
+                  <InputLabel id="application-priority-label">우선순위</InputLabel>
+                  <Select
+                    labelId="application-priority-label"
+                    value={form.priority}
+                    label="우선순위"
+                    onChange={handleChange('priority')}
+                  >
                     {PRIORITY_OPTIONS.map((p) => <MenuItem key={p.value} value={p.value}>{p.label}</MenuItem>)}
                   </Select>
                 </FormControl>
@@ -191,11 +290,11 @@ const ApplicationFormPage = () => {
             </Grid>
 
             <Box sx={{ display: 'flex', gap: 2, mt: 3, justifyContent: 'flex-end' }}>
-              <Button variant="outlined" onClick={() => navigate(-1)} disabled={loading}>
+              <Button variant="outlined" onClick={() => navigate(-1)} disabled={saving}>
                 취소
               </Button>
-              <Button type="submit" variant="contained" disabled={loading}>
-                {loading ? '저장 중...' : isEdit ? '수정 완료' : '등록하기'}
+              <Button type="submit" variant="contained" disabled={saving}>
+                {saving ? '저장 중...' : isEdit ? '수정 완료' : '등록하기'}
               </Button>
             </Box>
           </Box>

@@ -12,3 +12,21 @@ body {
 #root { min-height: 100vh; }
 
 a { color: inherit; text-decoration: none; }
+
+:where(
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"],
+  [role="link"],
+  [role="checkbox"],
+  [role="combobox"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 3px solid #1D4ED8 !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
