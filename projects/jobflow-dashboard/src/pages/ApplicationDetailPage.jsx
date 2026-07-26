@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import {
   Box, Card, CardContent, Typography, Button, Chip, Grid,
-  Divider, Alert, Stack,
+  Divider, Alert, Stack, Skeleton,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,6 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useApplications from '../hooks/useApplications';
 import { useAuth } from '../context/AuthContext';
 import StatusChip from '../components/ui/StatusChip';
+import ActionFeedback from '../components/ui/ActionFeedback';
 
 const Field = ({ label, value, fullWidth }) => (
   <Grid size={{ xs: 12, sm: fullWidth ? 12 : 6 }}>
@@ -28,9 +30,25 @@ const ApplicationDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { isGuest } = useAuth();
-  const { applications, remove } = useApplications();
+  const { applications, loading, error, refresh, remove } = useApplications();
+  const [feedback, setFeedback] = useState(null);
 
   const app = applications.find((a) => a.id === id);
+
+  if (loading) {
+    return <Skeleton variant="rounded" height={320} />;
+  }
+
+  if (error) {
+    return (
+      <Alert
+        severity="error"
+        action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
+      >
+        지원 정보를 불러오지 못했습니다. {error}
+      </Alert>
+    );
+  }
 
   if (!app) {
     return (
@@ -47,8 +65,17 @@ const ApplicationDetailPage = () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
       await remove(id);
-      navigate('/applications');
-    } catch { /* ignore */ }
+      navigate('/applications', {
+        state: {
+          feedback: { severity: 'success', message: '지원 정보를 삭제했습니다.' },
+        },
+      });
+    } catch (deleteError) {
+      setFeedback({
+        severity: 'error',
+        message: deleteError.message || '지원 정보를 삭제하지 못했습니다.',
+      });
+    }
   };
 
   return (
@@ -152,6 +179,7 @@ const ApplicationDetailPage = () => {
           )}
         </CardContent>
       </Card>
+      <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
     </Box>
   );
 };

@@ -1,20 +1,23 @@
 import { useMemo } from 'react';
 import {
   Box, Grid, Card, CardContent, Typography, LinearProgress,
-  Stack, Divider, Button, Skeleton, Checkbox,
+  Stack, Divider, Button, Skeleton, Alert, Link,
 } from '@mui/material';
 import WorkIcon from '@mui/icons-material/Work';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import EventIcon from '@mui/icons-material/Event';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import AddIcon from '@mui/icons-material/Add';
-import { useNavigate } from 'react-router-dom';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
 import { APPLICATION_STATUSES } from '../constants';
 import { calcProgress } from '../utils/statusHelpers';
 import StatusChip from '../components/ui/StatusChip';
+import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
 
 const StatCard = ({ icon, title, value, subtitle, color = 'primary.main' }) => (
   <Card sx={{ height: '100%' }}>
@@ -44,8 +47,17 @@ const StatCard = ({ icon, title, value, subtitle, color = 'primary.main' }) => (
 const DashboardPage = () => {
   const navigate = useNavigate();
   const { isGuest } = useAuth();
-  const { applications, loading } = useApplications();
-  const { items: checklistItems } = useChecklist();
+  const {
+    applications,
+    loading,
+    error: applicationsError,
+    refresh: refreshApplications,
+  } = useApplications();
+  const {
+    items: checklistItems,
+    error: checklistError,
+    refresh: refreshChecklist,
+  } = useChecklist();
 
   const stats = useMemo(() => {
     const total = applications.length;
@@ -73,20 +85,31 @@ const DashboardPage = () => {
   return (
     <Box>
       {isGuest && (
-        <Box sx={{ mb: 3, p: 2, bgcolor: '#EFF6FF', borderRadius: 2, border: '1px solid #BFDBFE' }}>
-          <Typography variant="body2" sx={{ color: '#1E40AF', fontWeight: 600 }}>
-            게스트 모드에서는 샘플 데이터를 체험할 수 있으며, 저장/수정 기능은 제한됩니다.
-          </Typography>
-          <Typography variant="caption" sx={{ color: '#1E40AF' }}>
-            실제 데이터 저장은 회원가입 후 사용할 수 있습니다.
-          </Typography>
-        </Box>
+        <GuestReadOnlyNotice description="샘플 지원 현황과 할 일을 조회하고 화면 흐름을 체험할 수 있습니다. 변경과 저장은 로그인 후 사용할 수 있습니다." />
+      )}
+      {applicationsError && (
+        <Alert
+          severity="error"
+          sx={{ mb: 2 }}
+          action={<Button color="inherit" size="small" onClick={refreshApplications}>다시 시도</Button>}
+        >
+          지원 현황을 불러오지 못했습니다. {applicationsError}
+        </Alert>
+      )}
+      {checklistError && (
+        <Alert
+          severity="error"
+          sx={{ mb: 2 }}
+          action={<Button color="inherit" size="small" onClick={refreshChecklist}>다시 시도</Button>}
+        >
+          체크리스트를 불러오지 못했습니다. {checklistError}
+        </Alert>
       )}
 
       {/* 페이지 소개 */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" fontWeight={700} color="text.primary">
-          취업 준비 현황과 할 일을 한눈에 관리하는 대시보드
+          지원 현황과 할 일을 한눈에 관리하세요
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
           지원 회사, 진행 상태, 면접 일정, 체크리스트를 정리해 다음 행동을 빠르게 확인하세요.
@@ -94,49 +117,52 @@ const DashboardPage = () => {
       </Box>
 
       {/* 요약 카드 4개 */}
-      <Grid container spacing={2} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard
-            icon={<WorkIcon sx={{ color: 'primary.main' }} />}
-            title="총 지원"
-            value={loading ? '-' : stats.total}
-            subtitle="개 회사"
-          />
+      {!applicationsError && (
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 6, md: 3 }}>
+            <StatCard
+              icon={<WorkIcon sx={{ color: 'primary.main' }} />}
+              title="총 지원"
+              value={loading ? '-' : stats.total}
+              subtitle="개 회사"
+            />
+          </Grid>
+          <Grid size={{ xs: 6, md: 3 }}>
+            <StatCard
+              icon={<TrendingUpIcon sx={{ color: '#3B82F6' }} />}
+              title="진행 중"
+              value={loading ? '-' : stats.active}
+              color="#3B82F6"
+              subtitle="전형 진행"
+            />
+          </Grid>
+          <Grid size={{ xs: 6, md: 3 }}>
+            <StatCard
+              icon={<EventIcon sx={{ color: '#8B5CF6' }} />}
+              title="면접 예정"
+              value={loading ? '-' : stats.interview}
+              color="#8B5CF6"
+              subtitle="건"
+            />
+          </Grid>
+          <Grid size={{ xs: 6, md: 3 }}>
+            <StatCard
+              icon={<DoneAllIcon sx={{ color: '#64748B' }} />}
+              title="완료 / 보류"
+              value={loading ? '-' : stats.closed}
+              color="#64748B"
+              subtitle="합격·불합격·보류"
+            />
+          </Grid>
         </Grid>
-        <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard
-            icon={<TrendingUpIcon sx={{ color: '#3B82F6' }} />}
-            title="진행 중"
-            value={loading ? '-' : stats.active}
-            color="#3B82F6"
-            subtitle="전형 진행"
-          />
-        </Grid>
-        <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard
-            icon={<EventIcon sx={{ color: '#8B5CF6' }} />}
-            title="면접 예정"
-            value={loading ? '-' : stats.interview}
-            color="#8B5CF6"
-            subtitle="건"
-          />
-        </Grid>
-        <Grid size={{ xs: 6, md: 3 }}>
-          <StatCard
-            icon={<DoneAllIcon sx={{ color: '#64748B' }} />}
-            title="완료 / 보류"
-            value={loading ? '-' : stats.closed}
-            color="#64748B"
-            subtitle="합격·불합격·보류"
-          />
-        </Grid>
-      </Grid>
+      )}
 
       {/* 하단 섹션 */}
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 7 }}>
-          <Card sx={{ mb: 2 }}>
-            <CardContent>
+        {!applicationsError && (
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Card sx={{ mb: 2 }}>
+              <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                 <Typography variant="h6" fontWeight={700}>최근 지원 현황</Typography>
                 <Button size="small" onClick={() => navigate('/applications')}>전체 보기</Button>
@@ -158,27 +184,51 @@ const DashboardPage = () => {
                       sx={{
                         py: 1.5, px: 1,
                         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        cursor: 'pointer', borderRadius: 1,
-                        '&:hover': { bgcolor: 'action.hover' },
+                        borderRadius: 1,
                       }}
-                      onClick={() => navigate(`/applications/${app.id}`)}
                     >
-                      <Box sx={{ minWidth: 0, mr: 1 }}>
-                        <Typography variant="body2" fontWeight={600} noWrap>{app.company_name}</Typography>
-                        <Typography variant="caption" color="text.secondary" noWrap>{app.position}</Typography>
+                      <Box
+                        sx={{
+                          minWidth: 0,
+                          mr: 1,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <Link
+                          component={RouterLink}
+                          to={`/applications/${app.id}`}
+                          underline="hover"
+                          fontWeight={700}
+                          sx={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}
+                        >
+                          {app.company_name}
+                        </Link>
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          noWrap
+                          sx={{ display: 'block', maxWidth: '100%' }}
+                        >
+                          {app.position}
+                        </Typography>
                       </Box>
                       <StatusChip status={app.status} />
                     </Box>
                   ))}
                 </Stack>
               )}
-            </CardContent>
-          </Card>
-        </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
 
-        <Grid size={{ xs: 12, md: 5 }}>
-          <Card sx={{ mb: 2 }}>
-            <CardContent>
+        {(!applicationsError || !checklistError) && (
+          <Grid size={{ xs: 12, md: applicationsError ? 12 : 5 }}>
+            {!applicationsError && (
+              <Card sx={{ mb: 2 }}>
+                <CardContent>
               <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>상태별 현황</Typography>
               {statusSummary.length === 0 ? (
                 <Typography variant="body2" color="text.secondary">데이터 없음</Typography>
@@ -205,11 +255,13 @@ const DashboardPage = () => {
                   );
                 })
               )}
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            )}
 
-          <Card>
-            <CardContent>
+            {!checklistError && (
+              <Card>
+                <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
                 <Typography variant="h6" fontWeight={700}>이번 주 할 일</Typography>
                 <Button size="small" onClick={() => navigate('/checklist')}>전체 보기</Button>
@@ -225,13 +277,11 @@ const DashboardPage = () => {
               <Stack spacing={0.5}>
                 {checklistItems.slice(0, 5).map((item) => (
                   <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Checkbox
-                      checked={item.is_done}
-                      size="small"
-                      readOnly
-                      tabIndex={-1}
-                      sx={{ p: 0, color: item.is_done ? '#2563EB' : '#CBD5E1', '&.Mui-checked': { color: '#2563EB' } }}
-                    />
+                    {item.is_done ? (
+                      <CheckBoxIcon titleAccess="완료" sx={{ fontSize: 18, color: '#1D4ED8' }} />
+                    ) : (
+                      <CheckBoxOutlineBlankIcon titleAccess="미완료" sx={{ fontSize: 18, color: '#64748B' }} />
+                    )}
                     <Typography
                       variant="caption"
                       sx={{
@@ -245,9 +295,11 @@ const DashboardPage = () => {
                   </Box>
                 ))}
               </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
+                </CardContent>
+              </Card>
+            )}
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

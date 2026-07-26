@@ -20,7 +20,7 @@ const NAV_ITEMS = [
   { path: '/kanban', label: '전형 보드', icon: <ViewKanbanIcon /> },
   { path: '/checklist', label: '체크리스트', icon: <ChecklistIcon /> },
   { path: '/interview', label: '면접 메모', icon: <QuestionAnswerIcon /> },
-  { path: '/ai-prompt', label: 'AI 프롬프트', icon: <AutoAwesomeIcon /> },
+  { path: '/ai-prompt', label: '문서 작성 도우미', icon: <AutoAwesomeIcon /> },
   { path: '/settings', label: '설정', icon: <SettingsIcon /> },
 ];
 
@@ -99,10 +99,10 @@ const SidebarContent = ({ onNavigate }) => {
       <Divider />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', fontWeight: 600, mb: 0.5 }}>
-          AI-assisted Dashboard
+          취업 준비를 한곳에서
         </Typography>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5, mb: 1 }}>
-          React/MUI 기반 취업 준비 대시보드입니다. AI 도구를 활용해 화면 구조와 기능 구현을 보조받았습니다.
+          지원 현황, 준비할 일, 면접 메모를 한 흐름으로 정리하고 다음 행동을 확인하세요.
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
           <Link
