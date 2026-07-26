@@ -7,50 +7,73 @@ import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutl
 import ForumOutlined from '@mui/icons-material/ForumOutlined';
 import GridViewOutlined from '@mui/icons-material/GridViewOutlined';
 
-/* 카테고리별 아이콘/라벨/썸네일 그라디언트 — 칩 아이콘과 카드 썸네일이 같은 소스를 공유한다 */
+/* 필터 아이콘과 코드 기반 미니 리뷰 보드가 같은 카테고리 색상 체계를 공유한다. */
 export const CATEGORY_THEME = {
   '전체': {
     icon: GridViewOutlined,
     label: '전체',
-    gradient: 'linear-gradient(135deg, #64748B 0%, #94A3B8 100%)',
+    accent: '#64748B',
+    surface: '#F8FAFC',
+    soft: '#DDE4EC',
+    preview: 'portfolio',
   },
   '포트폴리오 피드백': {
     icon: FactCheckOutlined,
-    label: 'Portfolio Review',
-    gradient: 'linear-gradient(135deg, #2563EB 0%, #4F46E5 100%)',
+    label: '포트폴리오 피드백',
+    accent: '#2563EB',
+    surface: '#EFF5FF',
+    soft: '#CFE0FF',
+    preview: 'portfolio',
   },
   'Figma': {
     icon: DesignServicesOutlined,
-    label: 'Figma Feedback',
-    gradient: 'linear-gradient(135deg, #6D28D9 0%, #BE185D 100%)',
+    label: 'Figma',
+    accent: '#7C3AED',
+    surface: '#F6F2FF',
+    soft: '#E3D8FF',
+    preview: 'figma',
   },
   'UX/UI': {
     icon: ViewQuiltOutlined,
-    label: 'UX/UI Review',
-    gradient: 'linear-gradient(135deg, #0891B2 0%, #2563EB 100%)',
+    label: 'UX/UI',
+    accent: '#0284C7',
+    surface: '#EFF8FC',
+    soft: '#CFEAF5',
+    preview: 'ux',
   },
   '취업 준비': {
     icon: WorkOutlineOutlined,
-    label: 'Job Prep',
-    gradient: 'linear-gradient(135deg, #059669 0%, #2563EB 100%)',
+    label: '취업 준비',
+    accent: '#0F766E',
+    surface: '#EFF8F5',
+    soft: '#CEEAE2',
+    preview: 'job',
   },
   'AI Coding': {
     icon: AutoAwesomeOutlined,
     label: 'AI Coding',
-    gradient: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+    accent: '#4F46E5',
+    surface: '#F2F3FF',
+    soft: '#D9DCFF',
+    preview: 'code',
   },
   '자유게시판': {
     icon: ChatBubbleOutlineOutlined,
-    label: 'Community Talk',
-    gradient: 'linear-gradient(135deg, #475569 0%, #64748B 100%)',
-    accent: 'rgba(245,158,11,0.35)',
+    label: '자유게시판',
+    accent: '#475569',
+    surface: '#F7F9FC',
+    soft: '#DCE3EC',
+    preview: 'community',
   },
 };
 
 export const DEFAULT_CATEGORY_THEME = {
   icon: ForumOutlined,
-  label: 'Feedback',
-  gradient: 'linear-gradient(135deg, #64748B 0%, #94A3B8 100%)',
+  label: '피드백',
+  accent: '#64748B',
+  surface: '#F8FAFC',
+  soft: '#DDE4EC',
+  preview: 'portfolio',
 };
 
 export const getCategoryTheme = (category) => CATEGORY_THEME[category] || DEFAULT_CATEGORY_THEME;

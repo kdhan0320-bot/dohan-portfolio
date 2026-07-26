@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import {
   Box, Container, Typography, TextField, Button, Chip, Alert, Paper,
 } from '@mui/material';
-import { AddPhotoAlternate, Refresh, Tag } from '@mui/icons-material';
+import { Tag } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import SubPageHeader from '../components/SubPageHeader';
+import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
 
-const PICSUM_SEED_URL = 'https://picsum.photos/seed/';
+const WRITE_FORM_ID = 'post-write-form';
 
 const FEEDBACK_FOCUS_OPTIONS = ['색상', '여백', '정보구조', '기능 흐름', '취업용 문구', '반응형', '접근성', '코드 구조'];
 
@@ -23,11 +24,6 @@ const PostWritePage = () => {
   const [error, setError] = useState('');
 
   const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleRandomImage = () => {
-    const seed = Math.random().toString(36).slice(2, 10);
-    setImageUrl(`${PICSUM_SEED_URL}${seed}/800/400`);
-  };
 
   const handleAddTag = (e) => {
     if ((e.key === 'Enter' || e.key === ',') && tagInput.trim()) {
@@ -48,9 +44,20 @@ const PostWritePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (loading) return;
+
     setError('');
-    if (!form.title.trim() || !form.content.trim()) {
-      setError('제목과 내용을 입력해주세요.');
+    if (!form.title.trim()) {
+      setError('제목을 입력해주세요.');
+      return;
+    }
+    if (!form.content.trim()) {
+      setError('내용을 입력해주세요.');
+      return;
+    }
+    const imageValidation = validateAndNormalizeImageUrl(imageUrl);
+    if (imageValidation.error) {
+      setError(imageValidation.error);
       return;
     }
     setLoading(true);
@@ -63,22 +70,29 @@ const PostWritePage = () => {
         user_id: user.id,
         title: form.title.trim(),
         content: contentWithFocus,
-        image_url: imageUrl || null,
+        image_url: imageValidation.imageUrl,
         hashtags: form.hashtags,
-      }).select().single();
-      if (err) throw err;
+      }).select('id').single();
+      if (err || !data?.id) throw err || new Error('Created post ID is missing.');
       navigate(`/posts/${data.id}`, { replace: true });
     } catch {
-      setError('게시물 등록 중 오류가 발생했습니다.');
+      setError('게시글을 등록하지 못했습니다.');
     } finally {
       setLoading(false);
     }
   };
 
+  const titleValidationError = error === '제목을 입력해주세요.';
+  const contentValidationError = error === '내용을 입력해주세요.';
+  const imageValidationError = Boolean(error) && (
+    error.includes('이미지 주소') || error.startsWith('Picsum 이미지')
+  );
+  const submitError = error && !titleValidationError && !contentValidationError && !imageValidationError;
+
   if (!user) {
     return (
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-        <SubPageHeader title="게시물 작성" />
+        <SubPageHeader title="게시글 작성" />
         <Container maxWidth="md" sx={{ py: 4 }}>
           <Alert severity="info" sx={{ mb: 2 }}>글쓰기는 로그인 또는 테스트 계정으로 이용할 수 있습니다.</Alert>
           <Button variant="contained" onClick={() => navigate('/login')}>
@@ -92,18 +106,35 @@ const PostWritePage = () => {
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <SubPageHeader
-        title="게시물 작성"
+        title="게시글 작성"
         rightActions={(
-          <Button variant="contained" onClick={handleSubmit} disabled={loading} sx={{ px: 3 }}>
-            {loading ? '등록 중...' : '게시물 등록'}
-          </Button>
+          <>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={() => navigate('/', { replace: true })}
+              disabled={loading}
+            >
+              취소
+            </Button>
+            <Button
+              type="submit"
+              form={WRITE_FORM_ID}
+              variant="contained"
+              disabled={loading}
+              sx={{ px: 3 }}
+            >
+              {loading ? '등록 중...' : '게시글 등록'}
+            </Button>
+          </>
         )}
       />
 
-      <Container maxWidth="md" sx={{ py: 4 }}>
-        {error && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
+      <Box component="form" id={WRITE_FORM_ID} onSubmit={handleSubmit} noValidate>
+        <Container maxWidth="md" sx={{ py: 4 }}>
+          {submitError && <Alert severity="error" sx={{ mb: 3 }}>{error}</Alert>}
 
-        <Paper sx={{ p: 4, borderRadius: 3 }}>
+          <Paper sx={{ p: 4, borderRadius: 3 }}>
           <TextField
             label="제목"
             name="title"
@@ -111,6 +142,8 @@ const PostWritePage = () => {
             onChange={handleChange}
             fullWidth
             required
+            error={titleValidationError}
+            helperText={titleValidationError ? error : undefined}
             sx={{ mb: 3 }}
             slotProps={{ htmlInput: { maxLength: 100 } }}
           />
@@ -124,6 +157,8 @@ const PostWritePage = () => {
             required
             multiline
             rows={10}
+            error={contentValidationError}
+            helperText={contentValidationError ? error : undefined}
             sx={{ mb: 3 }}
           />
 
@@ -152,35 +187,18 @@ const PostWritePage = () => {
 
           {/* 이미지 영역 */}
           <Box sx={{ mb: 3 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              이미지
-            </Typography>
-            <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-              <Button
-                variant="outlined"
-                startIcon={<AddPhotoAlternate />}
-                onClick={handleRandomImage}
-              >
-                랜덤 이미지 추가
-              </Button>
-              {imageUrl && (
-                <Button
-                  variant="outlined"
-                  startIcon={<Refresh />}
-                  onClick={handleRandomImage}
-                >
-                  다른 이미지
-                </Button>
-              )}
-            </Box>
-            {imageUrl && (
-              <Box
-                component="img"
-                src={imageUrl}
-                alt="미리보기"
-                sx={{ width: '100%', maxHeight: 280, objectFit: 'cover', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}
-              />
-            )}
+            <TextField
+              label="작업 이미지 URL (선택)"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://example.com/my-work.png"
+              helperText={imageValidationError
+                ? error
+                : '본인이 제작했거나 사용 권한이 있는 HTTPS 이미지 주소만 입력해주세요. 파일 업로드는 현재 지원하지 않습니다.'}
+              type="url"
+              fullWidth
+              error={imageValidationError}
+            />
           </Box>
 
           {/* 해시태그 */}
@@ -209,8 +227,9 @@ const PostWritePage = () => {
               slotProps={{ input: { startAdornment: <Tag sx={{ color: 'text.disabled', mr: 0.5, fontSize: 18 }} /> } }}
             />
           </Box>
-        </Paper>
-      </Container>
+          </Paper>
+        </Container>
+      </Box>
     </Box>
   );
 };

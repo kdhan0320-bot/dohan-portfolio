@@ -11,6 +11,7 @@ export const SAMPLE_POSTS = [
     content: '버스도착정보 앱을 포트폴리오 대표 Figma 프로젝트로 넣으려고 합니다. 홈, 검색, 상세, 마이페이지 4개 화면으로 구성했고, 도착 시간과 노선 정보를 빠르게 확인하는 흐름에 집중했습니다. 정보 위계와 색상 대비가 괜찮은지 피드백 부탁드립니다.',
     hashtags: ['Figma', '포트폴리오', 'UX'],
     category: '포트폴리오 피드백',
+    sampleAssetPath: 'sample-work/bus-arrival-ui.svg',
     profiles: { username: '디자인러너' },
     created_at: ago(115),
     like_count: 12, comment_count: 3, image_url: null, user_id: 'sample',
@@ -75,6 +76,7 @@ export const SAMPLE_POSTS = [
     content: '회원가입을 한 화면에 다 넣을지, 이메일 인증-비밀번호-프로필 순서로 3단계로 나눌지 고민입니다. 이탈률과 완성도 중 무엇을 더 우선해야 할지 의견 듣고 싶습니다.',
     hashtags: ['UXUI', '회원가입', '플로우'],
     category: 'UX/UI',
+    sampleAssetPath: 'sample-work/signup-flow-ui.svg',
     profiles: { username: 'UX리서처' },
     created_at: ago(45),
     like_count: 7, comment_count: 0, image_url: null, user_id: 'sample',
@@ -92,7 +94,7 @@ export const SAMPLE_POSTS = [
   {
     id: 'sample-13',
     title: '상세 페이지 CTA 버튼 위치 피드백 부탁드립니다',
-    content: '게시물 상세 페이지에서 "좋아요" 버튼을 본문 하단 중앙에 크게 배치했는데, 스크롤을 많이 내려야 보이는 게 단점인 것 같습니다. 상단 고정 방식과 비교했을 때 어떤 방식이 더 나을지 궁금합니다.',
+    content: '게시글 상세 페이지에서 "좋아요" 버튼을 본문 하단 중앙에 크게 배치했는데, 스크롤을 많이 내려야 보이는 게 단점인 것 같습니다. 상단 고정 방식과 비교했을 때 어떤 방식이 더 나을지 궁금합니다.',
     hashtags: ['UXUI', 'CTA'],
     category: 'UX/UI',
     profiles: { username: 'UX졸업준비생' },
@@ -139,6 +141,7 @@ export const SAMPLE_POSTS = [
     content: 'AI-assisted Coding 프로젝트를 포트폴리오에 넣을 때 "특정 AI 도구로 만들었다"는 표현이 어색하게 느껴질 수 있어서 어떻게 쓰면 좋을지 고민했습니다. "AI-assisted Coding"이라는 표현이 가장 자연스럽고 투명하게 보이는 것 같습니다.',
     hashtags: ['AI-assisted', '포트폴리오', '취업준비'],
     category: 'AI Coding',
+    sampleAssetPath: 'sample-work/jobflow-application-ui.svg',
     profiles: { username: '김도한_dev' },
     created_at: ago(225),
     like_count: 28, comment_count: 7, image_url: null, user_id: 'sample',
@@ -280,12 +283,8 @@ export const getCategoryLabel = (post) => {
   return post.hashtags?.find((tag) => CATEGORIES.includes(tag)) ?? null;
 };
 
-// 상태 배지: 댓글 수/카테고리 기반 휴리스틱으로 계산 (DB 스키마 변경 없음).
-// color는 옅은 배경 틴트(`${color}1A`) 위에서도 WCAG AA(4.5:1) 대비를 만족하도록 진한 톤으로 지정한다.
+// 상태 배지: 댓글 수로 계산하는 데모용 표시이며 DB workflow field가 아니다.
 export const getStatusBadge = (post) => {
-  const category = getCategoryLabel(post);
-  if (category === 'AI Coding') return { label: 'AI 활용', color: '#4338CA' };
-  if (category === '취업 준비') return { label: '취업 준비', color: '#1D4ED8' };
-  if ((post.comment_count ?? 0) === 0) return { label: '피드백 요청중', color: '#92400E' };
-  return { label: '답변 완료', color: '#1B5E20' };
+  if ((post.comment_count ?? 0) === 0) return { label: '피드백 대기', color: '#92400E' };
+  return { label: '댓글 있음', color: '#1B5E20' };
 };

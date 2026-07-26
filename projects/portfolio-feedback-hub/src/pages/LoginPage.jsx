@@ -74,10 +74,19 @@ const LoginPage = () => {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
-              <ForumOutlinedIcon sx={{ color: '#fff', fontSize: '1.3rem' }} />
+              <ForumOutlinedIcon aria-hidden="true" sx={{ color: '#fff', fontSize: '1.3rem' }} />
             </Box>
-            <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: 'text.primary', letterSpacing: '-0.3px' }}>
+            <Typography component="h1" sx={{ fontWeight: 800, fontSize: '1.2rem', color: 'text.primary', letterSpacing: '-0.3px' }}>
               Portfolio Feedback Hub
+              <Box
+                component="span"
+                sx={{
+                  position: 'absolute', width: '1px', height: '1px', p: 0, m: -1,
+                  overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0,
+                }}
+              >
+                {' '}로그인
+              </Box>
             </Typography>
           </Box>
           <Typography variant="body2" color="text.secondary">
@@ -129,10 +138,10 @@ const LoginPage = () => {
           }}
         >
           <Divider sx={{ mb: 2.5 }}>
-            <Typography variant="caption" color="text.disabled">계정으로 로그인</Typography>
+            <Typography variant="caption" color="text.secondary">계정으로 로그인</Typography>
           </Divider>
 
-          {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+          {error && <Alert id="login-error" severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
 
           <TextField
             label="아이디"
@@ -143,7 +152,13 @@ const LoginPage = () => {
             required
             sx={{ mb: 2 }}
             autoComplete="username"
-            slotProps={{ htmlInput: { 'aria-label': '아이디' } }}
+            slotProps={{
+              htmlInput: {
+                'aria-label': '아이디',
+                'aria-describedby': error ? 'login-error' : undefined,
+                'aria-invalid': Boolean(error),
+              },
+            }}
           />
           <TextField
             label="비밀번호"
@@ -156,7 +171,11 @@ const LoginPage = () => {
             sx={{ mb: 2.5 }}
             autoComplete="current-password"
             slotProps={{
-              htmlInput: { 'aria-label': '비밀번호' },
+              htmlInput: {
+                'aria-label': '비밀번호',
+                'aria-describedby': error ? 'login-error' : undefined,
+                'aria-invalid': Boolean(error),
+              },
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
@@ -165,6 +184,7 @@ const LoginPage = () => {
                       edge="end"
                       size="small"
                       aria-label={showPw ? '비밀번호 숨기기' : '비밀번호 표시'}
+                      sx={{ width: 44, height: 44 }}
                     >
                       {showPw ? <VisibilityOff fontSize="small" /> : <Visibility fontSize="small" />}
                     </IconButton>

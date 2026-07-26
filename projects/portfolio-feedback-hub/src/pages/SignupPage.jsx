@@ -47,6 +47,10 @@ const SignupPage = () => {
   const passedRules = PASSWORD_RULES.filter(r => r.test(form.password));
   const pwStrength = (passedRules.length / PASSWORD_RULES.length) * 100;
   const allPwRulesPassed = passedRules.length === PASSWORD_RULES.length;
+  const formErrorId = error ? 'signup-form-error' : undefined;
+  const usernameStatusId = usernameStatus ? 'signup-username-status' : undefined;
+  const usernameDescription = [usernameStatusId, formErrorId].filter(Boolean).join(' ') || undefined;
+  const passwordDescription = [form.password ? 'signup-password-rules' : undefined, formErrorId].filter(Boolean).join(' ') || undefined;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,7 +97,7 @@ const SignupPage = () => {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}
             >
-              <ForumOutlinedIcon sx={{ color: '#fff', fontSize: '1.3rem' }} />
+              <ForumOutlinedIcon aria-hidden="true" sx={{ color: '#fff', fontSize: '1.3rem' }} />
             </Box>
             <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: 'text.primary', letterSpacing: '-0.3px' }}>
               Portfolio Feedback Hub
@@ -116,11 +120,11 @@ const SignupPage = () => {
             boxShadow: '0 2px 16px rgba(26,26,46,0.06)',
           }}
         >
-          <Typography variant="h2" sx={{ mb: 3, textAlign: 'center', fontWeight: 700, fontSize: '1.25rem' }}>
+          <Typography component="h1" variant="h2" sx={{ mb: 3, textAlign: 'center', fontWeight: 700, fontSize: '1.25rem' }}>
             회원가입
           </Typography>
 
-          {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          {error && <Alert id="signup-form-error" severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
           {/* 아이디 + 중복확인 */}
           <Box sx={{ display: 'flex', gap: 1, mb: 0.5 }}>
@@ -133,23 +137,29 @@ const SignupPage = () => {
               required
               autoComplete="username"
               error={usernameStatus === 'taken'}
+              slotProps={{
+                htmlInput: {
+                  'aria-describedby': usernameDescription,
+                  'aria-invalid': usernameStatus === 'taken',
+                },
+              }}
             />
             <Button
               variant="outlined"
               onClick={handleCheckUsername}
               disabled={checkingUsername || !form.username}
-              sx={{ whiteSpace: 'nowrap', minWidth: 90 }}
+              sx={{ whiteSpace: 'nowrap', minWidth: 90, minHeight: 44 }}
             >
               중복확인
             </Button>
           </Box>
           {usernameStatus === 'available' && (
-            <Typography variant="caption" color="success.main" sx={{ mb: 1.5, display: 'block' }}>
+            <Typography id="signup-username-status" role="status" variant="caption" color="success.main" sx={{ mb: 1.5, display: 'block' }}>
               ✓ 사용 가능한 아이디입니다
             </Typography>
           )}
           {usernameStatus === 'taken' && (
-            <Typography variant="caption" color="error.main" sx={{ mb: 1.5, display: 'block' }}>
+            <Typography id="signup-username-status" role="status" variant="caption" color="error.main" sx={{ mb: 1.5, display: 'block' }}>
               ✗ 이미 사용 중인 아이디입니다
             </Typography>
           )}
@@ -168,6 +178,10 @@ const SignupPage = () => {
             autoComplete="new-password"
             disabled={usernameStatus !== 'available'}
             slotProps={{
+              htmlInput: {
+                'aria-describedby': passwordDescription,
+                'aria-invalid': Boolean(form.password) && !allPwRulesPassed,
+              },
               input: {
                 endAdornment: (
                   <InputAdornment position="end">
@@ -176,6 +190,7 @@ const SignupPage = () => {
                       edge="end"
                       disabled={usernameStatus !== 'available'}
                       aria-label={showPw ? '비밀번호 숨기기' : '비밀번호 표시'}
+                      sx={{ width: 44, height: 44 }}
                     >
                       {showPw ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -187,10 +202,12 @@ const SignupPage = () => {
 
           {/* 비밀번호 강도 */}
           {form.password && (
-            <Box sx={{ mb: 2 }}>
+            <Box id="signup-password-rules" sx={{ mb: 2 }}>
               <LinearProgress
                 variant="determinate"
                 value={pwStrength}
+                aria-label="비밀번호 규칙 충족도"
+                aria-valuetext={`${passedRules.length}/${PASSWORD_RULES.length}개 규칙 충족`}
                 sx={{
                   mb: 1, height: 6, borderRadius: 3,
                   '& .MuiLinearProgress-bar': {
@@ -218,7 +235,7 @@ const SignupPage = () => {
           )}
           {!form.password && <Box sx={{ mb: 2 }} />}
 
-          <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mb: 2, textAlign: 'center' }}>
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 2, textAlign: 'center' }}>
             포트폴리오 데모 프로젝트입니다. 실제 개인정보를 입력하지 마세요.
           </Typography>
 

@@ -39,14 +39,21 @@ const theme = createTheme({
     h6: { fontSize: '0.875rem', fontWeight: 600 },
     body1: { fontSize: '0.9375rem', lineHeight: 1.65 },
     body2: { fontSize: '0.875rem',  lineHeight: 1.6 },
-    caption: { fontSize: '0.75rem', color: '#7F8FA4' },
+    caption: { fontSize: '0.75rem', color: '#475569' },
     button: { fontSize: '0.875rem', fontWeight: 600, textTransform: 'none' },
   },
   spacing: 8,
   shape: { borderRadius: 12 },
   components: {
     MuiCssBaseline: {
-      styleOverrides: { body: { backgroundColor: '#F6F8FB' } },
+      styleOverrides: {
+        body: { backgroundColor: '#F6F8FB' },
+        'button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [role="button"]:focus-visible, [role="combobox"]:focus-visible': {
+          outline: '3px solid #2563EB',
+          outlineOffset: 3,
+          scrollMarginTop: 72,
+        },
+      },
     },
     MuiButton: {
       defaultProps: { disableElevation: true },
@@ -100,6 +107,11 @@ const theme = createTheme({
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: { borderColor: '#E0E4EA' },
+      },
+    },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: { color: '#475569' },
       },
     },
     MuiChip: {

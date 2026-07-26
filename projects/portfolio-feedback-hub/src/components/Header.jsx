@@ -1,9 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import {
-  AppBar, Toolbar, Container, Box, Typography, Chip, IconButton, Button, Tooltip,
+  AppBar, Toolbar, Container, Box, Typography, Chip, Button,
 } from '@mui/material';
-import { Logout, Login } from '@mui/icons-material';
-import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import { Logout } from '@mui/icons-material';
 import { useAuth } from '../hooks/useAuth';
 
 const Header = () => {
@@ -28,14 +27,17 @@ const Header = () => {
               width: 32, height: 32, borderRadius: '8px', flexShrink: 0,
               bgcolor: 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <ForumOutlinedIcon sx={{ color: '#fff', fontSize: '1.1rem' }} />
+              <Box component="svg" aria-hidden="true" viewBox="0 0 32 32" sx={{ width: 24, height: 24 }}>
+                <Box component="path" d="M5.5 6.5h21v14.5h-14l-5 4v-4h-2z" fill="none" stroke="#fff" strokeWidth="2" strokeLinejoin="round" />
+                <Box component="path" d="M10 11h12M10 15h8" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
+              </Box>
             </Box>
             <Typography
               variant="h6"
               sx={{ fontWeight: 800, letterSpacing: '-0.3px', whiteSpace: 'nowrap', flexShrink: 0 }}
             >
               <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Portfolio Feedback Hub</Box>
-              <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>PFH</Box>
+              <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Feedback Hub</Box>
             </Typography>
             {isGuest && (
               <Chip
@@ -47,13 +49,30 @@ const Header = () => {
           </Box>
 
           {(user || isGuest) ? (
-            <Tooltip title={isGuest ? '로그인 페이지로' : '로그아웃'}>
-              <IconButton color="inherit" onClick={handleLogout} aria-label={isGuest ? '로그인 페이지로 이동' : '로그아웃'}>
-                {isGuest ? <Login fontSize="small" /> : <Logout fontSize="small" />}
-              </IconButton>
-            </Tooltip>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={handleLogout}
+              aria-label={isGuest ? '게스트 모드 나가기' : '로그아웃'}
+              startIcon={<Logout fontSize="small" />}
+              sx={{
+                minWidth: 0,
+                minHeight: 44,
+                px: { xs: 1.25, sm: 1.5 },
+                flexShrink: 0,
+                whiteSpace: 'nowrap',
+                '& .MuiButton-startIcon': { mr: 0.75 },
+              }}
+            >
+              {isGuest ? (
+                <>
+                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>나가기</Box>
+                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>게스트 나가기</Box>
+                </>
+              ) : '로그아웃'}
+            </Button>
           ) : (
-            <Button size="small" variant="outlined" onClick={() => navigate('/login')} sx={{ fontSize: '0.78rem', minHeight: 32, flexShrink: 0 }}>
+            <Button size="small" variant="outlined" onClick={() => navigate('/login')} sx={{ fontSize: '0.78rem', minHeight: 44, flexShrink: 0 }}>
               로그인
             </Button>
           )}

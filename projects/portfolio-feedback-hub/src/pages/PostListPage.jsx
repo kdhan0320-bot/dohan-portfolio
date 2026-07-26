@@ -1,10 +1,10 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box, Container, Typography, Button, Card, CardActionArea,
   CardContent, Grid, Chip, Avatar, Skeleton,
   Divider, InputAdornment, TextField, Stack,
-  Select, MenuItem, FormControl,
+  Select, MenuItem, FormControl, Alert,
 } from '@mui/material';
 import {
   Add, Favorite, ChatBubble,
@@ -17,6 +17,7 @@ import { SAMPLE_POSTS, CATEGORIES, getCategoryLabel, getStatusBadge } from '../c
 import { getCategoryTheme } from '../constants/categoryTheme';
 import Header from '../components/Header';
 import CategoryThumbnail from '../components/CategoryThumbnail';
+import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
 
 const IMG_HEIGHT = 180;
 
@@ -33,6 +34,13 @@ const formatRelativeTime = (dateStr) => {
 const PostCard = ({ post, onClick }) => {
   const category = getCategoryLabel(post);
   const status = getStatusBadge(post);
+  const visibleTags = (post.hashtags ?? []).filter(tag => tag !== category);
+  const [previewLoadFailed, setPreviewLoadFailed] = useState(false);
+  const sampleAssetUrl = String(post.id).startsWith('sample-') && post.sampleAssetPath
+    ? `${import.meta.env.BASE_URL}${post.sampleAssetPath}`
+    : null;
+  const safeLiveImageUrl = validateAndNormalizeImageUrl(post.image_url).imageUrl;
+  const previewUrl = sampleAssetUrl || safeLiveImageUrl;
 
   return (
   <Card sx={{
@@ -43,7 +51,28 @@ const PostCard = ({ post, onClick }) => {
     '&:hover': { transform: 'translateY(-4px)', boxShadow: 8, borderColor: 'primary.main' },
   }}>
     <CardActionArea onClick={onClick} sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-      <CategoryThumbnail category={category} height={IMG_HEIGHT} />
+      {previewUrl && !previewLoadFailed ? (
+        <Box
+          component="img"
+          src={previewUrl}
+          alt=""
+          aria-hidden="true"
+          onError={() => setPreviewLoadFailed(true)}
+          draggable={false}
+          sx={{
+            width: '100%',
+            height: IMG_HEIGHT,
+            flexShrink: 0,
+            display: 'block',
+            objectFit: 'cover',
+            bgcolor: '#F8FAFC',
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
+        />
+      ) : (
+        <CategoryThumbnail category={category} height={IMG_HEIGHT} />
+      )}
 
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
@@ -63,14 +92,14 @@ const PostCard = ({ post, onClick }) => {
           {post.content}
         </Typography>
 
-        {post.hashtags?.length > 0 && (
+        {visibleTags.length > 0 && (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1.5 }}>
-            {post.hashtags.slice(0, 3).map(tag => (
+            {visibleTags.slice(0, 2).map(tag => (
               <Chip key={tag} label={`#${tag}`} size="small"
                 sx={{ fontSize: '0.68rem', height: 20, bgcolor: 'secondary.light', color: 'primary.dark' }} />
             ))}
-            {post.hashtags.length > 3 && (
-              <Chip label={`+${post.hashtags.length - 3}`} size="small"
+            {visibleTags.length > 2 && (
+              <Chip label={`+${visibleTags.length - 2}`} size="small"
                 sx={{ fontSize: '0.68rem', height: 20, bgcolor: 'action.hover', color: 'text.disabled' }} />
             )}
           </Box>
@@ -121,13 +150,14 @@ const PostListPage = () => {
   const navigate = useNavigate();
   const { user, isGuest } = useAuth();
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [dataState, setDataState] = useState('loading');
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('전체');
   const [sortBy, setSortBy] = useState('latest');
 
-  const fetchPosts = async () => {
-    setLoading(true);
+  const fetchPosts = useCallback(async () => {
+    setDataState('loading');
+    setPosts([]);
     try {
       const { data, error: fetchError } = await supabase
         .from('posts')
@@ -141,15 +171,28 @@ const PostListPage = () => {
         like_count: p.post_likes?.length ?? 0,
         comment_count: p.comments?.length ?? 0,
       }));
-      setPosts(normalized.length > 0 ? normalized : SAMPLE_POSTS);
+      if (normalized.length > 0) {
+        setPosts(normalized);
+        setDataState('live');
+      } else {
+        setPosts(SAMPLE_POSTS);
+        setDataState('sample-empty');
+      }
     } catch {
-      setPosts(SAMPLE_POSTS);
-    } finally {
-      setLoading(false);
+      setPosts([]);
+      setDataState('error');
     }
+  }, []);
+
+  useEffect(() => { fetchPosts(); }, [fetchPosts]);
+
+  const showSampleData = () => {
+    setPosts(SAMPLE_POSTS);
+    setDataState('sample-error');
   };
 
-  useEffect(() => { fetchPosts(); }, []);
+  const loading = dataState === 'loading';
+  const isSample = dataState === 'sample-empty' || dataState === 'sample-error';
 
   const filtered = useMemo(() => {
     let list = posts;
@@ -173,8 +216,8 @@ const PostListPage = () => {
   }, [posts, query, activeCategory, sortBy]);
 
   const stats = useMemo(() => ({
-    pending: posts.filter(p => getStatusBadge(p).label === '피드백 요청중').length,
-    answered: posts.filter(p => getStatusBadge(p).label === '답변 완료').length,
+    waiting: posts.filter(p => getStatusBadge(p).label === '피드백 대기').length,
+    withComments: posts.filter(p => getStatusBadge(p).label === '댓글 있음').length,
     job: posts.filter(p => getCategoryLabel(p) === '취업 준비').length,
     ai: posts.filter(p => getCategoryLabel(p) === 'AI Coding').length,
   }), [posts]);
@@ -206,6 +249,41 @@ const PostListPage = () => {
       <Header />
 
       <Container maxWidth="lg" sx={{ py: 4 }}>
+        {dataState === 'error' && (
+          <Alert severity="error" sx={{ mb: 3 }}>
+            <Typography sx={{ fontWeight: 700, mb: 0.5 }}>게시글을 불러오지 못했습니다.</Typography>
+            <Typography variant="body2" sx={{ mb: 2 }}>잠시 후 다시 시도해 주세요.</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+              <Button size="small" variant="contained" onClick={fetchPosts}>다시 시도</Button>
+                <Button size="small" variant="outlined" onClick={showSampleData} sx={{ borderColor: 'primary.main' }}>
+                  샘플 데이터로 둘러보기
+                </Button>
+            </Box>
+          </Alert>
+        )}
+
+        {isSample && (
+          <Alert
+            severity="info"
+            sx={{
+              mb: 3,
+              py: { xs: 0.5, sm: 1 },
+              alignItems: 'flex-start',
+              '& .MuiAlert-message': { width: '100%', py: 0.25 },
+            }}
+          >
+            <Typography sx={{ fontWeight: 700, mb: 0.25 }}>샘플 데이터를 표시합니다.</Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              {dataState === 'sample-empty'
+                ? '등록된 실제 글이 없어 포트폴리오 데모용 샘플을 보여드립니다.'
+                : '조회 오류 후 선택한 포트폴리오 데모용 샘플입니다.'}
+            </Typography>
+            <Button size="small" variant="outlined" onClick={fetchPosts} sx={{ borderColor: 'primary.main' }}>
+              실제 데이터 다시 불러오기
+            </Button>
+          </Alert>
+        )}
+
         {/* Hero 영역 */}
         <Box sx={{
           mb: 4, p: { xs: 3, sm: 4 }, borderRadius: 3,
@@ -230,9 +308,9 @@ const PostListPage = () => {
                 </Button>
                 {!user && !isGuest && (
                   <Button
-                    variant="outlined"
-                    onClick={() => navigate('/login')}
-                    sx={{ px: 3, py: 1.2, minHeight: 44 }}
+                      variant="outlined"
+                      onClick={() => navigate('/login')}
+                      sx={{ px: 3, py: 1.2, minHeight: 44, borderColor: 'primary.main' }}
                   >
                     <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
                       게스트로 둘러보기 / 테스트 계정으로 체험하기
@@ -246,8 +324,8 @@ const PostListPage = () => {
 
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }, gap: 1.5 }}>
                 {[
-                  { label: '피드백 요청', value: stats.pending },
-                  { label: '답변 완료', value: stats.answered },
+                  { label: '피드백 대기', value: stats.waiting },
+                  { label: '댓글 있음', value: stats.withComments },
                   { label: '취업 준비 글', value: stats.job },
                   { label: 'AI 활용 질문', value: stats.ai },
                 ].map(({ label, value }) => (
@@ -257,13 +335,20 @@ const PostListPage = () => {
                   </Box>
                 ))}
               </Box>
-              <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 1 }}>
-                데모 데이터 기준 통계입니다.
-              </Typography>
+              {isSample && (
+                <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 1 }}>
+                  샘플 데이터 기준 통계입니다.
+                </Typography>
+              )}
+              {dataState === 'live' && (
+                <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 1 }}>
+                  현재 등록된 게시글 기준 통계입니다.
+                </Typography>
+              )}
             </Box>
 
             {heroPreview.length > 0 && (
-              <Box sx={{ flex: { md: '1 1 44%' }, width: '100%', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+              <Box sx={{ flex: { md: '1 1 44%' }, width: '100%', minWidth: 0, display: { xs: 'none', md: 'flex' }, flexDirection: 'column', gap: 1.5 }}>
                 {heroPreview.map((p, i) => {
                   const previewCategory = getCategoryLabel(p);
                   const previewStatus = getStatusBadge(p);
@@ -360,7 +445,7 @@ const PostListPage = () => {
           </Typography>
         )}
 
-        {loading ? (
+        {dataState === 'error' ? null : loading ? (
           <Grid container spacing={3}>
             {Array.from({ length: 6 }).map((_, i) => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
@@ -372,7 +457,7 @@ const PostListPage = () => {
           <Box sx={{ textAlign: 'center', py: 10 }}>
             <ForumOutlinedIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
             <Typography color="text.secondary" sx={{ mb: 0.5 }}>검색 결과가 없습니다.</Typography>
-            <Typography variant="body2" color="text.disabled">다른 키워드나 카테고리를 선택해보세요.</Typography>
+            <Typography variant="body2" color="text.disabled">다른 키워드나 카테고리를 선택해 보세요.</Typography>
           </Box>
         ) : (
           <Grid container spacing={3}>
@@ -398,10 +483,10 @@ const PostListPage = () => {
               variant="outlined"
               startIcon={<GitHub />}
               component="a"
-              href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/my-community"
+              href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/portfolio-feedback-hub"
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ width: { xs: '100%', sm: 'auto' } }}
+              sx={{ borderColor: 'primary.main', width: { xs: '100%', sm: 'auto' } }}
             >
               GitHub 보기
             </Button>
