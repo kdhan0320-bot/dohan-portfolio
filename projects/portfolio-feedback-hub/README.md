@@ -2,7 +2,7 @@
 
 취업 준비생과 UX/UI 학습자가 포트폴리오와 피드백 요청을 공유하는 취업용 커뮤니티 데모입니다.
 
-- 배포 주소: https://kdhan0320-bot.github.io/dohan-portfolio/my-community/
+- 배포 주소: https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/
 
 ---
 

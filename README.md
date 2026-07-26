@@ -26,7 +26,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 |---|---|
 | my-portfolio | https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/ |
 | jobflow-dashboard | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
-| portfolio-feedback-hub | https://kdhan0320-bot.github.io/dohan-portfolio/my-community/ |
+| portfolio-feedback-hub | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
 | mini_sns | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
 | OTT Service | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
 
