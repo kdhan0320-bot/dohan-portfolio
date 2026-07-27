@@ -61,7 +61,7 @@ const MORE_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished === true);
  * 다른 화면(More Works 홈 섹션 등)이 같이 참조하므로 바꾸지 않고, 이 페이지의
  * More Work 카드에서만 project.id 기준으로 대체한다. */
 const PROJECTS_MORE_WORK_COPY = {
-  'ott-service': 'HTML·CSS·JavaScript 기반 반응형 콘텐츠 서비스',
+  'ott-service': '가상 콘텐츠와 정적 데이터로 구현한 반응형 스트리밍 UI 데모',
 };
 
 /* Figma direct node가 확정한 한글 UI 서체(Noto Sans KR)다. 전역 `FONT_SANS`
@@ -596,12 +596,7 @@ const MoreWorkCard = ({ project }) => {
           '@media (min-width:1920px)': { height: 380 },
         }}>
           {project.thumbnailUrl ? (
-            /* Phase 5A-F2 항목 7: ott-service.png 자체가 뷰포트 하단 근처에서
-             * 캡처된 텍스트("NIGHT SIGNAL")를 포함하고 있어 object-fit:contain
-             * 이어도 박스 경계에 바짝 붙어 보였다. 새 자산을 만들거나 이미지를
-             * 잘라내지 않고(cover로 바꾸면 실제 화면 일부가 잘린다), inset을
-             * 줘서 이미지 자체를 살짝 줄이고 사방에 여백을 둔다 — contain이라
-             * 전체 화면은 그대로 다 보인다. */
+            /* Streaming UI Concept의 최신 Hero 화면을 사용한 실제 프로젝트 썸네일. */
             <Box component="img" src={project.thumbnailUrl} alt={`${project.title} 화면 미리보기`} loading="lazy"
               sx={{ position: 'absolute', inset: '4%', width: '92%', height: '92%', objectFit: 'contain' }} />
           ) : (

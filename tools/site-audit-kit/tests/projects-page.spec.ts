@@ -48,8 +48,8 @@ test.describe('Projects Page', () => {
       const moreWorkCards = await page.locator('[data-project-kind="more-work"]').count();
       expect.soft(moreWorkCards, `${viewport}: More Works published card count`).toBe(1);
 
-      const ottCount = await page.getByText('OTT Service', { exact: true }).count();
-      expect.soft(ottCount, `${viewport}: OTT Service count`).toBeGreaterThanOrEqual(1);
+      const ottCount = await page.getByText('반응형 스트리밍 UI 콘셉트', { exact: true }).count();
+      expect.soft(ottCount, `${viewport}: 반응형 스트리밍 UI 콘셉트 count`).toBeGreaterThanOrEqual(1);
 
       const miniSnsText = await page.getByText('Mini SNS', { exact: false }).count();
       expect.soft(miniSnsText, `${viewport}: Mini SNS text/card count(비공개라 0이어야 함)`).toBe(0);
