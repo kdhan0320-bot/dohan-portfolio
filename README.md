@@ -20,15 +20,19 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 취업용 웹 포트폴리오(`projects/my-portfolio`)는 이 작업실에서 관리하는
 여러 프로젝트 중 하나이며, 저장소 전체를 대표하지 않습니다.
 
-## 공개 프로젝트
+## 배포 프로젝트
 
-| 프로젝트 | 배포 주소 |
-|---|---|
-| my-portfolio | https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/ |
-| jobflow-dashboard | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
-| portfolio-feedback-hub | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
-| mini_sns | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
-| Streaming UI Concept | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
+배포 주소의 존재와 취업용 포트폴리오 공개 작품 포함 여부는 구분합니다.
+현재 `projects/my-portfolio`의 공개 데이터와 렌더링 기준에 따른 분류는 다음과
+같습니다.
+
+| 프로젝트 | 현재 분류 | 배포 주소 |
+|---|---|---|
+| my-portfolio | 취업용 웹 포트폴리오 | https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/ |
+| jobflow-dashboard | 취업 포트폴리오 Featured | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
+| portfolio-feedback-hub | 취업 포트폴리오 Featured | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
+| mini_sns | Learning Archive · 현재 취업 포트폴리오 비노출 | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
+| Streaming UI Concept | 취업 포트폴리오 More Works | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
 
 ## 프로젝트별 데이터·연동 방식
 
@@ -41,8 +45,11 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 **Portfolio Feedback Hub** (`projects/portfolio-feedback-hub`) — Supabase Auth + PostgreSQL 실제 연동. 테스트 계정으로
 로그인하거나, 게스트 모드로 로그인 없이 주요 화면을 확인할 수 있습니다.
 
-**mini_sns** — mock 데이터와 브라우저 메모리 상태로 동작합니다. 실제
-백엔드는 없으며, 새로고침하면 초기 데이터로 복원됩니다.
+**mini_sns** — 교육 과정 결과물을 React/MUI 모바일 화면 흐름 학습 기록으로
+재정리한 Learning Archive입니다. 현재 취업용 포트폴리오 공개 작품에는 포함하지
+않으며, 배포 주소는 학습 기록 확인용으로 유지합니다. mock 데이터와 브라우저
+메모리 상태로 동작하고 실제 백엔드는 없으며, 새로고침하면 초기 데이터로
+복원됩니다.
 
 **Streaming UI Concept** — 정적 HTML/CSS/JavaScript로 만든 UI 데모입니다. 실제
 API·로그인·결제·스트리밍 기능은 없습니다.
