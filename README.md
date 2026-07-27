@@ -28,7 +28,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 | jobflow-dashboard | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
 | portfolio-feedback-hub | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
 | mini_sns | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
-| OTT Service | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
+| Streaming UI Concept | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
 
 ## 프로젝트별 데이터·연동 방식
 
@@ -44,7 +44,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 **mini_sns** — mock 데이터와 브라우저 메모리 상태로 동작합니다. 실제
 백엔드는 없으며, 새로고침하면 초기 데이터로 복원됩니다.
 
-**OTT Service** — 정적 HTML/CSS/JavaScript로 만든 UI 데모입니다. 실제
+**Streaming UI Concept** — 정적 HTML/CSS/JavaScript로 만든 UI 데모입니다. 실제
 API·로그인·결제·스트리밍 기능은 없습니다.
 
 ## 폴더 구조
@@ -66,8 +66,8 @@ npm run dev
 npm run build
 ```
 
-`OTT Service`는 정적 페이지이므로 별도 설치 없이 `index.html`을 열어
-확인합니다.
+Streaming UI Concept은 `projects/OTT Service`에 있는 별도 빌드 없는 정적
+페이지입니다. 로컬 HTTP 서버에서 `index.html`을 열어 확인합니다.
 
 ## GitHub Actions 배포
 

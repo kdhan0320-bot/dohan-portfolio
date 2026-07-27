@@ -1,9 +1,4 @@
-/* ==============================================
-   STREAMIX — main.js
-   인터랙션: ① 헤더 스크롤   ② 장르 필터
-             ③ 예고편 모달   ④ 찜하기 토글
-             ⑤ 게스트 안내 모달   ⑥ nav active
-   ============================================== */
+/* 포트폴리오용 반응형 스트리밍 UI 콘셉트 */
 
 'use strict';
 
@@ -21,39 +16,51 @@ handleScroll();
 
 
 // ──────────────────────────────────────────────
-// 2. 모바일 햄버거 메뉴
+// 2. 모바일 메뉴
 // ──────────────────────────────────────────────
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 
-hamburger.addEventListener('click', () => {
-  const isOpen = mobileMenu.classList.toggle('open');
-  hamburger.classList.toggle('active');
-  hamburger.setAttribute('aria-expanded', String(isOpen));
-  mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-});
+function openMobileMenu() {
+  mobileMenu.hidden = false;
+  mobileMenu.classList.add('open');
+  hamburger.classList.add('active');
+  hamburger.setAttribute('aria-expanded', 'true');
+  hamburger.setAttribute('aria-label', '메뉴 닫기');
+  mobileMenu.setAttribute('aria-hidden', 'false');
+  requestAnimationFrame(() => mobileMenu.querySelector('.mobile-nav__link')?.focus());
+}
 
-document.querySelectorAll('.mobile-nav__link').forEach((link) => {
-  link.addEventListener('click', closeMobileMenu);
-});
-
-function closeMobileMenu() {
+function closeMobileMenu({ restoreFocus = true } = {}) {
+  const wasOpen = mobileMenu.classList.contains('open');
   mobileMenu.classList.remove('open');
   hamburger.classList.remove('active');
   hamburger.setAttribute('aria-expanded', 'false');
+  hamburger.setAttribute('aria-label', '메뉴 열기');
   mobileMenu.setAttribute('aria-hidden', 'true');
+  mobileMenu.hidden = true;
+  if (wasOpen && restoreFocus) hamburger.focus();
 }
 
+hamburger.addEventListener('click', () => {
+  if (mobileMenu.classList.contains('open')) closeMobileMenu();
+  else openMobileMenu();
+});
+
+document.querySelectorAll('.mobile-nav__link').forEach((link) => {
+  link.addEventListener('click', () => closeMobileMenu());
+});
+
+document.addEventListener('pointerdown', (event) => {
+  if (!mobileMenu.classList.contains('open')) return;
+  if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMobileMenu();
+});
 
 // ──────────────────────────────────────────────
 // 3. 장르 필터 버튼 → 카드 필터링
 // ──────────────────────────────────────────────
 const filterBtns   = document.querySelectorAll('.filter-btn');
 const contentCards = document.querySelectorAll('#contentsGrid .card');
-const noResults    = document.getElementById('noResults');
-
-// 초기 빈 상태 확실히 숨김 (CSS fallback)
-noResults.style.display = 'none';
 
 filterBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -66,195 +73,265 @@ filterBtns.forEach((btn) => {
     btn.classList.add('active');
     btn.setAttribute('aria-pressed', 'true');
 
-    let count = 0;
     contentCards.forEach((card) => {
       const match = selected === 'all' || card.dataset.genre === selected;
-      if (match) {
-        card.classList.remove('hidden');
-        card.style.animation = 'none';
-        card.offsetHeight; // reflow
-        card.style.animation = `fadeUp 0.4s ease ${count * 0.07}s both`;
-        count++;
-      } else {
-        card.classList.add('hidden');
-      }
+      card.classList.toggle('hidden', !match);
     });
-
-    noResults.style.display = count === 0 ? 'flex' : 'none';
   });
 });
 
 
 // ──────────────────────────────────────────────
-// 4. 예고편 모달
+// 4. 정적 콘텐츠 데이터와 native dialog
 // ──────────────────────────────────────────────
-const trailerModal    = document.getElementById('trailerModal');
-const trailerBtn      = document.getElementById('trailerBtn');
-const heroTrailerBtn  = document.getElementById('heroTrailerBtn');
-const modalClose      = document.getElementById('modalClose');
-const modalBackdrop   = document.getElementById('modalBackdrop');
-const modalTitle      = document.getElementById('modalTitle');
-const modalVideoTitle = document.getElementById('modalVideoTitle');
-
-let lastFocused = null;
-
-function openModal(triggerEl, title) {
-  lastFocused = triggerEl || document.activeElement;
-  if (title) {
-    trailerModal.setAttribute('aria-label', `${title} 예고편 UI 미리보기`);
-    modalTitle.textContent = `${title} — 예고편 UI 미리보기`;
-    modalVideoTitle.textContent = title;
+const contents = {
+  'catalog-01': {
+    title: 'SIGNAL / 01',
+    genre: '미스터리 스릴러',
+    description: '도시 전력망이 멈춘 밤, 분석가는 정전 직전 반복된 좌표 신호를 추적한다.',
+    year: '2026',
+    episodes: '12화',
+    rating: '4.8 · 데모 평점'
+  },
+  'catalog-02': {
+    title: 'BLUE / 02',
+    genre: '로맨스 드라마',
+    description: '해가 지기 전 짧은 푸른 시간, 두 사람은 사라진 약속의 기록을 다시 마주한다.',
+    year: '2025',
+    episodes: '8화',
+    rating: '4.6 · 데모 평점'
+  },
+  'catalog-03': {
+    title: 'CITY / 03',
+    genre: 'SF',
+    description: '지도에서 삭제된 구역에 진입한 조사팀이 반복되는 하루의 원인을 찾는다.',
+    year: '2026',
+    episodes: '10화',
+    rating: '4.9 · 데모 평점'
+  },
+  'catalog-04': {
+    title: 'ROOM / 04',
+    genre: '심리',
+    description: '소리가 사라진 실험실에서 한 연구원이 벽 너머의 규칙적인 진동을 기록한다.',
+    year: '2025',
+    episodes: '6화',
+    rating: '4.7 · 데모 평점'
+  },
+  'catalog-05': {
+    title: 'ARCHIVE / 05',
+    genre: '다큐멘터리',
+    description: '폐쇄 직전의 기록 보관소에서 마지막 관리자가 누락된 문서의 순서를 복원한다.',
+    year: '2026',
+    episodes: '5화',
+    rating: '4.5 · 데모 평점'
+  },
+  'catalog-06': {
+    title: 'RUNWAY / 06',
+    genre: '테크 스릴러',
+    description: '운항 기록에 없는 활주로 신호가 매일 같은 시각 관제 화면에 나타난다.',
+    year: '2026',
+    episodes: '9화',
+    rating: '4.8 · 데모 평점'
+  },
+  'catalog-07': {
+    title: 'FOCUS / 07',
+    genre: '드라마',
+    description: '사진가는 현상되지 않은 필름 속에서 반복되는 인물의 흔적을 발견한다.',
+    year: '2026',
+    episodes: '10화',
+    rating: '4.6 · 데모 평점'
+  },
+  'catalog-08': {
+    title: 'MIDNIGHT / 08',
+    genre: '스릴러',
+    description: '자정 이후에만 연결되는 호출이 한 도시의 오래된 사건을 다시 연다.',
+    year: '2026',
+    episodes: '8화',
+    rating: '4.7 · 데모 평점'
+  },
+  'catalog-09': {
+    title: 'FREQUENCY / 09',
+    genre: '미스터리',
+    description: '서로 다른 지역의 라디오에서 같은 음성이 동시에 송출되기 시작한다.',
+    year: '2026',
+    episodes: '7화',
+    rating: '4.8 · 데모 평점'
+  },
+  'catalog-10': {
+    title: 'OCEAN / 10',
+    genre: 'SF',
+    description: '해저 관측망의 오류를 추적하던 팀이 지도에 없는 구조물을 감지한다.',
+    year: '2026',
+    episodes: '11화',
+    rating: '4.5 · 데모 평점'
   }
-  trailerModal.classList.add('open');
-  trailerModal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  requestAnimationFrame(() => modalClose.focus());
+};
+
+const projectGuideDialog = document.getElementById('projectGuideDialog');
+const contentInfoDialog = document.getElementById('contentInfoDialog');
+const trailerModal = document.getElementById('trailerModal');
+const dialogs = [projectGuideDialog, contentInfoDialog, trailerModal];
+const dialogTriggers = new WeakMap();
+const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+let currentContentId = 'catalog-01';
+
+function syncPageScroll() {
+  document.body.style.overflow = dialogs.some((dialog) => dialog.open) ? 'hidden' : '';
 }
 
-function closeModal() {
-  trailerModal.classList.remove('open');
-  trailerModal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  if (lastFocused) { lastFocused.focus(); lastFocused = null; }
+function openDialog(dialog, trigger, initialFocus) {
+  dialogTriggers.set(dialog, trigger || document.activeElement);
+  if (!dialog.open) dialog.showModal();
+  syncPageScroll();
+  requestAnimationFrame(() => initialFocus.focus());
 }
 
-trailerBtn.addEventListener('click',     () => openModal(trailerBtn, 'NIGHT SIGNAL'));
-heroTrailerBtn.addEventListener('click', () => openModal(heroTrailerBtn, 'NIGHT SIGNAL'));
-modalClose.addEventListener('click',     closeModal);
-modalBackdrop.addEventListener('click',  closeModal);
+function closeDialog(dialog) {
+  if (dialog.open) dialog.close();
+}
 
-// 콘텐츠 카드 · 추천 카드 재생 버튼 → 예고편 UI 모달 연결 (실제 영상 없음)
-document.querySelectorAll('.card__play-btn, .rec-card__btn').forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const card = btn.closest('.card, .rec-card');
-    const titleEl = card ? card.querySelector('.card__title, .rec-card__title') : null;
-    const title = titleEl ? titleEl.textContent.trim() : 'NIGHT SIGNAL';
-    openModal(btn, title);
+dialogs.forEach((dialog) => {
+  dialog.querySelectorAll('.js-dialog-close').forEach((button) => {
+    button.addEventListener('click', () => closeDialog(dialog));
   });
-});
 
-// 포커스 트랩 (Tab)
-trailerModal.addEventListener('keydown', (e) => {
-  if (e.key !== 'Tab') return;
-  const sel = 'button:not([disabled]), a[href], input, [tabindex]:not([tabindex="-1"])';
-  const focusable = Array.from(trailerModal.querySelectorAll(sel));
-  if (!focusable.length) return;
-  const first = focusable[0], last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-});
-
-
-// ──────────────────────────────────────────────
-// 5. 게스트 안내 모달
-// ──────────────────────────────────────────────
-const loginModal        = document.getElementById('loginModal');
-const loginModalClose   = document.getElementById('loginModalClose');
-const loginModalBackdrop = document.getElementById('loginModalBackdrop');
-
-let lastLoginFocused = null;
-
-function openLoginModal(triggerEl) {
-  closeMobileMenu(); // 모바일 메뉴 열려있으면 닫기
-  lastLoginFocused = triggerEl || document.activeElement;
-  loginModal.classList.add('open');
-  loginModal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
-  requestAnimationFrame(() => loginModalClose.focus());
-}
-
-function closeLoginModal() {
-  loginModal.classList.remove('open');
-  loginModal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
-  if (lastLoginFocused) { lastLoginFocused.focus(); lastLoginFocused = null; }
-}
-
-// 게스트 체험 안내 버튼 모두 연결
-document.querySelectorAll('.js-start-btn').forEach((btn) => {
-  btn.addEventListener('click', () => openLoginModal(btn));
-});
-
-loginModalClose.addEventListener('click',    closeLoginModal);
-loginModalBackdrop.addEventListener('click', closeLoginModal);
-
-// 게스트로 체험하기 버튼
-const demoEnterBtn = document.getElementById('demoEnterBtn');
-if (demoEnterBtn) {
-  demoEnterBtn.addEventListener('click', closeLoginModal);
-}
-
-// 게스트 안내 모달 포커스 트랩
-loginModal.addEventListener('keydown', (e) => {
-  if (e.key !== 'Tab') return;
-  const sel = 'button:not([disabled]), input, a[href], [tabindex]:not([tabindex="-1"])';
-  const focusable = Array.from(loginModal.querySelectorAll(sel));
-  if (!focusable.length) return;
-  const first = focusable[0], last = focusable[focusable.length - 1];
-  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-});
-
-
-// ──────────────────────────────────────────────
-// 6. ESC 키 — 열린 모달 닫기 (통합)
-// ──────────────────────────────────────────────
-document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape') return;
-  if (trailerModal.classList.contains('open')) closeModal();
-  else if (loginModal.classList.contains('open')) closeLoginModal();
-});
-
-
-// ──────────────────────────────────────────────
-// 7. 찜하기 토글 (Hero · Detail · 카드)
-// ──────────────────────────────────────────────
-
-// Hero 찜하기 버튼
-const likeHeroBtn = document.getElementById('likeHeroBtn');
-if (likeHeroBtn) {
-  likeHeroBtn.addEventListener('click', () => {
-    const isLiked = likeHeroBtn.classList.toggle('liked');
-    likeHeroBtn.setAttribute('aria-pressed', String(isLiked));
-    likeHeroBtn.setAttribute('aria-label', isLiked ? '찜 해제하기' : '찜하기');
-    const span = likeHeroBtn.querySelector('span');
-    if (span) span.textContent = isLiked ? '찜 완료' : '찜하기';
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) closeDialog(dialog);
   });
-}
 
-// Detail 내 리스트 추가 버튼
-const listAddBtn = document.getElementById('listAddBtn');
-if (listAddBtn) {
-  listAddBtn.addEventListener('click', () => {
-    const isLiked = listAddBtn.classList.toggle('liked');
-    listAddBtn.setAttribute('aria-pressed', String(isLiked));
-    listAddBtn.setAttribute('aria-label', isLiked ? '리스트에서 제거' : '내 리스트에 추가');
-    const span = listAddBtn.querySelector('span');
-    if (span) span.textContent = isLiked ? '리스트 추가됨' : '내 리스트 추가';
-    // 아이콘을 + → ✓ 로 변경
-    const svg = listAddBtn.querySelector('svg');
-    if (svg) {
-      svg.innerHTML = isLiked
-        ? '<polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2" fill="none"/>'
-        : '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>';
+  dialog.addEventListener('keydown', (event) => {
+    const topmostDialog = dialogs.filter((item) => item.open).at(-1);
+    if (event.key === 'Escape') {
+      if (dialog === topmostDialog) {
+        event.preventDefault();
+        closeDialog(dialog);
+      }
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = Array.from(dialog.querySelectorAll(focusableSelector))
+      .filter((element) => !element.hidden && element.getClientRects().length);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!focusable.includes(document.activeElement)) {
+      event.preventDefault();
+      (event.shiftKey ? last : first).focus();
+    } else if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
     }
   });
+
+  dialog.addEventListener('close', () => {
+    syncPageScroll();
+    const trigger = dialogTriggers.get(dialog);
+    if (trigger?.isConnected && trigger.getClientRects().length) trigger.focus();
+    dialogTriggers.delete(dialog);
+  });
+});
+
+document.querySelectorAll('.js-project-guide').forEach((button) => {
+  button.addEventListener('click', () => {
+    const fromMobileMenu = Boolean(button.closest('#mobileMenu'));
+    if (fromMobileMenu) closeMobileMenu({ restoreFocus: false });
+    openDialog(
+      projectGuideDialog,
+      fromMobileMenu ? hamburger : button,
+      document.getElementById('projectGuideTitle')
+    );
+  });
+});
+
+function openTrailer(trigger, title) {
+  document.getElementById('modalTitle').textContent = `${title} — 예고편 미리보기`;
+  document.getElementById('modalVideoTitle').textContent = title;
+  openDialog(trailerModal, trigger, document.getElementById('modalTitle'));
 }
 
-// 카드 찜하기 버튼 (모든 카드)
-document.querySelectorAll('.card__icon-btn[aria-label="찜하기"]').forEach((btn) => {
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation(); // 카드 클릭 이벤트 버블링 방지
-    const isLiked = btn.classList.toggle('liked');
-    btn.setAttribute('aria-pressed', String(isLiked));
-    btn.setAttribute('aria-label', isLiked ? '찜 해제하기' : '찜하기');
+document.querySelectorAll('.js-trailer-btn').forEach((button) => {
+  button.addEventListener('click', () => {
+    const content = contents[button.dataset.contentId];
+    openTrailer(button, content?.title || 'SIGNAL / 01');
+  });
+});
+
+function openContentInfo(trigger, contentId) {
+  const content = contents[contentId];
+  if (!content) return;
+  currentContentId = contentId;
+  document.getElementById('contentInfoTitle').textContent = content.title;
+  document.getElementById('contentInfoGenre').textContent = content.genre;
+  document.getElementById('contentInfoDescription').textContent = content.description;
+  document.getElementById('contentInfoYear').textContent = content.year;
+  document.getElementById('contentInfoEpisodes').textContent = content.episodes;
+  const contentInfoRating = document.getElementById('contentInfoRating');
+  contentInfoRating.querySelector('.rating-value').textContent = content.rating.split(' ')[0];
+  contentInfoRating.setAttribute('aria-label', `데모 평점 ${content.rating.split(' ')[0]}점`);
+  document.getElementById('contentInfoLike').dataset.likeId = contentId;
+  syncLikeButtons(contentId);
+  openDialog(contentInfoDialog, trigger, document.getElementById('contentInfoTitle'));
+}
+
+document.querySelectorAll('.js-info-btn').forEach((button) => {
+  button.addEventListener('click', () => openContentInfo(button, button.dataset.contentId));
+});
+
+document.querySelector('.js-info-trailer').addEventListener('click', (event) => {
+  openTrailer(event.currentTarget, contents[currentContentId].title);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !dialogs.some((dialog) => dialog.open) && mobileMenu.classList.contains('open')) {
+    closeMobileMenu();
+  }
+});
+
+
+// ──────────────────────────────────────────────
+// 5. 찜하기 상태 (현재 페이지 메모리에서만 유지)
+// ──────────────────────────────────────────────
+const likedContentIds = new Set();
+
+function syncLikeButtons(contentId) {
+  const isLiked = likedContentIds.has(contentId);
+  const contentTitle = contents[contentId]?.title;
+  document.querySelectorAll('.js-like-btn').forEach((button) => {
+    if (button.dataset.likeId !== contentId) return;
+    button.classList.toggle('liked', isLiked);
+    button.setAttribute('aria-pressed', String(isLiked));
+    const actionLabel = isLiked ? '찜 해제' : '찜하기';
+    button.setAttribute('aria-label', contentTitle ? `${contentTitle} ${actionLabel}` : actionLabel);
+    const label = button.querySelector('.js-like-label');
+    if (label) label.textContent = actionLabel;
+  });
+}
+
+document.querySelectorAll('.js-like-btn').forEach((button) => {
+  button.addEventListener('click', () => {
+    const contentId = button.dataset.likeId;
+    if (!contentId) return;
+    if (likedContentIds.has(contentId)) likedContentIds.delete(contentId);
+    else likedContentIds.add(contentId);
+    syncLikeButtons(contentId);
+  });
+});
+
+// 콘텐츠 action은 현재 focus된 실제 button에서만 Enter·Space를 처리합니다.
+document.querySelectorAll('.js-info-btn, .js-trailer-btn, .js-like-btn').forEach((button) => {
+  button.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    event.currentTarget.click();
   });
 });
 
 
 // ──────────────────────────────────────────────
-// 8. 스크롤 감지 → 네비 링크 active 전환
+// 6. 스크롤 감지 → 네비 링크 active 전환
 // ──────────────────────────────────────────────
 const sections = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav__link');
@@ -273,29 +350,3 @@ const sectionObserver = new IntersectionObserver(
 );
 
 sections.forEach((sec) => sectionObserver.observe(sec));
-
-
-// ──────────────────────────────────────────────
-// ──────────────────────────────────────────────
-// Hero 상세 정보 버튼 → Original 섹션으로 스크롤
-// ──────────────────────────────────────────────
-const heroDetailBtn = document.getElementById('heroDetailBtn');
-if (heroDetailBtn) {
-  heroDetailBtn.addEventListener('click', () => {
-    const target = document.getElementById('original');
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
-}
-
-
-// 9. 카드 키보드 접근성 (Enter / Space)
-// ──────────────────────────────────────────────
-document.querySelectorAll('.card, .rec-card').forEach((card) => {
-  card.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      const playBtn = card.querySelector('.card__play-btn') || card.querySelector('.rec-card__btn');
-      if (playBtn) playBtn.click();
-    }
-  });
-});

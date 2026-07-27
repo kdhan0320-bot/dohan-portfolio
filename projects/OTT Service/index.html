@@ -3,33 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="STREAMIX - 정적 콘텐츠 데이터를 기반으로 Hero, 콘텐츠 카드, 장르 필터, 게스트 체험 안내/예고편 모달을 구현한 OTT형 웹 UI 데모입니다." />
-  <title>STREAMIX — OTT UI 데모</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="description" content="가상 콘텐츠와 정적 데이터를 기반으로 콘텐츠 카드, 필터, 모달과 반응형 인터랙션을 구현한 포트폴리오용 스트리밍 UI 콘셉트 데모입니다." />
+  <title>Streaming UI Concept — Portfolio Demo</title>
+  <link rel="stylesheet" href="css/style.css?v=20260727-4" />
 </head>
 <body>
 
   <!-- ===== HEADER ===== -->
   <header class="header" id="header">
     <div class="header__inner">
-      <a href="#home" class="header__logo" aria-label="STREAMIX 홈으로 이동">
-        <span class="logo-text">STREAMIX</span>
+      <a href="#home" class="header__logo" aria-label="Streaming UI Concept 홈으로 이동">
+        <span class="logo-text">STREAMING UI CONCEPT</span>
+        <span class="brand-context">PORTFOLIO DEMO</span>
       </a>
 
       <nav class="header__nav" aria-label="메인 네비게이션">
         <ul class="nav__list">
-          <li><a href="#home"      class="nav__link active">Home</a></li>
-          <li><a href="#trending"  class="nav__link">Trending</a></li>
-          <li><a href="#original"  class="nav__link">Original</a></li>
-          <li><a href="#recommend" class="nav__link">Recommend</a></li>
+          <li><a href="#home"      class="nav__link active">홈</a></li>
+          <li><a href="#trending"  class="nav__link">콘텐츠</a></li>
+          <li><a href="#featured"  class="nav__link">대표작</a></li>
+          <li><a href="#recommend" class="nav__link">추천작</a></li>
         </ul>
       </nav>
 
       <div class="header__cta">
-        <button class="btn btn--outline js-start-btn" aria-label="게스트로 체험하기">게스트로 체험하기</button>
+        <button type="button" class="btn btn--outline js-project-guide"><span class="ui-label">프로젝트 안내</span></button>
       </div>
 
-      <button class="header__hamburger" id="hamburger"
+      <button type="button" class="header__hamburger" id="hamburger"
               aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobileMenu">
         <span></span>
         <span></span>
@@ -38,13 +39,13 @@
     </div>
 
     <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="navigation" aria-label="모바일 메뉴">
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="navigation" aria-label="모바일 메뉴" hidden>
       <ul class="mobile-nav__list">
-        <li><a href="#home"      class="mobile-nav__link">Home</a></li>
-        <li><a href="#trending"  class="mobile-nav__link">Trending</a></li>
-        <li><a href="#original"  class="mobile-nav__link">Original</a></li>
-        <li><a href="#recommend" class="mobile-nav__link">Recommend</a></li>
-        <li><button class="btn btn--outline btn--full js-start-btn" aria-label="게스트로 체험하기">게스트로 체험하기</button></li>
+        <li><a href="#home"      class="mobile-nav__link">홈</a></li>
+        <li><a href="#trending"  class="mobile-nav__link">콘텐츠</a></li>
+        <li><a href="#featured"  class="mobile-nav__link">대표작</a></li>
+        <li><a href="#recommend" class="mobile-nav__link">추천작</a></li>
+        <li><button type="button" class="btn btn--outline btn--full js-project-guide"><span class="ui-label">프로젝트 안내</span></button></li>
       </ul>
     </div>
   </header>
@@ -57,54 +58,49 @@
 
       <div class="hero__inner">
       <div class="hero__content">
+        <p class="hero__context">FICTIONAL CONTENT CATALOG</p>
         <div class="hero__badge">
-          <span class="badge badge--original">STREAMIX ORIGINAL</span>
-          <span class="badge badge--genre">Mystery Thriller</span>
+          <span class="badge badge--feature">FEATURE 01</span>
+          <span class="badge badge--genre">미스터리 스릴러</span>
         </div>
 
-        <h1 class="hero__title">NIGHT<br>SIGNAL</h1>
+        <h1 class="hero__title" aria-label="SIGNAL, 카탈로그 01">
+          <span class="hero__title-name" aria-hidden="true">SIGNAL</span>
+          <span class="hero__title-index" aria-hidden="true">/ 01</span>
+        </h1>
 
         <p class="hero__desc">
-          도시의 불빛이 꺼지는 순간,<br>숨겨진 신호가 깨어난다.
+          정전된 도시에서 분석가는 반복되는 좌표 신호를 추적한다.
         </p>
 
         <div class="hero__meta" aria-label="콘텐츠 정보">
           <span class="meta-item">2026</span>
           <span class="meta-div" aria-hidden="true">·</span>
-          <span class="meta-item">12 Episodes</span>
+          <span class="meta-item">12화</span>
           <span class="meta-div" aria-hidden="true">·</span>
-          <span class="meta-item">4K UHD</span>
-          <span class="meta-div" aria-hidden="true">·</span>
-          <span class="meta-item">15+</span>
-          <span class="meta-div" aria-hidden="true">·</span>
-          <span class="meta-item">Original Series</span>
+          <span class="meta-item">15세 이상</span>
         </div>
 
         <div class="hero__actions">
-          <button class="btn btn--primary btn--lg" id="heroDetailBtn" aria-label="상세 정보 보기">
-            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            상세 정보
+          <button type="button" class="btn btn--primary btn--lg js-info-btn" id="heroDetailBtn" data-content-id="catalog-01">
+            <span class="ui-label">작품 정보</span>
           </button>
-          <button class="btn btn--glass btn--lg" id="likeHeroBtn" aria-label="찜하기" aria-pressed="false">
-            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            <span>찜하기</span>
+          <button type="button" class="btn btn--outline btn--lg js-trailer-btn" id="heroTrailerBtn" data-content-id="catalog-01">
+            <span class="ui-label">예고편 미리보기</span>
           </button>
-          <button class="btn btn--outline btn--lg" id="heroTrailerBtn" aria-label="예고편 보기">
-            <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            예고편 보기
+          <button type="button" class="btn btn--glass hero__like-action js-like-btn" id="likeHeroBtn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
+            <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+            <span class="ui-label js-like-label">찜하기</span>
           </button>
         </div>
 
-        <div class="hero__rating" aria-label="평점 4.8점 / 5점, 12,400개 리뷰">
-          <div class="stars" aria-hidden="true">
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star filled">★</span>
-            <span class="star half">★</span>
-          </div>
-          <span class="rating-score">4.8</span>
-          <span class="rating-count">(12.4K 리뷰)</span>
+        <div class="hero__rating" aria-label="데모 평점 4.8점">
+          <span class="rating-display rating-display--hero" aria-hidden="true">
+            <span class="rating-star"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span>
+            <span class="rating-value">4.8</span>
+            <span class="rating-separator">·</span>
+            <span class="rating-label">데모 평점</span>
+          </span>
         </div>
       </div>
 
@@ -112,11 +108,11 @@
         <div class="hero__poster">
           <div class="poster__gradient"></div>
           <div class="poster__label">
-            <span>NIGHT SIGNAL</span>
+            <span>SIGNAL / 01</span>
           </div>
           <div class="poster__play">
             <div class="play-pulse"></div>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
           </div>
         </div>
       </div>
@@ -124,227 +120,247 @@
     </section>
 
     <!-- ===== TRENDING / MAIN CONTENTS SECTION ===== -->
-    <section class="section section--contents" id="trending" aria-label="인기 콘텐츠">
+    <section class="section section--contents" id="trending" aria-label="가상 콘텐츠 컬렉션">
       <div class="container">
         <div class="section__header">
           <div>
-            <p class="section__label">TRENDING NOW</p>
-            <h2 class="section__title">지금 뜨는 콘텐츠</h2>
+            <p class="section__label">STATIC COLLECTION</p>
+            <h2 class="section__title">가상 콘텐츠 컬렉션</h2>
           </div>
         </div>
 
         <!-- Genre Filter -->
         <div class="filter-bar" role="group" aria-label="장르 필터">
-          <button class="filter-btn active" data-filter="all"           aria-pressed="true">전체</button>
-          <button class="filter-btn"        data-filter="thriller"      aria-pressed="false">Thriller</button>
-          <button class="filter-btn"        data-filter="drama"         aria-pressed="false">Drama</button>
-          <button class="filter-btn"        data-filter="sci-fi"        aria-pressed="false">Sci-Fi</button>
-          <button class="filter-btn"        data-filter="psychological" aria-pressed="false">Psychological</button>
-          <button class="filter-btn"        data-filter="documentary"   aria-pressed="false">Documentary</button>
+          <button type="button" class="filter-btn active" data-filter="all"           aria-pressed="true">전체</button>
+          <button type="button" class="filter-btn"        data-filter="thriller"      aria-pressed="false">스릴러</button>
+          <button type="button" class="filter-btn"        data-filter="drama"         aria-pressed="false">드라마</button>
+          <button type="button" class="filter-btn"        data-filter="sci-fi"        aria-pressed="false">SF</button>
+          <button type="button" class="filter-btn"        data-filter="psychological" aria-pressed="false">심리</button>
+          <button type="button" class="filter-btn"        data-filter="documentary"   aria-pressed="false">다큐멘터리</button>
         </div>
 
         <!-- Content Cards Grid -->
         <div class="cards-grid" id="contentsGrid" role="list">
 
-          <!-- Card 1: Night Signal -->
-          <article class="card" data-genre="thriller" role="listitem" tabindex="0"
-                   aria-label="Night Signal - Mystery Thriller">
+          <!-- Catalog Card 01 -->
+          <article class="card" data-genre="thriller" data-content-id="catalog-01" role="listitem"
+                   aria-label="SIGNAL / 01 - 미스터리 스릴러">
             <div class="card__image">
               <div class="card__poster card__poster--1" aria-hidden="true"></div>
-              <span class="card__badge">ORIGINAL</span>
+              <span class="card__badge">FEATURE 01</span>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Night Signal 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-01" aria-label="SIGNAL / 01 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-01" aria-label="SIGNAL / 01 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Night Signal</h3>
-              <p class="card__genre">Mystery Thriller</p>
+              <h3 class="card__title">SIGNAL / 01</h3>
+              <p class="card__genre">미스터리 스릴러</p>
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
-                <span>12 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.8">★ 4.8</span>
+                <span>12화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
-          <!-- Card 2: Blue Hour -->
-          <article class="card" data-genre="drama" role="listitem" tabindex="0"
-                   aria-label="Blue Hour - Romance Drama">
+          <!-- Catalog Card 02 -->
+          <article class="card" data-genre="drama" data-content-id="catalog-02" role="listitem"
+                   aria-label="BLUE / 02 - 로맨스 드라마">
             <div class="card__image">
               <div class="card__poster card__poster--2" aria-hidden="true"></div>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Blue Hour 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-02" aria-label="BLUE / 02 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-02" aria-label="BLUE / 02 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-02" aria-label="BLUE / 02 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Blue Hour</h3>
-              <p class="card__genre">Romance Drama</p>
+              <h3 class="card__title">BLUE / 02</h3>
+              <p class="card__genre">로맨스 드라마</p>
               <div class="card__meta">
                 <span>2025</span><span aria-hidden="true">·</span>
-                <span>8 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.6">★ 4.6</span>
+                <span>8화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
-          <!-- Card 3: Zero City -->
-          <article class="card" data-genre="sci-fi" role="listitem" tabindex="0"
-                   aria-label="Zero City - Sci-Fi Action">
+          <!-- Catalog Card 03 -->
+          <article class="card" data-genre="sci-fi" data-content-id="catalog-03" role="listitem"
+                   aria-label="CITY / 03 - SF">
             <div class="card__image">
               <div class="card__poster card__poster--3" aria-hidden="true"></div>
-              <span class="card__badge card__badge--new">NEW</span>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Zero City 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-03" aria-label="CITY / 03 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-03" aria-label="CITY / 03 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-03" aria-label="CITY / 03 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Zero City</h3>
-              <p class="card__genre">Sci-Fi Action</p>
+              <h3 class="card__title">CITY / 03</h3>
+              <p class="card__genre">SF</p>
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
-                <span>10 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.9">★ 4.9</span>
+                <span>10화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.9점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.9</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
-          <!-- Card 4: Quiet Room -->
-          <article class="card" data-genre="psychological" role="listitem" tabindex="0"
-                   aria-label="Quiet Room - Psychological">
+          <!-- Catalog Card 04 -->
+          <article class="card" data-genre="psychological" data-content-id="catalog-04" role="listitem"
+                   aria-label="ROOM / 04 - 심리">
             <div class="card__image">
               <div class="card__poster card__poster--4" aria-hidden="true"></div>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Quiet Room 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-04" aria-label="ROOM / 04 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-04" aria-label="ROOM / 04 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-04" aria-label="ROOM / 04 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Quiet Room</h3>
-              <p class="card__genre">Psychological</p>
+              <h3 class="card__title">ROOM / 04</h3>
+              <p class="card__genre">심리</p>
               <div class="card__meta">
                 <span>2025</span><span aria-hidden="true">·</span>
-                <span>6 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.7">★ 4.7</span>
+                <span>6화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
-          <!-- Card 5: Last Archive -->
-          <article class="card" data-genre="documentary" role="listitem" tabindex="0"
-                   aria-label="Last Archive - Documentary">
+          <!-- Catalog Card 05 -->
+          <article class="card" data-genre="documentary" data-content-id="catalog-05" role="listitem"
+                   aria-label="ARCHIVE / 05 - 다큐멘터리">
             <div class="card__image">
               <div class="card__poster card__poster--5" aria-hidden="true"></div>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Last Archive 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-05" aria-label="ARCHIVE / 05 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-05" aria-label="ARCHIVE / 05 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-05" aria-label="ARCHIVE / 05 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Last Archive</h3>
-              <p class="card__genre">Documentary</p>
+              <h3 class="card__title">ARCHIVE / 05</h3>
+              <p class="card__genre">다큐멘터리</p>
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
-                <span>5 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.5">★ 4.5</span>
+                <span>5화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
-          <!-- Card 6: Runway 404 -->
-          <article class="card" data-genre="thriller" role="listitem" tabindex="0"
-                   aria-label="Runway 404 - Tech Thriller">
+          <!-- Catalog Card 06 -->
+          <article class="card" data-genre="thriller" data-content-id="catalog-06" role="listitem"
+                   aria-label="RUNWAY / 06 - 테크 스릴러">
             <div class="card__image">
               <div class="card__poster card__poster--6" aria-hidden="true"></div>
-              <span class="card__badge card__badge--hot">HOT</span>
               <div class="card__hover-overlay">
-                <button class="card__play-btn" aria-label="Runway 404 예고편 UI 미리보기">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
                 <div class="card__actions">
-                  <button class="card__icon-btn" aria-label="찜하기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                  <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-06" aria-label="RUNWAY / 06 작품 정보">
+                    <span class="ui-label">작품 정보</span>
                   </button>
-                  <button class="card__icon-btn" aria-label="정보 보기">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-06" aria-label="RUNWAY / 06 예고편 미리보기">
+                    <span class="ui-label">예고편</span>
+                  </button>
+                  <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-06" aria-label="RUNWAY / 06 찜하기" aria-pressed="false">
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="card__body">
-              <h3 class="card__title">Runway 404</h3>
-              <p class="card__genre">Tech Thriller</p>
+              <h3 class="card__title">RUNWAY / 06</h3>
+              <p class="card__genre">테크 스릴러</p>
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
-                <span>9 Ep.</span><span aria-hidden="true">·</span>
-                <span class="card__rating" aria-label="평점 4.8">★ 4.8</span>
+                <span>9화</span><span aria-hidden="true">·</span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
 
         </div>
 
-        <div class="no-results" id="noResults" role="status" aria-live="polite">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <p>해당 장르의 콘텐츠가 없습니다.</p>
-        </div>
       </div>
     </section>
 
-    <!-- ===== DETAIL / ORIGINAL SECTION ===== -->
-    <section class="section section--detail" id="original" aria-label="오리지널 콘텐츠 상세">
+    <!-- ===== FEATURED CATALOG SECTION ===== -->
+    <section class="section section--detail" id="featured" aria-label="대표 콘텐츠">
       <div class="container">
+        <aside class="featured-banner interactive-demo" aria-label="Interactive Demo">
+          <div class="featured-banner__bg" aria-hidden="true"></div>
+          <div class="featured-banner__content">
+            <div class="featured-banner__text">
+              <p class="section__label featured-banner__eyebrow">INTERACTIVE DEMO</p>
+              <h3 class="featured-banner__title">필터부터 모달까지,<br>직접 확인해보세요.</h3>
+              <p class="featured-banner__desc">장르 필터, 작품 정보, 예고편 미리보기와 찜하기 상태를 정적 데이터로 구현했습니다.</p>
+            </div>
+            <div class="featured-banner__actions">
+              <ul class="demo-scope__tags" aria-label="Interactive Demo 기능">
+                <li>Filter</li>
+                <li>Dialog</li>
+                <li>State</li>
+                <li>Responsive</li>
+              </ul>
+              <button type="button" class="btn btn--outline js-project-guide"><span class="ui-label">프로젝트 안내</span></button>
+            </div>
+          </div>
+        </aside>
+
         <div class="section__header">
           <div>
-            <p class="section__label">STREAMIX ORIGINAL</p>
-            <h2 class="section__title">이 달의 추천 작품</h2>
+            <p class="section__label">FEATURED FICTION</p>
+            <h2 class="section__title">대표 콘텐츠</h2>
           </div>
         </div>
 
@@ -353,11 +369,11 @@
           <div class="detail__poster">
             <div class="detail__poster-bg" aria-hidden="true"></div>
             <div class="detail__poster-overlay">
-              <button class="trailer-btn" id="trailerBtn" aria-label="NIGHT SIGNAL 예고편 보기">
-                <div class="trailer-btn__circle" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </div>
-                <span>예고편 보기</span>
+              <button type="button" class="trailer-btn js-trailer-btn" id="trailerBtn" data-content-id="catalog-01" aria-label="SIGNAL / 01 예고편 미리보기">
+                <span class="trailer-btn__circle" aria-hidden="true">
+                  <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                </span>
+                <span class="ui-label">예고편 미리보기</span>
               </button>
             </div>
           </div>
@@ -365,16 +381,14 @@
           <!-- Content Info -->
           <div class="detail__info">
             <div class="detail__badges">
-              <span class="badge badge--original">STREAMIX ORIGINAL</span>
-              <span class="badge badge--genre">Mystery Thriller</span>
+              <span class="badge badge--feature">FEATURE 01</span>
+              <span class="badge badge--genre">미스터리 스릴러</span>
             </div>
 
-            <h3 class="detail__title">NIGHT SIGNAL</h3>
+            <h3 class="detail__title">SIGNAL / 01</h3>
 
             <p class="detail__desc">
-              도시의 불빛이 꺼지는 순간, 숨겨진 신호가 깨어난다.<br><br>
-              신호 분석가 '이준'은 도심에서 발생한 대규모 정전 사고를 조사하던 중,
-              기이한 전파 패턴을 발견한다. 그것은 단순한 오류가 아니었다 — 누군가 보내는 메시지였다.
+              도시 전력망이 멈춘 밤, 분석가는 정전 직전 반복된 좌표 신호를 추적한다.
             </p>
 
             <div class="detail__meta-grid" aria-label="콘텐츠 메타 정보">
@@ -383,52 +397,38 @@
                 <span class="meta-card__value">2026</span>
               </div>
               <div class="meta-card">
-                <span class="meta-card__label">에피소드</span>
-                <span class="meta-card__value">12 Episodes</span>
+                <span class="meta-card__label">구성</span>
+                <span class="meta-card__value">12화</span>
               </div>
               <div class="meta-card">
-                <span class="meta-card__label">화질</span>
-                <span class="meta-card__value">4K UHD</span>
+                <span class="meta-card__label">장르</span>
+                <span class="meta-card__value">미스터리 스릴러</span>
               </div>
               <div class="meta-card">
-                <span class="meta-card__label">시청 등급</span>
-                <span class="meta-card__value">15+</span>
+                <span class="meta-card__label">등급</span>
+                <span class="meta-card__value">15세 이상</span>
               </div>
               <div class="meta-card">
-                <span class="meta-card__label">시리즈</span>
-                <span class="meta-card__value">Original</span>
+                <span class="meta-card__label">유형</span>
+                <span class="meta-card__value">가상 시리즈</span>
               </div>
               <div class="meta-card">
                 <span class="meta-card__label">평점</span>
-                <span class="meta-card__value card__rating">★ 4.8</span>
+                <span class="meta-card__value card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
 
             <div class="detail__actions">
-              <button class="btn btn--primary btn--lg js-start-btn" aria-label="게스트로 체험하기">
-                게스트로 체험하기
+              <button type="button" class="btn btn--primary btn--lg js-info-btn" data-content-id="catalog-01">
+                <span class="ui-label">작품 정보</span>
               </button>
-              <button class="btn btn--glass btn--lg" id="listAddBtn" aria-label="내 리스트에 추가" aria-pressed="false">
-                <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                <span>내 리스트 추가</span>
+              <button type="button" class="btn btn--glass btn--lg btn--icon-only js-like-btn" id="listAddBtn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
+                <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Featured Banner -->
-        <div class="featured-banner" aria-label="대표 콘텐츠 미리보기 배너">
-          <div class="featured-banner__bg" aria-hidden="true"></div>
-          <div class="featured-banner__content">
-            <span class="featured-banner__chip">🎬 대표 콘텐츠</span>
-            <div class="featured-banner__text">
-              <h4 class="featured-banner__title">NIGHT SIGNAL — 대표 콘텐츠 미리보기</h4>
-              <p class="featured-banner__desc">시즌 1 · 12 Episodes · 정적 데모 데이터</p>
-              <p class="featured-banner__desc">게스트로 주요 화면을 체험해보세요.</p>
-            </div>
-            <button class="btn btn--primary js-start-btn" aria-label="게스트로 체험하기">게스트로 체험하기</button>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -437,110 +437,134 @@
       <div class="container">
         <div class="section__header">
           <div>
-            <p class="section__label">TODAY'S PICK</p>
-            <h2 class="section__title">지금 주목할 콘텐츠</h2>
+            <p class="section__label">STATIC PICKS</p>
+            <h2 class="section__title">추천 콘텐츠</h2>
           </div>
         </div>
 
         <div class="recommend-grid" role="list">
 
           <!-- Recommend Card 1 -->
-          <article class="rec-card" role="listitem" tabindex="0" aria-label="Deep Focus - Drama">
+          <article class="rec-card" data-content-id="catalog-07" role="listitem" aria-label="FOCUS / 07 - 드라마">
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--1" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
               </div>
             </div>
             <div class="rec-card__body">
               <span class="rec-card__num" aria-hidden="true">01</span>
               <div class="rec-card__info">
-                <h3 class="rec-card__title">Deep Focus</h3>
-                <p class="rec-card__genre">Drama</p>
+                <h3 class="rec-card__title">FOCUS / 07</h3>
+                <p class="rec-card__genre">드라마</p>
                 <div class="rec-card__meta">
-                  <span aria-label="평점 4.6">★ 4.6</span>
-                  <span aria-hidden="true">·</span>
-                  <span>10 Ep.</span>
+                  <span>2026</span><span aria-hidden="true">·</span>
+                  <span>10화</span><span aria-hidden="true">·</span>
+                  <span class="rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
-              <button class="rec-card__btn" aria-label="Deep Focus 예고편 UI 미리보기">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+              <div class="rec-card__actions">
+                <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-07" aria-label="FOCUS / 07 작품 정보"><span class="ui-label">정보</span></button>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-07" aria-label="FOCUS / 07 예고편 미리보기">
+                  <span class="ui-label">예고편</span>
+                </button>
+                <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-07" aria-label="FOCUS / 07 찜하기" aria-pressed="false">
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                </button>
+              </div>
             </div>
           </article>
 
           <!-- Recommend Card 2 -->
-          <article class="rec-card" role="listitem" tabindex="0" aria-label="After Midnight - Thriller">
+          <article class="rec-card" data-content-id="catalog-08" role="listitem" aria-label="MIDNIGHT / 08 - 스릴러">
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--2" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
               </div>
             </div>
             <div class="rec-card__body">
               <span class="rec-card__num" aria-hidden="true">02</span>
               <div class="rec-card__info">
-                <h3 class="rec-card__title">After Midnight</h3>
-                <p class="rec-card__genre">Thriller</p>
+                <h3 class="rec-card__title">MIDNIGHT / 08</h3>
+                <p class="rec-card__genre">스릴러</p>
                 <div class="rec-card__meta">
-                  <span aria-label="평점 4.7">★ 4.7</span>
-                  <span aria-hidden="true">·</span>
-                  <span>8 Ep.</span>
+                  <span>2026</span><span aria-hidden="true">·</span>
+                  <span>8화</span><span aria-hidden="true">·</span>
+                  <span class="rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
-              <button class="rec-card__btn" aria-label="After Midnight 예고편 UI 미리보기">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+              <div class="rec-card__actions">
+                <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-08" aria-label="MIDNIGHT / 08 작품 정보"><span class="ui-label">정보</span></button>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-08" aria-label="MIDNIGHT / 08 예고편 미리보기">
+                  <span class="ui-label">예고편</span>
+                </button>
+                <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-08" aria-label="MIDNIGHT / 08 찜하기" aria-pressed="false">
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                </button>
+              </div>
             </div>
           </article>
 
           <!-- Recommend Card 3 -->
-          <article class="rec-card" role="listitem" tabindex="0" aria-label="Signal Room - Mystery">
+          <article class="rec-card" data-content-id="catalog-09" role="listitem" aria-label="FREQUENCY / 09 - 미스터리">
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--3" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
               </div>
             </div>
             <div class="rec-card__body">
               <span class="rec-card__num" aria-hidden="true">03</span>
               <div class="rec-card__info">
-                <h3 class="rec-card__title">Signal Room</h3>
-                <p class="rec-card__genre">Mystery</p>
+                <h3 class="rec-card__title">FREQUENCY / 09</h3>
+                <p class="rec-card__genre">미스터리</p>
                 <div class="rec-card__meta">
-                  <span aria-label="평점 4.8">★ 4.8</span>
-                  <span aria-hidden="true">·</span>
-                  <span>7 Ep.</span>
+                  <span>2026</span><span aria-hidden="true">·</span>
+                  <span>7화</span><span aria-hidden="true">·</span>
+                  <span class="rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
-              <button class="rec-card__btn" aria-label="Signal Room 예고편 UI 미리보기">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+              <div class="rec-card__actions">
+                <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-09" aria-label="FREQUENCY / 09 작품 정보"><span class="ui-label">정보</span></button>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-09" aria-label="FREQUENCY / 09 예고편 미리보기">
+                  <span class="ui-label">예고편</span>
+                </button>
+                <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-09" aria-label="FREQUENCY / 09 찜하기" aria-pressed="false">
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                </button>
+              </div>
             </div>
           </article>
 
           <!-- Recommend Card 4 -->
-          <article class="rec-card" role="listitem" tabindex="0" aria-label="Ocean Code - Sci-Fi">
+          <article class="rec-card" data-content-id="catalog-10" role="listitem" aria-label="OCEAN / 10 - SF">
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--4" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
               </div>
             </div>
             <div class="rec-card__body">
               <span class="rec-card__num" aria-hidden="true">04</span>
               <div class="rec-card__info">
-                <h3 class="rec-card__title">Ocean Code</h3>
-                <p class="rec-card__genre">Sci-Fi</p>
+                <h3 class="rec-card__title">OCEAN / 10</h3>
+                <p class="rec-card__genre">SF</p>
                 <div class="rec-card__meta">
-                  <span aria-label="평점 4.5">★ 4.5</span>
-                  <span aria-hidden="true">·</span>
-                  <span>11 Ep.</span>
+                  <span>2026</span><span aria-hidden="true">·</span>
+                  <span>11화</span><span aria-hidden="true">·</span>
+                  <span class="rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
-              <button class="rec-card__btn" aria-label="Ocean Code 예고편 UI 미리보기">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
+              <div class="rec-card__actions">
+                <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-10" aria-label="OCEAN / 10 작품 정보"><span class="ui-label">정보</span></button>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-10" aria-label="OCEAN / 10 예고편 미리보기">
+                  <span class="ui-label">예고편</span>
+                </button>
+                <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-10" aria-label="OCEAN / 10 찜하기" aria-pressed="false">
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                </button>
+              </div>
             </div>
           </article>
 
@@ -555,110 +579,114 @@
     <div class="container">
       <div class="footer__top">
         <div class="footer__brand">
-          <div class="footer__logo" aria-label="STREAMIX">STREAMIX</div>
-          <p class="footer__tagline">콘텐츠 중심 웹 UI 데모<br>콘텐츠 카드, 모달, 반응형 레이아웃 구현 연습</p>
-          <div class="footer__social" aria-hidden="true">
-            <span class="social-btn">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
-            </span>
-            <span class="social-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-            </span>
-            <span class="social-btn">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 00-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.4 19.5C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 001.94-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
-            </span>
-          </div>
+          <div class="footer__logo">STREAMING UI CONCEPT</div>
+          <p class="footer__tagline">가상 콘텐츠와 정적 데이터를 기반으로 제작한<br>반응형 스트리밍 UI 데모</p>
         </div>
 
-        <div class="footer__col">
-          <h4 class="footer__col-title">서비스</h4>
-          <ul class="footer__links">
-            <li><a href="#" class="footer__link">요금제</a></li>
-            <li><a href="#" class="footer__link">디바이스</a></li>
-            <li><a href="#" class="footer__link">다운로드</a></li>
-            <li><a href="#" class="footer__link">공지사항</a></li>
-          </ul>
-        </div>
-
-        <div class="footer__col">
-          <h4 class="footer__col-title">지원</h4>
-          <ul class="footer__links">
-            <li><a href="#" class="footer__link">고객센터</a></li>
-            <li><a href="#" class="footer__link">자주 묻는 질문</a></li>
-            <li><a href="#" class="footer__link">계정 관리</a></li>
-            <li><a href="#" class="footer__link">기기 설정</a></li>
-          </ul>
-        </div>
+        <nav class="footer__actions" aria-label="프로젝트 링크">
+          <a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/" target="_blank" rel="noopener noreferrer" class="footer__action">
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m15 18-6-6 6-6"/><path d="M9 12h10"/></svg></span>
+            <span class="footer__action-label">포트폴리오로 돌아가기</span>
+            <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
+          </a>
+          <a href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/OTT%20Service" target="_blank" rel="noopener noreferrer" class="footer__action">
+            <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
+            <span class="footer__action-label">GitHub 소스 보기</span>
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>
+          </a>
+          <button type="button" class="footer__action footer__action--dialog js-project-guide">
+            <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
+            <span class="footer__action-label">프로젝트 안내</span>
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9.25"/><path d="M12 10.75V16"/><path d="M12 7.75h.01"/></svg></span>
+          </button>
+        </nav>
       </div>
 
       <div class="footer__divider"></div>
 
       <div class="footer__bottom">
         <p class="footer__copy">
-          © 2026 STREAMIX — Demo Project<br>
-          <small>포트폴리오용 프론트엔드 UI 데모입니다. 실제 회원가입, 결제, 스트리밍 기능은 제공하지 않습니다. 표시된 콘텐츠와 브랜드는 포트폴리오 제작을 위한 가상 콘셉트입니다.</small>
+          2026 · Portfolio Demo<br>
+          <small>실제 로그인, 결제, 콘텐츠 저장과<br>영상 스트리밍 기능은 포함하지 않습니다.</small>
         </p>
-        <ul class="footer__legal-links" aria-label="법적 정보">
-          <li><a href="#" class="footer__legal-link">이용약관</a></li>
-          <li><a href="#" class="footer__legal-link">개인정보처리방침</a></li>
-          <li><a href="#" class="footer__legal-link">쿠키 설정</a></li>
-          <li><a href="#" class="footer__legal-link">저작권 안내</a></li>
-        </ul>
-        <div class="footer__badges" aria-label="포트폴리오 링크">
-          <a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/" target="_blank" rel="noopener noreferrer" class="footer__badge" style="text-decoration:none;cursor:pointer;" aria-label="포트폴리오로 돌아가기">포트폴리오로 돌아가기</a>
-          <a href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/OTT%20Service" target="_blank" rel="noopener noreferrer" class="footer__badge" style="text-decoration:none;cursor:pointer;" aria-label="GitHub 소스 보기">GitHub</a>
-        </div>
       </div>
     </div>
   </footer>
 
-  <!-- ===== GUEST EXPERIENCE MODAL ===== -->
-  <div class="modal" id="loginModal"
-       role="dialog" aria-modal="true"
-       aria-label="STREAMIX 게스트 체험 안내" aria-hidden="true">
-    <div class="modal__backdrop" id="loginModalBackdrop"></div>
+  <!-- ===== PROJECT GUIDE DIALOG ===== -->
+  <dialog class="modal" id="projectGuideDialog" aria-labelledby="projectGuideTitle">
     <div class="modal__container login-modal__box">
       <div class="modal__header">
-        <span class="login-modal__logo" aria-label="STREAMIX">STREAMIX</span>
-        <button class="modal__close" id="loginModalClose" aria-label="로그인 모달 닫기">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <span class="login-modal__logo">STREAMING UI CONCEPT</span>
+        <button type="button" class="modal__close js-dialog-close" aria-label="프로젝트 안내 닫기">
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
       </div>
 
       <div class="login-modal__body">
-        <h3 class="login-modal__title">게스트로 체험하기</h3>
-        <p class="login-modal__desc">실제 계정 없이 버튼 하나로 주요 화면을 바로 체험할 수 있습니다.</p>
-
-        <button type="button" class="btn btn--primary btn--full" id="demoEnterBtn" aria-label="게스트로 체험 시작하기">
-          게스트로 체험하기
-        </button>
-
-        <ul class="login-modal__notice-list" aria-label="게스트 체험 안내사항">
-          <li>실제 회원가입 및 로그인 기능은 없습니다.</li>
-          <li>실제 결제 및 스트리밍 기능은 제공하지 않습니다.</li>
-          <li>찜하기와 내 리스트 변경 내용은 저장되지 않습니다.</li>
-          <li>새로고침하면 체험 상태가 초기화됩니다.</li>
+        <h2 class="login-modal__title" id="projectGuideTitle" tabindex="-1">프로젝트 안내</h2>
+        <p class="login-modal__desc">정적 콘텐츠 데이터를 기반으로 제작한 포트폴리오용 스트리밍 UI 데모입니다.</p>
+        <h3 class="modal__section-title">구현 범위</h3>
+        <ul class="login-modal__notice-list">
+          <li>장르 필터와 콘텐츠 카드</li>
+          <li>작품 정보 및 예고편 미리보기 모달</li>
+          <li>찜하기 인터랙션</li>
+          <li>반응형 레이아웃</li>
         </ul>
-
-        <p class="login-modal__note">
-          포트폴리오용 프론트엔드 UI 데모입니다.
-        </p>
+        <h3 class="modal__section-title">포함하지 않은 기능</h3>
+        <ul class="login-modal__notice-list">
+          <li>실제 회원가입과 로그인</li>
+          <li>결제와 구독</li>
+          <li>실제 영상 재생</li>
+          <li>서버, 데이터베이스와 외부 API</li>
+          <li>새로고침 후 상태 저장</li>
+        </ul>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--primary js-dialog-close"><span class="ui-label">확인</span></button>
+          <a class="btn btn--outline" href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/OTT%20Service" target="_blank" rel="noopener noreferrer"><span class="ui-label">GitHub 소스 보기</span></a>
+        </div>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <!-- ===== TRAILER MODAL ===== -->
-  <div class="modal" id="trailerModal"
-       role="dialog" aria-modal="true"
-       aria-label="NIGHT SIGNAL 예고편 UI 미리보기" aria-hidden="true">
-    <div class="modal__backdrop" id="modalBackdrop"></div>
+  <!-- ===== CONTENT INFO DIALOG ===== -->
+  <dialog class="modal" id="contentInfoDialog" aria-labelledby="contentInfoTitle">
+    <div class="modal__container info-modal__box">
+      <div class="modal__header">
+        <h2 class="modal__title" id="contentInfoTitle" tabindex="-1">작품 정보</h2>
+        <button type="button" class="modal__close js-dialog-close" aria-label="작품 정보 닫기">
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="info-modal__body">
+        <p class="info-modal__genre" id="contentInfoGenre"></p>
+        <p class="info-modal__desc" id="contentInfoDescription"></p>
+        <dl class="info-modal__meta">
+          <div><dt>연도</dt><dd id="contentInfoYear"></dd></div>
+          <div><dt>회차</dt><dd id="contentInfoEpisodes"></dd></div>
+          <div><dt>평점</dt><dd class="rating-display" id="contentInfoRating"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value"></span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></dd></div>
+        </dl>
+        <p class="info-modal__notice">정적 데모 데이터</p>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--primary js-info-trailer"><span class="ui-label">예고편 미리보기</span></button>
+          <button type="button" class="btn btn--glass btn--icon-only js-like-btn" id="contentInfoLike" aria-label="찜하기" aria-pressed="false"><span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span></button>
+          <button type="button" class="btn btn--outline js-dialog-close"><span class="ui-label">닫기</span></button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ===== TRAILER DIALOG ===== -->
+  <dialog class="modal" id="trailerModal" aria-labelledby="modalTitle">
     <div class="modal__container">
       <div class="modal__header">
-        <h3 class="modal__title" id="modalTitle">NIGHT SIGNAL — 예고편 UI 미리보기</h3>
-        <button class="modal__close" id="modalClose" aria-label="모달 닫기">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <h2 class="modal__title" id="modalTitle" tabindex="-1">SIGNAL / 01 — 예고편 미리보기</h2>
+        <button type="button" class="modal__close js-dialog-close" aria-label="예고편 미리보기 닫기">
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
@@ -669,21 +697,21 @@
           <div class="modal__play-wrap" aria-hidden="true">
             <span class="pulse-ring"></span>
             <span class="pulse-ring pulse-ring--delay"></span>
-            <button class="modal__play-btn" tabindex="-1" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+            <span class="modal__play-btn">
+              <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+            </span>
           </div>
-          <p class="modal__video-title" id="modalVideoTitle">NIGHT SIGNAL</p>
-          <p class="modal__video-sub">예고편 UI 미리보기 · 실제 영상 없음</p>
+          <p class="modal__video-title" id="modalVideoTitle">SIGNAL / 01</p>
+          <p class="modal__video-sub">정적 예고편 인터페이스 미리보기</p>
         </div>
       </div>
 
       <div class="modal__footer">
-        <p class="modal__hint">포트폴리오용 데모 화면입니다. 실제 영상 재생 기능은 제공하지 않습니다.</p>
+        <p class="modal__hint">실제 영상은 재생되지 않습니다.</p>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=20260726-3"></script>
 </body>
 </html>
