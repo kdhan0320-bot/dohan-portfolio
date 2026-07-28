@@ -58,7 +58,7 @@
   카드는 900px 미만 세로 1열, 900~1199px 가로형 row 1열, 1200px 이상 3열로
   배치되고, More Works가 공개 1개일 때는 900px 이상에서 media/content 가로형
   single-feature 카드로 렌더됩니다.
-- `/projects/:slug` — 대표 프로젝트(JobFlow·버스 도착정보 앱·Portfolio Feedback Hub) 전용 상세 페이지. `ProjectDetailPage.jsx` 템플릿 하나를 재사용합니다. 이 페이지는 아직 최신 Figma Detail 구조와 완전히 동기화되지 않았습니다(다음 단계는 프로젝트별 실제 자산 inventory 이후 진행).
+- `/projects/:slug` — 대표 프로젝트(JobFlow·울산 버스 도착정보·Portfolio Feedback Hub) 전용 상세 페이지. `ProjectDetailPage.jsx` 템플릿 하나를 재사용하고 `PROJECT_DETAIL_READY` 데이터로 내용을 구성합니다. 울산 버스 도착정보 상세는 최종 10개 화면 Figma Prototype, 정적 데이터 범위와 대표 화면 Export를 동기화했습니다.
 
 More Works 섹션은 데이터에 공개 플래그(`moreWorksPublished: true`)가 있는 프로젝트만 렌더링하며, 공개 항목이 없으면 섹션 자체가 나타나지 않습니다(현재는 OTT Service 1개).
 

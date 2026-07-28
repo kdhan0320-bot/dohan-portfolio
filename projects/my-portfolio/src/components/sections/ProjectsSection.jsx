@@ -33,7 +33,7 @@ const MOBILE_STAGE_HEIGHTS = {
  * - JobFlow(263:2)의 Stage는 실제 화면을 680×425(1440 기준)로 그대로 inset하고
  *   가짜 browser toolbar row가 없다 — 이전 구현이 모든 프로젝트에 공통으로 씌우던
  *   3-dot 상단 바를 JobFlow에서는 제거한다.
- * - 버스 도착정보 앱(264:12)은 실제 public/detail 화면 중 Figma의
+ * - 울산 버스 도착정보(264:12)는 public/detail의 Figma Prototype 중
  *   HOME·SEARCH·ROUTE에 대응하는 3개(01-home/02-search/04-route-detail)를
  *   좌·우 작게, 중앙 크게 배치한다.
  * - Portfolio Feedback Hub(265:42)는 Soft White stage 안에 실제 화면을
@@ -47,13 +47,13 @@ const FEATURED_IDS = [
     media: { kind: 'single', src: `${BASE}detail/jobflow-dashboard-1440.png`, alt: '실제 브라우저 실행 화면 · JobFlow Dashboard' },
   },
   {
-    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '버스 도착정보 앱', stageTone: 'deep',
+    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '울산 버스 도착정보', stageTone: 'deep',
     media: {
       kind: 'triple', label: 'HOME · SEARCH · ROUTE',
       items: [
-        { src: `${BASE}detail/bus-arrival-01-home.png`, alt: '버스 도착정보 앱 실제 화면 · Home' },
-        { src: `${BASE}detail/bus-arrival-02-search.png`, alt: '버스 도착정보 앱 실제 화면 · Search' },
-        { src: `${BASE}detail/bus-arrival-04-route-detail.png`, alt: '버스 도착정보 앱 실제 화면 · Route' },
+        { src: `${BASE}detail/bus-arrival-01-home.png`, alt: '울산 버스 도착정보 Figma Prototype · Home' },
+        { src: `${BASE}detail/bus-arrival-02-search.png`, alt: '울산 버스 도착정보 Figma Prototype · Search' },
+        { src: `${BASE}detail/bus-arrival-04-route-detail.png`, alt: '울산 버스 도착정보 Figma Prototype · Route Detail' },
       ],
     },
   },

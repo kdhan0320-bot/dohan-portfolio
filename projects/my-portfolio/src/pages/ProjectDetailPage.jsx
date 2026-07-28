@@ -176,10 +176,17 @@ const ProjectDetailPage = () => {
   const nextProject = ALL_PROJECTS.find((p) => p.id === SLUG_TO_ID[nextSlug]);
 
   // AI Collaboration은 현재 로컬 프로젝트 데이터에 실제 aiContribution 필드가
-  // 있을 때만 표시한다(지시서: 없다고 "AI를 안 썼다"고 단정하지도 않는다 —
-  // 데이터가 없는 프로젝트는 이 섹션 자체를 만들지 않는다. Bus는 필드 자체가 없다).
+  // 있을 때만 표시한다. Figma 프로젝트는 구현 앱과 다른 AI·검증 문구를 사용한다.
   const hasAI = Boolean(project.detail.aiContribution);
+  const isFigmaProject = Boolean(project.is_figma_project);
   const implementationLine = (project.tech_stack ?? tools).join(' + ') || null;
+  const implementationLabel = isFigmaProject ? 'TOOLS / METHOD' : 'IMPLEMENTATION';
+  const aiSupportLabel = isFigmaProject
+    ? '화면 감사 · 카피 · Figma 편집 · 검사 보조'
+    : '초안 · 구현 보조 · 검사 보조';
+  const verificationLabel = isFigmaProject
+    ? 'Figma screenshot · metadata · Prototype · 접근성 QA'
+    : 'diff · build · lint · responsive · browser QA';
   // JobFlow/Bus는 primary(첫 화면 크게) + secondary(나머지 작게) 위계, Feedback
   // Hub만 List/Detail을 같은 무게로 보여준다(portfolioMeta.js의 명시적 신호).
   const mainScreensEqual = ready.mainScreensLayout === 'equal';
@@ -249,19 +256,43 @@ const ProjectDetailPage = () => {
                 {ready.hero.summary}
               </Typography>
 
-              {/* Figma Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개(196:25~36) — 카피
-               * 영역의 일부로 CTA 위에 온다(390은 2×2, 900px+는 한 줄 4개). */}
+              {/* Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개(196:25~36) — 카피
+               * 영역의 일부로 CTA 위에 온다. Figma 프로젝트는 모든 폭에서 2×2,
+               * 다른 프로젝트는 390에서 2×2, 900px+에서 한 줄 4개로 배치한다. */}
               {metaFacts.length > 0 && (
                 <Box sx={{
-                  display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 1.5, mb: 3, maxWidth: 560,
-                  [SPLIT_MQ]: { gridTemplateColumns: `repeat(${metaFacts.length}, 1fr)` },
+                  display: 'grid',
+                  gridTemplateColumns: isFigmaProject ? { xs: '112px minmax(0, 1fr)', md: '96px minmax(0, 1fr)' } : 'repeat(2, 1fr)',
+                  columnGap: 1.5,
+                  rowGap: 1.5,
+                  width: isFigmaProject ? '100%' : undefined,
+                  minWidth: 0,
+                  mb: 3,
+                  maxWidth: 560,
+                  ...(!isFigmaProject && {
+                    [SPLIT_MQ]: { gridTemplateColumns: `repeat(${metaFacts.length}, 1fr)` },
+                  }),
                 }}>
                   {metaFacts.map((f) => (
-                    <Box key={f.label} sx={{ bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '14px', p: 1.75 }}>
+                    <Box key={f.label} sx={{
+                      bgcolor: HUMAN_SIGNAL.softWhite,
+                      border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
+                      borderRadius: '14px',
+                      p: 1.75,
+                      minWidth: isFigmaProject ? 0 : undefined,
+                      maxWidth: isFigmaProject ? '100%' : undefined,
+                    }}>
                       <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.06em', mb: 0.75 }}>
                         {f.label}
                       </Typography>
-                      <Typography sx={{ fontSize: '0.8125rem', color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.5, wordBreak: 'keep-all' }}>
+                      <Typography sx={{
+                        fontSize: '0.8125rem',
+                        color: HUMAN_SIGNAL.inkNavy,
+                        lineHeight: 1.5,
+                        whiteSpace: isFigmaProject ? 'normal' : undefined,
+                        wordBreak: 'keep-all',
+                        overflowWrap: isFigmaProject ? 'normal' : undefined,
+                      }}>
                         {f.value}
                       </Typography>
                     </Box>
@@ -477,7 +508,7 @@ const ProjectDetailPage = () => {
               </Box>
               {implementationLine && (
                 <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
-                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>IMPLEMENTATION</Typography>
+                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>{implementationLabel}</Typography>
                   <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.0625rem', md: '1.1875rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.5, wordBreak: 'keep-all' }}>{implementationLine}</Typography>
                 </Box>
               )}
@@ -506,7 +537,7 @@ const ProjectDetailPage = () => {
               </Box>
               {implementationLine && (
                 <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 }, mb: { xs: 4, md: 5 } }}>
-                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>IMPLEMENTATION</Typography>
+                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>{implementationLabel}</Typography>
                   <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.0625rem', md: '1.1875rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.5, wordBreak: 'keep-all' }}>{implementationLine}</Typography>
                 </Box>
               )}
@@ -529,8 +560,8 @@ const ProjectDetailPage = () => {
           </Box>
 
           {/* AI Collaboration — 실제 aiContribution 데이터가 있는 프로젝트만
-           * 표시한다(Bus는 필드 자체가 없어 렌더되지 않는다). Figma처럼 별도
-           * 섹션이 아니라 이 navy 섹션 안의 카드 1개로 통합한다. */}
+           * 표시하며 Figma 프로젝트는 화면 설계·검증에 맞는 문구를 사용한다.
+           * 별도 섹션이 아니라 이 navy 섹션 안의 카드 1개로 통합한다. */}
           {hasAI && (
             <Box id="ai" sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '20px', p: { xs: 3, md: 4 }, scrollMarginTop: '96px' }}>
               <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 3 }}>
@@ -543,11 +574,11 @@ const ProjectDetailPage = () => {
                 </Box>
                 <Box>
                   <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.mutedSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1 }}>AI</Typography>
-                  <Typography sx={{ fontSize: '0.875rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.6 }}>초안 · 구현 보조 · 검사 보조</Typography>
+                  <Typography sx={{ fontSize: '0.875rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.6 }}>{aiSupportLabel}</Typography>
                 </Box>
                 <Box>
                   <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.mutedSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1 }}>검증</Typography>
-                  <Typography sx={{ fontSize: '0.875rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.6 }}>diff · build · lint · responsive · browser QA</Typography>
+                  <Typography sx={{ fontSize: '0.875rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.6 }}>{verificationLabel}</Typography>
                 </Box>
               </Box>
               <Typography sx={{ fontSize: '0.9375rem', color: HUMAN_SIGNAL.softWhite, lineHeight: 1.7, wordBreak: 'keep-all', ...READING_SX }}>

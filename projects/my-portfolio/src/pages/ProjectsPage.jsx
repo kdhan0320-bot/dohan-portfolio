@@ -37,7 +37,7 @@ const FEATURED_REFS = [
     role: 'DASHBOARD · SERVICE', data: 'ACTUAL / DEMO', mediaRotate: 2,
   },
   {
-    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '버스 도착정보 앱',
+    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '울산 버스 도착정보',
     proof: '중요한 정보를 먼저 읽게 만드는 모바일 우선순위',
     role: 'MOBILE UI · FIGMA', data: 'STATIC SAMPLE', mediaRotate: 0,
   },
@@ -390,7 +390,11 @@ const FeaturedCard = ({ card, index }) => {
             '@media (min-width:1920px)': { height: '376.2px' },
           }}>
             {project.thumbnailUrl ? (
-              <ProjectMediaStage image={project.thumbnailUrl} alt={`${displayTitle} 실제 화면`} rotate={mediaRotate} />
+              <ProjectMediaStage
+                image={project.thumbnailUrl}
+                alt={project.id === 'bus-arrival-app' ? `${displayTitle} Figma Prototype` : `${displayTitle} 실제 화면`}
+                rotate={mediaRotate}
+              />
             ) : (
               <Box sx={{
                 width: '100%', height: '100%', bgcolor: HUMAN_SIGNAL.deepHarbor,
