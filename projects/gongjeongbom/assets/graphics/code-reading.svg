@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" role="img" aria-labelledby="title desc">
+  <title id="title">라벨 코드 판독 도식</title>
+  <desc id="desc">산업용 라벨의 막대 코드와 판독 결과를 단순 도형으로 표현한 그래픽</desc>
+  <rect width="420" height="180" rx="14" fill="#edf3ff"/>
+  <rect x="46" y="42" width="328" height="96" rx="10" fill="#fff" stroke="#bbc6d1" stroke-width="3"/>
+  <g fill="#17212b">
+    <rect x="78" y="62" width="4" height="56"/><rect x="88" y="62" width="8" height="56"/>
+    <rect x="103" y="62" width="3" height="56"/><rect x="114" y="62" width="11" height="56"/>
+    <rect x="132" y="62" width="5" height="56"/><rect x="145" y="62" width="3" height="56"/>
+    <rect x="155" y="62" width="9" height="56"/><rect x="173" y="62" width="5" height="56"/>
+    <rect x="186" y="62" width="12" height="56"/><rect x="205" y="62" width="4" height="56"/>
+    <rect x="218" y="62" width="7" height="56"/><rect x="236" y="62" width="3" height="56"/>
+    <rect x="247" y="62" width="10" height="56"/><rect x="266" y="62" width="5" height="56"/>
+  </g>
+  <path d="M64 128h274" stroke="#1647c5" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="350" cy="90" r="14" fill="#1d7a46"/>
+  <path d="m343 90 5 5 10-12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

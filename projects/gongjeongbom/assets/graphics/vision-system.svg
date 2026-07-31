@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-labelledby="title desc">
+  <title id="title">가상 비전 시스템 도식</title>
+  <desc id="desc">짙은 본체, 렌즈, 상태 표시등과 두 개의 카메라 연결을 단순 도형으로 표현한 그래픽</desc>
+  <rect width="360" height="240" rx="18" fill="#f6f8fa"/>
+  <path d="M72 190h216" stroke="#00796f" stroke-width="4" stroke-linecap="round"/>
+  <rect x="98" y="38" width="164" height="112" rx="16" fill="#17212b"/>
+  <rect x="124" y="60" width="112" height="50" rx="8" fill="#d8e5ff"/>
+  <path d="M148 126h64" stroke="#20b8ab" stroke-width="8" stroke-linecap="round"/>
+  <path d="M132 150v24M228 150v24" stroke="#bbc6d1" stroke-width="4"/>
+  <rect x="78" y="168" width="70" height="46" rx="10" fill="#fff" stroke="#bbc6d1" stroke-width="3"/>
+  <rect x="212" y="168" width="70" height="46" rx="10" fill="#fff" stroke="#bbc6d1" stroke-width="3"/>
+  <circle cx="113" cy="191" r="11" fill="#1647c5"/>
+  <circle cx="247" cy="191" r="11" fill="#1647c5"/>
+</svg>

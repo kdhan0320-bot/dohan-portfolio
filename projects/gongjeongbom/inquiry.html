@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="관심 제품과 공정 조건을 단계별로 정리하는 저장·전송 없는 기술 문의 데모입니다.">
+  <title>기술 문의 — 공정봄</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body data-page="inquiry">
+  <header class="site-header"></header>
+  <div class="demo-banner"><div class="container"><strong>데모 양식 · 실제 전송 안 됨</strong><span>입력 내용은 저장되거나 실제 기업·이메일·CRM으로 전달되지 않습니다.</span></div></div>
+  <main>
+    <section class="page-hero inquiry-hero">
+      <div class="container">
+        <p class="eyebrow">제품·기술 상담</p>
+        <h1><span class="desktop-only">상담에 필요한 정보를 차례로 정리하세요.</span><span class="mobile-only">기술 문의</span></h1>
+        <p class="lead">제품을 이미 정했거나 아직 어떤 종류가 맞는지 모르는 경우 모두 작성할 수 있습니다. 필수 정보만 먼저 받고, 모르는 항목은 비워둘 수 있습니다.</p>
+        <ol class="stepper" aria-label="문의 단계">
+          <li data-step-indicator="1">01 문의 목적</li>
+          <li data-step-indicator="2">02 공정·제품</li>
+          <li data-step-indicator="3">03 담당자와 확인</li>
+        </ol>
+      </div>
+    </section>
+    <section class="inquiry-section section--muted">
+      <div class="container inquiry-layout">
+        <form id="inquiry-form" novalidate>
+          <div class="error-summary" role="alert" tabindex="-1" hidden><h2>입력 내용을 확인해 주세요.</h2><ul></ul></div>
+          <section class="form-step" data-step="1" aria-labelledby="step1-title">
+            <h2 id="step1-title">1. 문의 목적</h2>
+            <p>가장 가까운 문의 유형을 선택하세요.</p>
+            <fieldset><legend>문의 유형 · 필수</legend>
+              <label class="choice-card"><input type="radio" name="purpose" value="제품 선택·적용 가능성" required>제품 선택·적용 가능성</label>
+              <label class="choice-card"><input type="radio" name="purpose" value="기존 설비 연동">기존 설비 연동</label>
+              <label class="choice-card"><input type="radio" name="purpose" value="기술 사양">기술 사양 확인</label>
+            </fieldset>
+            <div class="form-actions"><button class="button button--primary next-step" type="button">다음: 공정·제품</button></div>
+          </section>
+          <section class="form-step" data-step="2" aria-labelledby="step2-title" hidden>
+            <h2 id="step2-title">2. 공정과 관심 제품</h2>
+            <p>상담에 필요한 최소 조건만 입력합니다. 정확히 모르는 항목은 비워둘 수 있습니다.</p>
+            <div class="field-grid">
+              <label>해결하려는 문제 · 필수<input name="problem" required placeholder="예: 누락·오조립 검사"><small>검사하려는 오류 유형</small></label>
+              <label>적용 산업<select name="industry"><option value="">선택 사항</option><option>자동차 부품</option><option>전자 부품</option><option>식품·포장</option><option>금속 가공</option></select><small>선택 사항</small></label>
+            </div>
+            <fieldset><legend>관심 제품</legend><div class="selected-products"></div></fieldset>
+            <div class="field-grid">
+              <label>검사 대상<input name="target" placeholder="예: 커넥터 조립 상태"><small>제품·부품 또는 검사 위치</small></label>
+              <label>설치 예정 시점<select name="schedule"><option value="">선택 사항</option><option>검토 중</option><option>3개월 이내</option><option>6개월 이내</option></select><small>대략적인 검토 일정</small></label>
+            </div>
+            <label>현재 문제 · 필수<textarea name="details" required rows="4" placeholder="공정에서 확인하려는 문제를 적어 주세요."></textarea></label>
+            <fieldset class="optional-checks"><legend>추가로 확인하면 좋은 조건</legend>
+              <label><input type="checkbox" name="conditions" value="시야 범위">대상 크기와 변동 범위</label>
+              <label><input type="checkbox" name="conditions" value="라인 속도">라인 속도</label>
+              <label><input type="checkbox" name="conditions" value="설치 거리">설치 거리</label>
+              <label><input type="checkbox" name="conditions" value="조명 환경">표면 반사와 조명 환경</label>
+              <label><input type="checkbox" name="conditions" value="PLC">연결할 PLC·네트워크</label>
+            </fieldset>
+            <div class="form-actions"><button class="button button--secondary prev-step" type="button">이전</button><button class="button button--primary next-step" type="button">다음: 담당자 정보</button></div>
+          </section>
+          <section class="form-step" data-step="3" aria-labelledby="step3-title" hidden>
+            <h2 id="step3-title">3. 담당자 정보와 확인</h2>
+            <p>데모 완료 상태를 확인하기 위한 최소 입력입니다.</p>
+            <div class="field-grid">
+              <label>이름 · 필수<input name="name" autocomplete="name" required></label>
+              <label>회사·조직<input name="company" autocomplete="organization"></label>
+              <label>이메일 · 필수<input name="email" type="email" autocomplete="email" required placeholder="name@example.com"></label>
+              <label>연락처<input name="phone" type="tel" autocomplete="tel"></label>
+            </div>
+            <label class="confirm-check"><input type="checkbox" name="demo-confirm" required>실제 저장·전송이 없는 포트폴리오 데모임을 확인했습니다.</label>
+            <div class="review-box"></div>
+            <div class="form-actions"><button class="button button--secondary prev-step" type="button">이전</button><button class="button button--primary" type="submit">데모 문의 완료</button></div>
+          </section>
+          <section class="completion-state" tabindex="-1" hidden>
+            <p class="eyebrow">데모 완료</p>
+            <h2>문의 내용을 정리했습니다.</h2>
+            <p>입력 내용은 어디에도 저장하거나 전송하지 않았습니다. 실제 상담이 아닌 인터랙션 데모의 완료 상태입니다.</p>
+            <div class="button-row"><a class="button button--primary" href="products.html">제품 다시 보기</a><a class="button button--secondary" href="index.html">홈으로</a></div>
+          </section>
+        </form>
+        <aside class="inquiry-summary" aria-labelledby="summary-title"><h2 id="summary-title">문의 요약</h2><dl></dl><div class="info-note"><strong>데모 동작</strong><p>다음 단계에서 필수 항목·이메일 오류·성공 상태를 별도 화면으로 검증합니다.</p></div></aside>
+      </div>
+    </section>
+    <section class="section"><div class="container"><h2>입력 정보의 처리 범위</h2><p>제출 전후에 실제로 저장하거나 전송하지 않는다는 사실을 반복해서 알립니다.</p><div class="type-grid"><div class="info-card"><strong>저장 안 함</strong><small>브라우저 또는 서버에 고객 정보를 저장하지 않음</small></div><div class="info-card"><strong>전송 안 함</strong><small>실제 기업·이메일·CRM으로 전달하지 않음</small></div><div class="info-card"><strong>상태 검증</strong><small>데모 성공과 테스트용 오류 상태만 구현</small></div></div></div></section>
+  </main>
+  <footer class="site-footer"></footer>
+  <script type="module" src="js/inquiry.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 180" role="img" aria-labelledby="title desc">
+  <title id="title">가공품 치수 측정 도식</title>
+  <desc id="desc">두 부품의 간격과 기준 위치를 측정하는 모습을 단순 도형으로 표현한 그래픽</desc>
+  <rect width="420" height="180" rx="14" fill="#edf3ff"/>
+  <rect x="92" y="58" width="90" height="70" rx="8" fill="#1647c5"/>
+  <rect x="238" y="58" width="90" height="70" rx="8" fill="#1647c5"/>
+  <path d="M68 34v112M352 34v112" stroke="#7b8a99" stroke-width="3" stroke-dasharray="5 6"/>
+  <path d="M68 40h284M68 140h284" stroke="#20b8ab" stroke-width="4"/>
+  <path d="m78 40 12-8v16zM342 40l-12-8v16zM78 140l12-8v16zM342 140l-12-8v16z" fill="#20b8ab"/>
+  <circle cx="210" cy="93" r="12" fill="#fff" stroke="#a85f00" stroke-width="4"/>
+</svg>
