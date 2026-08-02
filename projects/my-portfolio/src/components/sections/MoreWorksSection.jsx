@@ -2,6 +2,7 @@ import { Box, Container, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
 import ActionIcon from '../ui/ActionIcon';
+import ThumbnailStage from '../ui/ThumbnailStage';
 import QhdAmbientSignal from '../ui/QhdAmbientSignal';
 import QhdSectionIndex from '../ui/QhdSectionIndex';
 import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH, HOME_WIDE_MAX_WIDTH } from '../../theme';
@@ -10,11 +11,12 @@ const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
 const COMPACT_MQ = '@media (min-width:1024px)';
 const DESKTOP_MQ = '@media (min-width:1440px)';
 
-/* Figma 이름은 Selected Works지만 기존 데이터 규칙(moreWorksPublished)은
- * 그대로 쓴다. 실제로 조사해서 공개 가능하다고 판단한 프로젝트만 표시하고,
- * 준비 중/공개 예정 placeholder 카드는 만들지 않는다 — 공개 항목이 없으면
- * 섹션 전체를 렌더링하지 않는다. */
-const PUBLISHED_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished);
+/* Home Selected Works는 승인된 두 항목만 지정 순서로 표시한다. Projects의
+ * More Works 공개 플래그에는 BREWSTEP도 포함되므로 두 화면의 구성을 분리한다. */
+const HOME_SELECTED_IDS = ['bus-arrival-app', 'ott-service'];
+const PUBLISHED_WORKS = HOME_SELECTED_IDS
+  .map((id) => ALL_PROJECTS.find((project) => project.id === id))
+  .filter(Boolean);
 
 /* Phase 4B 재검토: burntOrange(#A84325, 전역 토큰)는 Paper Deep 위에서 4.30:1로
  * 기준(4.5:1) 미달이라 Phase 2D에서 Ink Navy로 교체했었다. 하지만 최신 Figma
@@ -32,48 +34,42 @@ const ORANGE_ON_PAPER_DEEP = '#9E3D22';
  * "전체 프로젝트 보기" 버튼만 Router로 `/projects`로 이동한다(Figma 267:76). */
 const FeatureCard = ({ project }) => {
   const meta = project.categoryLabel || (project.tools ?? []).join(' · ');
-  const stack = (project.tools ?? []).join(' · ').toUpperCase();
+  const stack = (project.moreWorksTools ?? project.tools ?? []).join(' · ').toUpperCase();
 
   return (
     <Box
       sx={{
-        display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, width: '100%',
+        display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'stretch', width: '100%',
+        height: { xs: '482px', sm: '300px' },
         gap: '14px', borderRadius: '18px',
         bgcolor: HUMAN_SIGNAL.softWhite,
         p: '18px',
-        [COMPACT_MQ]: { gap: '32px', borderRadius: '24px', p: '22px', height: '300px' },
-        [DESKTOP_MQ]: { gap: '42px', height: '330px', pl: '26px', pr: '38px', py: '26px' },
+        [COMPACT_MQ]: { gap: '32px', borderRadius: '24px', p: '22px' },
+        [DESKTOP_MQ]: { height: '330px', gap: '42px', pl: '26px', pr: '38px', py: '26px' },
         boxShadow: '0px 14px 30px rgba(8,13,20,0.13)',
       }}
     >
-      {/* 실제 화면 preview — 얇은 chrome(top dot bar) + 실제 OTT 화면을 contain */}
       <Box sx={{
-        position: 'relative', width: { xs: '100%', sm: '46%' }, flexShrink: 0, overflow: 'hidden',
-        borderRadius: '14px', border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-        bgcolor: HUMAN_SIGNAL.warmPaper,
-        aspectRatio: '306 / 190',
-        [COMPACT_MQ]: { width: '46%', aspectRatio: '430 / 193' },
-        [DESKTOP_MQ]: { width: 620, aspectRatio: '620 / 278' },
+        width: { xs: '100%', sm: '46%' }, flexShrink: 0, alignSelf: 'center',
+        [COMPACT_MQ]: { width: '430.28px' },
+        [DESKTOP_MQ]: { width: '620px' },
       }}>
-        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', height: 26, px: 1.5, bgcolor: HUMAN_SIGNAL.softWhite, borderBottom: `1px solid ${HUMAN_SIGNAL.paperDeep}` }}>
-          <Box sx={{ width: 6, height: 6, borderRadius: '4px', bgcolor: HUMAN_SIGNAL.brightOrange }} />
-          <Box sx={{ width: 6, height: 6, borderRadius: '4px', bgcolor: HUMAN_SIGNAL.mutedSage }} />
-          <Box sx={{ width: 6, height: 6, borderRadius: '4px', bgcolor: HUMAN_SIGNAL.steelMist }} />
-        </Box>
-        {project.thumbnailUrl ? (
-          <Box component="img" src={project.thumbnailUrl} alt={`${project.title} 화면 미리보기`} loading="eager"
-            sx={{ position: 'absolute', inset: '26px 0 0 0', width: '100%', height: 'calc(100% - 26px)', objectFit: 'contain', bgcolor: HUMAN_SIGNAL.softWhite }} />
-        ) : (
-          <Box sx={{ position: 'absolute', inset: '26px 0 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.inkNavy, fontSize: '0.875rem' }}>{project.title}</Typography>
-          </Box>
-        )}
+        <ThumbnailStage
+          src={project.thumbnailUrl}
+          alt={`${project.title} 대표 화면`}
+          loading="eager"
+          sx={{
+            height: { xs: '190px' }, aspectRatio: 'auto',
+            [COMPACT_MQ]: { height: '192.93px' },
+            [DESKTOP_MQ]: { height: '278px' },
+          }}
+        />
       </Box>
 
       {/* 정보 영역 — Ink Navy 계열(Soft White 배경) */}
       <Box sx={{
         display: 'flex', flexDirection: 'column', gap: 1, flex: 1, minWidth: 0,
-        justifyContent: { sm: 'center' },
+        justifyContent: 'flex-start',
       }}>
         <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.04em', color: HUMAN_SIGNAL.burntOrange }}>
           {meta}
@@ -104,9 +100,9 @@ const FeatureCard = ({ project }) => {
           aria-label="전체 프로젝트 페이지로 이동"
           sx={{
             display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-            alignSelf: 'flex-start', mt: 1.5,
+            alignSelf: 'flex-start', mt: 'auto',
             bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, textDecoration: 'none',
-            height: 52, px: 2.5, borderRadius: '14px', width: { xs: '100%', sm: 'auto' },
+            height: { xs: 54, sm: 52 }, px: 2.5, borderRadius: '14px', width: { xs: '100%', sm: 'auto' },
             fontFamily: FONT_KR, fontWeight: 700, fontSize: '0.875rem',
             transition: 'transform 160ms ease, box-shadow 160ms ease',
             '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 10px 22px rgba(12,20,32,0.28)' },
@@ -130,9 +126,9 @@ const MoreWorksSection = () => {
     <Box component="section" aria-label="더 많은 작업물" sx={{
       position: 'relative', overflowX: 'hidden', bgcolor: HUMAN_SIGNAL.paperDeep,
       py: { xs: 7, md: 10 }, boxSizing: 'border-box',
-      '@media (max-width:599.98px)': { height: '794px' },
-      [COMPACT_MQ]: { height: '654px', pt: '88px', pb: '96px' },
-      [DESKTOP_MQ]: { height: '742px', pt: '96px', pb: '104px' },
+      '@media (max-width:599.98px)': { minHeight: '1300px' },
+      [COMPACT_MQ]: { minHeight: '1010px', pt: '88px', pb: '96px' },
+      [DESKTOP_MQ]: { minHeight: '1096px', pt: '96px', pb: '104px' },
     }}>
       <QhdAmbientSignal variant="selected-right" sx={{ right: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 440px)`, top: -123 }} />
       <QhdSectionIndex id="selected" index="03" label="SELECTED / RANGE" side="left" indexTop={117} labelTop={277} indexOffset={502} labelOffset={434} />
@@ -186,8 +182,8 @@ const MoreWorksSection = () => {
             fontSize: '0.875rem', lineHeight: 1.64,
             [DESKTOP_MQ]: { fontSize: '1rem', lineHeight: 1.69 },
           }}>
-            <Box component="span" sx={{ display: 'block' }}>대표 프로젝트 밖의 반응형 퍼블리싱 작업을 </Box>
-            <Box component="span" sx={{ display: 'block' }}>한눈에 확인할 수 있게 정리했습니다.</Box>
+            <Box component="span" sx={{ display: 'block' }}>모바일 Prototype과 반응형 퍼블리싱 작업을 </Box>
+            <Box component="span" sx={{ display: 'block' }}>같은 기준으로 소개합니다.</Box>
           </Typography>
         </Box>
 

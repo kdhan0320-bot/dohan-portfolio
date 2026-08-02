@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
 import useInViewOnce from '../../hooks/useInViewOnce';
 import ActionIcon from '../ui/ActionIcon';
+import ThumbnailStage from '../ui/ThumbnailStage';
 import QhdAmbientSignal from '../ui/QhdAmbientSignal';
 import QhdSectionIndex from '../ui/QhdSectionIndex';
 import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH, HOME_WIDE_MAX_WIDTH, HOME_PROJECT_MAX_WIDTH } from '../../theme';
@@ -16,11 +17,6 @@ const MOBILE_ONLY_MQ = '@media (max-width:599.98px)';
 const COMPACT_MQ = '@media (min-width:1024px)';
 const COMPACT_ONLY_MQ = '@media (min-width:1024px) and (max-width:1439.95px)';
 const DESKTOP_MQ = '@media (min-width:1440px)';
-const MOBILE_STAGE_HEIGHTS = {
-  jobflow: '226px',
-  'bus-arrival-app': '286px',
-  'feedback-hub': '230px',
-};
 
 /* Home Featured Projects — 승인 Figma(Home Desktop 1440 254:3의 261:2, Compact
  * 1024 365:216, Mobile 390 269:102)로 복구한다.
@@ -30,36 +26,30 @@ const MOBILE_STAGE_HEIGHTS = {
  *   Soft White/Paper Deep로 번갈아지는 full-bleed 색상 band는 없다(이전
  *   구현의 alternating band를 제거).
  * - row 사이는 얇은 divider 하나로만 구분한다.
- * - JobFlow(263:2)의 Stage는 실제 화면을 680×425(1440 기준)로 그대로 inset하고
- *   가짜 browser toolbar row가 없다 — 이전 구현이 모든 프로젝트에 공통으로 씌우던
- *   3-dot 상단 바를 JobFlow에서는 제거한다.
- * - 울산 버스 도착정보(264:12)는 public/detail의 Figma Prototype 중
- *   HOME·SEARCH·ROUTE에 대응하는 3개(01-home/02-search/04-route-detail)를
- *   좌·우 작게, 중앙 크게 배치한다.
- * - Portfolio Feedback Hub(265:42)는 Soft White stage 안에 실제 화면을
- *   media frame에 contain하고, sage Signal Block·orange Signal Dot 구조를
- *   유지한다 — 실제 화면이 stage 전체를 지배하지 않게 한다.
+ * - 공정봄·JobFlow·설비잇은 공통 ThumbnailStage에 실제 승인 화면을 넣고,
+ *   새 browser toolbar나 프로젝트별 임의 비율을 추가하지 않는다.
  * - CTA는 검은 filled 버튼이 아니라 orange text link + arrow("프로젝트 상세
  *   보기", Figma 263:23/264:20/265:65)다. */
 const FEATURED_IDS = [
   {
-    id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow', stageTone: 'deep',
-    media: { kind: 'single', src: `${BASE}detail/jobflow-dashboard-1440.png`, alt: '실제 브라우저 실행 화면 · JobFlow Dashboard' },
-  },
-  {
-    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '울산 버스 도착정보', stageTone: 'deep',
+    id: 'gongjeongbom', slug: 'gongjeongbom', displayTitle: '공정봄', stageTone: 'deep',
     media: {
-      kind: 'triple', label: 'HOME · SEARCH · ROUTE',
-      items: [
-        { src: `${BASE}detail/bus-arrival-01-home.png`, alt: '울산 버스 도착정보 Figma Prototype · Home' },
-        { src: `${BASE}detail/bus-arrival-02-search.png`, alt: '울산 버스 도착정보 Figma Prototype · Search' },
-        { src: `${BASE}detail/bus-arrival-04-route-detail.png`, alt: '울산 버스 도착정보 Figma Prototype · Route Detail' },
-      ],
+      kind: 'single',
+      src: `${BASE}thumbnails/normalized/gongjeongbom-card-1600x1000.png`,
+      alt: '공정봄 제조 검사·자동화 B2B 반응형 웹 홈 화면',
     },
   },
   {
-    id: 'feedback-hub', slug: 'feedback-hub', displayTitle: 'Portfolio Feedback Hub', stageTone: 'soft',
-    media: { kind: 'single', src: `${BASE}detail/feedback-list-1440.png`, alt: '실제 Portfolio Feedback Hub 화면' },
+    id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow', stageTone: 'deep',
+    media: { kind: 'single', src: `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`, alt: '실제 브라우저 실행 화면 · JobFlow Dashboard' },
+  },
+  {
+    id: 'seolbiit', slug: 'seolbiit', displayTitle: '설비잇', stageTone: 'soft',
+    media: {
+      kind: 'single',
+      src: `${BASE}detail/seolbiit-cover.png`,
+      alt: '설비잇 현장 점검과 정비 관리 운영 UI',
+    },
   },
 ];
 
@@ -84,119 +74,19 @@ const revealSx = (show, skip, delay) => ({
   transition: skip ? 'none' : `opacity 0.55s ease-out ${delay}s, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
 });
 
-/* Stage — 프로젝트별 실제 화면을 Figma Stage 프레임 안에 배치한다. JobFlow는
- * chrome 없이 실제 화면을 직접 inset하고(Figma 330:104), Bus Arrival은 실제
- * 모바일 화면 3개를 Media/Slot/Mobile 비율(190:360)로, Feedback Hub는 실제
- * 화면을 Soft White media frame에 contain한다(Figma 265:43). */
-const Stage = ({ block, indexLabel, motionSx }) => {
-  const { media, stageTone } = block;
-  const dark = stageTone === 'deep';
-
-  return (
-    <Box
-      data-project-stage={block.id}
-      sx={{
-        gridArea: 'stage', position: 'relative', width: '100%', minWidth: 0,
-        aspectRatio: '342 / 226',
-        borderRadius: '20px',
-        [MOBILE_ONLY_MQ]: { aspectRatio: 'auto', height: MOBILE_STAGE_HEIGHTS[block.id] },
-        [COMPACT_MQ]: { aspectRatio: 'auto', height: '430px', borderRadius: '24px' },
-        [DESKTOP_MQ]: { height: '500px', borderRadius: '28px' },
-        overflow: 'hidden',
-        bgcolor: dark ? HUMAN_SIGNAL.deepHarbor : HUMAN_SIGNAL.softWhite,
-        border: dark ? 'none' : `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-        boxShadow: '0px 14px 30px rgba(8,13,20,0.13)',
-        ...motionSx,
-      }}
-    >
-      {/* 대형 ghost index — 순수 장식 */}
-      <Typography
-        aria-hidden="true"
-        sx={{
-          position: 'absolute', left: { xs: 14, sm: 22 }, bottom: { xs: -10, sm: -18 },
-          fontFamily: FONT_KR, fontWeight: 700, lineHeight: 1, userSelect: 'none', pointerEvents: 'none',
-          fontSize: { xs: '3.25rem', sm: '4.5rem' }, [DESKTOP_MQ]: { fontSize: '7rem' },
-          color: dark ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.inkNavy, opacity: 0.06,
-        }}
-      >
-        {indexLabel}
-      </Typography>
-      {/* signal node — Figma "Visual / Signal Node" */}
-      <Box aria-hidden="true" sx={{
-        position: 'absolute', top: { xs: 12, sm: 18 }, right: { xs: 14, sm: 26 },
-        width: 10, height: 10, borderRadius: '50%', bgcolor: HUMAN_SIGNAL.brightOrange,
-      }} />
-
-      {media.kind === 'single' && (
-        <Box sx={{
-          position: 'absolute', left: '5.5%', top: '7.5%', width: '89%', height: '85%',
-          overflow: 'hidden', borderRadius: '14px', [COMPACT_MQ]: { borderRadius: '18px' },
-          boxShadow: '0px 12px 24px rgba(0,0,0,0.15)',
-        }}>
-          <Box
-            component="img" src={media.src} alt={media.alt} loading="eager"
-            sx={{
-              width: '100%', height: '100%', display: 'block',
-              // feedback-list-1440.png(세로로 긴 목록 화면)을 contain으로 넣으면
-              // stage 안에서 거의 보이지 않을 만큼 작아진다(실측 확인) — 실제
-              // 화면이 눈에 보이도록 cover + top으로 상단 UI를 잘라 보여준다.
-              objectFit: 'cover', objectPosition: 'top',
-              bgcolor: HUMAN_SIGNAL.softWhite,
-            }}
-          />
-        </Box>
-      )}
-
-      {media.kind === 'triple' && (
-        <>
-          <Box sx={{
-            position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            gap: { xs: 1, sm: 1.5 }, px: { xs: 2, sm: 3 },
-          }}>
-            {media.items.map((item, i) => (
-              <Box
-                key={item.src}
-                sx={{
-                  position: 'relative', overflow: 'hidden', borderRadius: '16px',
-                  bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-                  boxShadow: '0px 12px 24px rgba(0,0,0,0.15)', aspectRatio: '190 / 360',
-                  width: i === 1 ? { xs: '30%', sm: '25%' } : { xs: '24%', sm: '18%' },
-                  transform: i === 1 ? { xs: 'translateY(-3%)', sm: 'translateY(-4%)' } : 'none',
-                  zIndex: i === 1 ? 1 : 0,
-                }}
-              >
-                <Box component="img" src={item.src} alt={item.alt} loading="eager"
-                  sx={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', objectPosition: 'top' }} />
-              </Box>
-            ))}
-          </Box>
-          <Typography aria-hidden="true" sx={{
-            position: 'absolute', left: '50%', bottom: { xs: 10, sm: 16 }, transform: 'translateX(-50%)',
-            fontFamily: FONT_MONO, fontSize: { xs: '0.5625rem', sm: '0.75rem' }, letterSpacing: '0.04em',
-            color: HUMAN_SIGNAL.softWhite, whiteSpace: 'nowrap',
-          }}>
-            {media.label}
-          </Typography>
-        </>
-      )}
-
-      {stageTone === 'soft' && (
-        <>
-          <Box aria-hidden="true" sx={{
-            position: 'absolute', right: { xs: '6%', sm: '9%' }, bottom: { xs: '10%', sm: '14%' },
-            width: { xs: 64, sm: 96, md: 118 }, height: { xs: 34, sm: 48, md: 60 },
-            borderRadius: '18px', bgcolor: HUMAN_SIGNAL.mutedSage,
-          }} />
-          <Box aria-hidden="true" sx={{
-            position: 'absolute', right: { xs: '11%', sm: '15.5%' }, bottom: { xs: '15%', sm: '19%' },
-            width: { xs: 8, sm: 11, md: 14 }, height: { xs: 8, sm: 11, md: 14 }, borderRadius: '50%',
-            bgcolor: HUMAN_SIGNAL.brightOrange,
-          }} />
-        </>
-      )}
-    </Box>
-  );
-};
+const Stage = ({ block, motionSx }) => (
+  <Box data-project-stage={block.id} sx={{ gridArea: 'stage', minWidth: 0, ...motionSx }}>
+    <ThumbnailStage
+      src={block.media.src}
+      sources={block.media.sources}
+      alt={block.media.alt}
+      loading="eager"
+      variant="featured"
+      objectFit="contain"
+      sx={{ boxShadow: '0px 14px 30px rgba(8,13,20,0.13)' }}
+    />
+  </Box>
+);
 
 /* 390~1024: copy summary(eyebrow/title/desc) → 실제 화면 → PROOF/ACTUAL SCOPE
  * → CTA 순서. DOM 순서는 모든 breakpoint에서 index/type → title → description
@@ -290,7 +180,7 @@ const ProjectBlock = ({ block, index }) => {
           </Typography>
         )}
 
-        <Stage block={block} indexLabel={indexLabel} motionSx={revealSx(show, skip, 0)} />
+        <Stage block={block} motionSx={revealSx(show, skip, 0)} />
 
         <Box sx={{ gridArea: 'cta', alignSelf: 'end', mt: 1, [COMPACT_MQ]: { mt: 0 }, ...revealSx(show, skip, 0.08) }}>
           {/* Figma "Link / 프로젝트 상세 보기"(263:23 등): 검은 filled 버튼이

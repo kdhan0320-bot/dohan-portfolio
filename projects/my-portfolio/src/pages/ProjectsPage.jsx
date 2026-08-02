@@ -6,8 +6,10 @@ import DMark from '../components/brand/DMark';
 import RevealOnScroll from '../components/ui/RevealOnScroll';
 import ActionIcon from '../components/ui/ActionIcon';
 import QhdSectionIndex from '../components/ui/QhdSectionIndex';
-import ProjectMediaStage from '../components/ui/ProjectMediaStage';
+import ThumbnailStage from '../components/ui/ThumbnailStage';
 import { CONTACT_EMAIL } from '../constants/site';
+
+const BASE = import.meta.env.BASE_URL;
 
 /* Human Signal Phase 5A: ChatGPT가 최신 Figma(53Ppn2hIgrvs9Jra3eejFs,
  * "21_READY_Projects" 페이지, Desktop node 206:5)를 직접 조회해 실제 코드와 대조한
@@ -18,12 +20,9 @@ import { CONTACT_EMAIL } from '../constants/site';
  * 최신 Figma에 맞추는 delta sync"다. 아래 텍스트는 전부 direct node
  * `get_design_context` 실측 카피를 그대로 옮겼다(임의 문구·성과 수치 없음).
  *
- * Figma More Works 카드는 2개(OTT Service + Mini SNS)지만, Mini SNS는
- * `moreWorksPublished`가 없어 실제 공개 대상이 아니다(projects/my-portfolio/
- * README.md의 공개 규칙과 동일 기준) — Figma의 "공개 작업 두 개"라는 placeholder 카피를
- * 그대로 베끼지 않고, 실제 공개 개수를 데이터에서 계산해 쓴다. Figma
- * active final의 Mini SNS 카드 노출은 이번 회차에서 Figma 쪽을 실제 공개
- * 상태에 맞추는 것으로 해결한다(코드에 새로 공개하지 않는다).
+ * 공개 구성은 Figma READY에 맞춰 Featured 공정봄·JobFlow·설비잇,
+ * More Works Portfolio Feedback Hub·울산 버스 도착정보·OTT Service·BREWSTEP으로
+ * 고정하고 실제 개수는 데이터에서 계산한다.
  *
  * Human Signal Phase 5A-F(Figma 충실도 복구): QHD 208:2 / Desktop 206:5 /
  * Compact 209:2 / Mobile 212:2 4개 node를 `get_design_context`로 직접 다시
@@ -32,19 +31,31 @@ import { CONTACT_EMAIL } from '../constants/site';
  * 했다. 이 페이지 전용 변경이며 Home/Detail/Navbar는 건드리지 않는다. */
 const FEATURED_REFS = [
   {
+    id: 'gongjeongbom', slug: 'gongjeongbom', displayTitle: '공정봄',
+    proof: '제조 실무를 제품 선택 UX와 반응형 웹으로 연결한 B2B 프로젝트',
+    role: 'B2B UX/UI · WEB PUBLISHING', data: 'STATIC / DEMO',
+    media: {
+      src: `${BASE}thumbnails/normalized/gongjeongbom-card-1600x1000.png`,
+      alt: '공정봄 제조 검사·자동화 B2B 반응형 웹 홈 화면',
+    },
+  },
+  {
     id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow',
-    proof: '업무 흐름과 실제 저장 구조를 연결하는 능력',
-    role: 'DASHBOARD · SERVICE', data: 'ACTUAL / DEMO', mediaRotate: 2,
+    proof: '지원 현황·면접 일정·체크리스트를 실제 저장 구조로 연결한 개인 구직 관리 대시보드',
+    role: 'DASHBOARD UX · FRONTEND', data: 'ACTUAL / DEMO',
+    media: {
+      src: `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`,
+      alt: 'JobFlow Dashboard 대표 화면',
+    },
   },
   {
-    id: 'bus-arrival-app', slug: 'bus-arrival', displayTitle: '울산 버스 도착정보',
-    proof: '중요한 정보를 먼저 읽게 만드는 모바일 우선순위',
-    role: 'MOBILE UI · FIGMA', data: 'STATIC SAMPLE', mediaRotate: 0,
-  },
-  {
-    id: 'feedback-hub', slug: 'feedback-hub', displayTitle: 'Portfolio Feedback Hub',
-    proof: '게스트 탐색과 참여 흐름을 분리한 커뮤니티 UX',
-    role: 'COMMUNITY · SUPABASE', data: 'ACTUAL / FALLBACK', mediaRotate: -1.5,
+    id: 'seolbiit', slug: 'seolbiit', displayTitle: '설비잇',
+    proof: '점검 기록을 정비 요청·배정·완료·재점검으로 연결한 반응형 운영 UX/UI',
+    role: 'INDUSTRIAL OPERATIONS UX/UI', data: 'STATIC / DEMO',
+    media: {
+      src: `${BASE}detail/seolbiit-cover.png`,
+      alt: '설비잇 현장 점검과 정비 관리 운영 UI',
+    },
   },
 ];
 
@@ -61,7 +72,10 @@ const MORE_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished === true);
  * 다른 화면(More Works 홈 섹션 등)이 같이 참조하므로 바꾸지 않고, 이 페이지의
  * More Work 카드에서만 project.id 기준으로 대체한다. */
 const PROJECTS_MORE_WORK_COPY = {
-  'ott-service': '가상 콘텐츠와 정적 데이터로 구현한 반응형 스트리밍 UI 데모',
+  'feedback-hub': '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱',
+  'bus-arrival-app': '도착 정보의 우선순위와 예외 상태를 설계한 모바일 Prototype',
+  'ott-service': '콘텐츠 탐색과 반응형 레이아웃을 구현한 웹 퍼블리싱 작업',
+  brewstep: '주문 조건과 상태를 반응형 화면과 Prototype으로 연결한 카페 주문 UX/UI',
 };
 
 /* Figma direct node가 확정한 한글 UI 서체(Noto Sans KR)다. 전역 `FONT_SANS`
@@ -248,7 +262,7 @@ const ProjectsHero = () => (
           fontSize: { xs: '14.5px', lg: '16px' }, lineHeight: { xs: '24px', lg: '27px' },
           width: { xs: '100%', md: 760, lg: 610 }, wordBreak: 'keep-all',
         }}>
-          대표 프로젝트와 추가 작업을 같은 기준으로 확인할 수 있습니다. Actual·Demo·Static·Mock 범위를 구분하고, 상세 페이지에서는 설계 판단과 화면 증거를 보여줍니다.
+          대표 프로젝트와 추가 작업을 같은 기준으로 확인할 수 있습니다. Actual·Demo·Static·Prototype 범위를 구분하고, 상세 페이지에서는 설계 판단과 화면 증거를 보여줍니다.
         </Typography>
         <Box
           component={RouterLink}
@@ -308,7 +322,7 @@ const ProjectsHero = () => (
         <Box sx={{ position: 'absolute', left: 28, right: 28, top: { xs: 388, sm: 262 }, borderTop: `1px solid rgba(170,183,196,0.16)` }} />
         <ViewGuideRow eyebrow="FEATURED" value={`서로 다른 역량을 보여주는 대표 ${FEATURED_CARDS.length}개`} geometry={VIEW_GUIDE_ROW_GEOMETRY[0]} />
         <ViewGuideRow eyebrow="MORE WORKS" value={`공개 가능한 추가 작업 ${MORE_WORKS.length}개`} geometry={VIEW_GUIDE_ROW_GEOMETRY[1]} />
-        <ViewGuideRow eyebrow="SCOPE" value="Actual · Demo · Static · Mock 구분" accent geometry={VIEW_GUIDE_ROW_GEOMETRY[2]} />
+        <ViewGuideRow eyebrow="SCOPE" value="Actual · Demo · Static · Prototype 구분" accent geometry={VIEW_GUIDE_ROW_GEOMETRY[2]} />
         <Typography sx={{
           position: 'absolute', left: { xs: 18, sm: 28 }, right: 18, top: { xs: 454, sm: 382 },
           fontFamily: FONT_KR, color: HUMAN_SIGNAL.steelMist, fontSize: '0.875rem', lineHeight: 1.6, wordBreak: 'keep-all',
@@ -353,7 +367,7 @@ const InfoChip = ({ eyebrow, value, tone }) => (
  * ROLE·DATA 칩이 가로 2열이 아니라 세로로 full-width 쌓인다(ChatGPT가 실제
  * 비교 이미지로 확인한 차이) — `InfoChip`을 column stack으로 바꿨다. */
 const FeaturedCard = ({ card, index }) => {
-  const { project, slug, displayTitle, proof, role, data, mediaRotate } = card;
+  const { project, slug, displayTitle, proof, role, data, media } = card;
   return (
     <RevealOnScroll y={16} duration={0.45} delay={index * 0.06}>
       <Box
@@ -364,49 +378,26 @@ const FeaturedCard = ({ card, index }) => {
           bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '22px',
           overflow: 'hidden', display: 'flex',
           flexDirection: { xs: 'column', md: 'row', lg: 'column' },
-          /* Phase 5A-F2 항목 5: xs(390) 실측 585px가 Figma 목표 600px보다 짧았다
-           * — auto-height가 실제 콘텐츠보다 작아지지 않도록 `height`가 아니라
-           * `minHeight`(바닥값)로 준다. md/lg/QHD는 이미 정확히 일치해 `height`를
-           * 그대로 유지한다(고정값이라 잘림 위험 없음, Phase 5A-F에서 확인됨).
-           * `minHeight`를 `md`에서 명시적으로 0으로 되돌리지 않으면 MUI
-           * breakpoint 객체가 xs 값을 그 위 tier까지 그대로 이어받아(mobile-first
-           * cascade) `min-height:600`이 `height:500`(md)보다 우선 적용되는
-           * 버그가 있었다(1024 실측으로 발견) — xs 전용으로 명시 범위를 좁힌다. */
-          minHeight: { xs: 600, md: 0 },
-          // Phase 5A-H: 210:44(Tablet 768) 카드 높이 740 — md가 뒤에 명시돼 있어
-          // sm 값이 900px+ 구간으로 새지 않는다.
-          height: { sm: 740, md: 500, lg: 760 },
+          height: { xs: 600, sm: 740, md: 500, lg: 760 },
           '@media (min-width:1920px)': { height: '866.4px' },
         }}
       >
         <Box sx={{
           p: '17px', flexShrink: 0,
-          pb: { xs: 0, md: '17px', lg: '17px' },
+          pb: { xs: 0, md: '17px', lg: 0 },
           width: { xs: '100%', md: '45%', lg: '100%' },
         }}>
-          <Box sx={{
-            borderRadius: '18px', overflow: 'hidden',
-            height: { xs: 220, sm: 330, md: '100%', lg: 330 },
-            '@media (min-width:1920px)': { height: '376.2px' },
-          }}>
-            {project.thumbnailUrl ? (
-              <ProjectMediaStage
-                image={project.thumbnailUrl}
-                alt={project.id === 'bus-arrival-app' ? `${displayTitle} Figma Prototype` : `${displayTitle} 실제 화면`}
-                rotate={mediaRotate}
-              />
-            ) : (
-              <Box sx={{
-                width: '100%', height: '100%', bgcolor: HUMAN_SIGNAL.deepHarbor,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.steelMist, fontSize: '0.875rem' }}>{displayTitle}</Typography>
-              </Box>
-            )}
-          </Box>
+          <ThumbnailStage
+            src={media?.src}
+            sources={media?.sources}
+            alt={media?.alt ?? `${displayTitle} 대표 화면`}
+            loading="eager"
+            variant="featured"
+            objectFit="contain"
+          />
         </Box>
 
-        <Box sx={{ p: '24px', pt: { xs: '20px', sm: '34px', md: '24px', lg: '20px' }, display: 'flex', flexDirection: 'column', gap: 1.25, flex: 1, minWidth: 0 }}>
+        <Box sx={{ p: '24px', pt: { xs: '20px', sm: '13px', md: '24px', lg: '20px' }, display: 'flex', flexDirection: 'column', gap: 1.25, flex: 1, minWidth: 0 }}>
           <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '11px', letterSpacing: '0.44px' }}>
             FEATURED {String(index + 1).padStart(2, '0')}
           </Typography>
@@ -452,10 +443,10 @@ const FeaturedProjects = () => (
     position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy,
     pt: { xs: '46px', sm: 7, md: 7, lg: 8 },
     pb: { xs: 0, sm: 7, md: 7, lg: 8 },
-    // Phase 5A-H: 210:38(Tablet 768) 실측 높이 2650(=1150~3800) — 카드 높이(740)·
-    // 헤딩 타이포·gap을 아래에서 함께 맞춰 실제 콘텐츠로 채운다.
     minHeight: { xs: 2240, sm: 2650, md: 2000, lg: 1200 },
     '@media (min-width:1920px)': { minHeight: 1300 },
+    // Phase 5A-H: 210:38(Tablet 768) 실측 높이 2650(=1150~3800) — 카드 높이(740)·
+    // 헤딩 타이포·gap을 아래에서 함께 맞춰 실제 콘텐츠로 채운다.
   }}>
     {/* Featured/Footer는 순수 dark(inkNavy) full-bleed라 deepHarbor 숫자는
      * 배경과 거의 구분되지 않는다(실측 스크린샷으로 확인) — More Works(light
@@ -543,38 +534,37 @@ const FeaturedProjects = () => (
 );
 
 /* ── More Works ── */
-/* Phase 5A-R Batch D: published 항목이 1개뿐일 때 기존 `maxWidth:632` 좌측정렬
- * 카드는 1312px shell 안에서 절반 이상을 빈 공간으로 남겼다(사용자가 실제
- * QHD에서 "빠진 두 번째 카드 자리"처럼 느낌). 두 번째 자리를 채우는 대신,
- * 카드 자체를 media+content 가로형 single-feature layout으로 넓혀 실제 화면을
- * 더 크게 보여준다.
- *
- * Phase 5A-F: 상한을 임의 1100px에서 Figma 실측값(Desktop 1440 = 1180px,
+/* More Works는 각 공개 항목을 media+content 가로형 카드로 쌓아 실제 화면과
+ * 범위·상태를 같은 구조로 비교한다. 상한은 Figma 실측값(Desktop 1440 = 1180px,
  * QHD 2560 = 1312px = shell 전체 폭)으로 교체했다 — ChatGPT가 실제 비교
  * 이미지로 확인한 차이(2)를 그대로 반영한다. media:content 비율(약 55:45)은
  * 기존 실측이 Figma와 이미 거의 일치해 유지한다. */
 const MoreWorkCard = ({ project }) => {
-  const href = project.liveUrl ?? project.githubUrl ?? null;
-  const isLink = Boolean(href);
-  const scopeLabel = project.tools?.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t))
+  const internalHref = project.slug ? `/projects/${project.slug}` : null;
+  const externalHref = project.liveUrl ?? project.githubUrl ?? null;
+  const isLink = Boolean(internalHref || externalHref);
+  const moreWorksTools = project.moreWorksTools ?? project.tools ?? [];
+  const scopeLabel = moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t))
     ? 'RESPONSIVE WEB' : (project.categoryLabel || 'MORE WORK');
-  const statusLabel = project.tools?.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t)) ? 'STATIC' : 'DEMO';
+  const statusLabel = project.moreWorksStatus
+    ?? (moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t)) ? 'STATIC' : 'DEMO');
+  const hasLongStatus = statusLabel.length > 20;
 
   return (
     <Box
-      component={isLink ? 'a' : 'div'}
-      href={isLink ? href : undefined}
-      target={isLink ? '_blank' : undefined}
-      rel={isLink ? 'noopener noreferrer' : undefined}
-      aria-label={isLink ? `${project.title} 새 탭에서 열기` : undefined}
+      component={internalHref ? RouterLink : (externalHref ? 'a' : 'div')}
+      to={internalHref ?? undefined}
+      href={externalHref ?? undefined}
+      target={externalHref ? '_blank' : undefined}
+      rel={externalHref ? 'noopener noreferrer' : undefined}
+      aria-label={isLink ? `${project.title} 프로젝트 보기` : undefined}
       data-project-id={project.id}
       data-project-kind="more-work"
       data-published="true"
       sx={{
-        position: 'relative',
         display: 'flex', flexDirection: { xs: 'column', md: 'row' },
-        width: '100%', maxWidth: { xs: '100%', md: '100%', lg: 1180 }, borderRadius: '22px', overflow: 'hidden',
         height: { xs: 390, sm: 425, md: 320, lg: 380 },
+        width: '100%', maxWidth: { xs: '100%', md: '100%', lg: 1180 }, borderRadius: '22px', overflow: 'hidden',
         textDecoration: 'none', color: 'inherit',
         bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
         cursor: isLink ? 'pointer' : 'default',
@@ -588,109 +578,100 @@ const MoreWorkCard = ({ project }) => {
     >
       <Box sx={{
         p: { xs: '13px', sm: '15px', md: '15px', lg: '17px' },
-        pb: { xs: 0, md: '15px', lg: '17px' },
-        width: { xs: '100%', md: '59.5%' },
-        height: { md: '100%' },
+        pb: { xs: 0, sm: 0, md: '15px', lg: '17px' },
+        width: { xs: '100%', md: '58%' },
         flexShrink: 0,
         '@media (min-width:1920px)': { p: '19px' },
       }}>
-        <Box sx={{
-          position: 'relative', width: '100%', borderRadius: '18px', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper,
-          height: { xs: 180, sm: 230, md: 288, lg: 344 },
-          '@media (min-width:1920px)': { height: 380 },
-        }}>
-          {project.thumbnailUrl ? (
-            /* Streaming UI Concept의 최신 Hero 화면을 사용한 실제 프로젝트 썸네일. */
-            <Box component="img" src={project.thumbnailUrl} alt={`${project.title} 화면 미리보기`} loading="lazy"
-              sx={{ position: 'absolute', inset: '4%', width: '92%', height: '92%', objectFit: 'contain' }} />
-          ) : (
-            <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.inkText, fontSize: '0.875rem' }}>{project.title}</Typography>
-            </Box>
-          )}
-        </Box>
+        <ThumbnailStage
+          src={project.thumbnailUrl}
+          alt={`${project.title} 대표 화면`}
+          sx={{
+            height: { xs: 180, sm: 230, md: 288, lg: 344 },
+            aspectRatio: 'auto',
+            '@media (min-width:1920px)': { height: 380 },
+          }}
+        />
       </Box>
-      <Box sx={{ position: 'absolute', inset: 0, minWidth: 0 }}>
+
+      <Box sx={{
+        display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0,
+        p: { xs: '16px', sm: '16px', md: '16px', lg: '18px' },
+        pt: { xs: '14px', sm: '14px', md: '18px', lg: '18px' },
+        '@media (min-width:1920px)': { p: '20px' },
+      }}>
         <Typography sx={{
-          position: 'absolute',
-          left: { xs: 15, sm: 17, md: '59.5%' },
-          right: { xs: 15, sm: 17, md: 17, lg: 19 },
-          top: { xs: 217, sm: 269, md: 109, lg: 129 },
           fontFamily: FONT_MONO,
-          fontSize: { xs: '10.5px', sm: '10.5px', lg: '11px' },
-          lineHeight: { xs: '18px', lg: '18px' },
+          fontSize: { xs: '10.5px', lg: '11px' },
+          lineHeight: '18px',
           letterSpacing: '0.04em',
           color: HUMAN_SIGNAL.burntOrange,
-          '@media (min-width:1920px)': { top: 144, lineHeight: '20.16px' },
         }}>
           {scopeLabel}
         </Typography>
-        <Typography component="h3" sx={{
-          position: 'absolute',
-          left: { xs: 15, sm: 17, md: '59.5%' },
-          right: { xs: 75, sm: 75, md: 17 },
-          top: { xs: 247, sm: 301, md: 137, lg: 159 },
-          fontFamily: FONT_KR, fontWeight: 700, color: HUMAN_SIGNAL.inkNavy,
-          fontSize: { xs: '22px', sm: '26px', md: '26px', lg: '28px' }, lineHeight: { xs: '30px', sm: '36px', md: '36px', lg: '36px' },
-          '@media (min-width:1920px)': { top: 177 },
-        }}>
-          {project.title}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, mt: 1.5 }}>
+          <Typography component="h3" sx={{
+            fontFamily: FONT_KR, fontWeight: 700, color: HUMAN_SIGNAL.inkNavy,
+            fontSize: { xs: '22px', sm: '26px', lg: '28px' },
+            lineHeight: { xs: '30px', sm: '36px' },
+          }}>
+            {project.title}
+          </Typography>
+          {isLink && <ActionIcon variant={internalHref ? 'internal' : 'external'} />}
+        </Box>
         <Typography sx={{
-          position: 'absolute',
-          left: { xs: 15, sm: 17, md: '59.5%' },
-          right: { xs: 15, sm: 17, md: 17 },
-          top: { xs: 285, sm: 339, md: 177, lg: 205 },
           fontFamily: FONT_KR, color: HUMAN_SIGNAL.inkNavy, wordBreak: 'keep-all',
           fontSize: { xs: '14px', md: '15px' }, lineHeight: { xs: '23px', md: '25px' },
-          '@media (min-width:1920px)': { top: 227 },
+          mt: 1.25,
         }}>
           {PROJECTS_MORE_WORK_COPY[project.id] ?? project.description}
         </Typography>
-        {project.tools?.length > 0 && (
-          <Typography sx={{
-            position: 'absolute',
-            left: { xs: 15, sm: 17, md: '59.5%' },
-            right: { xs: 145, sm: 160, md: 165 },
-            top: { xs: 343, sm: 391, md: 227, lg: 263 },
-            fontFamily: FONT_MONO,
-            fontSize: { xs: '10.5px', sm: '11px' },
-            lineHeight: { xs: '18px', lg: '18px' },
-            letterSpacing: '0.04em',
-            color: HUMAN_SIGNAL.inkNavy,
-            '@media (min-width:1920px)': { top: 291, lineHeight: '20.16px' },
-          }}>
-            {project.tools.join(' · ').toUpperCase()}
-          </Typography>
-        )}
+
+        <Box sx={{ flex: 1, minHeight: { xs: 13, sm: 20, md: 24 } }} />
+
         <Box sx={{
-          position: 'absolute',
-          right: { xs: 17, sm: 19, md: 17, lg: 19 },
-          top: { xs: 337, sm: 385, md: 223, lg: 259 },
-          width: { xs: 126, sm: 132, md: 130, lg: 132 },
-          height: 28,
-          bgcolor: HUMAN_SIGNAL.deepHarbor,
-          color: HUMAN_SIGNAL.softWhite,
-          borderRadius: '10px',
           display: 'flex',
+          flexDirection: 'row',
           alignItems: 'center',
-          px: 1.75,
-          '@media (min-width:1920px)': { right: 21, top: 287, width: 148, height: '31.36px' },
+          justifyContent: 'space-between',
+          gap: '12px',
         }}>
-          <Typography sx={{ fontFamily: FONT_MONO, fontSize: '12px', letterSpacing: '0.04em' }}>{statusLabel}</Typography>
+          {moreWorksTools.length > 0 && (
+            <Typography sx={{
+              fontFamily: FONT_MONO,
+              fontSize: { xs: '10.5px', sm: '11px' },
+              lineHeight: '18px',
+              letterSpacing: '0.04em',
+              color: HUMAN_SIGNAL.inkNavy,
+            }}>
+              {moreWorksTools.join(' · ').toUpperCase()}
+            </Typography>
+          )}
+          <Box sx={{
+            flex: '0 0 auto',
+            minWidth: { xs: hasLongStatus ? 158 : 126, sm: 132, md: 130, lg: 132 },
+            maxWidth: { xs: hasLongStatus ? 170 : 'none', sm: 'none' },
+            height: { xs: hasLongStatus ? 'auto' : 28, sm: 28 },
+            minHeight: 28,
+            bgcolor: HUMAN_SIGNAL.deepHarbor,
+            color: HUMAN_SIGNAL.softWhite,
+            borderRadius: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            px: 1.75,
+          }}>
+            <Typography sx={{
+              fontFamily: FONT_MONO,
+              fontSize: { xs: hasLongStatus ? '10px' : '12px', sm: '12px' },
+              lineHeight: { xs: hasLongStatus ? 1.2 : 1, sm: 1 },
+              letterSpacing: '0.04em',
+              whiteSpace: { xs: hasLongStatus ? 'normal' : 'nowrap', sm: 'nowrap' },
+            }}>
+              {statusLabel}
+            </Typography>
+          </Box>
         </Box>
-        {isLink && (
-          <ActionIcon
-            variant="external"
-            sx={{
-              position: 'absolute',
-              right: { xs: 17, sm: 27, md: 17, lg: 19 },
-              top: { xs: 247, sm: 341, md: 109, lg: 129 },
-              color: HUMAN_SIGNAL.burntOrange,
-              '@media (min-width:1920px)': { right: 21, top: 144 },
-            }}
-          />
-        )}
+
       </Box>
     </Box>
   );
@@ -703,13 +684,10 @@ const MoreWorks = () => {
       position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper,
       pt: { xs: '46px', sm: 7, md: 7, lg: 8 },
       pb: { xs: 0, sm: 7, md: 7, lg: 8 },
-      /* xs(390) More Works frame(212:102) 실측 800 — 실제 렌더 높이가 785로
-       * 15px 짧아 Footer 시작·끝이 Figma 대비 밀렸다(measurements 대조로 확인).
-       * Phase 5A-H: 210:98(Tablet 768)은 카드 높이(230 thumbnail)·헤딩
-       * 타이포를 아래에서 함께 올려 실제 콘텐츠로 900에 가깝게 채우므로 sm만
-       * Figma 실측값(900)을 명시한다. */
-      minHeight: { xs: 800, sm: 900, md: 720, lg: 800 },
-      '@media (min-width:1920px)': { minHeight: 850 },
+      minHeight: { xs: 1628, sm: 1798, md: 1408, lg: 1608 },
+      '@media (min-width:1920px)': { minHeight: 1738 },
+      /* 승인된 전체 section frame 높이는 카드 3개 공개 구성 기준으로 유지한다.
+       * 카드 자체 높이와 thumbnail stage는 같은 breakpoint에서 별도로 맞춘다. */
     }}>
       {/* Phase 5A-G: 209:99(1024)/207:3(1440)는 top=760이지만 210:99(768)=700,
        * 212:103(390)=650으로 breakpoint마다 다르다(고정값이 아니었다) — 반응형으로

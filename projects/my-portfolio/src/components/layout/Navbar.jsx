@@ -167,6 +167,14 @@ const Navbar = () => {
     if (isHome) { scrollToSection('home'); } else { navigate('/'); }
   };
 
+  const handleSkipLink = (e) => {
+    e.preventDefault();
+    const main = document.getElementById('main-content');
+    if (!main) return;
+    main.focus({ preventScroll: true });
+    main.scrollIntoView({ block: 'start', behavior: 'instant' });
+  };
+
   // Figma Home 1440·1024·390·2560(256:3 / 365:136 / 269:54)은 Home + 스크롤 전
   // 최초 상태에서 Header가 Hero의 Ink Navy 배경과 이어지는 dark header다.
   // sticky compact 상태와 /projects, /projects/:slug는 기존 밝은 Header를 그대로 쓴다.
@@ -180,7 +188,7 @@ const Navbar = () => {
 
   return (
     <>
-      <a href="#main-content" className="skip-link">본문으로 건너뛰기</a>
+      <a href="#main-content" className="skip-link" onClick={handleSkipLink}>본문으로 건너뛰기</a>
 
       <AppBar
         position="fixed"

@@ -4,14 +4,15 @@ import { ALL_PROJECTS } from '../../data/projectsData';
 
 const SITE_TITLE = '김도한 | UX/UI · 웹퍼블리싱 포트폴리오';
 
-/* pages/ProjectDetailPage.jsx의 SLUG_TO_ID와 같은 매핑이다(그 파일은 이번
- * 회차 변경 금지 대상이라 export를 새로 만들지 않고 여기서도 동일하게
- * 정의했다) — 두 파일이 갈라지면(대표 프로젝트 slug 추가/변경 시) 함께
- * 갱신해야 한다. */
+/* pages/ProjectDetailPage.jsx의 SLUG_TO_ID와 같은 매핑이다. 두 파일이
+ * 갈라지면(공개 상세 프로젝트 slug 추가/변경 시) 함께 갱신해야 한다. */
 const SLUG_TO_ID = {
+  gongjeongbom: 'gongjeongbom',
   jobflow: 'jobflow',
   'bus-arrival': 'bus-arrival-app',
   'feedback-hub': 'feedback-hub',
+  brewstep: 'brewstep',
+  seolbiit: 'seolbiit',
 };
 
 const resolveTitle = (pathname) => {
@@ -57,7 +58,13 @@ const RouteEffects = () => {
 
   // 현재 경로를 떠나기 직전 스크롤 위치를 기억해 둔다(POP으로 돌아왔을 때 복원용).
   useEffect(() => {
-    const save = () => scrollMemory.set(location.pathname, window.scrollY);
+    const save = () => {
+      const hashPath = window.location.hash.slice(1).split('?')[0] || '/';
+      // HashRouter는 링크 클릭 시 React effect cleanup보다 URL hash를 먼저 바꿀
+      // 수 있다. 그 사이 발생한 브라우저 scroll을 이전 route 위치로 덮어쓰지 않는다.
+      if (hashPath !== location.pathname) return;
+      scrollMemory.set(location.pathname, window.scrollY);
+    };
     window.addEventListener('scroll', save, { passive: true });
     return () => {
       save();

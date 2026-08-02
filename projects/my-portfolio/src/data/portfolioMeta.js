@@ -67,9 +67,141 @@ export const PROJECT_GITHUB_URL = 'https://github.com/kdhan0320-bot/dohan-portfo
  * ProjectDetailPage.jsx에서만 붙인다). 각 프로젝트의 실제 공개 증거 이미지와
  * 프로젝트별 thumbnail composite만 사용한다. */
 export const PROJECT_DETAIL_READY = {
-  jobflow: {
+  gongjeongbom: {
+    meta: {
+      type: 'RESPONSIVE WEB',
+      role: 'B2B UX/UI · WEB PUBLISHING',
+      tools: 'SEMANTIC HTML · CSS · VANILLA JAVASCRIPT',
+      data: 'STATIC / DEMO',
+    },
     hero: {
-      summary: '취업 준비 과정의 지원 현황과 다음 행동을 한 화면에서 관리하도록 설계·구현한 대시보드입니다.',
+      summary: '제조 현장에서 접한 기술 정보와 의사결정 조건을 바탕으로, 제품명을 모르는 사용자도 공정 문제에서 시작해 검사 시스템을 찾고 비교하도록 설계했습니다.',
+      media: [
+        {
+          src: 'detail/gongjeongbom/home-1440.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 홈 1440px · 가상 제품과 정적 데모 데이터',
+          aspectRatio: '16 / 10',
+          objectFit: 'contain',
+          objectPosition: 'top',
+          plainEvidence: true,
+        },
+        {
+          src: 'detail/gongjeongbom/home-390.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 홈 390px · 가상 제품과 정적 데모 데이터',
+          aspectRatio: '390 / 844',
+          objectFit: 'contain',
+          objectPosition: 'top',
+          frameWidth: 180,
+          plainEvidence: true,
+        },
+      ],
+      mediaLabel: '실제 브라우저 실행 화면 · 390 / 1440 · STATIC / DEMO',
+    },
+    context: {
+      problem: '제품명을 모르는 구매·생산기술 담당자는 검사 문제, 설치 조건과 제품 사양을 연결하기 어렵습니다.',
+      goal: '공정 문제 → 제품 종류 → 모델 비교 → 기술 문의로 이어지는 판단 흐름을 만듭니다.',
+    },
+    decisions: [
+      {
+        title: '제품명이 아니라 공정 문제에서 탐색을 시작했습니다.',
+        choice: '검사 문제·제품 종류·필요 검사 수준·설치 조건을 검색과 필터로 연결',
+        reason: '모델명을 모르는 사용자도 현재 공정의 문제에서 후보를 좁힐 수 있게 하기 위해',
+        verification: '실제 Products 화면에서 검색·제품 종류·검사 문제 필터와 결과 갱신 확인',
+        media: {
+          src: 'detail/gongjeongbom/products-1440.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 제품 찾기 · 가상 제품 데이터',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        title: '같은 종류의 제품만 최대 3개 비교하도록 제한했습니다.',
+        choice: '제품 종류 일치 조건·3개 상한·sessionStorage 비교 목록',
+        reason: '서로 다른 역할의 제품을 직접 비교해 잘못된 결론을 내리지 않도록 하기 위해',
+        verification: 'MV-X300·MV-X500·MV-X700 선택과 비교 화면, 다른 종류 차단 상태 확인',
+        media: {
+          src: 'detail/gongjeongbom/compare-1440.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 비전 시스템 모델 3개 비교',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        title: '사양 숫자보다 공정 적합성을 먼저 설명했습니다.',
+        choice: '잘 맞는 경우·해결 문제·구성 특징 다음에 상세 사양 배치',
+        reason: '숫자를 비교하기 전에 해당 모델이 어떤 검사 흐름에 맞는지 판단하게 하기 위해',
+        verification: 'MV-X500 상세 화면의 적용 조건·구성·사양 정보 위계 확인',
+        media: {
+          src: 'detail/gongjeongbom/product-1440.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 MV-X500 제품 상세 · 가상 제품 사양',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        title: '실제 전송이 없는 문의를 명확한 데모 상태로 구분했습니다.',
+        choice: '필수 항목·이메일 오류 요약·관심 제품 전달·데모 완료 고지',
+        reason: '입력 흐름은 검증하되 실제 이메일·CRM·DB 전송으로 오해하지 않게 하기 위해',
+        verification: '기술 문의 화면의 저장·전송 없음 고지와 오류·완료 데모 상태 확인',
+        media: {
+          src: 'detail/gongjeongbom/inquiry-1440.png',
+          alt: '실제 브라우저 실행 화면 · 공정봄 기술 문의 · 실제 저장과 전송이 없는 데모',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+    ],
+    mainScreens: [
+      { label: 'Home', media: { src: 'detail/gongjeongbom/home-1440.png', alt: '공정봄 Home 실제 브라우저 화면', aspectRatio: '16 / 10', objectFit: 'cover', objectPosition: 'top' } },
+      { label: 'Products', media: { src: 'detail/gongjeongbom/products-1440.png', alt: '공정봄 Products 실제 브라우저 화면', aspectRatio: '16 / 10', objectFit: 'cover', objectPosition: 'top' } },
+      { label: 'Product Detail', media: { src: 'detail/gongjeongbom/product-1440.png', alt: '공정봄 Product Detail 실제 브라우저 화면', aspectRatio: '16 / 10', objectFit: 'cover', objectPosition: 'top' } },
+      { label: 'Compare', media: { src: 'detail/gongjeongbom/compare-1440.png', alt: '공정봄 Compare 실제 브라우저 화면', aspectRatio: '16 / 10', objectFit: 'cover', objectPosition: 'top' } },
+      { label: 'Inquiry', media: { src: 'detail/gongjeongbom/inquiry-1440.png', alt: '공정봄 Inquiry 실제 브라우저 화면', aspectRatio: '16 / 10', objectFit: 'cover', objectPosition: 'top' } },
+    ],
+    responsiveCards: [
+      { width: '390px', rule: '텍스트 → 미디어 순서와 모바일 메뉴·필터 패널' },
+      { width: '1024px', rule: '중간 폭에서 제품 카드·비교 표·문의 폼 재배치' },
+      { width: '1440px', rule: '제품 탐색과 판단 정보를 넓은 화면에 병렬 배치' },
+    ],
+    scope: {
+      actual: [
+        'Figma UI·정보 구조·반응형·Prototype 설계',
+        'Semantic HTML·직접 작성 CSS·Vanilla JavaScript',
+        '검색·필터·같은 종류 최대 3개 비교와 sessionStorage 비교 목록',
+        '문의 폼 오류·데모 완료, 키보드·초점·reduced-motion',
+        '직접 제작 검사 신호·제품 도식',
+      ],
+      demoStatic: [
+        '가상 기업·제품·모델·사양과 로컬 JavaScript 데이터',
+        '문의 성공·오류 데모 상태',
+        '적용 예시와 제품 선정 정보',
+      ],
+      notIncluded: [
+        '실제 제품 또는 제조사',
+        '실제 견적·이메일·CRM·DB',
+        '실제 사용자 조사·테스트',
+        '실제 고객사·인증·납품 실적',
+        'AI 추천·챗봇·예지보전',
+      ],
+    },
+    resultLimit: {
+      done: '공정 문제에서 제품 탐색·상세·같은 종류 비교·기술 문의로 이어지는 반응형 웹 흐름을 390px·1024px·1440px에서 구현하고 검토했습니다.',
+      limit: '가상 기업·제품·사양과 정적 데모 데이터 기반이며 실제 제품 선정·견적·이메일·CRM·DB·사용자 조사·성과는 포함하지 않았습니다.',
+    },
+  },
+  jobflow: {
+    meta: {
+      type: 'WEB APPLICATION',
+      role: 'DASHBOARD UX · FRONTEND',
+      tools: 'REACT · MUI · SUPABASE',
+      data: 'ACTUAL / DEMO',
+    },
+    hero: {
+      summary: '지원 현황·면접 일정·체크리스트를 실제 저장 구조로 연결한 개인 구직 관리 대시보드입니다.',
       media: [
         { src: 'detail/jobflow-dashboard-1440.png', alt: '실제 브라우저 실행 화면 · JobFlow Dashboard · 게스트 sample data', aspectRatio: '1440 / 1077' },
         { src: 'detail/jobflow-dashboard-390.png', alt: '실제 브라우저 실행 화면 · JobFlow Dashboard 390px 1열 reflow · 게스트 sample data', aspectRatio: '390 / 844', objectFit: 'cover', objectPosition: 'top', frameWidth: 200 },
@@ -119,8 +251,14 @@ export const PROJECT_DETAIL_READY = {
     },
   },
   'feedback-hub': {
+    meta: {
+      type: 'WEB APPLICATION',
+      role: 'COMMUNITY UX · FRONTEND',
+      tools: 'REACT · MUI · SUPABASE',
+      data: 'PUBLIC READ-ONLY / SAMPLE FALLBACK',
+    },
     hero: {
-      summary: '포트폴리오를 탐색하고 피드백을 주고받는 흐름을 목록과 상세 화면으로 구성한 커뮤니티 UI demo입니다.',
+      summary: '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱입니다.',
       media: [
         { src: 'detail/feedback-list-1440.png', alt: '실제 브라우저 실행 화면 · Post List · static sample fallback', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
         { src: 'detail/feedback-detail-1440.png', alt: '실제 브라우저 실행 화면 · Post Detail · static sample fallback', aspectRatio: '1440 / 900' },
@@ -136,14 +274,14 @@ export const PROJECT_DETAIL_READY = {
         title: '탐색 조건과 콘텐츠 카드를 같은 화면에 배치했습니다.',
         choice: '검색·카테고리 필터·카드 그리드',
         reason: '관심 주제를 빠르게 좁히고 목록을 비교하기 위해',
-        verification: '실제 공개 목록 route에서 Supabase 200 빈 배열 후 static fallback 표시 확인',
+        verification: '실제 공개 목록 route에서 Supabase 200 빈 배열 후 SAMPLE_POSTS fallback 표시 확인',
         media: { src: 'detail/feedback-list-1440.png', alt: '실제 브라우저 실행 화면 · Post List · static sample fallback', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
       },
       {
         title: '상세 내용과 참여 조건을 한 화면에서 구분했습니다.',
         choice: '본문·좋아요·댓글 영역과 로그인 안내',
         reason: '읽기는 공개하고 작성·반응은 인증 경계를 명확히 하기 위해',
-        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route로 이동해 확인',
+        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route로 이동하고, 공개 읽기 전용 경계와 비공개 A/B 계정의 CRUD·RLS 허용·차단을 확인',
         media: { src: 'detail/feedback-detail-1440.png', alt: '실제 브라우저 실행 화면 · Post Detail · static sample fallback' },
       },
     ],
@@ -164,13 +302,334 @@ export const PROJECT_DETAIL_READY = {
       caption: '390px full-page source의 상단 viewport',
     },
     scope: {
-      actual: ['공개 목록·상세 route', '검색·카테고리 UI', 'Supabase posts 조회 요청'],
-      demoStatic: ['posts 결과가 빈 배열일 때 SAMPLE_POSTS fallback', '화면의 게시글과 수치는 sample data'],
-      notIncluded: ['실제 사용자 게시글·운영 데이터·활성 사용자 지표', '로그인 후 작성·댓글·좋아요는 이번 증거 회차에서 미검증'],
+      actual: [
+        '공개 목록·상세 route와 검색·카테고리·정렬',
+        'Supabase posts 읽기와 live/sample/error 상태 분리',
+        '비공개 계정 Auth와 게시글·댓글·대댓글·좋아요 CRUD',
+        '소유권 RLS와 profile 컬럼 보안 검증',
+      ],
+      demoStatic: [
+        '운영 게시글이 0건일 때 SAMPLE_POSTS fallback',
+        '화면의 게시글·댓글·좋아요 수는 표시용 sample 값',
+        '공개 읽기 전용 탐색 데모',
+      ],
+      notIncluded: [
+        '공개 무료 가입·작성·댓글·좋아요',
+        '실제 운영 사용자 콘텐츠·활성 지표',
+        '파일 업로드·Supabase Storage',
+        '관리자·신고·알림',
+      ],
     },
     resultLimit: {
-      done: '목록과 상세의 공개 탐색 흐름, 390px 1열 카드 stack을 실제 브라우저에서 확인했습니다.',
-      limit: '현재 화면 콘텐츠는 정적 sample fallback이며 운영 커뮤니티 데이터가 아닙니다.',
+      done: '공개 읽기 전용 목록·상세 탐색과 390px 1열 카드 stack을 확인하고, 비공개 A/B 계정으로 Auth·CRUD·RLS 경계를 검증했습니다.',
+      limit: '현재 공개 화면 콘텐츠와 수치는 sample fallback이며 실제 운영 사용자 콘텐츠나 활성 지표가 아닙니다.',
+    },
+  },
+  brewstep: {
+    meta: {
+      type: 'MOBILE APP',
+      role: 'MOBILE UX/UI',
+      tools: 'FIGMA · AUTO LAYOUT',
+      data: 'STATIC / PROTOTYPE',
+    },
+    hero: {
+      summary: '옵션이 많은 카페 주문을 7단계 흐름으로 정리하고, 모바일·반응형·Prototype·자산 권리까지 연결한 포트폴리오용 가상 주문 서비스입니다.',
+      mediaLayout: 'approved-pair',
+      media: [
+        {
+          src: 'detail/brewstep/detail-hero-desktop-1440.png',
+          sources: {
+            mobile: 'detail/brewstep/detail-hero-desktop-390.png',
+            compact: 'detail/brewstep/detail-hero-desktop-1024.png',
+          },
+          alt: 'BREWSTEP 상품 상세의 데스크톱 승인 화면',
+          aspectRatio: { xs: '504 / 487', md: '623 / 644', lg: '899 / 868' },
+        },
+        {
+          src: 'detail/brewstep/detail-hero-mobile-1440.png',
+          sources: {
+            mobile: 'detail/brewstep/detail-hero-mobile-390.png',
+            compact: 'detail/brewstep/detail-hero-mobile-1024.png',
+          },
+          alt: 'BREWSTEP 상품 상세의 모바일 승인 화면',
+          aspectRatio: { xs: '154 / 571', md: '191 / 755', lg: '275 / 1017' },
+        },
+      ],
+      mediaLabel: 'PRODUCT DETAIL · 1440 + 390 · 승인된 Figma 화면 비교',
+    },
+    context: {
+      problem: '교육 과정 과제 원본에는 화면·상태·참고 자산이 혼재해, 상품 선택부터 픽업까지의 주문 조건과 다음 행동을 하나의 흐름으로 설명하기 어려웠습니다.',
+      goal: '7단계 주문 흐름과 데이터 계약을 기준으로 화면·상태·반응형·Prototype·권리 문서를 하나의 시스템으로 정리했습니다.',
+    },
+    decisions: [
+      {
+        title: '주문 조건을 흐름과 데이터 계약으로 연결',
+        choice: 'Home → Menu → Product → Cart → Pickup → Review → Order Status',
+        reason: '상품·가격·매장·시간·결제 값을 화면마다 다시 결정하지 않기 위해',
+        verification: 'Content·Checkout Contract와 7개 모바일 화면의 값 대조',
+        media: {
+          layout: 'portrait-pair',
+          aspectRatio: '257 / 377',
+          items: [
+            {
+              src: 'detail/brewstep/decision-01-1440-a.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-01-390-a.png',
+                compact: 'detail/brewstep/decision-01-1024-a.png',
+              },
+              alt: 'BREWSTEP 주문 흐름과 화면별 데이터 계약',
+            },
+            {
+              src: 'detail/brewstep/decision-01-1440-b.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-01-390-b.png',
+                compact: 'detail/brewstep/decision-01-1024-b.png',
+              },
+              alt: 'BREWSTEP 주문 단계의 콘텐츠 값 대조',
+            },
+          ],
+        },
+      },
+      {
+        title: '선택·변경·진행 상태를 다른 문법으로 분리',
+        choice: 'Radio · Action Text · Progress',
+        reason: '모든 상태가 같은 Check 표시로 보이는 혼동 방지',
+        verification: '색상·Border·Indicator·Text, 44px Target, 14px 이상',
+        media: {
+          layout: 'portrait-pair',
+          aspectRatio: '257 / 377',
+          items: [
+            {
+              src: 'detail/brewstep/decision-02-1440-a.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-02-390-a.png',
+                compact: 'detail/brewstep/decision-02-1024-a.png',
+              },
+              alt: 'BREWSTEP 픽업 선택 전후 상태 비교',
+            },
+            {
+              src: 'detail/brewstep/decision-02-1440-b.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-02-390-b.png',
+                compact: 'detail/brewstep/decision-02-1024-b.png',
+              },
+              alt: 'BREWSTEP 주문 준비 진행 상태',
+            },
+          ],
+        },
+      },
+      {
+        title: '화면 폭에 따라 행동 구조를 변환',
+        choice: '390 Fixed CTA → 1024 Compact Footer → 1440 Summary Rail',
+        reason: '넓은 화면에서 Card만 늘이지 않고 행동 흐름을 재배치하기 위해',
+        verification: '360·390·1024·1440 Overflow와 Focus 가림 검사',
+        media: {
+          layout: 'wide-stack',
+          aspectRatio: '257 / 377',
+          items: [
+            {
+              src: 'detail/brewstep/decision-03-1440-a.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-03-mobile-wide-a.png',
+                compact: 'detail/brewstep/decision-03-1024-a.png',
+              },
+              alt: 'BREWSTEP 390·1024·1440 주문 행동 구조 비교',
+            },
+            {
+              src: 'detail/brewstep/decision-03-1440-b.png',
+              sources: {
+                mobile: 'detail/brewstep/decision-03-mobile-wide-b.png',
+                compact: 'detail/brewstep/decision-03-1024-b.png',
+              },
+              alt: 'BREWSTEP 반응형 주문 요약과 CTA 구조',
+            },
+          ],
+        },
+      },
+    ],
+    mainScreensLayout: 'approved-brewstep',
+    mainScreens: [
+      {
+        label: 'Product Detail · 1440',
+        media: {
+          src: 'detail/brewstep/main-1440-primary.png',
+          sources: {
+            mobile: 'detail/brewstep/main-390-primary.png',
+            compact: 'detail/brewstep/main-1024-primary.png',
+          },
+          alt: 'BREWSTEP 상품 상세의 Primary 데스크톱 화면',
+          aspectRatio: '1551 / 992',
+        },
+      },
+      {
+        label: 'Product Detail · 390',
+        media: {
+          src: 'detail/brewstep/main-1440-mobile.png',
+          sources: {
+            mobile: 'detail/brewstep/main-390-mobile.png',
+            compact: 'detail/brewstep/main-1024-mobile.png',
+          },
+          alt: 'BREWSTEP 상품 상세의 모바일 화면',
+          aspectRatio: '403 / 764',
+        },
+      },
+      {
+        label: 'Review & Pay · 1440',
+        media: {
+          src: 'detail/brewstep/main-1440-detail.png',
+          sources: {
+            mobile: 'detail/brewstep/main-390-detail.png',
+            compact: 'detail/brewstep/main-1024-detail.png',
+          },
+          alt: 'BREWSTEP Review and Pay의 Detail 화면',
+          aspectRatio: '634 / 458',
+        },
+      },
+    ],
+    responsiveCards: [
+      { width: '360', rule: 'ADJACENT MOBILE QA' },
+      { width: '390', rule: 'MOBILE SOURCE' },
+      { width: '1024', rule: 'COMPACT' },
+      { width: '1440', rule: 'DESKTOP' },
+    ],
+    scopeLabels: {
+      actual: 'DESIGN DELIVERABLES',
+      demoStatic: 'DEMO / STATIC',
+      notIncluded: 'NOT INCLUDED',
+    },
+    scope: {
+      actual: ['완료한 설계 산출물', '모바일 7화면', '반응형 4화면', 'Prototype Flow 2개', 'Reaction 22개', 'Component·Contract·Asset Rights'],
+      demoStatic: ['샘플·mock·정적 데이터', '상품·매장·픽업·결제·주문 상태 예시', 'Figma Concept Prototype', 'Pexels 제품 사진'],
+      notIncluded: ['미구현 기능과 한계', '웹·앱 코드 구현', '실제 API·DB·결제·재고·위치', '실제 사용자 조사·사용성 테스트', '성과 수치', '상표 Clearance'],
+    },
+    aiCollaboration: [
+      { label: 'USER LED', value: '목적 · 범위 · 정보 구조 · 최종 디자인 판단' },
+      { label: 'AI ASSISTED', value: '화면 감사 · 카피 초안 · Figma 편집 보조 · QA 후보' },
+      { label: 'USER VERIFIED', value: 'Figma node metadata · Screenshot · Reaction Graph · Source·License' },
+    ],
+    resultLimit: {
+      done: '모바일·반응형·Prototype·접근성·자산 권리를 하나의 파일 구조로 정리했습니다.',
+      limit: '실제 서비스 연동·코드 구현·사용성 조사·상표 검토는 포함하지 않았습니다.',
+    },
+  },
+  seolbiit: {
+    meta: {
+      type: 'RESPONSIVE OPERATIONS UI',
+      role: 'INDUSTRIAL UX/UI',
+      tools: 'FIGMA · AUTO LAYOUT',
+      data: 'STATIC / DEMO',
+    },
+    sectionHeadings: {
+      context: ['점검 이후의 기록이 끊기지 않도록'],
+      decisions: ['현장 실행과 관리자 판단을', '세 가지 기준으로 연결했습니다.'],
+      screens: ['모바일 실행과 관리자 배정을', '같은 사례 안에서 보여줍니다.'],
+      scope: ['검증 폭과 제작 범위를', '같은 화면에서 구분합니다.'],
+      result: ['현장 경험을 화면 구조로 바꾸되,', '구현하지 않은 범위는 분리했습니다.'],
+    },
+    hero: {
+      summary: '현장 기술자의 점검 기록이 정비 요청·배정·완료·재점검까지 이어지도록 모바일·태블릿·데스크톱 운영 흐름을 설계했습니다.',
+      media: [
+        {
+          src: 'detail/seolbiit-cover.png',
+          alt: '설비잇 현장 점검과 정비 관리 운영 UI Cover · Figma STATIC / DEMO',
+          aspectRatio: '16 / 10',
+          objectFit: 'contain',
+        },
+      ],
+      mediaLabel: 'Figma operations UI · responsive workflow · static demo data',
+    },
+    context: {
+      problem: '설비·점검 결과·사진·담당자·기한이 흩어지면 정비 요청과 재점검이 누락될 수 있습니다.',
+      goal: '현장 기술자와 관리자가 같은 기록을 이어 보도록 점검 → 이상 → 정비 요청 → 배정 → 완료 → 재점검을 연결합니다.',
+    },
+    decisions: [
+      {
+        title: '점검 결과를 정비 요청으로 자동 인계했습니다.',
+        choice: '같은 기록을 다음 작업으로 전달',
+        reason: '중복 입력과 누락 감소',
+        verification: '연결된 점검 정보가 정비 요청 화면에 표시됨',
+        media: {
+          src: 'detail/seolbiit-mobile-flow.png',
+          alt: '설비잇 모바일 오늘의 작업·점검 실행 흐름 · Figma STATIC / DEMO',
+          aspectRatio: '1000 / 1048',
+          objectFit: 'contain',
+        },
+      },
+      {
+        title: '상태·담당자·기한을 한 화면에 배치했습니다.',
+        choice: '요청·배정·작업·완료 상태 구분',
+        reason: '책임과 처리 시점을 명확히 확인',
+        verification: '데스크톱 작업 표와 상세 패널 확인',
+        media: {
+          src: 'detail/seolbiit-desktop-management.png',
+          alt: '설비잇 데스크톱 정비 작업 관리 화면 · Figma STATIC / DEMO',
+          aspectRatio: '16 / 10',
+          objectFit: 'contain',
+        },
+      },
+      {
+        title: '모바일 실행과 데스크톱 배정을 분리했습니다.',
+        choice: '390 실행 / 1024 확인 / 1440 관리·배정',
+        reason: '기기별 핵심 행동과 정보 밀도 분리',
+        verification: '모바일·태블릿·데스크톱 렌더 비교',
+        media: {
+          src: 'detail/seolbiit-completion-flow.png',
+          alt: '설비잇 모바일 이상 기록부터 완료·재점검까지의 흐름 · Figma STATIC / DEMO',
+          aspectRatio: '77 / 45',
+          objectFit: 'contain',
+        },
+      },
+    ],
+    mainScreensLayout: 'equal',
+    mainScreens: [
+      {
+        label: '현장 모바일 흐름',
+        media: { src: 'detail/seolbiit-mobile-flow.png', alt: '설비잇 현장 모바일 점검 실행 흐름 · Figma STATIC / DEMO', aspectRatio: '1000 / 1048', objectFit: 'contain' },
+      },
+      {
+        label: '관리자 작업 배정',
+        media: { src: 'detail/seolbiit-desktop-management.png', alt: '설비잇 관리자 정비 작업 배정 화면 · Figma STATIC / DEMO', aspectRatio: '16 / 10', objectFit: 'contain' },
+      },
+      {
+        label: '완료·재점검',
+        media: { src: 'detail/seolbiit-completion-flow.png', alt: '설비잇 완료와 재점검 흐름 · Figma STATIC / DEMO', aspectRatio: '77 / 45', objectFit: 'contain' },
+      },
+      {
+        label: '오류·빈 상태',
+        media: { src: 'detail/seolbiit-error-states.png', alt: '설비잇 오류와 빈 상태 화면 · Figma STATIC / DEMO', aspectRatio: '713 / 540', objectFit: 'contain' },
+      },
+    ],
+    responsiveCards: [
+      { width: '390px', rule: '현장 점검·작업 실행' },
+      { width: '1024px', rule: '점검 기록·상태 확인' },
+      { width: '1440px', rule: '작업 관리·담당자 배정' },
+    ],
+    scope: {
+      actual: [
+        'Figma 정보 구조와 모바일 9개 화면',
+        '태블릿 점검과 데스크톱 작업 관리',
+        '반응형·상태·접근성 기준',
+      ],
+      demoStatic: [
+        '가상 설비·사용자·작업 기록',
+        '요청·배정·완료·재점검 상태 시뮬레이션',
+        '실제 코드/API가 없는 Figma 운영 UI',
+      ],
+      notIncluded: [
+        '실제 API·서버',
+        '센서 연동·예지보전',
+        '법정 안전 기준 적용',
+        '실제 현장 사용자 조사',
+      ],
+    },
+    aiCollaboration: [
+      { label: 'USER LED', value: '목적 · 범위 · 현장 흐름 · 최종 판단' },
+      { label: 'AI ASSISTED', value: '화면 감사 · 카피 초안 · Figma 편집 보조' },
+      { label: 'USER VERIFIED', value: 'node metadata · Screenshot · 권리·범위 확인' },
+    ],
+    resultLimit: {
+      done: '현장과 관리자 역할을 분리하고 점검 기록을 다음 정비·재점검으로 연결한 반응형 운영 UI를 설계했습니다.',
+      limit: '실제 서비스 코드·API·센서 연동과 현장 사용자 테스트는 수행하지 않았습니다.',
     },
   },
   'bus-arrival': {
