@@ -90,7 +90,7 @@ const InlineEditField = ({ value, onSave, onCancel, pending = false }) => {
 // ── 댓글 아이템 ──
 const CommentItem = ({
   comment, currentUserId, onReply, onLike, likedCommentIds,
-  onDeleteComment, onEditComment, isActionPending,
+  onDeleteComment, onEditComment, isActionPending, canMutate,
 }) => {
   const [showReply, setShowReply] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -145,40 +145,48 @@ const CommentItem = ({
           )}
 
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton
-              size="small"
-              onClick={() => onLike(comment.id, liked)}
-              disabled={likePending}
-              aria-label={liked ? '댓글 좋아요 취소' : '댓글 좋아요'}
-              sx={{ width: 44, height: 44 }}
-            >
-              {liked
-                ? <Favorite sx={{ fontSize: 14, color: 'error.main' }} />
-                : <FavoriteBorder sx={{ fontSize: 14, color: 'text.secondary' }} />}
-            </IconButton>
+            {canMutate ? (
+              <IconButton
+                size="small"
+                onClick={() => onLike(comment.id, liked)}
+                disabled={likePending}
+                aria-label={liked ? '댓글 좋아요 취소' : '댓글 좋아요'}
+                sx={{ width: 44, height: 44 }}
+              >
+                {liked
+                  ? <Favorite sx={{ fontSize: 14, color: 'error.main' }} />
+                  : <FavoriteBorder sx={{ fontSize: 14, color: 'text.secondary' }} />}
+              </IconButton>
+            ) : (
+              <FavoriteBorder aria-hidden="true" sx={{ fontSize: 14, color: 'text.secondary' }} />
+            )}
             <Typography variant="caption" color="text.secondary">
               {comment.comment_likes?.length ?? 0}
             </Typography>
-            <Button
-              size="small"
-              startIcon={<Reply sx={{ fontSize: 14 }} />}
-              onClick={() => setShowReply(p => !p)}
-              sx={{ fontSize: '0.72rem', px: 1, color: 'text.secondary', minWidth: 64, minHeight: 44 }}
-            >
-              답글
-            </Button>
+            {canMutate && (
+              <Button
+                size="small"
+                startIcon={<Reply sx={{ fontSize: 14 }} />}
+                onClick={() => setShowReply(p => !p)}
+                sx={{ fontSize: '0.72rem', px: 1, color: 'text.secondary', minWidth: 64, minHeight: 44 }}
+              >
+                답글
+              </Button>
+            )}
           </Box>
 
-          <Collapse in={showReply}>
-            <ReplyInput
-              pending={replyPending}
-              onSubmit={async (content) => {
-                const success = await onReply(comment.id, content);
-                if (success) setShowReply(false);
-                return success;
-              }}
-            />
-          </Collapse>
+          {canMutate && (
+            <Collapse in={showReply}>
+              <ReplyInput
+                pending={replyPending}
+                onSubmit={async (content) => {
+                  const success = await onReply(comment.id, content);
+                  if (success) setShowReply(false);
+                  return success;
+                }}
+              />
+            </Collapse>
+          )}
 
           {/* 대댓글 목록 */}
           {comment.replies?.map(reply => (
@@ -191,6 +199,7 @@ const CommentItem = ({
               onDeleteComment={onDeleteComment}
               onEditComment={onEditComment}
               isActionPending={isActionPending}
+              canMutate={canMutate}
             />
           ))}
         </Box>
@@ -203,7 +212,7 @@ const CommentItem = ({
 // ── 대댓글 아이템 ──
 const ReplyItem = ({
   reply, currentUserId, onLike, likedCommentIds,
-  onDeleteComment, onEditComment, isActionPending,
+  onDeleteComment, onEditComment, isActionPending, canMutate,
 }) => {
   const [editing, setEditing] = useState(false);
   const isOwner = reply.user_id === currentUserId;
@@ -253,17 +262,21 @@ const ReplyItem = ({
         )}
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mt: 0.3 }}>
-          <IconButton
-            size="small"
-            onClick={() => onLike(reply.id, liked)}
-            disabled={likePending}
-            aria-label={liked ? '답글 좋아요 취소' : '답글 좋아요'}
-            sx={{ width: 44, height: 44 }}
-          >
-            {liked
-              ? <Favorite sx={{ fontSize: 12, color: 'error.main' }} />
-              : <FavoriteBorder sx={{ fontSize: 12, color: 'text.secondary' }} />}
-          </IconButton>
+          {canMutate ? (
+            <IconButton
+              size="small"
+              onClick={() => onLike(reply.id, liked)}
+              disabled={likePending}
+              aria-label={liked ? '답글 좋아요 취소' : '답글 좋아요'}
+              sx={{ width: 44, height: 44 }}
+            >
+              {liked
+                ? <Favorite sx={{ fontSize: 12, color: 'error.main' }} />
+                : <FavoriteBorder sx={{ fontSize: 12, color: 'text.secondary' }} />}
+            </IconButton>
+          ) : (
+            <FavoriteBorder aria-hidden="true" sx={{ fontSize: 12, color: 'text.secondary' }} />
+          )}
           <Typography variant="caption" color="text.secondary">
             {reply.comment_likes?.length ?? 0}
           </Typography>
@@ -501,7 +514,7 @@ const PostDetailPage = () => {
   // 게시글 좋아요
   const handlePostLike = async () => {
     if (!user) {
-      showFeedback('좋아요는 로그인 후 이용할 수 있어요.', 'info');
+      showFeedback('공개 데모는 읽기 전용입니다.', 'info');
       return false;
     }
     if (isSamplePost) {
@@ -530,7 +543,7 @@ const PostDetailPage = () => {
   // 댓글 좋아요
   const handleCommentLike = async (commentId, isLiked) => {
     if (!user) {
-      showFeedback('댓글 좋아요는 로그인 후 이용할 수 있어요.', 'info');
+      showFeedback('공개 데모는 읽기 전용입니다.', 'info');
       return false;
     }
     if (isSamplePost) {
@@ -859,17 +872,26 @@ const PostDetailPage = () => {
           <Divider sx={{ mb: 2 }} />
 
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant={liked ? 'contained' : 'outlined'}
-              color="error"
-              startIcon={liked ? <Favorite /> : <FavoriteBorder />}
-              onClick={handlePostLike}
-              disabled={isActionPending('post-like')}
-              aria-label={liked ? '게시글 좋아요 취소' : '게시글 좋아요'}
-              sx={{ px: 4, py: 1, minHeight: 44, borderRadius: 5 }}
-            >
-              좋아요 {likeCount}
-            </Button>
+            {user ? (
+              <Button
+                variant={liked ? 'contained' : 'outlined'}
+                color="error"
+                startIcon={liked ? <Favorite /> : <FavoriteBorder />}
+                onClick={handlePostLike}
+                disabled={isActionPending('post-like')}
+                aria-label={liked ? '게시글 좋아요 취소' : '게시글 좋아요'}
+                sx={{ px: 4, py: 1, minHeight: 44, borderRadius: 5 }}
+              >
+                좋아요 {likeCount}
+              </Button>
+            ) : (
+              <Chip
+                icon={<FavoriteBorder aria-hidden="true" />}
+                label={`좋아요 ${likeCount}`}
+                variant="outlined"
+                sx={{ px: 1.5, minHeight: 36, color: 'text.secondary' }}
+              />
+            )}
           </Box>
         </Box>
 
@@ -881,7 +903,7 @@ const PostDetailPage = () => {
 
           {!user ? (
             <Alert severity="info" sx={{ mb: 3 }}>
-              댓글을 작성하려면 로그인이 필요합니다.
+              공개 데모는 읽기 전용입니다. 게시글과 댓글을 확인할 수 있습니다.
             </Alert>
           ) : (
             <Box sx={{ display: 'flex', gap: 1.5, mb: 3 }}>
@@ -917,7 +939,9 @@ const PostDetailPage = () => {
           {comments.length === 0 ? (
             <Box sx={{ textAlign: 'center', py: 4 }}>
               <ChatBubble sx={{ fontSize: 40, color: 'text.disabled', mb: 1 }} />
-              <Typography variant="body2" color="text.secondary">첫 댓글을 남겨보세요!</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {user ? '첫 댓글을 남겨보세요!' : '등록된 댓글이 없습니다.'}
+              </Typography>
             </Box>
           ) : (
             comments.map(comment => (
@@ -931,6 +955,7 @@ const PostDetailPage = () => {
                 onDeleteComment={handleDeleteComment}
                 onEditComment={handleEditComment}
                 isActionPending={isActionPending}
+                canMutate={Boolean(user)}
               />
             ))
           )}

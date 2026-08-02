@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import {
   Box, Container, Typography, TextField, Button, Alert,
@@ -7,6 +7,11 @@ import {
 import { Visibility, VisibilityOff, CheckCircle, Cancel } from '@mui/icons-material';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import { useAuth } from '../hooks/useAuth';
+import {
+  USERNAME_MIN_LENGTH,
+  USERNAME_PATTERN_SOURCE,
+  validateUsername,
+} from '../utils/usernamePolicy';
 
 const PASSWORD_RULES = [
   { label: '8자 이상', test: (pw) => pw.length >= 8 },
@@ -24,23 +29,52 @@ const SignupPage = () => {
   const [checkingUsername, setCheckingUsername] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [usernameTouched, setUsernameTouched] = useState(false);
+  const usernameCheckRequestRef = useRef(0);
+  const usernameCheckInFlightRef = useRef(false);
+  const submitInFlightRef = useRef(false);
+  const usernameValidation = validateUsername(form.username);
+  const showUsernameValidation = usernameTouched && !usernameValidation.isValid;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
-    if (name === 'username') setUsernameStatus(null);
+    setError('');
+    if (name === 'username') {
+      setUsernameTouched(true);
+      usernameCheckRequestRef.current += 1;
+      usernameCheckInFlightRef.current = false;
+      setCheckingUsername(false);
+      setUsernameStatus(null);
+    }
   };
 
   const handleCheckUsername = async () => {
-    if (!form.username.trim()) return;
+    setUsernameTouched(true);
+    if (loading || usernameCheckInFlightRef.current) return;
+
+    setError('');
+    setUsernameStatus(null);
+    if (!usernameValidation.isValid) return;
+
+    const requestId = ++usernameCheckRequestRef.current;
+    usernameCheckInFlightRef.current = true;
     setCheckingUsername(true);
     try {
-      const available = await checkUsernameAvailable(form.username.trim());
-      setUsernameStatus(available ? 'available' : 'taken');
-    } catch {
-      setUsernameStatus(null);
+      const available = await checkUsernameAvailable(usernameValidation.normalizedUsername);
+      if (requestId === usernameCheckRequestRef.current) {
+        setUsernameStatus(available ? 'available' : 'taken');
+      }
+    } catch (err) {
+      if (requestId === usernameCheckRequestRef.current) {
+        setUsernameStatus(null);
+        setError(err instanceof Error ? err.message : '아이디 중복확인을 완료하지 못했습니다. 잠시 후 다시 시도해주세요.');
+      }
     } finally {
-      setCheckingUsername(false);
+      if (requestId === usernameCheckRequestRef.current) {
+        usernameCheckInFlightRef.current = false;
+        setCheckingUsername(false);
+      }
     }
   };
 
@@ -48,13 +82,20 @@ const SignupPage = () => {
   const pwStrength = (passedRules.length / PASSWORD_RULES.length) * 100;
   const allPwRulesPassed = passedRules.length === PASSWORD_RULES.length;
   const formErrorId = error ? 'signup-form-error' : undefined;
-  const usernameStatusId = usernameStatus ? 'signup-username-status' : undefined;
+  const usernameStatusId = (usernameStatus || showUsernameValidation) ? 'signup-username-status' : undefined;
   const usernameDescription = [usernameStatusId, formErrorId].filter(Boolean).join(' ') || undefined;
   const passwordDescription = [form.password ? 'signup-password-rules' : undefined, formErrorId].filter(Boolean).join(' ') || undefined;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submitInFlightRef.current) return;
+
+    setUsernameTouched(true);
     setError('');
+    if (!usernameValidation.isValid) {
+      setError(usernameValidation.message);
+      return;
+    }
     if (usernameStatus !== 'available') {
       setError('아이디 중복확인을 완료해주세요.');
       return;
@@ -63,13 +104,17 @@ const SignupPage = () => {
       setError('비밀번호 규칙을 모두 충족해주세요.');
       return;
     }
+
+    submitInFlightRef.current = true;
     setLoading(true);
     try {
-      await signUp({ username: form.username.trim(), password: form.password });
+      await signUp({ username: usernameValidation.normalizedUsername, password: form.password });
       navigate('/');
     } catch (err) {
-      setError(err.message || '회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      setUsernameStatus(null);
+      setError(err instanceof Error ? err.message : '회원가입 중 오류가 발생했습니다. 아이디를 확인하고 다시 시도해주세요.');
     } finally {
+      submitInFlightRef.current = false;
       setLoading(false);
     }
   };
@@ -111,6 +156,7 @@ const SignupPage = () => {
         <Box
           component="form"
           onSubmit={handleSubmit}
+          noValidate
           sx={{
             bgcolor: 'background.paper',
             borderRadius: 3,
@@ -135,24 +181,32 @@ const SignupPage = () => {
               onChange={handleChange}
               fullWidth
               required
+              disabled={loading}
               autoComplete="username"
-              error={usernameStatus === 'taken'}
+              error={usernameStatus === 'taken' || showUsernameValidation}
               slotProps={{
                 htmlInput: {
+                  minLength: USERNAME_MIN_LENGTH,
+                  pattern: USERNAME_PATTERN_SOURCE,
                   'aria-describedby': usernameDescription,
-                  'aria-invalid': usernameStatus === 'taken',
+                  'aria-invalid': usernameStatus === 'taken' || showUsernameValidation,
                 },
               }}
             />
             <Button
               variant="outlined"
               onClick={handleCheckUsername}
-              disabled={checkingUsername || !form.username}
+              disabled={checkingUsername || loading || !usernameValidation.isValid}
               sx={{ whiteSpace: 'nowrap', minWidth: 90, minHeight: 44 }}
             >
-              중복확인
+              {checkingUsername ? '확인 중...' : '중복확인'}
             </Button>
           </Box>
+          {showUsernameValidation && (
+            <Typography id="signup-username-status" role="alert" variant="caption" color="error.main" sx={{ mb: 1.5, display: 'block' }}>
+              {usernameValidation.message}
+            </Typography>
+          )}
           {usernameStatus === 'available' && (
             <Typography id="signup-username-status" role="status" variant="caption" color="success.main" sx={{ mb: 1.5, display: 'block' }}>
               ✓ 사용 가능한 아이디입니다
@@ -163,7 +217,7 @@ const SignupPage = () => {
               ✗ 이미 사용 중인 아이디입니다
             </Typography>
           )}
-          {!usernameStatus && <Box sx={{ mb: 1.5 }} />}
+          {!usernameStatus && !showUsernameValidation && <Box sx={{ mb: 1.5 }} />}
 
           {/* 비밀번호 */}
           <TextField
@@ -176,7 +230,7 @@ const SignupPage = () => {
             required
             sx={{ mb: 1 }}
             autoComplete="new-password"
-            disabled={usernameStatus !== 'available'}
+            disabled={loading || usernameStatus !== 'available'}
             slotProps={{
               htmlInput: {
                 'aria-describedby': passwordDescription,
@@ -188,7 +242,7 @@ const SignupPage = () => {
                     <IconButton
                       onClick={() => setShowPw(p => !p)}
                       edge="end"
-                      disabled={usernameStatus !== 'available'}
+                      disabled={loading || usernameStatus !== 'available'}
                       aria-label={showPw ? '비밀번호 숨기기' : '비밀번호 표시'}
                       sx={{ width: 44, height: 44 }}
                     >
@@ -245,7 +299,7 @@ const SignupPage = () => {
             color="primary"
             fullWidth
             size="large"
-            disabled={loading}
+            disabled={loading || checkingUsername}
             sx={{ mb: 2, py: 1.5, borderRadius: 2.5, fontWeight: 700, minHeight: 44 }}
           >
             {loading ? '가입 중...' : '회원가입'}

@@ -2,7 +2,6 @@ import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-rout
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
 import PostListPage from './pages/PostListPage';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
@@ -29,9 +28,9 @@ const RouteLoading = () => (
 );
 
 const PrivateRoute = ({ children }) => {
-  const { user, loading, isGuest } = useAuth();
+  const { user, loading } = useAuth();
   if (loading) return <RouteLoading />;
-  return (user || isGuest) ? children : <Navigate to="/login" replace />;
+  return user ? children : <Navigate to="/login" replace />;
 };
 
 const PublicRoute = ({ children }) => {
@@ -43,7 +42,7 @@ const PublicRoute = ({ children }) => {
 const AppRoutes = () => (
   <Routes>
     <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-    <Route path="/signup" element={<PublicRoute><SignupPage /></PublicRoute>} />
+    <Route path="/signup" element={<Navigate to="/login" replace />} />
     <Route path="/" element={<PostListPage />} />
     <Route path="/posts/:id" element={<PostDetailPage />} />
     <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />

@@ -16,9 +16,8 @@
 
 ## 주요 기능
 
-- 로그인 / 회원가입
-- 게스트로 둘러보기
-- 테스트 계정 체험 안내
+- 공개 목록 / 상세 읽기 전용 데모
+- 비공개 기능 검증 계정 로그인
 - 게시글 목록 카드형 그리드
 - 카테고리별 기본 썸네일
 - 히어로 미니 프리뷰
@@ -71,19 +70,30 @@
 - 상태 배지는 category와 댓글 수를 바탕으로 만든 계산형 demo label이며, 저장된 workflow 상태가 아닙니다.
 - 작성 화면의 피드백 요청 선택값은 별도 field가 아니라 게시글 본문 앞에 문자열로 합쳐 저장됩니다.
 - source에는 Supabase query와 mutation 흐름이 구현되어 있지만, 실제 운영 insert/update/delete와 RLS 허용·차단 전체는 별도 검증이 필요합니다.
+- 공개 UI에는 회원가입 route와 로그인·작성·mutation CTA를 노출하지 않습니다. `/signup`은 `/login`으로 이동하며, `/login` 직접 접근은 비공개 A/B 기능 검증 계정에 한해 사용합니다.
 
 ---
 
-## 테스트 계정
+## 공개 프로필과 회원가입 보안
 
-- 아이디: demo
-- 비밀번호: demo1234!
+- 공개 작성자 정보와 아이디 중복 확인에 사용하는 profile field는 `id`, `username`뿐입니다. 클라이언트도 두 field만 명시적으로 조회합니다.
+- username은 client와 DB 모두 `trim + lowercase`로 정규화하며 `^[a-z0-9_]{4,20}$` 형식만 허용합니다. 기존 profile 4개는 이 계약 및 Auth email local-part와의 일치 여부를 사전에 확인했습니다.
+- 회원가입 클라이언트는 `app_id: portfolio-feedback-hub`와 정규화한 `username`을 Supabase Auth metadata로 전달하며 `profiles`에 직접 INSERT하지 않습니다. Migration A 적용 후에는 Feedback Hub 전용 `AFTER INSERT` trigger가 이 `app_id`에만 반응해 같은 transaction에서 `profiles(id, username)`을 생성합니다.
+- Migration A `20260801141625_secure_profiles_and_atomic_signup.sql`은 trigger/function과 username CHECK constraint만 추가합니다. `app_id`가 없는 기존 배포 source는 trigger가 profile 생성 전에 반환하므로 기존 client INSERT 경로와 권한을 그대로 사용합니다.
+- 공개 가입은 재개하지 않습니다. 읽기 전용 source 배포 완료를 먼저 확인한 뒤 Migration A/B/C를 순서대로 적용합니다. Migration B `20260801141626_lock_down_feedback_hub_profiles.sql`은 기존 client INSERT/UPDATE 권한과 policy를 회수하고 `anon`, `authenticated`에 `SELECT(id, username)`만 허용합니다.
+- Migration C `20260802030120_grant_feedback_hub_data_api.sql`은 community table과 sequence의 Data API 권한을 최소 범위로 명시합니다. `anon`은 게시글·댓글·좋아요를 읽기만 할 수 있고, `authenticated`와 `service_role`은 게시글·댓글 CRUD, 좋아요 SELECT·INSERT·DELETE, 자동 ID 생성을 위한 sequence `USAGE`만 가집니다.
+- Auth 가입/trigger 실패와 로그인 session 이후의 profile 조회 실패는 별도 단계입니다. 후속 profile 조회 실패는 이미 생성된 사용자를 다시 가입시키는 이유로 취급하지 않습니다.
+- 운영 전환 순서는 `공개 가입 중단 상태 유지 → 읽기 전용 source 배포 완료 확인 → Migration A 적용 → Migration B 적용 → Migration C 적용 → 비실명 A/B Auth·CRUD·RLS 검사 → 테스트 데이터와 고아 Auth 사용자 여부 확인·정리 → 공개 읽기 전용 운영 유지 여부 재확인`입니다. Migration A와 최종 검증 사이에는 공개 가입을 재개하지 않으며, 실제 최종 권한 상태인 Migration B와 C 적용 후 `/login` 직접 접근으로 A/B 검증을 수행합니다.
+- 적용된 migration은 삭제하거나 수정해 되돌리지 않고 별도 forward-fix migration으로 복구합니다. 복구 중에도 `phone`은 비공개로 유지하고 `SELECT(id, username)`보다 넓은 조회 권한이나 `GRANT ALL`을 부여하지 않습니다. client profile INSERT를 임시 복구해야 하는 경우에도 `INSERT(id, username)`과 본인 행만 허용하는 RLS보다 넓은 권한은 부여하지 않습니다.
+- 공개 전에는 비실명 전용 계정으로 실제 회원가입, 중복 아이디, 게시글·댓글·좋아요 CRUD, 타 사용자 차단 RLS를 A/B 검증해야 합니다.
 
-배포 환경의 Supabase Auth에 해당 계정이 등록되어 있어야 테스트 계정 로그인이 가능합니다.
+### 현재 검증 및 운영 상태
 
-테스트 계정 로그인이 실패해도 게스트 모드로 목록, 상세, 검색, 필터, 정렬 등 주요 화면을 확인할 수 있습니다.
-
-이 프로젝트는 데모 목적의 프로젝트이며, 실제 개인정보를 입력하지 않는 것을 권장합니다.
+- 구현됨: 공개 테스트 계정과 가입 route·CTA 제거, 공개 목록·상세 read-only UI, 실제 사용자 전용 private route, username 공통 정책, Auth metadata 기반 profile 생성용 Migration A, profile 최소 권한용 Migration B, community Data API 최소 권한용 Migration C.
+- 완료됨: 로컬 정적 검사와 브라우저 검사를 수행했으며, 최종 source는 lint·build·diff check로 다시 확인합니다.
+- 운영 DB 적용 전: Migration A/B/C는 아직 적용하지 않았습니다. 현재 운영 DB에는 Feedback Hub 전용 trigger/function과 username 형식 constraint가 없고, `anon`의 `profiles` table SELECT 및 `phone` 조회가 허용된 상태로 확인되었습니다.
+- 미검증: 운영 환경의 실제 Auth 가입·로그인, 게시글·댓글·좋아요 CRUD, RLS 허용·차단 A/B는 실행하지 않았습니다.
+- 공개 운영 정책: 공개 가입은 기본적으로 비활성 상태를 유지하고 목록·상세만 read-only로 제공합니다. Migration A/B/C 적용 후 최종 A/B 검증이 끝나더라도 가입 재개는 별도 제품 결정 없이는 수행하지 않습니다.
 
 ---
 
@@ -136,6 +146,7 @@ GitHub Actions 배포에서는 저장소 Secrets의 `SUPABASE_URL`, `SUPABASE_AN
 
 - 현재는 사용 권한이 있는 선택적 HTTPS 이미지 URL만 지원하며, Picsum과 허용되지 않은 URL은 차단
 - 실제 파일 업로드와 Supabase Storage 연동
+- 공유 `auth.users` 전체에 적용되는 기존 `auto_confirm_email_trigger`의 앱별 분리 또는 제거 검토
 - category / status / feedback focus의 구조화된 DB field와 제품 workflow
 - 실제 운영 CRUD와 RLS 정책 전체 검증
 - 마이페이지
@@ -150,6 +161,6 @@ GitHub Actions 배포에서는 저장소 Secrets의 `SUPABASE_URL`, `SUPABASE_AN
 
 이 프로젝트는 취업용 포트폴리오에 포함하기 위한 데모 프로젝트입니다.
 
-실제 운영 서비스가 아니므로 테스트 계정, 샘플 데이터, 게스트 모드는 시연 목적에 맞게 구성되어 있습니다.
+실제 운영 서비스가 아니므로 샘플 데이터와 게스트 모드는 시연 목적에 맞게 구성되어 있습니다.
 
 README에는 실제 구현된 기능과 향후 개선 예정 기능을 구분해 작성했습니다.

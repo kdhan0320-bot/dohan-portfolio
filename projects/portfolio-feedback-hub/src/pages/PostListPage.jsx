@@ -49,6 +49,10 @@ const PostCard = ({ post, onClick }) => {
     flexDirection: 'column',
     transition: 'transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease',
     '&:hover': { transform: 'translateY(-4px)', boxShadow: 8, borderColor: 'primary.main' },
+    '@media (prefers-reduced-motion: reduce)': {
+      transition: 'none',
+      '&:hover': { transform: 'none' },
+    },
   }}>
     <CardActionArea onClick={onClick} sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
       {previewUrl && !previewLoadFailed ? (
@@ -148,7 +152,7 @@ const SORT_OPTIONS = [
 
 const PostListPage = () => {
   const navigate = useNavigate();
-  const { user, isGuest } = useAuth();
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [dataState, setDataState] = useState('loading');
   const [query, setQuery] = useState('');
@@ -236,14 +240,6 @@ const PostListPage = () => {
     return picked;
   }, [posts]);
 
-  const handleWriteClick = () => {
-    if (user || isGuest) {
-      navigate('/write');
-    } else {
-      navigate('/login');
-    }
-  };
-
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Header />
@@ -254,8 +250,8 @@ const PostListPage = () => {
             <Typography sx={{ fontWeight: 700, mb: 0.5 }}>게시글을 불러오지 못했습니다.</Typography>
             <Typography variant="body2" sx={{ mb: 2 }}>잠시 후 다시 시도해 주세요.</Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Button size="small" variant="contained" onClick={fetchPosts}>다시 시도</Button>
-                <Button size="small" variant="outlined" onClick={showSampleData} sx={{ borderColor: 'primary.main' }}>
+              <Button size="small" variant="contained" onClick={fetchPosts} sx={{ minHeight: 40 }}>다시 시도</Button>
+                <Button size="small" variant="outlined" onClick={showSampleData} sx={{ minHeight: 40, borderColor: 'primary.main' }}>
                   샘플 데이터로 둘러보기
                 </Button>
             </Box>
@@ -278,7 +274,7 @@ const PostListPage = () => {
                 ? '등록된 실제 글이 없어 포트폴리오 데모용 샘플을 보여드립니다.'
                 : '조회 오류 후 선택한 포트폴리오 데모용 샘플입니다.'}
             </Typography>
-            <Button size="small" variant="outlined" onClick={fetchPosts} sx={{ borderColor: 'primary.main' }}>
+            <Button size="small" variant="outlined" onClick={fetchPosts} sx={{ minHeight: 40, borderColor: 'primary.main' }}>
               실제 데이터 다시 불러오기
             </Button>
           </Alert>
@@ -296,31 +292,23 @@ const PostListPage = () => {
               <Typography variant="body1" color="text.secondary" sx={{ mb: 2.5, maxWidth: 560 }}>
                 포트폴리오를 공유하고, UX/UI·취업 관점의 피드백을 주고받는 커뮤니티입니다.
               </Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 3 }}>
+              {user ? (
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mb: 3 }}>
                 <Button
                   variant="contained"
                   startIcon={<Add />}
-                  onClick={handleWriteClick}
+                  onClick={() => navigate('/write')}
                   aria-label="새 게시글 작성"
                   sx={{ px: 3, py: 1.2, minHeight: 44 }}
                 >
                   피드백 요청하기
                 </Button>
-                {!user && !isGuest && (
-                  <Button
-                      variant="outlined"
-                      onClick={() => navigate('/login')}
-                      sx={{ px: 3, py: 1.2, minHeight: 44, borderColor: 'primary.main' }}
-                  >
-                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                      게스트로 둘러보기 / 테스트 계정으로 체험하기
-                    </Box>
-                    <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
-                      데모 체험하기
-                    </Box>
-                  </Button>
-                )}
-              </Box>
+                </Box>
+              ) : (
+                <Alert severity="info" sx={{ mb: 3, maxWidth: 560 }}>
+                  공개 데모는 읽기 전용입니다. 게시글 목록과 상세 내용을 둘러볼 수 있습니다.
+                </Alert>
+              )}
 
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' }, gap: 1.5 }}>
                 {[
@@ -389,7 +377,7 @@ const PostListPage = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           size="small"
-          sx={{ mb: 2, '& .MuiOutlinedInput-root': { bgcolor: 'background.paper', borderRadius: 2, fontSize: '0.95rem' } }}
+          sx={{ mb: 2, '& .MuiOutlinedInput-root': { minHeight: 44, bgcolor: 'background.paper', borderRadius: 2, fontSize: '0.95rem' } }}
           slotProps={{
             htmlInput: { 'aria-label': '게시글 검색' },
             input: {
@@ -413,6 +401,7 @@ const PostListPage = () => {
                   onClick={() => setActiveCategory(cat)}
                   variant={active ? 'filled' : 'outlined'}
                   sx={{
+                    height: { xs: 40, sm: 32 },
                     fontWeight: active ? 700 : 400,
                     bgcolor: active ? 'primary.main' : 'transparent',
                     color: active ? '#fff' : 'text.secondary',
@@ -429,7 +418,7 @@ const PostListPage = () => {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               inputProps={{ 'aria-label': '정렬 기준' }}
-              sx={{ bgcolor: 'background.paper' }}
+              sx={{ minHeight: 44, bgcolor: 'background.paper' }}
             >
               {SORT_OPTIONS.map(opt => (
                 <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
@@ -486,7 +475,7 @@ const PostListPage = () => {
               href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/portfolio-feedback-hub"
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ borderColor: 'primary.main', width: { xs: '100%', sm: 'auto' } }}
+              sx={{ minHeight: 44, borderColor: 'primary.main', width: { xs: '100%', sm: 'auto' } }}
             >
               GitHub 보기
             </Button>
@@ -497,7 +486,7 @@ const PostListPage = () => {
               href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ width: { xs: '100%', sm: 'auto' } }}
+              sx={{ minHeight: 44, width: { xs: '100%', sm: 'auto' } }}
             >
               포트폴리오로 돌아가기
             </Button>

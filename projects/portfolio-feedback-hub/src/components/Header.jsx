@@ -7,14 +7,10 @@ import { useAuth } from '../hooks/useAuth';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user, isGuest, signOut, exitGuestMode } = useAuth();
+  const { user, signOut } = useAuth();
 
   const handleLogout = async () => {
-    if (isGuest) {
-      exitGuestMode();
-    } else {
-      await signOut();
-    }
+    await signOut();
     navigate('/login');
   };
 
@@ -39,21 +35,14 @@ const Header = () => {
               <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Portfolio Feedback Hub</Box>
               <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Feedback Hub</Box>
             </Typography>
-            {isGuest && (
-              <Chip
-                label="게스트 모드"
-                size="small"
-                sx={{ bgcolor: 'rgba(37,99,235,0.12)', color: 'primary.main', fontSize: '0.68rem', height: 22, flexShrink: 0, display: { xs: 'none', sm: 'inline-flex' } }}
-              />
-            )}
           </Box>
 
-          {(user || isGuest) ? (
+          {user ? (
             <Button
               size="small"
               variant="outlined"
               onClick={handleLogout}
-              aria-label={isGuest ? '게스트 모드 나가기' : '로그아웃'}
+              aria-label="로그아웃"
               startIcon={<Logout fontSize="small" />}
               sx={{
                 minWidth: 0,
@@ -64,17 +53,21 @@ const Header = () => {
                 '& .MuiButton-startIcon': { mr: 0.75 },
               }}
             >
-              {isGuest ? (
-                <>
-                  <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>나가기</Box>
-                  <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>게스트 나가기</Box>
-                </>
-              ) : '로그아웃'}
+              로그아웃
             </Button>
           ) : (
-            <Button size="small" variant="outlined" onClick={() => navigate('/login')} sx={{ fontSize: '0.78rem', minHeight: 44, flexShrink: 0 }}>
-              로그인
-            </Button>
+            <Chip
+              label="읽기 전용 데모"
+              size="small"
+              sx={{
+                bgcolor: 'rgba(37,99,235,0.12)',
+                color: 'primary.main',
+                fontSize: '0.68rem',
+                fontWeight: 700,
+                height: 28,
+                flexShrink: 0,
+              }}
+            />
           )}
         </Toolbar>
       </Container>

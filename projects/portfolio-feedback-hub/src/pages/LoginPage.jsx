@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   Box, Container, Typography, TextField, Button,
   Alert, InputAdornment, IconButton, Divider,
@@ -7,6 +7,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import { useAuth } from '../hooks/useAuth';
+import { isUsernameFormatValid, normalizeUsername } from '../utils/usernamePolicy';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -16,14 +17,28 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (e) => {
+    setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const normalizedUsername = normalizeUsername(form.username);
     setError('');
+
+    if (!normalizedUsername || !form.password) {
+      setError('아이디와 비밀번호를 모두 입력해주세요.');
+      return;
+    }
+    if (!isUsernameFormatValid(normalizedUsername)) {
+      setError('아이디는 영문 소문자, 숫자, 밑줄(_) 4~20자로 입력해주세요.');
+      return;
+    }
+
     setLoading(true);
     try {
-      await signIn(form);
+      await signIn({ username: normalizedUsername, password: form.password });
       navigate('/');
     } catch {
       setError('아이디 또는 비밀번호가 올바르지 않습니다.');
@@ -35,19 +50,6 @@ const LoginPage = () => {
   const handleGuestMode = () => {
     enterGuestMode();
     navigate('/');
-  };
-
-  const handleDemoLogin = async () => {
-    setError('');
-    setLoading(true);
-    try {
-      await signIn({ username: 'demo', password: 'demo1234!' });
-      navigate('/');
-    } catch {
-      setError('테스트 계정 로그인에 실패했습니다. 게스트로 둘러보기를 이용해주세요.');
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -94,6 +96,15 @@ const LoginPage = () => {
           </Typography>
         </Box>
 
+        <Alert severity="info" sx={{ mb: 2, borderRadius: 2 }}>
+          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+            공개 데모는 읽기 전용으로 운영합니다.
+          </Typography>
+          <Typography variant="body2">
+            로그인은 비공개 기능 검증 계정에 한해 사용합니다.
+          </Typography>
+        </Alert>
+
         {/* 게스트 버튼 — 최상단 Primary CTA */}
         <Button
           variant="contained"
@@ -106,28 +117,14 @@ const LoginPage = () => {
           게스트로 둘러보기
         </Button>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mb: 1.5 }}>
-          별도 회원가입 없이 샘플 게시글로 주요 화면을 확인할 수 있습니다.
-        </Typography>
-
-        {/* 테스트 계정 체험 */}
-        <Button
-          variant="outlined"
-          fullWidth
-          onClick={handleDemoLogin}
-          disabled={loading}
-          aria-label="테스트 계정으로 로그인 체험하기"
-          sx={{ mb: 1, py: 1.2, borderRadius: 2.5, fontWeight: 600, minHeight: 44 }}
-        >
-          테스트 계정으로 체험하기
-        </Button>
-        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mb: 3 }}>
-          테스트 계정이 준비된 경우 로그인 흐름을 체험할 수 있습니다. 로그인이 실패해도 게스트 모드로 주요 화면을 확인할 수 있습니다.
+          별도 회원가입 없이 목록과 상세 화면을 읽기 전용으로 둘러볼 수 있습니다.
         </Typography>
 
         {/* 로그인 폼 */}
         <Box
           component="form"
           onSubmit={handleSubmit}
+          noValidate
           sx={{
             bgcolor: 'background.paper',
             borderRadius: 3,
@@ -205,20 +202,6 @@ const LoginPage = () => {
           >
             {loading ? '로그인 중...' : '로그인'}
           </Button>
-
-          <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="body2" color="text.secondary">
-              아직 계정이 없으신가요?{' '}
-              <Typography
-                component={Link}
-                to="/signup"
-                variant="body2"
-                sx={{ color: 'primary.main', textDecoration: 'none', fontWeight: 700 }}
-              >
-                회원가입
-              </Typography>
-            </Typography>
-          </Box>
         </Box>
       </Container>
     </Box>
