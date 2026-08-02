@@ -161,10 +161,13 @@ const Navbar = () => {
     }
   };
 
-  const handleLogoClick = (e) => {
-    e.preventDefault();
+  const handleLogoClick = (event) => {
     setMenuOpen(false);
-    if (isHome) { scrollToSection('home'); } else { navigate('/'); }
+
+    if (isHome) {
+      event.preventDefault();
+      scrollToSection('home');
+    }
   };
 
   const handleSkipLink = (e) => {
@@ -230,8 +233,8 @@ const Navbar = () => {
           >
             {/* 로고: D2 + DOHAN KIM + UX/UI · WEB PUBLISHING */}
             <Box
-              component="a"
-              href={isHome ? '#home' : '/'}
+              component={RouterLink}
+              to="/"
               onClick={handleLogoClick}
               aria-label="Dohan.K 홈으로 이동"
               sx={{
