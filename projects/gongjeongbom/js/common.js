@@ -21,7 +21,7 @@ function headerTemplate() {
         ${navLink("index.html#solutions", "솔루션")}
         ${navLink("products.html", "제품", productsActive)}
         ${navLink("index.html#cases", "적용 예시")}
-        ${navLink("inquiry.html", "기술지원")}
+        ${navLink("inquiry.html", "기술 문의")}
         ${navLink("index.html#about", "기업 소개")}
       </nav>
       <div class="header-actions">
@@ -64,7 +64,7 @@ function menuTemplate() {
           ${navLink("products.html", "제품 →")}
           ${navLink("index.html#cases", "적용 예시 →")}
           <span>지원</span>
-          ${navLink("inquiry.html", "기술지원 →")}
+          ${navLink("inquiry.html", "기술 문의 →")}
           ${navLink("products.html", "제품 선택 도움말 →")}
           <span>기업</span>
           ${navLink("index.html#about", "기업 소개 →")}
@@ -95,6 +95,11 @@ function saveCompareIds(ids) {
 }
 
 export function toggleCompare(product) {
+  if (!product) {
+    const message = "제품 정보를 찾을 수 없습니다.";
+    announce(message);
+    return { ok: false, message };
+  }
   const current = getProducts(getCompareIds());
   const exists = current.some((candidate) => candidate.id === product.id);
 
@@ -174,10 +179,28 @@ function setupDialog(trigger, dialog) {
   dialog.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    dialog.close();
+  });
   dialog.addEventListener("close", () => opener?.focus());
 }
 
+function setupSkipLink() {
+  const main = document.querySelector("main");
+  if (!main) return;
+  if (!main.id) main.id = "main-content";
+  main.classList.add("main-content-target");
+  main.setAttribute("tabindex", "-1");
+  document.body.insertAdjacentHTML(
+    "afterbegin",
+    `<a class="skip-link" href="#${main.id}">본문으로 바로가기</a>`,
+  );
+}
+
 function initCommon() {
+  setupSkipLink();
   const header = document.querySelector(".site-header");
   const footer = document.querySelector(".site-footer");
   if (header) header.innerHTML = headerTemplate();

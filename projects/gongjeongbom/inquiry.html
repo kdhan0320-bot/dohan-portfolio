@@ -26,30 +26,30 @@
     <section class="inquiry-section section--muted">
       <div class="container inquiry-layout">
         <form id="inquiry-form" novalidate>
-          <div class="error-summary" role="alert" tabindex="-1" hidden><h2>입력 내용을 확인해 주세요.</h2><ul></ul></div>
+          <div class="error-summary" id="error-summary" role="alert" tabindex="-1" hidden><h2>입력 내용을 확인해 주세요.</h2><ul></ul></div>
           <section class="form-step" data-step="1" aria-labelledby="step1-title">
-            <h2 id="step1-title">1. 문의 목적</h2>
+            <h2 id="step1-title" tabindex="-1">1. 문의 목적</h2>
             <p>가장 가까운 문의 유형을 선택하세요.</p>
-            <fieldset><legend>문의 유형 · 필수</legend>
-              <label class="choice-card"><input type="radio" name="purpose" value="제품 선택·적용 가능성" required>제품 선택·적용 가능성</label>
-              <label class="choice-card"><input type="radio" name="purpose" value="기존 설비 연동">기존 설비 연동</label>
-              <label class="choice-card"><input type="radio" name="purpose" value="기술 사양">기술 사양 확인</label>
+            <fieldset id="purpose-group" tabindex="-1" data-error-label="문의 유형"><legend>문의 유형 · 필수</legend>
+              <label class="choice-card" for="purpose-selection"><input id="purpose-selection" type="radio" name="purpose" value="제품 선택·적용 가능성" required>제품 선택·적용 가능성</label>
+              <label class="choice-card" for="purpose-integration"><input id="purpose-integration" type="radio" name="purpose" value="기존 설비 연동">기존 설비 연동</label>
+              <label class="choice-card" for="purpose-specification"><input id="purpose-specification" type="radio" name="purpose" value="기술 사양">기술 사양 확인</label>
             </fieldset>
             <div class="form-actions"><button class="button button--primary next-step" type="button">다음: 공정·제품</button></div>
           </section>
           <section class="form-step" data-step="2" aria-labelledby="step2-title" hidden>
-            <h2 id="step2-title">2. 공정과 관심 제품</h2>
+            <h2 id="step2-title" tabindex="-1">2. 공정과 관심 제품</h2>
             <p>상담에 필요한 최소 조건만 입력합니다. 정확히 모르는 항목은 비워둘 수 있습니다.</p>
             <div class="field-grid">
-              <label>해결하려는 문제 · 필수<input name="problem" required placeholder="예: 누락·오조립 검사"><small>검사하려는 오류 유형</small></label>
-              <label>적용 산업<select name="industry"><option value="">선택 사항</option><option>자동차 부품</option><option>전자 부품</option><option>식품·포장</option><option>금속 가공</option></select><small>선택 사항</small></label>
+              <label for="field-problem">해결하려는 문제 · 필수<input id="field-problem" name="problem" data-error-label="해결하려는 문제" required placeholder="예: 누락·오조립 검사"><small>검사하려는 오류 유형</small></label>
+              <label for="field-industry">적용 산업<select id="field-industry" name="industry"><option value="">선택 사항</option><option>자동차 부품</option><option>전자 부품</option><option>식품·포장</option><option>금속 가공</option></select><small>선택 사항</small></label>
             </div>
             <fieldset><legend>관심 제품</legend><div class="selected-products"></div></fieldset>
             <div class="field-grid">
-              <label>검사 대상<input name="target" placeholder="예: 커넥터 조립 상태"><small>제품·부품 또는 검사 위치</small></label>
-              <label>설치 예정 시점<select name="schedule"><option value="">선택 사항</option><option>검토 중</option><option>3개월 이내</option><option>6개월 이내</option></select><small>대략적인 검토 일정</small></label>
+              <label for="field-target">검사 대상<input id="field-target" name="target" placeholder="예: 커넥터 조립 상태"><small>제품·부품 또는 검사 위치</small></label>
+              <label for="field-schedule">설치 예정 시점<select id="field-schedule" name="schedule"><option value="">선택 사항</option><option>검토 중</option><option>3개월 이내</option><option>6개월 이내</option></select><small>대략적인 검토 일정</small></label>
             </div>
-            <label>현재 문제 · 필수<textarea name="details" required rows="4" placeholder="공정에서 확인하려는 문제를 적어 주세요."></textarea></label>
+            <label for="field-details">현재 문제 · 필수<textarea id="field-details" name="details" data-error-label="현재 문제" required rows="4" placeholder="공정에서 확인하려는 문제를 적어 주세요."></textarea></label>
             <fieldset class="optional-checks"><legend>추가로 확인하면 좋은 조건</legend>
               <label><input type="checkbox" name="conditions" value="시야 범위">대상 크기와 변동 범위</label>
               <label><input type="checkbox" name="conditions" value="라인 속도">라인 속도</label>
@@ -60,15 +60,15 @@
             <div class="form-actions"><button class="button button--secondary prev-step" type="button">이전</button><button class="button button--primary next-step" type="button">다음: 담당자 정보</button></div>
           </section>
           <section class="form-step" data-step="3" aria-labelledby="step3-title" hidden>
-            <h2 id="step3-title">3. 담당자 정보와 확인</h2>
+            <h2 id="step3-title" tabindex="-1">3. 담당자 정보와 확인</h2>
             <p>데모 완료 상태를 확인하기 위한 최소 입력입니다.</p>
             <div class="field-grid">
-              <label>이름 · 필수<input name="name" autocomplete="name" required></label>
-              <label>회사·조직<input name="company" autocomplete="organization"></label>
-              <label>이메일 · 필수<input name="email" type="email" autocomplete="email" required placeholder="name@example.com"></label>
-              <label>연락처<input name="phone" type="tel" autocomplete="tel"></label>
+              <label for="field-name">이름 · 필수<input id="field-name" name="name" data-error-label="이름" autocomplete="name" required></label>
+              <label for="field-company">회사·조직<input id="field-company" name="company" autocomplete="organization"></label>
+              <label for="field-email">이메일 · 필수<input id="field-email" name="email" data-error-label="이메일" type="email" autocomplete="email" required placeholder="name@example.com"></label>
+              <label for="field-phone">연락처<input id="field-phone" name="phone" type="tel" autocomplete="tel"></label>
             </div>
-            <label class="confirm-check"><input type="checkbox" name="demo-confirm" required>실제 저장·전송이 없는 포트폴리오 데모임을 확인했습니다.</label>
+            <label class="confirm-check" for="field-demo-confirm"><input id="field-demo-confirm" type="checkbox" name="demo-confirm" data-error-label="포트폴리오 데모 확인" required>실제 저장·전송이 없는 포트폴리오 데모임을 확인했습니다.</label>
             <div class="review-box"></div>
             <div class="form-actions"><button class="button button--secondary prev-step" type="button">이전</button><button class="button button--primary" type="submit">데모 문의 완료</button></div>
           </section>

@@ -20,7 +20,7 @@ const selectedProducts = getProducts(initialIds);
 setInquiryProducts(selectedProducts.map(({ id }) => id));
 
 document.querySelector(".selected-products").innerHTML = selectedProducts.length
-  ? selectedProducts.map((product) => `<label class="selected-product"><input type="checkbox" name="products" value="${product.id}" checked>${product.model} ×</label>`).join("")
+  ? selectedProducts.map((product) => `<label class="selected-product" for="selected-product-${product.id}"><input id="selected-product-${product.id}" type="checkbox" name="products" value="${product.id}" checked>${product.model} ×</label>`).join("")
   : '<p>선택한 제품이 없습니다. 제품 없이도 문의할 수 있습니다.</p>';
 
 if (selectedProducts.length) {
@@ -74,45 +74,90 @@ function fieldsForStep(step) {
   return [...document.querySelector(`[data-step="${step}"]`).querySelectorAll("input, select, textarea")];
 }
 
-function fieldLabel(field) {
-  return field.closest("label")?.childNodes[0]?.textContent?.trim()
-    || field.closest("fieldset")?.querySelector("legend")?.textContent?.trim()
-    || field.name;
+function validationItems(step) {
+  const fields = fieldsForStep(step);
+  const radioGroups = new Set();
+  const items = [];
+
+  fields.forEach((field) => {
+    if (field.type === "radio") {
+      if (radioGroups.has(field.name)) return;
+      radioGroups.add(field.name);
+      const controls = fields.filter((candidate) => candidate.type === "radio" && candidate.name === field.name);
+      if (controls.some((control) => control.required) && !controls.some((control) => control.checked)) {
+        items.push({ controls, target: field.closest("fieldset"), linkTarget: controls[0], field });
+      }
+      return;
+    }
+    if (!field.checkValidity()) items.push({ controls: [field], target: field, linkTarget: field, field });
+  });
+
+  return items;
+}
+
+function itemLabel({ target, field }) {
+  return target.dataset.errorLabel
+    || field.dataset.errorLabel
+    || field.labels?.[0]?.textContent?.trim()
+    || "필수 항목";
+}
+
+function clearValidationState() {
+  form.querySelectorAll('[aria-invalid="true"]').forEach((node) => node.removeAttribute("aria-invalid"));
+  errorSummary.hidden = true;
+  errorSummary.querySelector("ul").innerHTML = "";
+}
+
+function clearResolvedItem(control) {
+  const target = control.type === "radio" ? control.closest("fieldset") : control;
+  if (!target) return;
+  const resolved = control.type === "radio"
+    ? [...target.querySelectorAll('input[type="radio"]')].some((radio) => radio.checked)
+    : control.checkValidity();
+  if (!resolved) return;
+  target.removeAttribute("aria-invalid");
+  const linkId = control.type === "radio"
+    ? target.querySelector('input[type="radio"]').id
+    : target.id;
+  const link = [...errorSummary.querySelectorAll('a[href^="#"]')]
+    .find((candidate) => candidate.getAttribute("href") === `#${linkId}`);
+  link?.closest("li")?.remove();
+  if (!errorSummary.querySelector("li")) errorSummary.hidden = true;
 }
 
 function validateStep(step) {
-  const invalid = fieldsForStep(step).filter((field) => !field.checkValidity());
-  errorSummary.hidden = invalid.length === 0;
+  clearValidationState();
+  const invalid = validationItems(step);
   if (!invalid.length) return true;
 
-  errorSummary.querySelector("ul").innerHTML = invalid.map((field) => {
-    const message = field.validity.typeMismatch ? "올바른 이메일 형식으로 입력해 주세요." : "필수 항목을 입력하거나 선택해 주세요.";
-    return `<li><a href="#${field.id || field.name}">${fieldLabel(field)}: ${message}</a></li>`;
+  errorSummary.querySelector("ul").innerHTML = invalid.map((item) => {
+    const message = item.field.validity.typeMismatch ? "올바른 이메일 형식으로 입력해 주세요." : "필수 항목을 입력하거나 선택해 주세요.";
+    return `<li><a href="#${item.linkTarget.id}">${itemLabel(item)}: ${message}</a></li>`;
   }).join("");
-  invalid.forEach((field) => {
-    field.setAttribute("aria-invalid", "true");
-    if (!field.id) field.id = `field-${field.name}`;
-  });
-  errorSummary.focus();
-  invalid[0].focus();
+  invalid.forEach(({ target }) => target.setAttribute("aria-invalid", "true"));
+  errorSummary.hidden = false;
+  errorSummary.focus({ preventScroll: true });
+  errorSummary.scrollIntoView({ block: "center" });
   return false;
 }
 
 form.addEventListener("input", (event) => {
-  event.target.removeAttribute("aria-invalid");
+  clearResolvedItem(event.target);
   updateSummary();
 });
-form.addEventListener("change", updateSummary);
+form.addEventListener("change", (event) => {
+  clearResolvedItem(event.target);
+  updateSummary();
+});
 
 form.addEventListener("click", (event) => {
   if (event.target.closest(".next-step")) {
     if (validateStep(currentStep)) {
-      errorSummary.hidden = true;
       showStep(Math.min(3, currentStep + 1));
     }
   }
   if (event.target.closest(".prev-step")) {
-    errorSummary.hidden = true;
+    clearValidationState();
     showStep(Math.max(1, currentStep - 1));
   }
 });
@@ -122,7 +167,7 @@ form.addEventListener("submit", (event) => {
   if (!validateStep(3)) return;
   const completion = document.querySelector(".completion-state");
   steps.forEach((step) => { step.hidden = true; });
-  errorSummary.hidden = true;
+  clearValidationState();
   document.querySelector(".inquiry-summary").hidden = true;
   completion.hidden = false;
   indicators.forEach((indicator) => indicator.classList.remove("is-active"));

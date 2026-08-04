@@ -1,24 +1,8 @@
 @font-face {
   font-family: "Noto Sans KR";
-  src: url("../assets/fonts/NotoSansKR-400.woff2") format("woff2");
+  src: url("../assets/fonts/NotoSansKR-Variable-Subset.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url("../assets/fonts/NotoSansKR-500.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url("../assets/fonts/NotoSansKR-700.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
+  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -27,14 +11,6 @@
   src: url("../assets/fonts/RobotoMono-500.woff2") format("woff2");
   font-style: normal;
   font-weight: 500 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Noto Sans KR Full";
-  src: url("../assets/fonts/NotoSansKR-VF.ttf") format("truetype-variations");
-  font-style: normal;
-  font-weight: 100 900;
   font-display: swap;
 }
 
@@ -86,7 +62,7 @@ body {
   min-width: 320px;
   background: var(--color-page);
   color: var(--color-text);
-  font-family: "Noto Sans KR", "Noto Sans KR Full", "Malgun Gothic", sans-serif;
+  font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
   font-size: 16px;
   line-height: 1.625;
   -webkit-font-smoothing: antialiased;
@@ -164,6 +140,29 @@ h3 {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 12px;
+  left: 12px;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--color-inverse);
+  color: #fff;
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.main-content-target,
+main [id] {
+  scroll-margin-top: 72px;
 }
 
 .mobile-only {
@@ -999,6 +998,20 @@ legend {
 .product-visual img {
   width: 100%;
   height: 260px;
+}
+
+.product-visual__diagram {
+  display: grid;
+  width: 100%;
+  height: 260px;
+  place-items: center;
+}
+
+.product-visual__diagram .family-diagram,
+.product-visual__diagram .model-diagram {
+  width: min(320px, 100%);
+  height: auto;
+  flex-basis: auto;
 }
 
 .product-visual small {
@@ -1855,6 +1868,10 @@ legend {
     height: 180px;
   }
 
+  .product-visual__diagram {
+    height: 180px;
+  }
+
   .product-hero h1 {
     font-size: 2rem;
   }
@@ -1921,7 +1938,11 @@ legend {
   }
 
   .compare-mobile-card p strong {
-    min-width: 34px;
+    min-width: 76px;
+    flex: 0 0 auto;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
   }
 
   .demo-banner .container {
@@ -2303,7 +2324,7 @@ legend {
 
 /* READY 화면 정합화 */
 .font-tech {
-  font-family: "Roboto Mono", "Noto Sans KR", "Noto Sans KR Full", monospace;
+  font-family: "Roboto Mono", "Noto Sans KR", monospace;
   letter-spacing: -0.02em;
 }
 
@@ -2357,6 +2378,10 @@ legend {
 .product-visual img {
   height: 320px;
   object-fit: contain;
+}
+
+.product-visual__diagram {
+  height: 320px;
 }
 
 .product-summary h1 {
@@ -2585,7 +2610,7 @@ legend {
   background: var(--color-primary);
   color: #fff;
   cursor: pointer;
-  font-family: "Roboto Mono", "Noto Sans KR", "Noto Sans KR Full", monospace;
+  font-family: "Roboto Mono", "Noto Sans KR", monospace;
   font-weight: 600;
 }
 
@@ -2711,7 +2736,10 @@ legend {
   }
 
   .product-card h3 {
-    font-family: "Roboto Mono", "Noto Sans KR", "Noto Sans KR Full", monospace;
+    font-family: "Roboto Mono", "Noto Sans KR", monospace;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    word-break: normal;
   }
 
   .product-card .chip-row span:nth-child(n + 3) {
@@ -2863,6 +2891,11 @@ legend {
     padding-block: 34px;
   }
 
+  .product-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
   .product-summary h1 {
     margin-block: 12px 8px;
   }
@@ -2911,7 +2944,7 @@ legend {
   align-items: center;
   justify-content: space-between;
   color: #00796f;
-  font-family: "Roboto Mono", "Noto Sans KR Full", monospace;
+  font-family: "Roboto Mono", "Noto Sans KR", monospace;
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 24px;

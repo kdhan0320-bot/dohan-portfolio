@@ -246,6 +246,11 @@ filterDialog.querySelector(".apply-filter").addEventListener("click", () => {
   heading.focus();
 });
 filterDialog.addEventListener("close", () => filterOpener?.focus());
+filterDialog.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  event.preventDefault();
+  filterDialog.close();
+});
 filterDialog.addEventListener("click", (event) => {
   if (event.target === filterDialog) filterDialog.close();
 });
