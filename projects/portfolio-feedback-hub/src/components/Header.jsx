@@ -29,6 +29,7 @@ const Header = () => {
               </Box>
             </Box>
             <Typography
+              component="span"
               variant="h6"
               sx={{ fontWeight: 800, letterSpacing: '-0.3px', whiteSpace: 'nowrap', flexShrink: 0 }}
             >

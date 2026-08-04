@@ -8,6 +8,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import { useAuth } from '../hooks/useAuth';
 import { isUsernameFormatValid, normalizeUsername } from '../utils/usernamePolicy';
+import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const LoginPage = () => {
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  usePageTitle(PAGE_TITLES.login);
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));

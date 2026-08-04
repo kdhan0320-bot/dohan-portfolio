@@ -39,16 +39,31 @@ const PublicRoute = ({ children }) => {
   return !user ? children : <Navigate to="/" replace />;
 };
 
+const focusMainContent = (event) => {
+  event.preventDefault();
+  const main = document.getElementById('main-content');
+  if (!main) return;
+  main.focus({ preventScroll: true });
+  main.scrollIntoView({ block: 'start' });
+};
+
 const AppRoutes = () => (
-  <Routes>
-    <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-    <Route path="/signup" element={<Navigate to="/login" replace />} />
-    <Route path="/" element={<PostListPage />} />
-    <Route path="/posts/:id" element={<PostDetailPage />} />
-    <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
-    <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />
-    <Route path="*" element={<NotFoundPage />} />
-  </Routes>
+  <>
+    <a className="skip-link" href="#main-content" onClick={focusMainContent}>
+      본문으로 바로가기
+    </a>
+    <Box component="main" id="main-content" tabIndex={-1}>
+      <Routes>
+        <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+        <Route path="/signup" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<PostListPage />} />
+        <Route path="/posts/:id" element={<PostDetailPage />} />
+        <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
+        <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Box>
+  </>
 );
 
 const App = () => (

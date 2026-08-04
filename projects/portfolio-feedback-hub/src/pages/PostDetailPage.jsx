@@ -17,6 +17,7 @@ import { SAMPLE_POSTS, SAMPLE_COMMENTS, getCategoryLabel, getStatusBadge } from 
 import SubPageHeader from '../components/SubPageHeader';
 import CategoryThumbnail from '../components/CategoryThumbnail';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
+import { getPostPageTitle, PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const formatRelativeTime = (dateStr) => {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -364,6 +365,15 @@ const PostDetailPage = () => {
     : null;
   const safePostImageUrl = validateAndNormalizeImageUrl(post?.image_url).imageUrl;
   const displayImageUrl = sampleAssetUrl || safePostImageUrl;
+  const pageTitle = isInvalidPostId || loadState === 'not-found' || (!post && loadState !== 'loading' && loadState !== 'error')
+    ? PAGE_TITLES.postMissing
+    : loadState === 'error'
+      ? PAGE_TITLES.postError
+      : post
+        ? getPostPageTitle(post.title, isSamplePost)
+        : PAGE_TITLES.postLoading;
+
+  usePageTitle(pageTitle);
 
   useEffect(() => {
     setImageLoadFailed(false);
@@ -810,7 +820,13 @@ const PostDetailPage = () => {
             </Box>
           )}
 
-          <Typography component="h2" variant="h2" sx={{ mb: 2 }}>{post.title}</Typography>
+          <Typography component="h2" variant="h2" sx={{ mb: isSamplePost ? 1.5 : 2 }}>{post.title}</Typography>
+
+          {isSamplePost && (
+            <Alert severity="info" sx={{ mb: 2.5 }}>
+              포트폴리오 데모용 샘플입니다. 실제 등록된 게시글이 아닙니다.
+            </Alert>
+          )}
 
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>

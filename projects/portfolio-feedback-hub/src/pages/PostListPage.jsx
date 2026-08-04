@@ -18,6 +18,7 @@ import { getCategoryTheme } from '../constants/categoryTheme';
 import Header from '../components/Header';
 import CategoryThumbnail from '../components/CategoryThumbnail';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
+import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const IMG_HEIGHT = 180;
 
@@ -88,7 +89,7 @@ const PostCard = ({ post, onClick }) => {
           )}
         </Box>
 
-        <Typography variant="h6" sx={{ mb: 1, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.4 }}>
+        <Typography component="h3" variant="h6" sx={{ mb: 1, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', lineHeight: 1.4 }}>
           {post.title}
         </Typography>
 
@@ -158,6 +159,8 @@ const PostListPage = () => {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('전체');
   const [sortBy, setSortBy] = useState('latest');
+
+  usePageTitle(PAGE_TITLES.list);
 
   const fetchPosts = useCallback(async () => {
     setDataState('loading');
@@ -318,7 +321,7 @@ const PostListPage = () => {
                   { label: 'AI 활용 질문', value: stats.ai },
                 ].map(({ label, value }) => (
                   <Box key={label} sx={{ p: 1.5, borderRadius: 2, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
-                    <Typography variant="h3">{value}개</Typography>
+                    <Typography component="p" variant="h3">{value}개</Typography>
                     <Typography variant="caption" color="text.secondary">{label}</Typography>
                   </Box>
                 ))}
@@ -434,6 +437,16 @@ const PostListPage = () => {
           </Typography>
         )}
 
+        <Typography
+          component="h2"
+          sx={{
+            position: 'absolute', width: '1px', height: '1px', p: 0, m: -1,
+            overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0,
+          }}
+        >
+          피드백 게시글
+        </Typography>
+
         {dataState === 'error' ? null : loading ? (
           <Grid container spacing={3}>
             {Array.from({ length: 6 }).map((_, i) => (
@@ -452,7 +465,12 @@ const PostListPage = () => {
           <Grid container spacing={3}>
             {filtered.map(post => (
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={post.id}>
-                <PostCard post={post} onClick={() => navigate(`/posts/${post.id}`)} />
+                <PostCard
+                  post={post}
+                  onClick={() => navigate(`/posts/${post.id}`, {
+                    state: isSample ? { sampleSource: dataState } : undefined,
+                  })}
+                />
               </Grid>
             ))}
           </Grid>
@@ -463,9 +481,9 @@ const PostListPage = () => {
           mt: 6, p: { xs: 3, sm: 4 }, borderRadius: 3,
           bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider',
         }}>
-          <Typography variant="h4" sx={{ mb: 1 }}>Project Info</Typography>
+          <Typography component="p" variant="h4" sx={{ mb: 1 }}>Project Info</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5, lineHeight: 1.7 }}>
-            이 프로젝트는 React, MUI, Supabase로 구현한 포트폴리오 피드백 커뮤니티입니다. 카테고리 필터, 검색, 정렬, 댓글, 좋아요 기능을 통해 피드백 중심의 게시판 흐름을 설계했습니다.
+            React, MUI, Supabase로 구현한 포트폴리오 피드백 커뮤니티입니다. 공개 방문자는 목록·상세를 읽기 전용으로 탐색하고, 운영 글이 없으면 가상 게시글과 피드백 관계를 sample로 확인합니다. Auth·CRUD·댓글·답글·좋아요·RLS는 비공개 QA에서 검증했으며, 공개 가입·자유 작성·Storage upload·runtime AI는 제공하지 않습니다.
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
             <Button

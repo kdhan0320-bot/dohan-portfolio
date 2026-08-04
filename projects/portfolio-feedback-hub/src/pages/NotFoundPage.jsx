@@ -1,9 +1,12 @@
 import { Box, Button, Container, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
+import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const NotFoundPage = () => {
   const navigate = useNavigate();
+
+  usePageTitle(PAGE_TITLES.notFound);
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
