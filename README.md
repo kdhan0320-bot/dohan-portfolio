@@ -30,7 +30,7 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 |---|---|---|
 | my-portfolio | 취업용 웹 포트폴리오 | https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/ |
 | jobflow-dashboard | 취업 포트폴리오 Featured | https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/ |
-| portfolio-feedback-hub | 취업 포트폴리오 Featured | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
+| portfolio-feedback-hub | 취업 포트폴리오 More Works | https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/ |
 | mini_sns | Learning Archive · 현재 취업 포트폴리오 비노출 | https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/ |
 | Streaming UI Concept | 취업 포트폴리오 More Works | https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/ |
 
@@ -42,8 +42,9 @@ AI 활용 UX/UI·웹퍼블리싱 작업을 장기간 관리하는 개인 작업�
 **jobflow-dashboard** — Supabase Auth + PostgreSQL 실제 연동. 게스트
 모드에서는 샘플 데이터로 주요 화면을 체험할 수 있습니다.
 
-**Portfolio Feedback Hub** (`projects/portfolio-feedback-hub`) — Supabase Auth + PostgreSQL 실제 연동. 테스트 계정으로
-로그인하거나, 게스트 모드로 로그인 없이 주요 화면을 확인할 수 있습니다.
+**Portfolio Feedback Hub** (`projects/portfolio-feedback-hub`) — 공개 목록·상세는 읽기 전용이며,
+운영 게시글이 0건이면 sample fallback을 표시합니다. Auth·CRUD·댓글·답글·좋아요와 소유권 RLS는
+비공개 QA 계정으로 검증한 범위이고, 공개 자유 가입·작성 기능과 runtime AI·LLM API는 제공하지 않습니다.
 
 **mini_sns** — 교육 과정 결과물을 React/MUI 모바일 화면 흐름 학습 기록으로
 재정리한 Learning Archive입니다. 현재 취업용 포트폴리오 공개 작품에는 포함하지
