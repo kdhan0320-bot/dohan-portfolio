@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Box, Card, CardContent, Typography, TextField, Button,
   Select, MenuItem, FormControl, InputLabel, Alert, Stack,
@@ -8,6 +8,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
 import { PROMPT_TYPES } from '../constants';
 import { generatePrompt } from '../utils/promptHelpers';
+import ActionFeedback from '../components/ui/ActionFeedback';
 
 const AIPromptPage = () => {
   const [role, setRole] = useState('UX/UI 디자이너');
@@ -16,6 +17,12 @@ const AIPromptPage = () => {
   const [promptType, setPromptType] = useState('자기소개서');
   const [generated, setGenerated] = useState('');
   const [copied, setCopied] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const copyTimerRef = useRef(null);
+
+  useEffect(() => () => {
+    if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+  }, []);
 
   const handleGenerate = () => {
     const text = generatePrompt(promptType, role, company, project);
@@ -24,18 +31,39 @@ const AIPromptPage = () => {
 
   const handleCopy = async () => {
     if (!generated) return;
+    let copySucceeded = false;
+
     try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard API unavailable');
       await navigator.clipboard.writeText(generated);
+      copySucceeded = true;
     } catch {
       const el = document.createElement('textarea');
       el.value = generated;
+      el.setAttribute('readonly', '');
+      el.style.position = 'fixed';
+      el.style.opacity = '0';
       document.body.appendChild(el);
       el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
+      try {
+        copySucceeded = document.execCommand('copy');
+      } catch {
+        copySucceeded = false;
+      } finally {
+        document.body.removeChild(el);
+      }
     }
+
+    if (!copySucceeded) {
+      setCopied(false);
+      setFeedback({ severity: 'error', message: '복사하지 못했습니다. 브라우저 권한을 확인한 뒤 다시 시도해주세요.' });
+      return;
+    }
+
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setFeedback({ severity: 'success', message: '프롬프트를 클립보드에 복사했습니다.' });
+    if (copyTimerRef.current) window.clearTimeout(copyTimerRef.current);
+    copyTimerRef.current = window.setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -89,7 +117,7 @@ const AIPromptPage = () => {
               fullWidth
               value={project}
               onChange={(e) => setProject(e.target.value)}
-              placeholder="예: Mini SNS, Portfolio Feedback Hub, JobFlow Dashboard"
+              placeholder="예: 공정봄, JobFlow, 설비잇"
               slotProps={{ htmlInput: { 'aria-label': '강조할 프로젝트 입력' } }}
             />
             <Button
@@ -117,7 +145,7 @@ const AIPromptPage = () => {
                 startIcon={copied ? <CheckIcon /> : <ContentCopyIcon />}
                 onClick={handleCopy}
                 color={copied ? 'success' : 'primary'}
-                aria-label="프롬프트 복사"
+                aria-label={copied ? '프롬프트 복사 완료' : '프롬프트 복사'}
               >
                 {copied ? '복사됨' : '복사'}
               </Button>
@@ -147,6 +175,7 @@ const AIPromptPage = () => {
           </CardContent>
         </Card>
       )}
+      <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
     </Box>
   );
 };

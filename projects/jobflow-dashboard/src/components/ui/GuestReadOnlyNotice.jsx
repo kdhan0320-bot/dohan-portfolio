@@ -31,6 +31,9 @@ const GuestReadOnlyNotice = ({
           <Box sx={{ wordBreak: 'keep-all', overflowWrap: 'break-word' }}>
             {description}
           </Box>
+          <Box sx={{ mt: 0.5, fontSize: '0.8125rem', wordBreak: 'keep-all', overflowWrap: 'break-word' }}>
+            현재 탭에서 새로고침해도 체험 상태가 유지됩니다.
+          </Box>
         </Box>
         <Button
           variant="contained"

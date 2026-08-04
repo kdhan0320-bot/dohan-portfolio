@@ -5,38 +5,27 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { DRAWER_WIDTH } from './Sidebar';
+import { getRouteTitle } from '../../constants';
+import { getAuthErrorMessage } from '../../utils/authErrors';
 
-const PAGE_TITLES = {
-  '/': '대시보드',
-  '/applications': '지원 현황',
-  '/applications/new': '지원 정보 추가',
-  '/kanban': '전형 보드',
-  '/checklist': '체크리스트',
-  '/interview': '면접 메모',
-  '/ai-prompt': '문서 작성 도우미',
-  '/settings': '설정',
-};
-
-const Header = ({ onMenuClick }) => {
+const Header = ({ onMenuClick, menuButtonRef }) => {
   const { signOut, isGuest } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const isApplicationEdit = /^\/applications\/[^/]+\/edit$/.test(location.pathname);
-  const isApplicationDetail = /^\/applications\/[^/]+(?:\/edit)?$/.test(location.pathname);
-  const title = PAGE_TITLES[location.pathname]
-    ?? (isApplicationEdit
-      ? '지원 정보 수정'
-      : isApplicationDetail
-        ? '지원 정보'
-        : '페이지를 찾을 수 없음');
+  const title = getRouteTitle(location.pathname);
   const [logoutError, setLogoutError] = useState('');
+
+  const handleMenuClick = (event) => {
+    event.currentTarget.focus();
+    onMenuClick();
+  };
 
   const handleLogout = async () => {
     try {
       await signOut();
       navigate('/login');
     } catch (error) {
-      setLogoutError(error.message || '로그아웃하지 못했습니다. 다시 시도해주세요.');
+      setLogoutError(getAuthErrorMessage(error, '로그아웃하지 못했습니다. 다시 시도해주세요.'));
     }
   };
 
@@ -64,8 +53,10 @@ const Header = ({ onMenuClick }) => {
         }}
       >
         <IconButton
+          id="mobile-menu-button"
+          ref={menuButtonRef}
           edge="start"
-          onClick={onMenuClick}
+          onClick={handleMenuClick}
           sx={{ mr: 2, display: { md: 'none' } }}
           aria-label="메뉴 열기"
         >
@@ -82,7 +73,7 @@ const Header = ({ onMenuClick }) => {
           )}
           <IconButton
             onClick={handleLogout}
-            aria-label="로그아웃"
+            aria-label={isGuest ? '게스트 종료' : '로그아웃'}
             size="small"
             sx={{ color: 'text.secondary' }}
           >

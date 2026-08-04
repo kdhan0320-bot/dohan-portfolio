@@ -1,4 +1,5 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/layout/Layout';
 import LoginPage from './pages/LoginPage';
@@ -13,6 +14,17 @@ import AIPromptPage from './pages/AIPromptPage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { CircularProgress, Box } from '@mui/material';
+import { getRouteTitle } from './constants';
+
+const RouteTitleManager = () => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    document.title = `${getRouteTitle(pathname)} | JobFlow`;
+  }, [pathname]);
+
+  return null;
+};
 
 const AppRoutes = () => {
   const { user, loading, isGuest } = useAuth();
@@ -45,6 +57,7 @@ const AppRoutes = () => {
 
 const App = () => (
   <HashRouter>
+    <RouteTitleManager />
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<LoginPage />} />

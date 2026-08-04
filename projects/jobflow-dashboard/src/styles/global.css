@@ -13,6 +13,25 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #0F172A;
+  color: #FFFFFF;
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform 120ms ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 :where(
   a,
   button,

@@ -7,6 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
+import { getAuthErrorMessage } from '../utils/authErrors';
 
 const SettingsPage = () => {
   const { user, isGuest, signOut } = useAuth();
@@ -34,7 +35,7 @@ const SettingsPage = () => {
       if (cancelled) return;
 
       if (profileError) {
-        setError(profileError.message);
+        setError('프로필 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
         return;
       }
 
@@ -77,7 +78,9 @@ const SettingsPage = () => {
 
       setTimeout(() => setSaved(false), 2000);
     } catch (saveError) {
-      setError(saveError.message || '설정을 저장하지 못했습니다. 다시 시도해주세요.');
+      setError(saveError?.message === '저장할 프로필을 찾지 못했거나 권한이 없습니다.'
+        ? saveError.message
+        : '설정을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.');
     } finally {
       setSaving(false);
     }
@@ -88,7 +91,7 @@ const SettingsPage = () => {
       await signOut();
       navigate('/login');
     } catch (logoutError) {
-      setError(logoutError.message || '로그아웃하지 못했습니다. 다시 시도해주세요.');
+      setError(getAuthErrorMessage(logoutError, '로그아웃하지 못했습니다. 다시 시도해주세요.'));
     }
   };
 

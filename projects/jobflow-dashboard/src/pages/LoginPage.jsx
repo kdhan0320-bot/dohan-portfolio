@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Box, Container, Paper, Typography, TextField, Button,
   Alert, Tab, Tabs,
@@ -6,6 +6,9 @@ import {
 import WorkIcon from '@mui/icons-material/Work';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getAuthErrorMessage } from '../utils/authErrors';
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const LoginPage = () => {
   const [tab, setTab] = useState(0);
@@ -13,20 +16,50 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const { authError, signIn, signUp, enterGuestMode } = useAuth();
   const navigate = useNavigate();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const validate = () => {
+    const nextErrors = {};
+    const normalizedEmail = email.trim();
+
+    if (!normalizedEmail) nextErrors.email = '이메일을 입력해주세요.';
+    else if (!EMAIL_PATTERN.test(normalizedEmail)) nextErrors.email = '올바른 이메일 형식으로 입력해주세요.';
+
+    if (!password) nextErrors.password = '비밀번호를 입력해주세요.';
+    else if (password.length < 6) nextErrors.password = '비밀번호는 6자 이상 입력해주세요.';
+
+    setFieldErrors(nextErrors);
+
+    if (nextErrors.email) emailRef.current?.focus();
+    else if (nextErrors.password) passwordRef.current?.focus();
+
+    return Object.keys(nextErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
+    if (!validate()) return;
     setLoading(true);
     try {
       if (tab === 0) {
-        await signIn(email, password);
+        await signIn(email.trim(), password);
         navigate('/');
       } else {
-        const result = await signUp(email, password, displayName);
+        const result = await signUp(email.trim(), password, displayName.trim());
+        if (result.requiresEmailConfirmation) {
+          setTab(0);
+          setPassword('');
+          setSuccess('회원가입이 완료되었습니다. 이메일 인증 후 로그인해주세요.');
+          return;
+        }
         if (result.profileError) {
           navigate('/settings', {
             state: {
@@ -39,7 +72,7 @@ const LoginPage = () => {
         navigate('/');
       }
     } catch (err) {
-      setError(err.message || '오류가 발생했습니다. 다시 시도해주세요.');
+      setError(getAuthErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -48,12 +81,13 @@ const LoginPage = () => {
   const handleGuest = async () => {
     if (loading) return;
     setError('');
+    setSuccess('');
     setLoading(true);
     try {
       await enterGuestMode();
       navigate('/');
     } catch (guestError) {
-      setError(guestError.message || '게스트 모드로 전환하지 못했습니다. 다시 시도해주세요.');
+      setError(getAuthErrorMessage(guestError, '게스트 모드로 전환하지 못했습니다. 다시 시도해주세요.'));
     } finally {
       setLoading(false);
     }
@@ -81,7 +115,7 @@ const LoginPage = () => {
           >
             <WorkIcon sx={{ color: 'white', fontSize: 28 }} />
           </Box>
-          <Typography variant="h5" fontWeight={700} color="text.primary">
+          <Typography variant="h5" component="h1" fontWeight={700} color="text.primary">
             JobFlow Dashboard
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
@@ -106,45 +140,70 @@ const LoginPage = () => {
         </Typography>
 
         <Paper elevation={0} sx={{ p: 3, border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
-          <Tabs value={tab} onChange={(_, v) => { setTab(v); setError(''); }} sx={{ mb: 3 }}>
+          <Tabs value={tab} onChange={(_, v) => { setTab(v); setError(''); setSuccess(''); setFieldErrors({}); }} sx={{ mb: 3 }}>
             <Tab label="로그인" sx={{ flex: 1, fontWeight: 600 }} />
             <Tab label="회원가입" sx={{ flex: 1, fontWeight: 600 }} />
           </Tabs>
 
           {(error || authError) && <Alert severity="error" sx={{ mb: 2 }}>{error || authError}</Alert>}
+          {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
           <Box component="form" onSubmit={handleSubmit} noValidate>
             {tab === 1 && (
               <TextField
+                id="auth-display-name"
                 label="이름"
                 fullWidth
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 sx={{ mb: 2 }}
                 placeholder="홍길동"
+                helperText="선택 입력"
               />
             )}
             <TextField
+              id="auth-email"
+              inputRef={emailRef}
               label="이메일"
               type="email"
               fullWidth
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); setFieldErrors((current) => ({ ...current, email: '' })); }}
               sx={{ mb: 2 }}
               placeholder="example@email.com"
-              slotProps={{ htmlInput: { 'aria-label': '이메일' } }}
+              error={Boolean(fieldErrors.email)}
+              helperText={fieldErrors.email || 'example@email.com 형식'}
+              slotProps={{
+                htmlInput: {
+                  'aria-label': '이메일',
+                  'aria-invalid': Boolean(fieldErrors.email),
+                  'aria-describedby': 'auth-email-helper-text',
+                },
+                formHelperText: { id: 'auth-email-helper-text' },
+              }}
             />
             <TextField
+              id="auth-password"
+              inputRef={passwordRef}
               label="비밀번호"
               type="password"
               fullWidth
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); setFieldErrors((current) => ({ ...current, password: '' })); }}
               sx={{ mb: 3 }}
               placeholder="6자 이상"
-              slotProps={{ htmlInput: { 'aria-label': '비밀번호' } }}
+              error={Boolean(fieldErrors.password)}
+              helperText={fieldErrors.password || '6자 이상 입력하세요.'}
+              slotProps={{
+                htmlInput: {
+                  'aria-label': '비밀번호',
+                  'aria-invalid': Boolean(fieldErrors.password),
+                  'aria-describedby': 'auth-password-helper-text',
+                },
+                formHelperText: { id: 'auth-password-helper-text' },
+              }}
             />
             <Button
               type="submit"

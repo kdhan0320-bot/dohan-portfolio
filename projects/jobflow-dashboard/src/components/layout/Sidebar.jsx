@@ -1,7 +1,7 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText,
-  Typography, Divider, Avatar, Link,
+  Typography, Divider, Avatar, Link as MuiLink,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WorkIcon from '@mui/icons-material/Work';
@@ -11,28 +11,29 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useAuth } from '../../context/AuthContext';
+import { isNavItemActive, NAV_ITEMS } from '../../constants';
 
 const DRAWER_WIDTH = 240;
 
-const NAV_ITEMS = [
-  { path: '/', label: '대시보드', icon: <DashboardIcon /> },
-  { path: '/applications', label: '지원 현황', icon: <WorkIcon /> },
-  { path: '/kanban', label: '전형 보드', icon: <ViewKanbanIcon /> },
-  { path: '/checklist', label: '체크리스트', icon: <ChecklistIcon /> },
-  { path: '/interview', label: '면접 메모', icon: <QuestionAnswerIcon /> },
-  { path: '/ai-prompt', label: '문서 작성 도우미', icon: <AutoAwesomeIcon /> },
-  { path: '/settings', label: '설정', icon: <SettingsIcon /> },
-];
+const restoreMobileMenuFocus = () => {
+  window.setTimeout(() => {
+    document.getElementById('mobile-menu-button')?.focus({ preventScroll: true });
+  }, 800);
+};
 
-const SidebarContent = ({ onNavigate }) => {
+const NAV_ICONS = {
+  dashboard: <DashboardIcon />,
+  applications: <WorkIcon />,
+  kanban: <ViewKanbanIcon />,
+  checklist: <ChecklistIcon />,
+  interview: <QuestionAnswerIcon />,
+  'document-helper': <AutoAwesomeIcon />,
+  settings: <SettingsIcon />,
+};
+
+const SidebarContent = ({ onNavigate, isMobile = false }) => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { user, isGuest } = useAuth();
-
-  const handleNavigate = (path) => {
-    navigate(path);
-    onNavigate?.();
-  };
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -67,12 +68,15 @@ const SidebarContent = ({ onNavigate }) => {
 
       <List sx={{ flex: 1, px: 1, py: 1 }}>
         {NAV_ITEMS.map((item) => {
-          const active = location.pathname === item.path;
+          const active = isNavItemActive(item, location.pathname);
           return (
             <ListItemButton
               key={item.path}
-              onClick={() => handleNavigate(item.path)}
+              component={RouterLink}
+              to={item.path}
+              onClick={() => onNavigate?.(item.path, isMobile)}
               selected={active}
+              aria-current={active ? 'page' : undefined}
               sx={{
                 borderRadius: 2,
                 mb: 0.5,
@@ -85,7 +89,7 @@ const SidebarContent = ({ onNavigate }) => {
               }}
             >
               <ListItemIcon sx={{ minWidth: 36, color: active ? 'inherit' : 'text.secondary' }}>
-                {item.icon}
+                {NAV_ICONS[item.icon]}
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
@@ -105,7 +109,7 @@ const SidebarContent = ({ onNavigate }) => {
           지원 현황, 준비할 일, 면접 메모를 한 흐름으로 정리하고 다음 행동을 확인하세요.
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          <Link
+          <MuiLink
             href="https://github.com/kdhan0320-bot/dohan-portfolio"
             target="_blank"
             rel="noopener noreferrer"
@@ -114,8 +118,8 @@ const SidebarContent = ({ onNavigate }) => {
             sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
           >
             GitHub
-          </Link>
-          <Link
+          </MuiLink>
+          <MuiLink
             href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
             target="_blank"
             rel="noopener noreferrer"
@@ -124,26 +128,28 @@ const SidebarContent = ({ onNavigate }) => {
             sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
           >
             포트폴리오로 돌아가기
-          </Link>
+          </MuiLink>
         </Box>
       </Box>
     </Box>
   );
 };
 
-const Sidebar = ({ mobileOpen, onMobileClose }) => (
+const Sidebar = ({ mobileOpen, onMobileClose, onRouteSelect }) => (
   <>
     <Drawer
       variant="temporary"
       open={mobileOpen}
       onClose={onMobileClose}
-      ModalProps={{ keepMounted: true }}
+      ModalProps={{ keepMounted: true, disableEscapeKeyDown: false }}
+      PaperProps={{ tabIndex: -1, 'aria-label': '주 메뉴' }}
+      slotProps={{ backdrop: { onClick: restoreMobileMenuFocus } }}
       sx={{
         display: { xs: 'block', md: 'none' },
         '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' },
       }}
     >
-      <SidebarContent onNavigate={onMobileClose} />
+      <SidebarContent onNavigate={onRouteSelect} isMobile />
     </Drawer>
     <Drawer
       variant="permanent"
@@ -153,7 +159,7 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => (
       }}
       open
     >
-      <SidebarContent />
+      <SidebarContent onNavigate={onRouteSelect} />
     </Drawer>
   </>
 );

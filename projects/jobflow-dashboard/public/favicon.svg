@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">JobFlow</title>
+  <rect width="64" height="64" rx="16" fill="#2563EB"/>
+  <path d="M19 23h26a4 4 0 0 1 4 4v18a4 4 0 0 1-4 4H19a4 4 0 0 1-4-4V27a4 4 0 0 1 4-4Z" fill="#FFFFFF"/>
+  <path d="M25 23v-3a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v3" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <path d="m25 36 5 5 10-11" fill="none" stroke="#2563EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

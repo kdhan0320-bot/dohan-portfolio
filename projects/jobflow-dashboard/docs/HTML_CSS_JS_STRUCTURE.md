@@ -42,10 +42,10 @@ src/theme.js        ← MUI 디자인 시스템 (색상, 폰트, 간격, 컴포�
 ```
 src/hooks/          ← 데이터 요청 및 상태 관리 로직 (useApplications 등)
 src/utils/
-  formatters.js     ← 날짜, 텍스트 포맷 함수
-  statusHelpers.js  ← 상태 색상, 우선순위, 진행률 계산
-  promptHelpers.js  ← AI 프롬프트 템플릿 생성
-src/context/        ← 전역 상태 (AuthContext - 로그인 상태 관리)
+  authErrors.js     ← 인증 provider 오류를 안전한 사용자 문구로 변환
+  statusHelpers.js  ← 체크리스트 진행률 계산
+  promptHelpers.js  ← 문서 작성용 로컬 템플릿 생성
+src/context/        ← 전역 상태 (AuthContext - 인증·탭 단위 게스트 상태 관리)
 src/lib/            ← 외부 라이브러리 설정 (Supabase 클라이언트)
 src/constants/      ← 앱 전체에서 쓰는 상수 데이터 (상태값, 샘플 데이터 등)
 ```
@@ -59,6 +59,8 @@ jobflow-dashboard/
 ├── index.html                  ← HTML 진입점
 ├── .env.example                ← 환경변수 템플릿
 ├── vite.config.js              ← 빌드 설정
+├── public/
+│   └── favicon.svg             ← 현재 favicon
 ├── docs/
 │   └── HTML_CSS_JS_STRUCTURE.md
 └── src/
@@ -73,7 +75,7 @@ jobflow-dashboard/
     │   └── responsive.css
     │
     ├── utils/                  ← JS 유틸리티 역할
-    │   ├── formatters.js
+    │   ├── authErrors.js
     │   ├── statusHelpers.js
     │   └── promptHelpers.js
     │
@@ -87,7 +89,8 @@ jobflow-dashboard/
     │   ├── ChecklistPage.jsx
     │   ├── InterviewPage.jsx
     │   ├── AIPromptPage.jsx
-    │   └── SettingsPage.jsx
+    │   ├── SettingsPage.jsx
+    │   └── NotFoundPage.jsx
     │
     ├── components/             ← 재사용 UI 역할 (HTML)
     │   ├── layout/
@@ -95,6 +98,8 @@ jobflow-dashboard/
     │   │   ├── Sidebar.jsx
     │   │   └── Header.jsx
     │   └── ui/
+    │       ├── ActionFeedback.jsx
+    │       ├── GuestReadOnlyNotice.jsx
     │       ├── StatusChip.jsx
     │       └── EmptyState.jsx
     │
@@ -115,7 +120,18 @@ jobflow-dashboard/
 
 ---
 
-## 5. 핵심 차이점 요약
+## 5. 현재 route·상태 계약
+
+- `App.jsx`: HashRouter route와 route별 document title을 관리합니다.
+- `Layout.jsx`: skip link, `main-content`, route 이동 뒤 focus, temporary Drawer 상태를 관리합니다.
+- `Sidebar.jsx`: `constants/NAV_ITEMS`를 기준으로 실제 Router link와 `aria-current`를 렌더링합니다.
+- `AuthContext.jsx`: Supabase 사용자 session을 우선하고, 비인증 게스트 상태는 `sessionStorage`의 `jobflow-guest-mode`로 현재 탭에만 유지합니다.
+- `/applications`, `/applications/new`, `/applications/:id`, `/applications/:id/edit`는 하나의 `지원 현황` navigation family입니다.
+- `/ai-prompt`의 문서 작성 도우미는 브라우저 내 로컬 템플릿만 생성하며 runtime AI API를 호출하지 않습니다.
+
+---
+
+## 6. 핵심 차이점 요약
 
 | 구분 | 전통 방식 | React/Vite 방식 |
 |------|-----------|-----------------|

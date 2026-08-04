@@ -28,7 +28,7 @@ const theme = createTheme({
     divider: 'rgba(37, 99, 235, 0.10)',
   },
   typography: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif',
     h1: { fontSize: '2.125rem', fontWeight: 700 },
     h2: { fontSize: '1.5rem', fontWeight: 600 },
     h3: { fontSize: '1.25rem', fontWeight: 600 },

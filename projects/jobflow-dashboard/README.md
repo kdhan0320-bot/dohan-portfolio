@@ -15,7 +15,7 @@
 - 전형 상태별 칸반 보드
 - 포트폴리오 체크리스트 (진행률 표시)
 - 면접 메모 (중요도 / 복습 완료 관리)
-- AI 프롬프트 도우미 (자소서 / 면접 / 포트폴리오 / 지원동기)
+- 문서 작성 도우미 (브라우저 내 로컬 템플릿 생성·복사)
 - 반응형 대시보드 UI
 
 ## 사용 기술
@@ -35,23 +35,26 @@
 - 체크리스트로 포트폴리오 제출 전 실수 방지
 - 모바일에서는 카드형 레이아웃으로 전환
 - 게스트 모드로 방문자의 체험 진입 장벽 완화
-- AI 프롬프트 도우미로 자소서 · 면접 준비 흐름 보조
+- 문서 작성 도우미로 자소서 · 면접 준비용 텍스트 구조화
 
 ## 게스트 모드 안내
 
 로그인 화면의 "데모로 둘러보기" 버튼을 누르면 회원가입 없이 샘플 데이터로 전체 화면을 체험할 수 있습니다.
 
-- 조회, 검색/필터/정렬, AI 프롬프트 생성 등은 게스트 모드에서도 동작합니다.
+- 조회, 검색/필터/정렬, 문서 작성용 템플릿 생성 등은 게스트 모드에서도 동작합니다.
 - 지원 현황, 체크리스트, 면접 메모, 전형 보드의 샘플 데이터는 읽기 전용으로 제공됩니다.
 - 등록·수정·삭제 등 실제 데이터 저장이 필요한 동작은 게스트 모드에서 제한되며, 관련 버튼은 화면에서 숨김 처리됩니다.
+- 게스트 상태는 `sessionStorage`에 저장되어 같은 브라우저 탭에서 새로고침해도 유지되며, 탭을 닫으면 영구 저장되지 않습니다.
 - 실제 데이터 저장/수정이 필요하면 회원가입 후 로그인해서 사용할 수 있습니다.
+
+게스트 sample data와 로그인 사용자의 실제 데이터는 섞이지 않습니다. 로그인 사용자는 Supabase Auth 세션과 사용자별 RLS 정책을 기준으로 지원 현황·체크리스트·면접 메모를 실제 DB에 저장합니다.
 
 ## 폴더 구조
 
 ```
 src/
 ├── styles/       전역 CSS (global, layout, responsive)
-├── utils/        유틸 함수 (formatters, statusHelpers, promptHelpers)
+├── utils/        유틸 함수 (authErrors, statusHelpers, promptHelpers)
 ├── pages/        페이지 컴포넌트
 ├── components/   재사용 UI 컴포넌트
 ├── hooks/        데이터 요청 커스텀 훅
@@ -71,11 +74,18 @@ src/
 | application_notes | 지원 회사별 메모 (DB에 존재하나 현재 프론트엔드 코드에서는 사용하지 않음) |
 | portfolio_checklists | 포트폴리오 체크리스트 항목 |
 | interview_notes | 면접 준비 메모 |
-| prompt_templates | AI 프롬프트 저장용 (DB에 존재하나 현재는 사용하지 않으며, AI 프롬프트 도우미는 아래 설명대로 클라이언트 템플릿 방식으로만 동작) |
+| prompt_templates | 문서 템플릿 저장을 고려해 만든 테이블(DB에 존재하지만 현재 프론트엔드에서는 사용하지 않음) |
 
 `jobflow_profiles`는 JobFlow 전용 테이블이며, Community의 `profiles`와 공유하지 않습니다. `jobflow_profiles`는 이름·목표 직무 같은 선택적 설정을 저장할 뿐이며, 이 행이 없어도 로그인과 CRUD 기능(지원 회사, 체크리스트, 면접 메모 등)은 정상 동작합니다 — `applications`/`application_notes`/`interview_notes`/`portfolio_checklists`/`prompt_templates`의 `user_id`는 `jobflow_profiles`가 아니라 Supabase의 `auth.users(id)`를 기준으로 합니다. 모든 테이블에 RLS(Row Level Security)가 적용되어 있어 사용자는 자신의 데이터만 조회 · 수정 · 삭제할 수 있습니다. `anon key`는 공개되어도 되는 키이지만, 실제 데이터 접근 제어는 이 RLS 정책이 담당합니다.
 
-> AI 프롬프트 도우미는 별도 테이블 없이 클라이언트에서 템플릿 텍스트를 생성하는 방식으로 동작하며, 실제 LLM API를 호출하지 않습니다. 생성된 텍스트를 ChatGPT 등 생성형 AI에 직접 붙여넣어 사용하는 구조입니다.
+> 문서 작성 도우미는 별도 테이블 없이 브라우저에서 로컬 템플릿 텍스트를 생성합니다. runtime LLM·AI API를 호출하지 않으며, 생성된 텍스트를 사용자가 원하는 작성 도구에 직접 붙여넣는 구조입니다. 제작 과정에서는 생성형 AI 코딩 도구를 코드 검토·수정 보조로 활용했지만, 이는 제품의 runtime 기능과 구분합니다.
+
+### 운영 Data API·RLS 검증 (2026-08-03)
+
+- `anon`은 JobFlow 6개 테이블에 대한 권한이 없습니다.
+- `authenticated`는 현재 사용하는 `applications`, `portfolio_checklists`, `interview_notes`, `jobflow_profiles`에 필요한 CRUD 권한만 보유하며, 미사용 `application_notes`와 `prompt_templates`에는 Data API 권한이 없습니다.
+- 모든 JobFlow 테이블은 RLS를 사용하며, 로그인 사용자는 자신의 행에만 접근할 수 있습니다.
+- 비실명 QA A/B 계정으로 본인 CRUD와 타 사용자 접근·`user_id` 위조 차단을 확인한 뒤 테스트 행·프로필·Auth 사용자를 모두 정리했습니다.
 
 ## 환경변수 설정
 
@@ -119,3 +129,5 @@ npm run build
 - 캘린더 일정 관리
 - 통계 차트 (지원 현황 시각화)
 - CSV Export
+- 외부 채용 플랫폼 API 연동
+- runtime AI·LLM 문서 생성

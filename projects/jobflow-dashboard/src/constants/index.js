@@ -17,8 +17,6 @@ export const PRIORITY_OPTIONS = [
 
 export const COMPANY_SIZE_OPTIONS = ['스타트업', '중소기업', '중견기업', '대기업', '공기업', '외국계'];
 
-export const NOTE_TYPES = ['메모', '면접', '자기소개서', '포트폴리오', '연락'];
-
 export const IMPORTANCE_OPTIONS = [
   { value: '낮음', label: '낮음', color: '#475569' },
   { value: '보통', label: '보통', color: '#92400E' },
@@ -30,14 +28,31 @@ export const CHECKLIST_CATEGORIES = ['포트폴리오', '서류', '면접', '지
 export const PROMPT_TYPES = ['자기소개서', '면접 답변', '포트폴리오 설명', '지원동기'];
 
 export const NAV_ITEMS = [
-  { path: '/', label: '대시보드' },
-  { path: '/applications', label: '지원 현황' },
-  { path: '/kanban', label: '전형 보드' },
-  { path: '/checklist', label: '체크리스트' },
-  { path: '/interview', label: '면접 메모' },
-  { path: '/ai-prompt', label: '문서 작성 도우미' },
-  { path: '/settings', label: '설정' },
+  { path: '/', label: '대시보드', icon: 'dashboard', match: 'exact' },
+  { path: '/applications', label: '지원 현황', icon: 'applications', match: 'family' },
+  { path: '/kanban', label: '전형 보드', icon: 'kanban', match: 'exact' },
+  { path: '/checklist', label: '체크리스트', icon: 'checklist', match: 'exact' },
+  { path: '/interview', label: '면접 메모', icon: 'interview', match: 'exact' },
+  { path: '/ai-prompt', label: '문서 작성 도우미', icon: 'document-helper', match: 'exact' },
+  { path: '/settings', label: '설정', icon: 'settings', match: 'exact' },
 ];
+
+export const getRouteTitle = (pathname) => {
+  if (pathname === '/login') return '로그인';
+  if (pathname === '/') return '대시보드';
+  if (pathname === '/applications/new') return '지원 정보 추가';
+  if (/^\/applications\/[^/]+\/edit$/.test(pathname)) return '지원 정보 수정';
+  if (/^\/applications\/[^/]+$/.test(pathname)) return '지원 정보';
+
+  return NAV_ITEMS.find((item) => item.path === pathname)?.label
+    ?? '페이지를 찾을 수 없음';
+};
+
+export const isNavItemActive = (item, pathname) => (
+  item.match === 'family'
+    ? pathname === item.path || pathname.startsWith(`${item.path}/`)
+    : pathname === item.path
+);
 
 /* 게스트 모드 샘플 데이터 — 기능 체험용 가상 데이터입니다 */
 export const DEMO_APPLICATIONS = [
@@ -180,7 +195,7 @@ export const DEMO_INTERVIEW_NOTES = [
     id: 'in-1',
     question: '자기소개를 해주세요.',
     answer: '안녕하세요. 저는 UX/UI 기반 웹디자이너로 사용자 흐름을 정리하고 실무형 웹서비스 화면을 구현하는 것을 목표로 학습하고 있습니다.',
-    related_project: 'Mini SNS',
+    related_project: '공정봄',
     importance: '높음',
     is_reviewed: true,
   },
@@ -196,7 +211,7 @@ export const DEMO_INTERVIEW_NOTES = [
     id: 'in-3',
     question: 'React를 선택한 이유는?',
     answer: '컴포넌트 기반 설계로 재사용성이 높고, MUI와 결합 시 빠르게 실무형 UI를 구현할 수 있기 때문입니다.',
-    related_project: 'my-community',
+    related_project: 'Portfolio Feedback Hub',
     importance: '보통',
     is_reviewed: false,
   },
