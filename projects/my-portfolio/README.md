@@ -44,11 +44,11 @@
 
 ## 페이지 구조
 
-- `/` — Header(고정) → Hero → About(소개·기술 스택) → Featured Projects(공정봄·JobFlow·설비잇 3개 카드 + 전용 상세 페이지) → Selected Works(울산 버스 도착정보·OTT Service) → Contact
+- `/` — Header(고정) → Hero → About(소개·기술 스택) → Featured Projects(공정봄·JobFlow·설비잇 3개 카드 + 전용 상세 페이지) → Selected Works(울산 버스 도착정보·Streaming UI Concept) → Contact
 - `/about` — 별도 페이지가 아니라 Home의 About 섹션으로 리다이렉트됩니다(`App.jsx`의 `<Navigate>` + `HomePage.jsx`의 `location.state.scrollTo` 재사용).
 - `/projects` — Hero(작업 소개 + 실제 공개 수치를 보여주는 dark View Guide 패널) →
   Featured(공정봄·JobFlow·설비잇 3개를 동일 구조 카드로 비교, 상세 라우트로 이동) → More Works(공개
-  플래그가 있는 Portfolio Feedback Hub·울산 버스 도착정보·OTT Service·BREWSTEP 4개) → Footer(홈/메일 이동) 순서로 구성됩니다.
+  플래그가 있는 Portfolio Feedback Hub·울산 버스 도착정보·Streaming UI Concept·BREWSTEP 4개) → Footer(홈/메일 이동) 순서로 구성됩니다.
   View Guide의 FEATURED/MORE WORKS 숫자는 고정 문구가 아니라 실제 데이터에서 계산합니다.
   별도 Archive 모달은 없습니다 — 공개 판단이 끝난 프로젝트만 데이터의
   `moreWorksPublished` 플래그로 표시하고, 판단 전인 내부 초안은 공개 화면 어디에도
@@ -57,15 +57,16 @@
   클릭 불가 — 2480 미만은 장식이 부분적으로 잘리는 대신 아예 숨깁니다). Featured
   카드는 900px 미만 세로 1열, 900~1199px 가로형 row 1열, 1200px 이상 3열로
   배치되고, More Works는 900px 이상에서 media/content 가로형 카드로 렌더됩니다.
-- `/projects/:slug` — 공개 상세 프로젝트(공정봄·JobFlow·설비잇·Portfolio Feedback Hub·울산 버스 도착정보·BREWSTEP) 전용 상세 페이지. `ProjectDetailPage.jsx` 템플릿 하나를 재사용하고 `PROJECT_DETAIL_READY` 데이터로 내용을 구성합니다. 설비잇은 Figma 기반 STATIC / DEMO 운영 UI이며 실제 서비스 코드·API·센서 연동 프로젝트가 아닙니다.
+- `/projects/:slug` — 공개 상세 프로젝트(공정봄·JobFlow·설비잇·Portfolio Feedback Hub·울산 버스 도착정보·Streaming UI Concept·BREWSTEP) 전용 상세 페이지. `ProjectDetailPage.jsx` 템플릿 하나를 재사용하고 `PROJECT_DETAIL_READY` 데이터로 내용을 구성합니다. 설비잇은 Figma 기반 STATIC / DEMO 운영 UI이며 실제 서비스 코드·API·센서 연동 프로젝트가 아닙니다.
 
-Projects의 More Works 섹션은 데이터에 공개 플래그(`moreWorksPublished: true`)가 있는 프로젝트만 렌더링하며, 공개 항목이 없으면 섹션 자체가 나타나지 않습니다. 현재 순서는 Portfolio Feedback Hub → 울산 버스 도착정보 → OTT Service → BREWSTEP이며, Home의 Selected Works는 승인 구성에 따라 울산 버스 도착정보·OTT Service만 표시합니다.
+Projects의 More Works 섹션은 데이터에 공개 플래그(`moreWorksPublished: true`)가 있는 프로젝트만 렌더링하며, 공개 항목이 없으면 섹션 자체가 나타나지 않습니다. 현재 순서는 Portfolio Feedback Hub → 울산 버스 도착정보 → Streaming UI Concept → BREWSTEP이며, Home의 Selected Works는 승인 구성에 따라 울산 버스 도착정보·Streaming UI Concept만 표시합니다.
 
 Portfolio Feedback Hub의 공개 목록·상세는 읽기 전용으로 운영합니다. Supabase posts 읽기 결과는 live/sample/error 상태로 분리하고 운영 글이 0건이면 `SAMPLE_POSTS`를 표시합니다. 비공개 A/B 계정으로 Auth와 게시글·댓글·대댓글·좋아요 CRUD, 소유권 RLS와 profile 컬럼 보안을 검증했습니다. 공개 무료 가입·작성·댓글·좋아요, 실제 운영 사용자 콘텐츠·활성 지표, 파일 업로드·Storage, 관리자·신고·알림은 공개 범위에 포함하지 않습니다.
 
 프로젝트 목록과 상세 정보는 `src/data/projectsFallbackData.js`를 기본 소스로 사용하고, `src/data/projectsData.js`에서 정렬·썸네일·상세 표시 구조를 조합합니다. 포트폴리오는 정적 프로젝트 데이터를 사용하며 실제 API 연동은 없습니다.
 
 고정된 내부 경로 이동(홈으로 돌아가기, 대표 프로젝트 상세 보기, 다음 프로젝트, 404의 홈/전체 프로젝트)은 모두 React Router `Link`로 구현해 실제 `<a href>`를 렌더합니다(새 탭 열기·주소 복사·기본 브라우저 동작 지원). 조건에 따라 다른 곳으로 이동하는 Detail의 "스마트 뒤로가기"만 버튼으로 유지합니다.
+일반 PUSH·REPLACE route는 새 본문의 `main#main-content`로 focus와 scroll을 함께 옮기고, browser Back·Forward POP은 pathname별 scroll memory를 복원합니다. Home의 section 이동은 `location.state.scrollTo` 계약을 유지합니다.
 
 ---
 

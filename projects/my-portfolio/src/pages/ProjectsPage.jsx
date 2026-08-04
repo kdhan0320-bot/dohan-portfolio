@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 import { ALL_PROJECTS } from '../data/projectsData';
 import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH } from '../theme';
@@ -21,7 +21,7 @@ const BASE = import.meta.env.BASE_URL;
  * `get_design_context` 실측 카피를 그대로 옮겼다(임의 문구·성과 수치 없음).
  *
  * 공개 구성은 Figma READY에 맞춰 Featured 공정봄·JobFlow·설비잇,
- * More Works Portfolio Feedback Hub·울산 버스 도착정보·OTT Service·BREWSTEP으로
+ * More Works Portfolio Feedback Hub·울산 버스 도착정보·Streaming UI Concept·BREWSTEP으로
  * 고정하고 실제 개수는 데이터에서 계산한다.
  *
  * Human Signal Phase 5A-F(Figma 충실도 복구): QHD 208:2 / Desktop 206:5 /
@@ -42,7 +42,7 @@ const FEATURED_REFS = [
   {
     id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow',
     proof: '지원 현황·면접 일정·체크리스트를 실제 저장 구조로 연결한 개인 구직 관리 대시보드',
-    role: 'DASHBOARD UX · FRONTEND', data: 'ACTUAL / DEMO',
+    role: 'DASHBOARD UX · REACT FRONTEND', data: 'ACTUAL / SAMPLE',
     media: {
       src: `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`,
       alt: 'JobFlow Dashboard 대표 화면',
@@ -74,7 +74,7 @@ const MORE_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished === true);
 const PROJECTS_MORE_WORK_COPY = {
   'feedback-hub': '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱',
   'bus-arrival-app': '도착 정보의 우선순위와 예외 상태를 설계한 모바일 Prototype',
-  'ott-service': '콘텐츠 탐색과 반응형 레이아웃을 구현한 웹 퍼블리싱 작업',
+  'ott-service': '가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱',
   brewstep: '주문 조건과 상태를 반응형 화면과 Prototype으로 연결한 카페 주문 UX/UI',
 };
 
@@ -540,29 +540,36 @@ const FeaturedProjects = () => (
  * 이미지로 확인한 차이(2)를 그대로 반영한다. media:content 비율(약 55:45)은
  * 기존 실측이 Figma와 이미 거의 일치해 유지한다. */
 const MoreWorkCard = ({ project }) => {
+  const navigate = useNavigate();
   const internalHref = project.slug ? `/projects/${project.slug}` : null;
-  const externalHref = project.liveUrl ?? project.githubUrl ?? null;
+  const externalHref = internalHref ? null : (project.liveUrl ?? project.githubUrl ?? null);
+  const hasSeparateLiveAction = project.id === 'ott-service' && Boolean(internalHref && project.liveUrl);
   const isLink = Boolean(internalHref || externalHref);
   const moreWorksTools = project.moreWorksTools ?? project.tools ?? [];
-  const scopeLabel = moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t))
-    ? 'RESPONSIVE WEB' : (project.categoryLabel || 'MORE WORK');
+  const scopeLabel = project.moreWorksRole ?? (moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t))
+    ? 'RESPONSIVE WEB' : (project.categoryLabel || 'MORE WORK'));
   const statusLabel = project.moreWorksStatus
     ?? (moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t)) ? 'STATIC' : 'DEMO');
   const hasLongStatus = statusLabel.length > 20;
 
   return (
     <Box
-      component={internalHref ? RouterLink : (externalHref ? 'a' : 'div')}
-      to={internalHref ?? undefined}
+      component={hasSeparateLiveAction ? 'article' : (internalHref ? RouterLink : (externalHref ? 'a' : 'div'))}
+      to={hasSeparateLiveAction ? undefined : (internalHref ?? undefined)}
       href={externalHref ?? undefined}
       target={externalHref ? '_blank' : undefined}
       rel={externalHref ? 'noopener noreferrer' : undefined}
-      aria-label={isLink ? `${project.title} 프로젝트 보기` : undefined}
+      onKeyDown={internalHref && !hasSeparateLiveAction ? (event) => {
+        if (event.key !== 'Enter') return;
+        event.preventDefault();
+        navigate(internalHref);
+      } : undefined}
+      aria-label={isLink && !hasSeparateLiveAction ? `${project.title} 프로젝트 보기` : undefined}
       data-project-id={project.id}
       data-project-kind="more-work"
       data-published="true"
       sx={{
-        display: 'flex', flexDirection: { xs: 'column', md: 'row' },
+        position: 'relative', display: 'flex', flexDirection: { xs: 'column', md: 'row' },
         height: { xs: 390, sm: 425, md: 320, lg: 380 },
         width: '100%', maxWidth: { xs: '100%', md: '100%', lg: 1180 }, borderRadius: '22px', overflow: 'hidden',
         textDecoration: 'none', color: 'inherit',
@@ -576,6 +583,17 @@ const MoreWorkCard = ({ project }) => {
         '@media (min-width:1920px)': { maxWidth: 1312, height: 420 },
       }}
     >
+      {hasSeparateLiveAction && (
+        <Box
+          component={RouterLink}
+          to={internalHref}
+          aria-label={`${project.title} 내부 상세 보기`}
+          sx={{
+            position: 'absolute', inset: 0, zIndex: 1, borderRadius: 'inherit',
+            '&:focus-visible': { outline: `3px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '-3px' },
+          }}
+        />
+      )}
       <Box sx={{
         p: { xs: '13px', sm: '15px', md: '15px', lg: '17px' },
         pb: { xs: 0, sm: 0, md: '15px', lg: '17px' },
@@ -649,6 +667,28 @@ const MoreWorkCard = ({ project }) => {
           )}
           <Box sx={{
             flex: '0 0 auto',
+            position: 'relative', zIndex: 2,
+            display: 'flex', alignItems: 'center', gap: 1,
+          }}>
+            {hasSeparateLiveAction && (
+              <Box
+                component="a"
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${project.title} 실행 화면 새 탭에서 열기`}
+                sx={{
+                  display: 'inline-flex', alignItems: 'center', gap: 0.5,
+                  minHeight: 44, px: 0.5, color: HUMAN_SIGNAL.burntOrange,
+                  fontFamily: FONT_MONO, fontWeight: 700, fontSize: '0.6875rem',
+                  letterSpacing: '0.04em', textDecoration: 'none',
+                  ...focusVisibleSx,
+                }}
+              >
+                LIVE <ActionIcon variant="external" />
+              </Box>
+            )}
+            <Box sx={{
             minWidth: { xs: hasLongStatus ? 158 : 126, sm: 132, md: 130, lg: 132 },
             maxWidth: { xs: hasLongStatus ? 170 : 'none', sm: 'none' },
             height: { xs: hasLongStatus ? 'auto' : 28, sm: 28 },
@@ -658,8 +698,8 @@ const MoreWorkCard = ({ project }) => {
             borderRadius: '10px',
             display: 'flex',
             alignItems: 'center',
-            px: 1.75,
-          }}>
+              px: 1.75,
+            }}>
             <Typography sx={{
               fontFamily: FONT_MONO,
               fontSize: { xs: hasLongStatus ? '10px' : '12px', sm: '12px' },
@@ -669,6 +709,7 @@ const MoreWorkCard = ({ project }) => {
             }}>
               {statusLabel}
             </Typography>
+            </Box>
           </Box>
         </Box>
 

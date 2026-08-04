@@ -148,7 +148,7 @@ export const PROJECT_DETAIL_READY = {
         verification: '기술 문의 화면의 저장·전송 없음 고지와 오류·완료 데모 상태 확인',
         media: {
           src: 'detail/gongjeongbom/inquiry-1440.png',
-          alt: '실제 브라우저 실행 화면 · 공정봄 기술 문의 · 실제 저장과 전송이 없는 데모',
+          alt: '실제 브라우저 실행 화면 · MV-X300·MV-X500이 연결된 공정봄 기술 문의 2단계 · 실제 저장과 전송이 없는 데모',
           aspectRatio: '16 / 10',
           objectFit: 'cover',
           objectPosition: 'top',
@@ -196,14 +196,14 @@ export const PROJECT_DETAIL_READY = {
   jobflow: {
     meta: {
       type: 'WEB APPLICATION',
-      role: 'DASHBOARD UX · FRONTEND',
+      role: 'DASHBOARD UX · REACT FRONTEND',
       tools: 'REACT · MUI · SUPABASE',
-      data: 'ACTUAL / DEMO',
+      data: 'ACTUAL / SAMPLE',
     },
     hero: {
-      summary: '지원 현황·면접 일정·체크리스트를 실제 저장 구조로 연결한 개인 구직 관리 대시보드입니다.',
+      summary: '지원 상태·체크리스트·면접 메모를 사용자별로 저장하고 다음 행동을 정리하는 개인 구직 관리 대시보드입니다.',
       media: [
-        { src: 'detail/jobflow-dashboard-1440.png', alt: '실제 브라우저 실행 화면 · JobFlow Dashboard · 게스트 sample data', aspectRatio: '1440 / 1077' },
+        { src: 'detail/jobflow-dashboard-1440.png', alt: '실제 브라우저 실행 화면 · JobFlow Dashboard · 게스트 sample read-only', aspectRatio: '1440 / 900' },
         { src: 'detail/jobflow-dashboard-390.png', alt: '실제 브라우저 실행 화면 · JobFlow Dashboard 390px 1열 reflow · 게스트 sample data', aspectRatio: '390 / 844', objectFit: 'cover', objectPosition: 'top', frameWidth: 200 },
       ],
       mediaLabel: '실제 브라우저 실행 화면 · 게스트 sample data',
@@ -241,13 +241,13 @@ export const PROJECT_DETAIL_READY = {
       { label: 'Checklist', media: { src: 'detail/jobflow-checklist-1440.png', alt: '실제 브라우저 실행 화면 · JobFlow Checklist · 게스트 sample data' } },
     ],
     scope: {
-      actual: ['실제 브라우저 실행 Dashboard·Kanban·Checklist'],
-      demoStatic: ['게스트 sample data', '게스트 저장·수정 제한'],
-      notIncluded: ['고급 통계 리포트', '실시간 알림', '외부 채용 플랫폼 API 연동'],
+      actual: ['실제 브라우저 실행 Dashboard·Kanban·Checklist', '로그인 사용자별 Supabase 저장 구조'],
+      demoStatic: ['게스트 sample data', '게스트 읽기 전용·현재 탭 새로고침 유지'],
+      notIncluded: ['고급 통계 리포트', '실시간 알림', '외부 채용 플랫폼 API 연동', 'runtime AI·LLM 문서 생성'],
     },
     resultLimit: {
-      done: '지원 현황·상태 흐름·체크리스트를 실제 반응형 화면으로 연결하고 390px과 1440px에서 확인했습니다.',
-      limit: '게스트 화면은 sample data이며 실제 사용자 성과나 운영 데이터가 아닙니다. Kanban은 내부 가로 스크롤을 사용합니다.',
+      done: '지원 현황·상태 흐름·체크리스트를 사용자별 저장 구조와 반응형 화면으로 연결하고 390px과 1440px에서 확인했습니다.',
+      limit: '게스트 화면은 읽기 전용 sample data이며 실제 사용자 성과나 운영 데이터가 아닙니다. Kanban은 내부 가로 스크롤을 사용하고 runtime AI는 없습니다.',
     },
   },
   'feedback-hub': {
@@ -258,12 +258,12 @@ export const PROJECT_DETAIL_READY = {
       data: 'PUBLIC READ-ONLY / SAMPLE FALLBACK',
     },
     hero: {
-      summary: '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱입니다.',
+      summary: '공개 탐색은 읽기 전용으로 운영하고, Auth Hook으로 self-signup을 막은 비공개 계정에서 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱입니다.',
       media: [
-        { src: 'detail/feedback-list-1440.png', alt: '실제 브라우저 실행 화면 · Post List · static sample fallback', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
-        { src: 'detail/feedback-detail-1440.png', alt: '실제 브라우저 실행 화면 · Post Detail · static sample fallback', aspectRatio: '1440 / 900' },
+        { src: 'detail/feedback-list-1440.png', alt: '현재 브라우저 실행 화면 · 운영 posts 0건의 sample-empty 공개 읽기 전용 목록', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
+        { src: 'detail/feedback-detail-1440.png', alt: '현재 브라우저 실행 화면 · sample 게시글 안내가 표시된 공개 읽기 전용 상세', aspectRatio: '1440 / 900' },
       ],
-      mediaLabel: '실제 브라우저 실행 화면 · static sample fallback',
+      mediaLabel: '현재 브라우저 실행 화면 · public read-only · sample fallback',
     },
     context: {
       problem: '작업 탐색과 의견 확인이 분리되면 관심 주제와 대화 맥락을 이어서 보기 어렵습니다.',
@@ -275,14 +275,14 @@ export const PROJECT_DETAIL_READY = {
         choice: '검색·카테고리 필터·카드 그리드',
         reason: '관심 주제를 빠르게 좁히고 목록을 비교하기 위해',
         verification: '실제 공개 목록 route에서 Supabase 200 빈 배열 후 SAMPLE_POSTS fallback 표시 확인',
-        media: { src: 'detail/feedback-list-1440.png', alt: '실제 브라우저 실행 화면 · Post List · static sample fallback', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
+        media: { src: 'detail/feedback-list-1440.png', alt: '현재 브라우저 실행 화면 · 운영 posts 0건의 sample-empty 공개 읽기 전용 목록', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' },
       },
       {
         title: '상세 내용과 참여 조건을 한 화면에서 구분했습니다.',
         choice: '본문·좋아요·댓글 영역과 로그인 안내',
         reason: '읽기는 공개하고 작성·반응은 인증 경계를 명확히 하기 위해',
-        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route로 이동하고, 공개 읽기 전용 경계와 비공개 A/B 계정의 CRUD·RLS 허용·차단을 확인',
-        media: { src: 'detail/feedback-detail-1440.png', alt: '실제 브라우저 실행 화면 · Post Detail · static sample fallback' },
+        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route로 이동하고, Feedback Hub app_id signup 403과 공개 읽기 전용 경계, 비공개 A/B 계정의 CRUD·RLS 허용·차단을 확인',
+        media: { src: 'detail/feedback-detail-1440.png', alt: '현재 브라우저 실행 화면 · sample 게시글 안내가 표시된 공개 읽기 전용 상세', aspectRatio: '1440 / 900' },
       },
     ],
     // JobFlow/Bus는 첫 화면(Dashboard/Home)이 primary, 나머지가 secondary인
@@ -291,15 +291,13 @@ export const PROJECT_DETAIL_READY = {
     // 적용돼 1440에서 오른쪽에 큰 빈 공간이 남는다.
     mainScreensLayout: 'equal',
     mainScreens: [
-      { label: 'Post List', media: { src: 'detail/feedback-list-1440.png', alt: '실제 브라우저 실행 화면 · Post List · static sample fallback', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' } },
-      { label: 'Post Detail', media: { src: 'detail/feedback-detail-1440.png', alt: '실제 브라우저 실행 화면 · Post Detail · static sample fallback' } },
+      { label: 'Post List', media: { src: 'detail/feedback-list-1440.png', alt: '현재 브라우저 실행 화면 · 운영 posts 0건의 sample-empty 공개 읽기 전용 목록', aspectRatio: '1440 / 900', objectFit: 'cover', objectPosition: 'top' } },
+      { label: 'Post Detail', media: { src: 'detail/feedback-detail-1440.png', alt: '현재 브라우저 실행 화면 · sample 게시글 안내가 표시된 공개 읽기 전용 상세', aspectRatio: '1440 / 900' } },
     ],
-    // 390×9453 full-page 검증 캡처. 원본을 세로로 늘여 넣지 않고 controlled
-    // viewport(top alignment)로 1열 card stack 증거만 보여준다.
     responsiveEvidence: {
-      src: 'detail/feedback-list-390.png', alt: '실제 브라우저 실행 화면 · Post List 390px 1열 카드 stack · static sample fallback',
-      aspectRatio: '390 / 700', objectFit: 'cover', objectPosition: 'top', frameWidth: 200,
-      caption: '390px full-page source의 상단 viewport',
+      src: 'detail/feedback-list-390.png', alt: '현재 브라우저 실행 화면 · 390×844 sample-empty 공개 읽기 전용 목록 첫 화면',
+      aspectRatio: '390 / 844', objectFit: 'cover', objectPosition: 'top', frameWidth: 200,
+      caption: '390×844 CSS viewport · posts 0건 sample-empty · public read-only',
     },
     scope: {
       actual: [
@@ -307,6 +305,7 @@ export const PROJECT_DETAIL_READY = {
         'Supabase posts 읽기와 live/sample/error 상태 분리',
         '비공개 계정 Auth와 게시글·댓글·대댓글·좋아요 CRUD',
         '소유권 RLS와 profile 컬럼 보안 검증',
+        'Feedback Hub app_id signup Auth Hook 차단과 JobFlow 전역 signup 유지',
       ],
       demoStatic: [
         '운영 게시글이 0건일 때 SAMPLE_POSTS fallback',
@@ -317,12 +316,168 @@ export const PROJECT_DETAIL_READY = {
         '공개 무료 가입·작성·댓글·좋아요',
         '실제 운영 사용자 콘텐츠·활성 지표',
         '파일 업로드·Supabase Storage',
+        'runtime AI·LLM API — AI Coding은 taxonomy·sample category',
         '관리자·신고·알림',
       ],
     },
     resultLimit: {
-      done: '공개 읽기 전용 목록·상세 탐색과 390px 1열 카드 stack을 확인하고, 비공개 A/B 계정으로 Auth·CRUD·RLS 경계를 검증했습니다.',
+      done: '공개 읽기 전용 목록·상세 탐색과 390px 1열 카드 stack을 확인하고, Auth Hook의 Feedback Hub signup 차단과 비공개 A/B 계정의 Auth·CRUD·RLS 경계를 검증했습니다.',
       limit: '현재 공개 화면 콘텐츠와 수치는 sample fallback이며 실제 운영 사용자 콘텐츠나 활성 지표가 아닙니다.',
+    },
+  },
+  'ott-service': {
+    meta: {
+      type: 'RESPONSIVE WEB',
+      role: 'RESPONSIVE WEB PUBLISHING · VANILLA JS',
+      tools: 'HTML · CSS · JAVASCRIPT',
+      data: 'STATIC / PAGE MEMORY',
+    },
+    hero: {
+      summary: '가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱',
+      media: [
+        {
+          src: 'detail/streaming-ui/streaming-hero-1440.png',
+          alt: 'Streaming UI Concept Home · 1440×900 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      ],
+      mediaLabel: '현재 브라우저 실행 화면 · static catalog · page-memory interaction',
+    },
+    context: {
+      problem: '어두운 콘텐츠 UI의 분위기를 유지하면서도 작품 정보·필터·주요 행동을 빠르게 읽을 수 있어야 했습니다. 프레임워크 없이 여러 위치의 상태와 dialog keyboard flow도 일관되게 연결해야 했습니다.',
+      goal: '정적 가상 catalog를 기반으로 filter·native dialog·page-memory 찜 상태와 반응형 navigation을 HTML·CSS·Vanilla JavaScript로 구현합니다.',
+    },
+    decisions: [
+      {
+        title: '정적 catalog를 장르 filter로 빠르게 좁히도록 구성했습니다.',
+        choice: '전체 6개와 스릴러 2개, 다른 장르 각 1개를 버튼 상태와 함께 필터링',
+        reason: '검색·추천 API 없이도 catalog 분류와 결과 변화를 명확하게 확인하기 위해',
+        verification: '스릴러 선택 시 SIGNAL / 01과 RUNWAY / 06 두 카드만 노출',
+        media: {
+          src: 'detail/streaming-ui/streaming-filter-1440.png',
+          alt: 'Streaming UI Concept 장르 스릴러 filter 적용 결과 · 1440×900 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        title: '세 종류의 native dialog에 같은 keyboard flow를 적용했습니다.',
+        choice: '작품 정보·미리보기·프로젝트 안내에 initial focus와 Tab·Shift+Tab·Escape·backdrop·trigger focus return 적용',
+        reason: '마우스와 키보드에서 열기·탐색·닫기·복귀 흐름을 일관되게 유지하기 위해',
+        verification: '작품 정보와 프로젝트 안내 dialog의 open 상태·초기 heading focus·닫기 후 trigger 복귀 확인. 실제 video·audio는 재생하지 않음',
+        media: {
+          layout: 'portrait-pair',
+          aspectRatio: '16 / 10',
+          items: [
+            {
+              src: 'detail/streaming-ui/streaming-dialog-390.png',
+              alt: 'Streaming UI Concept 작품 정보 native dialog · 390×844 실제 브라우저 화면',
+              objectFit: 'contain',
+              objectPosition: 'top',
+            },
+            {
+              src: 'detail/streaming-ui/streaming-guide-1440.png',
+              alt: 'Streaming UI Concept 프로젝트 안내 native dialog · 1440×900 실제 브라우저 화면',
+              objectFit: 'contain',
+              objectPosition: 'top',
+            },
+          ],
+        },
+      },
+      {
+        title: '같은 콘텐츠의 찜 상태를 Hero·card·dialog에 동기화했습니다.',
+        choice: '현재 페이지 메모리의 Set을 기준으로 aria-pressed·label·visual state를 함께 갱신',
+        reason: '서로 다른 위치에서 같은 콘텐츠 행동이 모순되지 않게 하기 위해',
+        verification: 'SIGNAL / 01의 네 개 찜 버튼이 함께 true가 되고 새로고침하면 초기화됨. localStorage·sessionStorage·계정·DB 저장은 사용하지 않음',
+        media: {
+          src: 'detail/streaming-ui/streaming-favorite-390.png',
+          alt: 'Streaming UI Concept SIGNAL / 01 찜 상태 동기화 · 390×844 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'contain',
+          objectPosition: 'top',
+        },
+      },
+    ],
+    mainScreensLayout: 'equal',
+    mainScreens: [
+      {
+        label: 'Responsive Home',
+        media: {
+          src: 'detail/streaming-ui/streaming-hero-1440.png',
+          sources: {
+            mobile: 'detail/streaming-ui/streaming-hero-390.png',
+            compact: 'detail/streaming-ui/streaming-hero-1024.png',
+          },
+          alt: 'Streaming UI Concept responsive Home · 390·1024·1440 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        label: 'Genre Filter',
+        media: {
+          src: 'detail/streaming-ui/streaming-filter-1440.png',
+          alt: 'Streaming UI Concept 스릴러 filter 결과 · 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+      {
+        label: 'Content Info Dialog',
+        media: {
+          src: 'detail/streaming-ui/streaming-dialog-390.png',
+          alt: 'Streaming UI Concept 작품 정보 native dialog · 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'contain',
+          objectPosition: 'top',
+        },
+      },
+      {
+        label: 'Project Guide Dialog',
+        media: {
+          src: 'detail/streaming-ui/streaming-guide-1440.png',
+          alt: 'Streaming UI Concept 프로젝트 안내 native dialog · 실제 브라우저 화면',
+          aspectRatio: '16 / 10',
+          objectFit: 'cover',
+          objectPosition: 'top',
+        },
+      },
+    ],
+    responsiveCards: [
+      { width: '390px', rule: '모바일 navigation·Hero 행동·dialog' },
+      { width: '1024px', rule: '중간 폭 catalog·section 보간' },
+      { width: '1440px', rule: 'Hero split·filter·desktop navigation' },
+    ],
+    scope: {
+      actual: [
+        'fictional catalog 10개와 장르 filter',
+        'native dialog·page-memory favorite·반응형 navigation',
+        '390·1024·1440 browser QA와 keyboard flow',
+      ],
+      demoStatic: [
+        'HTML·JavaScript 정적 catalog data',
+        '찜 상태는 현재 페이지 메모리에만 유지되고 reload 시 초기화',
+        'ChatGPT Python 환경의 Pillow·NumPy procedural WebP와 자체 SVG·icon',
+      ],
+      notIncluded: [
+        '실제 streaming·video·audio',
+        'login·payment·subscription·API·DB·Storage',
+        '사용자 조사·사용성 테스트·운영 지표와 자산 독점성·법률상 무위험 보증',
+      ],
+    },
+    aiCollaboration: [
+      { label: 'USER LED', value: '최종 선택 · 편집 · UI 적용 · 공개 범위 판단' },
+      { label: 'AI ASSISTED', value: 'ChatGPT Python 환경의 Pillow·NumPy procedural asset 제작 보조' },
+      { label: 'BOUNDARY', value: '외부 입력 이미지·OpenAI 이미지 생성 모델·runtime AI 없음' },
+    ],
+    resultLimit: {
+      done: 'fictional catalog 10개, 장르 filter, native dialog, page-memory favorite, 390·1024·1440 반응형 화면, procedural WebP와 자체 SVG·icon을 구현했으며 외부 image·API·CDN request는 사용하지 않았습니다.',
+      limit: '실제 streaming·video, login·payment·subscription, API·DB·Storage, 사용자 조사·사용성 테스트·운영 지표는 포함하지 않았고 자산 독점성·법률상 무위험을 보증하지 않습니다.',
     },
   },
   brewstep: {
@@ -498,7 +653,7 @@ export const PROJECT_DETAIL_READY = {
       notIncluded: 'NOT INCLUDED',
     },
     scope: {
-      actual: ['완료한 설계 산출물', '모바일 7화면', '반응형 4화면', 'Prototype Flow 2개', 'Reaction 22개', 'Component·Contract·Asset Rights'],
+      actual: ['완료한 설계 산출물', '모바일 7화면', '반응형 4화면', 'Prototype Flow 3개', 'Reaction 21개', 'Component·Contract·Asset Rights'],
       demoStatic: ['샘플·mock·정적 데이터', '상품·매장·픽업·결제·주문 상태 예시', 'Figma Concept Prototype', 'Pexels 제품 사진'],
       notIncluded: ['미구현 기능과 한계', '웹·앱 코드 구현', '실제 API·DB·결제·재고·위치', '실제 사용자 조사·사용성 테스트', '성과 수치', '상표 Clearance'],
     },
@@ -544,7 +699,7 @@ export const PROJECT_DETAIL_READY = {
     },
     decisions: [
       {
-        title: '점검 결과를 정비 요청으로 자동 인계했습니다.',
+        title: '점검 결과가 정비 요청으로 이어지는 인계 흐름을 설계했습니다.',
         choice: '같은 기록을 다음 작업으로 전달',
         reason: '중복 입력과 누락 감소',
         verification: '연결된 점검 정보가 정비 요청 화면에 표시됨',

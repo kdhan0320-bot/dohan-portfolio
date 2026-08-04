@@ -286,12 +286,13 @@ Contact다(Home Desktop 1440 254:3 y좌표 순서로 재확인). Phase 4A에서
   Soft White 카드, 인덱스+accent bar+제목+purpose+divider+tools). Phase 3C의
   정리·연결·검증 밴드, Capability Studio(dark 3레인), 5단계 Working
   Process는 최신 Figma에 없어 제거했다.
-- **Featured Projects**: 이전 구조 유지(JobFlow/버스 도착정보 앱/Portfolio
-  Feedback Hub 3개 row, 이미지·설명 교차 배치, 실제 데이터). 헤딩 카피만
+- **Featured Projects**: 현재 공개 대표 작품 3개(공정봄/JobFlow/설비잇 row,
+  이미지·설명 교차 배치, 실제 데이터). 헤딩 카피만
   Figma 실측으로 갱신("서로 다른 문제를, 같은 기준으로 풀었습니다.").
-- **Selected Works**: 이전 구조 유지(`moreWorksPublished` 플래그 기반 단일
-  카드, 현재 OTT Service 1개). 헤딩 카피만 갱신("다른 작업도, 같은
-  기준으로 정리했습니다.").
+- **Selected Works**: 현재 공개 보조 작품 2개(울산 버스 도착정보/Streaming UI
+  Concept). Projects 페이지의 More Works는 Portfolio Feedback Hub → 울산 버스
+  도착정보 → Streaming UI Concept → BREWSTEP 순서다. 헤딩 카피는 "다른 작업도,
+  같은 기준으로 정리했습니다."를 사용한다.
 - **Contact**: 좌 32% Deep Harbor identity plane(D2+`DOHAN KIM`+정리·연결·
   검증+OPEN TO WORK) / 우 68% Soft White action plane(heading+Mail primary+
   GitHub secondary+지원 분야, PDF 버튼 없음 — 268:65 확인), 하단 별도
@@ -363,6 +364,13 @@ Figma placeholder 문구를 그대로 베끼지 않고 코드 데이터(`moreWor
 Detail 이전/다음 프로젝트, 404 홈/전체 프로젝트는 전부 `RouterLink`로 실제
 `<a href>`를 렌더한다. Detail의 스마트 뒤로가기(history 유무에 따라 다른 곳으로
 이동)만 버튼으로 유지한다.
+
+Projects의 Streaming UI Concept 카드는 sibling link 두 개로 행동을 분리한다.
+카드 전체의 주 행동은 `#/projects/ott-service` 내부 상세이고, `LIVE`는 실제
+Streaming UI를 새 탭에서 연다. 두 link를 서로 중첩하지 않는다. 일반
+PUSH·REPLACE route에서는 `RouteEffects.jsx`가 새 route의 H1 render를 bounded
+requestAnimationFrame으로 기다린 뒤 `main#main-content`에 `preventScroll` focus를
+주고, POP과 Home `location.state.scrollTo`는 기존 scroll 계약을 유지한다.
 
 **Detail placeholder 금지 원칙**: `/projects/:slug`는 프로젝트별 실제 이미지 수가
 1장뿐인 경우가 있다. 실제 asset inventory 없이 Figma의 여러 media slot을 그대로

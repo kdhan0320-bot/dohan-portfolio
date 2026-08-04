@@ -29,10 +29,11 @@ const SLUG_TO_ID = {
   jobflow: 'jobflow',
   'bus-arrival': 'bus-arrival-app',
   'feedback-hub': 'feedback-hub',
+  'ott-service': 'ott-service',
   brewstep: 'brewstep',
   seolbiit: 'seolbiit',
 };
-const SLUG_ORDER = ['gongjeongbom', 'jobflow', 'seolbiit', 'feedback-hub', 'bus-arrival', 'brewstep'];
+const SLUG_ORDER = ['gongjeongbom', 'jobflow', 'seolbiit', 'feedback-hub', 'bus-arrival', 'ott-service', 'brewstep'];
 const cycleSlug = (slug, dir) => {
   const i = SLUG_ORDER.indexOf(slug);
   if (i < 0) return null;
@@ -135,7 +136,10 @@ const ApprovedSlotImage = ({ media, loading = 'lazy', fluidMobile = false }) => 
         display: 'block',
         width: '100%',
         height: fluidMobile ? { xs: 'auto', md: '100%' } : '100%',
-        objectFit: fluidMobile ? { xs: 'contain', md: 'cover' } : 'cover',
+        objectFit: fluidMobile
+          ? { xs: media.objectFit ?? 'contain', md: media.objectFit ?? 'cover' }
+          : media.objectFit ?? 'cover',
+        objectPosition: media.objectPosition ?? 'center',
       }}
     />
   </Box>

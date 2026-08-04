@@ -262,7 +262,7 @@ const HeroSection = () => {
     aria-label="소개"
     sx={{
       position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy,
-      width: '100vw', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw',
+      width: '100%',
       // Figma Hero pt/pb: Mobile 390(18/48), Compact 1024(20/60), Desktop 1440(24/72).
       pt: { xs: '18px', sm: 9 }, pb: { xs: '48px', sm: 9 },
       [SPLIT_MQ]: { display: 'flex', alignItems: 'center' },

@@ -11,6 +11,7 @@ const SLUG_TO_ID = {
   jobflow: 'jobflow',
   'bus-arrival': 'bus-arrival-app',
   'feedback-hub': 'feedback-hub',
+  'ott-service': 'ott-service',
   brewstep: 'brewstep',
   seolbiit: 'seolbiit',
 };
@@ -40,11 +41,13 @@ const resolveTitle = (pathname) => {
  *   뒤에는 그때까지의 값으로라도 복원한다(무한 대기 금지). */
 const scrollMemory = new Map();
 const MAX_RESTORE_FRAMES = 48;
+const MAX_FOCUS_FRAMES = 24;
 
 const RouteEffects = () => {
   const location = useLocation();
   const navigationType = useNavigationType();
   const restoreRef = useRef({ rafId: null, cancelled: false });
+  const previousPathRef = useRef(location.pathname);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -78,6 +81,9 @@ const RouteEffects = () => {
     const state = { rafId: null, cancelled: false };
     restoreRef.current = state;
 
+    const isSamePath = previousPathRef.current === location.pathname;
+    previousPathRef.current = location.pathname;
+
     if (navigationType === 'POP') {
       const saved = scrollMemory.get(location.pathname);
       if (saved != null) {
@@ -97,10 +103,28 @@ const RouteEffects = () => {
       return () => { state.cancelled = true; };
     }
 
-    if (navigationType === 'PUSH' || navigationType === 'REPLACE') {
-      if (!location.state?.scrollTo) {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-      }
+    if ((navigationType === 'PUSH' || navigationType === 'REPLACE')
+      && !location.state?.scrollTo
+      && !isSamePath) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+
+      let attempts = 0;
+      const focusRouteStart = () => {
+        if (state.cancelled) return;
+        const main = document.querySelector('main#main-content');
+        const routeReady = Boolean(main?.querySelector('h1'));
+
+        if (main && (routeReady || attempts >= MAX_FOCUS_FRAMES)) {
+          main.focus({ preventScroll: true });
+          return;
+        }
+
+        attempts += 1;
+        state.rafId = requestAnimationFrame(focusRouteStart);
+      };
+
+      state.rafId = requestAnimationFrame(focusRouteStart);
+      return () => { state.cancelled = true; };
     }
     return undefined;
   }, [location.pathname, location.state, navigationType]);

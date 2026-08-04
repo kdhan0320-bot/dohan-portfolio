@@ -81,10 +81,10 @@ const ContactSection = () => {
         <QhdAmbientSignal variant="contact-right" sx={{ right: 0, width: CONTACT_GUTTER_WIDTH, maxWidth: 560 }} />
       </Box>
 
-      {/* 2-pane split — 1440까지는 100vw full-bleed(Hero와 동일한 breakout 기법),
+      {/* 2-pane split — 1440까지는 부모 section의 전체 폭을 사용하고,
        * 1920+에서는 HOME_WIDE_MAX_WIDTH(1440) shell로 캡핑하고 중앙 정렬한다. */}
       <Box sx={{
-        position: 'relative', width: '100vw', left: '50%', right: '50%', marginLeft: '-50vw', marginRight: '-50vw',
+        position: 'relative', width: '100%',
         display: 'block',
         [MOBILE_ONLY_MQ]: { height: '828px' },
         [SPLIT_MQ]: { display: 'grid', gridTemplateColumns: '32fr 68fr', height: '520px' },
