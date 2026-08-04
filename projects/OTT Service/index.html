@@ -3,11 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="가상 콘텐츠와 정적 데이터를 기반으로 콘텐츠 카드, 필터, 모달과 반응형 인터랙션을 구현한 포트폴리오용 스트리밍 UI 콘셉트 데모입니다." />
+  <meta name="description" content="가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱" />
   <title>Streaming UI Concept — Portfolio Demo</title>
-  <link rel="stylesheet" href="css/style.css?v=20260727-4" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css?v=20260804-1" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">본문으로 바로가기</a>
+
+  <svg class="svg-sprite" aria-hidden="true" focusable="false">
+    <symbol id="icon-play" viewBox="0 0 24 24">
+      <polygon points="8,5.5 19,12 8,18.5" />
+    </symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24">
+      <path d="M12 20.4 4.7 13.5C1.2 10.2 2.5 4.6 7.2 4.1c2.1-.2 3.9.8 4.8 2.4.9-1.6 2.7-2.6 4.8-2.4 4.7.5 6 6.1 2.5 9.4Z" />
+    </symbol>
+    <symbol id="icon-star" viewBox="0 0 24 24">
+      <polygon points="12,3.5 14.5,8.7 20.2,9.5 16.1,13.5 17.1,19.2 12,16.5 6.9,19.2 7.9,13.5 3.8,9.5 9.5,8.7" />
+    </symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" />
+      <line x1="12" y1="11" x2="12" y2="16" />
+      <circle cx="12" cy="8" r="0.8" fill="currentColor" stroke="none" />
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <line x1="6.5" y1="6.5" x2="17.5" y2="17.5" />
+      <line x1="17.5" y1="6.5" x2="6.5" y2="17.5" />
+    </symbol>
+    <symbol id="icon-arrow-left" viewBox="0 0 24 24">
+      <polyline points="11,6 5,12 11,18" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24">
+      <polyline points="10,6 18,6 18,14" />
+      <line x1="18" y1="6" x2="8" y2="16" />
+      <polyline points="15,18 6,18 6,9" />
+    </symbol>
+  </svg>
 
   <!-- ===== HEADER ===== -->
   <header class="header" id="header">
@@ -50,7 +82,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content" tabindex="-1">
 
     <!-- ===== HERO SECTION ===== -->
     <section class="hero" id="home" aria-label="메인 콘텐츠 배너">
@@ -89,14 +121,14 @@
             <span class="ui-label">예고편 미리보기</span>
           </button>
           <button type="button" class="btn btn--glass hero__like-action js-like-btn" id="likeHeroBtn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
-            <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+            <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
             <span class="ui-label js-like-label">찜하기</span>
           </button>
         </div>
 
         <div class="hero__rating" aria-label="데모 평점 4.8점">
           <span class="rating-display rating-display--hero" aria-hidden="true">
-            <span class="rating-star"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span>
+            <span class="rating-star"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span>
             <span class="rating-value">4.8</span>
             <span class="rating-separator">·</span>
             <span class="rating-label">데모 평점</span>
@@ -112,7 +144,7 @@
           </div>
           <div class="poster__play">
             <div class="play-pulse"></div>
-            <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+            <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
           </div>
         </div>
       </div>
@@ -157,7 +189,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -169,7 +201,7 @@
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
                 <span>12화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -188,7 +220,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-02" aria-label="BLUE / 02 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -200,7 +232,7 @@
               <div class="card__meta">
                 <span>2025</span><span aria-hidden="true">·</span>
                 <span>8화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -219,7 +251,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-03" aria-label="CITY / 03 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -231,7 +263,7 @@
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
                 <span>10화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.9점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.9</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.9점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.9</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -250,7 +282,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-04" aria-label="ROOM / 04 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -262,7 +294,7 @@
               <div class="card__meta">
                 <span>2025</span><span aria-hidden="true">·</span>
                 <span>6화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -281,7 +313,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-05" aria-label="ARCHIVE / 05 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -293,7 +325,7 @@
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
                 <span>5화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -312,7 +344,7 @@
                     <span class="ui-label">예고편</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-06" aria-label="RUNWAY / 06 찜하기" aria-pressed="false">
-                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                    <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                     <span class="ui-label js-like-label">찜하기</span>
                   </button>
                 </div>
@@ -324,7 +356,7 @@
               <div class="card__meta">
                 <span>2026</span><span aria-hidden="true">·</span>
                 <span>9화</span><span aria-hidden="true">·</span>
-                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
           </article>
@@ -371,7 +403,7 @@
             <div class="detail__poster-overlay">
               <button type="button" class="trailer-btn js-trailer-btn" id="trailerBtn" data-content-id="catalog-01" aria-label="SIGNAL / 01 예고편 미리보기">
                 <span class="trailer-btn__circle" aria-hidden="true">
-                  <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                  <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
                 </span>
                 <span class="ui-label">예고편 미리보기</span>
               </button>
@@ -414,7 +446,7 @@
               </div>
               <div class="meta-card">
                 <span class="meta-card__label">평점</span>
-                <span class="meta-card__value card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                <span class="meta-card__value card__rating rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
               </div>
             </div>
 
@@ -423,7 +455,7 @@
                 <span class="ui-label">작품 정보</span>
               </button>
               <button type="button" class="btn btn--glass btn--lg btn--icon-only js-like-btn" id="listAddBtn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
-                <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
               </button>
             </div>
           </div>
@@ -449,7 +481,7 @@
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--1" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
               </div>
             </div>
             <div class="rec-card__body">
@@ -460,7 +492,7 @@
                 <div class="rec-card__meta">
                   <span>2026</span><span aria-hidden="true">·</span>
                   <span>10화</span><span aria-hidden="true">·</span>
-                  <span class="rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                  <span class="rating-display" aria-label="데모 평점 4.6점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.6</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
               <div class="rec-card__actions">
@@ -469,7 +501,7 @@
                   <span class="ui-label">예고편</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-07" aria-label="FOCUS / 07 찜하기" aria-pressed="false">
-                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                 </button>
               </div>
             </div>
@@ -480,7 +512,7 @@
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--2" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
               </div>
             </div>
             <div class="rec-card__body">
@@ -491,7 +523,7 @@
                 <div class="rec-card__meta">
                   <span>2026</span><span aria-hidden="true">·</span>
                   <span>8화</span><span aria-hidden="true">·</span>
-                  <span class="rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                  <span class="rating-display" aria-label="데모 평점 4.7점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.7</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
               <div class="rec-card__actions">
@@ -500,7 +532,7 @@
                   <span class="ui-label">예고편</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-08" aria-label="MIDNIGHT / 08 찜하기" aria-pressed="false">
-                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                 </button>
               </div>
             </div>
@@ -511,7 +543,7 @@
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--3" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
               </div>
             </div>
             <div class="rec-card__body">
@@ -522,7 +554,7 @@
                 <div class="rec-card__meta">
                   <span>2026</span><span aria-hidden="true">·</span>
                   <span>7화</span><span aria-hidden="true">·</span>
-                  <span class="rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                  <span class="rating-display" aria-label="데모 평점 4.8점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.8</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
               <div class="rec-card__actions">
@@ -531,7 +563,7 @@
                   <span class="ui-label">예고편</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-09" aria-label="FREQUENCY / 09 찜하기" aria-pressed="false">
-                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                 </button>
               </div>
             </div>
@@ -542,7 +574,7 @@
             <div class="rec-card__image">
               <div class="rec-poster rec-poster--4" aria-hidden="true"></div>
               <div class="rec-card__overlay" aria-hidden="true">
-                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+                <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
               </div>
             </div>
             <div class="rec-card__body">
@@ -553,7 +585,7 @@
                 <div class="rec-card__meta">
                   <span>2026</span><span aria-hidden="true">·</span>
                   <span>11화</span><span aria-hidden="true">·</span>
-                  <span class="rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
+                  <span class="rating-display" aria-label="데모 평점 4.5점"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value">4.5</span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></span>
                 </div>
               </div>
               <div class="rec-card__actions">
@@ -562,7 +594,7 @@
                   <span class="ui-label">예고편</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-10" aria-label="OCEAN / 10 찜하기" aria-pressed="false">
-                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span>
+                  <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
                 </button>
               </div>
             </div>
@@ -585,19 +617,19 @@
 
         <nav class="footer__actions" aria-label="프로젝트 링크">
           <a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/" target="_blank" rel="noopener noreferrer" class="footer__action">
-            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m15 18-6-6 6-6"/><path d="M9 12h10"/></svg></span>
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-arrow-left"></use></svg></span>
             <span class="footer__action-label">포트폴리오로 돌아가기</span>
             <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
           </a>
           <a href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/OTT%20Service" target="_blank" rel="noopener noreferrer" class="footer__action">
             <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
             <span class="footer__action-label">GitHub 소스 보기</span>
-            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></span>
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-external"></use></svg></span>
           </a>
           <button type="button" class="footer__action footer__action--dialog js-project-guide">
             <span class="footer__action-icon footer__action-icon--empty" aria-hidden="true"></span>
             <span class="footer__action-label">프로젝트 안내</span>
-            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9.25"/><path d="M12 10.75V16"/><path d="M12 7.75h.01"/></svg></span>
+            <span class="footer__action-icon" aria-hidden="true"><svg class="ui-icon ui-icon--info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-info"></use></svg></span>
           </button>
         </nav>
       </div>
@@ -619,15 +651,13 @@
       <div class="modal__header">
         <span class="login-modal__logo">STREAMING UI CONCEPT</span>
         <button type="button" class="modal__close js-dialog-close" aria-label="프로젝트 안내 닫기">
-          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg>
         </button>
       </div>
 
       <div class="login-modal__body">
         <h2 class="login-modal__title" id="projectGuideTitle" tabindex="-1">프로젝트 안내</h2>
-        <p class="login-modal__desc">정적 콘텐츠 데이터를 기반으로 제작한 포트폴리오용 스트리밍 UI 데모입니다.</p>
+        <p class="login-modal__desc">가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱입니다.</p>
         <h3 class="modal__section-title">구현 범위</h3>
         <ul class="login-modal__notice-list">
           <li>장르 필터와 콘텐츠 카드</li>
@@ -640,7 +670,7 @@
           <li>실제 회원가입과 로그인</li>
           <li>결제와 구독</li>
           <li>실제 영상 재생</li>
-          <li>서버, 데이터베이스와 외부 API</li>
+          <li>API·DB·Storage와 runtime AI</li>
           <li>새로고침 후 상태 저장</li>
         </ul>
         <div class="modal__actions">
@@ -657,9 +687,7 @@
       <div class="modal__header">
         <h2 class="modal__title" id="contentInfoTitle" tabindex="-1">작품 정보</h2>
         <button type="button" class="modal__close js-dialog-close" aria-label="작품 정보 닫기">
-          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg>
         </button>
       </div>
       <div class="info-modal__body">
@@ -668,12 +696,12 @@
         <dl class="info-modal__meta">
           <div><dt>연도</dt><dd id="contentInfoYear"></dd></div>
           <div><dt>회차</dt><dd id="contentInfoEpisodes"></dd></div>
-          <div><dt>평점</dt><dd class="rating-display" id="contentInfoRating"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-2.9-5.6 2.9 1.1-6.2L3 9.6l6.2-.9Z"/></svg></span><span class="rating-value"></span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></dd></div>
+          <div><dt>평점</dt><dd class="rating-display" id="contentInfoRating"><span class="rating-star" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-star"></use></svg></span><span class="rating-value"></span><span class="rating-separator" aria-hidden="true">·</span><span class="rating-label">데모 평점</span></dd></div>
         </dl>
         <p class="info-modal__notice">정적 데모 데이터</p>
         <div class="modal__actions">
           <button type="button" class="btn btn--primary js-info-trailer"><span class="ui-label">예고편 미리보기</span></button>
-          <button type="button" class="btn btn--glass btn--icon-only js-like-btn" id="contentInfoLike" aria-label="찜하기" aria-pressed="false"><span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21.2l7.8-7.7 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg></span></button>
+          <button type="button" class="btn btn--glass btn--icon-only js-like-btn" id="contentInfoLike" aria-label="찜하기" aria-pressed="false"><span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span></button>
           <button type="button" class="btn btn--outline js-dialog-close"><span class="ui-label">닫기</span></button>
         </div>
       </div>
@@ -686,9 +714,7 @@
       <div class="modal__header">
         <h2 class="modal__title" id="modalTitle" tabindex="-1">SIGNAL / 01 — 예고편 미리보기</h2>
         <button type="button" class="modal__close js-dialog-close" aria-label="예고편 미리보기 닫기">
-          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
+          <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg>
         </button>
       </div>
 
@@ -698,7 +724,7 @@
             <span class="pulse-ring"></span>
             <span class="pulse-ring pulse-ring--delay"></span>
             <span class="modal__play-btn">
-              <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m8.5 6.5 9.5 5.5-9.5 5.5Z"/></svg>
+              <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
             </span>
           </div>
           <p class="modal__video-title" id="modalVideoTitle">SIGNAL / 01</p>
@@ -712,6 +738,6 @@
     </div>
   </dialog>
 
-  <script src="js/main.js?v=20260726-3"></script>
+  <script src="js/main.js?v=20260804-4"></script>
 </body>
 </html>

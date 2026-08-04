@@ -117,6 +117,36 @@ textarea {
 button { cursor: pointer; border: none; background: none; }
 h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; }
 
+.svg-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 2000;
+  padding: 10px 14px;
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-sm);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-size: 0.875rem;
+  font-weight: 700;
+  transform: translateY(calc(-100% - 20px));
+  transition: transform 0.18s ease;
+}
+.skip-link:focus-visible { transform: translateY(0); }
+
+#main-content {
+  scroll-margin-top: var(--header-h);
+}
+#main-content:focus { outline: none; }
+
 .section__title,
 .featured-banner__title,
 .card__title,
@@ -261,7 +291,9 @@ h1, h2, h3, h4 { line-height: 1.2; font-weight: 700; }
 /* Focus ring */
 .btn:focus-visible,
 .filter-btn:focus-visible,
-.footer__action:focus-visible {
+.footer__action:focus-visible,
+.header__logo:focus-visible,
+.header__hamburger:focus-visible {
   outline: var(--focus-size) solid var(--primary);
   outline-offset: var(--focus-offset);
 }

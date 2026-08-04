@@ -1,65 +1,77 @@
-# Streaming UI Concept — Portfolio Demo
+# Streaming UI Concept
 
-## 개요
+## 1. 한 줄 목적
 
-가상 콘텐츠와 정적 데이터를 기반으로 제작한 포트폴리오용 반응형 스트리밍 UI 콘셉트 데모입니다. 특정 스트리밍 서비스나 영상 작품의 브랜드를 나타내지 않으며, HTML·CSS·Vanilla JavaScript 구현, 콘텐츠 카드 상태, native dialog 인터랙션과 keyboard·touch 접근성을 보여주는 프로젝트입니다.
+가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱입니다.
 
-## 기술 스택
+## 2. 구현 과제
+
+어두운 콘텐츠 UI의 분위기를 유지하면서 정보 가독성·keyboard flow·filter·dialog·page-memory 상태를 반응형으로 일관되게 구현했습니다.
+
+## 3. 기술 스택
 
 - HTML
 - CSS (`css/style.css`)
 - Vanilla JavaScript (`js/main.js`)
-- Static Data
-- 별도 프레임워크·패키지·빌드 도구 없음
+- Static HTML·JavaScript data
+- 별도 framework·package·build tool 없음
 
-## 구현 범위
+## 4. 주요 화면·인터랙션
 
-- 헤더 스크롤 상태와 데스크톱·모바일 내비게이션
-- 장르 필터와 번호 기반 가상 콘텐츠 카탈로그 10개
-- 카탈로그 10개의 작품 정보 및 예고편 미리보기 모달
-- Hero·대표 콘텐츠·카드·작품 정보 모달의 찜하기 인터랙션
-- 컬렉션과 대표 콘텐츠 사이의 Interactive Demo 배너 및 프로젝트 안내 연결
-- 추천 콘텐츠의 실제 버튼 기반 mouse·keyboard 동작
+- Hero와 번호 기반 가상 catalog 10개
+- 장르 filter 6종
 - native `<dialog>` 기반 프로젝트 안내·작품 정보·예고편 미리보기
-- 모달 초기 포커스, Tab 순환, Escape·backdrop 닫기와 trigger 포커스 복귀
-- 모바일 메뉴 focus 이동, 바깥 클릭·Escape·링크 선택 닫기
-- Footer의 실제 포트폴리오·GitHub 링크와 프로젝트 안내 dialog action
-- 반응형 레이아웃과 `prefers-reduced-motion` 대응
+- Hero·card·dialog 사이에서 동기화되는 찜 상태
+- 데스크톱·모바일 navigation과 실제 포트폴리오·GitHub 링크
 
-## 정적 데이터와 상태
+## 5. STATIC·PAGE MEMORY 계약
 
-콘텐츠 라벨, 장르, 설명, 연도, 회차와 데모 평점은 HTML 또는 JavaScript의 작은 정적 객체에 정의되어 있습니다. 카탈로그 라벨은 상업 브랜드나 독창적인 영상 작품명에 대한 권리 주장 없이 번호 기반 데모 식별자로 사용합니다. 찜 상태는 현재 페이지 메모리에서만 유지되며 `localStorage`와 `sessionStorage`를 사용하지 않아 새로고침하면 초기화됩니다.
+콘텐츠 제목·장르·설명·연도·회차·데모 평점은 HTML과 JavaScript의 정적 데이터입니다. 찜 상태는 현재 페이지 메모리에서만 유지되며 `localStorage`와 `sessionStorage`를 사용하지 않습니다. 새로고침하면 모든 찜 상태가 초기화됩니다.
 
-## 자산 및 권리 상태
+## 6. 포함하지 않은 기능
 
-| 경로 또는 항목 | 종류 | 실제 파일 구조 | 제작자·제작 도구 | 외부 저작물 포함 여부 | 라이선스 | 현재 판정 | 확인일 |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `assets/backdrops/*.svg` | 추상 배경 벡터 1개 | SVG 도형·그라디언트·필터만 포함. `<image>`, 외부 참조, embedded raster, `<text>` 없음 | Git 추가자: `kdhan0320-bot` (`9f454b7`). 실제 제작자·제작 도구는 확인 불가 | 파일 구조상 외부 이미지·브랜드 로고는 확인되지 않음 | 확인 불가 | 외부 raster 참조는 없으나 제작 경위와 이용 권리는 확인 불가 | 2026-07-26 |
-| `assets/posters/*.svg` | 추상 포스터 벡터 6개 | SVG 도형·그라디언트·필터만 포함. `<image>`, 외부 참조, embedded raster, `<text>` 없음 | Git 추가자: `kdhan0320-bot` (`9f454b7`). 실제 제작자·제작 도구는 확인 불가 | 파일 구조상 외부 이미지·브랜드 로고는 확인되지 않음 | 확인 불가 | 외부 raster 참조는 없으나 제작 경위와 이용 권리는 확인 불가 | 2026-07-26 |
-| `assets/posters/signal-01-hero.webp` | WebP, 840×1050, 4:5 | SIGNAL / 01 Hero 포스터. 이미지 내부 텍스트·로고와 EXIF·XMP·ICC 없음 | 생성형 콘셉트 보드의 도시·좌표 신호 아트 영역을 추출하고 UI·문자 제거, crop·명암·하단 안전 영역 편집 | 외부 사진·배우·영화 스틸컷·브랜드 로고 입력 없음 | 별도 라이선스 문서 없음 | 현재 UI에 적용. 법률상 무위험을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/signal-01-card.webp` | WebP, 1200×750, 16:10 | SIGNAL / 01 콘텐츠 카드. 이미지 내부 텍스트·로고와 EXIF·XMP·ICC 없음 | 생성형 콘셉트 보드의 도시·좌표 신호 아트 영역을 추출하고 UI·문자 제거, crop·명암·하단 안전 영역 편집 | 외부 사진·배우·영화 스틸컷·브랜드 로고 입력 없음 | 별도 라이선스 문서 없음 | 현재 UI에 적용. 법률상 무위험을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/blue-02-card.webp` | WebP, 1200×750, 16:10 | BLUE / 02 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/city-03-card.webp` | WebP, 1200×750, 16:10 | CITY / 03 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/room-04-card.webp` | WebP, 1200×750, 16:10 | ROOM / 04 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/archive-05-card.webp` | WebP, 1200×750, 16:10 | ARCHIVE / 05 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/runway-06-card.webp` | WebP, 1200×750, 16:10 | RUNWAY / 06 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/focus-07-card.webp` | WebP, 1200×750, 16:10 | FOCUS / 07 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/midnight-08-card.webp` | WebP, 1200×750, 16:10 | MIDNIGHT / 08 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/frequency-09-card.webp` | WebP, 1200×750, 16:10 | FREQUENCY / 09 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| `assets/posters/ocean-10-card.webp` | WebP, 1200×750, 16:10 | OCEAN / 10 카드 썸네일 | 생성형 콘셉트 시트의 카드 아트 영역 추출·crop·resize | 내부 제목·서비스 로고 없음. 외부 영화 포스터·배우·브랜드 입력 없음 | 별도 라이선스 문서 없음 | 생성 이미지 기반 편집 자산. 법률상 무위험·독점권을 보증하지 않음 | 2026-07-26 |
-| inline play·heart·info·close 아이콘 | 일반 UI 벡터 아이콘 | HTML 안의 path·line·circle·polygon 기반 inline SVG | 실제 제작자·제작 도구 확인 불가 | 외부 파일·브랜드 로고 참조 없음 | 확인 불가 | 일반 기능 아이콘이며 출처와 라이선스는 확인 불가 | 2026-07-26 |
-| `assets/fonts/PretendardVariable.woff2`, `assets/fonts/OFL.txt` | 로컬 Variable WOFF2와 원문 라이선스 | Pretendard v1.3.9 Variable WOFF2를 수정 없이 로컬 로드 | Kil Hyung-jin / [Pretendard project](https://github.com/orioncactus/pretendard/releases/tag/v1.3.9) | 오픈소스 글꼴 파일 포함 | SIL Open Font License 1.1 | 외부 CDN 없이 로컬 웹폰트로 사용 | 2026-07-27 |
-| 외부 URL·API·CDN | 링크·네트워크 | 포트폴리오와 GitHub로 이동하는 실제 링크만 존재 | 해당 사이트 운영자 | 실행 자산으로 포함하지 않음 | 해당 없음 | 외부 이미지·API·CDN 요청 없음 | 2026-07-26 |
+- 실제 영상 재생·스트리밍
+- 회원가입·로그인
+- 결제·구독
+- API·DB·Storage
+- 새로고침 이후 상태 유지
+- runtime AI
 
-## 포함하지 않은 기능
+## 7. 실행 방법
 
-- 실제 회원가입과 로그인
-- 결제와 구독
-- 실제 영상 재생과 스트리밍
-- 콘텐츠 저장
-- 서버, 데이터베이스와 외부 API
-- 새로고침 후 상태 저장
+별도 설치나 빌드 과정이 없습니다. 저장소 루트에서 로컬 HTTP server를 실행한 뒤 `projects/OTT Service/index.html`을 엽니다.
 
-## 실행 방법
+## 8. 폴더·파일 역할
 
-별도 설치나 빌드 과정이 없습니다. 로컬 HTTP 서버에서 `index.html`을 열어 확인합니다.
+```text
+projects/OTT Service/
+├─ index.html                  # 화면 구조와 자체 SVG symbol sprite
+├─ css/style.css              # dark UI·responsive·focus style
+├─ js/main.js                 # filter·dialog·찜·mobile menu 상태
+└─ assets/
+   ├─ ASSET_PROVENANCE.md     # 이미지·SVG·icon·font provenance
+   ├─ favicon.svg             # 자체 signal geometry favicon
+   ├─ backdrops/              # Hero fallback SVG
+   ├─ posters/                # procedural WebP와 fallback SVG
+   └─ fonts/                  # Pretendard Variable WOFF2·OFL
+```
+
+폴더명 `OTT Service`와 공개 경로 `/ott-service/`는 기존 배포 copy 계약 때문에 유지합니다. 사용자 노출 작품명은 `Streaming UI Concept`입니다.
+
+## 9. 접근성·반응형
+
+- `본문으로 바로가기` skip link와 programmatic main focus target
+- CSS의 767px mobile 경계와 같은 `matchMedia('(min-width: 768px)')` 상태 동기화
+- mobile menu 초기 focus, 외부 pointer·Escape·link 닫기, desktop 전환 시 동등 navigation target으로 focus 이동
+- dialog 초기 focus, Tab·Shift+Tab 순환, Escape·backdrop 닫기와 trigger focus 복귀
+- button `aria-label`·`aria-pressed`, 장식 icon `aria-hidden`, `prefers-reduced-motion` 대응
+
+## 10. 자산·폰트 요약
+
+WebP 11개는 ChatGPT Python 환경에서 Pillow·NumPy를 이용해 기하 도형, gradient, procedural noise와 blur를 조합한 절차형 이미지입니다. 외부 입력 이미지와 실제 인물·브랜드·영화·게임·캐릭터 참조를 사용하지 않았고 이미지 내부 문자·워터마크가 없습니다. fallback SVG 7개, favicon과 inline symbol icon 7종은 프로젝트 내부에서 단순 geometry로 새로 작성했습니다.
+
+글꼴은 로컬 `PretendardVariable.woff2` v1.3.9를 사용하며 `OFL.txt`의 SIL Open Font License 1.1을 유지합니다. 파일별 dimensions·scene brief·seed·SHA-256과 세부 근거는 [`assets/ASSET_PROVENANCE.md`](assets/ASSET_PROVENANCE.md)에 기록합니다.
+
+## 11. 현재 한계
+
+자산 bundle에는 manifest와 생성 방식 설명은 있지만 완전한 generator source가 포함되어 있지 않아 같은 결과의 정확한 재생성을 주장하지 않습니다. 절차형 결과의 독점성이나 법률상 무위험도 보증하지 않습니다. screen reader의 실제 수동 낭독과 모든 상태의 수치형 contrast 측정은 별도 사용자 환경 검토가 필요합니다.

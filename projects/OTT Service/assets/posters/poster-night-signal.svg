@@ -1,45 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250" role="img" aria-label="추상 포스터 아트">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 250" width="400" height="250" role="img" aria-label="도시 위 청록 신호를 표현한 추상 포스터">
   <defs>
-    <linearGradient id="base-nightsignal" x1="15%" y1="0%" x2="85%" y2="100%">
-      <stop offset="0%" stop-color="#060e1c"/>
-      <stop offset="50%" stop-color="#0d0b22"/>
-      <stop offset="100%" stop-color="#050c14"/>
-    </linearGradient>
-    <radialGradient id="glowA-nightsignal" cx="28%" cy="35%" r="55%">
-      <stop offset="0%" stop-color="#00D1FF" stop-opacity="0.85"/>
-      <stop offset="100%" stop-color="#00D1FF" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="glowB-nightsignal" cx="72%" cy="68%" r="55%">
-      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.75"/>
-      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="vignette-nightsignal" cx="50%" cy="50%" r="75%">
-      <stop offset="55%" stop-color="#000000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000000" stop-opacity="0.55"/>
-    </radialGradient>
-    <linearGradient id="streak-nightsignal" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8fe8ff" stop-opacity="0"/>
-      <stop offset="50%" stop-color="#8fe8ff" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#8fe8ff" stop-opacity="0"/>
-    </linearGradient>
-    <filter id="soft-nightsignal" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="10"/>
-    </filter>
-    <filter id="grain-nightsignal">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise"/>
-      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.035 0"/>
-    </filter>
+    <linearGradient id="night-bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#050816"/><stop offset="1" stop-color="#112747"/></linearGradient>
+    <radialGradient id="night-glow"><stop stop-color="#00d1ff" stop-opacity="0.35"/><stop offset="1" stop-color="#00d1ff" stop-opacity="0"/></radialGradient>
   </defs>
-
-  <rect width="400" height="250" fill="url(#base-nightsignal)"/>
-  <rect width="400" height="250" fill="url(#glowA-nightsignal)"/>
-  <rect width="400" height="250" fill="url(#glowB-nightsignal)"/>
-
-  <g filter="url(#soft-nightsignal)" opacity="0.6">
-    <rect x="-80" y="30" width="560" height="22.5" fill="url(#streak-nightsignal)" transform="rotate(-18 200 125)"/>
-    <rect x="-80" y="155" width="560" height="12.5" fill="url(#streak-nightsignal)" transform="rotate(-18 200 125)"/>
+  <rect width="400" height="250" fill="url(#night-bg)"/>
+  <circle cx="250" cy="115" r="108" fill="url(#night-glow)"/>
+  <g fill="#07101e">
+    <rect x="0" y="142" width="52" height="108"/><rect x="42" y="112" width="45" height="138"/><rect x="78" y="155" width="62" height="95"/>
+    <rect x="128" y="98" width="54" height="152"/><rect x="170" y="132" width="66" height="118"/><rect x="226" y="84" width="58" height="166"/>
+    <rect x="272" y="126" width="52" height="124"/><rect x="314" y="102" width="56" height="148"/><rect x="358" y="144" width="42" height="106"/>
   </g>
-
-  <rect width="400" height="250" fill="url(#vignette-nightsignal)"/>
-  <rect width="400" height="250" filter="url(#grain-nightsignal)" opacity="0.5"/>
+  <g fill="none" stroke-linecap="round">
+    <circle cx="250" cy="126" r="24" stroke="#00d1ff" stroke-width="2"/><circle cx="250" cy="126" r="48" stroke="#8b5cf6" stroke-width="1.5"/>
+    <circle cx="250" cy="126" r="74" stroke="#00d1ff" stroke-opacity="0.38"/><line x1="250" y1="24" x2="250" y2="224" stroke="#00d1ff" stroke-width="1.5"/>
+  </g>
+  <circle cx="250" cy="126" r="6" fill="#e8fbff"/>
 </svg>

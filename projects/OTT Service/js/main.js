@@ -20,6 +20,8 @@ handleScroll();
 // ──────────────────────────────────────────────
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
+const headerLogo = document.querySelector('.header__logo');
+const desktopViewport = window.matchMedia('(min-width: 768px)');
 
 function openMobileMenu() {
   mobileMenu.hidden = false;
@@ -31,7 +33,7 @@ function openMobileMenu() {
   requestAnimationFrame(() => mobileMenu.querySelector('.mobile-nav__link')?.focus());
 }
 
-function closeMobileMenu({ restoreFocus = true } = {}) {
+function closeMobileMenu({ restoreFocus = true, focusTarget = null } = {}) {
   const wasOpen = mobileMenu.classList.contains('open');
   mobileMenu.classList.remove('open');
   hamburger.classList.remove('active');
@@ -39,7 +41,12 @@ function closeMobileMenu({ restoreFocus = true } = {}) {
   hamburger.setAttribute('aria-label', '메뉴 열기');
   mobileMenu.setAttribute('aria-hidden', 'true');
   mobileMenu.hidden = true;
-  if (wasOpen && restoreFocus) hamburger.focus();
+  if (!wasOpen) return;
+  if (focusTarget?.isConnected && focusTarget.getClientRects().length) {
+    focusTarget.focus();
+  } else if (restoreFocus && !desktopViewport.matches) {
+    hamburger.focus();
+  }
 }
 
 hamburger.addEventListener('click', () => {
@@ -54,6 +61,36 @@ document.querySelectorAll('.mobile-nav__link').forEach((link) => {
 document.addEventListener('pointerdown', (event) => {
   if (!mobileMenu.classList.contains('open')) return;
   if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMobileMenu();
+});
+
+function handleDesktopViewport(event) {
+  if (!event.matches) return;
+  const activeElement = document.activeElement;
+  const focusWasInMobileMenu = mobileMenu.contains(activeElement);
+  const focusWasOnHamburger = activeElement === hamburger;
+  let desktopFocusTarget = null;
+
+  if (focusWasInMobileMenu && activeElement.matches('a[href]')) {
+    const href = activeElement.getAttribute('href');
+    desktopFocusTarget = document.querySelector(`.header__nav a[href="${href}"]`);
+  }
+  if ((focusWasInMobileMenu || focusWasOnHamburger) && !desktopFocusTarget) {
+    desktopFocusTarget = headerLogo;
+  }
+
+  closeMobileMenu({ restoreFocus: false, focusTarget: desktopFocusTarget });
+}
+
+desktopViewport.addEventListener('change', handleDesktopViewport);
+handleDesktopViewport(desktopViewport);
+
+const skipLink = document.querySelector('.skip-link');
+const mainContent = document.getElementById('main-content');
+
+skipLink.addEventListener('click', (event) => {
+  event.preventDefault();
+  mainContent.scrollIntoView({ block: 'start' });
+  mainContent.focus({ preventScroll: true });
 });
 
 // ──────────────────────────────────────────────
