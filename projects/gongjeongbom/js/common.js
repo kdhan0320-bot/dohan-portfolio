@@ -13,7 +13,8 @@ function navLink(href, label, active = false) {
 
 function headerTemplate() {
   const page = pageName();
-  const productsActive = ["products", "product", "compare", "inquiry"].includes(page);
+  const productsActive = ["products", "product", "compare"].includes(page);
+  const inquiryActive = page === "inquiry";
   return `
     <div class="site-header__inner">
       <a class="brand" href="index.html" aria-label="공정봄 홈">공정봄</a>
@@ -21,7 +22,7 @@ function headerTemplate() {
         ${navLink("index.html#solutions", "솔루션")}
         ${navLink("products.html", "제품", productsActive)}
         ${navLink("index.html#cases", "적용 예시")}
-        ${navLink("inquiry.html", "기술 문의")}
+        ${navLink("inquiry.html", "기술 문의", inquiryActive)}
         ${navLink("index.html#about", "기업 소개")}
       </nav>
       <div class="header-actions">
@@ -42,13 +43,16 @@ function footerTemplate() {
       <div class="footer-links">
         <div><strong>탐색</strong><a href="index.html#solutions">솔루션</a><a href="products.html">제품</a><a href="index.html#cases">적용 예시</a></div>
         <div><strong>지원</strong><a href="products.html">제품 선택 도움말</a><a href="inquiry.html">기술 문의</a></div>
-        <div><strong>프로젝트</strong><a href="README.md">가상 기업</a><a href="README.md">데모 안내</a><a href="README.md#자산과-라이선스">자산 출처와 사용 조건</a></div>
+        <div><strong>프로젝트</strong><a href="README.md">프로젝트 안내·자산 출처</a></div>
       </div>
       <p class="footer-meta">가상 기업 · 데모 고지 · 자산 라이선스</p>
     </div>`;
 }
 
 function menuTemplate() {
+  const page = pageName();
+  const productsActive = ["products", "product", "compare"].includes(page);
+  const inquiryActive = page === "inquiry";
   return `
     <dialog class="sheet-dialog menu-dialog" id="menu-dialog" aria-labelledby="menu-title">
       <div class="sheet-dialog__header">
@@ -57,14 +61,14 @@ function menuTemplate() {
       </div>
       <div class="sheet-dialog__body">
         <h2 id="menu-title">전체 메뉴</h2>
-        <p>키보드 이동 순서가 화면의 정보 순서와 일치하도록 구성했습니다.</p>
+        <p>제품 탐색부터 비교·문의까지 원하는 경로로 이동하세요.</p>
         <nav class="mobile-nav" aria-label="전체 메뉴">
           <span>탐색</span>
           ${navLink("index.html#solutions", "솔루션 →")}
-          ${navLink("products.html", "제품 →")}
+          ${navLink("products.html", "제품 →", productsActive)}
           ${navLink("index.html#cases", "적용 예시 →")}
           <span>지원</span>
-          ${navLink("inquiry.html", "기술 문의 →")}
+          ${navLink("inquiry.html", "기술 문의 →", inquiryActive)}
           ${navLink("products.html", "제품 선택 도움말 →")}
           <span>기업</span>
           ${navLink("index.html#about", "기업 소개 →")}
@@ -74,7 +78,6 @@ function menuTemplate() {
           <a class="button button--secondary" href="compare.html">비교 목록 보기</a>
           <a class="button button--primary" href="inquiry.html">기술 문의</a>
         </div>
-        <p class="dialog-hint">Esc 키로 닫으면 키보드 초점이 메뉴 버튼으로 돌아갑니다.</p>
       </div>
       <div class="dialog-footer"><strong>공정봄</strong><p>가상 기업 · 데모 고지 · 자산 라이선스</p></div>
     </dialog>`;
@@ -133,6 +136,10 @@ export function clearCompare() {
 
 export function setInquiryProducts(ids) {
   sessionStorage.setItem(INQUIRY_KEY, JSON.stringify(ids));
+}
+
+export function hasInquiryProducts() {
+  return sessionStorage.getItem(INQUIRY_KEY) !== null;
 }
 
 export function getInquiryProducts() {

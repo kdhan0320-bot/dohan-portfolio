@@ -17,6 +17,7 @@ const MOBILE_ONLY_MQ = '@media (max-width:599.98px)';
 const COMPACT_MQ = '@media (min-width:1024px)';
 const COMPACT_ONLY_MQ = '@media (min-width:1024px) and (max-width:1439.95px)';
 const DESKTOP_MQ = '@media (min-width:1440px)';
+const FEATURED_RAIL_OFFSET = HOME_PROJECT_MAX_WIDTH / 2 + 24;
 
 /* Home Featured Projects — 승인 Figma(Home Desktop 1440 254:3의 261:2, Compact
  * 1024 365:216, Mobile 390 269:102)로 복구한다.
@@ -106,8 +107,8 @@ const ProjectBlock = ({ block, index }) => {
 
   const stackedAreas = '"eyebrow" "title" "desc" "stage" "proof" "scope" "cta"';
   const crossAreas = stageFirst
-    ? '"stage eyebrow" "stage title" "stage desc" "stage proof" "stage scope" "stage cta"'
-    : '"eyebrow stage" "title stage" "desc stage" "proof stage" "scope stage" "cta stage"';
+    ? '"stage top" "stage eyebrow" "stage title" "stage desc" "stage proof" "stage scope" "stage cta" "stage bottom"'
+    : '"top stage" "eyebrow stage" "title stage" "desc stage" "proof stage" "scope stage" "cta stage" "bottom stage"';
   // Figma column gap: 72(1440) · 48(1024) · Copy 496/1312, Stage 744/1312(1440);
   // Copy 360/928, Stage 520/928(1024).
   const crossColumns = stageFirst ? '520fr 360fr' : '360fr 520fr';
@@ -118,6 +119,7 @@ const ProjectBlock = ({ block, index }) => {
   return (
     <Box ref={ref} component="section" data-project-row={block.id} sx={{ position: 'relative' }}>
       <Box
+        data-featured-layout="vertical-center"
         sx={{
           position: 'relative',
           display: 'grid',
@@ -128,18 +130,18 @@ const ProjectBlock = ({ block, index }) => {
           [COMPACT_MQ]: {
             gridTemplateAreas: crossAreas,
             gridTemplateColumns: crossColumns,
-            gridTemplateRows: 'auto auto 1fr auto auto auto',
+            gridTemplateRows: 'minmax(0, 1fr) repeat(6, auto) minmax(0, 1fr)',
             columnGap: '48px',
             rowGap: 1.5,
           },
           [DESKTOP_MQ]: { gridTemplateColumns: desktopColumns, columnGap: '72px' },
         }}
       >
-        <Typography sx={{ gridArea: 'eyebrow', fontFamily: FONT_MONO, color: labelColor, fontSize: '0.75rem', letterSpacing: '0.04em', ...revealSx(show, skip, 0.08) }}>
+        <Typography data-featured-copy-item="eyebrow" sx={{ gridArea: 'eyebrow', fontFamily: FONT_MONO, color: labelColor, fontSize: '0.75rem', letterSpacing: '0.04em', ...revealSx(show, skip, 0.08) }}>
           {indexLabel} · {project.categoryLabel}
         </Typography>
 
-        <Typography component="h3" sx={{
+        <Typography component="h3" data-featured-copy-item="title" sx={{
           gridArea: 'title', fontFamily: FONT_KR, fontWeight: 700, wordBreak: 'keep-all',
           fontSize: '1.625rem', lineHeight: 1.29, letterSpacing: '-0.02em',
           [COMPACT_MQ]: { fontSize: '1.875rem', letterSpacing: '-0.028px' },
@@ -149,7 +151,7 @@ const ProjectBlock = ({ block, index }) => {
           {displayTitle}
         </Typography>
 
-        <Typography sx={{
+        <Typography data-featured-copy-item="description" sx={{
           gridArea: 'desc', fontFamily: FONT_KR, color: HUMAN_SIGNAL.mutedInk, wordBreak: 'keep-all',
           fontSize: '0.9375rem', lineHeight: 1.7,
           [COMPACT_MQ]: { fontSize: '0.875rem' },
@@ -160,7 +162,7 @@ const ProjectBlock = ({ block, index }) => {
         </Typography>
 
         {proofItems.length > 0 && (
-          <Typography sx={{
+          <Typography data-featured-copy-item="proof" sx={{
             gridArea: 'proof', fontFamily: FONT_KR, fontSize: '0.875rem', lineHeight: 1.6, color: HUMAN_SIGNAL.inkNavy, wordBreak: 'keep-all',
             pt: 1.75, borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, ...revealSx(show, skip, 0.08),
           }}>
@@ -172,7 +174,7 @@ const ProjectBlock = ({ block, index }) => {
         )}
 
         {project.cardScope && (
-          <Typography sx={{
+          <Typography data-featured-copy-item="scope" sx={{
             gridArea: 'scope', fontFamily: FONT_KR, fontSize: '0.8125rem', lineHeight: 1.6, color: HUMAN_SIGNAL.mutedInk, wordBreak: 'keep-all',
             ...revealSx(show, skip, 0.08),
           }}>
@@ -182,7 +184,7 @@ const ProjectBlock = ({ block, index }) => {
 
         <Stage block={block} motionSx={revealSx(show, skip, 0)} />
 
-        <Box sx={{ gridArea: 'cta', alignSelf: 'end', mt: 1, [COMPACT_MQ]: { mt: 0 }, ...revealSx(show, skip, 0.08) }}>
+        <Box data-featured-copy-item="cta" sx={{ gridArea: 'cta', alignSelf: 'end', mt: 1, [COMPACT_MQ]: { mt: 0 }, ...revealSx(show, skip, 0.08) }}>
           {/* Figma "Link / 프로젝트 상세 보기"(263:23 등): 검은 filled 버튼이
            * 아니라 orange text link + arrow다. */}
           <Box
@@ -208,13 +210,12 @@ const ProjectBlock = ({ block, index }) => {
 
 const ProjectsSection = () => {
   return (
-    <Box component="section" id="projects" aria-label="프로젝트" sx={{
+    <Box component="section" id="projects" aria-label="프로젝트" data-featured-section="true" sx={{
       position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper,
       py: { xs: 7, md: 9 },
       boxSizing: 'border-box',
-      [MOBILE_ONLY_MQ]: { height: '2298px' },
-      [COMPACT_ONLY_MQ]: { height: '1935px', pt: '88px', pb: '96px' },
-      [DESKTOP_MQ]: { height: '2301px', pt: '104px', pb: '120px' },
+      [COMPACT_ONLY_MQ]: { pt: '88px', pb: '96px' },
+      [DESKTOP_MQ]: { pt: '104px', pb: '120px' },
     }}>
       <QhdAmbientSignal variant="featured-left" sx={{ left: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 440px)`, top: 1278 }} />
 
@@ -224,8 +225,7 @@ const ProjectsSection = () => {
         sx={{
           display: 'none', position: 'absolute', zIndex: 1, width: '1px',
           bgcolor: 'rgba(89,99,110,0.34)', pointerEvents: 'none',
-          [COMPACT_ONLY_MQ]: { display: 'block', left: 'calc(100% - 50px)', top: '300px', height: '1270px' },
-          [DESKTOP_MQ]: { display: 'block', left: 'calc(50% + 642px)', top: '330px', height: '1540px' },
+          [DESKTOP_MQ]: { display: 'block', left: `calc(50% + ${FEATURED_RAIL_OFFSET}px)`, top: '330px', height: '1540px' },
         }}
       />
       {[
@@ -243,12 +243,8 @@ const ProjectsSection = () => {
             border: `2px solid ${HUMAN_SIGNAL.warmPaper}`,
             boxShadow: '0 0 0 1px rgba(89,99,110,0.34)',
             pointerEvents: 'none',
-            [COMPACT_ONLY_MQ]: {
-              display: 'block', left: 'calc(100% - 55px)', top: `${checkpoint.compactTop}px`,
-              width: `${checkpoint.compactSize}px`, height: `${checkpoint.compactSize}px`,
-            },
             [DESKTOP_MQ]: {
-              display: 'block', left: `calc(50% + ${checkpoint.index === 2 ? 636 : 637}px)`,
+              display: 'block', left: `calc(50% + ${FEATURED_RAIL_OFFSET - checkpoint.desktopSize / 2}px)`,
               top: `${checkpoint.desktopTop}px`,
               width: `${checkpoint.desktopSize}px`, height: `${checkpoint.desktopSize}px`,
             },
@@ -264,7 +260,7 @@ const ProjectsSection = () => {
           '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
         }}
       >
-        <Box sx={{ maxWidth: { xl: HOME_PROJECT_MAX_WIDTH }, mx: 'auto' }}>
+        <Box data-featured-content-shell="true" sx={{ maxWidth: { xl: HOME_PROJECT_MAX_WIDTH }, mx: 'auto' }}>
           <Box
             data-featured-heading="true"
             sx={{
@@ -305,7 +301,7 @@ const ProjectsSection = () => {
             </Typography>
           </Box>
 
-          <Box sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mb: { xs: 5, md: 6 }, [DESKTOP_MQ]: { mb: '64px' } }} />
+          <Box data-featured-divider="heading" sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mb: { xs: 5, md: 6 }, [DESKTOP_MQ]: { mb: '64px' } }} />
 
           {/* Featured Projects는 Warm Paper 단일 배경 안의 row 3개다 — 이전의
            * Soft White/Paper Deep 번갈이 full-bleed band는 없다. row 사이는
@@ -314,7 +310,7 @@ const ProjectsSection = () => {
             {FEATURED_BLOCKS.map((block, i) => (
               <Box key={block.id}>
                 {i > 0 && (
-                  <Box sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mb: { xs: 5, md: 6 }, [DESKTOP_MQ]: { mb: '64px' } }} />
+                  <Box data-featured-divider={`row-${i}`} sx={{ borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`, mb: { xs: 5, md: 6 }, [DESKTOP_MQ]: { mb: '64px' } }} />
                 )}
                 <ProjectBlock block={block} index={i} />
               </Box>

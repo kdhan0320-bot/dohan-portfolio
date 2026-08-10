@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="관심 제품과 공정 조건을 단계별로 정리하는 저장·전송 없는 기술 문의 데모입니다.">
+  <meta name="description" content="관심 제품과 공정 조건을 단계별로 정리하는 기술 문의 데모입니다. 문의 작성 내용은 별도 저장·전송하지 않고, 선택 제품 ID만 현재 탭에서 임시 유지합니다.">
   <title>기술 문의 — 공정봄</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="inquiry">
   <header class="site-header"></header>
-  <div class="demo-banner"><div class="container"><strong>데모 양식 · 실제 전송 안 됨</strong><span>입력 내용은 저장되거나 실제 기업·이메일·CRM으로 전달되지 않습니다.</span></div></div>
+  <div class="demo-banner"><div class="container"><strong>데모 양식 · 실제 전송 안 됨</strong><span>문의 작성 내용은 별도 저장하거나 외부 서비스로 전송하지 않습니다. 선택 제품은 현재 탭에서만 유지됩니다.</span></div></div>
   <main>
     <section class="page-hero inquiry-hero">
       <div class="container">
@@ -61,28 +61,27 @@
           </section>
           <section class="form-step" data-step="3" aria-labelledby="step3-title" hidden>
             <h2 id="step3-title" tabindex="-1">3. 담당자 정보와 확인</h2>
-            <p>데모 완료 상태를 확인하기 위한 최소 입력입니다.</p>
+            <p>연락에 필요한 최소 정보만 입력합니다. 이름·이메일 등 문의 작성 내용은 별도 저장하거나 외부로 전송하지 않습니다.</p>
             <div class="field-grid">
               <label for="field-name">이름 · 필수<input id="field-name" name="name" data-error-label="이름" autocomplete="name" required></label>
               <label for="field-company">회사·조직<input id="field-company" name="company" autocomplete="organization"></label>
               <label for="field-email">이메일 · 필수<input id="field-email" name="email" data-error-label="이메일" type="email" autocomplete="email" required placeholder="name@example.com"></label>
               <label for="field-phone">연락처<input id="field-phone" name="phone" type="tel" autocomplete="tel"></label>
             </div>
-            <label class="confirm-check" for="field-demo-confirm"><input id="field-demo-confirm" type="checkbox" name="demo-confirm" data-error-label="포트폴리오 데모 확인" required>실제 저장·전송이 없는 포트폴리오 데모임을 확인했습니다.</label>
-            <div class="review-box"></div>
+            <label class="confirm-check" for="field-demo-confirm"><input id="field-demo-confirm" type="checkbox" name="demo-confirm" data-error-label="포트폴리오 데모 확인" required>문의 작성 내용을 별도 저장·전송하지 않는 포트폴리오 데모임을 확인했습니다.</label>
             <div class="form-actions"><button class="button button--secondary prev-step" type="button">이전</button><button class="button button--primary" type="submit">데모 문의 완료</button></div>
           </section>
           <section class="completion-state" tabindex="-1" hidden>
             <p class="eyebrow">데모 완료</p>
             <h2>문의 내용을 정리했습니다.</h2>
-            <p>입력 내용은 어디에도 저장하거나 전송하지 않았습니다. 실제 상담이 아닌 인터랙션 데모의 완료 상태입니다.</p>
+            <p>문의 작성 내용은 별도 저장하거나 전송하지 않았습니다. 선택 제품 ID만 현재 탭에서 임시 유지됩니다. 실제 상담이 아닌 인터랙션 데모의 완료 상태입니다.</p>
             <div class="button-row"><a class="button button--primary" href="products.html">제품 다시 보기</a><a class="button button--secondary" href="index.html">홈으로</a></div>
           </section>
         </form>
-        <aside class="inquiry-summary" aria-labelledby="summary-title"><h2 id="summary-title">문의 요약</h2><dl></dl><div class="info-note"><strong>데모 동작</strong><p>다음 단계에서 필수 항목·이메일 오류·성공 상태를 별도 화면으로 검증합니다.</p></div></aside>
+        <aside class="inquiry-summary" aria-labelledby="summary-title"><h2 id="summary-title">문의 요약</h2><dl></dl><div class="info-note"><strong>입력 범위</strong><p>선택 제품 ID는 현재 탭에서 임시 유지되며, 그 밖의 문의 작성 내용은 이 화면의 요약에만 반영되고 별도 저장·전송하지 않습니다.</p></div></aside>
       </div>
     </section>
-    <section class="section"><div class="container"><h2>입력 정보의 처리 범위</h2><p>제출 전후에 실제로 저장하거나 전송하지 않는다는 사실을 반복해서 알립니다.</p><div class="type-grid"><div class="info-card"><strong>저장 안 함</strong><small>브라우저 또는 서버에 고객 정보를 저장하지 않음</small></div><div class="info-card"><strong>전송 안 함</strong><small>실제 기업·이메일·CRM으로 전달하지 않음</small></div><div class="info-card"><strong>상태 검증</strong><small>데모 성공과 테스트용 오류 상태만 구현</small></div></div></div></section>
+    <section class="section"><div class="container"><h2>입력 정보의 처리 범위</h2><p>선택 제품 ID만 현재 탭에서 임시 유지되며, 이름·이메일·문제 설명 등 그 밖의 문의 작성 내용은 앱에서 별도 저장하거나 외부 서비스로 전송하지 않습니다.</p><div class="type-grid"><div class="info-card"><strong>작성값 저장 안 함</strong><small>이름·이메일·문제 설명 등을 앱에서 별도 저장하지 않음</small></div><div class="info-card"><strong>외부 전송 안 함</strong><small>실제 기업·이메일·CRM으로 전달하지 않음</small></div><div class="info-card"><strong>현재 탭에서만 유지</strong><small>선택 제품 ID만 화면 이동을 위해 임시 유지</small></div></div></div></section>
   </main>
   <footer class="site-footer"></footer>
   <script type="module" src="js/inquiry.js"></script>

@@ -54,10 +54,10 @@ Pexels License가 attribution을 필수로 요구해서가 아니라 추적성�
 작가 또는 Pexels가 BREWSTEP을 보증한다는 의미가 아니다. 이 등록부는 법률상 무위험을
 보증하지 않는다.
 
-## 현재 source가 참조하는 공개 이미지·아이콘 70개
+## 현재 source가 참조하는 공개 이미지·아이콘 71개
 
-현재 production DOM inventory에서 확인한 public 이미지·아이콘 70개(BREWSTEP
-33개와 기타 37개)를 정확한 경로로 등록한다. BREWSTEP 화면 안의 제품 사진 권리는
+현재 production DOM inventory에서 확인한 public 이미지·아이콘 71개(BREWSTEP
+33개와 기타 38개)를 정확한 경로로 등록한다. BREWSTEP 화면 안의 제품 사진 권리는
 위 Pexels 원본 행을 별도로 적용한다. source 미참조 legacy·교체 후보는 현재 자산과
 구분해 별도로 기록한다.
 
@@ -105,16 +105,17 @@ node는 확인했지만 과거 파생 파일의 정확한 export scale·crop·co
 | `public/detail/brewstep/main-390-detail.png` | PNG 380×275 | `CDA6AF52FF9B0A547E8E0240C15699AA2B3C9B50E29BC3A7CCE42199712777C3` | `mainScreens[2]` · CSS 390 | `706:1561 · 706:1564` | D |
 | `public/detail/brewstep/main-1024-detail.png` | PNG 451×326 | `507578461A8B798B9928DB592D14DC0C1F67A40A1E80253C188B82E300E7186A` | `mainScreens[2]` · CSS 1024 | `706:1561 · 706:1564` | D |
 
-### 기타 16개
+### 기타 17개
 
 | 정확한 경로 | 분류 | origin 또는 derivative source | 사용 화면 | 권리 근거·상태 |
 | --- | --- | --- | --- | --- |
-| `public/detail/gongjeongbom/compare-1440.png` | browser screenshot | `compare.html?ids=mv-x300,mv-x500,mv-x700` · MV-X300·MV-X500·MV-X700 선택 비교 · CSS viewport 1440×900 · actual PNG 1440×900 · 2026-08-03 확인 | 공정봄 Compare | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기 확인함 |
-| `public/detail/gongjeongbom/home-1440.png` | normalized browser screenshot | 기존 공정봄 Home 캡처의 중앙 초점을 유지해 1440×900 true PNG로 Lanczos resize·re-encode. 왜곡·색 보정 없음 | 공정봄 Home 1440 | 사용자 제작 프로젝트 UI 캡처; 외부 사진·회사 로고 없음. PNG signature·크기 확인함 |
-| `public/detail/gongjeongbom/home-390.png` | browser screenshot | `index.html` · 모바일 Home 초기 화면 · CSS viewport 390×844 · actual PNG 390×844 · 2026-08-03 확인 | 공정봄 Home 390 | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기 확인함 |
-| `public/detail/gongjeongbom/inquiry-1440.png` | browser screenshot | `inquiry.html?products=mv-x300,mv-x500` · 선택 제품 2개가 연결된 문의 2단계 · CSS viewport 1440×900 · actual PNG 1440×900 · 2026-08-03 확인 | 공정봄 Inquiry | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기 확인함 |
-| `public/detail/gongjeongbom/product-1440.png` | browser screenshot | `product.html?id=mv-x500` · MV-X500 상세 Hero · CSS viewport 1440×900 · actual PNG 1440×900 · 2026-08-03 확인 | 공정봄 Product Detail | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기 확인함 |
-| `public/detail/gongjeongbom/products-1440.png` | browser screenshot | `products.html` · 검색·필터를 적용하지 않은 전체 제품 7개 초기 상태 · CSS viewport 1440×900 · actual PNG 1440×900 · 2026-08-03 확인 | 공정봄 Products | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기 확인함 |
+| `public/detail/gongjeongbom/compare-1440.png` | browser screenshot | 최종 로컬 route `/compare.html` · 현재 탭 `sessionStorage`의 `gongjeongbom-compare`에 `mv-x300`, `mv-x500`, `mv-x700`을 설정한 3개 제품 선택 비교 top · CSS viewport 1440×900 직접 viewport 캡처 · resize·crop 없음 · actual PNG 1440×900 · SHA-256 `D4C98CC91F6B8675009D782E3171CAE571A1E21D79BEEB6C344FA20B79D1D222` · 최초 캡처 2026-08-09 · 적용·재검증 2026-08-10 | 공정봄 Compare | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/home-1440.png` | browser screenshot | 최종 로컬 route `/index.html` · Home desktop initial top · CSS viewport 1440×900 직접 viewport 캡처 · resize·crop 없음 · actual PNG 1440×900 · SHA-256 `B6F9ABB93D79014169062AAB56D0DD28AD5CFBCC7EB1385D51C44B9EB30907A0` · 최초 캡처 2026-08-09 · 적용·재검증 2026-08-10 | 공정봄 Main Screens Home 전용 exact viewport 증거 | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/home-hero-1440.png` | browser screenshot | 승인 후보 source ZIP `gongjeongbom-figma-hero-runtime-contract-final-20260810-130342.zip` 내부 `04_browser-candidate-b/candidates/home-1440-semantic-boundary.png` · 최종 로컬 route `/index.html` · Home desktop semantic section boundary · CSS viewport 1440×720 직접 viewport capture · resize·crop 없음 · actual PNG 1440×720 · SHA-256 `78CB5D6078A3076C320F365433C41690E31FDF2CE38E231C7AA890E10C2D5B98` · 적용·재검증 2026-08-10 | 공정봄 Hero desktop semantic section capture | 사용자 제작 프로젝트 UI의 실제 브라우저 capture; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/home-390.png` | browser screenshot | 승인 후보 source ZIP `gongjeongbom-figma-hero-runtime-contract-final-20260810-130342.zip` 내부 `04_browser-candidate-b/candidates/home-390-semantic-boundary.png` · 최종 로컬 route `/index.html` · Home mobile semantic section boundary · CSS viewport 390×824 직접 viewport capture · resize·crop 없음 · actual PNG 390×824 · SHA-256 `A3D6CCE8B4169683F2ECEAAA18189586205A716D37D730642DE57A5E75CA67D5` · 적용·재검증 2026-08-10 | 공정봄 Hero mobile semantic section capture | 사용자 제작 프로젝트 UI의 실제 브라우저 capture; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/inquiry-1440.png` | browser screenshot | 최종 로컬 route `/inquiry.html?products=mv-x300,mv-x500` · MV-X300·MV-X500 연결 Inquiry Step 2 top · CSS viewport 1440×900 직접 viewport 캡처 · resize·crop 없음 · actual PNG 1440×900 · SHA-256 `C8CAB36E18DE0A668FE6C4F9E5B76DC963BA9A1805CD1F5873086E09E4D50D85` · 최초 캡처 2026-08-09 · 적용·재검증 2026-08-10 | 공정봄 Inquiry | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/product-1440.png` | browser screenshot | 최종 로컬 route `/product.html?id=mv-x500` · MV-X500 detail top·Hero · CSS viewport 1440×900 직접 viewport 캡처 · resize·crop 없음 · actual PNG 1440×900 · SHA-256 `E0E256FC311BFBDA62BDC879E60EFCFE08ACAF23AF95540D8B045FFD0E7611B6` · 최초 캡처 2026-08-09 · 적용·재검증 2026-08-10 | 공정봄 Product Detail | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
+| `public/detail/gongjeongbom/products-1440.png` | browser screenshot | 최종 로컬 route `/products.html` · 전체 7개·검색/필터 미적용 initial top · CSS viewport 1440×900 직접 viewport 캡처 · resize·crop 없음 · actual PNG 1440×900 · SHA-256 `6E0FF327933C39368630C0CCC7F6699BEE4563C5177961DB1CB3DB91281B4288` · 최초 캡처 2026-08-09 · 적용·재검증 2026-08-10 | 공정봄 Products | 사용자 제작 프로젝트 UI 캡처; 외부 사진·브랜드 자산 없음. PNG signature·크기·hash 확인함 |
 | `public/detail/seolbiit-completion-flow.png` | Figma export | 설비잇 원본 Figma `GInxTqHo6Y87DEe3vuhmMw`, 완료·재점검 node `27:38` 직접 export | 설비잇 Completion Flow | 사용자 제작 Figma 화면; 외부 이미지·로고·아이콘 추가 없음. 확인함 |
 | `public/detail/seolbiit-cover.png` | Figma export | 설비잇 원본 Figma `GInxTqHo6Y87DEe3vuhmMw`, Cover node `91:16` 직접 export | 설비잇 Cover·카드 | 사용자 제작 Figma 화면; 외부 이미지·로고·아이콘 추가 없음. 확인함 |
 | `public/detail/seolbiit-desktop-management.png` | Figma export | 설비잇 원본 Figma `GInxTqHo6Y87DEe3vuhmMw`, 데스크톱 관리 node `24:43` 직접 export | 설비잇 Desktop Management | 사용자 제작 Figma 화면; 외부 이미지·로고·아이콘 추가 없음. 확인함 |
@@ -122,7 +123,7 @@ node는 확인했지만 과거 파생 파일의 정확한 export scale·crop·co
 | `public/detail/seolbiit-mobile-flow.png` | Figma export | 설비잇 원본 Figma `GInxTqHo6Y87DEe3vuhmMw`, 모바일 흐름 node `19:2` 직접 export · actual PNG 1000×1048 · SHA-256 `9F8290C99F5621AB042F24C6E4CC79626E4D2E7C459FCD994A79D4A1EED32AF2` · 2026-08-03 재확인 | 설비잇 Mobile Flow | 사용자 제작 Figma 화면; 외부 이미지·로고·아이콘 추가 없음. 현재 Figma node와 hash 일치 확인함 |
 | `public/thumbnails/normalized/brewstep-card-1600x1000.png` | normalized derivative | `public/detail/brewstep/main-1440-primary.png`의 1600×1000 카드용 정규화 파생본 | Projects BREWSTEP card | 원 Figma export 권리 + Latte Pexels 권리 적용. 확인함 |
 | `public/thumbnails/normalized/bus-arrival-card-1600x1000.png` | normalized derivative | 등록된 `public/thumbnails/bus-arrival-ui-thumbnail.png`의 1600×1000 카드용 정규화 파생본 | Home·Projects Bus card | 사용자 제작 Figma composite의 crop/pad 파생본. 확인함 |
-| `public/thumbnails/normalized/gongjeongbom-card-1600x1000.png` | normalized derivative | 기존 공정봄 Home 캡처의 중앙 초점을 유지해 1600×1000 true PNG로 Lanczos resize·re-encode. 왜곡·색 보정 없음 | Home·Projects 공정봄 card | 사용자 제작 browser screenshot 파생본. PNG signature·크기 확인함 |
+| `public/thumbnails/normalized/gongjeongbom-card-1600x1000.png` | Figma export derivative | 사용자 작성 Figma file `3ZJ4TUGqBNAewsJYzheOWo`, COVER node `136:2` 1440×900 export에서 `x=80, y=80, width=1280, height=800` tighter crop 후 1600×1000 resize · actual PNG 1600×1000 · SHA-256 `CB748C9D4EFC6E31C1C647661708AB6D861787B6C31874A99561675481C33B83` · 2026-08-05 확인 | Home·Projects 공정봄 card | 사용자 제작 vector·text 구성; 외부 이미지 없음. PNG signature·크기·hash 확인함 |
 | `public/thumbnails/normalized/jobflow-card-1600x1000.png` | normalized derivative | JobFlow production build `#/` · 게스트 sample read-only · CSS viewport 1440×900인 `public/detail/jobflow-dashboard-1440.png`를 비율 유지해 배치한 1600×1000 true PNG | Home·Projects JobFlow card | 사용자 제작 `projects/jobflow-dashboard` UI capture 파생본. MUI icon MIT·OS system UI font stack 적용, 외부 사진·타사 브랜드 UI 없음. 2026-08-03 PNG signature·dimensions 확인함 |
 | `public/thumbnails/normalized/ott-service-card-1600x1000.png` | browser capture normalized derivative | `projects/OTT Service`의 2026-08-04 현재 Hero 초기 상태. CSS viewport 1600×1000에서 font·자산 로드와 animation settle 후 인앱 브라우저가 반환한 1440×900 픽셀을 비율 유지 Lanczos로 1600×1000, 16:10 정규화한 true PNG. 색 보정·mockup·비율 왜곡 없음 | Home·Projects Streaming UI Concept card · 현재 `projectsData.js` source 참조 | 사용자 제작 UI와 자체 절차형 WebP·SVG·icon만 포함. 외부 영화·인물·브랜드 자산 없음. actual PNG 1600×1000, SHA-256 `ab4bb2ddf2933f33c64d4ac2569d0029809590fb75063347105beb949c964320`, 2026-08-04 확인함. 독점성·법률상 무위험을 보증하지 않음 |
 

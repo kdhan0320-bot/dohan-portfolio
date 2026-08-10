@@ -39,13 +39,21 @@ const activeFilters = document.querySelector(".active-filters");
 const compareBar = document.querySelector(".compare-bar");
 const filterDialog = document.querySelector("#filter-dialog");
 const filterTrigger = document.querySelector(".filter-trigger");
+let filterDraft = null;
 
 function filterMarkup(prefix = "") {
   const problemChoices = Object.entries(PROBLEM_LABELS)
     .map(([value, label]) => `<label><input type="checkbox" name="${prefix}problem" value="${value}">${label}</label>`)
     .join("");
+  const typeChoices = prefix
+    ? `<fieldset class="product-type-filter"><legend>제품 종류</legend>
+      <label><input type="radio" name="${prefix}type" value="">전체 ${products.length}</label>
+      ${Object.entries(PRODUCT_TYPES).map(([value, label]) => `<label><input type="radio" name="${prefix}type" value="${value}">${label} ${typeCounts[value]}</label>`).join("")}
+    </fieldset>`
+    : "";
   return `
     <h2>필터</h2>
+    ${typeChoices}
     <fieldset><legend>해결 문제</legend>${problemChoices}</fieldset>
     <fieldset><legend>필요한 검사 수준</legend>
       <label><input type="radio" name="${prefix}level" value="">전체</label>
@@ -64,23 +72,46 @@ function filterMarkup(prefix = "") {
 
 function tabsMarkup() {
   return [
-    `<button type="button" data-type="" class="${state.type ? "" : "is-active"}">전체 ${products.length}</button>`,
+    `<button type="button" data-type="" class="${state.type ? "" : "is-active"}" aria-pressed="${!state.type}">전체 ${products.length}</button>`,
     ...Object.entries(PRODUCT_TYPES).map(
       ([value, label]) =>
-        `<button type="button" data-type="${value}" class="${state.type === value ? "is-active" : ""}">${label} ${typeCounts[value]}</button>`,
+        `<button type="button" data-type="${value}" class="${state.type === value ? "is-active" : ""}" aria-pressed="${state.type === value}">${label} ${typeCounts[value]}</button>`,
     ),
   ].join("");
 }
 
+function copyFilterState(source) {
+  return {
+    type: source.type,
+    problems: new Set(source.problems),
+    level: source.level,
+    connections: new Set(source.connections),
+  };
+}
+
+function replaceFilterState(target, source) {
+  target.type = source.type;
+  target.problems = new Set(source.problems);
+  target.level = source.level;
+  target.connections = new Set(source.connections);
+}
+
+function stateForControl(input) {
+  return input.name.startsWith("mobile-") && filterDraft ? filterDraft : state;
+}
+
 function syncControls() {
+  document.querySelectorAll('input[type="radio"][name$="type"]').forEach((input) => {
+    input.checked = input.value === stateForControl(input).type;
+  });
   document.querySelectorAll('input[type="checkbox"][name$="problem"]').forEach((input) => {
-    input.checked = state.problems.has(input.value);
+    input.checked = stateForControl(input).problems.has(input.value);
   });
   document.querySelectorAll('input[type="radio"][name$="level"]').forEach((input) => {
-    input.checked = input.value === state.level;
+    input.checked = input.value === stateForControl(input).level;
   });
   document.querySelectorAll('input[type="checkbox"][name$="connection"]').forEach((input) => {
-    input.checked = state.connections.has(input.value);
+    input.checked = stateForControl(input).connections.has(input.value);
   });
 }
 
@@ -123,7 +154,34 @@ function cardMarkup(product) {
 }
 
 function selectedFilterCount() {
-  return state.problems.size + state.connections.size + Number(Boolean(state.level));
+  return state.problems.size
+    + state.connections.size
+    + Number(Boolean(state.type))
+    + Number(Boolean(state.level));
+}
+
+function isVisible(node) {
+  return Boolean(node && (node.offsetWidth || node.offsetHeight || node.getClientRects().length));
+}
+
+function focusResultStatus() {
+  const compactStatus = document.querySelector(".mobile-result-count");
+  const target = isVisible(heading) ? heading : isVisible(compactStatus) ? compactStatus : searchInput;
+  target?.focus({ preventScroll: true });
+}
+
+function focusTypeControl(type) {
+  const control = [...tabs.querySelectorAll("[data-type]")]
+    .find((button) => button.dataset.type === type && isVisible(button));
+  if (control) control.focus({ preventScroll: true });
+  else focusResultStatus();
+}
+
+function focusCompareControl(productId) {
+  const control = [...document.querySelectorAll("[data-compare-id]")]
+    .find((button) => button.dataset.compareId === productId && isVisible(button));
+  if (control) control.focus({ preventScroll: true });
+  else focusResultStatus();
 }
 
 function render() {
@@ -147,7 +205,7 @@ function render() {
     ...active,
   ].filter(Boolean);
   document.querySelector(".active-filter-summary").innerHTML = compactFilters.map((item) => `<span>${item}</span>`).join("")
-    + (active.length ? '<button class="text-button reset-filter" type="button">필터 초기화</button>' : "");
+    + (compactFilters.length ? '<button class="text-button reset-filter" type="button">필터 초기화</button>' : "");
 
   productGrid.innerHTML = results.length
     ? results.map(cardMarkup).join("") + `
@@ -171,23 +229,29 @@ function renderCompareBar() {
   compareBar.querySelector(".compare-bar__models").textContent = selected.map(({ model }) => model).join(" · ");
 }
 
-function updateStateFromControl(input) {
+function updateStateFromControl(input, target = state) {
   const baseName = input.name.replace(/^mobile-/, "");
   if (baseName === "problem") {
-    input.checked ? state.problems.add(input.value) : state.problems.delete(input.value);
+    input.checked ? target.problems.add(input.value) : target.problems.delete(input.value);
+  } else if (baseName === "type") {
+    target.type = input.value;
   } else if (baseName === "level") {
-    state.level = input.value;
+    target.level = input.value;
   } else if (baseName === "connection") {
-    input.checked ? state.connections.add(input.value) : state.connections.delete(input.value);
+    input.checked ? target.connections.add(input.value) : target.connections.delete(input.value);
   }
+}
+
+function clearFilterState(target) {
+  target.type = "";
+  target.problems.clear();
+  target.level = "";
+  target.connections.clear();
 }
 
 function resetFilters() {
   state.query = "";
-  state.type = "";
-  state.problems.clear();
-  state.level = "";
-  state.connections.clear();
+  clearFilterState(state);
   searchInput.value = "";
   render();
 }
@@ -199,7 +263,6 @@ searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   state.query = searchInput.value;
   render();
-  heading.focus();
 });
 
 tabs.addEventListener("click", (event) => {
@@ -207,13 +270,19 @@ tabs.addEventListener("click", (event) => {
   if (!button) return;
   state.type = button.dataset.type;
   render();
+  focusTypeControl(state.type);
 });
 
 document.addEventListener("change", (event) => {
-  if (!event.target.matches('input[name$="problem"], input[name$="level"], input[name$="connection"]')) return;
-  updateStateFromControl(event.target);
-  if (!event.target.name.startsWith("mobile-")) render();
-  else syncControls();
+  if (!event.target.matches('input[name$="type"], input[name$="problem"], input[name$="level"], input[name$="connection"]')) return;
+  if (event.target.name.startsWith("mobile-")) {
+    filterDraft ??= copyFilterState(state);
+    updateStateFromControl(event.target, filterDraft);
+    syncControls();
+  } else {
+    updateStateFromControl(event.target);
+    render();
+  }
 });
 
 document.addEventListener("click", (event) => {
@@ -223,29 +292,48 @@ document.addEventListener("click", (event) => {
     const result = toggleCompare(product);
     if (!result.ok) alert(result.message);
     render();
+    focusCompareControl(product.id);
     return;
   }
-  if (event.target.closest(".reset-filter")) resetFilters();
+  const reset = event.target.closest(".reset-filter");
+  if (reset) {
+    if (filterDialog.open && filterDialog.contains(reset)) {
+      filterDraft ??= copyFilterState(state);
+      clearFilterState(filterDraft);
+      syncControls();
+      return;
+    }
+    resetFilters();
+    if (!reset.isConnected || !isVisible(reset)) focusResultStatus();
+    return;
+  }
   if (event.target.closest(".clear-compare")) {
     clearCompare();
     render();
+    focusResultStatus();
   }
 });
 
 let filterOpener = filterTrigger;
 filterTrigger.addEventListener("click", () => {
   filterOpener = document.activeElement;
+  filterDraft = copyFilterState(state);
   syncControls();
   filterDialog.showModal();
   filterDialog.querySelector(".dialog-close").focus();
 });
 filterDialog.querySelector(".dialog-close").addEventListener("click", () => filterDialog.close());
 filterDialog.querySelector(".apply-filter").addEventListener("click", () => {
+  if (filterDraft) replaceFilterState(state, filterDraft);
+  filterDraft = null;
   filterDialog.close();
   render();
-  heading.focus();
 });
-filterDialog.addEventListener("close", () => filterOpener?.focus());
+filterDialog.addEventListener("close", () => {
+  filterDraft = null;
+  syncControls();
+  filterOpener?.focus();
+});
 filterDialog.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
   event.preventDefault();

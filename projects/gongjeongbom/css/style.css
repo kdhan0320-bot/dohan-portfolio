@@ -8,9 +8,9 @@
 
 @font-face {
   font-family: "Roboto Mono";
-  src: url("../assets/fonts/RobotoMono-500.woff2") format("woff2");
+  src: url("../assets/fonts/RobotoMono-500.ttf") format("truetype");
   font-style: normal;
-  font-weight: 500 700;
+  font-weight: 500;
   font-display: swap;
 }
 
@@ -342,6 +342,11 @@ main [id] {
 
 .hero__copy h1 {
   font-size: clamp(2.75rem, 4.15vw, 3.5rem);
+}
+
+body[data-page="home"] .hero__copy .lead {
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .inspection-diagram {
@@ -796,6 +801,10 @@ legend {
   font-size: 0.875rem;
 }
 
+.mobile-filter-body .product-type-filter label {
+  min-height: 44px;
+}
+
 .filter-panel input,
 .mobile-filter-body input,
 .selected-product input,
@@ -1106,6 +1115,15 @@ legend {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.related-grid--one {
+  grid-template-columns: minmax(0, calc((100% - 20px) / 2));
+  justify-content: center;
+}
+
+.related-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .compact-product-card h3 {
   font-size: 1.125rem;
 }
@@ -1147,14 +1165,19 @@ legend {
 }
 
 .compare-table {
+  --compare-product-count: 3;
   margin-top: 28px;
   overflow: hidden;
   border-radius: var(--radius-md);
 }
 
+.compare-table--two {
+  --compare-product-count: 2;
+}
+
 .compare-table__row {
   display: grid;
-  grid-template-columns: 200px repeat(3, minmax(0, 1fr));
+  grid-template-columns: 200px repeat(var(--compare-product-count), minmax(0, 1fr));
   min-height: 58px;
   align-items: center;
   background: #fff;
@@ -1380,18 +1403,17 @@ legend {
   font-size: 0.875rem;
 }
 
-.review-box {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: var(--radius-sm);
-  background: var(--color-subtle);
-}
-
 .completion-state {
   min-height: 400px;
   padding-block: 50px;
   outline: 0;
   text-align: center;
+}
+
+.form-step h2:focus-visible,
+.completion-state:focus-visible {
+  outline: 3px solid #3d6df2;
+  outline-offset: 3px;
 }
 
 .completion-state .button-row {
@@ -1462,11 +1484,6 @@ legend {
   display: grid;
   gap: 10px;
   margin-top: 36px;
-}
-
-.dialog-hint {
-  margin-top: 12px;
-  font-size: 0.75rem;
 }
 
 .dialog-footer {
@@ -1582,6 +1599,10 @@ legend {
     gap: 28px;
   }
 
+  .filter-dialog .mobile-filter-body > .reset-filter {
+    min-height: 44px;
+  }
+
   .filter-dialog .filter-actions {
     grid-template-columns: 1fr 2fr;
     margin: 0;
@@ -1595,7 +1616,7 @@ legend {
   }
 
   .compare-table__row {
-    grid-template-columns: 150px repeat(3, minmax(0, 1fr));
+    grid-template-columns: 150px repeat(var(--compare-product-count), minmax(0, 1fr));
   }
 }
 
@@ -1626,6 +1647,13 @@ legend {
 
   .site-header {
     height: 60px;
+  }
+
+  .site-header__inner > .brand,
+  .sheet-dialog__header .brand {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
   }
 
   .primary-nav,
@@ -1887,10 +1915,18 @@ legend {
   }
 
   .anchor-nav a {
+    display: flex;
+    min-height: 44px;
+    align-items: center;
     padding: 6px 10px;
     border: 1px solid var(--color-border);
     border-radius: 14px;
     font-size: 0.75rem;
+  }
+
+  .selected-card-row .remove-compare {
+    min-height: 44px;
+    padding-block: 7px;
   }
 
   .spec-table > div {
@@ -2028,7 +2064,7 @@ legend {
   }
 
   .form-actions {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   .form-actions .button {
@@ -2064,7 +2100,6 @@ legend {
 .cta-label--compact,
 .responsive-copy--compact,
 .case-copy--compact,
-.products-lead--tablet,
 .footer-meta {
   display: none;
 }
@@ -2124,18 +2159,16 @@ legend {
   .case-copy--desktop,
   .problem-card__meta,
   .problem-card__link,
-  .info-card > small,
+  body[data-page="home"] .info-card > small,
   .case-card > span,
   .case-card__link,
-  .support-card__link,
-  .products-lead--default {
+  .support-card__link {
     display: none;
   }
 
   .cta-label--compact,
   .responsive-copy--compact,
-  .case-copy--compact,
-  .products-lead--tablet {
+  .case-copy--compact {
     display: inline;
   }
 
@@ -2325,6 +2358,7 @@ legend {
 /* READY 화면 정합화 */
 .font-tech {
   font-family: "Roboto Mono", "Noto Sans KR", monospace;
+  font-weight: 500;
   letter-spacing: -0.02em;
 }
 
@@ -2564,12 +2598,22 @@ legend {
   color: var(--color-primary);
 }
 
+@media (min-width: 761px) {
+  .selected-card-row--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .compare-differences {
   padding-block: 80px;
 }
 
 .compare-differences .difference-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.compare-differences--two .difference-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .compare-differences .difference-grid article {
@@ -2611,7 +2655,7 @@ legend {
   color: #fff;
   cursor: pointer;
   font-family: "Roboto Mono", "Noto Sans KR", monospace;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .selected-product input {
@@ -2619,6 +2663,11 @@ legend {
   width: 1px;
   height: 1px;
   opacity: 0;
+}
+
+.selected-product:has(input:focus-visible) {
+  outline: 3px solid #3d6df2;
+  outline-offset: 3px;
 }
 
 .selected-product:not(:has(input:checked)) {
@@ -2698,12 +2747,9 @@ legend {
   }
 
   .active-filter-summary .text-button {
+    min-height: 44px;
     color: var(--color-text-secondary);
     font-size: 0.8125rem;
-  }
-
-  .mobile-result-count {
-    display: none;
   }
 
   .product-section {
@@ -2737,6 +2783,7 @@ legend {
 
   .product-card h3 {
     font-family: "Roboto Mono", "Noto Sans KR", monospace;
+    font-weight: 500;
     overflow-wrap: normal;
     white-space: nowrap;
     word-break: normal;
@@ -2880,7 +2927,11 @@ legend {
   }
 
   .active-filter-summary .text-button {
-    display: none;
+    display: inline-flex;
+    min-height: 44px;
+    flex: 0 0 auto;
+    align-items: center;
+    white-space: nowrap;
   }
 
   .breadcrumb {
@@ -2915,6 +2966,16 @@ legend {
 
   .related-product-card {
     min-height: 270px;
+  }
+
+  .selected-card-row article {
+    min-height: 232px;
+  }
+
+  .related-product-card__title,
+  .selected-card-row article > span {
+    overflow-wrap: normal;
+    word-break: keep-all;
   }
 
   .compare-differences .difference-grid {
@@ -3081,6 +3142,7 @@ legend {
   color: #7fe0d7;
   font-family: "Roboto Mono", monospace;
   font-size: 0.6875rem;
+  font-weight: 500;
 }
 
 .signal-scan {
@@ -3102,6 +3164,7 @@ legend {
   color: #7fe0d7;
   font-family: "Roboto Mono", monospace;
   font-size: 0.625rem;
+  font-weight: 500;
 }
 
 .signal-node {

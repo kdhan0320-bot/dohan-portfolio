@@ -81,7 +81,7 @@ function renderProduct(item) {
       </div><div class="info-note"><strong>숫자와 조건은 실제 장비값이 아닙니다.</strong><p>실제 장비 선정 전에는 제조사 사양서와 기술 검토가 필요합니다.</p></div>
     </div></section>
     <section class="section product-conditions" id="conditions"><div class="container"><p class="eyebrow">설치 조건</p><h2>문의 전에 확인할 공정 조건</h2><p class="section-intro">정확히 모르는 항목은 비워 두고 현재 확인 가능한 범위만 정리하세요.</p><div class="support-grid"><div><strong>검사 대상</strong><span>크기·재질·변동 범위</span></div><div><strong>설치 조건</strong><span>거리·공간·조명</span></div><div><strong>공정 조건</strong><span>라인 속도·정지 여부</span></div><div><strong>연결 조건</strong><span class="font-tech">PLC · Ethernet · 데이터</span></div></div></div></section>
-    <section class="section related-products" id="compare"><div class="container"><p class="eyebrow">관련 제품</p><h2>같은 종류의 제품끼리만 사양을 비교합니다.</h2><p class="section-intro">${detail.relatedDescription}</p><div class="related-grid">${siblings.map(siblingCard).join("")}</div></div></section>
+    <section class="section related-products" id="compare"><div class="container"><p class="eyebrow">관련 제품</p><h2>같은 종류의 제품끼리만 사양을 비교합니다.</h2><p class="section-intro">${detail.relatedDescription}</p><div class="related-grid related-grid--${siblings.length === 1 ? "one" : "two"}">${siblings.map(siblingCard).join("")}</div></div></section>
     <section class="cta-band" id="inquiry"><div class="container"><div><h2>${item.model}이 현재 공정에 맞는지 확인하세요.</h2><p>관심 제품과 공정 조건을 기술 문의로 전달합니다.</p></div><a class="button button--primary product-inquiry" href="inquiry.html?products=${item.id}">기술 문의하기</a></div></section>`;
 }
 

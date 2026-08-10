@@ -30,7 +30,7 @@
 
 제품 상세의 단일 Source of Truth는 `js/data.js`입니다. 제품·사양·선택 문구는 정적 가상 데이터이며 비교 선택과 문의에 전달할 제품 ID만 현재 탭의 `sessionStorage`에 보관합니다.
 
-문의 입력값은 브라우저나 서버에 저장하지 않고 실제 기업·이메일·CRM으로 전송하지 않습니다. 로그인·결제·CMS·API·DB 연동도 포함하지 않습니다.
+선택 제품 ID와 별개로, 이름·이메일·문제 설명 등 문의 작성값은 앱에서 별도로 저장하지 않으며 실제 기업·이메일·CRM으로 전송하지 않습니다. 로그인·결제·CMS·API·DB 연동도 포함하지 않습니다.
 
 ## 실행 방법
 
@@ -50,7 +50,7 @@ python -m http.server 4173
 | `products.html` | 검색·필터·제품 목록 |
 | `product.html` | query ID에 따른 제품별 상세 또는 찾을 수 없음 상태 |
 | `compare.html` | 같은 종류 제품의 차이 비교 |
-| `inquiry.html` | 저장·전송 없는 3단계 기술 문의 데모 |
+| `inquiry.html` | 선택 제품 ID는 현재 탭 `sessionStorage`에 임시 유지하고, 문의 작성값은 별도 저장·외부 전송하지 않는 3단계 기술 문의 데모 |
 | `css/style.css` | 공통 디자인, 반응형, 접근성 상태, 모션 |
 | `js/data.js` | 7개 catalog와 상세 화면 데이터, 제품 diagram helper |
 | `js/common.js` | Header·Footer·본문 바로가기·dialog·비교·문의 공통 상태 |
@@ -68,7 +68,7 @@ python -m http.server 4173
 - 모션 기준: `04_MOTION` node `137:2`
 - 데스크톱·태블릿·모바일의 승인 최종 화면을 구조와 반응형 기준으로 사용
 
-현재 Figma에 남은 `MV-S`, `MR-C` 문구와 코드의 제품별 상세 계약은 별도 Figma 동기화 회차에서 맞춰야 합니다. 이번 코드 회차에서는 Figma를 수정하지 않았습니다.
+Figma와 구현은 `js/data.js`의 현재 제품별 상세 계약을 공통 기준으로 사용합니다.
 
 ## 접근성·반응형 지원
 
@@ -86,8 +86,8 @@ python -m http.server 4173
 | 경로 | runtime 상태와 제작 방식 | 권리 상태 |
 | --- | --- | --- |
 | `assets/fonts/NotoSansKR-Variable-Subset.woff2` | 공식 Noto Sans KR variable TTF 원본에서 현재 사용자 노출 문자열과 ASCII·필수 기호를 수집해 `fontTools 4.63.0`과 WOFF2 지원 환경으로 생성한 100–900 variable subset. 본문·제목·UI에서 사용 | SIL Open Font License 1.1, `assets/fonts/OFL.txt` |
-| `assets/fonts/RobotoMono-500.woff2` | 모델명·기술 값에 제한적으로 사용하는 Roboto Mono | SIL Open Font License 1.1, `assets/fonts/RobotoMono-OFL.txt` |
-| `assets/graphics/vision-system.svg` | 가상 비전 시스템 도식 | 프로젝트 직접 제작 |
+| `assets/fonts/RobotoMono-500.ttf` | 모델명·기술 값에 제한적으로 사용하는 TrueType(sfnt) Roboto Mono static 500 subset. SHA-256 `ACCF0063DCBE24AD3E1F73E5FF32A242C38F9F1E2920B54097F78850B7A27042` | SIL Open Font License 1.1, `assets/fonts/RobotoMono-OFL.txt` |
+| `assets/graphics/vision-system.svg` | runtime에서 미참조인 직접 제작 초기 비전 시스템 diagram 원본·복구 자산. 화면 복구·재구성 기준으로 보존 | 프로젝트 직접 제작 |
 | `assets/graphics/connector-inspection.svg` | 커넥터 조립 검사 도식 | 프로젝트 직접 제작 |
 | `assets/graphics/dimension-measurement.svg` | 치수 측정 도식 | 프로젝트 직접 제작 |
 | `assets/graphics/code-reading.svg` | 코드 판독 도식 | 프로젝트 직접 제작 |
@@ -108,5 +108,4 @@ Noto Sans KR 원본 TTF는 저장소에 포함하지 않습니다. subset을 다
 
 - 정적 포트폴리오 데모이며 독립 Live 배포·실제 상담 연동이 없습니다.
 - 가상 사양은 산업 장비 성능이나 현장 적합성을 보증하지 않습니다.
-- Figma의 이전 제품 계열 문구는 별도 동기화가 필요합니다.
 - 실제 screen reader, 운영 환경 Core Web Vitals, 법적 권리 체인 전체는 이 저장소만으로 확인할 수 없습니다.

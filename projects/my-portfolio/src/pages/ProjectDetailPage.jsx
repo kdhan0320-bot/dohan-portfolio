@@ -34,11 +34,23 @@ const SLUG_TO_ID = {
   seolbiit: 'seolbiit',
 };
 const SLUG_ORDER = ['gongjeongbom', 'jobflow', 'seolbiit', 'feedback-hub', 'bus-arrival', 'ott-service', 'brewstep'];
-const cycleSlug = (slug, dir) => {
+const getNextSlug = (slug) => {
   const i = SLUG_ORDER.indexOf(slug);
-  if (i < 0) return null;
-  return SLUG_ORDER[(i + dir + SLUG_ORDER.length) % SLUG_ORDER.length];
+  if (i < 0 || i >= SLUG_ORDER.length - 1) return null;
+  return SLUG_ORDER[i + 1];
 };
+
+const CASE_STUDY_LABELS = {
+  gongjeongbom: 'GONGJEONGBOM',
+  jobflow: 'JOBFLOW',
+  seolbiit: 'SEOLBIIT',
+  'feedback-hub': 'PORTFOLIO FEEDBACK HUB',
+  'bus-arrival': 'ULSAN BUS ARRIVAL',
+  'ott-service': 'STREAMING UI CONCEPT',
+  brewstep: 'BREWSTEP',
+};
+
+const PROJECT_INDEX_DESCRIPTION = '대표 프로젝트와 추가 작업을\n같은 기준으로 확인할 수 있습니다.';
 
 // Figma Responsive & Scope(199:6~17 등)의 390/768/1440/2560 breakpoint 카드 4개 —
 // 실제 프로젝트별 수치가 아니라 React/MUI 반응형 웹 공통 규칙을 설명하는 고정 UI
@@ -51,6 +63,9 @@ const BREAKPOINT_CARDS = [
 ];
 
 const SPLIT_MQ = '@media (min-width:900px)';
+// Hero copy 열 안에서 4개 메타 카드가 각각 약 120px 이상의 읽을 폭을
+// 확보하는 시점부터만 한 줄로 전환한다. 1024 split layout은 2×2를 유지한다.
+const META_FOUR_COLUMN_MQ = '@media (min-width:1280px)';
 
 const SHELL_SX = {
   px: { xs: 3, sm: 6, md: 8 }, maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 }, mx: 'auto',
@@ -59,6 +74,210 @@ const SHELL_SX = {
 // 읽기 전용 문단(Context/Decisions/Scope/AI/Result)의 reading column — QHD에서도
 // 한 줄이 과도하게 길어지지 않게 상한을 둔다.
 const READING_SX = { maxWidth: { md: HOME_READING_MAX_WIDTH + 120 } };
+
+const PROTECTED_COPY_PATTERN = /(Product Detail|Vanilla JS|reduced-motion|STATIC \/ DEMO|실제 견적·CRM·DB는)/g;
+
+const ProtectedCopy = ({ text, tokens = [] }) => (
+  tokens.length === 0
+    ? text
+    : text.split(PROTECTED_COPY_PATTERN).map((part, index) => (
+      tokens.includes(part) ? (
+        <Box key={`${part}-${index}`} component="span" sx={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+          {part}
+        </Box>
+      ) : part
+    ))
+);
+
+const DetailEndNavigation = ({ currentSlug, nextSlug, nextProject, nextRole }) => {
+  const isLast = !nextSlug;
+  const primaryHref = isLast ? '/projects' : `/projects/${nextSlug}`;
+  const primaryTitle = isLast ? '전체 프로젝트 보기' : nextProject?.title;
+  const primaryLabel = isLast ? '전체 프로젝트 보기' : `다음 프로젝트: ${primaryTitle}`;
+  const footerRight = `${CASE_STUDY_LABELS[currentSlug]} · CASE STUDY`;
+
+  return (
+    <Box
+      data-detail-end-navigation={isLast ? 'last' : 'standard'}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%', mb: { xs: 4, md: 1 } }}
+    >
+      <Box
+        component="nav"
+        aria-label="프로젝트 상세 탐색"
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
+      >
+        <Box
+          component={RouterLink}
+          to={primaryHref}
+          aria-label={primaryLabel}
+          data-detail-end-navigation-primary="true"
+          sx={{
+            bgcolor: HUMAN_SIGNAL.deepHarbor,
+            color: HUMAN_SIGNAL.softWhite,
+            borderRadius: '24px',
+            p: { xs: 2, md: 4 },
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: { xs: 'flex-end', md: 'center' },
+            justifyContent: 'space-between',
+            gap: 2,
+            width: '100%',
+            minWidth: 0,
+            overflow: 'hidden',
+            textDecoration: 'none',
+            WebkitTapHighlightColor: 'transparent',
+            '&:focus-visible': {
+              outline: `3px solid ${HUMAN_SIGNAL.burntOrange}`,
+              outlineOffset: '4px',
+            },
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%', minWidth: 0 }}>
+            <Typography
+              component="p"
+              data-detail-end-navigation-eyebrow="true"
+              sx={{
+                m: 0,
+                color: HUMAN_SIGNAL.brightOrangeOnDark,
+                fontFamily: FONT_MONO,
+                fontWeight: 600,
+                fontSize: '0.75rem',
+                lineHeight: '16px',
+                letterSpacing: '0.02em',
+              }}
+            >
+              {isLast ? 'PROJECT INDEX' : 'NEXT PROJECT'}
+            </Typography>
+            <Typography
+              component="h3"
+              data-detail-end-navigation-title="true"
+              sx={{
+                m: 0,
+                color: HUMAN_SIGNAL.softWhite,
+                fontWeight: 700,
+                fontSize: { xs: '1.5rem', md: '2.5rem' },
+                lineHeight: { xs: '32px', md: '50px' },
+                letterSpacing: { xs: '-0.008em', md: '-0.015em' },
+                wordBreak: 'keep-all',
+                overflowWrap: 'normal',
+              }}
+            >
+              {primaryTitle}
+            </Typography>
+            {isLast ? (
+              <Typography
+                component="p"
+                data-detail-end-navigation-description="true"
+                sx={{
+                  m: 0,
+                  color: HUMAN_SIGNAL.steelMist,
+                  fontSize: { xs: '0.9375rem', md: '1rem' },
+                  lineHeight: { xs: '25px', md: '27px' },
+                  whiteSpace: 'pre-line',
+                  wordBreak: 'keep-all',
+                  overflowWrap: 'normal',
+                }}
+              >
+                {PROJECT_INDEX_DESCRIPTION}
+              </Typography>
+            ) : (
+              <Typography
+                component="p"
+                data-detail-end-navigation-role="true"
+                sx={{
+                  m: 0,
+                  color: HUMAN_SIGNAL.steelMist,
+                  fontFamily: FONT_MONO,
+                  fontWeight: 600,
+                  fontSize: '0.75rem',
+                  lineHeight: '16px',
+                  letterSpacing: '0.02em',
+                  wordBreak: 'keep-all',
+                  overflowWrap: 'normal',
+                }}
+              >
+                {nextRole}
+              </Typography>
+            )}
+          </Box>
+          <Box
+            aria-hidden="true"
+            sx={{
+              width: { xs: 54, md: 56 },
+              height: { xs: 54, md: 56 },
+              minWidth: { xs: 54, md: 56 },
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: HUMAN_SIGNAL.brightOrangeOnDark,
+              fontSize: '2rem',
+              pointerEvents: 'none',
+            }}
+          >
+            <ActionIcon variant="internal" sx={{ fontSize: '2rem' }} />
+          </Box>
+        </Box>
+
+        {!isLast && (
+          <Box
+            component={RouterLink}
+            to="/projects"
+            aria-label="전체 프로젝트 보기"
+            data-detail-end-navigation-secondary="true"
+            sx={{
+              color: HUMAN_SIGNAL.inkNavy,
+              minHeight: { xs: 54, md: 56 },
+              px: { xs: 2, md: 3 },
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 2,
+              textDecoration: 'none',
+              fontWeight: 700,
+              fontSize: '0.9375rem',
+              lineHeight: '22px',
+              wordBreak: 'keep-all',
+              WebkitTapHighlightColor: 'transparent',
+              '&:focus-visible': {
+                outline: `3px solid ${HUMAN_SIGNAL.burntOrange}`,
+                outlineOffset: '3px',
+              },
+            }}
+          >
+            <Box component="span">전체 프로젝트 보기</Box>
+            <ActionIcon variant="internal" sx={{ color: HUMAN_SIGNAL.burntOrange, fontSize: '1.0625rem' }} />
+          </Box>
+        )}
+      </Box>
+
+      <Box
+        component="footer"
+        data-detail-end-navigation-footer="true"
+        sx={{
+          borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
+          pt: 2,
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'flex-start', md: 'center' },
+          justifyContent: { md: 'space-between' },
+          gap: { xs: 1, md: 2 },
+          width: '100%',
+          color: HUMAN_SIGNAL.inkNavy,
+          fontFamily: FONT_MONO,
+          fontWeight: 600,
+          fontSize: '0.75rem',
+          lineHeight: '16px',
+          letterSpacing: '0.02em',
+          wordBreak: 'keep-all',
+        }}
+      >
+        <Box component="span" data-detail-end-navigation-footer-left="true">DOHAN KIM · HUMAN SIGNAL</Box>
+        <Box component="span" data-detail-end-navigation-footer-right="true">{footerRight}</Box>
+      </Box>
+    </Box>
+  );
+};
 
 const SectionLabel = ({ index, children, tone = 'onLight' }) => (
   <Typography sx={{
@@ -86,6 +305,20 @@ const SectionHeading = ({ lines, tone = 'onLight' }) => (
   </Typography>
 );
 
+const SectionIntro = ({ text, tone = 'onLight', tokens = [], compact = false }) => (
+  <Typography component="p" sx={{
+    mt: { xs: -2, md: -3 },
+    mb: compact ? 0 : { xs: 4, md: 5 },
+    color: tone === 'onLight' ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist,
+    fontSize: { xs: '0.9375rem', md: '1rem' },
+    lineHeight: 1.7,
+    wordBreak: 'keep-all',
+    ...READING_SX,
+  }}>
+    <ProtectedCopy text={text} tokens={tokens} />
+  </Typography>
+);
+
 const DEFAULT_SECTION_HEADINGS = {
   context: ['무엇이 복잡했고,', '어떤 판단이 더 빨라졌는가'],
   decisions: ['핵심 설계 판단을,', '화면 증거와 함께 보여줍니다.'],
@@ -103,14 +336,14 @@ const FieldRow = ({ label, children, tone = 'onLight' }) => (
   </Typography>
 );
 
-const BulletList = ({ items, tone = 'onLight' }) => (
+const BulletList = ({ items, tone = 'onLight', protectedTokens = [] }) => (
   <Box component="ul" sx={{ m: 0, pl: 2.25, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
     {items.map((item) => (
       <Typography key={item} component="li" sx={{
         fontSize: '0.875rem', lineHeight: 1.6, wordBreak: 'keep-all',
         color: tone === 'onLight' ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist,
       }}>
-        {item}
+        <ProtectedCopy text={item} tokens={protectedTokens} />
       </Typography>
     ))}
   </Box>
@@ -165,7 +398,7 @@ const ResponsiveNotApplicableField = () => (
  * 라벨을 조금 더 크게 보여준다. `extra`는 Feedback Hub 390 evidence처럼
  * 카드 하단에 controlled viewport 보조 증거를 붙일 때만 쓴다. */
 const ScreenCard = ({ s, large = false, extra, sx }) => (
-  <Box sx={sx}>
+  <Box data-main-screen={s.label} sx={sx}>
     <Box sx={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: s.media.aspectRatio ?? '16 / 10' }}>
       {s.media.sources ? (
         <ApprovedSlotImage media={s.media} />
@@ -218,9 +451,12 @@ const ProjectDetailPage = () => {
     else navigate(-1);
   };
 
-  const nextSlug = cycleSlug(slug, 1);
+  const nextSlug = getNextSlug(slug);
   const nextProject = nextSlug
     ? ALL_PROJECTS.find((p) => p.id === SLUG_TO_ID[nextSlug])
+    : null;
+  const nextRole = nextSlug
+    ? (PROJECT_DETAIL_READY[nextSlug]?.meta?.role ?? nextProject?.role ?? null)
     : null;
 
   // AI Collaboration은 현재 로컬 프로젝트 데이터에 실제 aiContribution 필드가
@@ -238,9 +474,13 @@ const ProjectDetailPage = () => {
   // 기본은 primary(첫 화면 크게) + secondary(나머지 작게) 위계다. 프로젝트별
   // 화면 증거의 무게가 같을 때만 portfolioMeta.js에서 equal을 명시한다.
   const mainScreensEqual = ready.mainScreensLayout === 'equal';
+  const mainScreensBalanced = ready.mainScreensLayout === 'balanced-five';
+  const heroMediaCentered = ready.hero.mediaLayout === 'centered-pair';
   const secondaryScreens = ready.mainScreens.slice(1);
   const responsiveCards = ready.responsiveCards ?? BREAKPOINT_CARDS;
   const sectionHeadings = { ...DEFAULT_SECTION_HEADINGS, ...ready.sectionHeadings };
+  const sectionIntros = ready.sectionIntros ?? {};
+  const protectedCopyTokens = ready.protectedCopyTokens ?? [];
 
   // Figma Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개(196:25~36 등) — 값이 있는
   // 필드만 표시한다. TYPE은 EvidenceBadges의 derivePlatform과 같은 판단 기준
@@ -306,8 +546,8 @@ const ProjectDetailPage = () => {
                 {ready.hero.summary}
               </Typography>
 
-              {/* Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개 — 모바일은 2×2,
-               * split layout부터는 승인된 상세 화면처럼 한 줄 4개로 배치한다. */}
+              {/* Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개 — 좁은 split layout까지
+               * 2×2를 유지하고 각 카드의 읽을 폭이 확보될 때만 한 줄로 배치한다. */}
               {metaFacts.length > 0 && (
                 <Box sx={{
                   display: 'grid',
@@ -318,7 +558,7 @@ const ProjectDetailPage = () => {
                   minWidth: 0,
                   mb: 3,
                   maxWidth: 560,
-                  [SPLIT_MQ]: { gridTemplateColumns: `repeat(${metaFacts.length}, minmax(0, 1fr))` },
+                  [META_FOUR_COLUMN_MQ]: { gridTemplateColumns: `repeat(${metaFacts.length}, minmax(0, 1fr))` },
                 }}>
                   {metaFacts.map((f) => (
                     <Box key={f.label} sx={{
@@ -390,7 +630,7 @@ const ProjectDetailPage = () => {
             {/* 우측 — navy media stage(Figma "Hero Media Stage" 구조: 어두운 무대 위
              * 실제 evidence PNG 프레임 1~2장 + 하단 caption + 저대비 D mark). */}
             <Box sx={{ mt: { xs: 4, md: 0 } }}>
-              <Box sx={{
+              <Box data-hero-media-stage="true" sx={{
                 position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.deepHarbor,
                 borderRadius: '20px', p: { xs: 2, sm: 2.5, md: 3 },
               }}>
@@ -410,9 +650,17 @@ const ProjectDetailPage = () => {
                     </Box>
                   </Box>
                 ) : (
-                  <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', gap: 2 }}>
-                    {ready.hero.media.map((m) => (
-                      <Box key={m.src} sx={{
+                  <Box
+                    data-hero-media-layout={ready.hero.mediaLayout ?? 'default'}
+                    sx={{
+                      position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap',
+                      alignItems: heroMediaCentered ? 'center' : 'flex-end',
+                      justifyContent: heroMediaCentered ? 'center' : 'flex-start',
+                      gap: 2,
+                    }}
+                  >
+                    {ready.hero.media.map((m, index) => (
+                      <Box key={m.src} data-hero-media-frame={index === 0 ? 'desktop' : 'mobile'} sx={{
                         borderRadius: '14px', overflow: 'hidden',
                         flex: m.frameWidth ? '0 0 auto' : '1 1 260px',
                         width: m.frameWidth ?? undefined,
@@ -450,8 +698,16 @@ const ProjectDetailPage = () => {
                     ))}
                   </Box>
                 )}
-                <Typography sx={{ position: 'relative', zIndex: 1, fontFamily: FONT_MONO, color: HUMAN_SIGNAL.steelMist, fontSize: '0.75rem', mt: 2 }}>
-                  {ready.hero.mediaLabel}
+                <Typography data-hero-media-caption="true" sx={{ position: 'relative', zIndex: 1, fontFamily: FONT_MONO, color: HUMAN_SIGNAL.steelMist, fontSize: '0.75rem', mt: 2 }}>
+                  {heroMediaCentered && ready.hero.mediaLabel.includes('STATIC / DEMO') ? (
+                    <>
+                      {ready.hero.mediaLabel.split('STATIC / DEMO')[0]}
+                      <Box component="span" data-hero-caption-token="static-demo" sx={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+                        STATIC / DEMO
+                      </Box>
+                      {ready.hero.mediaLabel.split('STATIC / DEMO')[1]}
+                    </>
+                  ) : ready.hero.mediaLabel}
                 </Typography>
                 <Box sx={{ position: 'absolute', right: -12, bottom: -12, width: 96, height: 96, opacity: 0.12, pointerEvents: 'none' }} aria-hidden="true">
                   <DMark size="100%" tone="onDark" sx={{ width: '100%', height: '100%' }} />
@@ -475,18 +731,31 @@ const ProjectDetailPage = () => {
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
           <SectionLabel index="01" tone="onDark">CONTEXT</SectionLabel>
           <SectionHeading tone="onDark" lines={sectionHeadings.context} />
+          {sectionIntros.context && (
+            <SectionIntro text={sectionIntros.context} tone="onDark" tokens={protectedCopyTokens} />
+          )}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: { xs: 3, md: 4 } }}>
             <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '20px', p: { xs: 3, md: 4 } }}>
               <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 2 }}>PROBLEM</Typography>
               <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.45, letterSpacing: '-0.01em', wordBreak: 'keep-all' }}>
                 {ready.context.problem}
               </Typography>
+              {ready.context.problemNote && (
+                <Typography sx={{ mt: 2, color: HUMAN_SIGNAL.steelMist, fontSize: '0.875rem', lineHeight: 1.65, wordBreak: 'keep-all' }}>
+                  {ready.context.problemNote}
+                </Typography>
+              )}
             </Box>
             <Box sx={{ position: 'relative', bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: '20px', p: { xs: 3, md: 4 } }}>
               <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 2 }}>GOAL</Typography>
               <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.45, letterSpacing: '-0.01em', wordBreak: 'keep-all' }}>
                 {ready.context.goal}
               </Typography>
+              {ready.context.goalNote && (
+                <Typography sx={{ mt: 2, pr: 5, color: HUMAN_SIGNAL.inkText, fontSize: '0.875rem', lineHeight: 1.65, wordBreak: 'keep-all' }}>
+                  {ready.context.goalNote}
+                </Typography>
+              )}
               <Box aria-hidden="true" sx={{ position: 'absolute', right: 24, bottom: 24, display: 'flex', alignItems: 'flex-end', gap: 1 }}>
                 <Box sx={{ width: 18, height: 18, borderRadius: '6px', bgcolor: HUMAN_SIGNAL.mutedSage }} />
                 <Box sx={{ width: 9, height: 9, borderRadius: '3px', bgcolor: HUMAN_SIGNAL.brightOrange }} />
@@ -502,6 +771,9 @@ const ProjectDetailPage = () => {
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
           <SectionLabel index="02">KEY DECISIONS</SectionLabel>
           <SectionHeading lines={sectionHeadings.decisions} />
+          {sectionIntros.decisions && (
+            <SectionIntro text={sectionIntros.decisions} tokens={protectedCopyTokens} />
+          )}
           {/* 지시서 3-F3-4: 이전 구현은 부모 flex의 gap과 각 항목의 pt가 같은 값으로
            * 중복 적용돼(예: md에서 56px+56px=112px) DECISION 사이 간격이 의도한
            * 값의 2배였다 — 부모 gap을 없애고 각 항목의 pt(+구분선)만으로 간격을
@@ -578,14 +850,55 @@ const ProjectDetailPage = () => {
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
           <SectionLabel index="03">MAIN SCREENS</SectionLabel>
           <SectionHeading lines={sectionHeadings.screens} />
+          {sectionIntros.screens && (
+            <SectionIntro text={sectionIntros.screens} tokens={protectedCopyTokens} />
+          )}
           {/* 지시서 3-F3-1: Feedback Hub Main Screens는 Figma 기준 Post List/Post
            * Detail 2개여야 한다 — 이전에는 첫 카드에 responsiveEvidence(390px
            * 세로 캡처)를 extra로 붙여 시각적으로 세 번째 화면처럼 보이고 넓은
            * 빈 공간을 만들었다. 390px 확인 사실은 Responsive & Scope에 이미
            * 있으므로 여기서는 extra를 더 이상 전달하지 않는다(데이터 자체는
            * portfolioMeta.js에 그대로 남겨 evidence mapping을 유지한다). */}
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
-            {ready.mainScreensLayout === 'approved-brewstep' ? (
+          <Box
+            data-main-screens-layout={ready.mainScreensLayout ?? 'primary-secondary'}
+            sx={mainScreensBalanced ? {
+              display: 'grid', gridTemplateColumns: '1fr', alignItems: 'start', gap: 3,
+              '@media (min-width:1024px)': { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' },
+              '@media (min-width:1440px)': { gridTemplateColumns: 'repeat(12, minmax(0, 1fr))' },
+            } : { display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}
+          >
+            {mainScreensBalanced ? (
+              ready.mainScreens.map((s, index) => (
+                <ScreenCard
+                  key={s.label}
+                  s={s}
+                  large={index === 0}
+                  sx={{
+                    minWidth: 0,
+                    '@media (min-width:1024px)': { gridColumn: index === 0 ? '1 / -1' : 'auto' },
+                    '@media (min-width:1440px)': {
+                      // M2 mosaic-five: Home과 오른쪽 2단 stack, 하단 6/6을
+                      // 명시 배치하되 DOM 순서는 그대로 유지한다.
+                      gridColumn: index === 0
+                        ? '1 / span 8'
+                        : index === 1 || index === 2
+                          ? '9 / span 4'
+                          : index === 3
+                            ? '1 / span 6'
+                            : '7 / span 6',
+                      gridRow: index === 0
+                        ? '1 / span 2'
+                        : index === 1
+                          ? '1'
+                          : index === 2
+                            ? '2'
+                            : '3',
+                      alignSelf: index === 0 ? 'center' : 'start',
+                    },
+                  }}
+                />
+              ))
+            ) : ready.mainScreensLayout === 'approved-brewstep' ? (
               <>
                 <ScreenCard
                   s={ready.mainScreens[0]} large
@@ -710,16 +1023,37 @@ const ProjectDetailPage = () => {
 
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3, mb: { xs: 4, md: 5 } }}>
             <Box sx={{ bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.deepSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>{ready.scopeLabels?.actual ?? 'ACTUAL'}</Typography>
-              <BulletList items={ready.scope.actual} />
+              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.deepSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
+                <ProtectedCopy text={ready.scopeLabels?.actual ?? 'ACTUAL'} tokens={protectedCopyTokens} />
+              </Typography>
+              {ready.scopeTitles?.actual && (
+                <Typography sx={{ color: HUMAN_SIGNAL.inkNavy, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
+                  {ready.scopeTitles.actual}
+                </Typography>
+              )}
+              <BulletList items={ready.scope.actual} protectedTokens={protectedCopyTokens} />
             </Box>
             <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>{ready.scopeLabels?.demoStatic ?? 'DEMO / STATIC'}</Typography>
-              <BulletList items={ready.scope.demoStatic} tone="onDark" />
+              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
+                <ProtectedCopy text={ready.scopeLabels?.demoStatic ?? 'DEMO / STATIC'} tokens={protectedCopyTokens} />
+              </Typography>
+              {ready.scopeTitles?.demoStatic && (
+                <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
+                  {ready.scopeTitles.demoStatic}
+                </Typography>
+              )}
+              <BulletList items={ready.scope.demoStatic} tone="onDark" protectedTokens={protectedCopyTokens} />
             </Box>
             <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>{ready.scopeLabels?.notIncluded ?? 'NOT INCLUDED'}</Typography>
-              <BulletList items={ready.scope.notIncluded} tone="onDark" />
+              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
+                <ProtectedCopy text={ready.scopeLabels?.notIncluded ?? 'NOT INCLUDED'} tokens={protectedCopyTokens} />
+              </Typography>
+              {ready.scopeTitles?.notIncluded && (
+                <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
+                  {ready.scopeTitles.notIncluded}
+                </Typography>
+              )}
+              <BulletList items={ready.scope.notIncluded} tone="onDark" protectedTokens={protectedCopyTokens} />
             </Box>
           </Box>
 
@@ -762,6 +1096,9 @@ const ProjectDetailPage = () => {
             <Box>
               <SectionLabel index="05">RESULT &amp; LIMIT</SectionLabel>
               <SectionHeading lines={sectionHeadings.result} />
+              {sectionIntros.result && (
+                <SectionIntro text={sectionIntros.result} tokens={protectedCopyTokens} compact />
+              )}
             </Box>
           </Box>
 
@@ -769,31 +1106,23 @@ const ProjectDetailPage = () => {
             <Box sx={{ bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
               <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>DONE</Typography>
               <Typography sx={{ color: HUMAN_SIGNAL.inkNavy, fontWeight: 600, fontSize: { xs: '1rem', md: '1.0625rem' }, lineHeight: 1.7, wordBreak: 'keep-all' }}>
-                {ready.resultLimit.done}
+                <ProtectedCopy text={ready.resultLimit.done} tokens={protectedCopyTokens} />
               </Typography>
             </Box>
             <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
               <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>LIMIT</Typography>
               <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 600, fontSize: { xs: '1rem', md: '1.0625rem' }, lineHeight: 1.7, wordBreak: 'keep-all' }}>
-                {ready.resultLimit.limit}
+                <ProtectedCopy text={ready.resultLimit.limit} tokens={protectedCopyTokens} />
               </Typography>
             </Box>
           </Box>
 
-          {nextProject && (
-            <Box
-              component={RouterLink} to={`/projects/${nextSlug}`}
-              aria-label={`다음 프로젝트: ${nextProject.title}`}
-              sx={{
-                bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, height: 56, px: 3, borderRadius: '14px',
-                display: 'inline-flex', alignItems: 'center', gap: 1, textDecoration: 'none',
-                fontWeight: 700, fontSize: '0.9375rem',
-                '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
-              }}
-            >
-              다음 프로젝트 <ActionIcon variant="internal" sx={{ color: HUMAN_SIGNAL.brightOrangeOnDark }} />
-            </Box>
-          )}
+          <DetailEndNavigation
+            currentSlug={slug}
+            nextSlug={nextSlug}
+            nextProject={nextProject}
+            nextRole={nextRole}
+          />
         </Box>
       </Box>
     </Box>

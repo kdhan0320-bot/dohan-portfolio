@@ -14,7 +14,7 @@
       <div class="container">
         <p class="eyebrow">제품 찾기</p>
         <h1>제품 찾기</h1>
-        <p class="lead"><span class="products-lead--default">검사할 문제와 설치 조건을 확인해 후보 제품을 줄이세요.</span><span class="products-lead--tablet">태블릿에서는 필터 사이드바를 상단 도구막대로 압축합니다.</span></p>
+        <p class="lead">검사 문제와 설치 조건으로 후보 제품을 좁혀보세요.</p>
         <form class="product-search" role="search">
           <label for="product-search">제품 검색</label>
           <div><input id="product-search" type="search" placeholder="제품명·모델명·검사 작업을 검색하세요."><button class="button button--primary" type="submit">검색</button></div>
@@ -24,7 +24,7 @@
         <div class="mobile-filter-row">
           <button class="button button--secondary filter-trigger" type="button" aria-haspopup="dialog" aria-controls="filter-dialog">필터 <span class="filter-count">0</span></button>
           <div class="active-filter-summary"></div>
-          <span class="mobile-result-count"></span>
+          <span class="mobile-result-count" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></span>
         </div>
       </div>
     </section>

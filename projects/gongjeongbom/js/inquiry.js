@@ -3,6 +3,7 @@ import { getProducts } from "./data.js";
 import {
   getInquiryProducts,
   getCompareIds,
+  hasInquiryProducts,
   setInquiryProducts,
 } from "./common.js";
 
@@ -14,8 +15,13 @@ const errorSummary = document.querySelector(".error-summary");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let currentStep = 1;
 
-const queryProducts = new URLSearchParams(location.search).get("products")?.split(",").filter(Boolean) || [];
-const initialIds = queryProducts.length ? queryProducts : getInquiryProducts().length ? getInquiryProducts() : getCompareIds();
+const params = new URLSearchParams(location.search);
+const queryProducts = params.get("products")?.split(",").filter(Boolean) || [];
+const initialIds = params.has("products")
+  ? queryProducts
+  : hasInquiryProducts()
+    ? getInquiryProducts()
+    : getCompareIds();
 const selectedProducts = getProducts(initialIds);
 setInquiryProducts(selectedProducts.map(({ id }) => id));
 
@@ -24,18 +30,18 @@ document.querySelector(".selected-products").innerHTML = selectedProducts.length
   : '<p>선택한 제품이 없습니다. 제품 없이도 문의할 수 있습니다.</p>';
 
 if (selectedProducts.length) {
-  form.elements.problem.value = "누락·오조립 검사";
-  form.elements.industry.value = "자동차 부품";
-  form.elements.target.value = "커넥터 조립 상태";
-  form.elements.schedule.value = "검토 중";
-  form.elements.details.value = "커넥터 누락과 방향 오류를 한 공정에서 확인하려고 합니다. 두 검사 위치를 연결할 수 있는지 검토가 필요합니다.";
   form.elements.purpose.value = "제품 선택·적용 가능성";
   currentStep = 2;
 }
 
-function selectedProductModels() {
+function selectedProductIds() {
   return [...form.querySelectorAll('input[name="products"]:checked')]
-    .map((input) => selectedProducts.find(({ id }) => id === input.value)?.model)
+    .map((input) => input.value);
+}
+
+function selectedProductModels() {
+  return selectedProductIds()
+    .map((id) => selectedProducts.find((product) => product.id === id)?.model)
     .filter(Boolean);
 }
 
@@ -48,7 +54,17 @@ function updateSummary() {
     "선택 제품": selectedProductModels().join(" · ") || "선택 없음",
     "현재 단계": `${currentStep}단계 / 3단계`,
   };
-  summary.innerHTML = Object.entries(values).map(([key, value]) => `<div><dt>${key}</dt><dd>${value}</dd></div>`).join("");
+  const fragment = document.createDocumentFragment();
+  Object.entries(values).forEach(([key, value]) => {
+    const row = document.createElement("div");
+    const term = document.createElement("dt");
+    const description = document.createElement("dd");
+    term.textContent = key;
+    description.textContent = value;
+    row.append(term, description);
+    fragment.append(row);
+  });
+  summary.replaceChildren(fragment);
 }
 
 function showStep(step) {
@@ -147,6 +163,9 @@ form.addEventListener("input", (event) => {
 });
 form.addEventListener("change", (event) => {
   clearResolvedItem(event.target);
+  if (event.target.matches('input[name="products"]')) {
+    setInquiryProducts(selectedProductIds());
+  }
   updateSummary();
 });
 
@@ -170,7 +189,10 @@ form.addEventListener("submit", (event) => {
   clearValidationState();
   document.querySelector(".inquiry-summary").hidden = true;
   completion.hidden = false;
-  indicators.forEach((indicator) => indicator.classList.remove("is-active"));
+  indicators.forEach((indicator) => {
+    indicator.classList.remove("is-active");
+    indicator.removeAttribute("aria-current");
+  });
   completion.focus();
 });
 

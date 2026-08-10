@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Locator, type Page } from '@playwright/test';
 import { assertTargetUrl, RESULTS_FILE, QHD_VIEWPORTS, QHD_HIDDEN_VIEWPORTS } from './projects-target';
 
 function record(entry: Record<string, unknown>) {
@@ -39,17 +39,22 @@ test.describe('Projects Page', () => {
       record({ kind: 'structure', viewport, mainCount, h1Count, horizontalOverflow: overflow });
     });
 
-    await test.step('공개 사실성 (Featured 3 / More Works 1 / Mini SNS 0)', async () => {
+    await test.step('공개 사실성 (Featured 3 / More Works 4 / Mini SNS 0)', async () => {
       const featuredCards = await page.locator('[data-project-kind="featured"]').count();
       expect.soft(featuredCards, `${viewport}: Featured card count`).toBe(3);
       const featuredLinks = await page.locator('[data-project-kind="featured"] a[href*="/projects/"]').count();
       expect.soft(featuredLinks, `${viewport}: Featured detail Link count`).toBe(3);
 
       const moreWorkCards = await page.locator('[data-project-kind="more-work"]').count();
-      expect.soft(moreWorkCards, `${viewport}: More Works published card count`).toBe(1);
+      expect.soft(moreWorkCards, `${viewport}: More Works published card count`).toBe(4);
 
-      const ottCount = await page.getByText('반응형 스트리밍 UI 콘셉트', { exact: true }).count();
-      expect.soft(ottCount, `${viewport}: 반응형 스트리밍 UI 콘셉트 count`).toBeGreaterThanOrEqual(1);
+      const moreWorkTitles = ['Portfolio Feedback Hub', '울산 버스 도착정보', 'Streaming UI Concept', 'BREWSTEP'];
+      const moreWorkTitleCounts: Record<string, number> = {};
+      for (const title of moreWorkTitles) {
+        const count = await page.getByText(title, { exact: true }).count();
+        moreWorkTitleCounts[title] = count;
+        expect.soft(count, `${viewport}: ${title} 공개 카드 제목 count`).toBe(1);
+      }
 
       const miniSnsText = await page.getByText('Mini SNS', { exact: false }).count();
       expect.soft(miniSnsText, `${viewport}: Mini SNS text/card count(비공개라 0이어야 함)`).toBe(0);
@@ -57,7 +62,7 @@ test.describe('Projects Page', () => {
       const placeholderCards = await page.locator('[data-project-kind="more-work"][data-published="false"]').count();
       expect.soft(placeholderCards, `${viewport}: placeholder card count`).toBe(0);
 
-      record({ kind: 'publicationTruth', viewport, featuredCards, featuredLinks, moreWorkCards, ottCount, miniSnsText, placeholderCards });
+      record({ kind: 'publicationTruth', viewport, featuredCards, featuredLinks, moreWorkCards, moreWorkTitleCounts, miniSnsText, placeholderCards });
     });
 
     await test.step('Header PROJECTS active / Header MAIL', async () => {
@@ -93,26 +98,25 @@ test.describe('Projects Page', () => {
     });
 
     await test.step('내부 고정 라우트는 Link(<a href>)여야 함', async () => {
-      const checks: { name: RegExp | string; scope?: string }[] = [
-        { name: /홈으로 돌아가기/ },
-        { name: 'JobFlow 상세 보기' },
-        { name: '버스 도착정보 앱 상세 보기' },
-        { name: 'Portfolio Feedback Hub 상세 보기' },
-      ];
-      for (const c of checks) {
-        const link = page.getByRole('link', { name: c.name }).first();
-        const count = await link.count();
-        if (count === 0) {
-          record({ kind: 'navigationSemantics', viewport, target: String(c.name), result: 'FAIL', note: 'link를 찾을 수 없음' });
-          expect.soft(0, `${viewport}: ${c.name} link를 찾을 수 없음`).toBeGreaterThan(0);
-          continue;
-        }
-        const tagName = await link.evaluate((el) => el.tagName);
-        const href = await link.getAttribute('href');
-        const ok = tagName === 'A' && !!href;
-        record({ kind: 'navigationSemantics', viewport, target: String(c.name), tagName, href, result: ok ? 'PASS' : 'FAIL' });
-        expect.soft(tagName, `${viewport}: ${c.name} tagName`).toBe('A');
-        expect.soft(href, `${viewport}: ${c.name} href 존재`).toBeTruthy();
+      const homeLink = page.getByRole('link', { name: /홈으로 돌아가기/ }).first();
+      expect.soft(await homeLink.count(), `${viewport}: 홈으로 돌아가기 link count`).toBe(1);
+
+      const projectLinks = await page.evaluate(() => Array.from(document.querySelectorAll('[data-project-kind]')).map((card) => {
+        const link = card.matches('a[href]') ? card : card.querySelector('a[href*="/projects/"]');
+        return {
+          projectKind: card.getAttribute('data-project-kind'),
+          projectId: card.getAttribute('data-project-id'),
+          tagName: link?.tagName ?? null,
+          href: link?.getAttribute('href') ?? null,
+        };
+      }));
+      expect.soft(projectLinks.length, `${viewport}: 공개 프로젝트 카드 Link 계약 수`).toBe(7);
+      for (const link of projectLinks) {
+        const target = `${link.projectKind}:${link.projectId}`;
+        const ok = link.tagName === 'A' && Boolean(link.href?.includes('/projects/'));
+        record({ kind: 'navigationSemantics', viewport, target, ...link, result: ok ? 'PASS' : 'FAIL' });
+        expect.soft(link.tagName, `${viewport}: ${target} tagName`).toBe('A');
+        expect.soft(link.href, `${viewport}: ${target} 내부 상세 href`).toContain('/projects/');
       }
     });
 
@@ -257,11 +261,16 @@ test.describe('Projects Page', () => {
       const gap = await page.evaluate(() => {
         const section = document.querySelector('section[aria-label="더 많은 작업물"]') as HTMLElement | null;
         if (!section) return null;
-        const card = section.querySelector('[data-project-kind="more-work"]') as HTMLElement | null;
-        if (!card) return null;
+        const cards = Array.from(section.querySelectorAll('[data-project-kind="more-work"]')) as HTMLElement[];
+        const visibleCards = cards.filter((card) => {
+          const style = getComputedStyle(card);
+          const rect = card.getBoundingClientRect();
+          return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        });
+        if (visibleCards.length === 0) return null;
         const sectionRect = section.getBoundingClientRect();
-        const cardRect = card.getBoundingClientRect();
-        return { bottomGap: Math.round(sectionRect.bottom - cardRect.bottom) };
+        const lastCardBottom = Math.max(...visibleCards.map((card) => card.getBoundingClientRect().bottom));
+        return { bottomGap: Math.round(sectionRect.bottom - lastCardBottom), cardCount: visibleCards.length };
       });
       if (gap) {
         const maxGap = viewport === '390' || viewport === '768' ? 160 : 200; // py + 여유(카드 자체 높이 편차 감안)
@@ -272,18 +281,15 @@ test.describe('Projects Page', () => {
       }
     });
 
-    await test.step('section 경계(절대 page y) — Figma 4개 locked node 실측 대조', async () => {
-      // Phase 5A-F2: Figma QHD 208:2 / Desktop 206:5 / Compact 209:2 / Mobile
-      // 212:2 자체 frame 누적 높이(Hero→Featured→More Works→Footer)를 그대로
-      // 옮긴 값이다. header는 별도 고정 Navbar라 절대 page y로 비교한다
-      // (getBoundingClientRect + scrollY). 390은 기존 "More Works 빈 공간"
-      // 가드와 충돌해 section 높이를 콘텐츠 기준으로 되돌렸으므로 이 표에서
-      // 제외한다(카드 높이 600±4는 위에서 이미 별도로 보증되지 않으니 아래
-      // touch target/clip 검사가 대신 방어한다).
-      const FIGMA_SECTION_TARGETS: Record<string, { featuredStart: number; moreWorksStart: number; footerStart: number; footerBottom: number }> = {
-        '1024': { featuredStart: 1050, moreWorksStart: 3050, footerStart: 3770, footerBottom: 4470 },
-        '1440': { featuredStart: 680, moreWorksStart: 1880, footerStart: 2680, footerBottom: 3280 },
-        '2560': { featuredStart: 680, moreWorksStart: 1980, footerStart: 2830, footerBottom: 3430 },
+    await test.step('section 시작점과 공개 콘텐츠 이후 footer 인접성 확인', async () => {
+      // Featured/More Works 시작점은 승인 Figma의 locked node를 유지한다. Footer의
+      // 절대 y는 공개 More Works가 1개에서 4개로 늘어나며 달라졌으므로, 오래된
+      // 좌표를 고정하지 않고 현재 공개 카드가 끝난 직후 이어지는지와 자체 높이를
+      // 엄격하게 검증한다. 390은 콘텐츠 높이 기반이라 별도 clip/gap 검사가 맡는다.
+      const FIGMA_SECTION_TARGETS: Record<string, { featuredStart: number; moreWorksStart: number; footerHeight: number }> = {
+        '1024': { featuredStart: 1050, moreWorksStart: 3050, footerHeight: 700 },
+        '1440': { featuredStart: 680, moreWorksStart: 1880, footerHeight: 600 },
+        '2560': { featuredStart: 680, moreWorksStart: 1980, footerHeight: 600 },
       };
       const target = FIGMA_SECTION_TARGETS[viewport];
       if (!target) return;
@@ -296,15 +302,21 @@ test.describe('Projects Page', () => {
         return {
           featuredStart: absTop(featured),
           moreWorksStart: absTop(moreWorks),
+          moreWorksBottom: absBottom(moreWorks),
           footerStart: absTop(footer),
           footerBottom: absBottom(footer),
         };
       });
-      record({ kind: 'figmaSectionBoundary', viewport, target, measured: geometry });
-      for (const key of Object.keys(target) as (keyof typeof target)[]) {
-        const diff = Math.abs((geometry[key] ?? 0) - target[key]);
-        expect.soft(diff, `${viewport}: ${key} 실측 ${geometry[key]} vs Figma 목표 ${target[key]} (오차 ${diff}px, 허용 ±4)`).toBeLessThanOrEqual(4);
-      }
+      const featuredDiff = Math.abs((geometry.featuredStart ?? 0) - target.featuredStart);
+      const moreWorksDiff = Math.abs((geometry.moreWorksStart ?? 0) - target.moreWorksStart);
+      const footerAdjacencyDiff = Math.abs((geometry.footerStart ?? 0) - (geometry.moreWorksBottom ?? 0));
+      const footerHeight = (geometry.footerBottom ?? 0) - (geometry.footerStart ?? 0);
+      const footerHeightDiff = Math.abs(footerHeight - target.footerHeight);
+      record({ kind: 'figmaSectionBoundary', viewport, target, measured: geometry, featuredDiff, moreWorksDiff, footerAdjacencyDiff, footerHeight, footerHeightDiff });
+      expect.soft(featuredDiff, `${viewport}: featuredStart Figma 오차 ${featuredDiff}px`).toBeLessThanOrEqual(4);
+      expect.soft(moreWorksDiff, `${viewport}: moreWorksStart Figma 오차 ${moreWorksDiff}px`).toBeLessThanOrEqual(4);
+      expect.soft(footerAdjacencyDiff, `${viewport}: More Works와 footer 사이 간격 ${footerAdjacencyDiff}px`).toBeLessThanOrEqual(1);
+      expect.soft(footerHeightDiff, `${viewport}: footer 높이 ${footerHeight}px vs 목표 ${target.footerHeight}px`).toBeLessThanOrEqual(4);
     });
 
     record({ kind: 'consoleIssues', viewport, count: consoleErrors.length, items: consoleErrors.slice(0, 20) });
@@ -313,28 +325,151 @@ test.describe('Projects Page', () => {
     expect.soft(failedRequests.length, `${viewport}: failed request`).toBe(0);
   });
 
-  // Detail prev/next Link, smart back button, 404 Home/Projects Link semantics는
-  // viewport와 무관하므로 1440 project에서만 1회 확인한다(중복 방지).
-  test('Detail prev/next Link · smart back · 404 Link semantics', async ({ page }, testInfo) => {
+  // Detail Next/Last/Footer, smart back, 404 semantics는 1440 project에서만
+  // 실행하되, 상세 하단의 반응형 계약은 요구한 세 CSS viewport를 직접 순회한다.
+  test('Detail Next/Last/Footer · smart back · 404 Link semantics', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== '1440', '뷰포트 무관 검사라 1440에서만 실행');
     const base = assertTargetUrl();
 
-    await page.goto(`${base}#/projects/jobflow`, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(300);
+    const viewports = [
+      { label: '390', width: 390, height: 844 },
+      { label: '1024', width: 1024, height: 900 },
+      { label: '1440', width: 1440, height: 1000 },
+    ];
+    const normalizeText = (value: string | null) => (value ?? '').replace(/\s+/g, ' ').trim();
+    const expectMinTarget = async (locator: Locator, label: string) => {
+      const rect = await locator.boundingBox();
+      expect.soft(rect, `${label}: target geometry`).not.toBeNull();
+      expect.soft(rect?.width ?? 0, `${label}: target width`).toBeGreaterThanOrEqual(44);
+      expect.soft(rect?.height ?? 0, `${label}: target height`).toBeGreaterThanOrEqual(44);
+      return rect;
+    };
+    const expectFocusVisible = async (locator: Locator, label: string) => {
+      await page.keyboard.press('Tab');
+      await locator.focus();
+      const focus = await locator.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          active: document.activeElement === element,
+          focusVisible: element.matches(':focus-visible'),
+          outlineStyle: style.outlineStyle,
+          outlineWidth: Number.parseFloat(style.outlineWidth) || 0,
+          outlineColor: style.outlineColor,
+        };
+      });
+      expect.soft(focus.active, `${label}: activeElement`).toBe(true);
+      expect.soft(focus.focusVisible, `${label}: :focus-visible`).toBe(true);
+      expect.soft(focus.outlineStyle, `${label}: outline style`).not.toBe('none');
+      expect.soft(focus.outlineWidth, `${label}: outline width`).toBeGreaterThanOrEqual(3);
+      expect.soft(focus.outlineColor, `${label}: outline color`).toBe('rgb(168, 67, 37)');
+    };
 
-    const prevNext = page.getByRole('link', { name: /이전 프로젝트|다음 프로젝트/ });
-    const prevNextCount = await prevNext.count();
-    expect.soft(prevNextCount, 'Detail prev/next link count').toBeGreaterThanOrEqual(2);
-    for (let i = 0; i < prevNextCount; i++) {
-      const el = prevNext.nth(i);
-      const tagName = await el.evaluate((n) => n.tagName);
-      const href = await el.getAttribute('href');
-      record({ kind: 'navigationSemantics', viewport: '1440', target: `detail-prev-next-${i}`, tagName, href });
-      expect.soft(tagName, `Detail prev/next[${i}] tagName`).toBe('A');
-      expect.soft(href, `Detail prev/next[${i}] href 존재`).toBeTruthy();
+    for (const viewport of viewports) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto(`${base}#/projects/gongjeongbom`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => document.fonts.ready);
+
+      const nav = page.locator('nav[aria-label="프로젝트 상세 탐색"]');
+      const primary = nav.locator('[data-detail-end-navigation-primary="true"]');
+      const secondary = nav.locator('[data-detail-end-navigation-secondary="true"]');
+      const footer = page.locator('[data-detail-end-navigation-footer="true"]');
+      const primaryHref = await primary.getAttribute('href');
+      const secondaryHref = await secondary.getAttribute('href');
+      const nestedInteractive = await primary.locator('a, button, [role="link"], [role="button"], input, select, textarea').count();
+      const footerInteractive = await footer.locator('a, button, [role="link"], [role="button"], input, select, textarea').count();
+      const footerDirection = await footer.evaluate((element) => getComputedStyle(element).flexDirection);
+
+      expect.soft(await page.locator('[data-detail-end-navigation]').getAttribute('data-detail-end-navigation'), `${viewport.label}: Standard state`).toBe('standard');
+      expect.soft(await nav.locator('[data-detail-end-navigation-eyebrow="true"]').textContent(), `${viewport.label}: Standard eyebrow`).toBe('NEXT PROJECT');
+      await expect.soft(nav.getByRole('heading', { level: 3, name: 'JobFlow 구직 관리 대시보드' })).toHaveCount(1);
+      expect.soft(await nav.locator('[data-detail-end-navigation-role="true"]').textContent(), `${viewport.label}: next role`).toBe('DASHBOARD UX · REACT FRONTEND');
+      expect.soft(await primary.getAttribute('aria-label'), `${viewport.label}: primary accessible name`).toBe('다음 프로젝트: JobFlow 구직 관리 대시보드');
+      expect.soft(primaryHref, `${viewport.label}: Gong primary href`).toContain('#/projects/jobflow');
+      expect.soft(await secondary.count(), `${viewport.label}: Standard secondary count`).toBe(1);
+      expect.soft(secondaryHref, `${viewport.label}: Standard secondary href`).toContain('#/projects');
+      expect.soft(nestedInteractive, `${viewport.label}: primary nested interactive`).toBe(0);
+      expect.soft(await footer.getByText('DOHAN KIM · HUMAN SIGNAL', { exact: true }).count(), `${viewport.label}: Footer left`).toBe(1);
+      expect.soft(await footer.getByText('GONGJEONGBOM · CASE STUDY', { exact: true }).count(), `${viewport.label}: Footer right`).toBe(1);
+      expect.soft(footerInteractive, `${viewport.label}: Footer interactive`).toBe(0);
+      expect.soft(footerDirection, `${viewport.label}: Footer direction`).toBe(viewport.width < 900 ? 'column' : 'row');
+      const primaryRect = await expectMinTarget(primary, `${viewport.label}: Gong primary`);
+      const secondaryRect = await expectMinTarget(secondary, `${viewport.label}: Gong secondary`);
+      record({
+        kind: 'detailClosingContract',
+        route: 'gongjeongbom', viewport: viewport.label, state: 'standard',
+        primaryHref, secondaryHref, primaryRect, secondaryRect, nestedInteractive, footerInteractive, footerDirection,
+      });
+
+      if (viewport.width === 1440) {
+        await expectFocusVisible(secondary, '1440: Standard secondary');
+        await expectFocusVisible(primary, '1440: Standard primary');
+        await Promise.all([
+          page.waitForURL(/#\/projects\/jobflow$/),
+          page.keyboard.press('Enter'),
+        ]);
+        await page.waitForTimeout(300);
+        expect.soft(await page.evaluate(() => window.scrollY), 'Standard Enter 이동 후 scroll top').toBeLessThanOrEqual(1);
+      }
     }
 
-    const backButton = page.getByRole('button', { name: '전체 프로젝트 목록으로 이동' });
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(`${base}#/projects/jobflow`, { waitUntil: 'networkidle' });
+    const jobflowPrimaryHref = await page.locator('[data-detail-end-navigation-primary="true"]').getAttribute('href');
+    expect.soft(jobflowPrimaryHref, 'JobFlow next href').toContain('#/projects/seolbiit');
+    record({ kind: 'detailClosingContract', route: 'jobflow', viewport: '1440', state: 'standard', primaryHref: jobflowPrimaryHref });
+
+    for (const viewport of viewports) {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto(`${base}#/projects/brewstep`, { waitUntil: 'networkidle' });
+      await page.evaluate(() => document.fonts.ready);
+
+      const nav = page.locator('nav[aria-label="프로젝트 상세 탐색"]');
+      const primary = nav.locator('[data-detail-end-navigation-primary="true"]');
+      const footer = page.locator('[data-detail-end-navigation-footer="true"]');
+      const links = nav.getByRole('link');
+      const primaryHref = await primary.getAttribute('href');
+      const description = normalizeText(await nav.locator('[data-detail-end-navigation-description="true"]').textContent());
+      const nestedInteractive = await primary.locator('a, button, [role="link"], [role="button"], input, select, textarea').count();
+      const footerInteractive = await footer.locator('a, button, [role="link"], [role="button"], input, select, textarea').count();
+      const footerDirection = await footer.evaluate((element) => getComputedStyle(element).flexDirection);
+
+      expect.soft(await page.locator('[data-detail-end-navigation]').getAttribute('data-detail-end-navigation'), `${viewport.label}: Last state`).toBe('last');
+      expect.soft(await links.count(), `${viewport.label}: Last link count`).toBe(1);
+      expect.soft(await primary.getAttribute('aria-label'), `${viewport.label}: Last accessible name`).toBe('전체 프로젝트 보기');
+      expect.soft(primaryHref, `${viewport.label}: Last primary href`).toContain('#/projects');
+      expect.soft(primaryHref, `${viewport.label}: Last no Gong cycle`).not.toContain('/projects/gongjeongbom');
+      expect.soft(await nav.locator('[data-detail-end-navigation-eyebrow="true"]').textContent(), `${viewport.label}: Last eyebrow`).toBe('PROJECT INDEX');
+      await expect.soft(nav.getByRole('heading', { level: 3, name: '전체 프로젝트 보기' })).toHaveCount(1);
+      expect.soft(description, `${viewport.label}: Last description`).toBe('대표 프로젝트와 추가 작업을 같은 기준으로 확인할 수 있습니다.');
+      expect.soft(await nav.getByText('NEXT PROJECT', { exact: true }).count(), `${viewport.label}: Last NEXT PROJECT count`).toBe(0);
+      expect.soft(await nav.locator('[data-detail-end-navigation-secondary="true"]').count(), `${viewport.label}: Last secondary count`).toBe(0);
+      expect.soft(nestedInteractive, `${viewport.label}: Last nested interactive`).toBe(0);
+      expect.soft(await footer.getByText('DOHAN KIM · HUMAN SIGNAL', { exact: true }).count(), `${viewport.label}: Last Footer left`).toBe(1);
+      expect.soft(await footer.getByText('BREWSTEP · CASE STUDY', { exact: true }).count(), `${viewport.label}: Last Footer right`).toBe(1);
+      expect.soft(footerInteractive, `${viewport.label}: Last Footer interactive`).toBe(0);
+      expect.soft(footerDirection, `${viewport.label}: Last Footer direction`).toBe(viewport.width < 900 ? 'column' : 'row');
+      const primaryRect = await expectMinTarget(primary, `${viewport.label}: Last primary`);
+      record({
+        kind: 'detailClosingContract',
+        route: 'brewstep', viewport: viewport.label, state: 'last',
+        primaryHref, primaryRect, description, nestedInteractive, footerInteractive, footerDirection,
+      });
+
+      if (viewport.width === 1440) {
+        await expectFocusVisible(primary, '1440: Last primary');
+        await Promise.all([
+          page.waitForURL(/#\/projects$/),
+          page.keyboard.press('Enter'),
+        ]);
+        await page.waitForTimeout(300);
+        expect.soft(await page.evaluate(() => window.scrollY), 'Last Enter 이동 후 scroll top').toBeLessThanOrEqual(1);
+      }
+    }
+
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    await page.goto(`${base}#/projects/jobflow`, { waitUntil: 'networkidle' });
+    await page.waitForTimeout(300);
+    const backButton = page.getByRole('button', { name: '이전 화면으로 돌아가기' });
     const backCount = await backButton.count();
     expect.soft(backCount, 'Detail smart back button count').toBeGreaterThan(0);
     if (backCount > 0) {
