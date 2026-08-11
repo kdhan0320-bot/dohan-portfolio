@@ -55,8 +55,17 @@ const SidebarContent = ({ onNavigate, onClose, closeButtonRef, isMobile = false 
 
       <Box sx={{ p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', fontSize: 14 }}>
-            {isGuest ? 'G' : (user?.email?.[0] ?? '?').toUpperCase()}
+          <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main', fontSize: 14, fontWeight: 600 }}>
+            <Box
+              component="span"
+              sx={{
+                display: 'block',
+                lineHeight: 1,
+                transform: 'translateY(-1px)',
+              }}
+            >
+              {isGuest ? 'G' : (user?.email?.[0] ?? '?').toUpperCase()}
+            </Box>
           </Avatar>
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="body2" fontWeight={600} noWrap>
