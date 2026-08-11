@@ -115,7 +115,7 @@ jobflow-dashboard/
 - `20260811054550_remove_global_auto_confirm_email.sql` forward migration으로 공유 `auth.users`의 `auto_confirm_email_trigger`와 `public.auto_confirm_email()`을 제거했습니다. 과거 migration은 수정하지 않았습니다.
 - 회원가입 요청은 현재 앱의 정확한 base URL을 `emailRedirectTo`로 보내고, user metadata에 `app_id: jobflow-dashboard`와 정규화한 `display_name`을 보존합니다.
 - 회원가입 시 profile row를 선행 생성하지 않습니다. 설정 화면은 `jobflow_profiles` row가 없을 때 user metadata의 `display_name`을 사용하며, 사용자가 저장하면 DB row가 기준이 됩니다.
-- UI validation·오류 문구·local Supabase config의 최소 비밀번호 길이는 8자입니다. Hosted 최소 길이는 현재 6자로 유지하며, frontend 배포 회차에서 8자로 동기화할 예정입니다.
+- UI validation·오류 문구·local Supabase config와 Hosted Auth의 최소 비밀번호 길이는 모두 8자로 동기화했습니다.
 - 이번 2026-08-11 회차에는 실제 이메일 전달, confirmation link 실행, QA 사용자 생성, A/B RLS CRUD를 수행하지 않았습니다.
 
 ## 운영 Data API·RLS 검증 기록

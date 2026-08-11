@@ -82,6 +82,7 @@
 - 운영 row는 `profiles` 4행이며 `posts`, `comments`, `post_likes`, `comment_likes`는 각 0행입니다. 따라서 공개 목록은 현재 `sample-empty` fallback을 표시합니다.
 - 2026-08-03 관리자 방식으로 준비한 비공개 QA A/B 계정에서 게시글·댓글·좋아요 본인 CRUD, 교차 수정·삭제 0행, `user_id` 위조 차단, cascade와 공개 anon 읽기 전용 경계를 운영 DB에서 검증했습니다. 당시 테스트 Auth·profile·콘텐츠는 모두 정리했습니다.
 - 운영 `Allow new users to sign up`과 email provider는 JobFlow를 위해 활성 상태이며, Feedback Hub의 공개 가입은 앱별 Auth Hook으로만 차단합니다.
+- 2026-08-11 JobFlow frontend 배포 후 공유 Hosted Auth의 최소 비밀번호 길이를 8자로 동기화했습니다.
 - `20260811054550_remove_global_auto_confirm_email.sql` forward migration으로 공유 `auth.users`의 전역 auto-confirm trigger/function을 제거했습니다. Feedback Hub 가입 차단 함수와 JobFlow·Community RLS·policy·grant는 적용 전후 fingerprint가 동일합니다.
 - 2026-08-11 trigger 제거 회차에는 QA 사용자를 만들지 않았고, 실제 email delivery·confirmation link·A/B CRUD를 다시 실행하지 않았습니다.
 - 과거 `my-community` 주소는 기존 링크가 끊기지 않도록 query/hash를 보존해 canonical `portfolio-feedback-hub`로 보내는 redirect만 유지합니다.
@@ -139,7 +140,6 @@ GitHub Actions 배포에서는 저장소 Secrets의 `SUPABASE_URL`, `SUPABASE_AN
 - 실제 파일 업로드와 Supabase Storage 연동은 미포함
 - Auth 또는 migration 변경 후 비공개 Admin QA 계정으로 confirmation·CRUD·RLS 회귀 검증
 - category / status / feedback focus의 구조화된 DB field와 제품 workflow
-- frontend 배포 시 JobFlow 안내와 Hosted 최소 비밀번호 길이를 8자로 동기화
 - 마이페이지
 - 알림 기능
 - 신고 / 관리 기능

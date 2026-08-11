@@ -1,7 +1,7 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText,
-  Typography, Divider, Avatar, Link as MuiLink, IconButton,
+  Typography, Divider, Avatar, Button, IconButton,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WorkIcon from '@mui/icons-material/Work';
@@ -11,6 +11,9 @@ import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CloseIcon from '@mui/icons-material/Close';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 import { useAuth } from '../../context/AuthContext';
 import { isNavItemActive, NAV_ITEMS } from '../../constants';
 
@@ -31,7 +34,7 @@ const SidebarContent = ({ onNavigate, onClose, closeButtonRef, isMobile = false 
   const { user, isGuest } = useAuth();
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', overflowY: 'auto', overflowX: 'hidden' }}>
       <Box sx={{ p: 2.5, pb: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
         <Box sx={{ minWidth: 0 }}>
           <Typography component="div" variant="h6" color="primary" fontWeight={700} letterSpacing={-0.5}>
@@ -110,27 +113,72 @@ const SidebarContent = ({ onNavigate, onClose, closeButtonRef, isMobile = false 
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.5, mb: 1 }}>
           지원 현황, 준비할 일, 면접 메모를 한 흐름으로 정리하고 다음 행동을 확인하세요.
         </Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-          <MuiLink
+        <Box component="nav" aria-label="프로젝트 관련 링크" sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Button
+            component="a"
+            href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
+            variant="outlined"
+            fullWidth
+            disableRipple
+            startIcon={<ArrowBackRoundedIcon aria-hidden="true" />}
+            sx={{
+              minHeight: 44,
+              justifyContent: 'flex-start',
+              px: 1.25,
+              color: 'primary.dark',
+              borderColor: 'primary.main',
+              bgcolor: 'background.paper',
+              fontSize: '0.875rem',
+              lineHeight: 1.25,
+              whiteSpace: 'nowrap',
+              scrollMarginBlock: 6,
+              '&:hover': { borderColor: 'primary.dark', bgcolor: 'rgba(37, 99, 235, 0.06)' },
+              '&:focus-visible': {
+                bgcolor: 'rgba(37, 99, 235, 0.06)',
+                outline: (theme) => `2px solid ${theme.palette.primary.dark} !important`,
+                outlineOffset: '2px !important',
+              },
+              '&:active': { bgcolor: 'rgba(37, 99, 235, 0.10)' },
+            }}
+          >
+            포트폴리오로 돌아가기
+          </Button>
+          <Button
+            component="a"
             href="https://github.com/kdhan0320-bot/dohan-portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            variant="caption"
-            underline="hover"
-            sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+            aria-label="GitHub 저장소 새 탭에서 열기"
+            variant="outlined"
+            fullWidth
+            disableRipple
+            startIcon={<GitHubIcon aria-hidden="true" />}
+            endIcon={<OpenInNewRoundedIcon aria-hidden="true" />}
+            sx={{
+              minHeight: 44,
+              justifyContent: 'flex-start',
+              px: 1.25,
+              color: 'text.primary',
+              borderColor: 'secondary.main',
+              bgcolor: 'background.paper',
+              fontSize: '0.875rem',
+              lineHeight: 1.25,
+              whiteSpace: 'nowrap',
+              scrollMarginBlock: 6,
+              '& .MuiButton-endIcon': { ml: 'auto' },
+              '&:hover': { color: 'primary.dark', borderColor: 'primary.main', bgcolor: 'rgba(37, 99, 235, 0.04)' },
+              '&:focus-visible': {
+                color: 'primary.dark',
+                borderColor: 'primary.main',
+                bgcolor: 'rgba(37, 99, 235, 0.04)',
+                outline: (theme) => `2px solid ${theme.palette.primary.dark} !important`,
+                outlineOffset: '2px !important',
+              },
+              '&:active': { bgcolor: 'rgba(37, 99, 235, 0.10)' },
+            }}
           >
-            GitHub
-          </MuiLink>
-          <MuiLink
-            href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="caption"
-            underline="hover"
-            sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
-          >
-            포트폴리오로 돌아가기
-          </MuiLink>
+            GitHub 저장소
+          </Button>
         </Box>
       </Box>
     </Box>
