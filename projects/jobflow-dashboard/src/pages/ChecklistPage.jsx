@@ -12,6 +12,7 @@ import { CHECKLIST_CATEGORIES } from '../constants';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import EmptyState from '../components/ui/EmptyState';
 import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
+import { calcProgress } from '../utils/statusHelpers';
 
 const ChecklistPage = () => {
   const { items, loading, error, refresh, toggle, add, remove } = useChecklist();
@@ -40,10 +41,10 @@ const ChecklistPage = () => {
     });
   };
 
-  const progress = useMemo(() => {
-    if (items.length === 0) return 0;
-    return Math.round((items.filter((i) => i.is_done).length / items.length) * 100);
-  }, [items]);
+  const { rate: progress, done: completedCount, total: itemCount } = useMemo(
+    () => calcProgress(items),
+    [items],
+  );
 
   const grouped = useMemo(() => {
     const map = {};
@@ -107,7 +108,7 @@ const ChecklistPage = () => {
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 1 }}>취업 준비 체크리스트</Typography>
+      <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 1 }}>취업 준비 체크리스트</Typography>
       {isGuest && (
         <GuestReadOnlyNotice description="샘플 체크리스트는 조회만 할 수 있습니다. 로그인하면 항목을 추가하고 완료 상태를 저장할 수 있습니다." />
       )}
@@ -125,17 +126,19 @@ const ChecklistPage = () => {
         <Card sx={{ mb: 3 }}>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-              <Typography variant="body1" fontWeight={600}>전체 진행률</Typography>
-              <Typography variant="h6" fontWeight={700} color="success.main">{progress}%</Typography>
+              <Typography component="h2" variant="h6" fontWeight={600}>전체 진행률</Typography>
+              <Typography component="p" variant="h6" fontWeight={700} color="success.main">{progress}%</Typography>
             </Box>
             <LinearProgress
               variant="determinate"
               value={progress}
               color="success"
+              aria-label="체크리스트 진행률"
+              aria-valuetext={`${completedCount}/${itemCount} 항목 완료, ${progress}%`}
               sx={{ height: 12, borderRadius: 6 }}
             />
             <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-              {items.filter((i) => i.is_done).length}/{items.length} 항목 완료
+              {completedCount}/{itemCount} 항목 완료
             </Typography>
           </CardContent>
         </Card>
@@ -144,7 +147,7 @@ const ChecklistPage = () => {
       {!isGuest && (
         <Card sx={{ mb: 3 }}>
           <CardContent>
-            <Typography variant="body2" fontWeight={600} sx={{ mb: 1.5 }}>항목 추가</Typography>
+            <Typography component="h2" variant="h6" fontWeight={600} sx={{ mb: 1.5 }}>항목 추가</Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
               <TextField
                 placeholder="체크리스트 항목 입력"
@@ -202,7 +205,7 @@ const ChecklistPage = () => {
           <Card key={category} sx={{ mb: 2 }}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5 }}>
-                <Typography variant="body2" fontWeight={700}>{category}</Typography>
+                <Typography component="h2" variant="h6" fontWeight={700}>{category}</Typography>
                 <Chip
                   label={`${categoryItems.filter((i) => i.is_done).length}/${categoryItems.length}`}
                   size="small"

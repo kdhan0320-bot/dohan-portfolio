@@ -27,7 +27,7 @@ const StatCard = ({ icon, title, value, subtitle, color = 'primary.main' }) => (
           <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
             {title}
           </Typography>
-          <Typography variant="h4" fontWeight={700} color={color} sx={{ mt: 0.5 }}>
+          <Typography component="p" variant="h4" fontWeight={700} color={color} sx={{ mt: 0.5 }}>
             {value}
           </Typography>
           {subtitle && (
@@ -36,7 +36,7 @@ const StatCard = ({ icon, title, value, subtitle, color = 'primary.main' }) => (
             </Typography>
           )}
         </Box>
-        <Box sx={{ p: 1, bgcolor: `${color}20`, borderRadius: 2 }}>
+        <Box sx={{ p: 1, bgcolor: 'action.hover', borderRadius: 2 }}>
           {icon}
         </Box>
       </Box>
@@ -55,6 +55,7 @@ const DashboardPage = () => {
   } = useApplications();
   const {
     items: checklistItems,
+    loading: checklistLoading,
     error: checklistError,
     refresh: refreshChecklist,
   } = useChecklist();
@@ -79,7 +80,9 @@ const DashboardPage = () => {
     applications.forEach((a) => {
       map[a.status] = (map[a.status] || 0) + 1;
     });
-    return Object.entries(map).map(([status, count]) => ({ status, count }));
+    return APPLICATION_STATUSES
+      .filter(({ value }) => map[value] > 0)
+      .map(({ value }) => ({ status: value, count: map[value] }));
   }, [applications]);
 
   return (
@@ -108,11 +111,11 @@ const DashboardPage = () => {
 
       {/* 페이지 소개 */}
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" fontWeight={700} color="text.primary">
-          지원 현황과 할 일을 한눈에 관리하세요
+        <Typography component="h1" variant="h5" fontWeight={700} color="text.primary">
+          지원 현황과 다음 행동을 확인하세요
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          지원 회사, 진행 상태, 면접 일정, 체크리스트를 정리해 다음 행동을 빠르게 확인하세요.
+          지원 회사·전형 상태·체크리스트·면접 메모를 함께 정리합니다.
         </Typography>
       </Box>
 
@@ -129,28 +132,28 @@ const DashboardPage = () => {
           </Grid>
           <Grid size={{ xs: 6, md: 3 }}>
             <StatCard
-              icon={<TrendingUpIcon sx={{ color: '#3B82F6' }} />}
-              title="진행 중"
+              icon={<TrendingUpIcon sx={{ color: 'primary.main' }} />}
+              title="준비·진행"
               value={loading ? '-' : stats.active}
-              color="#3B82F6"
-              subtitle="전형 진행"
+              color="primary.main"
+              subtitle="지원 예정·전형 진행"
             />
           </Grid>
           <Grid size={{ xs: 6, md: 3 }}>
             <StatCard
-              icon={<EventIcon sx={{ color: '#8B5CF6' }} />}
+              icon={<EventIcon sx={{ color: 'warning.main' }} />}
               title="면접 예정"
               value={loading ? '-' : stats.interview}
-              color="#8B5CF6"
+              color="warning.main"
               subtitle="건"
             />
           </Grid>
           <Grid size={{ xs: 6, md: 3 }}>
             <StatCard
-              icon={<DoneAllIcon sx={{ color: '#64748B' }} />}
-              title="완료 / 보류"
+              icon={<DoneAllIcon sx={{ color: 'secondary.main' }} />}
+              title="종료·보류"
               value={loading ? '-' : stats.closed}
-              color="#64748B"
+              color="secondary.main"
               subtitle="합격·불합격·보류"
             />
           </Grid>
@@ -164,7 +167,7 @@ const DashboardPage = () => {
             <Card sx={{ mb: 2 }}>
               <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h6" fontWeight={700}>최근 지원 현황</Typography>
+                <Typography component="h2" variant="h6" fontWeight={700}>최근 지원 현황</Typography>
                 <Button size="small" onClick={() => navigate('/applications')}>전체 보기</Button>
               </Box>
               {loading ? (
@@ -229,7 +232,7 @@ const DashboardPage = () => {
             {!applicationsError && (
               <Card sx={{ mb: 2 }}>
                 <CardContent>
-              <Typography variant="h6" fontWeight={700} sx={{ mb: 2 }}>상태별 현황</Typography>
+              <Typography component="h2" variant="h6" fontWeight={700} sx={{ mb: 2 }}>상태별 현황</Typography>
               {statusSummary.length === 0 ? (
                 <Typography variant="body2" color="text.secondary">데이터 없음</Typography>
               ) : (
@@ -245,6 +248,8 @@ const DashboardPage = () => {
                       <LinearProgress
                         variant="determinate"
                         value={pct}
+                        aria-label={`${status} 비율`}
+                        aria-valuetext={`${count}건, ${pct}%`}
                         sx={{
                           height: 6, borderRadius: 1,
                           bgcolor: `${found?.color ?? '#ccc'}20`,
@@ -263,38 +268,51 @@ const DashboardPage = () => {
               <Card>
                 <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-                <Typography variant="h6" fontWeight={700}>이번 주 할 일</Typography>
+                <Typography component="h2" variant="h6" fontWeight={700}>준비할 일</Typography>
                 <Button size="small" onClick={() => navigate('/checklist')}>전체 보기</Button>
               </Box>
-              <LinearProgress
-                variant="determinate"
-                value={stats.checklistRate}
-                sx={{ height: 6, borderRadius: 2, mb: 1.5, bgcolor: '#E2E8F0', '& .MuiLinearProgress-bar': { bgcolor: '#2563EB' } }}
-              />
-              <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
-                {stats.done}/{stats.checklistTotal} 항목 완료 ({stats.checklistRate}%)
-              </Typography>
-              <Stack spacing={0.5}>
-                {checklistItems.slice(0, 5).map((item) => (
-                  <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {item.is_done ? (
-                      <CheckBoxIcon titleAccess="완료" sx={{ fontSize: 18, color: '#1D4ED8' }} />
-                    ) : (
-                      <CheckBoxOutlineBlankIcon titleAccess="미완료" sx={{ fontSize: 18, color: '#64748B' }} />
-                    )}
-                    <Typography
-                      variant="caption"
-                      sx={{
-                        textDecoration: item.is_done ? 'line-through' : 'none',
-                        color: item.is_done ? 'text.secondary' : 'text.primary',
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                  </Box>
-                ))}
-              </Stack>
+              {checklistLoading ? (
+                <Stack spacing={1} aria-label="체크리스트 불러오는 중">
+                  <Skeleton variant="rounded" height={8} />
+                  <Skeleton width="45%" />
+                  <Skeleton width="80%" />
+                  <Skeleton width="70%" />
+                </Stack>
+              ) : (
+                <>
+                  <LinearProgress
+                    variant="determinate"
+                    value={stats.checklistRate}
+                    aria-label="체크리스트 진행률"
+                    aria-valuetext={`${stats.done}/${stats.checklistTotal} 항목 완료, ${stats.checklistRate}%`}
+                    sx={{ height: 6, borderRadius: 2, mb: 1.5, bgcolor: '#E2E8F0', '& .MuiLinearProgress-bar': { bgcolor: '#2563EB' } }}
+                  />
+                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
+                    {stats.done}/{stats.checklistTotal} 항목 완료 ({stats.checklistRate}%)
+                  </Typography>
+                  <Stack spacing={0.5}>
+                    {checklistItems.slice(0, 5).map((item) => (
+                      <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        {item.is_done ? (
+                          <CheckBoxIcon titleAccess="완료" sx={{ fontSize: 18, color: '#1D4ED8' }} />
+                        ) : (
+                          <CheckBoxOutlineBlankIcon titleAccess="미완료" sx={{ fontSize: 18, color: '#64748B' }} />
+                        )}
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            textDecoration: item.is_done ? 'line-through' : 'none',
+                            color: item.is_done ? 'text.secondary' : 'text.primary',
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {item.title}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Stack>
+                </>
+              )}
                 </CardContent>
               </Card>
             )}

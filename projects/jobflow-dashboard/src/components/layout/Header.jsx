@@ -63,7 +63,7 @@ const Header = ({ onMenuClick, menuButtonRef }) => {
           <MenuIcon />
         </IconButton>
 
-        <Typography variant="h6" component="h1" sx={{ flex: 1, fontWeight: 600 }}>
+        <Typography variant="h6" component="div" sx={{ flex: 1, fontWeight: 600 }}>
           {title}
         </Typography>
 

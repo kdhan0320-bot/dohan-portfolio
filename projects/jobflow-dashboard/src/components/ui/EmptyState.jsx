@@ -10,7 +10,7 @@ const EmptyState = ({ title = '데이터가 없습니다', description = '', act
     }}
   >
     <InboxIcon sx={{ fontSize: 48, mb: 2, opacity: 0.4 }} />
-    <Typography variant="h6" gutterBottom color="text.primary">
+    <Typography component="h2" variant="h6" gutterBottom color="text.primary">
       {title}
     </Typography>
     {description && (

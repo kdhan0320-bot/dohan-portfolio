@@ -1,7 +1,7 @@
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   Box, Drawer, List, ListItemButton, ListItemIcon, ListItemText,
-  Typography, Divider, Avatar, Link as MuiLink,
+  Typography, Divider, Avatar, Link as MuiLink, IconButton,
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WorkIcon from '@mui/icons-material/Work';
@@ -10,16 +10,11 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CloseIcon from '@mui/icons-material/Close';
 import { useAuth } from '../../context/AuthContext';
 import { isNavItemActive, NAV_ITEMS } from '../../constants';
 
 const DRAWER_WIDTH = 240;
-
-const restoreMobileMenuFocus = () => {
-  window.setTimeout(() => {
-    document.getElementById('mobile-menu-button')?.focus({ preventScroll: true });
-  }, 800);
-};
 
 const NAV_ICONS = {
   dashboard: <DashboardIcon />,
@@ -31,19 +26,26 @@ const NAV_ICONS = {
   settings: <SettingsIcon />,
 };
 
-const SidebarContent = ({ onNavigate, isMobile = false }) => {
+const SidebarContent = ({ onNavigate, onClose, closeButtonRef, isMobile = false }) => {
   const location = useLocation();
   const { user, isGuest } = useAuth();
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ p: 2.5, pb: 2 }}>
-        <Typography variant="h6" color="primary" fontWeight={700} letterSpacing={-0.5}>
-          JobFlow
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          취업 준비 관리 대시보드
-        </Typography>
+      <Box sx={{ p: 2.5, pb: 2, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography component="div" variant="h6" color="primary" fontWeight={700} letterSpacing={-0.5}>
+            JobFlow
+          </Typography>
+          <Typography component="div" variant="caption" color="text.secondary">
+            개인 구직 관리 대시보드
+          </Typography>
+        </Box>
+        {isMobile && (
+          <IconButton ref={closeButtonRef} onClick={onClose} aria-label="메뉴 닫기" edge="end" sx={{ mt: -1, mr: -1 }}>
+            <CloseIcon />
+          </IconButton>
+        )}
       </Box>
 
       <Divider />
@@ -74,7 +76,7 @@ const SidebarContent = ({ onNavigate, isMobile = false }) => {
               key={item.path}
               component={RouterLink}
               to={item.path}
-              onClick={() => onNavigate?.(item.path, isMobile)}
+              onClick={() => onNavigate?.(isMobile)}
               selected={active}
               aria-current={active ? 'page' : undefined}
               sx={{
@@ -135,21 +137,23 @@ const SidebarContent = ({ onNavigate, isMobile = false }) => {
   );
 };
 
-const Sidebar = ({ mobileOpen, onMobileClose, onRouteSelect }) => (
+const Sidebar = ({ mobileOpen, onMobileClose, onMobileEntered, onMobileExited, onRouteSelect, mobileCloseButtonRef }) => (
   <>
     <Drawer
       variant="temporary"
       open={mobileOpen}
       onClose={onMobileClose}
-      ModalProps={{ keepMounted: true, disableEscapeKeyDown: false }}
-      PaperProps={{ tabIndex: -1, 'aria-label': '주 메뉴' }}
-      slotProps={{ backdrop: { onClick: restoreMobileMenuFocus } }}
+      ModalProps={{ keepMounted: true, disableEscapeKeyDown: false, disableRestoreFocus: true }}
+      slotProps={{
+        paper: { tabIndex: -1, 'aria-label': '주 메뉴' },
+        transition: { onEntered: onMobileEntered, onExited: onMobileExited },
+      }}
       sx={{
         display: { xs: 'block', md: 'none' },
         '& .MuiDrawer-paper': { width: DRAWER_WIDTH, boxSizing: 'border-box' },
       }}
     >
-      <SidebarContent onNavigate={onRouteSelect} isMobile />
+      <SidebarContent onNavigate={onRouteSelect} onClose={onMobileClose} closeButtonRef={mobileCloseButtonRef} isMobile />
     </Drawer>
     <Drawer
       variant="permanent"

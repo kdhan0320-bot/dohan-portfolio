@@ -13,7 +13,7 @@ const AUTH_ERROR_RULES = [
   },
   {
     match: ['password should be at least', 'password is too short', 'weak password'],
-    message: '비밀번호는 6자 이상 입력해주세요.',
+    message: '비밀번호는 8자 이상 입력해주세요.',
   },
   {
     match: ['rate limit', 'too many requests', 'over_email_send_rate_limit'],

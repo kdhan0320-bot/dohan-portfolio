@@ -73,15 +73,17 @@
 - `profiles`의 공개 조회 column은 `id`, `username`뿐입니다. `phone`, `created_at`, `expires_at`은 anon·authenticated에 공개하지 않습니다.
 - anon은 `posts`, `comments`, `post_likes`, `comment_likes`를 SELECT만 할 수 있고 mutation table privilege가 없습니다.
 - authenticated는 게시글·댓글을 소유권 조건으로 CRUD하고 좋아요를 SELECT·INSERT·DELETE할 수 있습니다. 5개 community table 모두 RLS가 활성화되어 있습니다.
-- 전역 email signup은 JobFlow를 위해 유지하고 anonymous signup은 비활성화합니다. `app_id: portfolio-feedback-hub`를 보낸 self-signup은 Before User Created Auth Hook에서 사용자 생성 전에 403으로 차단합니다.
+- 전역 email signup은 JobFlow를 위해 유지하고 Confirm Email을 사용하며, anonymous signup은 비활성화합니다. `app_id: portfolio-feedback-hub`를 보낸 self-signup은 Before User Created Auth Hook에서 사용자 생성 전에 403으로 차단합니다.
 - Feedback Hub 참여용 Auth 사용자와 `profiles` 행은 관리자가 함께 준비합니다. 공개 사용자는 `profiles`를 직접 INSERT할 수 없고 공개 화면은 목록·상세만 읽기 전용입니다.
 - 적용된 migration은 수정·재실행하지 않으며 변경이 필요하면 별도 forward-fix migration으로 관리합니다.
 
 ### 현재 검증 및 운영 상태
 
 - 운영 row는 `profiles` 4행이며 `posts`, `comments`, `post_likes`, `comment_likes`는 각 0행입니다. 따라서 공개 목록은 현재 `sample-empty` fallback을 표시합니다.
-- 관리자 방식으로 준비한 비공개 QA A/B 계정에서 게시글·댓글·좋아요 본인 CRUD, 교차 수정·삭제 0행, `user_id` 위조 차단, cascade와 공개 anon 읽기 전용 경계를 운영 DB에서 재검증했습니다. 테스트 Auth·profile·콘텐츠는 모두 정리했습니다.
+- 2026-08-03 관리자 방식으로 준비한 비공개 QA A/B 계정에서 게시글·댓글·좋아요 본인 CRUD, 교차 수정·삭제 0행, `user_id` 위조 차단, cascade와 공개 anon 읽기 전용 경계를 운영 DB에서 검증했습니다. 당시 테스트 Auth·profile·콘텐츠는 모두 정리했습니다.
 - 운영 `Allow new users to sign up`과 email provider는 JobFlow를 위해 활성 상태이며, Feedback Hub의 공개 가입은 앱별 Auth Hook으로만 차단합니다.
+- `20260811054550_remove_global_auto_confirm_email.sql` forward migration으로 공유 `auth.users`의 전역 auto-confirm trigger/function을 제거했습니다. Feedback Hub 가입 차단 함수와 JobFlow·Community RLS·policy·grant는 적용 전후 fingerprint가 동일합니다.
+- 2026-08-11 trigger 제거 회차에는 QA 사용자를 만들지 않았고, 실제 email delivery·confirmation link·A/B CRUD를 다시 실행하지 않았습니다.
 - 과거 `my-community` 주소는 기존 링크가 끊기지 않도록 query/hash를 보존해 canonical `portfolio-feedback-hub`로 보내는 redirect만 유지합니다.
 
 ---
@@ -135,9 +137,9 @@ GitHub Actions 배포에서는 저장소 Secrets의 `SUPABASE_URL`, `SUPABASE_AN
 
 - 현재는 사용 권한이 있는 선택적 HTTPS 이미지 URL만 지원하며, Picsum과 허용되지 않은 URL은 차단
 - 실제 파일 업로드와 Supabase Storage 연동은 미포함
-- 공유 `auth.users` 전체에 적용되는 기존 `auto_confirm_email_trigger`의 앱별 분리 또는 제거 검토
+- Auth 또는 migration 변경 후 비공개 Admin QA 계정으로 confirmation·CRUD·RLS 회귀 검증
 - category / status / feedback focus의 구조화된 DB field와 제품 workflow
-- Auth 설정 변경 또는 migration 추가 시 비공개 QA 계정의 CRUD·RLS 회귀 검증
+- frontend 배포 시 JobFlow 안내와 Hosted 최소 비밀번호 길이를 8자로 동기화
 - 마이페이지
 - 알림 기능
 - 신고 / 관리 기능

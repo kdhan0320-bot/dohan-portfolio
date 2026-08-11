@@ -10,7 +10,7 @@ import ApplicationFormPage from './pages/ApplicationFormPage';
 import KanbanPage from './pages/KanbanPage';
 import ChecklistPage from './pages/ChecklistPage';
 import InterviewPage from './pages/InterviewPage';
-import AIPromptPage from './pages/AIPromptPage';
+import DocumentHelperPage from './pages/DocumentHelperPage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import { CircularProgress, Box } from '@mui/material';
@@ -20,7 +20,8 @@ const RouteTitleManager = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    document.title = `${getRouteTitle(pathname)} | JobFlow`;
+    const titlePathname = pathname === '/ai-prompt' ? '/document-helper' : pathname;
+    document.title = `${getRouteTitle(titlePathname)} | JobFlow`;
   }, [pathname]);
 
   return null;
@@ -47,7 +48,8 @@ const AppRoutes = () => {
         <Route path="kanban" element={<KanbanPage />} />
         <Route path="checklist" element={<ChecklistPage />} />
         <Route path="interview" element={<InterviewPage />} />
-        <Route path="ai-prompt" element={<AIPromptPage />} />
+        <Route path="document-helper" element={<DocumentHelperPage />} />
+        <Route path="ai-prompt" element={<Navigate to="/document-helper" replace />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

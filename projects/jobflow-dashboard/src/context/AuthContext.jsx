@@ -79,25 +79,24 @@ export const AuthProvider = ({ children }) => {
 
   const signUp = async (email, password, displayName) => {
     setAuthError('');
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const normalizedEmail = email.trim();
+    const normalizedDisplayName = displayName?.trim() || normalizedEmail.split('@')[0];
+    const { data, error } = await supabase.auth.signUp({
+      email: normalizedEmail,
+      password,
+      options: {
+        emailRedirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).toString(),
+        data: {
+          app_id: 'jobflow-dashboard',
+          display_name: normalizedDisplayName,
+        },
+      },
+    });
     if (error) throw createAuthError(error);
     persistGuestMode(false);
     setIsGuest(false);
 
-    let profileError = null;
-
-    if (data.session?.user) {
-      const result = await supabase
-        .from('jobflow_profiles')
-        .upsert({
-          id: data.session.user.id,
-          email,
-          display_name: displayName || email.split('@')[0],
-        });
-      profileError = result.error;
-    }
-
-    return { data, profileError, requiresEmailConfirmation: Boolean(data.user && !data.session) };
+    return { data, requiresEmailConfirmation: Boolean(data.user && !data.session) };
   };
 
   const signIn = async (email, password) => {

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const GuestReadOnlyNotice = ({
   title = '게스트 읽기 전용',
-  description = '샘플 데이터는 조회만 할 수 있습니다. 로그인하면 내 데이터를 추가하고 관리할 수 있습니다.',
+  description = '샘플 데이터는 읽기 전용으로 확인할 수 있습니다. 저장·수정·삭제는 로그인 후 사용할 수 있습니다.',
 }) => {
   const navigate = useNavigate();
 
@@ -32,7 +32,7 @@ const GuestReadOnlyNotice = ({
             {description}
           </Box>
           <Box sx={{ mt: 0.5, fontSize: '0.8125rem', wordBreak: 'keep-all', overflowWrap: 'break-word' }}>
-            현재 탭에서 새로고침해도 체험 상태가 유지됩니다.
+            게스트 체험 상태만 현재 탭에 유지되며, 샘플 데이터 자체는 브라우저에 저장되지 않습니다.
           </Box>
         </Box>
         <Button

@@ -166,7 +166,7 @@ const InterviewPage = () => {
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
         <Box>
-          <Typography variant="h5" fontWeight={700}>면접 메모</Typography>
+          <Typography component="h1" variant="h5" fontWeight={700}>면접 메모</Typography>
           {!error && (
             <Typography variant="caption" color="text.secondary">
               {notes.length}개 질문 • {reviewed.length}개 복습 완료
@@ -208,7 +208,7 @@ const InterviewPage = () => {
           <>
           {unreviewed.length > 0 && (
             <>
-              <Typography variant="body2" fontWeight={600} color="text.secondary" sx={{ mb: 1.5 }}>
+              <Typography component="h2" variant="h6" fontWeight={600} color="text.secondary" sx={{ mb: 1.5 }}>
                 미복습 ({unreviewed.length})
               </Typography>
               <Stack spacing={1.5} sx={{ mb: 3 }}>
@@ -229,7 +229,7 @@ const InterviewPage = () => {
           {reviewed.length > 0 && (
             <>
               <Divider sx={{ my: 2 }} />
-              <Typography variant="body2" fontWeight={600} color="text.secondary" sx={{ mb: 1.5 }}>
+              <Typography component="h2" variant="h6" fontWeight={600} color="text.secondary" sx={{ mb: 1.5 }}>
                 복습 완료 ({reviewed.length})
               </Typography>
               <Stack spacing={1.5}>

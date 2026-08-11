@@ -7,10 +7,10 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
 import { PROMPT_TYPES } from '../constants';
-import { generatePrompt } from '../utils/promptHelpers';
+import { generatePrompt } from '../utils/documentTemplateHelpers';
 import ActionFeedback from '../components/ui/ActionFeedback';
 
-const AIPromptPage = () => {
+const DocumentHelperPage = () => {
   const [role, setRole] = useState('UX/UI 디자이너');
   const [company, setCompany] = useState('');
   const [project, setProject] = useState('');
@@ -70,7 +70,7 @@ const AIPromptPage = () => {
     <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
         <AutoAwesomeIcon color="primary" />
-        <Typography variant="h5" fontWeight={700}>문서 작성 도우미</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700}>문서 작성 도우미</Typography>
       </Box>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
         입력 내용을 정리해 외부 생성형 AI에 붙여넣을 수 있는 문서 작성용 프롬프트를 만듭니다.
@@ -82,7 +82,7 @@ const AIPromptPage = () => {
 
       <Card sx={{ mb: 3 }}>
         <CardContent>
-          <Typography variant="body1" fontWeight={600} sx={{ mb: 2 }}>입력 정보</Typography>
+          <Typography component="h2" variant="h6" fontWeight={600} sx={{ mb: 2 }}>입력 정보</Typography>
           <Stack spacing={2}>
             <FormControl fullWidth>
               <InputLabel id="prompt-type-label">프롬프트 유형</InputLabel>
@@ -138,7 +138,7 @@ const AIPromptPage = () => {
         <Card>
           <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-              <Typography variant="body1" fontWeight={600}>생성된 프롬프트</Typography>
+              <Typography component="h2" variant="h6" fontWeight={600}>생성된 프롬프트</Typography>
               <Button
                 variant="outlined"
                 size="small"
@@ -164,7 +164,8 @@ const AIPromptPage = () => {
                 lineHeight: 1.8,
                 color: 'text.primary',
                 m: 0,
-                wordBreak: 'break-word',
+                wordBreak: 'keep-all',
+                overflowWrap: 'anywhere',
               }}
             >
               {generated}
@@ -180,4 +181,4 @@ const AIPromptPage = () => {
   );
 };
 
-export default AIPromptPage;
+export default DocumentHelperPage;

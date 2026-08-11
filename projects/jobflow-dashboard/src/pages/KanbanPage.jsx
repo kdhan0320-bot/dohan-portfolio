@@ -138,7 +138,7 @@ const KanbanPage = () => {
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>전형 보드</Typography>
+      <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>전형 보드</Typography>
       {isGuest && (
         <GuestReadOnlyNotice description="샘플 전형 보드는 조회만 할 수 있습니다. 로그인하면 각 카드의 상태를 변경하고 저장할 수 있습니다." />
       )}
@@ -193,7 +193,8 @@ const KanbanPage = () => {
               {/* 컬럼 헤더 */}
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
                 <Typography
-                  variant="caption"
+                  component="h2"
+                  variant="h6"
                   fontWeight={700}
                   sx={{ color: found?.color ?? 'text.secondary', letterSpacing: 0.3 }}
                 >

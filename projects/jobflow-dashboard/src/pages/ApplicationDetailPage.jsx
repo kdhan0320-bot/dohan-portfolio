@@ -20,7 +20,7 @@ const Field = ({ label, value, fullWidth }) => (
     <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
       {label}
     </Typography>
-    <Typography variant="body2" sx={{ mt: 0.5, wordBreak: 'break-word' }}>
+    <Typography variant="body2" sx={{ mt: 0.5, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
       {value || '—'}
     </Typography>
   </Grid>
@@ -36,23 +36,32 @@ const ApplicationDetailPage = () => {
   const app = applications.find((a) => a.id === id);
 
   if (loading) {
-    return <Skeleton variant="rounded" height={320} />;
+    return (
+      <Box>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 상세</Typography>
+        <Skeleton variant="rounded" height={320} />
+      </Box>
+    );
   }
 
   if (error) {
     return (
-      <Alert
-        severity="error"
-        action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
-      >
-        지원 정보를 불러오지 못했습니다. {error}
-      </Alert>
+      <Box>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 상세</Typography>
+        <Alert
+          severity="error"
+          action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
+        >
+          지원 정보를 불러오지 못했습니다. {error}
+        </Alert>
+      </Box>
     );
   }
 
   if (!app) {
     return (
       <Box>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 상세</Typography>
         <Alert severity="warning">해당 지원 정보를 찾을 수 없습니다.</Alert>
         <Button startIcon={<ArrowBackIcon />} sx={{ mt: 2 }} onClick={() => navigate('/applications')}>
           목록으로
@@ -109,7 +118,7 @@ const ApplicationDetailPage = () => {
         <CardContent>
           <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 3 }}>
             <Box>
-              <Typography variant="h5" fontWeight={700}>{app.company_name}</Typography>
+              <Typography component="h1" variant="h5" fontWeight={700}>{app.company_name}</Typography>
               {app.position && <Typography variant="body1" color="text.secondary">{app.position}</Typography>}
             </Box>
             <StatusChip status={app.status} size="medium" />

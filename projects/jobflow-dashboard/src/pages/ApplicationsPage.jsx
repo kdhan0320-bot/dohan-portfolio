@@ -76,7 +76,7 @@ const ApplicationsPage = () => {
         </Alert>
       )}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>지원 회사 목록</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700}>지원 회사 목록</Typography>
         {!isGuest && (
           <Button
             variant="contained"
@@ -100,7 +100,7 @@ const ApplicationsPage = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               size="small"
-              sx={{ flex: 1 }}
+              sx={{ flex: 1, '& .MuiInputBase-root': { minHeight: 44 } }}
               slotProps={{
                 htmlInput: { 'aria-label': '회사명 또는 직무 검색' },
                 input: {
@@ -108,25 +108,25 @@ const ApplicationsPage = () => {
                 },
               }}
             />
-            <FormControl size="small" sx={{ minWidth: 140 }}>
+            <FormControl size="small" sx={{ minWidth: 140, '& .MuiInputBase-root': { minHeight: 44 } }}>
               <InputLabel id="application-status-filter-label">상태 필터</InputLabel>
               <Select
-                labelId="application-status-filter-label"
                 value={statusFilter}
                 label="상태 필터"
                 onChange={(e) => setStatusFilter(e.target.value)}
+                inputProps={{ 'aria-label': '지원 상태 필터' }}
               >
                 <MenuItem value="">전체</MenuItem>
                 {APPLICATION_STATUSES.map((s) => <MenuItem key={s.value} value={s.value}>{s.label}</MenuItem>)}
               </Select>
             </FormControl>
-            <FormControl size="small" sx={{ minWidth: 120 }}>
+            <FormControl size="small" sx={{ minWidth: 120, '& .MuiInputBase-root': { minHeight: 44 } }}>
               <InputLabel id="application-sort-label">정렬</InputLabel>
               <Select
-                labelId="application-sort-label"
                 value={sortBy}
                 label="정렬"
                 onChange={(e) => setSortBy(e.target.value)}
+                inputProps={{ 'aria-label': '지원 목록 정렬' }}
               >
                 <MenuItem value="newest">최신순</MenuItem>
                 <MenuItem value="oldest">오래된순</MenuItem>

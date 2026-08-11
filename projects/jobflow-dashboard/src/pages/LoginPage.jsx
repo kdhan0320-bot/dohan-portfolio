@@ -32,7 +32,7 @@ const LoginPage = () => {
     else if (!EMAIL_PATTERN.test(normalizedEmail)) nextErrors.email = '올바른 이메일 형식으로 입력해주세요.';
 
     if (!password) nextErrors.password = '비밀번호를 입력해주세요.';
-    else if (password.length < 6) nextErrors.password = '비밀번호는 6자 이상 입력해주세요.';
+    else if (password.length < 8) nextErrors.password = '비밀번호는 8자 이상 입력해주세요.';
 
     setFieldErrors(nextErrors);
 
@@ -58,15 +58,6 @@ const LoginPage = () => {
           setTab(0);
           setPassword('');
           setSuccess('회원가입이 완료되었습니다. 이메일 인증 후 로그인해주세요.');
-          return;
-        }
-        if (result.profileError) {
-          navigate('/settings', {
-            state: {
-              profileWarning:
-                '회원가입은 완료되었지만 기본 프로필 저장에 실패했습니다. 이름과 목표 직무를 확인한 뒤 저장해주세요.',
-            },
-          });
           return;
         }
         navigate('/');
@@ -95,6 +86,7 @@ const LoginPage = () => {
 
   return (
     <Box
+      component="main"
       sx={{
         minHeight: '100vh',
         bgcolor: 'background.default',
@@ -116,10 +108,13 @@ const LoginPage = () => {
             <WorkIcon sx={{ color: 'white', fontSize: 28 }} />
           </Box>
           <Typography variant="h5" component="h1" fontWeight={700} color="text.primary">
-            JobFlow Dashboard
+            JobFlow
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            취업 준비 관리 대시보드
+          <Typography variant="body1" color="text.primary" sx={{ mt: 1, fontWeight: 600 }}>
+            지원 상태와 다음 행동을 한 화면에서 정리하세요.
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.75 }}>
+            지원 현황·체크리스트·면접 메모를 읽기 전용 샘플로 둘러볼 수 있습니다.
           </Typography>
         </Box>
 
@@ -131,16 +126,22 @@ const LoginPage = () => {
           disabled={loading}
           size="large"
           sx={{ py: 1.75, mb: 2, fontSize: '1rem', fontWeight: 700, borderRadius: 2 }}
-          aria-label="로그인 없이 데모 대시보드 체험하기"
+          aria-label="샘플 대시보드 둘러보기"
         >
-          {loading ? '전환 중...' : '데모로 둘러보기 (로그인 불필요)'}
+          {loading ? '전환 중...' : '샘플 대시보드 둘러보기'}
         </Button>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mb: 3 }}>
-          샘플 데이터를 바로 체험할 수 있으며, 저장/수정은 회원가입 후 가능합니다
+          로그인 없이 샘플 데이터를 확인할 수 있습니다.<br />
+          저장·수정·삭제는 로그인 후 사용할 수 있습니다.
         </Typography>
 
         <Paper elevation={0} sx={{ p: 3, border: '1px solid', borderColor: 'divider', borderRadius: 3 }}>
-          <Tabs value={tab} onChange={(_, v) => { setTab(v); setError(''); setSuccess(''); setFieldErrors({}); }} sx={{ mb: 3 }}>
+          <Tabs
+            value={tab}
+            onChange={(_, v) => { setTab(v); setError(''); setSuccess(''); setFieldErrors({}); }}
+            aria-label="로그인 또는 회원가입"
+            sx={{ mb: 3 }}
+          >
             <Tab label="로그인" sx={{ flex: 1, fontWeight: 600 }} />
             <Tab label="회원가입" sx={{ flex: 1, fontWeight: 600 }} />
           </Tabs>
@@ -193,9 +194,9 @@ const LoginPage = () => {
               value={password}
               onChange={(e) => { setPassword(e.target.value); setFieldErrors((current) => ({ ...current, password: '' })); }}
               sx={{ mb: 3 }}
-              placeholder="6자 이상"
+              placeholder="8자 이상"
               error={Boolean(fieldErrors.password)}
-              helperText={fieldErrors.password || '6자 이상 입력하세요.'}
+              helperText={fieldErrors.password || '8자 이상 입력하세요.'}
               slotProps={{
                 htmlInput: {
                   'aria-label': '비밀번호',

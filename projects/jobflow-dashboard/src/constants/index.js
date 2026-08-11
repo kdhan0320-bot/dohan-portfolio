@@ -33,7 +33,7 @@ export const NAV_ITEMS = [
   { path: '/kanban', label: '전형 보드', icon: 'kanban', match: 'exact' },
   { path: '/checklist', label: '체크리스트', icon: 'checklist', match: 'exact' },
   { path: '/interview', label: '면접 메모', icon: 'interview', match: 'exact' },
-  { path: '/ai-prompt', label: '문서 작성 도우미', icon: 'document-helper', match: 'exact' },
+  { path: '/document-helper', label: '문서 작성 도우미', icon: 'document-helper', match: 'exact' },
   { path: '/settings', label: '설정', icon: 'settings', match: 'exact' },
 ];
 
@@ -70,6 +70,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '포트폴리오 피드백 긍정적. 실무 면접 준비 필요. 면접 질문 리스트 정리 중.',
     job_url: '',
+    created_at: '2026-06-22T09:00:00.000Z',
   },
   {
     id: 'demo-2',
@@ -85,6 +86,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '포트폴리오 보완 후 제출 완료. 서류 합격 대기 중.',
     job_url: '',
+    created_at: '2026-06-21T09:00:00.000Z',
   },
   {
     id: 'demo-3',
@@ -100,6 +102,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: false,
     memo: '이력서 마무리 후 제출 예정. 채용 공고 확인 완료.',
     job_url: '',
+    created_at: '2026-06-20T09:00:00.000Z',
   },
   {
     id: 'demo-4',
@@ -115,6 +118,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '핀테크 스타트업. UI 역량 강조 필요. 자기소개서 작성 완료.',
     job_url: '',
+    created_at: '2026-06-19T09:00:00.000Z',
   },
   {
     id: 'demo-5',
@@ -130,6 +134,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '지원 완료. 결과 대기 중.',
     job_url: '',
+    created_at: '2026-06-18T09:00:00.000Z',
   },
   {
     id: 'demo-6',
@@ -145,6 +150,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: false,
     memo: 'React 기반 포지션. 포트폴리오 보완 후 지원 검토 예정.',
     job_url: '',
+    created_at: '2026-06-17T09:00:00.000Z',
   },
   {
     id: 'demo-7',
@@ -160,6 +166,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '서류 불합격. 포트폴리오 프로젝트 설명 강화 필요.',
     job_url: '',
+    created_at: '2026-06-16T09:00:00.000Z',
   },
   {
     id: 'demo-8',
@@ -175,6 +182,7 @@ export const DEMO_APPLICATIONS = [
     resume_submitted: true,
     memo: '채용 일정 연기됨. 추후 재공고 예정이라는 안내 수신.',
     job_url: '',
+    created_at: '2026-06-15T09:00:00.000Z',
   },
 ];
 

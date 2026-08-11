@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Box, Card, CardContent, Typography, TextField, Button,
   Select, MenuItem, FormControl, InputLabel,
@@ -9,6 +9,7 @@ import useApplications from '../hooks/useApplications';
 import { useAuth } from '../context/AuthContext';
 import { APPLICATION_STATUSES, PRIORITY_OPTIONS, COMPANY_SIZE_OPTIONS } from '../constants';
 import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
+import { APPLICATION_MUTABLE_FIELDS, isValidApplicationUrl } from '../utils/applicationPayload';
 
 const INITIAL = {
   company_name: '',
@@ -24,6 +25,18 @@ const INITIAL = {
   portfolio_submitted: false,
   resume_submitted: false,
 };
+
+const BOOLEAN_FIELDS = new Set(['portfolio_submitted', 'resume_submitted']);
+
+const toApplicationFormState = (application) => (
+  APPLICATION_MUTABLE_FIELDS.reduce((values, field) => {
+    if (!Object.prototype.hasOwnProperty.call(application, field)) return values;
+    values[field] = BOOLEAN_FIELDS.has(field)
+      ? Boolean(application[field])
+      : application[field] ?? values[field];
+    return values;
+  }, { ...INITIAL })
+);
 
 const ApplicationFormPage = () => {
   const navigate = useNavigate();
@@ -46,9 +59,18 @@ const ApplicationFormPage = () => {
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [loadedApplicationId, setLoadedApplicationId] = useState(null);
+  const companyNameInputRef = useRef(null);
+  const jobUrlInputRef = useRef(null);
+  const pageTitle = isEdit ? '지원 정보 수정' : '지원 회사 등록';
 
   useEffect(() => {
-    if (editingApplication) setForm({ ...INITIAL, ...editingApplication });
+    if (editingApplication) {
+      setForm(toApplicationFormState(editingApplication));
+      setLoadedApplicationId(String(editingApplication.id));
+    } else {
+      setLoadedApplicationId(null);
+    }
   }, [editingApplication]);
 
   const handleChange = (field) => (e) => {
@@ -60,6 +82,9 @@ const ApplicationFormPage = () => {
   const validate = () => {
     const errs = {};
     if (!form.company_name.trim()) errs.company_name = '회사명은 필수입니다';
+    if (!isValidApplicationUrl(form.job_url)) {
+      errs.job_url = '공고 링크는 http:// 또는 https://로 시작해야 합니다';
+    }
     return errs;
   };
 
@@ -67,7 +92,12 @@ const ApplicationFormPage = () => {
     e.preventDefault();
     if (saving || (isEdit && !editingApplication)) return;
     const errs = validate();
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      if (errs.company_name) companyNameInputRef.current?.focus();
+      else if (errs.job_url) jobUrlInputRef.current?.focus();
+      return;
+    }
     setSaving(true);
     setApiError('');
     try {
@@ -91,6 +121,9 @@ const ApplicationFormPage = () => {
   if (isGuest) {
     return (
       <Box>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>
+          {pageTitle}
+        </Typography>
         <GuestReadOnlyNotice
           title="로그인이 필요합니다"
           description={isEdit
@@ -107,7 +140,7 @@ const ApplicationFormPage = () => {
   if (isEdit && applicationsLoading) {
     return (
       <Box>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>{pageTitle}</Typography>
         <Skeleton variant="rounded" height={420} />
       </Box>
     );
@@ -116,7 +149,7 @@ const ApplicationFormPage = () => {
   if (isEdit && applicationsError) {
     return (
       <Box>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>{pageTitle}</Typography>
         <Alert
           severity="error"
           action={<Button color="inherit" size="small" onClick={refresh}>다시 시도</Button>}
@@ -134,7 +167,7 @@ const ApplicationFormPage = () => {
   if (isEdit && !editingApplication) {
     return (
       <Box>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>{pageTitle}</Typography>
         <Alert severity="warning" sx={{ mb: 2 }}>
           수정할 지원 정보를 찾을 수 없습니다.
         </Alert>
@@ -145,10 +178,10 @@ const ApplicationFormPage = () => {
     );
   }
 
-  if (isEdit && String(form.id) !== String(editingApplication.id)) {
+  if (isEdit && loadedApplicationId !== String(editingApplication.id)) {
     return (
       <Box>
-        <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>지원 정보 수정</Typography>
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>{pageTitle}</Typography>
         <Skeleton variant="rounded" height={420} />
       </Box>
     );
@@ -156,8 +189,8 @@ const ApplicationFormPage = () => {
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} sx={{ mb: 3 }}>
-        {isEdit ? '지원 정보 수정' : '지원 회사 등록'}
+      <Typography component="h1" variant="h5" fontWeight={700} sx={{ mb: 3 }}>
+        {pageTitle}
       </Typography>
 
       {apiError && <Alert severity="error" sx={{ mb: 2 }}>{apiError}</Alert>}
@@ -168,10 +201,12 @@ const ApplicationFormPage = () => {
             <Grid container spacing={2}>
               <Grid size={{ xs: 12, sm: 6 }}>
                 <TextField
-                  label="회사명 *"
+                  label="회사명"
                   fullWidth
+                  required
                   value={form.company_name}
                   onChange={handleChange('company_name')}
+                  inputRef={companyNameInputRef}
                   error={Boolean(errors.company_name)}
                   helperText={errors.company_name}
                 />
@@ -209,12 +244,12 @@ const ApplicationFormPage = () => {
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, sm: 6 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="application-status-label">지원 상태 *</InputLabel>
+                <FormControl fullWidth required>
+                  <InputLabel id="application-status-label">지원 상태</InputLabel>
                   <Select
                     labelId="application-status-label"
                     value={form.status}
-                    label="지원 상태 *"
+                    label="지원 상태"
                     onChange={handleChange('status')}
                   >
                     {APPLICATION_STATUSES.map((s) => <MenuItem key={s.value} value={s.value}>{s.label}</MenuItem>)}
@@ -262,6 +297,9 @@ const ApplicationFormPage = () => {
                   onChange={handleChange('job_url')}
                   placeholder="https://"
                   type="url"
+                  inputRef={jobUrlInputRef}
+                  error={Boolean(errors.job_url)}
+                  helperText={errors.job_url}
                 />
               </Grid>
               <Grid size={12}>
@@ -272,7 +310,7 @@ const ApplicationFormPage = () => {
                   rows={4}
                   value={form.memo}
                   onChange={handleChange('memo')}
-                  placeholder="면접 일정, 특이사항 등을 기록하세요"
+                  placeholder="면접 준비 메모와 특이사항을 기록하세요"
                 />
               </Grid>
               <Grid size={12}>
