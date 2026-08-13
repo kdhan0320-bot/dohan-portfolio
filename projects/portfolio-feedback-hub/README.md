@@ -70,11 +70,11 @@
 ## 공개 프로필과 회원가입 보안
 
 - 2026-08-12 Hosted preflight에서 관련 migration 8개가 Hosted history에 모두 존재하고, `profiles`, `posts`, `comments`, `post_likes`, `comment_likes`의 RLS가 모두 활성 상태임을 확인했습니다.
-- Hosted grant 기준으로 `profiles`의 anon·authenticated 공개 조회는 `id`, `username` column에만 허용됩니다. 반면 `post_likes`, `comment_likes`는 anon SELECT와 공개 SELECT policy가 유지되어 `user_id` 관계까지 조회 가능한 상태임을 확인했습니다.
+- Hosted grant 기준으로 `profiles`의 anon·authenticated 공개 조회는 `id`, `username` column에만 허용됩니다.
 - Hosted Before User Created Hook은 `public.hook_block_feedback_hub_public_signup`을 가리키며 `Enabled` 상태임을 확인했습니다. 이번 preflight에서는 signup이나 403 동작을 재실행하지 않았습니다.
 - Feedback Hub 참여용 Auth 사용자와 `profiles` 행은 관리자가 함께 준비하는 구조입니다. 공개 사용자의 `profiles` INSERT 차단은 저장소 SQL 기준이고, 공개 화면의 목록·상세 read-only는 2026-08-12 runtime에서 확인했습니다.
 - `20260812134107_harden_feedback_hub_counts_and_integrity.sql`은 like count table·동기화 trigger, reply same-post 무결성, 최소 server-side CHECK, column grant·RLS·FK index 보강을 위한 additive migration이며, 2026-08-13 연결된 Hosted Supabase 프로젝트에 적용했습니다. 적용 후 migration history local/remote 18/18, 신규 object 계약 33/33, grant·RLS 계약 106/106, backfill 누락·불일치·음수 count 0, linked DB lint 오류·경고 0, Before User Created Hook `Enabled` 유지를 확인했습니다.
-- 기존 배포 frontend와의 호환을 위해 `post_likes`와 `comment_likes`의 공개 SELECT는 임시 유지 중입니다. 새 count-table frontend의 운영 배포와 공개 count·로그인 own-like 검증 후, 별도의 restrictive migration으로 base like 관계 조회를 차단할 예정입니다.
+- `20260813051904_restrict_feedback_hub_base_like_visibility.sql`은 2026-08-13 연결된 Hosted Supabase 프로젝트에 적용했습니다. anon과 PUBLIC의 `post_likes`·`comment_likes` SELECT를 제거하고, authenticated에는 `user_id`와 대상 ID column만 허용하며 RLS로 자신의 좋아요 row만 조회하도록 제한했습니다. 공개 좋아요 수는 `post_like_counts`와 `comment_like_counts`에서 계속 제공합니다.
 - 기존 migration source는 수정·재실행하지 않으며 변경이 필요하면 별도 forward-fix migration으로 관리합니다.
 
 ### 검증 기록과 2026-08-12 확인 범위
@@ -87,13 +87,15 @@
 - 2026-08-11 trigger 제거 회차에는 QA 사용자를 만들지 않았고, 실제 email delivery·confirmation link·A/B CRUD를 다시 실행하지 않았습니다.
 - 과거 `my-community` 주소는 기존 링크가 끊기지 않도록 query/hash를 보존해 canonical `portfolio-feedback-hub`로 보내는 redirect만 유지합니다.
 
-### Additive migration release order
+### Like count 보안 release order
 
-1. additive migration을 Hosted에 적용합니다. → 완료
-2. Hosted schema·grant·trigger와 count backfill을 검증합니다. → 완료
-3. 새 count table을 읽는 frontend를 배포합니다. → 이번 release
-4. 공개 count와 로그인 사용자의 private own-like 흐름을 운영 QA합니다. → 배포 후 확인
-5. 별도 restrictive migration으로 base like table의 공개 SELECT를 차단합니다. → 운영 QA 이후 별도 승인
+1. Additive migration 적용 → 완료
+2. Count-table frontend 배포 → 완료
+3. 운영 count query 검증 → 완료
+4. Restrictive migration 적용 → 완료
+5. Anon base-like REST 차단 확인 → 완료
+
+- Authenticated own-like HTTP는 안전하게 재사용할 기존 로그인 session이 없어 이번 회차에 재검증하지 않았으며, 격리 PostgreSQL 45/45 runtime 검증 근거를 유지합니다.
 
 ---
 
