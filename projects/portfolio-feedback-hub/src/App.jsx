@@ -1,4 +1,4 @@
-import { HashRouter as BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
@@ -7,6 +7,7 @@ import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostEditPage from './pages/PostEditPage';
 import NotFoundPage from './pages/NotFoundPage';
+import RouteEffects from './components/RouteEffects';
 
 const RouteLoading = () => (
   <Box
@@ -67,11 +68,12 @@ const AppRoutes = () => (
 );
 
 const App = () => (
-  <BrowserRouter>
+  <HashRouter>
+    <RouteEffects />
     <AuthProvider>
       <AppRoutes />
     </AuthProvider>
-  </BrowserRouter>
+  </HashRouter>
 );
 
 export default App;

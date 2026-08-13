@@ -10,8 +10,21 @@ import { supabase } from '../lib/supabase';
 import SubPageHeader from '../components/SubPageHeader';
 import { SAMPLE_POSTS } from '../constants/samplePosts';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
+import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const EDIT_FORM_ID = 'post-edit-form';
+
+const visuallyHiddenSx = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  p: 0,
+  m: -1,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
 
 const PostEditPage = () => {
   const { id } = useParams();
@@ -32,6 +45,8 @@ const PostEditPage = () => {
   const [loadError, setLoadError] = useState('');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+
+  usePageTitle(PAGE_TITLES.edit);
 
   useEffect(() => {
     if (isSamplePostId) {
@@ -209,7 +224,8 @@ const PostEditPage = () => {
   if (loading) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <SubPageHeader title="게시글 수정" fallbackTo="/" />
-      <Container maxWidth="md" sx={{ py: 6 }}>
+      <Container maxWidth="md" sx={{ py: 6 }} role="status" aria-label="게시글 수정 정보를 불러오는 중입니다.">
+        <Typography aria-hidden="true" sx={visuallyHiddenSx}>게시글 수정 정보를 불러오는 중입니다.</Typography>
         <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
       </Container>
     </Box>
@@ -238,6 +254,7 @@ const PostEditPage = () => {
               variant="outlined"
               onClick={() => navigate(`/posts/${id}`, { replace: true })}
               disabled={saving}
+              sx={{ minHeight: 44 }}
             >
               취소
             </Button>
@@ -246,7 +263,7 @@ const PostEditPage = () => {
               form={EDIT_FORM_ID}
               variant="contained"
               disabled={saving}
-              sx={{ px: 3 }}
+              sx={{ px: 3, minHeight: 44 }}
             >
               {saving ? '저장 중...' : '수정 완료'}
             </Button>
@@ -314,7 +331,7 @@ const PostEditPage = () => {
                   label={`#${tag}`}
                   onDelete={() => removeTag(tag)}
                   size="small"
-                  sx={{ bgcolor: 'secondary.light', color: 'primary.dark' }}
+                  sx={{ bgcolor: 'secondary.light', color: 'primary.dark', height: 44 }}
                 />
               ))}
             </Box>
@@ -325,7 +342,10 @@ const PostEditPage = () => {
               placeholder="#태그입력"
               size="small"
               disabled={form.hashtags.length >= 5}
-              slotProps={{ input: { startAdornment: <Tag sx={{ color: 'text.disabled', mr: 0.5, fontSize: 18 }} /> } }}
+              slotProps={{
+                htmlInput: { 'aria-label': '해시태그 추가' },
+                input: { startAdornment: <Tag sx={{ color: 'text.disabled', mr: 0.5, fontSize: 18 }} /> },
+              }}
             />
           </Box>
           </Paper>

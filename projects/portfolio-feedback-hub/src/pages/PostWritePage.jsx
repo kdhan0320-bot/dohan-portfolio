@@ -8,6 +8,7 @@ import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import SubPageHeader from '../components/SubPageHeader';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
+import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const WRITE_FORM_ID = 'post-write-form';
 
@@ -22,6 +23,8 @@ const PostWritePage = () => {
   const [feedbackFocus, setFeedbackFocus] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  usePageTitle(PAGE_TITLES.write);
 
   const handleChange = (e) => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
@@ -114,6 +117,7 @@ const PostWritePage = () => {
               variant="outlined"
               onClick={() => navigate('/', { replace: true })}
               disabled={loading}
+              sx={{ minHeight: 44 }}
             >
               취소
             </Button>
@@ -122,7 +126,7 @@ const PostWritePage = () => {
               form={WRITE_FORM_ID}
               variant="contained"
               disabled={loading}
-              sx={{ px: 3 }}
+              sx={{ px: 3, minHeight: 44 }}
             >
               {loading ? '등록 중...' : '게시글 등록'}
             </Button>
@@ -179,6 +183,7 @@ const PostWritePage = () => {
                     bgcolor: feedbackFocus.includes(item) ? 'primary.main' : 'transparent',
                     color: feedbackFocus.includes(item) ? '#fff' : 'text.secondary',
                     borderColor: feedbackFocus.includes(item) ? 'primary.main' : 'divider',
+                    height: 44,
                   }}
                 />
               ))}
@@ -213,7 +218,7 @@ const PostWritePage = () => {
                   label={`#${tag}`}
                   onDelete={() => removeTag(tag)}
                   size="small"
-                  sx={{ bgcolor: 'secondary.light', color: 'primary.dark' }}
+                  sx={{ bgcolor: 'secondary.light', color: 'primary.dark', height: 44 }}
                 />
               ))}
             </Box>
@@ -224,7 +229,10 @@ const PostWritePage = () => {
               placeholder="#태그입력"
               size="small"
               disabled={form.hashtags.length >= 5}
-              slotProps={{ input: { startAdornment: <Tag sx={{ color: 'text.disabled', mr: 0.5, fontSize: 18 }} /> } }}
+              slotProps={{
+                htmlInput: { 'aria-label': '해시태그 추가' },
+                input: { startAdornment: <Tag sx={{ color: 'text.disabled', mr: 0.5, fontSize: 18 }} /> },
+              }}
             />
           </Box>
           </Paper>

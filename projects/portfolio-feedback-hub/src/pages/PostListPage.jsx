@@ -1,5 +1,5 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Box, Container, Typography, Button, Card, CardActionArea,
   CardContent, Grid, Chip, Avatar, Skeleton,
@@ -22,6 +22,24 @@ import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const IMG_HEIGHT = 180;
 
+const getLikeCount = (relation) => {
+  const row = Array.isArray(relation) ? relation[0] : relation;
+  const value = Number(row?.like_count);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+};
+
+const visuallyHiddenSx = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  p: 0,
+  m: -1,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
+
 const formatRelativeTime = (dateStr) => {
   const diff = Date.now() - new Date(dateStr).getTime();
   const m = Math.floor(diff / 60000);
@@ -32,7 +50,7 @@ const formatRelativeTime = (dateStr) => {
   return `${Math.floor(h / 24)}일 전`;
 };
 
-const PostCard = ({ post, onClick }) => {
+const PostCard = ({ post, focusId, onClick }) => {
   const category = getCategoryLabel(post);
   const status = getStatusBadge(post);
   const visibleTags = (post.hashtags ?? []).filter(tag => tag !== category);
@@ -55,7 +73,11 @@ const PostCard = ({ post, onClick }) => {
       '&:hover': { transform: 'none' },
     },
   }}>
-    <CardActionArea onClick={onClick} sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+    <CardActionArea
+      data-route-focus-id={focusId}
+      onClick={onClick}
+      sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}
+    >
       {previewUrl && !previewLoadFailed ? (
         <Box
           component="img"
@@ -105,7 +127,7 @@ const PostCard = ({ post, onClick }) => {
             ))}
             {visibleTags.length > 2 && (
               <Chip label={`+${visibleTags.length - 2}`} size="small"
-                sx={{ fontSize: '0.68rem', height: 20, bgcolor: 'action.hover', color: 'text.disabled' }} />
+                sx={{ fontSize: '0.68rem', height: 20, bgcolor: 'action.hover', color: 'text.secondary' }} />
             )}
           </Box>
         )}
@@ -151,16 +173,71 @@ const SORT_OPTIONS = [
   { value: 'comments', label: '댓글 많은 순' },
 ];
 
+const VALID_SORT_VALUES = new Set(SORT_OPTIONS.map(option => option.value));
+
 const PostListPage = () => {
+  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [dataState, setDataState] = useState('loading');
-  const [query, setQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('전체');
-  const [sortBy, setSortBy] = useState('latest');
+  const [resultAnnouncement, setResultAnnouncement] = useState('');
+  const searchInputRef = useRef(null);
+
+  const query = searchParams.get('q') ?? '';
+  const categoryParam = searchParams.get('category');
+  const sortParam = searchParams.get('sort');
+  const activeCategory = CATEGORIES.includes(categoryParam) ? categoryParam : '전체';
+  const sortBy = VALID_SORT_VALUES.has(sortParam) ? sortParam : 'latest';
 
   usePageTitle(PAGE_TITLES.list);
+
+  useEffect(() => {
+    const normalized = new URLSearchParams(searchParams);
+    let changed = false;
+
+    const normalizeKnownParam = (name, value, shouldOmit) => {
+      const values = normalized.getAll(name);
+      if (values.length <= 1 && !shouldOmit) return;
+      if (values.length === 0) return;
+      normalized.delete(name);
+      if (!shouldOmit) normalized.set(name, value);
+      changed = true;
+    };
+
+    normalizeKnownParam('q', query, !query);
+    normalizeKnownParam('category', activeCategory, activeCategory === '전체');
+    normalizeKnownParam('sort', sortBy, sortBy === 'latest');
+
+    if (changed) setSearchParams(normalized, { replace: true });
+  }, [activeCategory, query, searchParams, setSearchParams, sortBy]);
+
+  const updateListState = useCallback((patch) => {
+    setSearchParams(current => {
+      const currentCategory = current.get('category');
+      const currentSort = current.get('sort');
+      const nextState = {
+        query: current.get('q') ?? '',
+        activeCategory: CATEGORIES.includes(currentCategory) ? currentCategory : '전체',
+        sortBy: VALID_SORT_VALUES.has(currentSort) ? currentSort : 'latest',
+        ...patch,
+      };
+      const next = new URLSearchParams(current);
+
+      next.delete('q');
+      next.delete('category');
+      next.delete('sort');
+      if (nextState.query) next.set('q', nextState.query);
+      if (nextState.activeCategory !== '전체') next.set('category', nextState.activeCategory);
+      if (nextState.sortBy !== 'latest') next.set('sort', nextState.sortBy);
+      return next;
+    }, { replace: true });
+  }, [setSearchParams]);
+
+  const setQuery = (value) => updateListState({ query: value });
+  const setActiveCategory = (value) => updateListState({ activeCategory: value });
+  const setSortBy = (value) => updateListState({ sortBy: value });
 
   const fetchPosts = useCallback(async () => {
     setDataState('loading');
@@ -168,14 +245,14 @@ const PostListPage = () => {
     try {
       const { data, error: fetchError } = await supabase
         .from('posts')
-        .select(`*, profiles!posts_user_id_fkey(username), post_likes(user_id), comments(id)`)
+        .select(`*, profiles!posts_user_id_fkey(username), post_like_counts(like_count), comments(id)`)
         .order('created_at', { ascending: false });
 
       if (fetchError) throw fetchError;
 
       const normalized = (data || []).map(p => ({
         ...p,
-        like_count: p.post_likes?.length ?? 0,
+        like_count: getLikeCount(p.post_like_counts),
         comment_count: p.comments?.length ?? 0,
       }));
       if (normalized.length > 0) {
@@ -222,6 +299,19 @@ const PostListPage = () => {
     return sorted;
   }, [posts, query, activeCategory, sortBy]);
 
+  useEffect(() => {
+    if (loading) return undefined;
+    const timer = window.setTimeout(() => {
+      setResultAnnouncement(`${filtered.length}개의 게시글을 표시합니다.`);
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [activeCategory, filtered.length, loading, query, sortBy]);
+
+  const resetSearchConditions = () => {
+    updateListState({ query: '', activeCategory: '전체', sortBy: 'latest' });
+    requestAnimationFrame(() => searchInputRef.current?.focus());
+  };
+
   const stats = useMemo(() => ({
     waiting: posts.filter(p => getStatusBadge(p).label === '피드백 대기').length,
     withComments: posts.filter(p => getStatusBadge(p).label === '댓글 있음').length,
@@ -253,8 +343,8 @@ const PostListPage = () => {
             <Typography sx={{ fontWeight: 700, mb: 0.5 }}>게시글을 불러오지 못했습니다.</Typography>
             <Typography variant="body2" sx={{ mb: 2 }}>잠시 후 다시 시도해 주세요.</Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-              <Button size="small" variant="contained" onClick={fetchPosts} sx={{ minHeight: 40 }}>다시 시도</Button>
-                <Button size="small" variant="outlined" onClick={showSampleData} sx={{ minHeight: 40, borderColor: 'primary.main' }}>
+              <Button size="small" variant="contained" onClick={fetchPosts} sx={{ minHeight: 44 }}>다시 시도</Button>
+                <Button size="small" variant="outlined" onClick={showSampleData} sx={{ minHeight: 44, borderColor: 'primary.main' }}>
                   샘플 데이터로 둘러보기
                 </Button>
             </Box>
@@ -277,7 +367,7 @@ const PostListPage = () => {
                 ? '등록된 실제 글이 없어 포트폴리오 데모용 샘플을 보여드립니다.'
                 : '조회 오류 후 선택한 포트폴리오 데모용 샘플입니다.'}
             </Typography>
-            <Button size="small" variant="outlined" onClick={fetchPosts} sx={{ minHeight: 40, borderColor: 'primary.main' }}>
+            <Button size="small" variant="outlined" onClick={fetchPosts} sx={{ minHeight: 44, borderColor: 'primary.main' }}>
               실제 데이터 다시 불러오기
             </Button>
           </Alert>
@@ -321,11 +411,20 @@ const PostListPage = () => {
                   { label: 'AI 활용 질문', value: stats.ai },
                 ].map(({ label, value }) => (
                   <Box key={label} sx={{ p: 1.5, borderRadius: 2, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
-                    <Typography component="p" variant="h3">{value}개</Typography>
+                    <Typography component="p" variant="h3">
+                      {loading ? (
+                        <Skeleton data-loading-stat aria-hidden="true" width={44} />
+                      ) : dataState === 'error' ? '—' : `${value}개`}
+                    </Typography>
                     <Typography variant="caption" color="text.secondary">{label}</Typography>
                   </Box>
                 ))}
               </Box>
+              {loading && (
+                <Typography role="status" aria-live="polite" variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                  게시글을 불러오는 중입니다.
+                </Typography>
+              )}
               {isSample && (
                 <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 1 }}>
                   샘플 데이터 기준 통계입니다.
@@ -333,7 +432,7 @@ const PostListPage = () => {
               )}
               {dataState === 'live' && (
                 <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mt: 1 }}>
-                  현재 등록된 게시글 기준 통계입니다.
+                  실제 데이터 기준 통계입니다.
                 </Typography>
               )}
             </Box>
@@ -376,6 +475,7 @@ const PostListPage = () => {
         {/* 검색 */}
         <TextField
           fullWidth
+          inputRef={searchInputRef}
           placeholder="제목, 내용, 태그로 피드백 글 검색"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -404,7 +504,7 @@ const PostListPage = () => {
                   onClick={() => setActiveCategory(cat)}
                   variant={active ? 'filled' : 'outlined'}
                   sx={{
-                    height: { xs: 40, sm: 32 },
+                    height: 44,
                     fontWeight: active ? 700 : 400,
                     bgcolor: active ? 'primary.main' : 'transparent',
                     color: active ? '#fff' : 'text.secondary',
@@ -437,12 +537,15 @@ const PostListPage = () => {
           </Typography>
         )}
 
+        {!loading && (
+          <Typography role="status" aria-live="polite" aria-atomic="true" sx={visuallyHiddenSx}>
+            {resultAnnouncement}
+          </Typography>
+        )}
+
         <Typography
           component="h2"
-          sx={{
-            position: 'absolute', width: '1px', height: '1px', p: 0, m: -1,
-            overflow: 'hidden', clip: 'rect(0 0 0 0)', whiteSpace: 'nowrap', border: 0,
-          }}
+          sx={visuallyHiddenSx}
         >
           피드백 게시글
         </Typography>
@@ -459,7 +562,12 @@ const PostListPage = () => {
           <Box sx={{ textAlign: 'center', py: 10 }}>
             <ForumOutlinedIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
             <Typography color="text.secondary" sx={{ mb: 0.5 }}>검색 결과가 없습니다.</Typography>
-            <Typography variant="body2" color="text.disabled">다른 키워드나 카테고리를 선택해 보세요.</Typography>
+            <Typography variant="body2" color="text.disabled" sx={{ mb: 2 }}>
+              다른 키워드나 카테고리를 선택해 보세요.
+            </Typography>
+            <Button variant="outlined" onClick={resetSearchConditions} sx={{ minHeight: 44 }}>
+              검색 조건 초기화
+            </Button>
           </Box>
         ) : (
           <Grid container spacing={3}>
@@ -467,9 +575,19 @@ const PostListPage = () => {
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={post.id}>
                 <PostCard
                   post={post}
-                  onClick={() => navigate(`/posts/${post.id}`, {
-                    state: isSample ? { sampleSource: dataState } : undefined,
-                  })}
+                  focusId={`post-card-${post.id}`}
+                  onClick={() => {
+                    navigate(`/posts/${post.id}`, {
+                      state: {
+                        ...(isSample ? { sampleSource: dataState } : {}),
+                        routeReturn: {
+                          entryKey: location.key,
+                          focusId: `post-card-${post.id}`,
+                          scrollY: window.scrollY,
+                        },
+                      },
+                    });
+                  }}
                 />
               </Grid>
             ))}
@@ -481,9 +599,43 @@ const PostListPage = () => {
           mt: 6, p: { xs: 3, sm: 4 }, borderRadius: 3,
           bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider',
         }}>
-          <Typography component="p" variant="h4" sx={{ mb: 1 }}>Project Info</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2.5, lineHeight: 1.7 }}>
-            React, MUI, Supabase로 구현한 포트폴리오 피드백 커뮤니티입니다. 공개 방문자는 목록·상세를 읽기 전용으로 탐색하고, 운영 글이 없으면 가상 게시글과 피드백 관계를 sample로 확인합니다. Auth·CRUD·댓글·답글·좋아요·RLS는 비공개 QA에서 검증했으며, 공개 가입·자유 작성·Storage upload·runtime AI는 제공하지 않습니다.
+          <Typography component="h2" variant="h4" sx={{ mb: 1 }}>Project Info</Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mb: 2.5,
+              lineHeight: 1.7,
+              wordBreak: 'keep-all',
+              overflowWrap: 'anywhere',
+              maxWidth: { md: 960 },
+            }}
+          >
+            {'React·MUI·Supabase로 구현한 포트폴리오 피드백 커뮤니티입니다. 공개 화면에서는 목록과 상세를 '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              읽기 전용으로
+            </Box>
+            {' 탐색하며, 실제 게시글이 없을 때는 샘플임을 명확히 표시해 보여줍니다. '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              2026-08-03
+            </Box>
+            {' 비공개 검증에서는 준비된 계정으로 '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              게시글·댓글·답글의
+            </Box>
+            {' '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              작성·수정·삭제
+            </Box>
+            {', 좋아요 등록·취소와 '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              소유권 제한(RLS)
+            </Box>
+            {'을 당시 확인했습니다. 공개 가입, 파일 업로드, '}
+            <Box component="span" sx={{ whiteSpace: 'nowrap' }}>
+              서비스 내 AI 기능
+            </Box>
+            {'은 제공하지 않습니다.'}
           </Typography>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
             <Button
@@ -493,6 +645,7 @@ const PostListPage = () => {
               href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/portfolio-feedback-hub"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="GitHub 저장소 보기(새 탭)"
               sx={{ minHeight: 44, borderColor: 'primary.main', width: { xs: '100%', sm: 'auto' } }}
             >
               GitHub 보기
@@ -504,9 +657,10 @@ const PostListPage = () => {
               href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label="포트폴리오 보기(새 탭)"
               sx={{ minHeight: 44, width: { xs: '100%', sm: 'auto' } }}
             >
-              포트폴리오로 돌아가기
+              포트폴리오 보기
             </Button>
           </Stack>
         </Box>

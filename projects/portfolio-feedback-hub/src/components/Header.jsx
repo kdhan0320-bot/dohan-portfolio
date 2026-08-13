@@ -62,7 +62,7 @@ const Header = () => {
               size="small"
               sx={{
                 bgcolor: 'rgba(37,99,235,0.12)',
-                color: 'primary.main',
+                color: 'primary.dark',
                 fontSize: '0.68rem',
                 fontWeight: 700,
                 height: 28,

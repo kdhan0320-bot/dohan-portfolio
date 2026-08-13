@@ -19,6 +19,29 @@ import CategoryThumbnail from '../components/CategoryThumbnail';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
 import { getPostPageTitle, PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
+const visuallyHiddenSx = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  p: 0,
+  m: -1,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  whiteSpace: 'nowrap',
+  border: 0,
+};
+
+const getLikeCount = (relation) => {
+  const row = Array.isArray(relation) ? relation[0] : relation;
+  const value = Number(row?.like_count);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+};
+
+const normalizeCommentLikeCount = (comment) => ({
+  ...comment,
+  like_count: getLikeCount(comment.comment_like_counts),
+});
+
 const formatRelativeTime = (dateStr) => {
   const diff = Date.now() - new Date(dateStr).getTime();
   const m = Math.floor(diff / 60000);
@@ -38,7 +61,7 @@ const EditDeleteButtons = ({
       size={size}
       onClick={onEdit}
       disabled={editDisabled}
-      sx={{ width: 40, height: 40, color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
+      sx={{ width: 44, height: 44, color: 'text.secondary', '&:hover': { color: 'primary.main' } }}
       aria-label={`${itemLabel} 수정`}
     >
       <Edit sx={{ fontSize: size === 'small' ? 13 : 11 }} />
@@ -47,7 +70,7 @@ const EditDeleteButtons = ({
       size={size}
       onClick={onDelete}
       disabled={deleteDisabled}
-      sx={{ width: 40, height: 40, color: 'text.secondary', '&:hover': { color: 'error.main' } }}
+      sx={{ width: 44, height: 44, color: 'text.secondary', '&:hover': { color: 'error.main' } }}
       aria-label={`${itemLabel} 삭제`}
     >
       <Delete sx={{ fontSize: size === 'small' ? 13 : 11 }} />
@@ -56,7 +79,7 @@ const EditDeleteButtons = ({
 );
 
 // ── 인라인 편집 폼 ──
-const InlineEditField = ({ value, onSave, onCancel, pending = false }) => {
+const InlineEditField = ({ value, onSave, onCancel, pending = false, itemLabel = '댓글' }) => {
   const [text, setText] = useState(value);
   const handleSave = async () => {
     const nextText = text.trim();
@@ -75,12 +98,13 @@ const InlineEditField = ({ value, onSave, onCancel, pending = false }) => {
         autoFocus
         disabled={pending}
         onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey && text.trim()) { e.preventDefault(); handleSave(); } }}
+        slotProps={{ htmlInput: { 'aria-label': `${itemLabel} 수정 내용` } }}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.3 }}>
-        <IconButton size="small" color="primary" onClick={handleSave} disabled={pending || !text.trim()} sx={{ width: 40, height: 40 }} aria-label="댓글 수정 저장">
+        <IconButton size="small" color="primary" onClick={handleSave} disabled={pending || !text.trim()} sx={{ width: 44, height: 44 }} aria-label={`${itemLabel} 수정 저장`}>
           <Check sx={{ fontSize: 16 }} />
         </IconButton>
-        <IconButton size="small" onClick={onCancel} disabled={pending} sx={{ width: 40, height: 40 }} aria-label="댓글 수정 취소">
+        <IconButton size="small" onClick={onCancel} disabled={pending} sx={{ width: 44, height: 44 }} aria-label={`${itemLabel} 수정 취소`}>
           <Close sx={{ fontSize: 16 }} />
         </IconButton>
       </Box>
@@ -131,6 +155,7 @@ const CommentItem = ({
           {editing ? (
             <InlineEditField
               value={comment.content}
+              itemLabel="댓글"
               pending={editPending}
               onSave={async (text) => {
                 const success = await onEditComment(comment.id, text);
@@ -162,7 +187,7 @@ const CommentItem = ({
               <FavoriteBorder aria-hidden="true" sx={{ fontSize: 14, color: 'text.secondary' }} />
             )}
             <Typography variant="caption" color="text.secondary">
-              {comment.comment_likes?.length ?? 0}
+              {comment.like_count ?? 0}
             </Typography>
             {canMutate && (
               <Button
@@ -248,6 +273,7 @@ const ReplyItem = ({
         {editing ? (
           <InlineEditField
             value={reply.content}
+            itemLabel="답글"
             pending={editPending}
             onSave={async (text) => {
               const success = await onEditComment(reply.id, text);
@@ -279,7 +305,7 @@ const ReplyItem = ({
             <FavoriteBorder aria-hidden="true" sx={{ fontSize: 12, color: 'text.secondary' }} />
           )}
           <Typography variant="caption" color="text.secondary">
-            {reply.comment_likes?.length ?? 0}
+            {reply.like_count ?? 0}
           </Typography>
         </Box>
       </Box>
@@ -308,6 +334,7 @@ const ReplyInput = ({ onSubmit, pending = false }) => {
         maxRows={3}
         disabled={pending}
         onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey && content.trim()) { e.preventDefault(); handleSubmit(); } }}
+        slotProps={{ htmlInput: { 'aria-label': '답글 내용' } }}
       />
       <IconButton
         color="primary"
@@ -418,44 +445,71 @@ const PostDetailPage = () => {
   }, [id]);
 
   const fetchLikes = useCallback(async () => {
-    const { data: likeRows, error } = await supabase.from('post_likes').select('user_id').eq('post_id', id);
-    if (error) throw error;
-    setLikeCount(likeRows?.length ?? 0);
-    if (user) setLiked(likeRows?.some(r => r.user_id === user.id) ?? false);
+    const { data: countRow, error: countError } = await supabase
+      .from('post_like_counts')
+      .select('like_count')
+      .eq('post_id', id)
+      .maybeSingle();
+    if (countError) throw countError;
+    setLikeCount(getLikeCount(countRow));
+
+    if (!user) {
+      setLiked(false);
+      return;
+    }
+
+    const { data: ownLike, error: ownLikeError } = await supabase
+      .from('post_likes')
+      .select('post_id')
+      .eq('post_id', id)
+      .eq('user_id', user.id)
+      .maybeSingle();
+    if (ownLikeError) throw ownLikeError;
+    setLiked(Boolean(ownLike));
   }, [id, user]);
 
   const fetchComments = useCallback(async () => {
     const { data, error: commentsError } = await supabase
       .from('comments')
-      .select('*, profiles!comments_user_id_fkey(username), comment_likes(user_id)')
+      .select('*, profiles!comments_user_id_fkey(username), comment_like_counts(like_count)')
       .eq('post_id', id)
       .is('parent_id', null)
       .order('created_at', { ascending: true });
     if (commentsError) throw commentsError;
 
-    const topLevel = data || [];
+    const topLevel = (data || []).map(normalizeCommentLikeCount);
     const allIds = topLevel.map(c => c.id);
 
     const { data: replies, error: repliesError } = await supabase
       .from('comments')
-      .select('*, profiles!comments_user_id_fkey(username), comment_likes(user_id)')
+      .select('*, profiles!comments_user_id_fkey(username), comment_like_counts(like_count)')
       .in('parent_id', allIds.length > 0 ? allIds : [-1])
       .order('created_at', { ascending: true });
     if (repliesError) throw repliesError;
 
+    const normalizedReplies = (replies || []).map(normalizeCommentLikeCount);
+
     setComments(topLevel.map(c => ({
       ...c,
-      replies: (replies || []).filter(r => r.parent_id === c.id),
+      replies: normalizedReplies.filter(r => r.parent_id === c.id),
     })));
 
-    if (user) {
-      const allIds2 = [...topLevel.map(c => c.id), ...(replies || []).map(r => r.id)];
-      if (allIds2.length > 0) {
-        const { data: myLikes, error: myLikesError } = await supabase.from('comment_likes').select('comment_id').eq('user_id', user.id).in('comment_id', allIds2);
-        if (myLikesError) throw myLikesError;
-        setLikedCommentIds(new Set((myLikes || []).map(l => l.comment_id)));
-      }
+    const currentCommentIds = [
+      ...topLevel.map(c => c.id),
+      ...normalizedReplies.map(r => r.id),
+    ];
+    if (!user || currentCommentIds.length === 0) {
+      setLikedCommentIds(new Set());
+      return;
     }
+
+    const { data: myLikes, error: myLikesError } = await supabase
+      .from('comment_likes')
+      .select('comment_id')
+      .eq('user_id', user.id)
+      .in('comment_id', currentCommentIds);
+    if (myLikesError) throw myLikesError;
+    setLikedCommentIds(new Set((myLikes || []).map(l => l.comment_id)));
   }, [id, user]);
 
   useEffect(() => {
@@ -471,6 +525,8 @@ const PostDetailPage = () => {
       if (samplePost) {
         setPost(samplePost);
         setLikeCount(samplePost.like_count);
+        setLiked(false);
+        setLikedCommentIds(new Set());
         setComments(SAMPLE_COMMENTS[id] || []);
         setLoadState('ready');
       } else {
@@ -693,7 +749,8 @@ const PostDetailPage = () => {
   if (loadState === 'loading') return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <SubPageHeader title="게시글 상세" fallbackTo="/" />
-      <Container maxWidth="md" sx={{ py: 6 }}>
+      <Container maxWidth="md" sx={{ py: 6 }} role="status" aria-label="게시글 상세를 불러오는 중입니다.">
+        <Typography aria-hidden="true" sx={visuallyHiddenSx}>게시글 상세를 불러오는 중입니다.</Typography>
         <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
       </Container>
     </Box>
@@ -750,7 +807,7 @@ const PostDetailPage = () => {
               size="small"
               startIcon={<Edit sx={{ fontSize: 15 }} />}
               onClick={() => navigate(`/posts/${id}/edit`)}
-              sx={{ color: 'inherit', fontSize: '0.8rem' }}
+              sx={{ color: 'inherit', fontSize: '0.8rem', minHeight: 44 }}
             >
               수정
             </Button>
@@ -758,7 +815,7 @@ const PostDetailPage = () => {
               size="small"
               startIcon={<Delete sx={{ fontSize: 15 }} />}
               onClick={() => setDeletePostDialog(true)}
-              sx={{ color: 'error.light', fontSize: '0.8rem' }}
+              sx={{ color: 'error.light', fontSize: '0.8rem', minHeight: 44 }}
             >
               삭제
             </Button>
@@ -919,7 +976,7 @@ const PostDetailPage = () => {
 
           {!user ? (
             <Alert severity="info" sx={{ mb: 3 }}>
-              공개 데모는 읽기 전용입니다. 게시글과 댓글을 확인할 수 있습니다.
+              공개 데모는 읽기 전용입니다. 게시글과 댓글은 확인할 수 있으며, 공개 가입·좋아요·댓글 작성은 제공하지 않습니다.
             </Alert>
           ) : (
             <Box sx={{ display: 'flex', gap: 1.5, mb: 3 }}>
@@ -936,6 +993,7 @@ const PostDetailPage = () => {
                   maxRows={4}
                   disabled={isActionPending('comment-add')}
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAddComment(); } }}
+                  slotProps={{ htmlInput: { 'aria-label': '댓글 내용' } }}
                 />
                 <IconButton
                   color="primary"

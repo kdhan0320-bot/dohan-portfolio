@@ -69,23 +69,31 @@
 
 ## 공개 프로필과 회원가입 보안
 
-- 운영 Supabase에는 관련 migration 7개(`create_community_tables`, `secure_shared_portfolio_database`, `remove_insecure_view_count_function`, `secure_profiles_and_atomic_signup`, `lock_down_feedback_hub_profiles`, `grant_feedback_hub_data_api`, `block_feedback_hub_public_signup`)가 적용되어 있습니다.
-- `profiles`의 공개 조회 column은 `id`, `username`뿐입니다. `phone`, `created_at`, `expires_at`은 anon·authenticated에 공개하지 않습니다.
-- anon은 `posts`, `comments`, `post_likes`, `comment_likes`를 SELECT만 할 수 있고 mutation table privilege가 없습니다.
-- authenticated는 게시글·댓글을 소유권 조건으로 CRUD하고 좋아요를 SELECT·INSERT·DELETE할 수 있습니다. 5개 community table 모두 RLS가 활성화되어 있습니다.
-- 전역 email signup은 JobFlow를 위해 유지하고 Confirm Email을 사용하며, anonymous signup은 비활성화합니다. `app_id: portfolio-feedback-hub`를 보낸 self-signup은 Before User Created Auth Hook에서 사용자 생성 전에 403으로 차단합니다.
-- Feedback Hub 참여용 Auth 사용자와 `profiles` 행은 관리자가 함께 준비합니다. 공개 사용자는 `profiles`를 직접 INSERT할 수 없고 공개 화면은 목록·상세만 읽기 전용입니다.
-- 적용된 migration은 수정·재실행하지 않으며 변경이 필요하면 별도 forward-fix migration으로 관리합니다.
+- 2026-08-12 Hosted preflight에서 관련 migration 8개가 Hosted history에 모두 존재하고, `profiles`, `posts`, `comments`, `post_likes`, `comment_likes`의 RLS가 모두 활성 상태임을 확인했습니다.
+- Hosted grant 기준으로 `profiles`의 anon·authenticated 공개 조회는 `id`, `username` column에만 허용됩니다. 반면 `post_likes`, `comment_likes`는 anon SELECT와 공개 SELECT policy가 유지되어 `user_id` 관계까지 조회 가능한 상태임을 확인했습니다.
+- Hosted Before User Created Hook은 `public.hook_block_feedback_hub_public_signup`을 가리키며 `Enabled` 상태임을 확인했습니다. 이번 preflight에서는 signup이나 403 동작을 재실행하지 않았습니다.
+- Feedback Hub 참여용 Auth 사용자와 `profiles` 행은 관리자가 함께 준비하는 구조입니다. 공개 사용자의 `profiles` INSERT 차단은 저장소 SQL 기준이고, 공개 화면의 목록·상세 read-only는 2026-08-12 runtime에서 확인했습니다.
+- `20260812134107_harden_feedback_hub_counts_and_integrity.sql`은 like count table·동기화 trigger, reply same-post 무결성, 최소 server-side CHECK, column grant·RLS·FK index 보강을 위한 additive migration이며, 2026-08-13 연결된 Hosted Supabase 프로젝트에 적용했습니다. 적용 후 migration history local/remote 18/18, 신규 object 계약 33/33, grant·RLS 계약 106/106, backfill 누락·불일치·음수 count 0, linked DB lint 오류·경고 0, Before User Created Hook `Enabled` 유지를 확인했습니다.
+- 기존 배포 frontend와의 호환을 위해 `post_likes`와 `comment_likes`의 공개 SELECT는 임시 유지 중입니다. 새 count-table frontend의 운영 배포와 공개 count·로그인 own-like 검증 후, 별도의 restrictive migration으로 base like 관계 조회를 차단할 예정입니다.
+- 기존 migration source는 수정·재실행하지 않으며 변경이 필요하면 별도 forward-fix migration으로 관리합니다.
 
-### 현재 검증 및 운영 상태
+### 검증 기록과 2026-08-12 확인 범위
 
-- 운영 row는 `profiles` 4행이며 `posts`, `comments`, `post_likes`, `comment_likes`는 각 0행입니다. 따라서 공개 목록은 현재 `sample-empty` fallback을 표시합니다.
-- 2026-08-03 관리자 방식으로 준비한 비공개 QA A/B 계정에서 게시글·댓글·좋아요 본인 CRUD, 교차 수정·삭제 0행, `user_id` 위조 차단, cascade와 공개 anon 읽기 전용 경계를 운영 DB에서 검증했습니다. 당시 테스트 Auth·profile·콘텐츠는 모두 정리했습니다.
-- 운영 `Allow new users to sign up`과 email provider는 JobFlow를 위해 활성 상태이며, Feedback Hub의 공개 가입은 앱별 Auth Hook으로만 차단합니다.
-- 2026-08-11 JobFlow frontend 배포 후 공유 Hosted Auth의 최소 비밀번호 길이를 8자로 동기화했습니다.
-- `20260811054550_remove_global_auto_confirm_email.sql` forward migration으로 공유 `auth.users`의 전역 auto-confirm trigger/function을 제거했습니다. Feedback Hub 가입 차단 함수와 JobFlow·Community RLS·policy·grant는 적용 전후 fingerprint가 동일합니다.
+- 2026-08-12 Hosted preflight의 정확한 row count는 `profiles` 4건, `posts`·`comments`·`post_likes`·`comment_likes` 각 0건입니다. 같은 검사에서 reply same-post 제약과 posts/comments 업무 CHECK가 없음을 확인했습니다.
+- 2026-08-03 비공개 QA 기록에서는 관리자 방식으로 준비한 A/B 계정으로 게시글·댓글·답글의 본인 CRUD, 좋아요 등록·취소, 다른 사용자 콘텐츠의 수정·삭제 차단, `user_id` 위조 차단, cascade와 공개 anon 읽기 전용 경계를 운영 DB에서 검증했습니다. 당시 테스트 Auth·profile·콘텐츠는 모두 정리했습니다. 이 비공개 CRUD·RLS 검사는 2026-08-12에 재실행하지 않았습니다.
+- RLS 검증의 `다른 사용자 삭제 차단`은 직접 UPDATE·DELETE 요청을 뜻합니다. 본인 게시글 또는 부모 댓글 삭제 시 FK `ON DELETE CASCADE`로 연결된 하위 데이터가 함께 정리되는 동작은 별도입니다.
+- 2026-08-11 기록에서는 JobFlow를 위해 공유 Hosted Auth의 email signup과 email provider를 유지하고 최소 비밀번호 길이를 8자로 동기화했습니다. 2026-08-12에는 이 hosted Auth 설정을 재조회하지 않았습니다.
+- 저장소의 `20260811054550_remove_global_auto_confirm_email.sql`은 공유 `auth.users`의 전역 auto-confirm trigger/function 제거만 정의하며, 2026-08-12 Hosted history에서도 해당 migration을 확인했습니다.
 - 2026-08-11 trigger 제거 회차에는 QA 사용자를 만들지 않았고, 실제 email delivery·confirmation link·A/B CRUD를 다시 실행하지 않았습니다.
 - 과거 `my-community` 주소는 기존 링크가 끊기지 않도록 query/hash를 보존해 canonical `portfolio-feedback-hub`로 보내는 redirect만 유지합니다.
+
+### Additive migration release order
+
+1. additive migration을 Hosted에 적용합니다. → 완료
+2. Hosted schema·grant·trigger와 count backfill을 검증합니다. → 완료
+3. 새 count table을 읽는 frontend를 배포합니다. → 이번 release
+4. 공개 count와 로그인 사용자의 private own-like 흐름을 운영 QA합니다. → 배포 후 확인
+5. 별도 restrictive migration으로 base like table의 공개 SELECT를 차단합니다. → 운영 QA 이후 별도 승인
 
 ---
 
@@ -112,7 +120,7 @@
 ## 실행 방법
 
 ```bash
-npm install
+npm ci
 npm run dev
 npm run build
 ```
