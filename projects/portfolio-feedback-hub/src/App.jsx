@@ -1,6 +1,7 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { AuthProvider, useAuth } from './hooks/useAuth';
+import AuthProvider from './components/AuthProvider';
+import { useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
 import PostListPage from './pages/PostListPage';
 import PostWritePage from './pages/PostWritePage';

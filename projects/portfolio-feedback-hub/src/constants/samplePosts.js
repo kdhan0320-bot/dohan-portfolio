@@ -1,4 +1,11 @@
-/* 게스트 모드 / Supabase 데이터 없을 때 표시하는 샘플 데이터 */
+/*
+ * Portfolio Feedback Hub의 공개 fallback용 synthetic sample content입니다.
+ * 게시글·댓글·답글·표시 이름·상대 시간·좋아요/댓글 수는 실제 사용자 제출물이나 운영 row가 아닙니다.
+ * 실제 사용자 원문을 복제하지 않았습니다.
+ * 생성형 AI가 문구 초안과 구현을 보조했고 김도한이 검토·편집·최종 승인했습니다.
+ * `김도한_dev`는 프로젝트 소유자 데모 표기이며, 그 외 표시 이름은 특정 실제
+ * 제3자를 지칭하지 않는 가상 역할명입니다.
+ */
 
 const now = Date.now();
 const ago = (min) => new Date(now - min * 60 * 1000).toISOString();

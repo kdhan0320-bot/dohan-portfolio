@@ -44,13 +44,11 @@
 
 ## 자산 및 라이선스
 
-- Pretendard `v1.3.9`를 공식 저장소의 jsDelivr CDN 경로로 불러오며, 공식 라이선스는 SIL Open Font License 1.1입니다.
+- Pretendard `v1.3.9`를 공식 jsDelivr 고정 버전 webfont로 불러옵니다. [공식 upstream](https://github.com/orioncactus/pretendard)과 [공식 라이선스](https://github.com/orioncactus/pretendard/blob/main/LICENSE)에서 SIL Open Font License 1.1을 확인할 수 있습니다.
 - `@mui/material`과 `@mui/icons-material` `9.0.1`을 사용합니다. 설치된 각 package의 `package.json`과 `LICENSE`에서 MIT 라이선스를 확인했습니다.
-- 카테고리 썸네일은 작은 MUI icon과 CSS 기본 도형으로 구성한 미니 리뷰 보드이며, 외부 이미지나 별도 브랜드 logo를 사용하지 않습니다.
-- 대표 샘플 3종(`bus-arrival-ui.svg`, `jobflow-application-ui.svg`, `signup-flow-ui.svg`)은 이번 작업에서 기본 SVG geometry로 직접 제작했습니다. 외부 stock·AI 생성 image·타사 logo·실제 브랜드 UI를 사용하거나 복제하지 않았습니다.
+- Header mark, `public/favicon.svg`, CategoryThumbnail, 대표 샘플 3종(`bus-arrival-ui.svg`, `jobflow-application-ui.svg`, `signup-flow-ui.svg`)은 프로젝트 내부 코드와 기본 SVG·CSS·MUI 도형으로 제작했습니다. 생성형 AI·코딩 도구가 구현을 보조했고, 김도한이 지시·검토·수정·최종 승인했습니다. 외부 사진·stock image·타사 logo·실제 브랜드 UI를 직접 복제하지 않았습니다.
 - 대표 샘플 asset은 `sampleAssetPath`가 지정된 sample data에서만 사용합니다. live 게시글 이미지는 기존의 허용된 HTTPS `image_url` 정책을 따르며, 이미지가 없거나 load에 실패하면 코드 기반 카테고리 썸네일로 복구합니다.
 - 포트폴리오 대표 썸네일 `projects/my-portfolio/public/thumbnails/community-feedback-hub.svg`의 제작 경위는 기존 `asset-license-register.md`에 기록되어 있습니다.
-- `public/favicon.svg`와 Header mark는 이번 7.1단계에서 feedback bubble과 comment line을 뜻하는 기본 SVG geometry로 재제작했습니다. 외부 image·logo asset을 사용하지 않았고, Material icon path를 favicon에 복제하지 않았습니다.
 
 ---
 
@@ -62,6 +60,7 @@
 - 카테고리는 sample post의 `category`와 실제 글의 hashtag를 활용하는 demo taxonomy이며 전용 DB column이 아닙니다.
 - 상태 배지는 댓글 수가 0인지에 따라 `피드백 대기` 또는 `댓글 있음`으로 계산한 demo label이며, 저장된 workflow 상태가 아닙니다.
 - 작성 화면의 피드백 요청 선택값은 별도 field가 아니라 게시글 본문 앞에 문자열로 합쳐 저장됩니다.
+- `SAMPLE_POSTS`의 게시글 18개와 `SAMPLE_COMMENTS`의 댓글 32개·답글 3개, 표시 이름·상대 시간·좋아요/댓글 수는 실제 사용자 활동이나 운영 데이터가 아닌 포트폴리오 데모용 synthetic 콘텐츠입니다. 생성형 AI가 문구 초안과 구현을 보조했고 김도한이 검토·편집·최종 승인했으며, 실제 사용자 게시글·댓글이나 외부 커뮤니티 원문을 복제하지 않았습니다. `김도한_dev`는 프로젝트 소유자 데모 표기이고, 그 외 표시 이름은 특정 실제 제3자를 지칭하지 않는 가상 역할명입니다.
 - 공개 standalone은 목록·상세만 읽기 전용으로 제공하며 회원가입·작성·mutation CTA를 노출하지 않습니다. `/signup`은 `/login`으로 이동하고 `/login` 직접 접근은 비공개 QA 계정에 한해 사용합니다.
 - runtime AI·LLM API와 Supabase Storage upload는 없습니다. `AI Coding`은 taxonomy와 sample category 이름입니다.
 
@@ -146,7 +145,8 @@ GitHub Actions 배포에서는 저장소 Secrets의 `SUPABASE_URL`, `SUPABASE_AN
 
 ## 한계 및 개선 예정
 
-- 현재는 사용 권한이 있는 선택적 HTTPS 이미지 URL만 지원하며, Picsum과 허용되지 않은 URL은 차단
+- HTTPS·hostname·userinfo·Picsum 차단은 URL 형식과 허용 host 경계를 검사하는 기능이며, 이미지의 저작권·라이선스·초상권·상표권을 자동 검증하지 않음
+- 실제 `image_url`을 사용할 경우 제공자가 사용 권리를 보유해야 하며, 공개 포트폴리오 반영 전 별도 출처·권리 기록 필요
 - 실제 파일 업로드와 Supabase Storage 연동은 미포함
 - Auth 또는 migration 변경 후 비공개 Admin QA 계정으로 confirmation·CRUD·RLS 회귀 검증
 - category / status / feedback focus의 구조화된 DB field와 제품 workflow

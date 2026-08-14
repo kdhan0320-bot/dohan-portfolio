@@ -12,7 +12,7 @@ import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { signIn, enterGuestMode } = useAuth();
+  const { signIn } = useAuth();
   const [form, setForm] = useState({ username: '', password: '' });
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
@@ -51,7 +51,6 @@ const LoginPage = () => {
   };
 
   const handleGuestMode = () => {
-    enterGuestMode();
     navigate('/');
   };
 
