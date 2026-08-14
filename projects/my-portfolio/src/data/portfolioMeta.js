@@ -820,7 +820,7 @@ export const PROJECT_DETAIL_READY = {
   'bus-arrival': {
     responsiveNotApplicable: true,
     hero: {
-      summary: '교육 과정 제한 시간 과제로 시작한 화면을 바탕으로, 이동 중 도착 정보를 빠르게 확인하도록 정보 구조·상태·컴포넌트와 Prototype을 다시 정리한 모바일 UI입니다.',
+      summary: '이동 중 짧은 시간 안에 다음 버스를 판단하도록, 도착 정보의 우선순위와 검색·상세·복구 상태를 정리한 모바일 Figma Prototype입니다.',
       media: [
         { src: 'thumbnails/bus-arrival-ui-thumbnail.png', alt: '울산 버스 도착정보 Figma Prototype · final screen composite · static sample', objectFit: 'contain' },
       ],
@@ -845,9 +845,9 @@ export const PROJECT_DETAIL_READY = {
       },
       {
         title: '검색의 기본·결과·결과 없음 상태를 분리했습니다.',
-        choice: 'Recent Empty · Search Result · No Result를 독립 상태로 구성',
+        choice: 'Recent Empty · Search Results · No Result를 독립 상태로 구성',
         reason: '입력 전 상태와 검색 실패를 같은 빈 화면으로 오해하지 않게 하기 위해',
-        verification: '최종 Figma Search와 상태 Prototype 연결 확인',
+        verification: 'Recent Empty → Search Results, Clear/다시 검색 → Recent Empty 전환 확인',
         media: { src: 'detail/bus-arrival-02-search.png', alt: '울산 버스 도착정보 Figma Prototype · Search · static sample', aspectRatio: '3 / 2' },
       },
       {
@@ -868,19 +868,19 @@ export const PROJECT_DETAIL_READY = {
     // Search는 Decision 02 증거로만 쓰고 Main Screens에는 다시 넣지 않는다.
     mainScreens: [
       { label: 'Home', media: { src: 'detail/bus-arrival-01-home.png', alt: '울산 버스 도착정보 Figma Prototype · Home · static sample', aspectRatio: '3 / 2' } },
-      { label: 'Route Detail', media: { src: 'detail/bus-arrival-04-route-detail.png', alt: '울산 버스 도착정보 Figma Prototype · Route Detail · static sample', aspectRatio: '3 / 2' } },
       { label: 'Station Detail', media: { src: 'detail/bus-arrival-03-station-detail.png', alt: '울산 버스 도착정보 Figma Prototype · Station Detail · static sample', aspectRatio: '3 / 2' } },
+      { label: 'Route Detail', media: { src: 'detail/bus-arrival-04-route-detail.png', alt: '울산 버스 도착정보 Figma Prototype · Route Detail · static sample', aspectRatio: '3 / 2' } },
     ],
     scope: {
       actual: [
-        'Figma 정보 구조·모바일 UI·컴포넌트·Prototype 설계',
+        'Figma 모바일 정보 구조·상태·Prototype 설계',
         '최종 화면 10개와 상태·접근성 QA',
-        '울산 BIS 공개정보 재검토 · 2026.07.28',
+        '화면 예시 데이터 2026-07-28 · 공식 자료 재확인 2026-08-14',
       ],
       demoStatic: [
         '정적 예시 정류장·노선·도착 정보',
         '도착 분·남은 정류장 수·저상 여부는 시연값',
-        'AI는 화면 감사·카피·접근성 QA·Figma 편집 보조에 활용',
+        'AI는 화면 감사·카피·공식 자료·접근성 QA·Figma 편집 보조에 활용',
       ],
       notIncluded: [
         '실시간 버스 API·차량 위치·운행 변경',
@@ -889,7 +889,7 @@ export const PROJECT_DETAIL_READY = {
       ],
     },
     resultLimit: {
-      done: '교육 과정 과제에서 출발한 화면을 최종 화면 10개, 의미 기반 컴포넌트와 상태, 방향별 노선 타임라인, 접근성 QA와 프로토타입 흐름으로 리파인했습니다.',
+      done: '도착 정보의 우선순위와 검색·정류장 상세·노선 상세 흐름, 빈 상태·결과 없음·로딩·오류 복구 상태를 최종 10개 화면과 QA 문서로 정리했습니다.',
       limit: '실행 앱이 아닌 360px Figma Prototype입니다. 실제 API·실시간 위치·Push·계정·코드 구현과 사용자 조사·사용성 검증은 포함하지 않았습니다.',
     },
   },
