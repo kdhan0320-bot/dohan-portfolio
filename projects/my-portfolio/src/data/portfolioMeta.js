@@ -513,13 +513,13 @@ export const PROJECT_DETAIL_READY = {
   },
   brewstep: {
     meta: {
-      type: 'MOBILE APP',
-      role: 'MOBILE UX/UI',
+      type: 'FIGMA PROTOTYPE',
+      role: 'MOBILE UX/UI · PROTOTYPING',
       tools: 'FIGMA · AUTO LAYOUT',
       data: 'STATIC / PROTOTYPE',
     },
     hero: {
-      summary: '옵션이 많은 카페 주문을 7단계 흐름으로 정리하고, 모바일·반응형·Prototype·자산 권리까지 연결한 포트폴리오용 가상 주문 서비스입니다.',
+      summary: '옵션과 픽업 조건이 많은 카페 주문을 7단계 흐름으로 정리하고, 390·1024·1440에서 같은 선택과 다음 행동이 이어지도록 설계한 Figma Concept Prototype입니다.',
       mediaLayout: 'approved-pair',
       media: [
         {
@@ -544,8 +544,8 @@ export const PROJECT_DETAIL_READY = {
       mediaLabel: 'PRODUCT DETAIL · 1440 + 390 · 승인된 Figma 화면 비교',
     },
     context: {
-      problem: '교육 과정 과제 원본에는 화면·상태·참고 자산이 혼재해, 상품 선택부터 픽업까지의 주문 조건과 다음 행동을 하나의 흐름으로 설명하기 어려웠습니다.',
-      goal: '7단계 주문 흐름과 데이터 계약을 기준으로 화면·상태·반응형·Prototype·권리 문서를 하나의 시스템으로 정리했습니다.',
+      problem: '모바일 카페 주문 사용자는 온도·사이즈·추가 옵션·수량·픽업 매장과 시간이 여러 단계에 흩어지면 현재 선택과 다음 행동을 놓치기 쉽습니다.',
+      goal: '상품 선택부터 픽업·결제·주문 상태까지 같은 조건을 이어 보며, 화면 폭이 달라도 다음 행동을 빠르게 판단하도록 7단계 흐름을 설계했습니다.',
     },
     decisions: [
       {
@@ -684,8 +684,16 @@ export const PROJECT_DETAIL_READY = {
       notIncluded: 'NOT INCLUDED',
     },
     scope: {
-      actual: ['완료한 설계 산출물', '모바일 7화면', '반응형 4화면', 'Prototype Flow 3개', 'Reaction 21개', 'Component·Contract·Asset Rights'],
-      demoStatic: ['샘플·mock·정적 데이터', '상품·매장·픽업·결제·주문 상태 예시', 'Figma Concept Prototype', 'Pexels 제품 사진'],
+      actual: [
+        '모바일 7화면 · 반응형 4화면',
+        '대표 Prototype Flow 3개 · Reaction 21개',
+        'Component · Content/Checkout Contract · Asset Rights',
+      ],
+      demoStatic: [
+        '상품·매장·픽업·결제·주문 상태의 정적 예시 데이터',
+        'Figma Concept Prototype · Pexels 제품 사진',
+        '대표 3개 흐름만 연결 · 일부 조작 요소는 시각 사양',
+      ],
       notIncluded: ['미구현 기능과 한계', '웹·앱 코드 구현', '실제 API·DB·결제·재고·위치', '실제 사용자 조사·사용성 테스트', '성과 수치', '상표 Clearance'],
     },
     aiCollaboration: [
@@ -694,8 +702,8 @@ export const PROJECT_DETAIL_READY = {
       { label: 'USER VERIFIED', value: 'Figma node metadata · Screenshot · Reaction Graph · Source·License' },
     ],
     resultLimit: {
-      done: '모바일·반응형·Prototype·접근성·자산 권리를 하나의 파일 구조로 정리했습니다.',
-      limit: '실제 서비스 연동·코드 구현·사용성 조사·상표 검토는 포함하지 않았습니다.',
+      done: '모바일 7화면·반응형 4화면과 대표 Prototype 3개 흐름을 Content/Checkout Contract와 선택·변경·진행 상태 문법으로 연결했습니다.',
+      limit: '실제 서비스 연동·코드 구현·사용성 조사·상표 검토는 포함하지 않았으며, 공개 Prototype은 대표 3개 흐름만 시연합니다.',
     },
   },
   seolbiit: {

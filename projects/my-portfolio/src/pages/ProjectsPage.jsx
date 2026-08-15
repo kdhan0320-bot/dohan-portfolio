@@ -74,7 +74,6 @@ const MORE_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished === true);
 const PROJECTS_MORE_WORK_COPY = {
   'feedback-hub': '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱',
   'bus-arrival-app': '도착 정보의 우선순위와 예외 상태를 설계한 모바일 Prototype',
-  brewstep: '주문 조건과 상태를 반응형 화면과 Prototype으로 연결한 카페 주문 UX/UI',
 };
 
 /* Figma direct node가 확정한 한글 UI 서체(Noto Sans KR)다. 전역 `FONT_SANS`

@@ -440,7 +440,8 @@ const ProjectDetailPage = () => {
   // 없는 경우 모두 가짜 페이지를 만들지 않고 전체 프로젝트 목록으로 돌려보낸다.
   if (!project || !ready) return <Navigate to="/projects" replace />;
 
-  const { tools = [], liveUrl, githubUrl, figmaPrototypeUrl, categoryLabel } = project;
+  const { tools = [], liveUrl, githubUrl, figmaPrototypeUrl, figmaPrototypeLabel, categoryLabel } = project;
+  const resolvedFigmaLabel = figmaPrototypeLabel || 'Figma 화면 보기';
 
   // 스마트 back: 브라우저 history가 있으면(=Home/Projects에서 들어옴) 뒤로가기로
   // 스크롤 위치까지 보존, history가 없는 직접 URL 진입/새로고침이면 /projects로
@@ -601,14 +602,14 @@ const ProjectDetailPage = () => {
                     </Box>
                   )}
                   {figmaPrototypeUrl && (
-                    <Box component="a" href={figmaPrototypeUrl} target="_blank" rel="noopener noreferrer" aria-label="Figma 화면 새 탭에서 열기"
+                    <Box component="a" href={figmaPrototypeUrl} target="_blank" rel="noopener noreferrer" aria-label={`${resolvedFigmaLabel} 새 탭에서 열기`}
                       sx={{
                         bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, height: 48, px: 2.5, borderRadius: '12px',
                         display: 'inline-flex', alignItems: 'center', gap: 1, textDecoration: 'none',
                         fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
                         '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
                       }}>
-                      Figma 화면 보기 <OpenInNewIcon sx={{ fontSize: '1rem' }} />
+                      {resolvedFigmaLabel} <OpenInNewIcon sx={{ fontSize: '1rem' }} />
                     </Box>
                   )}
                   {githubUrl && (
