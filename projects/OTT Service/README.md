@@ -2,7 +2,7 @@
 
 ## 1. 한 줄 목적
 
-가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱입니다.
+가상 콘텐츠 탐색을 장르 필터·native dialog·찜 상태 동기화로 구현한 Vanilla JavaScript 반응형 퍼블리싱입니다.
 
 ## 2. 구현 과제
 
@@ -20,13 +20,13 @@
 
 - Hero와 번호 기반 가상 catalog 10개
 - 장르 filter 6종
-- native `<dialog>` 기반 프로젝트 안내·작품 정보·예고편 미리보기
+- native `<dialog>` 기반 프로젝트 안내·작품 정보·미리보기 UI
 - Hero·card·dialog 사이에서 동기화되는 찜 상태
 - 데스크톱·모바일 navigation과 실제 포트폴리오·GitHub 링크
 
-## 5. STATIC·PAGE MEMORY 계약
+## 5. ACTUAL INTERACTION · STATIC DATA · PAGE MEMORY 계약
 
-콘텐츠 제목·장르·설명·연도·회차·데모 평점은 HTML과 JavaScript의 정적 데이터입니다. 찜 상태는 현재 페이지 메모리에서만 유지되며 `localStorage`와 `sessionStorage`를 사용하지 않습니다. 새로고침하면 모든 찜 상태가 초기화됩니다.
+장르 필터·native dialog·찜 상태 동기화는 실제 browser interaction으로 구현했습니다. Catalog의 제목·장르·설명·연도·회차·데모 평점은 static data입니다. Favorite는 현재 page memory에서만 유지되며 `localStorage`와 `sessionStorage`를 사용하지 않고, reload 시 모두 초기화됩니다.
 
 ## 6. 포함하지 않은 기능
 
@@ -40,6 +40,8 @@
 ## 7. 실행 방법
 
 별도 설치나 빌드 과정이 없습니다. 저장소 루트에서 로컬 HTTP server를 실행한 뒤 `projects/OTT Service/index.html`을 엽니다.
+
+별도 승인 Figma는 없습니다. 현재 HTML·CSS·JavaScript와 운영 화면이 구현 Source of Truth입니다.
 
 ## 8. 폴더·파일 역할
 
@@ -74,4 +76,4 @@ WebP 11개는 ChatGPT Python 환경에서 Pillow·NumPy를 이용해 기하 도�
 
 ## 11. 현재 한계
 
-자산 bundle에는 manifest와 생성 방식 설명은 있지만 완전한 generator source가 포함되어 있지 않아 같은 결과의 정확한 재생성을 주장하지 않습니다. 절차형 결과의 독점성이나 법률상 무위험도 보증하지 않습니다. screen reader의 실제 수동 낭독과 모든 상태의 수치형 contrast 측정은 별도 사용자 환경 검토가 필요합니다.
+과거 자산 생성 기록에는 `manifest.json`·`manifest.md`·`validation.json`이 언급되지만 현재 저장소에서 해당 파일 위치는 확인되지 않습니다. 현재 보존된 근거는 파일별 dimensions·scene brief·seed·SHA-256을 기록한 `ASSET_PROVENANCE.md`와 `OFL.txt`입니다. 완전한 generator source와 원본 prompt도 확인되지 않아 같은 결과의 정확한 재생성을 주장하지 않습니다. 절차형 결과의 독점성이나 법률상 무위험도 보증하지 않습니다. screen reader의 실제 수동 낭독과 모든 상태의 수치형 contrast 측정은 별도 사용자 환경 검토가 필요합니다.

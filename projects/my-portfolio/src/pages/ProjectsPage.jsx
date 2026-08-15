@@ -74,7 +74,6 @@ const MORE_WORKS = ALL_PROJECTS.filter((p) => p.moreWorksPublished === true);
 const PROJECTS_MORE_WORK_COPY = {
   'feedback-hub': '공개 탐색은 읽기 전용으로 운영하고, 비공개 계정으로 Auth·CRUD·RLS 경계를 검증한 React/MUI 커뮤니티 웹앱',
   'bus-arrival-app': '도착 정보의 우선순위와 예외 상태를 설계한 모바일 Prototype',
-  'ott-service': '가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱',
   brewstep: '주문 조건과 상태를 반응형 화면과 Prototype으로 연결한 카페 주문 UX/UI',
 };
 
@@ -546,11 +545,20 @@ const MoreWorkCard = ({ project }) => {
   const hasSeparateLiveAction = project.id === 'ott-service' && Boolean(internalHref && project.liveUrl);
   const isLink = Boolean(internalHref || externalHref);
   const moreWorksTools = project.moreWorksTools ?? project.tools ?? [];
+  const moreWorksToolsLabel =
+    hasSeparateLiveAction && moreWorksTools.length > 1
+      ? [
+          moreWorksTools.slice(0, -1).join(' · '),
+          moreWorksTools.at(-1),
+        ].join('\n')
+      : moreWorksTools.join(' · ');
   const scopeLabel = project.moreWorksRole ?? (moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t))
     ? 'RESPONSIVE WEB' : (project.categoryLabel || 'MORE WORK'));
   const statusLabel = project.moreWorksStatus
     ?? (moreWorksTools.every((t) => ['HTML', 'CSS', 'JavaScript'].includes(t)) ? 'STATIC' : 'DEMO');
   const hasLongStatus = statusLabel.length > 20;
+  const needsCompactStatusWrap =
+    hasSeparateLiveAction && hasLongStatus;
 
   return (
     <Box
@@ -660,9 +668,10 @@ const MoreWorkCard = ({ project }) => {
               fontSize: { xs: '10.5px', sm: '11px' },
               lineHeight: '18px',
               letterSpacing: '0.04em',
+              whiteSpace: hasSeparateLiveAction ? 'pre-line' : undefined,
               color: HUMAN_SIGNAL.inkNavy,
             }}>
-              {moreWorksTools.join(' · ').toUpperCase()}
+              {moreWorksToolsLabel.toUpperCase()}
             </Typography>
           )}
           <Box sx={{
@@ -693,6 +702,12 @@ const MoreWorkCard = ({ project }) => {
             maxWidth: { xs: hasLongStatus ? 170 : 'none', sm: 'none' },
             height: { xs: hasLongStatus ? 'auto' : 28, sm: 28 },
             minHeight: 28,
+            '@media (min-width:900px) and (max-width:1199.98px)': needsCompactStatusWrap ? {
+              minWidth: 158,
+              maxWidth: 170,
+              height: 'auto',
+              minHeight: 28,
+            } : undefined,
             bgcolor: HUMAN_SIGNAL.deepHarbor,
             color: HUMAN_SIGNAL.softWhite,
             borderRadius: '10px',
@@ -706,6 +721,11 @@ const MoreWorkCard = ({ project }) => {
               lineHeight: { xs: hasLongStatus ? 1.2 : 1, sm: 1 },
               letterSpacing: '0.04em',
               whiteSpace: { xs: hasLongStatus ? 'normal' : 'nowrap', sm: 'nowrap' },
+              '@media (min-width:900px) and (max-width:1199.98px)': needsCompactStatusWrap ? {
+                fontSize: '10px',
+                lineHeight: 1.2,
+                whiteSpace: 'normal',
+              } : undefined,
             }}>
               {statusLabel}
             </Typography>

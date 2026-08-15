@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱" />
+  <meta name="description" content="장르 필터·native dialog·찜 상태 동기화와 키보드 탐색을 구현한 Vanilla JavaScript 반응형 UI" />
   <title>Streaming UI Concept — Portfolio Demo</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=20260804-1" />
+  <link rel="stylesheet" href="css/style.css?v=20260815-1" />
 </head>
 <body>
   <a class="skip-link" href="#main-content">본문으로 바로가기</a>
@@ -51,7 +51,7 @@
 
       <nav class="header__nav" aria-label="메인 네비게이션">
         <ul class="nav__list">
-          <li><a href="#home"      class="nav__link active">홈</a></li>
+          <li><a href="#home"      class="nav__link active" aria-current="location">홈</a></li>
           <li><a href="#trending"  class="nav__link">콘텐츠</a></li>
           <li><a href="#featured"  class="nav__link">대표작</a></li>
           <li><a href="#recommend" class="nav__link">추천작</a></li>
@@ -73,7 +73,7 @@
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true" role="navigation" aria-label="모바일 메뉴" hidden>
       <ul class="mobile-nav__list">
-        <li><a href="#home"      class="mobile-nav__link">홈</a></li>
+        <li><a href="#home"      class="mobile-nav__link" aria-current="location">홈</a></li>
         <li><a href="#trending"  class="mobile-nav__link">콘텐츠</a></li>
         <li><a href="#featured"  class="mobile-nav__link">대표작</a></li>
         <li><a href="#recommend" class="mobile-nav__link">추천작</a></li>
@@ -81,6 +81,21 @@
       </ul>
     </div>
   </header>
+
+  <noscript>
+    <aside class="noscript-notice" aria-labelledby="noscriptNoticeTitle">
+      <div class="container">
+        <p class="noscript-notice__title" id="noscriptNoticeTitle">JavaScript 비활성화 안내</p>
+        <p class="noscript-notice__body">카탈로그 제목과 본문은 그대로 읽을 수 있습니다. 장르 필터·dialog·찜·모바일 메뉴는 JavaScript가 필요합니다.</p>
+        <nav class="noscript-notice__links" aria-label="JavaScript 없이 섹션 바로가기">
+          <a href="#home">Home</a>
+          <a href="#trending">콘텐츠</a>
+          <a href="#featured">대표작</a>
+          <a href="#recommend">추천작</a>
+        </nav>
+      </div>
+    </aside>
+  </noscript>
 
   <main id="main-content" tabindex="-1">
 
@@ -118,7 +133,7 @@
             <span class="ui-label">작품 정보</span>
           </button>
           <button type="button" class="btn btn--outline btn--lg js-trailer-btn" id="heroTrailerBtn" data-content-id="catalog-01">
-            <span class="ui-label">예고편 미리보기</span>
+            <span class="ui-label">미리보기 UI</span>
           </button>
           <button type="button" class="btn btn--glass hero__like-action js-like-btn" id="likeHeroBtn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
             <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -162,7 +177,7 @@
         </div>
 
         <!-- Genre Filter -->
-        <div class="filter-bar" role="group" aria-label="장르 필터">
+        <div class="filter-bar" role="group" aria-label="장르 필터" aria-controls="contentsGrid">
           <button type="button" class="filter-btn active" data-filter="all"           aria-pressed="true">전체</button>
           <button type="button" class="filter-btn"        data-filter="thriller"      aria-pressed="false">스릴러</button>
           <button type="button" class="filter-btn"        data-filter="drama"         aria-pressed="false">드라마</button>
@@ -170,6 +185,7 @@
           <button type="button" class="filter-btn"        data-filter="psychological" aria-pressed="false">심리</button>
           <button type="button" class="filter-btn"        data-filter="documentary"   aria-pressed="false">다큐멘터리</button>
         </div>
+        <p id="filterStatus" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
 
         <!-- Content Cards Grid -->
         <div class="cards-grid" id="contentsGrid" role="list">
@@ -185,8 +201,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-01" aria-label="SIGNAL / 01 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-01" aria-label="SIGNAL / 01 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-01" aria-label="SIGNAL / 01 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-01" aria-label="SIGNAL / 01 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -216,8 +232,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-02" aria-label="BLUE / 02 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-02" aria-label="BLUE / 02 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-02" aria-label="BLUE / 02 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-02" aria-label="BLUE / 02 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -247,8 +263,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-03" aria-label="CITY / 03 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-03" aria-label="CITY / 03 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-03" aria-label="CITY / 03 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-03" aria-label="CITY / 03 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -278,8 +294,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-04" aria-label="ROOM / 04 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-04" aria-label="ROOM / 04 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-04" aria-label="ROOM / 04 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-04" aria-label="ROOM / 04 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -309,8 +325,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-05" aria-label="ARCHIVE / 05 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-05" aria-label="ARCHIVE / 05 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-05" aria-label="ARCHIVE / 05 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-05" aria-label="ARCHIVE / 05 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -340,8 +356,8 @@
                   <button type="button" class="card__icon-btn js-info-btn" data-content-id="catalog-06" aria-label="RUNWAY / 06 작품 정보">
                     <span class="ui-label">작품 정보</span>
                   </button>
-                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-06" aria-label="RUNWAY / 06 예고편 미리보기">
-                    <span class="ui-label">예고편</span>
+                  <button type="button" class="card__play-btn js-trailer-btn" data-content-id="catalog-06" aria-label="RUNWAY / 06 미리보기 UI">
+                    <span class="ui-label">미리보기</span>
                   </button>
                   <button type="button" class="card__icon-btn js-like-btn" data-like-id="catalog-06" aria-label="RUNWAY / 06 찜하기" aria-pressed="false">
                     <span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -374,8 +390,8 @@
           <div class="featured-banner__content">
             <div class="featured-banner__text">
               <p class="section__label featured-banner__eyebrow">INTERACTIVE DEMO</p>
-              <h3 class="featured-banner__title">필터부터 모달까지,<br>직접 확인해보세요.</h3>
-              <p class="featured-banner__desc">장르 필터, 작품 정보, 예고편 미리보기와 찜하기 상태를 정적 데이터로 구현했습니다.</p>
+              <p class="featured-banner__title">필터부터 모달까지,<br>직접 확인해보세요.</p>
+              <p class="featured-banner__desc">장르 필터, 작품 정보, 미리보기 UI와 찜하기 상태를 정적 데이터로 구현했습니다.</p>
             </div>
             <div class="featured-banner__actions">
               <ul class="demo-scope__tags" aria-label="Interactive Demo 기능">
@@ -401,11 +417,11 @@
           <div class="detail__poster">
             <div class="detail__poster-bg" aria-hidden="true"></div>
             <div class="detail__poster-overlay">
-              <button type="button" class="trailer-btn js-trailer-btn" id="trailerBtn" data-content-id="catalog-01" aria-label="SIGNAL / 01 예고편 미리보기">
+              <button type="button" class="trailer-btn js-trailer-btn" id="trailerBtn" data-content-id="catalog-01" aria-label="SIGNAL / 01 미리보기 UI">
                 <span class="trailer-btn__circle" aria-hidden="true">
                   <svg class="ui-icon ui-icon--play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-play"></use></svg>
                 </span>
-                <span class="ui-label">예고편 미리보기</span>
+                <span class="ui-label">미리보기 UI</span>
               </button>
             </div>
           </div>
@@ -497,8 +513,8 @@
               </div>
               <div class="rec-card__actions">
                 <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-07" aria-label="FOCUS / 07 작품 정보"><span class="ui-label">정보</span></button>
-                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-07" aria-label="FOCUS / 07 예고편 미리보기">
-                  <span class="ui-label">예고편</span>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-07" aria-label="FOCUS / 07 미리보기 UI">
+                  <span class="ui-label">미리보기</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-07" aria-label="FOCUS / 07 찜하기" aria-pressed="false">
                   <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -528,8 +544,8 @@
               </div>
               <div class="rec-card__actions">
                 <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-08" aria-label="MIDNIGHT / 08 작품 정보"><span class="ui-label">정보</span></button>
-                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-08" aria-label="MIDNIGHT / 08 예고편 미리보기">
-                  <span class="ui-label">예고편</span>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-08" aria-label="MIDNIGHT / 08 미리보기 UI">
+                  <span class="ui-label">미리보기</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-08" aria-label="MIDNIGHT / 08 찜하기" aria-pressed="false">
                   <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -559,8 +575,8 @@
               </div>
               <div class="rec-card__actions">
                 <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-09" aria-label="FREQUENCY / 09 작품 정보"><span class="ui-label">정보</span></button>
-                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-09" aria-label="FREQUENCY / 09 예고편 미리보기">
-                  <span class="ui-label">예고편</span>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-09" aria-label="FREQUENCY / 09 미리보기 UI">
+                  <span class="ui-label">미리보기</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-09" aria-label="FREQUENCY / 09 찜하기" aria-pressed="false">
                   <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -590,8 +606,8 @@
               </div>
               <div class="rec-card__actions">
                 <button type="button" class="rec-card__btn js-info-btn" data-content-id="catalog-10" aria-label="OCEAN / 10 작품 정보"><span class="ui-label">정보</span></button>
-                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-10" aria-label="OCEAN / 10 예고편 미리보기">
-                  <span class="ui-label">예고편</span>
+                <button type="button" class="rec-card__btn js-trailer-btn" data-content-id="catalog-10" aria-label="OCEAN / 10 미리보기 UI">
+                  <span class="ui-label">미리보기</span>
                 </button>
                 <button type="button" class="rec-card__btn js-like-btn" data-like-id="catalog-10" aria-label="OCEAN / 10 찜하기" aria-pressed="false">
                   <span class="ui-icon-wrap rec-card__icon" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span>
@@ -657,11 +673,11 @@
 
       <div class="login-modal__body">
         <h2 class="login-modal__title" id="projectGuideTitle" tabindex="-1">프로젝트 안내</h2>
-        <p class="login-modal__desc">가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱입니다.</p>
+        <p class="login-modal__desc">장르 필터·native dialog·찜 상태 동기화와 키보드 탐색을 구현한 Vanilla JavaScript 반응형 UI입니다.</p>
         <h3 class="modal__section-title">구현 범위</h3>
         <ul class="login-modal__notice-list">
           <li>장르 필터와 콘텐츠 카드</li>
-          <li>작품 정보 및 예고편 미리보기 모달</li>
+          <li>작품 정보 및 미리보기 UI dialog</li>
           <li>찜하기 인터랙션</li>
           <li>반응형 레이아웃</li>
         </ul>
@@ -700,7 +716,7 @@
         </dl>
         <p class="info-modal__notice">정적 데모 데이터</p>
         <div class="modal__actions">
-          <button type="button" class="btn btn--primary js-info-trailer"><span class="ui-label">예고편 미리보기</span></button>
+          <button type="button" class="btn btn--primary js-info-trailer"><span class="ui-label">미리보기 UI</span></button>
           <button type="button" class="btn btn--glass btn--icon-only js-like-btn" id="contentInfoLike" aria-label="찜하기" aria-pressed="false"><span class="ui-icon-wrap" aria-hidden="true"><svg class="ui-icon ui-icon--heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-heart"></use></svg></span></button>
           <button type="button" class="btn btn--outline js-dialog-close"><span class="ui-label">닫기</span></button>
         </div>
@@ -712,8 +728,8 @@
   <dialog class="modal" id="trailerModal" aria-labelledby="modalTitle">
     <div class="modal__container">
       <div class="modal__header">
-        <h2 class="modal__title" id="modalTitle" tabindex="-1">SIGNAL / 01 — 예고편 미리보기</h2>
-        <button type="button" class="modal__close js-dialog-close" aria-label="예고편 미리보기 닫기">
+        <h2 class="modal__title" id="modalTitle" tabindex="-1">SIGNAL / 01 — 미리보기 UI</h2>
+        <button type="button" class="modal__close js-dialog-close" aria-label="미리보기 UI 닫기">
           <svg class="ui-icon ui-icon--close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="#icon-close"></use></svg>
         </button>
       </div>
@@ -738,6 +754,6 @@
     </div>
   </dialog>
 
-  <script src="js/main.js?v=20260804-4"></script>
+  <script src="js/main.js?v=20260815-1"></script>
 </body>
 </html>

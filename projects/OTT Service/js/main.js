@@ -98,6 +98,7 @@ skipLink.addEventListener('click', (event) => {
 // ──────────────────────────────────────────────
 const filterBtns   = document.querySelectorAll('.filter-btn');
 const contentCards = document.querySelectorAll('#contentsGrid .card');
+const filterStatus = document.getElementById('filterStatus');
 
 filterBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -110,10 +111,14 @@ filterBtns.forEach((btn) => {
     btn.classList.add('active');
     btn.setAttribute('aria-pressed', 'true');
 
+    let visibleCardCount = 0;
     contentCards.forEach((card) => {
       const match = selected === 'all' || card.dataset.genre === selected;
       card.classList.toggle('hidden', !match);
+      if (match) visibleCardCount += 1;
     });
+
+    filterStatus.textContent = `${btn.textContent.trim()} 필터 적용: 콘텐츠 ${visibleCardCount}개가 표시됩니다.`;
   });
 });
 
@@ -284,7 +289,7 @@ document.querySelectorAll('.js-project-guide').forEach((button) => {
 });
 
 function openTrailer(trigger, title) {
-  document.getElementById('modalTitle').textContent = `${title} — 예고편 미리보기`;
+  document.getElementById('modalTitle').textContent = `${title} — 미리보기 UI`;
   document.getElementById('modalVideoTitle').textContent = title;
   openDialog(trailerModal, trigger, document.getElementById('modalTitle'));
 }
@@ -357,21 +362,11 @@ document.querySelectorAll('.js-like-btn').forEach((button) => {
   });
 });
 
-// 콘텐츠 action은 현재 focus된 실제 button에서만 Enter·Space를 처리합니다.
-document.querySelectorAll('.js-info-btn, .js-trailer-btn, .js-like-btn').forEach((button) => {
-  button.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    event.preventDefault();
-    event.currentTarget.click();
-  });
-});
-
-
 // ──────────────────────────────────────────────
 // 6. 스크롤 감지 → 네비 링크 active 전환
 // ──────────────────────────────────────────────
 const sections = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav__link');
+const navLinks  = document.querySelectorAll('.nav__link, .mobile-nav__link');
 
 const sectionObserver = new IntersectionObserver(
   (entries) => {
@@ -379,7 +374,10 @@ const sectionObserver = new IntersectionObserver(
       if (!entry.isIntersecting) return;
       const id = entry.target.id;
       navLinks.forEach((link) => {
-        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        const isCurrent = link.getAttribute('href') === `#${id}`;
+        if (link.classList.contains('nav__link')) link.classList.toggle('active', isCurrent);
+        if (isCurrent) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
       });
     });
   },

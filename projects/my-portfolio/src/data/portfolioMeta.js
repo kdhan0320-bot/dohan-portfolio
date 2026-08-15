@@ -360,10 +360,10 @@ export const PROJECT_DETAIL_READY = {
       type: 'RESPONSIVE WEB',
       role: 'RESPONSIVE WEB PUBLISHING · VANILLA JS',
       tools: 'HTML · CSS · JAVASCRIPT',
-      data: 'STATIC / PAGE MEMORY',
+      data: 'STATIC DATA / PAGE MEMORY',
     },
     hero: {
-      summary: '가상 콘텐츠를 filter·native dialog·찜 상태·반응형으로 연결한 Vanilla JavaScript 퍼블리싱',
+      summary: '장르 필터·native dialog·찜 상태 동기화와 키보드 탐색을 구현한 Vanilla JavaScript 반응형 UI입니다.',
       media: [
         {
           src: 'detail/streaming-ui/streaming-hero-1440.png',
@@ -373,11 +373,11 @@ export const PROJECT_DETAIL_READY = {
           objectPosition: 'top',
         },
       ],
-      mediaLabel: '현재 브라우저 실행 화면 · static catalog · page-memory interaction',
+      mediaLabel: '현재 브라우저 실행 화면 · interactive UI · static catalog · reload reset',
     },
     context: {
-      problem: '어두운 콘텐츠 UI의 분위기를 유지하면서도 작품 정보·필터·주요 행동을 빠르게 읽을 수 있어야 했습니다. 프레임워크 없이 여러 위치의 상태와 dialog keyboard flow도 일관되게 연결해야 했습니다.',
-      goal: '정적 가상 catalog를 기반으로 filter·native dialog·page-memory 찜 상태와 반응형 navigation을 HTML·CSS·Vanilla JavaScript로 구현합니다.',
+      problem: '어두운 미디어 UI에서는 분위기를 유지하면서도 카드·필터·주요 행동을 빠르게 구분해야 하고, 같은 콘텐츠의 상태와 dialog 초점 흐름이 여러 위치에서 일관되어야 했습니다.',
+      goal: '정적 catalog에서도 장르 필터·native dialog·찜 상태 동기화·반응형 navigation을 실제 브라우저 interaction으로 연결하는 것이 목표였습니다.',
     },
     decisions: [
       {
@@ -395,7 +395,7 @@ export const PROJECT_DETAIL_READY = {
       },
       {
         title: '세 종류의 native dialog에 같은 keyboard flow를 적용했습니다.',
-        choice: '작품 정보·미리보기·프로젝트 안내에 initial focus와 Tab·Shift+Tab·Escape·backdrop·trigger focus return 적용',
+        choice: '작품 정보·미리보기 UI·프로젝트 안내에 initial focus와 Tab·Shift+Tab·Escape·backdrop·trigger focus return 적용',
         reason: '마우스와 키보드에서 열기·탐색·닫기·복귀 흐름을 일관되게 유지하기 위해',
         verification: '작품 정보와 프로젝트 안내 dialog의 open 상태·초기 heading focus·닫기 후 trigger 복귀 확인. 실제 video·audio는 재생하지 않음',
         media: {
@@ -485,14 +485,15 @@ export const PROJECT_DETAIL_READY = {
     ],
     scope: {
       actual: [
-        'fictional catalog 10개와 장르 filter',
-        'native dialog·page-memory favorite·반응형 navigation',
-        '390·1024·1440 browser QA와 keyboard flow',
+        '정적 가상 catalog 10개와 장르 filter 6종',
+        'native dialog 3종과 initial focus·Tab·Shift+Tab·Escape·backdrop·focus return',
+        'Hero·card·dialog page-memory favorite 상태 동기화',
+        'keyboard flow와 390·1024·1440 responsive navigation',
       ],
       demoStatic: [
-        'HTML·JavaScript 정적 catalog data',
-        '찜 상태는 현재 페이지 메모리에만 유지되고 reload 시 초기화',
-        'ChatGPT Python 환경의 Pillow·NumPy procedural WebP와 자체 SVG·icon',
+        'HTML·JavaScript static catalog data',
+        'favorite 상태는 page memory에만 유지되고 reload 시 초기화',
+        'procedural WebP는 USER_DECLARED_AI_ASSISTED, project SVG·inline icon은 REPOSITORY_DECLARATION_ONLY',
       ],
       notIncluded: [
         '실제 streaming·video·audio',
@@ -506,8 +507,8 @@ export const PROJECT_DETAIL_READY = {
       { label: 'BOUNDARY', value: '외부 입력 이미지·OpenAI 이미지 생성 모델·runtime AI 없음' },
     ],
     resultLimit: {
-      done: 'fictional catalog 10개, 장르 filter, native dialog, page-memory favorite, 390·1024·1440 반응형 화면, procedural WebP와 자체 SVG·icon을 구현했으며 외부 image·API·CDN request는 사용하지 않았습니다.',
-      limit: '실제 streaming·video, login·payment·subscription, API·DB·Storage, 사용자 조사·사용성 테스트·운영 지표는 포함하지 않았고 자산 독점성·법률상 무위험을 보증하지 않습니다.',
+      done: '정적 가상 catalog 10개, 장르 filter 6종, native dialog 3종, Hero·card·dialog favorite 상태 동기화, keyboard flow와 390·1024·1440 responsive navigation을 구현했습니다.',
+      limit: '정적 data와 page-memory 범위이며 reload 시 favorite가 초기화됩니다. 실제 streaming·video·audio, login·payment·subscription, API·DB·Storage, 사용자 조사·사용성 테스트·운영 지표는 포함하지 않았고 절차형 WebP·SVG·icon의 독점성·법률상 무위험을 보증하지 않습니다.',
     },
   },
   brewstep: {
