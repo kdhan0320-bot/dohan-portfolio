@@ -48,7 +48,7 @@ const FEATURED_IDS = [
     id: 'seolbiit', slug: 'seolbiit', displayTitle: '설비잇', stageTone: 'soft',
     media: {
       kind: 'single',
-      src: `${BASE}detail/seolbiit-cover.png`,
+      src: `${BASE}thumbnails/normalized/seolbiit-card-1600x1000.png`,
       alt: '설비잇 현장 점검과 정비 관리 운영 UI',
     },
   },

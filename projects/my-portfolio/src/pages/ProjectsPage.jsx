@@ -11,24 +11,8 @@ import { CONTACT_EMAIL } from '../constants/site';
 
 const BASE = import.meta.env.BASE_URL;
 
-/* Human Signal Phase 5A: ChatGPT가 최신 Figma(53Ppn2hIgrvs9Jra3eejFs,
- * "21_READY_Projects" 페이지, Desktop node 206:5)를 직접 조회해 실제 코드와 대조한
- * 결과, Phase 3A 이후의 이 페이지는 Human Signal 토큰은 쓰지만 최신 Figma
- * 구조(Warm Paper Hero + dark View Guide 패널, dark full-bleed Featured,
- * light More Works, dark Footer, QHD 01~03 index)와는 달랐다 — 그래서
- * "처음 Human Signal로 바꾸는 작업"이 아니라 "이미 Human Signal인 코드를
- * 최신 Figma에 맞추는 delta sync"다. 아래 텍스트는 전부 direct node
- * `get_design_context` 실측 카피를 그대로 옮겼다(임의 문구·성과 수치 없음).
- *
- * 공개 구성은 Figma READY에 맞춰 Featured 공정봄·JobFlow·설비잇,
- * More Works Portfolio Feedback Hub·울산 버스 도착정보·Streaming UI Concept·BREWSTEP으로
- * 고정하고 실제 개수는 데이터에서 계산한다.
- *
- * Human Signal Phase 5A-F(Figma 충실도 복구): QHD 208:2 / Desktop 206:5 /
- * Compact 209:2 / Mobile 212:2 4개 node를 `get_design_context`로 직접 다시
- * 조회해 typography(Noto Sans KR/IBM Plex Mono)·geometry(shell·Hero H1·
- * Featured heading·card·media·ROLE/DATA·More Work·Footer D mark)를 재동기화
- * 했다. 이 페이지 전용 변경이며 Home/Detail/Navbar는 건드리지 않는다. */
+/* 현재 공개 코드·README가 Projects closeout Source of Truth다.
+ * Portfolio Figma READY는 구성·문구·자산 확정 후 별도 회차에서 동기화한다. */
 const FEATURED_REFS = [
   {
     id: 'gongjeongbom', slug: 'gongjeongbom', displayTitle: '공정봄',
@@ -51,9 +35,9 @@ const FEATURED_REFS = [
   {
     id: 'seolbiit', slug: 'seolbiit', displayTitle: '설비잇',
     proof: '점검 기록을 정비 요청·배정·완료·재점검으로 연결한 반응형 운영 UX/UI',
-    role: 'INDUSTRIAL OPERATIONS UX/UI', data: 'STATIC / DEMO',
+    role: 'INDUSTRIAL UX/UI', data: 'STATIC / DEMO',
     media: {
-      src: `${BASE}detail/seolbiit-cover.png`,
+      src: `${BASE}thumbnails/normalized/seolbiit-card-1600x1000.png`,
       alt: '설비잇 현장 점검과 정비 관리 운영 UI',
     },
   },
@@ -577,7 +561,8 @@ const MoreWorkCard = ({ project }) => {
       data-published="true"
       sx={{
         position: 'relative', display: 'flex', flexDirection: { xs: 'column', md: 'row' },
-        height: { xs: 390, sm: 425, md: 320, lg: 380 },
+        height: { xs: 'auto', sm: 425, md: 320, lg: 380 },
+        minHeight: { xs: 390, sm: 'unset' },
         width: '100%', maxWidth: { xs: '100%', md: '100%', lg: 1180 }, borderRadius: '22px', overflow: 'hidden',
         textDecoration: 'none', color: 'inherit',
         bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
@@ -611,6 +596,7 @@ const MoreWorkCard = ({ project }) => {
         <ThumbnailStage
           src={project.thumbnailUrl}
           alt={`${project.title} 대표 화면`}
+          objectFit="contain"
           sx={{
             height: { xs: 180, sm: 230, md: 288, lg: 344 },
             aspectRatio: 'auto',
@@ -746,7 +732,7 @@ const MoreWorks = () => {
       pb: { xs: 0, sm: 7, md: 7, lg: 8 },
       minHeight: { xs: 1628, sm: 1798, md: 1408, lg: 1608 },
       '@media (min-width:1920px)': { minHeight: 1738 },
-      /* 승인된 전체 section frame 높이는 카드 3개 공개 구성 기준으로 유지한다.
+      /* 승인된 전체 section frame 높이는 카드 4개 공개 구성 기준으로 유지한다.
        * 카드 자체 높이와 thumbnail stage는 같은 breakpoint에서 별도로 맞춘다. */
     }}>
       {/* Phase 5A-G: 209:99(1024)/207:3(1440)는 top=760이지만 210:99(768)=700,

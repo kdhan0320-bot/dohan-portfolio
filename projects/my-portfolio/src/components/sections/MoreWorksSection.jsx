@@ -26,21 +26,17 @@ const PUBLISHED_WORKS = HOME_SELECTED_IDS
  * 이유가 없어져 원래 색으로 되돌린다. */
 const ORANGE_ON_PAPER_DEEP = '#9E3D22';
 
-/* Figma "Selected Work / OTT Service"(267:59)는 Soft White 가로 카드다 —
- * 이전 구현의 Deep Harbor full-card 배경(전체 프로젝트 보기 버튼을 어둡게
- * 보이게 해 Featured Projects보다 더 강조돼 보이던 문제)을 제거하고, Soft
- * White 카드 + 왼쪽 실제 화면 preview + 오른쪽 Ink Navy 계열 정보로 복원한다.
- * 카드 전체를 외부 링크로 감싸지 않고(Figma에 없는 패턴), 카드 내부의 dark
- * "전체 프로젝트 보기" 버튼만 Router로 `/projects`로 이동한다(Figma 267:76). */
+/* 현재 공개 코드·README가 Home Selected Works의 closeout Source of Truth다.
+ * Portfolio Figma READY는 구성·문구·자산 확정 후 별도 회차에서 동기화한다. */
 const FeatureCard = ({ project }) => {
   const meta = project.categoryLabel || (project.tools ?? []).join(' · ');
   const stack = (project.moreWorksTools ?? project.tools ?? []).join(' · ').toUpperCase();
-
   return (
     <Box
       sx={{
         display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'stretch', width: '100%',
-        height: { xs: '482px', sm: '300px' },
+        height: { xs: 'auto', sm: '300px' },
+        minHeight: { xs: '482px', sm: 'unset' },
         gap: '14px', borderRadius: '18px',
         bgcolor: HUMAN_SIGNAL.softWhite,
         p: '18px',
@@ -58,6 +54,7 @@ const FeatureCard = ({ project }) => {
           src={project.thumbnailUrl}
           alt={`${project.title} 대표 화면`}
           loading="eager"
+          objectFit="contain"
           sx={{
             height: { xs: '190px' }, aspectRatio: 'auto',
             [COMPACT_MQ]: { height: '192.93px' },
@@ -92,6 +89,14 @@ const FeatureCard = ({ project }) => {
         {stack && (
           <Typography sx={{ fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.04em', color: HUMAN_SIGNAL.inkNavy, mt: 0.5 }}>
             {stack}
+          </Typography>
+        )}
+        {project.moreWorksStatus && (
+          <Typography sx={{
+            fontFamily: FONT_MONO, fontSize: '0.6875rem', lineHeight: 1.5,
+            letterSpacing: '0.04em', color: HUMAN_SIGNAL.mutedInk,
+          }}>
+            {project.moreWorksStatus}
           </Typography>
         )}
         <Box

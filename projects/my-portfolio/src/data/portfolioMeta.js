@@ -275,6 +275,11 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['게스트 sample data', '게스트 읽기 전용·현재 탭 새로고침 유지'],
       notIncluded: ['고급 통계 리포트', '실시간 알림', '외부 채용 플랫폼 API 연동', 'runtime AI·LLM 문서 생성'],
     },
+    aiCollaboration: [
+      { label: 'USER LED', value: '요구사항 · 정보 구조 · 데이터 범위 · 최종 판단' },
+      { label: 'AI ASSISTED', value: '코드 작성·수정 · 오류 검토 보조' },
+      { label: 'VERIFIED', value: '현재 lint·build·responsive browser QA · Auth·CRUD·RLS는 2026-08-03 역사적 검증 기록' },
+    ],
     resultLimit: {
       done: '지원 현황·상태 흐름·체크리스트를 사용자별 저장 구조와 반응형 화면으로 연결하고 390px과 1440px에서 확인했습니다.',
       limit: '게스트 화면은 읽기 전용 sample data이며 실제 사용자 성과나 운영 데이터가 아닙니다. Kanban은 내부 가로 스크롤을 사용하고 runtime AI는 없습니다.',
@@ -311,7 +316,7 @@ export const PROJECT_DETAIL_READY = {
         title: '상세 내용과 참여 조건을 한 화면에서 구분했습니다.',
         choice: '본문·좋아요·댓글 영역과 로그인 안내',
         reason: '읽기는 공개하고 작성·반응은 인증 경계를 명확히 하기 위해',
-        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route로 이동하고, Feedback Hub app_id signup 403과 공개 읽기 전용 경계, 비공개 A/B 계정의 CRUD·RLS 허용·차단을 확인',
+        verification: '목록의 실제 카드에서 #/posts/sample-7 상세 route와 공개 읽기 전용 경계를 2026-08-12 runtime에서 확인했습니다. 비공개 A/B 계정의 CRUD·RLS 허용·차단은 2026-08-03 역사적 QA 기록입니다.',
         media: { src: 'detail/feedback-detail-1440.png', alt: '현재 브라우저 실행 화면 · sample 게시글 안내가 표시된 공개 읽기 전용 상세', aspectRatio: '1440 / 900' },
       },
     ],
@@ -350,8 +355,13 @@ export const PROJECT_DETAIL_READY = {
         '관리자·신고·알림',
       ],
     },
+    aiCollaboration: [
+      { label: 'USER LED', value: '공개·비공개 경계 · 정보 구조 · 문구 · 최종 승인' },
+      { label: 'AI ASSISTED', value: '라우팅·UI·sample 문구 · 코드·QA 보조' },
+      { label: 'VERIFIED', value: '공개 read-only 2026-08-12 · 비공개 A/B CRUD·RLS 2026-08-03 · Hosted migration closeout 2026-08-13' },
+    ],
     resultLimit: {
-      done: '공개 읽기 전용 목록·상세 탐색과 390px 1열 카드 stack을 확인하고, Auth Hook의 Feedback Hub signup 차단과 비공개 A/B 계정의 Auth·CRUD·RLS 경계를 검증했습니다.',
+      done: '공개 읽기 전용 목록·상세 탐색과 390px 1열 카드 stack은 2026-08-12 runtime에서 확인했습니다. 비공개 A/B 계정의 Auth·CRUD·RLS 경계는 2026-08-03 역사적 QA 기록이며, Hosted migration·권한·RLS closeout은 2026-08-13에 완료했습니다.',
       limit: '현재 공개 화면 콘텐츠와 수치는 sample fallback이며 실제 운영 사용자 콘텐츠나 활성 지표가 아닙니다.',
     },
   },
@@ -827,6 +837,12 @@ export const PROJECT_DETAIL_READY = {
     },
   },
   'bus-arrival': {
+    meta: {
+      type: 'FIGMA PROTOTYPE',
+      role: 'MOBILE UX/UI',
+      tools: 'FIGMA · AUTO LAYOUT',
+      data: 'STATIC DATA',
+    },
     responsiveNotApplicable: true,
     hero: {
       summary: '이동 중 짧은 시간 안에 다음 버스를 판단하도록, 도착 정보의 우선순위와 검색·상세·복구 상태를 정리한 모바일 Figma Prototype입니다.',

@@ -65,6 +65,27 @@ Desktop 1440(254:3) 프레임을 다시 조회해 확인한 hex다. `src/theme.j
 - focus-visible 링은 Bright Orange가 아니라 **Burnt Orange** 2px다(hover와
   구분되는 색).
 
+## THUMBNAIL VISUAL LOCK
+
+- Canvas: `1600×1000` normalized PNG · outer `#172432`
+- Tight inner: `x=24, y=15, width=1552, height=970`
+- Rendering: `contain / center center`
+- Contexts: Home Featured · Home Selected · Projects Featured · Projects More Works
+- Per-project fit exception: 없음
+- Per-project position exception: 없음
+- Portfolio Figma Source of Truth: file `53Ppn2hIgrvs9Jra3eejFs` · `THUMBNAIL_SYSTEM` `836:42` · Master `836:45` · Scale QA `836:46` · Home reference `836:47`
+- exact bytes·SHA-256·rights·derivative provenance는 `asset-license-register.md`를 canonical source로 사용한다.
+
+| 작품 | runtime asset | source |
+|---|---|---|
+| 공정봄 | `thumbnails/normalized/gongjeongbom-card-1600x1000.png` | `projects/gongjeongbom/compare.html` · VS-C100 + VS-C300 selected state · Tight Shell normalization |
+| JobFlow | `thumbnails/normalized/jobflow-card-1600x1000.png` | `projects/jobflow-dashboard #/` · current guest sample read-only Dashboard · Tight Shell normalization |
+| 설비잇 | `thumbnails/normalized/seolbiit-card-1600x1000.png` | Figma `GInxTqHo6Y87DEe3vuhmMw` · READY `24:43` · Tight Shell normalization |
+| Portfolio Feedback Hub | `thumbnails/normalized/feedback-hub-card-1600x1000.png` | `projects/portfolio-feedback-hub #/` · public read-only list · `scrollY=293` · Tight Shell normalization |
+| 울산 버스 | `thumbnails/normalized/bus-arrival-card-1600x1000.png` | Light Tight composite · Figma final `600:66` · READY `59:100` → `59:146` → `223:198` |
+| Streaming UI Concept | `thumbnails/normalized/ott-service-card-1600x1000.png` | `projects/OTT Service/index.html` · initial SIGNAL / 01 Hero · Tight Shell normalization |
+| BREWSTEP | `thumbnails/normalized/brewstep-card-1600x1000.png` | 56:44 `THUMBNAIL_DERIVATIVE` · Figma final `978:609` · READY `706:1560` · Product `722:18` · Order `722:24` · Projects-only · Pexels `32938766` |
+
 ## 전역 MUI 테마 (`getDesignTokens()`, Phase 4F)
 
 이 저장소의 모든 화면은 각 컴포넌트가 `HUMAN_SIGNAL.*` 토큰을 직접 `sx`로

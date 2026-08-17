@@ -10,12 +10,12 @@ const BASE = import.meta.env.BASE_URL;
 const THUMB_MAP = {
   gongjeongbom: `${BASE}thumbnails/normalized/gongjeongbom-card-1600x1000.png`,
   jobflow:      `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`,
-  seolbiit:     `${BASE}detail/seolbiit-cover.png`,
+  seolbiit:     `${BASE}thumbnails/normalized/seolbiit-card-1600x1000.png`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
   'ott-service': `${BASE}thumbnails/normalized/ott-service-card-1600x1000.png`,
   'bus-arrival-app': `${BASE}thumbnails/normalized/bus-arrival-card-1600x1000.png`,
   brewstep: `${BASE}thumbnails/normalized/brewstep-card-1600x1000.png`,
-  'feedback-hub': `${BASE}thumbnails/community-feedback-hub.svg`,
+  'feedback-hub': `${BASE}thumbnails/normalized/feedback-hub-card-1600x1000.png`,
 };
 
 export const ALL_PROJECTS = [...fallbackProjects]
