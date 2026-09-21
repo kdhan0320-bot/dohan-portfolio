@@ -10,6 +10,10 @@ Figma 원본이 우선하고, 이 문서는 그 수치를 코드에 어떻게 �
 실측 기록 중 Contact 32/68 분할·Closing Signal은 이전 구성의 기록이며,
 현재 구현은 Home 섹션의 Hero·Contact 항목을 따른다. Figma 파일은 수정하지 않는다.
 
+사용자 추가 승인(2026-09-22, QHD 캡처 확인 후): Home과 Projects의 번호·설명
+정렬 및 장식 대비를 통일하고, Hero 재생 제어를 동작 줄이기 환경에서도 제공한다.
+아래 공통 규칙이 과거 개별 좌표·낮은 opacity 기록보다 우선한다.
+
 이전 디자인 시스템(Ordered Signal, 큰 한글 타이포 + 신호점/신호선 모티프)은
 사용자 승인 아래 Human Signal로 교체됐다. Header/Navigation/모바일 메뉴/404/
 D2 로고/전역 토큰에 이어, Hero/About/Featured Projects/Selected Works/
@@ -189,21 +193,27 @@ TextField 등)가 상속하는 기본값 역할을 한다.
   표시 기준은 `QHD_DECORATION_MIN_WIDTH` 2480px이며, 그 미만에서는 숫자·
   설명·원형 장식을 모두 숨긴다. Figma의 과거 개별 좌표와 다른 사용자 승인 변경이다.
   - **숫자 + 설명**: `QhdSectionIndex`의 `layout="section"`을 사용한다.
-    섹션 시작으로부터 top 104px, 숫자 170px/line-height 1, 설명 11px,
+    섹션 시작으로부터 top 104px, 숫자 170px/line-height 1, 설명 12px,
     둘 사이 gap 12px. 독립적인 left/top 보정 대신 같은 flex column 안에서
     가운데 정렬한다. 01·03은 왼쪽, 02·04는 오른쪽 여백의 중앙에 놓인다.
+    Projects 01–03도 동일하다. Projects는 실제 콘텐츠 폭 1552px 바깥의 여백을
+    기준으로 하며, dark/light 배경에 따라 공통 `SECTION_SIGNAL_TONES`를 쓴다.
+    숫자 opacity는 light 0.18 / dark 0.24, 작은 설명은 opacity 1이다.
+    설명 색은 light burntOrange / dark brightOrangeOnDark로 구분한다.
   - **원형 장식**: 숫자의 반대쪽 여백 중앙, top 48px, 폭 320px,
     scene 비율 360:620 유지. 01–04가 같은 크기·간격·불투명도를 사용한다.
     04는 02와 같은 `ABOUT_FEATURED_VARIANT`를 `contact-section-left`로 재사용한다.
     네 장식 모두 정적이며 기존 Hero의 느린 모션과 경쟁하지 않는다.
+    부모 opacity 0.48 중첩은 제거한다. 원선은 light inkNavy 20% / dark
+    softWhite 28%, 레일·네모도 같은 공통 tone으로 표시한다.
+    Projects의 기존 halo는 sage 50% / orange 46% 중심색과 얇은 원 테두리를 사용한다.
   - **잘림 방지**: 음수 top을 제거하고, scene 내부의 원이 frame 경계에서
     잘리지 않도록 공통 섹션 모드에서는 overflow를 허용한다. 전체 장식은
     여백 안에 머물고 부모 section 밖으로는 넘치지 않는 크기로 제한한다.
     Featured는 full-width 배경보다 뒤에 장식을 렌더해 가려짐을 방지한다.
   - **일반 데스크톱 정렬**: 1024–1439px에서는 Home 01–04 컨테이너가
     모두 좌우 48px, 1440px 이상에서는 공통 64px 여백을 사용한다.
-  - **유지 범위**: Hero 외곽 장식의 위치·크기, Projects 페이지의 별도
-    숫자 배치(`legacy`)는 변경하지 않는다.
+  - **유지 범위**: Hero 외곽 장식의 위치·크기와 각 페이지의 콘텐츠 폭을 유지한다.
   - **검증 범위**: `site-audit-kit`의 QHD 검사는 01–04 누락, 숫자와 설명의
     중심선·간격, 원의 비율, 본문 침범, 섹션 밖 잘림을 검사하도록 갱신한다.
     현재 작업 환경에서는 1363px 브라우저만 제공되므로 QHD 실렌더 검사 결과는
@@ -220,8 +230,8 @@ TextField 등)가 상속하는 기본값 역할을 한다.
 - `prefers-reduced-motion: reduce`: 기존 전역 규칙(`index.css`, duration/
   delay를 0에 가깝게)은 그대로 두고, 모바일 메뉴처럼 JS 트랜지션(MUI
   Drawer의 Slide)을 쓰는 새 컴포넌트는 개별적으로 감지해 opacity 전환으로
-  바꿨다. Hero 등 transform 기반 진입 모션 자체의 reduced-motion 처리는
-  다음 회차(Hero B 모션 구현) 범위다.
+  바꿨다. Hero 반복 모션은 기본 정지하며, 사용자가 재생 버튼을 누를 때만
+  해당 원선·도형에 한정해 반복을 허용한다. 재생 버튼을 숨기지 않는다.
 
 ## Quiet Structural Depth
 
@@ -250,10 +260,12 @@ Contact다(Home Desktop 1440 254:3 y좌표 순서로 재확인). Phase 4A에서
   재생(Motion Guide 286:3, 키프레임 323:3/92/181/270 실측).
   사용자 요청에 따른 코드 변경: D2와 두 원의 중심은 카드의 x=50%, y=44%로
   통일했다. 기존 D2 y=48.7%와 원 중심의 어긋남을 해소하고, 등장 완료 후
-  두 원 위 강조선과 작은 점 두 개가 32초/42초 주기로 반대 방향 순환한다.
-  강조선의 길이·대비를 높이고 2px 두께로 조정해 움직임을 쉽게 알아보도록 했다.
-  총 다섯 점 중 세 개와 D2·격자·chip·연결선은 고정하며, 확대·축소·점멸·
-  무작위 이동은 사용하지 않는다. 44px 일시 정지/재생 버튼과 prefers-reduced-motion 정적 표시를
+  두 원 위 강조선과 작은 점 두 개가 24초/34초 주기로 반대 방향 순환한다.
+  강조선은 2.5px이며 길이·대비를 높여 움직임을 알아보기 쉽게 한다.
+  작은 네모 두 개는 4px, 점 세 개는 2px만 7–10초 주기로 부유한다.
+  진입 모션과 부유 모션은 별도 wrapper에 두어 transform이 충돌하지 않는다.
+  D2·격자·연결선은 고정하며 확대·축소·점멸·무작위 이동은 사용하지 않는다.
+  글자가 있는 높이 44px 일시 정지/재생 버튼과 prefers-reduced-motion 기본 정지를
   제공하며, Stage가 화면 밖에 있거나 탭이 숨겨지면 반복 모션을 정지한다.
   Hero 좌우 배치는 본문 고정폭이 정의되는 1024px부터 시작한다. 900–1023px에서
   width:100% 본문과 400px Stage가 동시에 배치되던 폭 충돌을 제거했다.

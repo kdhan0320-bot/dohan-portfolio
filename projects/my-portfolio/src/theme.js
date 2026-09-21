@@ -70,6 +70,27 @@ export const HOME_READING_MAX_WIDTH = 680; // 본문 한 단락이 읽기 좋은
  * 이 상수 하나만 참조하도록 해 임계값을 두 곳에 중복 하드코딩하지 않는다. */
 export const QHD_DECORATION_MIN_WIDTH = 2480;
 
+// Home / Projects 공통 장식 대비. 작은 설명은 불투명 텍스트로 표시하고,
+// 큰 번호와 원선만 낮은 대비를 사용한다(부모 opacity를 중첩하지 않는다).
+export const SECTION_SIGNAL_TONES = {
+  light: {
+    indexColor: HUMAN_SIGNAL.inkNavy, indexOpacity: 0.18,
+    labelColor: HUMAN_SIGNAL.burntOrange,
+    circleStroke: 'rgba(12,20,32,0.20)',
+    lineStroke: 'rgba(12,20,32,0.22)',
+    fragmentBg: 'rgba(23,36,50,0.06)',
+    fragmentBorder: 'rgba(12,20,32,0.18)',
+  },
+  dark: {
+    indexColor: HUMAN_SIGNAL.softWhite, indexOpacity: 0.24,
+    labelColor: HUMAN_SIGNAL.brightOrangeOnDark,
+    circleStroke: 'rgba(255,253,248,0.28)',
+    lineStroke: 'rgba(170,183,196,0.34)',
+    fragmentBg: 'rgba(255,253,248,0.08)',
+    fragmentBorder: 'rgba(170,183,196,0.30)',
+  },
+};
+
 /* Phase 4F: 옛 Ordered Signal `COLORS`(dark palette)를 완전히 걷어내고 MUI
  * 기본 팔레트를 Human Signal 기준(light mode)으로 맞춘다. 이 저장소의 모든
  * 화면은 이미 개별 컴포넌트에서 `HUMAN_SIGNAL.*` 토큰을 직접 sx로 지정하므로

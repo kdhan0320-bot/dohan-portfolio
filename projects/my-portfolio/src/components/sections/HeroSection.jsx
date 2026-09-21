@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import PauseRounded from '@mui/icons-material/PauseRounded';
 import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
 import { scrollToSection } from '../../hooks/useScrollNav';
@@ -26,7 +26,8 @@ import QhdAmbientSignal from '../ui/QhdAmbientSignal';
  *    색으로 정렬) → SETTLE(1180–1460ms, D2와 하단 signal bar가 완성되며
  *    멈춤) 4단계, 총 약 1.46초, 최초 진입 1회이다.
  * 사용자 요청 반영: D2와 두 원의 중심을 높이 44%로 맞추고, 등장 완료 후
- * 원 위의 강조선과 작은 점 두 개만 느리게 순환한다. D2·네모·연결선은 고정한다.
+ * 원 위의 강조선과 작은 점 두 개가 느리게 순환하고, 작은 도형은 2–4px만 떠 움직인다.
+ * D2·격자·연결선은 고정해 중심을 유지한다.
  * 일시 정지·동작 줄이기·화면 밖 정지를 지원한다.
  * review 캡처 모드(data-review-mode="true")에서는 애니메이션 없이 최종
  * 상태로 렌더링한다 — HomePage.jsx의 data-hero-reveal opacity>=0.99 계약은
@@ -88,7 +89,10 @@ const SIGNAL_CENTER_Y = '44%';
 
 const HeroSignalStage = () => {
   const stageRef = useRef(null);
-  const [motionPaused, setMotionPaused] = useState(false);
+  const prefersReducedMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
+  // OS 설정은 기본값으로 존중하고, 사용자가 재생을 선택한 경우에만 켠다.
+  const [motionChoice, setMotionChoice] = useState(null);
+  const motionEnabled = motionChoice ?? !prefersReducedMotion;
   const [motionVisible, setMotionVisible] = useState(false);
 
   useEffect(() => {
@@ -116,12 +120,13 @@ const HeroSignalStage = () => {
     };
   }, []);
 
-  const orbitPlayState = motionVisible && !motionPaused ? 'running' : 'paused';
+  const orbitPlayState = motionVisible && motionEnabled ? 'running' : 'paused';
 
   return (
   <Box
     ref={stageRef}
     data-home-hero-stage="true"
+    data-home-hero-motion={motionEnabled ? 'enabled' : 'paused'}
     sx={{
       // Figma Mobile 390(269:79)은 342×280(가로형)이고, Compact 1024(365:169)
       // 400×438과 Desktop 1440(257:16) 548×600은 동일한 0.913 비율(세로형)이다.
@@ -166,14 +171,16 @@ const HeroSignalStage = () => {
         from: { transform: 'rotate(0deg)' },
         to: { transform: 'rotate(360deg)' },
       },
+      '@keyframes stageDrift': {
+        '0%, 100%': { transform: 'translateY(0)' },
+        '50%': { transform: 'translateY(var(--hero-drift-distance, -4px))' },
+      },
+      '& [data-home-hero-orbit], & [data-home-hero-drift]': {
+        animationPlayState: orbitPlayState,
+      },
       '& [data-home-hero-orbit]': {
         transformOrigin: `50% ${SIGNAL_CENTER_Y}`,
         transformBox: 'view-box',
-        animationPlayState: orbitPlayState,
-      },
-      '@media (prefers-reduced-motion: reduce)': {
-        '& [data-home-hero-orbit]': { animation: 'none', transform: 'none' },
-        '& [data-home-hero-motion-toggle]': { display: 'none' },
       },
     }}
   >
@@ -204,25 +211,27 @@ const HeroSignalStage = () => {
       }}
     >
       <circle data-home-hero-ring="outer" cx="274" cy="264" r="208.24"
-        stroke="rgba(170,183,196,0.22)" vectorEffect="non-scaling-stroke" />
+        stroke="rgba(170,183,196,0.32)" vectorEffect="non-scaling-stroke" />
       <circle data-home-hero-ring="inner" cx="274" cy="264" r="142.48"
-        stroke="rgba(170,183,196,0.22)" vectorEffect="non-scaling-stroke" />
+        stroke="rgba(170,183,196,0.32)" vectorEffect="non-scaling-stroke" />
       <Box component="g" data-home-hero-orbit="outer" sx={{
-        animation: isReviewCapture ? 'none' : 'stageOrbit 32s linear 1.46s infinite',
+        '--hero-motion-duration': '24s',
+        animation: isReviewCapture ? 'none' : 'stageOrbit var(--hero-motion-duration) linear 0s infinite',
       }}>
         <circle cx="274" cy="264" r="208.24" pathLength="100"
-          stroke={HUMAN_SIGNAL.steelMist} strokeWidth="2" strokeOpacity="0.85"
-          strokeDasharray="14 86" strokeLinecap="round"
+          stroke={HUMAN_SIGNAL.steelMist} strokeWidth="2.5" strokeOpacity="1"
+          strokeDasharray="18 82" strokeLinecap="round"
           vectorEffect="non-scaling-stroke" />
         <circle data-home-hero-orbit-dot="outer" cx="482.24" cy="264" r="4.5"
           fill={HUMAN_SIGNAL.steelMist} />
       </Box>
       <Box component="g" data-home-hero-orbit="inner" sx={{
-        animation: isReviewCapture ? 'none' : 'stageOrbit 42s linear 1.46s infinite reverse',
+        '--hero-motion-duration': '34s',
+        animation: isReviewCapture ? 'none' : 'stageOrbit var(--hero-motion-duration) linear 0s infinite reverse',
       }}>
         <circle cx="274" cy="264" r="142.48" pathLength="100" transform="rotate(180 274 264)"
-          stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="2" strokeOpacity="0.9"
-          strokeDasharray="16 84" strokeLinecap="round"
+          stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="2.5" strokeOpacity="1"
+          strokeDasharray="20 80" strokeLinecap="round"
           vectorEffect="non-scaling-stroke" />
         <circle data-home-hero-orbit-dot="inner" cx="131.52" cy="264" r="4.5"
           fill={HUMAN_SIGNAL.mutedSage} />
@@ -233,16 +242,25 @@ const HeroSignalStage = () => {
     {STAGE_CHIPS.map((chip, i) => (
       <Box
         key={chip.key}
+        data-home-hero-drift={i === 0 || i === 3 ? 'chip' : undefined}
         sx={{
           position: 'absolute', left: chip.left, top: chip.top, width: chip.width, height: chip.height,
+          '--hero-motion-duration': i === 0 ? '8s' : '10s',
+          '--hero-drift-distance': i === 0 ? '-4px' : '4px',
+          animation: !isReviewCapture && (i === 0 || i === 3)
+            ? 'stageDrift var(--hero-motion-duration) ease-in-out infinite' : undefined,
+        }}
+      >
+      <Box sx={{
+          width: '100%', height: '100%',
           borderRadius: '10px',
           bgcolor: chip.tone === 'light' ? HUMAN_SIGNAL.softWhite : 'rgba(255,253,248,0.07)',
           border: chip.tone === 'light' ? 'none' : '1px solid rgba(170,183,196,0.22)',
           opacity: isReviewCapture ? 1 : 0,
           filter: isReviewCapture ? 'grayscale(0)' : undefined,
           animation: anim('stageChipIn', 0.9, 0.22 + i * 0.05),
-        }}
-      />
+        }} />
+      </Box>
     ))}
 
     {/* 연결 stub 라인 4개 — ALIGN에 색이 붙으며 나타난다 */}
@@ -260,17 +278,24 @@ const HeroSignalStage = () => {
       />
     ))}
 
-    {/* 고정 점 3개 — 나머지 2개는 원선과 같은 궤도 안에서만 움직인다. */}
+    {/* 점 3개는 2px만 천천히 부유하고, 나머지 2개는 원선과 함께 순환한다. */}
     {STAGE_DOTS.map((dot, i) => (
       <Box
         key={dot.key}
+        data-home-hero-drift="dot"
         sx={{
           position: 'absolute', left: dot.left, top: dot.top, width: dot.size, height: dot.size,
+          '--hero-motion-duration': `${7 + i}s`, '--hero-drift-distance': '-2px',
+          animation: isReviewCapture ? 'none' : 'stageDrift var(--hero-motion-duration) ease-in-out infinite',
+        }}
+      >
+      <Box sx={{
+          width: '100%', height: '100%',
           borderRadius: '50%', bgcolor: HUMAN_SIGNAL[dot.color],
           opacity: isReviewCapture ? 1 : 0,
           animation: anim('stageDotIn', 0.24, 0.24 + i * 0.06),
-        }}
-      />
+        }} />
+      </Box>
     ))}
 
     {/* D2 signal core — IDENTITY 끝에 흐리게(grayscale) 나타나 SETTLE(1180–1460ms)에서
@@ -316,21 +341,23 @@ const HeroSignalStage = () => {
         component="button"
         type="button"
         data-home-hero-motion-toggle="true"
-        aria-label={motionPaused ? '배경 모션 재생' : '배경 모션 일시 정지'}
-        title={motionPaused ? '배경 모션 재생' : '배경 모션 일시 정지'}
-        onClick={() => setMotionPaused((paused) => !paused)}
+        aria-label={motionEnabled ? '배경 모션 일시 정지' : '배경 모션 재생'}
+        title={motionEnabled ? '배경 모션 일시 정지' : '배경 모션 재생'}
+        onClick={() => setMotionChoice(!motionEnabled)}
         sx={{
-          position: 'absolute', top: 8, right: 8, width: 44, height: 44,
-          display: 'grid', placeItems: 'center', p: 0, cursor: 'pointer',
-          border: '1px solid rgba(170,183,196,0.3)', borderRadius: '50%',
-          color: HUMAN_SIGNAL.steelMist, bgcolor: HUMAN_SIGNAL.deepHarbor,
+          position: 'absolute', top: 12, right: 12, minWidth: 112, height: 44,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5,
+          px: 1.5, cursor: 'pointer', fontFamily: FONT_KR, fontSize: '12px', fontWeight: 600,
+          border: '1px solid rgba(170,183,196,0.45)', borderRadius: '999px',
+          color: HUMAN_SIGNAL.softWhite, bgcolor: HUMAN_SIGNAL.deepHarbor,
           '&:hover': { color: HUMAN_SIGNAL.softWhite, borderColor: HUMAN_SIGNAL.steelMist },
           '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.brightOrange}`, outlineOffset: 2 },
         }}
       >
-        {motionPaused
+        {!motionEnabled
           ? <PlayArrowRounded aria-hidden="true" sx={{ fontSize: 18 }} />
           : <PauseRounded aria-hidden="true" sx={{ fontSize: 18 }} />}
+        {motionEnabled ? '모션 정지' : '모션 재생'}
       </Box>
     )}
   </Box>

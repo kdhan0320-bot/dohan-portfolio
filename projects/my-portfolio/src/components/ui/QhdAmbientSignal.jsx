@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH, QHD_DECORATION_MIN_WIDTH } from '../../theme';
+import { HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH, QHD_DECORATION_MIN_WIDTH, SECTION_SIGNAL_TONES } from '../../theme';
 
 /* QHD(2480px 이상) 전용 외곽 장식 — Home 콘텐츠가 1440px(HOME_WIDE_MAX_WIDTH)로
  * 고정되면서 2560에서 생기는 좌우 여백을 채운다. Figma QHD 2560(347:383) direct
@@ -26,20 +26,6 @@ import { HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH, QHD_DECORATION_MIN_WIDTH } from '../
  * 숨긴다 — 부분적으로 잘린 원/선/점보다, 아예 안 보이는 쪽이 마감된 화면으로
  * 인식된다는 원칙에 따른다.
  * 항상 aria-hidden + pointer-events:none, 저대비, 본문/CTA보다 강하지 않아야 한다. */
-
-const DARK_TONE = {
-  circleStroke: 'rgba(255,253,248,0.14)',
-  lineStroke: 'rgba(170,183,196,0.22)',
-  fragmentBg: 'rgba(255,253,248,0.06)',
-  fragmentBorder: 'rgba(170,183,196,0.22)',
-};
-
-const LIGHT_TONE = {
-  circleStroke: 'rgba(12,20,32,0.08)',
-  lineStroke: HUMAN_SIGNAL.paperDeep,
-  fragmentBg: 'rgba(23,36,50,0.04)',
-  fragmentBorder: HUMAN_SIGNAL.paperDeep,
-};
 
 const DOT_COLOR = { sage: HUMAN_SIGNAL.mutedSage, orange: HUMAN_SIGNAL.brightOrange, quiet: HUMAN_SIGNAL.steelMist };
 
@@ -79,7 +65,6 @@ const ABOUT_FEATURED_VARIANT = {
   tone: 'light',
   scene: SCENE_SIDE,
   sizing: 'fixed',
-  frameOpacity: 0.48,
   circles: [
     { x: 120, y: 30, w: 250, h: 250 },
     { x: 40, y: 210, w: 190, h: 190 },
@@ -103,7 +88,6 @@ const SELECTED_VARIANT = {
   tone: 'light',
   scene: SCENE_SIDE,
   sizing: 'fixed',
-  frameOpacity: 0.48,
   circles: [
     { x: 20, y: 30, w: 250, h: 250 },
     { x: 100, y: 210, w: 190, h: 190 },
@@ -215,7 +199,7 @@ const renderLine = (line, scene, stroke, key) => {
 const QhdAmbientSignal = ({ variant, sectionSide, sx }) => {
   const spec = VARIANTS[variant];
   if (!spec) return null;
-  const tone = spec.tone === 'light' ? LIGHT_TONE : DARK_TONE;
+  const tone = SECTION_SIGNAL_TONES[spec.tone];
   const scene = spec.scene;
 
   const sizingSx = spec.sizing === 'fixed'
@@ -228,7 +212,6 @@ const QhdAmbientSignal = ({ variant, sectionSide, sx }) => {
       data-qhd-signal={variant}
       sx={{
         position: 'absolute', top: 0, overflow: 'hidden', pointerEvents: 'none',
-        opacity: spec.frameOpacity ?? 1,
         display: 'none',
         [`@media (min-width:${QHD_DECORATION_MIN_WIDTH}px)`]: { display: 'block' },
         ...sizingSx,

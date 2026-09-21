@@ -85,12 +85,8 @@ const SHELL_SX = {
   '@media (min-width:1920px)': { maxWidth: 1552, px: 0 },
 };
 
-/* QHD(1920+) 전용 01~03 index 좌우 gutter offset — Figma "QHD / Projects Signal
- * Field"(381:257) 실측(2560 기준: 01/03 left index x=58 · label x=124,
- * 02 right index x=2210 · label x=2140)에서 역산했다. Home과 side당 offset
- * 값이 살짝 다르다(QhdSectionIndex.jsx 상단 주석 참고). */
-const QHD_LEFT = { indexOffset: 502, labelOffset: 436 };
-const QHD_RIGHT = { indexOffset: 210, labelOffset: 140 };
+// QHD의 실제 1552px 콘텐츠 바깥 여백에서 Home과 같은 번호 묶음 규칙을 쓴다.
+const PROJECTS_WIDE_WIDTH = 1552;
 
 const focusVisibleSx = {
   '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
@@ -110,11 +106,12 @@ const focusVisibleSx = {
  * Figma 스크린샷상 얇은 outline이 아니라 halo와 같은 채워진 soft glow라
  * `Arc`를 `Halo`와 같은 radial-gradient로 통일한다(레이어 이름만 유지). */
 const Halo = ({ tone = 'sage', sx }) => (
-  <Box aria-hidden="true" sx={{
+  <Box aria-hidden="true" data-projects-halo={tone} sx={{
     position: 'absolute', borderRadius: '50%', pointerEvents: 'none',
+    border: `1px solid ${tone === 'sage' ? 'rgba(144,165,139,0.30)' : 'rgba(216,92,50,0.24)'}`,
     background: tone === 'sage'
-      ? 'radial-gradient(circle, rgba(144,165,139,0.44) 0%, rgba(144,165,139,0) 82%)'
-      : 'radial-gradient(circle, rgba(216,92,50,0.40) 0%, rgba(216,92,50,0) 82%)',
+      ? 'radial-gradient(circle, rgba(144,165,139,0.50) 0%, rgba(144,165,139,0) 82%)'
+      : 'radial-gradient(circle, rgba(216,92,50,0.46) 0%, rgba(216,92,50,0) 82%)',
     ...sx,
   }} />
 );
@@ -439,8 +436,7 @@ const FeaturedProjects = () => (
     }} />
     <QhdSectionIndex
       id="projects-featured" index="01" label="LIBRARY / FEATURED" side="left"
-      indexTop={140} labelTop={310} {...QHD_LEFT}
-      indexColor={HUMAN_SIGNAL.softWhite} indexFontSize="150px" labelOpacity={0.55}
+      layout="section" tone="dark" contentWidth={PROJECTS_WIDE_WIDTH}
     />
     <Box sx={SHELL_SX}>
       <Box sx={{
@@ -750,8 +746,7 @@ const MoreWorks = () => {
       }} />
       <QhdSectionIndex
         id="projects-more-works" index="02" label="MORE WORKS / SCOPE" side="right"
-        indexTop={120} labelTop={290} {...QHD_RIGHT}
-        indexColor={HUMAN_SIGNAL.deepHarbor} indexFontSize="150px" labelOpacity={0.55}
+        layout="section" contentWidth={PROJECTS_WIDE_WIDTH}
       />
       <Box sx={SHELL_SX}>
         <Box sx={{
@@ -821,8 +816,7 @@ const ProjectsFooter = () => (
     }} />
     <QhdSectionIndex
       id="projects-footer" index="03" label="NAVIGATION / CONTACT" side="left"
-      indexTop={40} labelTop={210} {...QHD_LEFT}
-      indexColor={HUMAN_SIGNAL.softWhite} indexFontSize="150px" labelOpacity={0.55}
+      layout="section" tone="dark" contentWidth={PROJECTS_WIDE_WIDTH}
     />
     <Box sx={SHELL_SX}>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0,1fr) minmax(0,1.6fr)' }, columnGap: { md: 8 }, rowGap: { xs: 5, md: 0 } }}>

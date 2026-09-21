@@ -111,4 +111,12 @@ body::before {
     transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
+
+  /* 동작 줄이기에서는 기본 정지. 사용자가 Hero 재생 버튼을 누른 경우에만
+   * 해당 반복 모션을 허용한다. 진입·스크롤 등 다른 모션의 감소 설정은 유지한다. */
+  [data-home-hero-motion="enabled"] [data-home-hero-orbit],
+  [data-home-hero-motion="enabled"] [data-home-hero-drift] {
+    animation-duration: var(--hero-motion-duration) !important;
+    animation-iteration-count: infinite !important;
+  }
 }

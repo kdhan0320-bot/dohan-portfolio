@@ -201,8 +201,8 @@ test.describe('Projects Page', () => {
 
     await test.step('QHD Projects index (01~03) 기하 확인', async () => {
       const geometry = await page.evaluate(() => {
-        const contentLeft = (window.innerWidth - 1440) / 2;
-        const contentRight = window.innerWidth - contentLeft;
+        const contentLeft = (document.documentElement.clientWidth - 1552) / 2;
+        const contentRight = document.documentElement.clientWidth - contentLeft;
         return Array.from(document.querySelectorAll('[data-qhd-index]')).map((el) => {
           // display:none은 wrapper(부모)에 걸려 있다 - 자식(el) 자신의 computed
           // display는 조상이 display:none이어도 'none'으로 바뀌지 않으므로 반드시
@@ -213,6 +213,7 @@ test.describe('Projects Page', () => {
           const r = (el as HTMLElement).getBoundingClientRect();
           const label = wrapper?.querySelector('[data-qhd-index-label]') as HTMLElement | null;
           const labelRect = label ? label.getBoundingClientRect() : null;
+          const sectionRect = el.closest('section, footer')?.getBoundingClientRect();
           const overlapsContent = visible && r.width > 0 && r.left < contentRight && r.right > contentLeft;
           return {
             index: el.getAttribute('data-qhd-index'),
@@ -224,6 +225,11 @@ test.describe('Projects Page', () => {
             rect: { left: Math.round(r.left), right: Math.round(r.right) },
             labelRect: labelRect ? { left: Math.round(labelRect.left), right: Math.round(labelRect.right) } : null,
             viewportWidth: window.innerWidth,
+            centerError: labelRect ? Math.abs((r.left + r.right - labelRect.left - labelRect.right) / 2) : null,
+            labelGap: labelRect ? labelRect.top - r.bottom : null,
+            sectionTop: sectionRect ? r.top - sectionRect.top : null,
+            labelFontSize: label ? getComputedStyle(label).fontSize : null,
+            labelOpacity: label ? getComputedStyle(label).opacity : null,
           };
         });
       });
@@ -240,6 +246,11 @@ test.describe('Projects Page', () => {
           expect.soft(item.ariaHidden, `${label}: aria-hidden="true"`).toBe('true');
           expect.soft(item.pointerEvents, `${label}: pointer-events:none`).toBe('none');
           expect.soft(item.overlapsContent, `${label}: overlapsContent는 false여야 함`).toBe(false);
+          expect.soft(item.centerError ?? Infinity, `${label}: 번호와 설명 중심선`).toBeLessThanOrEqual(1);
+          expect.soft(Math.abs((item.labelGap ?? -1) - 12), `${label}: 번호와 설명 간격`).toBeLessThanOrEqual(1);
+          expect.soft(Math.abs((item.sectionTop ?? -1) - 104), `${label}: 공통 상단 정렬`).toBeLessThanOrEqual(1);
+          expect.soft(item.labelFontSize, `${label}: 공통 설명 크기`).toBe('12px');
+          expect.soft(item.labelOpacity, `${label}: 설명에 중복 투명도를 적용하지 않음`).toBe('1');
           // Phase 5A-R: "부분 clip 허용" 폐기 — index/label 전체가 viewport 안에 있어야 한다.
           expect.soft(item.rect.left, `${label}: index rect.left가 0 미만`).toBeGreaterThanOrEqual(0);
           expect.soft(item.rect.right, `${label}: index rect.right가 viewport 초과`).toBeLessThanOrEqual(item.viewportWidth);
