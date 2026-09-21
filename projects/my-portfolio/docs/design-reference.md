@@ -183,87 +183,31 @@ TextField 등)가 상속하는 기본값 역할을 한다.
   사이트 새 탭), `download`(`DownloadRounded`, PDF 포트폴리오). 프로젝트
   진행 과정을 설명하는 `projectsFallbackData.js`의 `process` 필드 문자열은
   UI 내비게이션이 아닌 사실 데이터라 이 규칙 대상이 아니다(문자 그대로 유지).
-- **Ultra-wide(2560)**: Phase 4A에서 QHD 2560 프레임(347:383)을 직접
-  재측정한 결과, "Content Master" 프레임이 2560 캔버스 안에서도 1440
-  Desktop과 동일한 1440px 폭(내부 콘텐츠 1312px)으로 중앙에 고정되고,
-  그 바깥 여백에는 별도의 저대비 "Ambient Signal" 장식만 확장되는
-  구조였다 — 1440 레이아웃의 단순 확대가 아니라는 원래 원칙은 맞지만,
-  이전 회차가 썼던 1680/2080/1960px 상수는 옛 QHD 프레임 기준이라 폐기했다.
-  `theme.js`의 `ULTRAWIDE_CONTENT_MAX_WIDTH`(1312) / `HOME_WIDE_MAX_WIDTH`
-  (1440, Container 자체 CSS max-width) / `HOME_PROJECT_MAX_WIDTH`(1312)로
-  갱신했다. Header/Hero/About/Featured/Selected/Contact 전부 이 상수로
-  콘텐츠 폭을 고정한다 — Contact의 좌 32%/우 68% 2-plane 분할도 1440까지는
-  100vw 풀블리드, 1920+에서는 `HOME_WIDE_MAX_WIDTH`(1440) shell로 캡핑된다
-  (Phase 4B에서 구현). QHD Ambient Signal 장식(`QhdAmbientSignal.jsx`)은
-  Hero(432:303)·About(432:313)·Featured(432:323)·Selected(432:333)·
-  Contact(442:166) 5곳 전부 구현됐다 — Figma direct node ID 실측 픽셀
-  좌표 + `scene`(360×620 또는 560×560) 기준으로 렌더하며(Phase 4D), 1920px
-  이상에서만 표시되고 1440 이하에서는 DOM에 있어도 `display:none`이다.
-  Phase 4C에서는 원이 세로로 늘어난 타원으로 렌더되는 기하 버그가 있었는데
-  (컴포넌트 root 높이가 섹션의 임의 실제 높이를 따라가 360:620 비율이
-  깨졌던 것), Phase 4D에서 고정 aspect-ratio + 원본 픽셀 좌표 기반 렌더로
-  교정했다(직접 렌더 측정으로 원 width/height 차이 1px 이하 확인). Phase 4D는
-  원 비율만 고쳤을 뿐 세로 위치(`top`)는 그대로 0으로 남아 있어 Figma
-  실측과 어긋나 있었다 — Phase 4E에서 실제 문서 좌표를 기준으로 교정했다.
-  - Hero Left: 문서(viewport) 기준 top 250px. Header가 `position:fixed`라
-    Hero section 흐름 밖에 있어(`App.jsx`의 `NAVBAR_HEIGHT` 스페이서만큼
-    실제로 밀림), `HeroSection.jsx`가 `getBoundingClientRect()`로 Hero
-    section의 실제 문서 top을 재서 section-relative top을 그때그때 역산한다
-    (하드코딩 시 Header 높이가 바뀌면 조용히 어긋나는 걸 방지).
-  - About Right: About section 기준 section-relative top 260px(Figma
-    y=1120, About section 시작 860 기준).
-  - Featured Left: Featured section 기준 section-relative top 1278px
-    (Figma y=3000, Featured section 시작 1722 기준) — Bus Arrival(두 번째
-    project row) 부근에 오도록 고정값을 쓴다. project row에 직접 anchor하는
-    방식도 검토했으나 row 높이가 콘텐츠에 따라 바뀔 수 있어 Figma 좌표
-    기준 고정값을 우선 후보로 선택했다.
-  - Selected Right: Selected section 기준 section-relative top -123px
-    (Figma y=3900, Selected section 시작 4023 기준) — 이전 Featured 섹션
-    위로 123px 넘어가고 Selected 안으로 497px(620-123) 이어진다.
-    `MoreWorksSection.jsx`의 section은 `overflowX:'hidden'`만 지정하고
-    overflowY는 지정하지 않아(기본 visible) 이 음수 top이 잘리지 않는다.
-  - Contact Left/Right: Contact section 기준 top 0(section 자체 좌우
-    identity/action plane 분할과 무관). 너비는 `gutterWidth = calc((100vw -
-    HOME_WIDE_MAX_WIDTH) / 2)`, `maxWidth: 560`을 그대로 쓴다 — 2560에서
-    560px, 1920에서 240px 정사각형이며, 이전에 쓰던 `maxWidth: 400` +
-    `CONTACT_SHELL_SPLIT_OFFSET` 기반 복잡한 식은 1920에서 실제 gutter보다
-    넓게 렌더돼 중앙 1440 shell과 겹치는(`overlapsContent:true`) 버그가
-    있어 제거했다. `CONTACT_RIGHT_VARIANT`의 내부 자식 좌표(원/line/fragment/
-    점)도 Phase 4D까지는 "기존 비율 추정 유지"였는데, Phase 4E에서
-    `get_metadata`로 442:166을 직접 재조회해 실제 절대 좌표(`local x =
-    absolute x - 2000`)로 교체했다 — Left에는 없는 두 번째 line(가로
-    Terminal Path)이 있어 `line2`로 추가했다.
-  - 모든 수치는 `npm run audit:detailed`의 `qhdSignalGeometry` 단계가
-    `expect.soft()`로 직접 검증한다(오차 허용: 위치 ±2px, 크기 ±1px).
-- **QHD Section Index(`QhdSectionIndex.jsx`, Phase 4F)**: Figma QHD Home
-  (347:383)의 "Wide Index / Wide Label" 4쌍(396:199~206) — Human Signal의
-  "단계·구조·검증" 정체성을 QHD 여백에 설명하는 승인된 요소다. Ambient
-  Signal(원/선/점)과 역할이 달라 별도 컴포넌트로 분리했다. 1920px+에서만
-  표시, 1440 이하는 `display:none`.
-  - 스타일은 direct node `get_design_context` 실측 그대로: index 숫자는
-    Noto Sans KR Bold 170px opacity 0.05 inkNavy(Figma Type 패널의 Noto
-    Sans KR은 이 저장소에서 항상 실제 코드 폰트 SUIT Variable로 치환해
-    검증한다 — 위 "타이포그래피" 절과 동일 규칙), label은 IBM Plex Mono
-    SemiBold 11px opacity 0.56 burntOrange.
-  - 위치(section-relative top, 뷰포트 폭과 무관하게 항상 같다):
-    01 About(left) index 220 / label 380,
-    02 Featured(right) index 1619 / label 1779,
-    03 Selected(left) index 117 / label 277,
-    04 Contact(right) index -5 / label 173.
-  - 수평 위치는 중앙 1440(`HOME_WIDE_MAX_WIDTH`) shell 기준 Figma gutter
-    간격을 그대로 보존한 calc식이다 — 2560에서 left index x=58/label
-    x=126, right index x=2218/label x=2148과 정확히 맞는다(1920에서는
-    화면 밖으로 일부 잘리는 걸 허용, 중앙 shell 침범은 금지).
-  - **구현 중 발견한 버그**: Featured/Contact처럼 opaque full-bleed(100vw)
-    배경 블록(project band, Contact 2-pane split/footer strip)이 있는
-    섹션에서, `QhdSectionIndex`를 그 블록들보다 DOM에서 앞에 두면 완전히
-    가려진다(그 블록들이 나중에 페인트돼 덮어씀 — `elementFromPoint`로
-    재현·확인). 두 섹션 모두 `QhdSectionIndex`를 해당 블록들보다 뒤에
-    배치해 해결했다. 숫자는 1440 content shell 바깥 여백에만 있어 이렇게
-    옮겨도 실제 텍스트/CTA 위로 올라오지 않는다.
-  - 모든 수치는 `npm run audit:detailed`의 `qhdIndexGeometry` 단계가
-    `expect.soft()`로 검증한다(section-relative top 허용 오차 ±2px,
-    중앙 1440 shell `overlapsContent:false` 필수).
+- **Ultra-wide(2560)**: 중앙 콘텐츠는 `HOME_WIDE_MAX_WIDTH` 1440px
+  (내부 콘텐츠 1312px + 좌우 padding 64px)이며, 장식은 바깥 여백에만 배치한다.
+  Home 01–04는 사용자 추가 요청에 따라 아래 공통 규칙을 사용한다.
+  표시 기준은 `QHD_DECORATION_MIN_WIDTH` 2480px이며, 그 미만에서는 숫자·
+  설명·원형 장식을 모두 숨긴다. Figma의 과거 개별 좌표와 다른 사용자 승인 변경이다.
+  - **숫자 + 설명**: `QhdSectionIndex`의 `layout="section"`을 사용한다.
+    섹션 시작으로부터 top 104px, 숫자 170px/line-height 1, 설명 11px,
+    둘 사이 gap 12px. 독립적인 left/top 보정 대신 같은 flex column 안에서
+    가운데 정렬한다. 01·03은 왼쪽, 02·04는 오른쪽 여백의 중앙에 놓인다.
+  - **원형 장식**: 숫자의 반대쪽 여백 중앙, top 48px, 폭 320px,
+    scene 비율 360:620 유지. 01–04가 같은 크기·간격·불투명도를 사용한다.
+    04는 02와 같은 `ABOUT_FEATURED_VARIANT`를 `contact-section-left`로 재사용한다.
+    네 장식 모두 정적이며 기존 Hero의 느린 모션과 경쟁하지 않는다.
+  - **잘림 방지**: 음수 top을 제거하고, scene 내부의 원이 frame 경계에서
+    잘리지 않도록 공통 섹션 모드에서는 overflow를 허용한다. 전체 장식은
+    여백 안에 머물고 부모 section 밖으로는 넘치지 않는 크기로 제한한다.
+    Featured는 full-width 배경보다 뒤에 장식을 렌더해 가려짐을 방지한다.
+  - **일반 데스크톱 정렬**: 1024–1439px에서는 Home 01–04 컨테이너가
+    모두 좌우 48px, 1440px 이상에서는 공통 64px 여백을 사용한다.
+  - **유지 범위**: Hero 외곽 장식의 위치·크기, Projects 페이지의 별도
+    숫자 배치(`legacy`)는 변경하지 않는다.
+  - **검증 범위**: `site-audit-kit`의 QHD 검사는 01–04 누락, 숫자와 설명의
+    중심선·간격, 원의 비율, 본문 침범, 섹션 밖 잘림을 검사하도록 갱신한다.
+    현재 작업 환경에서는 1363px 브라우저만 제공되므로 QHD 실렌더 검사 결과는
+    별도로 확인해야 한다. 정적 CSS 검사·배치 계산을 실제 QHD 화면 검사로 간주하지 않는다.
 
 ## 접근성
 
@@ -339,7 +283,8 @@ Contact다(Home Desktop 1440 254:3 y좌표 순서로 재확인). Phase 4A에서
   왼쪽 시작선을 맞춘다. 문구는 "함께 일할 기회를 찾고 있습니다."를 유지한다.
   고정 높이와 absolute footer를 제거해 모바일·텍스트 확대 시 내용이 자연스럽게
   늘어난다. 이름·연도·OPEN TO WORK는 작은 하단 정보로 남긴다. QHD의 04
-  section index는 유지하고, 과거 좌우 분할용 Closing Signal 장식은 제거한다.
+  section index는 공통 묶음 정렬을 사용한다. 과거 좌우 분할용 Closing Signal 대신
+  02와 같은 원형 장식을 왼쪽 외곽에 넣는다.
 
 영문 이름 표기는 `DOHAN KIM`(이름 성 순서)으로 통일 확정됐다(사용자 확정).
 Navbar 로고, Hero eyebrow, Contact footer, ProjectsPage footer,

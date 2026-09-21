@@ -217,8 +217,6 @@ const ProjectsSection = () => {
       [COMPACT_ONLY_MQ]: { pt: '88px', pb: '96px' },
       [DESKTOP_MQ]: { pt: '104px', pb: '120px' },
     }}>
-      <QhdAmbientSignal variant="featured-left" sx={{ left: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 440px)`, top: 1278 }} />
-
       <Box
         aria-hidden="true"
         data-featured-signal-rail="true"
@@ -319,7 +317,8 @@ const ProjectsSection = () => {
         </Box>
       </Container>
 
-      <QhdSectionIndex id="featured" index="02" label="FEATURED / EVIDENCE" side="right" indexTop={1619} labelTop={1779} indexOffset={218} labelOffset={148} />
+      <QhdAmbientSignal variant="featured-left" sectionSide="left" />
+      <QhdSectionIndex id="featured" index="02" label="FEATURED / EVIDENCE" side="right" layout="section" />
     </Box>
   );
 };

@@ -135,13 +135,14 @@ const MoreWorksSection = () => {
       [COMPACT_MQ]: { minHeight: '1010px', pt: '88px', pb: '96px' },
       [DESKTOP_MQ]: { minHeight: '1096px', pt: '96px', pb: '104px' },
     }}>
-      <QhdAmbientSignal variant="selected-right" sx={{ right: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 440px)`, top: -123 }} />
-      <QhdSectionIndex id="selected" index="03" label="SELECTED / RANGE" side="left" indexTop={117} labelTop={277} indexOffset={502} labelOffset={434} />
+      <QhdAmbientSignal variant="selected-right" sectionSide="right" />
+      <QhdSectionIndex id="selected" index="03" label="SELECTED / RANGE" side="left" layout="section" />
 
       <Container
         maxWidth={false}
         sx={{
           px: { xs: 3, sm: 6, md: 8 }, maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 }, mx: 'auto',
+          '@media (min-width:1024px) and (max-width:1439.95px)': { px: '48px' },
           '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
         }}
       >

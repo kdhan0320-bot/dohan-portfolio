@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
-import { HUMAN_SIGNAL, QHD_DECORATION_MIN_WIDTH } from '../../theme';
+import { HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH, QHD_DECORATION_MIN_WIDTH } from '../../theme';
 
-/* QHD(1920px 이상) 전용 외곽 장식 — Home 콘텐츠가 1440px(HOME_WIDE_MAX_WIDTH)로
+/* QHD(2480px 이상) 전용 외곽 장식 — Home 콘텐츠가 1440px(HOME_WIDE_MAX_WIDTH)로
  * 고정되면서 2560에서 생기는 좌우 여백을 채운다. Figma QHD 2560(347:383) direct
  * node ID 실측 기준(Phase 4C에서 `get_metadata`로 확보): Hero/About/Featured/
  * Selected는 겹친 원 2개 + 세로 rail + 점 4개 + fragment 2개, Contact는 원 2개 +
@@ -186,6 +186,7 @@ const VARIANTS = {
   'about-right': ABOUT_FEATURED_VARIANT,
   'featured-left': ABOUT_FEATURED_VARIANT,
   'selected-right': SELECTED_VARIANT,
+  'contact-section-left': ABOUT_FEATURED_VARIANT,
 };
 
 /* line/line2 공용 렌더러 — Contact Right는 Left와 달리 vertical rail(line) +
@@ -211,7 +212,7 @@ const renderLine = (line, scene, stroke, key) => {
   );
 };
 
-const QhdAmbientSignal = ({ variant, sx }) => {
+const QhdAmbientSignal = ({ variant, sectionSide, sx }) => {
   const spec = VARIANTS[variant];
   if (!spec) return null;
   const tone = spec.tone === 'light' ? LIGHT_TONE : DARK_TONE;
@@ -231,6 +232,12 @@ const QhdAmbientSignal = ({ variant, sx }) => {
         display: 'none',
         [`@media (min-width:${QHD_DECORATION_MIN_WIDTH}px)`]: { display: 'block' },
         ...sizingSx,
+        ...(sectionSide && {
+          // 01–04 공통: 원형 장식을 본문 바깥 여백 중앙에 놓는다.
+          // 음수 top과 섹션별 임의 좌표를 사용하지 않아 위/아래가 잘리지 않는다.
+          top: 48, width: 320, overflow: 'visible',
+          [sectionSide]: `calc((100% - ${HOME_WIDE_MAX_WIDTH}px) / 4 - 160px)`,
+        }),
         ...sx,
       }}
     >

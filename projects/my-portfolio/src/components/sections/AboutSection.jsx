@@ -71,12 +71,8 @@ const AboutSection = () => {
         [COMPACT_ONLY_MQ]: { pt: '88px', pb: '96px' },
       }}
     >
-      {/* QHD(1920+) 전용 외곽 신호 — Figma 432:313, About 콘텐츠보다 강하지 않게 저대비.
-       * top:260은 Figma About Right(432:313) section-relative 실측값(y=1120, About
-       * section 시작 860 기준 1120-860=260). About section 자체가 위치 기준(relative)이라
-       * Hero처럼 Header 오프셋 보정이 필요 없다. */}
-      <QhdAmbientSignal variant="about-right" sx={{ right: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 470px)`, top: 260 }} />
-      <QhdSectionIndex id="about" index="01" label="ABOUT / CAPABILITIES" side="left" indexTop={220} labelTop={380} indexOffset={502} labelOffset={434} />
+      <QhdAmbientSignal variant="about-right" sectionSide="right" />
+      <QhdSectionIndex id="about" index="01" label="ABOUT / CAPABILITIES" side="left" layout="section" />
 
       <Container
         maxWidth={false}

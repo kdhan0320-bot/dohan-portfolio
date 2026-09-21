@@ -11,14 +11,9 @@ import { scanContrastInPage } from '../scripts/contrast-scan';
 // QHD_DECORATION_MIN_WIDTH를 바꾸면 이 값도 함께 바꿔야 한다.
 const QHD_DECORATION_MIN_WIDTH = 2480;
 
-/* Phase 4E: qhdSignalGeometry는 Phase 4D까지 수치만 기록하고 실패로 연결하지
- * 않았다(감사 도구가 "기록만 하고 통과시키는" 신뢰성 문제) — 아래 표는 각
- * variant의 Figma 실측 기준 기대값이고, 실제 assertion은 expect.soft()로
- * 걸어 하나라도 어긋나면 `npm run audit:detailed`가 실패하게 한다.
- * 2560/1920 side-scene(hero-left/about-right/featured-left/selected-right)은
- * width/height 360x620을, contact-left/right는 각 viewport gutter 폭 기준
- * 정사각형을 기대한다. 1440 이하 7개 viewport는 6개 variant 전부 visible:false만
- * 확인한다(그 외 수치는 렌더되지 않아 의미가 없다). */
+/* 사용자 승인 정렬: Hero는 기존 scene을 유지하고, Home 01–04는
+ * 동일한 320×(320*620/360) 원형 장식을 섹션 상단 48px·좌우 여백 중앙에 둔다.
+ * 원/번호/설명은 2480px 미만에서 숨기고, 보일 때는 잘림·본문 침범을 금지한다. */
 type QhdExpectation = {
   documentTop?: number;
   sectionRelativeTop?: number;
@@ -31,27 +26,20 @@ type QhdExpectation = {
 const QHD_TOLERANCE = 2;
 const QHD_SIZE_TOLERANCE = 1;
 
-// Phase 5A-R: 표시 기준이 2480으로 바뀌면서 실제 visible을 기대하는 viewport는
-// desktop-2560/desktop-2480 둘뿐이다(그 사이 1707/1920/2048/2133/2304는 전부
-// hidden). left/rightGap은 gutter offset 상수(hero/about: 470, featured/selected: 440)를
-// `calc((100vw-1440)/2 - offset)`로 그대로 계산한 값이고, contact 폭은
-// `calc((100vw-1440)/2)`(560 상한)이다.
 const QHD_EXPECTED: Record<string, Record<string, QhdExpectation>> = {
   'desktop-2560': {
     'hero-left': { documentTop: 250, left: 90, width: 360, height: 620 },
-    'about-right': { sectionRelativeTop: 260, rightGap: 90, width: 360, height: 620 },
-    'featured-left': { sectionRelativeTop: 1278, left: 120, width: 360, height: 620 },
-    'selected-right': { sectionRelativeTop: -123, rightGap: 120, width: 360, height: 620 },
-    'contact-left': { width: 560, height: 560, overlapsContent: false },
-    'contact-right': { width: 560, height: 560, overlapsContent: false },
+    'about-right': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'featured-left': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'selected-right': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'contact-section-left': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
   },
   'desktop-2480': {
     'hero-left': { documentTop: 250, left: 50, width: 360, height: 620 },
-    'about-right': { sectionRelativeTop: 260, rightGap: 50, width: 360, height: 620 },
-    'featured-left': { sectionRelativeTop: 1278, left: 80, width: 360, height: 620 },
-    'selected-right': { sectionRelativeTop: -123, rightGap: 80, width: 360, height: 620 },
-    'contact-left': { width: 520, height: 520, overlapsContent: false },
-    'contact-right': { width: 520, height: 520, overlapsContent: false },
+    'about-right': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'featured-left': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'selected-right': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
+    'contact-section-left': { sectionRelativeTop: 48, width: 320, height: 551, overlapsContent: false },
   },
 };
 const QHD_HIDDEN_VIEWPORTS = [
@@ -60,19 +48,14 @@ const QHD_HIDDEN_VIEWPORTS = [
 ];
 const QHD_VISIBLE_VIEWPORTS = ['desktop-2560', 'desktop-2480'];
 
-/* Phase 4F: QhdSectionIndex(01~04) 4쌍의 section-relative top은 caller가 넘긴
- * 리터럴 px 값이라 뷰포트 폭과 무관하게 항상 같다(가로 위치만 50% 기준 calc라
- * 뷰포트마다 달라진다) — 그래서 desktop-2560/2480 둘 다 같은 기대값을 쓴다.
- * Phase 5A-R: "1920에서 화면 밖으로 나갈 수 있어(침범 허용)"라던 이전 원칙은
- * 폐기했다 — 이제 visible로 판정되는 viewport(2480/2560)에서는 index/label
- * rect가 viewport 안에 완전히 들어와야 하며(아래 본문의 rect.left>=0 /
- * rect.right<=innerWidth 검사), 부분적으로만 잘리는 상태를 PASS로 두지 않는다. */
+// 번호와 설명을 각각 배치하지 않고 같은 묶음으로 정렬한다.
+// 실제 DOM에서 중심선·간격·섹션 내부 포함 여부를 함께 검사한다.
 type QhdIndexExpectation = { sectionRelativeTop: number; labelSectionRelativeTop: number };
 const QHD_INDEX_EXPECTED: Record<string, QhdIndexExpectation> = {
-  about: { sectionRelativeTop: 220, labelSectionRelativeTop: 380 },
-  featured: { sectionRelativeTop: 1619, labelSectionRelativeTop: 1779 },
-  selected: { sectionRelativeTop: 117, labelSectionRelativeTop: 277 },
-  contact: { sectionRelativeTop: -5, labelSectionRelativeTop: 173 },
+  about: { sectionRelativeTop: 104, labelSectionRelativeTop: 286 },
+  featured: { sectionRelativeTop: 104, labelSectionRelativeTop: 286 },
+  selected: { sectionRelativeTop: 104, labelSectionRelativeTop: 286 },
+  contact: { sectionRelativeTop: 104, labelSectionRelativeTop: 286 },
 };
 const QHD_INDEX_VISIBLE_VIEWPORTS = QHD_VISIBLE_VIEWPORTS;
 
@@ -944,8 +927,8 @@ test.describe('Detailed Design Audit', () => {
       });
     }
 
-    // Phase 4D: QhdAmbientSignal(hero-left/about-right/featured-left/selected-right/
-    // contact-left/contact-right) 6개 scene의 실제 렌더 기하를 9개 viewport 전부에서
+    // QhdAmbientSignal(hero-left/about-right/featured-left/selected-right/
+    // contact-section-left) 5개 scene의 실제 렌더 기하를 각 viewport에서
     // 잰다(desktop-1440 전용 블록 밖에 둬서 1440/390의 "안 보임"과 1920/2560의 "보임"을
     // 같은 회차에서 함께 확인한다). 원이 타원으로 늘어나는 버그(circle의 width/height
     // 렌더 차이)가 재발하지 않는지, 1440 content shell과 안 겹치는지를 직접 측정한다 —
@@ -968,6 +951,13 @@ test.describe('Detailed Design Audit', () => {
               return { width: Math.round(r.width * 100) / 100, height: Math.round(r.height * 100) / 100, diff: Math.round(Math.abs(r.width - r.height) * 100) / 100 };
             });
             const overlapsContent = visible && rect.width > 0 && rect.left < contentRight && rect.right > contentLeft;
+            const sectionWidth = sectionRect?.width ?? window.innerWidth;
+            const gutterWidth = (sectionWidth - 1440) / 2;
+            const centerX = rect.left + rect.width / 2;
+            const gutterCenterError = Math.min(
+              Math.abs(centerX - gutterWidth / 2),
+              Math.abs(centerX - (sectionWidth - gutterWidth / 2)),
+            );
             return {
               variant: el.getAttribute('data-qhd-signal'),
               visible,
@@ -979,11 +969,16 @@ test.describe('Detailed Design Audit', () => {
               viewportWidth: window.innerWidth,
               circles,
               allCirclesRound: circles.every((c) => c.diff <= 1),
+              gutterCenterError,
+              sectionBottomGap: sectionRect ? sectionRect.bottom - rect.bottom : null,
               overlapsContent,
             };
           });
         });
         record({ kind: 'qhdSignalGeometry', viewport: viewportKey, scenes: geometry });
+        expect.soft(geometry.map((scene) => scene.variant).sort(), 'Home 원형 장식 5개가 모두 있어야 함').toEqual(
+          ['hero-left', 'about-right', 'featured-left', 'selected-right', 'contact-section-left'].sort(),
+        );
 
         // Phase 4E: 기록만 하고 끝내지 않는다 — 필수 조건은 expect.soft()로 실패를
         // 남긴다(하나가 실패해도 나머지 검사는 계속 진행). 예외를 삼켜 "확인 불가"로만
@@ -1002,6 +997,11 @@ test.describe('Detailed Design Audit', () => {
           expect.soft(scene.allCirclesRound, `${label}: 원이 타원으로 늘어나면 안 됨`).toBe(true);
           expect.soft(scene.ariaHidden, `${label}: aria-hidden="true"`).toBe('true');
           expect.soft(scene.pointerEvents, `${label}: pointer-events:none`).toBe('none');
+          if (scene.variant !== 'hero-left') {
+            expect.soft(scene.gutterCenterError, `${label}: 원형 장식이 여백 중앙에 있어야 함`).toBeLessThanOrEqual(1);
+            expect.soft(scene.sectionBottomGap, `${label}: 장식 하단이 섹션 밖으로 잘리면 안 됨`).not.toBeNull();
+            expect.soft(scene.sectionBottomGap ?? -1, `${label}: 장식 하단 잘림`).toBeGreaterThanOrEqual(0);
+          }
 
           // Phase 5A-R: "부분 clip 허용" 폐기 — visible로 판정된 장식은 viewport
           // 안에 완전히 들어와야 한다(한 픽셀이라도 밖으로 나가면 FAIL).
@@ -1074,6 +1074,9 @@ test.describe('Detailed Design Audit', () => {
               ariaHidden: wrapper.getAttribute('aria-hidden'),
               rect: { left: Math.round(rect.left), right: Math.round(rect.right), top: Math.round(rect.top), width: Math.round(rect.width), height: Math.round(rect.height) },
               labelRect: labelRect ? { left: Math.round(labelRect.left), right: Math.round(labelRect.right), width: Math.round(labelRect.width) } : null,
+              centerError: labelRect ? Math.abs((rect.left + rect.right - labelRect.left - labelRect.right) / 2) : null,
+              labelGap: labelRect ? labelRect.top - rect.bottom : null,
+              sectionBottomGap: labelRect && sectionRect ? sectionRect.bottom - labelRect.bottom : null,
               viewportWidth: window.innerWidth,
               sectionRelativeTop: sectionRect ? Math.round(rect.top - sectionRect.top) : null,
               labelSectionRelativeTop: (labelRect && sectionRect) ? Math.round(labelRect.top - sectionRect.top) : null,
@@ -1082,6 +1085,7 @@ test.describe('Detailed Design Audit', () => {
           });
         });
         record({ kind: 'qhdIndexGeometry', viewport: viewportKey, indices: indexGeometry });
+        expect.soft(indexGeometry.map((item) => item.index), '01–04 번호가 모두 있어야 함').toEqual(['01', '02', '03', '04']);
 
         const hiddenExpected = QHD_HIDDEN_VIEWPORTS.includes(viewportKey);
         const visibleExpected = QHD_INDEX_VISIBLE_VIEWPORTS.includes(viewportKey);
@@ -1096,6 +1100,10 @@ test.describe('Detailed Design Audit', () => {
           expect.soft(item.visible, `${label}: visible이어야 함`).toBe(true);
           expect.soft(item.ariaHidden, `${label}: aria-hidden="true"`).toBe('true');
           expect.soft(item.pointerEvents, `${label}: pointer-events:none`).toBe('none');
+          expect.soft(item.centerError, `${label}: 설명이 있어야 함`).not.toBeNull();
+          expect.soft(item.centerError ?? Infinity, `${label}: 숫자와 설명의 중심 불일치`).toBeLessThanOrEqual(1);
+          expect.soft(Math.abs((item.labelGap ?? -1) - 12), `${label}: 숫자와 설명 간격`).toBeLessThanOrEqual(1);
+          expect.soft(item.sectionBottomGap ?? -1, `${label}: 설명 하단 잘림`).toBeGreaterThanOrEqual(0);
           expect.soft(item.overlapsContent, `${label}: overlapsContent는 false여야 함(중앙 1440 shell 침범 금지)`).toBe(false);
 
           // Phase 5A-R: index 숫자와 label 전체가 viewport 안에 완전히 들어와야 한다

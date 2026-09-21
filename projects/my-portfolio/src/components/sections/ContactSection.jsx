@@ -3,6 +3,7 @@ import { PORTFOLIO_PDF_URL, GITHUB_PROFILE_URL, CONTACT_EMAIL } from '../../cons
 import { FONT_MONO, HUMAN_SIGNAL, HOME_WIDE_MAX_WIDTH, ULTRAWIDE_CONTENT_MAX_WIDTH } from '../../theme';
 import ActionIcon from '../ui/ActionIcon';
 import QhdSectionIndex from '../ui/QhdSectionIndex';
+import QhdAmbientSignal from '../ui/QhdAmbientSignal';
 
 const APPLICATION_ROLES = ['UX/UI 웹디자인', '웹퍼블리싱', 'UI 구현'];
 const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
@@ -19,6 +20,7 @@ const ContactSection = () => (
     <Container maxWidth={false} sx={{
       position: 'relative', px: { xs: 3, sm: 6, md: 8 },
       maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 }, mx: 'auto',
+      '@media (min-width:1024px) and (max-width:1439.95px)': { px: '48px' },
       '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
     }}>
       <Box data-contact-content="true" sx={{ maxWidth: 820, textAlign: 'left' }}>
@@ -140,7 +142,8 @@ const ContactSection = () => (
         </Typography>
       </Box>
     </Container>
-    <QhdSectionIndex id="contact" index="04" label="CONTACT / NEXT" side="right" indexTop={-5} labelTop={173} indexOffset={218} labelOffset={148} />
+    <QhdAmbientSignal variant="contact-section-left" sectionSide="left" />
+    <QhdSectionIndex id="contact" index="04" label="CONTACT / NEXT" side="right" layout="section" />
   </Box>
 );
 
