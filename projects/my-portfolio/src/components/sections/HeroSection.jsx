@@ -26,7 +26,8 @@ import QhdAmbientSignal from '../ui/QhdAmbientSignal';
  *    색으로 정렬) → SETTLE(1180–1460ms, D2와 하단 signal bar가 완성되며
  *    멈춤) 4단계, 총 약 1.46초, 최초 진입 1회이다.
  * 사용자 요청 반영: D2와 두 원의 중심을 높이 44%로 맞추고, 등장 완료 후
- * 원 위의 짧은 선만 느리게 순환한다. 일시 정지·동작 줄이기·화면 밖 정지를 지원한다.
+ * 원 위의 강조선과 작은 점 두 개만 느리게 순환한다. D2·네모·연결선은 고정한다.
+ * 일시 정지·동작 줄이기·화면 밖 정지를 지원한다.
  * review 캡처 모드(data-review-mode="true")에서는 애니메이션 없이 최종
  * 상태로 렌더링한다 — HomePage.jsx의 data-hero-reveal opacity>=0.99 계약은
  * eyebrow/H1/주 CTA 3곳에 그대로 유지한다. prefers-reduced-motion은
@@ -72,11 +73,9 @@ const STAGE_LINES = [
 ];
 
 const STAGE_DOTS = [
-  { key: 'd1', left: '15.3%', top: '19.3%', size: 8, color: 'mutedSage' },
   { key: 'd2', left: '81.1%', top: '15.2%', size: 10, color: 'brightOrange' },
   { key: 'd3', left: '85.2%', top: '69.3%', size: 9, color: 'brightOrange' },
   { key: 'd4', left: '13.3%', top: '75.3%', size: 8, color: 'mutedSage' },
-  { key: 'd5', left: '49.5%', top: '9.5%', size: 6, color: 'steelMist' },
 ];
 
 const BAR_SEGMENTS = [
@@ -209,20 +208,24 @@ const HeroSignalStage = () => {
       <circle data-home-hero-ring="inner" cx="274" cy="264" r="142.48"
         stroke="rgba(170,183,196,0.22)" vectorEffect="non-scaling-stroke" />
       <Box component="g" data-home-hero-orbit="outer" sx={{
-        animation: isReviewCapture ? 'none' : 'stageOrbit 48s linear 1.46s infinite',
+        animation: isReviewCapture ? 'none' : 'stageOrbit 32s linear 1.46s infinite',
       }}>
         <circle cx="274" cy="264" r="208.24" pathLength="100"
-          stroke={HUMAN_SIGNAL.steelMist} strokeWidth="1.5" strokeOpacity="0.65"
-          strokeDasharray="6 94" strokeDashoffset="24" strokeLinecap="round"
+          stroke={HUMAN_SIGNAL.steelMist} strokeWidth="2" strokeOpacity="0.85"
+          strokeDasharray="14 86" strokeLinecap="round"
           vectorEffect="non-scaling-stroke" />
+        <circle data-home-hero-orbit-dot="outer" cx="482.24" cy="264" r="4.5"
+          fill={HUMAN_SIGNAL.steelMist} />
       </Box>
       <Box component="g" data-home-hero-orbit="inner" sx={{
-        animation: isReviewCapture ? 'none' : 'stageOrbit 36s linear 1.46s infinite reverse',
+        animation: isReviewCapture ? 'none' : 'stageOrbit 42s linear 1.46s infinite reverse',
       }}>
         <circle cx="274" cy="264" r="142.48" pathLength="100"
-          stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="1.5" strokeOpacity="0.7"
-          strokeDasharray="8 92" strokeDashoffset="60" strokeLinecap="round"
+          stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="2" strokeOpacity="0.9"
+          strokeDasharray="16 84" strokeDashoffset="50" strokeLinecap="round"
           vectorEffect="non-scaling-stroke" />
+        <circle data-home-hero-orbit-dot="inner" cx="131.52" cy="264" r="4.5"
+          fill={HUMAN_SIGNAL.mutedSage} />
       </Box>
     </Box>
 
@@ -257,7 +260,7 @@ const HeroSignalStage = () => {
       />
     ))}
 
-    {/* 점 5개 — SCATTER에 순서대로 등장 */}
+    {/* 고정 점 3개 — 나머지 2개는 원선과 같은 궤도 안에서만 움직인다. */}
     {STAGE_DOTS.map((dot, i) => (
       <Box
         key={dot.key}

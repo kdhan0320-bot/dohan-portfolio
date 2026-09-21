@@ -5,6 +5,11 @@
 `53Ppn2hIgrvs9Jra3eejFs`를 1차 소스로 삼아 정리했다. 세부 수치(hex, px, 초)는
 Figma 원본이 우선하고, 이 문서는 그 수치를 코드에 어떻게 적용했는지 설명한다.
 
+사용자 추가 승인(2026-09-22): Hero 모션의 가시성을 높이고, Contact의 D2
+브랜드 패널을 제거해 왼쪽 정렬 단일 영역으로 변경한다. 아래 과거 Figma
+실측 기록 중 Contact 32/68 분할·Closing Signal은 이전 구성의 기록이며,
+현재 구현은 Home 섹션의 Hero·Contact 항목을 따른다. Figma 파일은 수정하지 않는다.
+
 이전 디자인 시스템(Ordered Signal, 큰 한글 타이포 + 신호점/신호선 모티프)은
 사용자 승인 아래 Human Signal로 교체됐다. Header/Navigation/모바일 메뉴/404/
 D2 로고/전역 토큰에 이어, Hero/About/Featured Projects/Selected Works/
@@ -301,14 +306,17 @@ Contact다(Home Desktop 1440 254:3 y좌표 순서로 재확인). Phase 4A에서
   재생(Motion Guide 286:3, 키프레임 323:3/92/181/270 실측).
   사용자 요청에 따른 코드 변경: D2와 두 원의 중심은 카드의 x=50%, y=44%로
   통일했다. 기존 D2 y=48.7%와 원 중심의 어긋남을 해소하고, 등장 완료 후
-  두 원 위 짧은 선만 48초/36초 주기로 반대 방향 순환한다. D2·격자·chip·점은
-  고정한다. 44px 일시 정지/재생 버튼과 prefers-reduced-motion 정적 표시를
+  두 원 위 강조선과 작은 점 두 개가 32초/42초 주기로 반대 방향 순환한다.
+  선은 원주의 14%/16%, 2px 두께로 조정해 움직임을 쉽게 알아보도록 했다.
+  총 다섯 점 중 세 개와 D2·격자·chip·연결선은 고정하며, 확대·축소·점멸·
+  무작위 이동은 사용하지 않는다. 44px 일시 정지/재생 버튼과 prefers-reduced-motion 정적 표시를
   제공하며, Stage가 화면 밖에 있거나 탭이 숨겨지면 반복 모션을 정지한다.
   Hero 좌우 배치는 본문 고정폭이 정의되는 1024px부터 시작한다. 900–1023px에서
   width:100% 본문과 400px Stage가 동시에 배치되던 폭 충돌을 제거했다.
   같은 1024px 미디어쿼리는 한 속성으로 통합해 flex 배치가 덮어쓰이지 않게 했다.
-  lint·build와 Hero 정적 렌더 CSS 검사는 통과했다. 수정본의 실제 브라우저 모션,
-  일시 정지 조작과 모바일 시각 검사는 아직 완료하지 않았다.
+  이전 배포본은 데스크톱에서 회전·일시 정지·키보드 재생·화면 밖 정지와
+  D2 중심 정렬을 확인했다. 이번 가시성 조정본은 별도로 검증하며,
+  모바일 실기기와 동작 줄이기 설정의 실기기 검사는 미완료다.
   Figma 원본은 이 코드 수정 회차에서 변경하지 않았다.
 - **About**: 섹션 배경은 Soft White(Warm Paper 아님, 266:53 실측). 상단
   Intro(좌 헤드라인 "제가 할 수 있는 일을, 실제 결과물 기준으로
@@ -325,16 +333,16 @@ Contact다(Home Desktop 1440 254:3 y좌표 순서로 재확인). Phase 4A에서
   Concept). Projects 페이지의 More Works는 Portfolio Feedback Hub → 울산 버스
   도착정보 → Streaming UI Concept → BREWSTEP 순서다. 헤딩 카피는 "다른 작업도,
   같은 기준으로 정리했습니다."를 사용한다.
-- **Contact**: 좌 32% Deep Harbor identity plane(D2+`DOHAN KIM`+정리·연결·
-  검증+OPEN TO WORK) / 우 68% Soft White action plane(heading+Mail primary+
-  GitHub secondary+지원 분야, PDF 버튼 없음 — 268:65 확인), 하단 별도
-  Deep Harbor footer strip(한 줄: `DOHAN KIM · HUMAN SIGNAL / {year}
-  PORTFOLIO`). 좌우 분할은 1440까지 100vw 풀블리드를 유지하고, 1920+에서는
-  `HOME_WIDE_MAX_WIDTH`(1440) shell로 캡핑되며 그 바깥 여백에 Contact
-  Closing Signal(442:166)이 렌더된다(위 Ultra-wide 절 참고).
+- **Contact**: 사용자 승인에 따라 큰 D2와 좌측 identity plane을 제거하고
+  Soft White 단일 영역으로 구성한다. Selected Works와 같은 Container 폭·
+  반응형 좌우 여백을 사용해 CONTACT·제목·설명·메일/GitHub 버튼·지원 분야의
+  왼쪽 시작선을 맞춘다. 문구는 "함께 일할 기회를 찾고 있습니다."를 유지한다.
+  고정 높이와 absolute footer를 제거해 모바일·텍스트 확대 시 내용이 자연스럽게
+  늘어난다. 이름·연도·OPEN TO WORK는 작은 하단 정보로 남긴다. QHD의 04
+  section index는 유지하고, 과거 좌우 분할용 Closing Signal 장식은 제거한다.
 
 영문 이름 표기는 `DOHAN KIM`(이름 성 순서)으로 통일 확정됐다(사용자 확정).
-Navbar 로고, Hero eyebrow, Contact identity·footer, ProjectsPage footer,
+Navbar 로고, Hero eyebrow, Contact footer, ProjectsPage footer,
 NotFoundPage footer 전부 `DOHAN KIM`을 쓴다 — `KIM DOHAN`(성 이름 순서)은
 더 이상 쓰지 않는다.
 
