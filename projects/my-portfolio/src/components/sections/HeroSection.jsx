@@ -1,5 +1,7 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Typography } from '@mui/material';
+import PauseRounded from '@mui/icons-material/PauseRounded';
+import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
 import { scrollToSection } from '../../hooks/useScrollNav';
 import {
   HERO_EYEBROW, HERO_HEADLINE_LINES, HERO_DESCRIPTION_LINES,
@@ -22,7 +24,9 @@ import QhdAmbientSignal from '../ui/QhdAmbientSignal';
  * 4) 모션은 IDENTITY(0–220ms, 이름/헤드라인 등장) → SCATTER(220–720ms, 격자·
  *    점·chip이 각자 자리에 흐릿하게 등장) → ALIGN(720–1180ms, chip이 실제
  *    색으로 정렬) → SETTLE(1180–1460ms, D2와 하단 signal bar가 완성되며
- *    멈춤) 4단계, 총 약 1.46초, 최초 진입 1회, 이후 반복 없음이다.
+ *    멈춤) 4단계, 총 약 1.46초, 최초 진입 1회이다.
+ * 사용자 요청 반영: D2와 두 원의 중심을 높이 44%로 맞추고, 등장 완료 후
+ * 원 위의 짧은 선만 느리게 순환한다. 일시 정지·동작 줄이기·화면 밖 정지를 지원한다.
  * review 캡처 모드(data-review-mode="true")에서는 애니메이션 없이 최종
  * 상태로 렌더링한다 — HomePage.jsx의 data-hero-reveal opacity>=0.99 계약은
  * eyebrow/H1/주 CTA 3곳에 그대로 유지한다. prefers-reduced-motion은
@@ -41,7 +45,8 @@ const anim = (name, duration, delay, ease = EASE_OUT) =>
 // 둔다(ProjectsPage.jsx의 FONT_KR과 동일 문자열, 파일 간 import 없이 중복).
 const FONT_KR = '"Noto Sans KR", "Pretendard", "Malgun Gothic", sans-serif';
 
-const SPLIT_MQ = '@media (min-width:900px)';
+// 본문 고정폭이 정의되는 1024px부터 좌우 배치한다. 그 아래에서는
+// width:100% 본문과 400px Stage가 동시에 놓여 잘리는 것을 피한다.
 // Figma 승인 Home breakpoint(1024 Compact 365:126, 1440 Desktop 254:3)의 실제
 // bounding box에 맞춰 typography·geometry를 단계별로 고정한다.
 const COMPACT_MQ = '@media (min-width:1024px)';
@@ -80,9 +85,43 @@ const BAR_SEGMENTS = [
   { key: 's3', color: 'brightOrange', flex: 16 },
 ];
 
-const HeroSignalStage = () => (
+const SIGNAL_CENTER_Y = '44%';
+
+const HeroSignalStage = () => {
+  const stageRef = useRef(null);
+  const [motionPaused, setMotionPaused] = useState(false);
+  const [motionVisible, setMotionVisible] = useState(false);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage || isReviewCapture) return undefined;
+
+    let inView = false;
+    const syncVisibility = () => setMotionVisible(inView && !document.hidden);
+    const observer = typeof IntersectionObserver === 'function'
+      ? new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        syncVisibility();
+      })
+      : null;
+
+    if (observer) observer.observe(stage);
+    else {
+      inView = true;
+      syncVisibility();
+    }
+    document.addEventListener('visibilitychange', syncVisibility);
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', syncVisibility);
+    };
+  }, []);
+
+  const orbitPlayState = motionVisible && !motionPaused ? 'running' : 'paused';
+
+  return (
   <Box
-    aria-hidden="true"
+    ref={stageRef}
     data-home-hero-stage="true"
     sx={{
       // Figma Mobile 390(269:79)은 342×280(가로형)이고, Compact 1024(365:169)
@@ -91,7 +130,7 @@ const HeroSignalStage = () => (
       aspectRatio: '342 / 280', borderRadius: '28px', overflow: 'hidden',
       bgcolor: HUMAN_SIGNAL.deepHarbor, border: `1px solid rgba(170,183,196,0.16)`,
       boxShadow: '0 30px 60px rgba(12,20,32,0.35)',
-      [SPLIT_MQ]: { aspectRatio: '548 / 600', maxWidth: 400 },
+      [COMPACT_MQ]: { aspectRatio: '548 / 600', maxWidth: 400 },
       [DESKTOP_MQ]: { maxWidth: 548 },
       '@keyframes stageFadeIn': {
         from: { opacity: 0 },
@@ -124,8 +163,22 @@ const HeroSignalStage = () => (
         from: { transform: 'scaleX(0)' },
         to: { transform: 'scaleX(1)' },
       },
+      '@keyframes stageOrbit': {
+        from: { transform: 'rotate(0deg)' },
+        to: { transform: 'rotate(360deg)' },
+      },
+      '& [data-home-hero-orbit]': {
+        transformOrigin: `50% ${SIGNAL_CENTER_Y}`,
+        transformBox: 'view-box',
+        animationPlayState: orbitPlayState,
+      },
+      '@media (prefers-reduced-motion: reduce)': {
+        '& [data-home-hero-orbit]': { animation: 'none', transform: 'none' },
+        '& [data-home-hero-motion-toggle]': { display: 'none' },
+      },
     }}
   >
+    <Box aria-hidden="true" sx={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
     {/* 격자 + 동심원 — SCATTER(220–720ms)에 흐릿하게 나타난다 */}
     <Box
       sx={{
@@ -137,16 +190,41 @@ const HeroSignalStage = () => (
         animation: anim('stageFadeIn', 0.3, 0.22),
       }}
     />
-    <Box sx={{
-      position: 'absolute', left: '12%', top: '8%', width: '76%', height: '69.4%',
-      borderRadius: '50%', border: '1px solid rgba(170,183,196,0.22)',
-      opacity: isReviewCapture ? 1 : 0, animation: anim('stageFadeIn', 0.3, 0.26),
-    }} />
-    <Box sx={{
-      position: 'absolute', left: '24%', top: '20%', width: '52%', height: '47.5%',
-      borderRadius: '50%', border: '1px solid rgba(170,183,196,0.22)',
-      opacity: isReviewCapture ? 1 : 0, animation: anim('stageFadeIn', 0.3, 0.3),
-    }} />
+    {/* 548×600 좌표 안에서 회전하므로 모바일의 가로형 Stage에서도 궤도가
+     * 흔들리지 않는다. 원과 D2는 같은 (274, 264) 중심을 사용한다. */}
+    <Box
+      component="svg"
+      viewBox="0 0 548 600"
+      preserveAspectRatio="none"
+      focusable="false"
+      sx={{
+        position: 'absolute', inset: 0, width: '100%', height: '100%',
+        overflow: 'visible', fill: 'none',
+        opacity: isReviewCapture ? 1 : 0,
+        animation: anim('stageFadeIn', 0.3, 0.26),
+      }}
+    >
+      <circle data-home-hero-ring="outer" cx="274" cy="264" r="208.24"
+        stroke="rgba(170,183,196,0.22)" vectorEffect="non-scaling-stroke" />
+      <circle data-home-hero-ring="inner" cx="274" cy="264" r="142.48"
+        stroke="rgba(170,183,196,0.22)" vectorEffect="non-scaling-stroke" />
+      <Box component="g" data-home-hero-orbit="outer" sx={{
+        animation: isReviewCapture ? 'none' : 'stageOrbit 48s linear 1.46s infinite',
+      }}>
+        <circle cx="274" cy="264" r="208.24" pathLength="100"
+          stroke={HUMAN_SIGNAL.steelMist} strokeWidth="1.5" strokeOpacity="0.65"
+          strokeDasharray="6 94" strokeDashoffset="24" strokeLinecap="round"
+          vectorEffect="non-scaling-stroke" />
+      </Box>
+      <Box component="g" data-home-hero-orbit="inner" sx={{
+        animation: isReviewCapture ? 'none' : 'stageOrbit 36s linear 1.46s infinite reverse',
+      }}>
+        <circle cx="274" cy="264" r="142.48" pathLength="100"
+          stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="1.5" strokeOpacity="0.7"
+          strokeDasharray="8 92" strokeDashoffset="60" strokeLinecap="round"
+          vectorEffect="non-scaling-stroke" />
+      </Box>
+    </Box>
 
     {/* 코너 chip 4개 — SCATTER에 흐리게 등장, ALIGN(720–1180ms)에 실제 색으로 정렬 */}
     {STAGE_CHIPS.map((chip, i) => (
@@ -195,8 +273,9 @@ const HeroSignalStage = () => (
     {/* D2 signal core — IDENTITY 끝에 흐리게(grayscale) 나타나 SETTLE(1180–1460ms)에서
      * 실제 색(Soft White + Muted Sage + Bright Orange)으로 완성된 뒤 멈춘다 */}
     <Box
+      data-home-hero-core="true"
       sx={{
-        position: 'absolute', left: '50%', top: '48.7%', width: '34%', aspectRatio: '1 / 1',
+        position: 'absolute', left: '50%', top: SIGNAL_CENTER_Y, width: '34%', aspectRatio: '1 / 1',
         opacity: isReviewCapture ? 1 : 0,
         filter: isReviewCapture ? 'grayscale(0)' : undefined,
         transform: isReviewCapture ? 'translate(-50%, -50%) scale(1)' : undefined,
@@ -228,8 +307,32 @@ const HeroSignalStage = () => (
         />
       ))}
     </Box>
+    </Box>
+    {!isReviewCapture && (
+      <Box
+        component="button"
+        type="button"
+        data-home-hero-motion-toggle="true"
+        aria-label={motionPaused ? '배경 모션 재생' : '배경 모션 일시 정지'}
+        title={motionPaused ? '배경 모션 재생' : '배경 모션 일시 정지'}
+        onClick={() => setMotionPaused((paused) => !paused)}
+        sx={{
+          position: 'absolute', top: 8, right: 8, width: 44, height: 44,
+          display: 'grid', placeItems: 'center', p: 0, cursor: 'pointer',
+          border: '1px solid rgba(170,183,196,0.3)', borderRadius: '50%',
+          color: HUMAN_SIGNAL.steelMist, bgcolor: HUMAN_SIGNAL.deepHarbor,
+          '&:hover': { color: HUMAN_SIGNAL.softWhite, borderColor: HUMAN_SIGNAL.steelMist },
+          '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.brightOrange}`, outlineOffset: 2 },
+        }}
+      >
+        {motionPaused
+          ? <PlayArrowRounded aria-hidden="true" sx={{ fontSize: 18 }} />
+          : <PauseRounded aria-hidden="true" sx={{ fontSize: 18 }} />}
+      </Box>
+    )}
   </Box>
-);
+  );
+};
 
 /* Figma "Hero"(432:303) 실측 y=250 — 문서(document) 좌표 기준이다. Header는
  * position:fixed라 Hero section 흐름 밖에 있고(App.jsx의 NAVBAR_HEIGHT 스페이서가
@@ -265,8 +368,7 @@ const HeroSection = () => {
       width: '100%',
       // Figma Hero pt/pb: Mobile 390(18/48), Compact 1024(20/60), Desktop 1440(24/72).
       pt: { xs: '18px', sm: 9 }, pb: { xs: '48px', sm: 9 },
-      [SPLIT_MQ]: { display: 'flex', alignItems: 'center' },
-      [COMPACT_MQ]: { pt: '20px', pb: '60px' },
+      [COMPACT_MQ]: { display: 'flex', alignItems: 'center', pt: '20px', pb: '60px' },
       [DESKTOP_MQ]: { pt: '24px', pb: '72px' },
       '@keyframes heroCopyIn': {
         from: { opacity: 0, transform: 'translateY(14px)' },
@@ -300,7 +402,7 @@ const HeroSection = () => {
         width: 420,
         height: 420,
         opacity: 0.05,
-        [SPLIT_MQ]: { display: 'block' }, display: 'none',
+        [COMPACT_MQ]: { display: 'block' }, display: 'none',
       }}>
         <DMark size="100%" tone="onDark" decorative sx={{ width: '100%', height: '100%' }} />
       </Box>
@@ -311,7 +413,7 @@ const HeroSection = () => {
         width: '1px',
         height: 620,
         bgcolor: 'rgba(170,183,196,0.16)',
-        [SPLIT_MQ]: { display: 'block' },
+        [COMPACT_MQ]: { display: 'block' },
         display: 'none',
       }} />
       <Box sx={{
@@ -322,7 +424,7 @@ const HeroSection = () => {
         height: 360,
         borderRadius: '50%',
         background: `radial-gradient(circle, ${HUMAN_SIGNAL.brightOrange} 0%, transparent 70%)`, opacity: 0.1, filter: 'blur(60px)',
-        [SPLIT_MQ]: { display: 'block' },
+        [COMPACT_MQ]: { display: 'block' },
         display: 'none',
       }} />
       <Box sx={{
@@ -333,7 +435,7 @@ const HeroSection = () => {
         height: 700,
         borderRadius: '50%',
         background: `radial-gradient(circle, ${HUMAN_SIGNAL.mutedSage} 0%, transparent 70%)`, opacity: 0.06, filter: 'blur(70px)',
-        [SPLIT_MQ]: { display: 'block' },
+        [COMPACT_MQ]: { display: 'block' },
         display: 'none',
       }} />
     </Box>
@@ -347,8 +449,7 @@ const HeroSection = () => {
         '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
         // Figma Hero/Main(365:155, 257:2)은 grid gap이 아니라 justify-content:
         // space-between + Copy·Stage 고정폭이다(1024: 480/400, 1440: 648/548).
-        [SPLIT_MQ]: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6, minHeight: 500 },
-        [COMPACT_MQ]: { gap: 0, minHeight: 620 },
+        [COMPACT_MQ]: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 0, minHeight: 620 },
         [DESKTOP_MQ]: { minHeight: 684, px: '64px' },
       }}
     >
@@ -357,8 +458,7 @@ const HeroSection = () => {
       <Box
         sx={{
           position: 'relative', py: { xs: 0, sm: 0, md: 8 }, width: '100%',
-          [SPLIT_MQ]: { py: 0, flexShrink: 0 },
-          [COMPACT_MQ]: { width: 480 },
+          [COMPACT_MQ]: { py: 0, flexShrink: 0, width: 480 },
           [DESKTOP_MQ]: { width: 648, height: 560 },
         }}
       >
@@ -481,7 +581,7 @@ const HeroSection = () => {
       <Box
         sx={{
           mt: { xs: '15px', sm: 7, md: 0 }, width: '100%',
-          [SPLIT_MQ]: { mt: 0, width: 400, flexShrink: 0 },
+          [COMPACT_MQ]: { mt: 0, width: 400, flexShrink: 0 },
           [DESKTOP_MQ]: { width: 548 },
           opacity: isReviewCapture ? 1 : 0,
           animation: anim('heroStageIn', 0.4, 0.1),
