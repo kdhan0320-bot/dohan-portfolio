@@ -220,9 +220,9 @@ const HeroSignalStage = () => {
       <Box component="g" data-home-hero-orbit="inner" sx={{
         animation: isReviewCapture ? 'none' : 'stageOrbit 42s linear 1.46s infinite reverse',
       }}>
-        <circle cx="274" cy="264" r="142.48" pathLength="100"
+        <circle cx="274" cy="264" r="142.48" pathLength="100" transform="rotate(180 274 264)"
           stroke={HUMAN_SIGNAL.mutedSage} strokeWidth="2" strokeOpacity="0.9"
-          strokeDasharray="16 84" strokeDashoffset="50" strokeLinecap="round"
+          strokeDasharray="16 84" strokeLinecap="round"
           vectorEffect="non-scaling-stroke" />
         <circle data-home-hero-orbit-dot="inner" cx="131.52" cy="264" r="4.5"
           fill={HUMAN_SIGNAL.mutedSage} />
