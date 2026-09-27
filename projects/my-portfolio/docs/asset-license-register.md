@@ -200,3 +200,11 @@ MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 �
 | --- | --- | --- |
 | `projects/jobflow-dashboard/src/assets/galpi-rose-archive.webp` | 이번 대화 내장 ImageGen 텍스트 생성. 외부 참고 이미지·로고·작가 지정 없음. 1536×1024, WebP 79,552바이트, 품질 86 변환. AI 보조 제작; 독점성·유사성 부재 보증 아님. 정확한 프롬프트는 해당 프로젝트 NOTICE. | 소개·로그인·설정 장식 |
 | `projects/jobflow-dashboard/public/galpirok-rose.svg` | 기존 프로젝트의 직접 작성한 종이·책갈피 path를 크랜베리색으로 변경. 외부 도안 입력 없음. | 브라우저 탭 아이콘 |
+
+
+## 갈피록 종이 배경 보강 — 2026-09-28
+
+| 자산 | 제작·확인 범위 | 용도 |
+| --- | --- | --- |
+| `projects/jobflow-dashboard/src/assets/galpi-ribbon-paper.webp` | 내장 ImageGen 텍스트 생성, 외부 이미지 입력 없음. 실제 1774×887, WebP 품질 84, 88,014바이트. AI 보조 제작이며 원본 촬영물 아님. 프롬프트는 프로젝트 NOTICE. | 페이지 상단·날짜 티켓 뒤·면접 연습 바탕 |
+| `projects/jobflow-dashboard/src/assets/galpi-paper-landscape.svg` | 프로젝트용 원본 path·gradient·작은 섬유 패턴을 코드로 작성. 외부 도안 입력 없음. | 소개·작업 공간·로그인 배경 |

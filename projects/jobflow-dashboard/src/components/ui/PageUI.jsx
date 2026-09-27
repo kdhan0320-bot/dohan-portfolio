@@ -7,7 +7,8 @@ export function PageHeading({
   description,
   art
 }) {
-  return <header className={`page-heading ${art ? 'page-heading-illustrated' : ''}`}>
+  return <header className={`page-heading ${art ? 'page-heading-illustrated' : ''}`} data-art={art}>
+  {art && <PaperGraphic kind={art} className="heading-graphic" />}
   <div className="page-heading-copy">
 
     <h1>
@@ -17,7 +18,6 @@ export function PageHeading({
       {description}
     </p>}
   </div>
-  {art && <PaperGraphic kind={art} className="heading-graphic" />}
   <div className="heading-actions">
     {children}
   </div>

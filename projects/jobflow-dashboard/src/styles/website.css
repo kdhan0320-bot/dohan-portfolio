@@ -122,7 +122,7 @@
 
 .calendar-layout { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 24px; align-items: start; }
 .calendar-surface { background: #FFF; border: 1px solid #E4DED7; border-radius: 17px; overflow: hidden; }
-.calendar-toolbar { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 22px 24px 18px; }
+.calendar-toolbar { background: #F7EFEB; border-top: 5px solid #B87987; display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 22px 24px 18px; }
 .calendar-toolbar h2 { font-size: 22px; letter-spacing: -.035em; }
 .calendar-toolbar > div { display: flex; align-items: center; gap: 3px; }
 .calendar-toolbar .MuiIconButton-root { min-width: 44px; min-height: 44px; }

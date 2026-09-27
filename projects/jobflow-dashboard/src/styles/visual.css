@@ -1,8 +1,9 @@
 /* Galpirok's own paper, bookmark and filing motifs. Artwork stays outside inputs. */
 .paper-graphic { display: block; width: 180px; height: auto; flex-shrink: 0; }
-.welcome-page { background: #FCFAF7; }
+.welcome-page { background: #FCFAF7 url('../assets/galpi-paper-landscape.svg') center bottom / 100% auto no-repeat; }
 .welcome-nav { min-height: 100px; }
 .welcome-stage { position: relative; isolation: isolate; background: #F8F5F0; border-block: 1px solid #E5DFD9; overflow: hidden; }
+.welcome-stage::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('../assets/galpi-paper-landscape.svg') right 42% / cover no-repeat; opacity: .8; pointer-events: none; }
 .welcome-hero { min-height: 540px; padding-block: 24px; gap: 12px; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
 .welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: #94394B; }
 .welcome-kicker::before { content: ''; width: 12px; height: 21px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
@@ -17,7 +18,7 @@
 .welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #512E36; }
 .welcome-showcase > header > span { color: #655D5B; font-size: 14px; padding-bottom: 7px; }
 .showcase-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); align-items: center; gap: 58px; }
-.showcase-controls { min-width: 0; }
+.showcase-controls { min-width: 0; background: #FCFAF7; border: 1px solid #E5D8D1; padding: 9px; border-radius: 4px 15px 15px 4px; box-shadow: -4px 0 #DBC2C6, 0 8px 20px #512E3606; }
 .showcase-controls .MuiTabs-indicator { display: none; }
 .showcase-controls .MuiTab-root { display: flex; flex-direction: row; justify-content: flex-start; gap: 18px; width: 100%; max-width: none; min-height: 80px; padding: 20px; border-bottom: 1px solid #E0DBD5; border-radius: 0; text-align: left; font-size: 19px; color: #655D5B; transition: background .15s, color .15s; }
 .showcase-controls .MuiTab-root.Mui-selected { background: #F4E4E6; color: #94394B; border-radius: 3px 10px 10px 3px; border-color: transparent; box-shadow: inset 3px 0 #94394B; }
@@ -26,26 +27,29 @@
 .showcase-controls .MuiTab-root > svg { margin-left: auto; }
 .showcase-number { color: #94394B; font-size: 13px; font-variant-numeric: tabular-nums; }
 .showcase-preview { position: relative; min-width: 0; padding: 18px 18px 0; }
-.showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #E4DED7; transform: rotate(-2deg); pointer-events: none; }
+.showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #DFC4C8; transform: rotate(-2deg); pointer-events: none; }
+.showcase-preview::after { content: ''; position: absolute; top: 3px; right: 65px; width: 48px; height: 21px; background: #E4D1BFA8; border-inline: 1px solid #DCC7B2; transform: rotate(8deg); pointer-events: none; }
 .showcase-preview > div { position: relative; }
 .showcase-preview .product-window { border-color: #CFBDC0; box-shadow: 0 12px 24px #463C3E0D; }
 .showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: #664E52; background: #FCFAF7; font-size: 14px; line-height: 1.6; text-align: center; }
-.welcome-footer { border-color: #E0DBD5; }
+.welcome-footer { border-color: #E0DBD5; position: relative; background: #FCFAF7; }
 
 .workspace-shell { position: relative; isolation: isolate; }
-.workspace-content { position: relative; isolation: isolate; background-color: #F6F4F0; }
-.workspace-content::before { content: ''; position: absolute; inset: 64px 0 0; z-index: -1; background: linear-gradient(90deg, transparent 35px, #E7E1DA 35px, #E7E1DA 36px, transparent 36px); pointer-events: none; }
+.workspace-content { position: relative; isolation: isolate; background: #F5F0EA url('../assets/galpi-paper-landscape.svg') right 64px / 100% auto repeat-y; }
+.workspace-content::before { content: ''; position: absolute; inset: 64px 0 0 17px; width: 5px; z-index: -1; border-inline: 1px solid #CDAAB0; opacity: .6; pointer-events: none; }
 .workspace-content main { position: relative; }
 .workspace-content .MuiAppBar-root { background: #FAF8F4; }
 .page-heading { position: relative; }
-.page-heading-illustrated { min-height: 108px; gap: 18px; padding-bottom: 15px; margin-bottom: 25px; border-bottom: 1px solid #DFD8D2; }
+.page-heading-illustrated { isolation: isolate; overflow: hidden; min-height: 154px; gap: 20px; padding: 22px 28px 22px 20px; margin-bottom: 28px; border: 1px solid #DDCEC5; border-radius: 6px 22px 22px 6px; background: #FAF7F2; box-shadow: 0 5px 0 -2px #ECE0D7, 0 6px 0 -2px #D8C9C0, 0 12px 22px #512E3607; }
+.page-heading-illustrated::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #FAF7F2 38%, #FAF7F2B3 62%, #FAF7F200 80%), url('../assets/galpi-ribbon-paper.webp') right 48% / 620px auto no-repeat; pointer-events: none; }
 .page-heading-illustrated .page-heading-copy { flex: 1; min-width: 0; }
-.page-heading-illustrated .heading-graphic { width: 126px; margin-right: 12px; align-self: center; }
+.page-heading-illustrated h1 { font-size: clamp(27px, 2.4vw, 32px); }
+.page-heading-illustrated .heading-graphic { width: 106px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #512E360A); }
 .page-heading-illustrated .heading-actions:empty { display: none; }
 .page-heading-illustrated .heading-actions { flex-shrink: 0; }
 .page-heading .muted { color: #655D5B; }
 .next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 320px; }
-.next-application::before { content: ''; position: absolute; inset: 0 0 0 57%; background: repeating-linear-gradient(0deg, transparent 0, transparent 35px, #94394B0D 35px, #94394B0D 36px), #F4E4E6; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
+.next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #F4E4E6; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
 .next-application-copy { max-width: 520px; padding-right: 8px; }
 .next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
 .ticket-orbit { display: none; }
@@ -54,13 +58,15 @@
 .job-lane { background: #F4F2EF; box-shadow: 0 8px 20px #512E3604; }
 .job-lane-heading { position: relative; }
 .job-tile { box-shadow: 0 3px 5px #512E3608; }
-.sidebar-content { position: relative; background: #FCFAF7; }
+.sidebar-content { position: relative; isolation: isolate; background: #FCFAF7; }
+.sidebar-content::before { content: ''; position: absolute; inset: 0 auto 0 7px; width: 3px; border-inline: 1px solid #E3CBCD; pointer-events: none; z-index: -1; }
 .sidebar-bottom { position: relative; }
 
-.login-story { position: relative; isolation: isolate; overflow: hidden; background: #F8F5F0; }
+.login-story { position: relative; isolation: isolate; overflow: hidden; background: #F8F5F0 url('../assets/galpi-paper-landscape.svg') center / cover no-repeat; }
 .login-story-center { padding-block: 28px; }
 .login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
-.login-form-section { position: relative; }
+.login-shell { background: #F9F5EF url('../assets/galpi-paper-landscape.svg') right bottom / auto 100% no-repeat; }
+.login-form-section { position: relative; isolation: isolate; background: #FFFDFA; border: 1px solid #E4D8CF; border-radius: 8px 24px 24px 8px; width: calc(100% - 64px); padding-inline: clamp(28px, 3vw, 45px); box-shadow: 0 8px 0 -3px #EEE4DA, 0 9px 0 -3px #D9CAC1, 0 20px 38px #512E3608; }
 .login-form-section::before { content: ''; width: 15px; height: 26px; background: #B36C79; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
 
 @media (min-width: 1600px) {
@@ -79,7 +85,7 @@
   .welcome-showcase { width: calc(100% - 64px); }
   .showcase-layout { grid-template-columns: 190px minmax(0, 1fr); gap: 18px; }
   .showcase-controls .MuiTab-root { gap: 12px; padding-inline: 13px; font-size: 17px; }
-  .page-heading-illustrated .heading-graphic { width: 104px; margin-right: 0; }
+  .page-heading-illustrated .heading-graphic { width: 86px; margin-right: 0; }
 }
 @media (max-width: 699px) {
   .welcome-nav { min-height: 88px; }
@@ -97,16 +103,21 @@
   .showcase-preview::before { inset: 0 8px 46px; }
   .showcase-caption { font-size: 13px; margin-top: 16px; }
   .workspace-content::before { display: none; }
-  .page-heading-illustrated { gap: 12px; min-height: 100px; padding-bottom: 16px; flex-wrap: wrap; }
-  .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 92px); }
-  .page-heading-illustrated .heading-graphic { width: 77px; }
+  .page-heading-illustrated { gap: 12px; min-height: 134px; padding: 20px 18px; border-radius: 6px 17px 17px 6px; flex-wrap: wrap; }
+  .page-heading-illustrated::before { background-size: auto, 420px auto; background-position: center, right top; opacity: .38; }
+  .page-heading-illustrated h1 { font-size: 25px; }
+  .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 78px); }
+  .page-heading-illustrated .heading-graphic { width: 66px; }
   .page-heading-illustrated .heading-actions { width: 100%; }
   .page-heading-illustrated .heading-actions .MuiButton-root { min-height: 44px; }
   .next-application::after { left: 25px; width: 18px; height: 15px; }
   .next-application { min-height: 0; }
   .next-application::before { inset-inline-start: 48%; }
   .login-brand-art { height: 220px; }
+  .login-form-section { width: calc(100% - 40px); margin-block: 24px 36px; padding: 26px 22px; }
   .login-form-section::before { margin-bottom: 14px; }
+  .workspace-content { background-size: auto 900px; background-position: 58% 56px; }
+  .showcase-controls { padding: 5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .paper-graphic, .showcase-controls .MuiTab-root { animation: none; transition: none; }

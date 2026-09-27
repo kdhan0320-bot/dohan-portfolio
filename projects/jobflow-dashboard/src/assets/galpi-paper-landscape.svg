@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" fill="none">
+  <defs>
+    <linearGradient id="rose" x1="1320" y1="0" x2="1030" y2="1050" gradientUnits="userSpaceOnUse"><stop stop-color="#EFDEDC"/><stop offset="1" stop-color="#F6EBE7"/></linearGradient>
+    <linearGradient id="paper" x1="1040" y1="120" x2="1410" y2="640" gradientUnits="userSpaceOnUse"><stop stop-color="#FFFCF6"/><stop offset="1" stop-color="#F1E6DD"/></linearGradient>
+    <linearGradient id="fold" x1="0" y1="800" x2="340" y2="1150" gradientUnits="userSpaceOnUse"><stop stop-color="#EFE0D8"/><stop offset="1" stop-color="#F8F2EC"/></linearGradient>
+    <pattern id="fiber" width="180" height="160" patternUnits="userSpaceOnUse"><path d="m13 17 4-1m47 37 3 1m79-29 3-1M25 119h4m85 19 4-1m-21-58h3m62 38 3 1" stroke="#9C8078" stroke-opacity=".13" stroke-width=".65"/></pattern>
+  </defs>
+  <path d="M1190-120 1738 2l-250 1211-548-120Z" fill="url(#rose)"/>
+  <path d="m1291-99 430 174-311 891-430-174Z" fill="url(#paper)" stroke="#E0CBC5"/>
+  <path d="m1457-106 340 231-493 729-340-231Z" fill="#FAF5EE" stroke="#E7D9D1"/>
+  <path d="m-161 718 436 124 322 455H-161Z" fill="url(#fold)"/>
+  <path d="m-128 760 403 128 201 308" stroke="#D9C3BD"/>
+  <path d="M1510 234c-150 130-312 103-281 236 34 145 291 37 244 242-30 132-172 136-220 259" stroke="#BC7D8B" stroke-opacity=".48" stroke-width="1.5"/>
+  <path d="M1525 227c-157 138-307 117-276 244 33 135 288 34 242 244-31 141-176 142-219 265" stroke="#BC7D8B" stroke-opacity=".25"/>
+  <path d="m1339 840 44 16-53 142-13-24-25 9Z" fill="#CB9DA5"/>
+  <path d="M24 1070c154-184 223 40 382-76 101-74 187-31 227 90" stroke="#BA8D94" stroke-opacity=".46" stroke-width="1.4"/>
+  <rect width="1600" height="1200" fill="url(#fiber)"/>
+</svg>
