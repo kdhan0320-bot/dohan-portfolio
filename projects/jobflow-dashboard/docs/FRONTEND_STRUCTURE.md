@@ -18,11 +18,14 @@
 | `pages/DashboardPage.jsx` | 실제 기록으로 가까운 마감·지원 중 회사·남은 할 일 표시 |
 | `pages/ApplicationsPage.jsx`, `components/applications/ApplicationPanel.jsx` | 회사 카드·검색·상태 변경·추가·삭제·미저장 이탈 확인 |
 | `pages/CalendarPage.jsx`, `utils/calendar.js` | 마감 달력·날짜 검증·월 이동·미지원 회사 선택 |
-| `pages/ChecklistPage.jsx`, `pages/InterviewPage.jsx` | 할 일·면접 질문 관리 |
+| `pages/ChecklistPage.jsx`, `pages/InterviewPage.jsx` | 할 일·면접 질문 추가·편집·삭제·완료 관리 |
 | `context/AuthContext.jsx` | 실제 인증 상태와 샘플 데이터 3개 집합 관리 |
 | `hooks/useApplications.js`, `useChecklist.js`, `useInterviewNotes.js` | 사용자별 DB 요청 또는 샘플 메모리 변경 |
 | `components/ui/Field.jsx` | 외부 고정 라벨·입력·설명·오류 연결 |
 | `components/layout/` | 주 메뉴·모바일 Drawer·본문 포커스 |
+| `components/ui/PaperGraphic.jsx`, `assets/galpi-paper-field.svg` | 원본 기능별 벡터와 장식용 종이 배경 |
+| `utils/recordPayload.js` | 기록 수정 필드 제한과 빈 값·분류 검증 |
+| `styles/visual.css` | 소개·로그인·내부 화면의 배경 및 그래픽 배치 |
 | `styles/global.css`, `responsive.css`, `website.css` | 공통 컴포넌트·반응형·소개/오늘/달력 스타일 |
 
 ## 데이터 경계

@@ -89,3 +89,7 @@ An original high-end editorial product still-life asset, a single EXTRA WIDE pan
 ## 2026-09-27 서비스 소개·일정 시각 요소
 
 `ProductPreview.jsx`의 가상 회사 보드·달력·체크리스트와 `DashboardPage.jsx`의 날짜 티켓은 이번 프로젝트를 위해 만든 JSX/CSS 구성입니다. 외부 스크린샷·로고·일러스트를 삽입하지 않았습니다. 제품 예시는 샘플로 표시합니다. 참고 사례의 화면·문구·조사 결과를 복제하지 않았으며, 참고 사실은 README에 기록했습니다.
+
+## 2026-09-27 배경·기능별 그래픽
+
+`src/assets/galpi-paper-field.svg`는 겹친 종이 면·책갈피·연결선을 원본 path로 구성한 배경입니다. `PaperGraphic.jsx`의 폴더·진행 카드·달력·준비 체크·말풍선·필기 6종은 이번 코드 편집에서 직접 작성한 AI 보조 벡터입니다. 외부 이미지·로고·특정 작가의 도안을 입력하거나 복사하지 않았습니다. 장식 그림에는 `aria-hidden`을 적용하고 실제 기능 이름은 텍스트로 제공합니다. 기존 폰트·MUI 아이콘의 라이선스는 그대로 유지합니다.

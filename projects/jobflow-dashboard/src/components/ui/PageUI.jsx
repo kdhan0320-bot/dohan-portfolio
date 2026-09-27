@@ -1,12 +1,14 @@
 import { Alert, Button, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Link } from 'react-router-dom';
+import PaperGraphic from './PaperGraphic';
 export function PageHeading({
   title,
   children,
-  description
+  description,
+  art
 }) {
-  return <header className="page-heading">
-  <div>
+  return <header className={`page-heading ${art ? 'page-heading-illustrated' : ''}`}>
+  <div className="page-heading-copy">
 
     <h1>
       {title}
@@ -15,6 +17,7 @@ export function PageHeading({
       {description}
     </p>}
   </div>
+  {art && <PaperGraphic kind={art} className="heading-graphic" />}
   <div className="heading-actions">
     {children}
   </div>

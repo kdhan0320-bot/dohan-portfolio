@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { createSafeDataError, getSafeDataErrorMessage } from '../utils/dataErrors';
+import { interviewUpdate } from '../utils/recordPayload';
 const useInterviewNotes = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -102,6 +103,21 @@ const useInterviewNotes = () => {
       is_reviewed: data.is_reviewed
     } : n));
   };
+  const update = async (id, payload) => {
+    const values = interviewUpdate(payload);
+    if (isGuest) {
+      setDemoNotes(prev => prev.map(note => note.id === id ? { ...note, ...values } : note));
+      return;
+    }
+    if (!user) throw new Error('로그인 후 면접 메모를 수정할 수 있습니다.');
+    let response;
+    try {
+      response = await supabase.from('interview_notes').update(values).eq('id', id).eq('user_id', user.id).select('id, question, answer, related_project, importance').maybeSingle();
+    } catch (requestError) { throw createSafeDataError(requestError); }
+    if (response.error) throw createSafeDataError(response.error);
+    if (!response.data) throw new Error('수정할 면접 메모를 찾지 못했거나 권한이 없습니다.');
+    setNotes(prev => prev.map(note => note.id === id ? { ...note, ...response.data } : note));
+  };
   const remove = async id => {
     if (isGuest) {
       setDemoNotes(prev => prev.filter(n => n.id !== id));
@@ -128,6 +144,7 @@ const useInterviewNotes = () => {
     error,
     refresh: fetch,
     add,
+    update,
     toggleReview,
     remove
   };

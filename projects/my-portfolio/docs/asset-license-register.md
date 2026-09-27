@@ -167,6 +167,12 @@ MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 �
 
 원본 PNG를 내용과 크기를 유지한 채 WebP 품질 90으로 인코딩했습니다. 현재 `galpi-desk.webp`는 설정 화면의 `JournalArt`에서 사용합니다. `galpi-objects.webp`는 보존 자산이며 현재 주요 화면에서 사용하지 않습니다. 공개 사이트의 주요 데스크톱 화면을 1363×936에서 확인했으며 모바일 및 모든 자산 사용 상태의 시각 검증을 완료했다는 뜻은 아닙니다.
 
+### 갈피록 배경·기능별 원본 벡터 보강 (2026-09-27)
+
+- `projects/jobflow-dashboard/src/assets/galpi-paper-field.svg`: 겹친 종이 면·책갈피·연결선의 원본 SVG path.
+- `projects/jobflow-dashboard/src/components/ui/PaperGraphic.jsx`: 폴더·진행 카드·달력·체크리스트·말풍선·필기 6종.
+- 이번 코드 편집에서 작성한 AI 보조 벡터이며 외부 이미지·로고·도안 입력 없음. 원본 제작 경로는 확인했으나 독점성·상표 권리의 보증은 아님. 기존 Pretendard OFL 및 MUI MIT 고지는 유지.
+
 ## 갱신 규칙
 - 새 외부 폰트/이미지/아이콘/영상/mockup/template/코드를 추가할 때는 위
   표에 한 행을 추가하고, 원 배포처 LICENSE를 직접 연 뒤에만 `상태`를

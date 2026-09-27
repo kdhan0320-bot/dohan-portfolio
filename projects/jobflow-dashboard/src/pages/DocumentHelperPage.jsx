@@ -30,7 +30,7 @@ export default function DocumentHelperPage() {
     }
   }
   return <>
-  <PageHeading title="문장 도우미" />
+  <PageHeading art="write" title="문장 도우미" />
   <div className="helper-grid">
     <form className="panel panel-body field-stack" onSubmit={e => {
         e.preventDefault();

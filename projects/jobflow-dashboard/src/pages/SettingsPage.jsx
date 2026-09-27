@@ -88,7 +88,7 @@ const SettingsPage = () => {
   };
   if (isGuest) {
     return <Box>
-  <PageHeading title="설정" description="나의 기록장을 관리하세요." />
+  <PageHeading art="folder" title="설정" description="나의 기록장을 관리하세요." />
   <Card sx={{
         maxWidth: 720
       }}>
@@ -127,7 +127,7 @@ const SettingsPage = () => {
 </Box>;
   }
   return <Box>
-  <PageHeading title="설정" description="나의 기록장을 관리하세요." />
+  <PageHeading art="folder" title="설정" description="나의 기록장을 관리하세요." />
   {profileLoading ? <Card aria-busy="true">
     <CardContent>
       <Typography component="h2" variant="h6" sx={{

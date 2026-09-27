@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Tabs, Tab, IconButton, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
 import Check from '@mui/icons-material/Check';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
@@ -21,11 +22,13 @@ export default function InterviewPage() {
     error,
     refresh,
     add,
+    update,
     toggleReview,
     remove
   } = useInterviewNotes();
   const [tab, setTab] = useState('todo');
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(INITIAL);
   const [formError, setFormError] = useState('');
   const [revealed, setRevealed] = useState({});
@@ -58,21 +61,25 @@ export default function InterviewPage() {
       document.getElementById(!form.question.trim() ? 'note-question' : 'note-answer')?.focus();
       return;
     }
-    setBusy('add');
+    setBusy(editingId ? 'edit' : 'add');
     setFormError('');
     try {
-      await add({
+      const payload = {
         ...form,
         question: form.question.trim(),
         answer: form.answer.trim(),
         related_project: form.related_project.trim()
-      });
+      };
+      if (editingId) await update(editingId, payload);
+      else await add(payload);
       setOpen(false);
       setForm(INITIAL);
-      setTab('todo');
+      if (editingId) setRevealed(prev => ({ ...prev, [editingId]: true }));
+      else setTab('todo');
       setFeedback({
-        message: '면접 노트를 추가했어요.'
+        message: editingId ? '면접 노트를 수정했어요.' : '면접 노트를 추가했어요.'
       });
+      setEditingId(null);
     } catch (e) {
       setFormError(e.message);
     } finally {
@@ -97,8 +104,10 @@ export default function InterviewPage() {
     }
   }
   return <>
-  <PageHeading title="면접 연습" description="답변을 보기 전에, 내 말로 먼저 떠올려보세요.">
+  <PageHeading art="chat" title="면접 연습" description="답변을 보기 전에, 내 말로 먼저 떠올려보세요.">
     <Button variant="contained" startIcon={<Add />} onClick={() => {
+        setEditingId(null);
+        setForm(INITIAL);
         setOpen(true);
         setFormError('');
       }}>질문 추가</Button>
@@ -131,10 +140,16 @@ export default function InterviewPage() {
           {revealed[n.id] ? '답변 접기' : '답변 펼치기'}
         </Button>
         <div>
+          <IconButton aria-label={`${n.question} 수정`} disabled={Boolean(busy)} onClick={() => {
+            setEditingId(n.id);
+            setForm({ ...INITIAL, ...n });
+            setFormError('');
+            setOpen(true);
+          }}><EditOutlined fontSize="small" /></IconButton>
           <Button startIcon={<Check />} disabled={Boolean(busy)} onClick={() => review(n)}>
             {n.is_reviewed ? '복습 취소' : '복습 완료'}
           </Button>
-          <IconButton aria-label={`${n.question} 삭제`} onClick={() => setTarget(n)}>
+          <IconButton aria-label={`${n.question} 삭제`} disabled={Boolean(busy)} onClick={() => setTarget(n)}>
             <DeleteOutline fontSize="small" />
           </IconButton>
         </div>
@@ -144,13 +159,13 @@ export default function InterviewPage() {
         gridColumn: '1/-1'
       }}>
       <Empty title={tab === 'todo' && notes.length ? '지금까지의 질문을 모두 복습했어요' : '아직 질문이 없어요'}>
-        <Button onClick={() => setOpen(true)}>새 질문 기록하기</Button>
+        <Button onClick={() => { setEditingId(null); setForm(INITIAL); setFormError(''); setOpen(true); }}>새 질문 기록하기</Button>
       </Empty>
     </div>}
   </div>}
   <Dialog aria-labelledby="note-dialog-title" open={open} onClose={busy ? undefined : () => setOpen(false)} fullWidth maxWidth="sm">
     <form onSubmit={submit} noValidate>
-      <DialogTitle id="note-dialog-title">면접 질문 기록</DialogTitle>
+      <DialogTitle id="note-dialog-title">{editingId ? '면접 질문 수정' : '면접 질문 기록'}</DialogTitle>
       <DialogContent>
         <div className="field-stack" style={{
             paddingTop: 12
@@ -182,7 +197,7 @@ export default function InterviewPage() {
       </DialogContent>
       <DialogActions>
         <Button disabled={Boolean(busy)} onClick={() => setOpen(false)}>취소</Button>
-        <Button type="submit" variant="contained" disabled={Boolean(busy)}>질문 저장</Button>
+        <Button type="submit" variant="contained" disabled={Boolean(busy)}>{editingId ? '수정 저장' : '질문 저장'}</Button>
       </DialogActions>
     </form>
   </Dialog>

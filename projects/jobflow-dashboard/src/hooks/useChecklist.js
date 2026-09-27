@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { createSafeDataError, getSafeDataErrorMessage } from '../utils/dataErrors';
+import { checklistUpdate } from '../utils/recordPayload';
 const useChecklist = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,6 +109,21 @@ const useChecklist = () => {
     setItems(prev => [...prev, data]);
     return data;
   };
+  const update = async (id, payload) => {
+    const values = checklistUpdate(payload);
+    if (isGuest) {
+      setDemoItems(prev => prev.map(item => item.id === id ? { ...item, ...values } : item));
+      return;
+    }
+    if (!user) throw new Error('로그인 후 체크리스트를 수정할 수 있습니다.');
+    let response;
+    try {
+      response = await supabase.from('portfolio_checklists').update({ ...values, updated_at: new Date().toISOString() }).eq('id', id).eq('user_id', user.id).select('id, title, category').maybeSingle();
+    } catch (requestError) { throw createSafeDataError(requestError); }
+    if (response.error) throw createSafeDataError(response.error);
+    if (!response.data) throw new Error('수정할 할 일을 찾지 못했거나 권한이 없습니다.');
+    setItems(prev => prev.map(item => item.id === id ? { ...item, ...response.data } : item));
+  };
   const remove = async id => {
     if (isGuest) {
       setDemoItems(prev => prev.filter(i => i.id !== id));
@@ -135,6 +151,7 @@ const useChecklist = () => {
     refresh: fetch,
     toggle,
     add,
+    update,
     remove
   };
 };

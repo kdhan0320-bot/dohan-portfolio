@@ -54,7 +54,7 @@ export default function ApplicationsPage() {
     </button>;
   }
   return <>
-    <PageHeading title="취업 지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
+    <PageHeading art="folder" title="취업 지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
       <Button id="board-add-company" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>회사 추가</Button>
     </PageHeading>
     <div className="board-toolbar">

@@ -61,13 +61,13 @@ const Layout = () => {
   <a className="skip-link" href="#main-content" onClick={handleSkipLink}>
         본문으로 바로가기
       </a>
-  <Box sx={{
+  <Box className="workspace-shell" sx={{
       display: 'flex',
       minHeight: '100vh',
       bgcolor: 'background.default'
     }}>
     <Sidebar mobileOpen={mobileOpen} onMobileClose={handleDrawerClose} onMobileEntered={handleDrawerEntered} onMobileExited={handleDrawerExited} onRouteSelect={handleRouteSelect} mobileCloseButtonRef={menuCloseButtonRef} />
-    <Box sx={{
+    <Box className="workspace-content" sx={{
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
