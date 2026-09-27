@@ -1,10 +1,9 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { supabase, isAuthConfigured } from '../lib/supabase';
 import { createAuthError, getAuthErrorMessage } from '../utils/authErrors';
-
+import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES } from '../constants';
 const AuthContext = createContext(null);
 const GUEST_MODE_KEY = 'jobflow-guest-mode';
-
 const readGuestMode = () => {
   try {
     return window.sessionStorage.getItem(GUEST_MODE_KEY) === 'true';
@@ -12,8 +11,7 @@ const readGuestMode = () => {
     return false;
   }
 };
-
-const persistGuestMode = (enabled) => {
+const persistGuestMode = enabled => {
   try {
     if (enabled) {
       window.sessionStorage.setItem(GUEST_MODE_KEY, 'true');
@@ -24,45 +22,62 @@ const persistGuestMode = (enabled) => {
     // 저장소 접근이 제한된 환경에서는 현재 탭의 React 상태만 사용합니다.
   }
 };
-
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({
+  children
+}) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isGuest, setIsGuest] = useState(false);
   const [authError, setAuthError] = useState('');
-
+  const [demoApplications, setDemoApplications] = useState(() => structuredClone(DEMO_APPLICATIONS));
+  const [demoItems, setDemoItems] = useState(() => structuredClone(DEMO_CHECKLISTS));
+  const [demoNotes, setDemoNotes] = useState(() => structuredClone(DEMO_INTERVIEW_NOTES));
+  const resetDemo = () => {
+    setDemoApplications(structuredClone(DEMO_APPLICATIONS));
+    setDemoItems(structuredClone(DEMO_CHECKLISTS));
+    setDemoNotes(structuredClone(DEMO_INTERVIEW_NOTES));
+  };
   useEffect(() => {
+    if (!isAuthConfigured) {
+      setIsGuest(readGuestMode());
+      setLoading(false);
+      return;
+    }
     let active = true;
-
-    supabase.auth.getSession()
-      .then(({ data: { session }, error }) => {
-        if (!active) return;
-        if (error) {
-          setAuthError(getAuthErrorMessage(error, '로그인 상태를 확인하지 못했습니다. 다시 로그인해주세요.'));
-          setUser(null);
-          setIsGuest(readGuestMode());
+    supabase.auth.getSession().then(({
+      data: {
+        session
+      },
+      error
+    }) => {
+      if (!active) return;
+      if (error) {
+        setAuthError(getAuthErrorMessage(error, '로그인 상태를 확인하지 못했습니다. 다시 로그인해주세요.'));
+        setUser(null);
+        setIsGuest(readGuestMode());
+      } else {
+        setUser(session?.user ?? null);
+        if (session?.user) {
+          persistGuestMode(false);
+          setIsGuest(false);
         } else {
-          setUser(session?.user ?? null);
-          if (session?.user) {
-            persistGuestMode(false);
-            setIsGuest(false);
-          } else {
-            setIsGuest(readGuestMode());
-          }
-        }
-      })
-      .catch((error) => {
-        if (active) {
-          setAuthError(getAuthErrorMessage(error, '로그인 상태를 확인하지 못했습니다. 다시 로그인해주세요.'));
-          setUser(null);
           setIsGuest(readGuestMode());
         }
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      }
+    }).catch(error => {
+      if (active) {
+        setAuthError(getAuthErrorMessage(error, '로그인 상태를 확인하지 못했습니다. 다시 로그인해주세요.'));
+        setUser(null);
+        setIsGuest(readGuestMode());
+      }
+    }).finally(() => {
+      if (active) setLoading(false);
+    });
+    const {
+      data: {
+        subscription
+      }
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         persistGuestMode(false);
@@ -70,47 +85,58 @@ export const AuthProvider = ({ children }) => {
         setAuthError('');
       }
     });
-
     return () => {
       active = false;
       subscription.unsubscribe();
     };
   }, []);
-
   const signUp = async (email, password, displayName) => {
     setAuthError('');
+    if (!isAuthConfigured) throw new Error('이 미리보기는 샘플 체험만 가능합니다. 계정 기능은 연결된 서비스에서 이용해주세요.');
     const normalizedEmail = email.trim();
     const normalizedDisplayName = displayName?.trim() || normalizedEmail.split('@')[0];
-    const { data, error } = await supabase.auth.signUp({
+    const {
+      data,
+      error
+    } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
       options: {
         emailRedirectTo: new URL(import.meta.env.BASE_URL, window.location.origin).toString(),
         data: {
           app_id: 'jobflow-dashboard',
-          display_name: normalizedDisplayName,
-        },
-      },
+          display_name: normalizedDisplayName
+        }
+      }
     });
     if (error) throw createAuthError(error);
     persistGuestMode(false);
     setIsGuest(false);
-
-    return { data, requiresEmailConfirmation: Boolean(data.user && !data.session) };
+    return {
+      data,
+      requiresEmailConfirmation: Boolean(data.user && !data.session)
+    };
   };
-
   const signIn = async (email, password) => {
     setAuthError('');
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!isAuthConfigured) throw new Error('이 미리보기는 샘플 체험만 가능합니다. 계정 기능은 연결된 서비스에서 이용해주세요.');
+    const {
+      data,
+      error
+    } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
     if (error) throw createAuthError(error);
     persistGuestMode(false);
     setIsGuest(false);
     return data;
   };
-
   const signOut = async () => {
     if (user) {
-      const { error } = await supabase.auth.signOut();
+      const {
+        error
+      } = await supabase.auth.signOut();
       if (error) throw createAuthError(error, '로그아웃하지 못했습니다. 다시 시도해주세요.');
     }
     persistGuestMode(false);
@@ -118,25 +144,38 @@ export const AuthProvider = ({ children }) => {
     setIsGuest(false);
     setAuthError('');
   };
-
   const enterGuestMode = async () => {
     setAuthError('');
     if (user) {
-      const { error } = await supabase.auth.signOut();
+      const {
+        error
+      } = await supabase.auth.signOut();
       if (error) throw createAuthError(error, '게스트 모드로 전환하지 못했습니다. 다시 시도해주세요.');
     }
     persistGuestMode(true);
     setUser(null);
     setIsGuest(true);
   };
-
-  return (
-    <AuthContext.Provider value={{ user, loading, isGuest, authError, signUp, signIn, signOut, enterGuestMode }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{
+    user,
+    loading,
+    isGuest,
+    authError,
+    signUp,
+    signIn,
+    signOut,
+    enterGuestMode,
+    demoApplications,
+    setDemoApplications,
+    demoItems,
+    setDemoItems,
+    demoNotes,
+    setDemoNotes,
+    resetDemo
+  }}>
+  {children}
+</AuthContext.Provider>;
 };
-
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');

@@ -1,90 +1,148 @@
 import { createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
+export default createTheme({
   palette: {
     primary: {
-      main: '#2563EB',
-      light: '#60A5FA',
-      dark: '#1D4ED8',
-      contrastText: '#ffffff',
+      main: '#684C67',
+      dark: '#49374F',
+      light: '#AC91AA',
+      contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#64748B',
-      light: '#94A3B8',
-      dark: '#475569',
+      main: '#5D776A'
     },
     background: {
-      default: '#F8FAFC',
-      paper: '#FFFFFF',
+      default: '#F7F7FA',
+      paper: '#FFFFFF'
     },
     text: {
-      primary: '#0F172A',
-      secondary: '#475569',
+      primary: '#302B35',
+      secondary: '#6B6470'
     },
-    success: { main: '#15803D' },
-    warning: { main: '#B45309' },
-    error: { main: '#B91C1C' },
-    info: { main: '#1D4ED8' },
-    divider: 'rgba(37, 99, 235, 0.10)',
+    divider: '#E6E1E5',
+    success: {
+      main: '#37644E'
+    },
+    error: {
+      main: '#AC363E'
+    },
+    warning: {
+      main: '#8A5C23'
+    },
+    info: {
+      main: '#684C67'
+    }
   },
   typography: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif',
-    h1: { fontSize: '2.125rem', fontWeight: 700 },
-    h2: { fontSize: '1.5rem', fontWeight: 600 },
-    h3: { fontSize: '1.25rem', fontWeight: 600 },
-    h4: { fontSize: '1.125rem', fontWeight: 600 },
-    h5: { fontSize: '1.25rem', fontWeight: 600, lineHeight: 1.4 },
-    h6: { fontSize: '1rem', fontWeight: 600, lineHeight: 1.5 },
-    body1: { fontSize: '1rem' },
-    body2: { fontSize: '0.875rem' },
-    caption: { fontSize: '0.75rem' },
+    fontFamily: '"Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif',
+    h1: {
+      fontSize: '2rem',
+      fontWeight: 700,
+      letterSpacing: '-.045em'
+    },
+    h2: {
+      fontSize: '1.25rem',
+      fontWeight: 700
+    },
+    h3: {
+      fontSize: '1.125rem',
+      fontWeight: 700
+    },
+    h5: {
+      fontSize: '1.6rem',
+      fontWeight: 700
+    },
+    h6: {
+      fontSize: '1.05rem',
+      fontWeight: 700
+    },
+    body1: {
+      fontSize: '1rem',
+      lineHeight: 1.65
+    },
+    body2: {
+      fontSize: '.875rem',
+      lineHeight: 1.65
+    },
+    caption: {
+      fontSize: '.8125rem',
+      lineHeight: 1.5
+    },
+    button: {
+      textTransform: 'none',
+      fontWeight: 600
+    }
   },
-  spacing: 8,
-  shape: { borderRadius: 8 },
+  shape: {
+    borderRadius: 12
+  },
   components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true
+      },
+      styleOverrides: {
+        root: {
+          minHeight: 44,
+          borderRadius: 9,
+          paddingInline: 16
+        }
+      }
+    },
     MuiIconButton: {
       styleOverrides: {
         root: {
           minWidth: 44,
-          minHeight: 44,
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: 'none',
-          fontWeight: 600,
-          minHeight: 44,
-        },
-      },
-    },
-    MuiChip: {
-      styleOverrides: {
-        root: { fontWeight: 500 },
-      },
+          minHeight: 44
+        }
+      }
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: '0 1px 4px rgba(15,23,42,0.06)',
-          border: '1px solid #E2E8F0',
+          boxShadow: 'none',
+          border: '1px solid #E6E1E5'
+        }
+      }
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#FFFFFF'
         },
-      },
+        notchedOutline: {
+          borderColor: '#978D99'
+        }
+      }
     },
     MuiTableCell: {
       styleOverrides: {
-        head: {
-          fontWeight: 600,
-          backgroundColor: '#F8FAFC',
-          color: '#64748B',
-          fontSize: '0.75rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.05em',
+        root: {
+          borderColor: '#E6E1E5',
+          padding: '18px 20px'
         },
-      },
+        head: {
+          fontSize: 13,
+          color: '#6B6470',
+          backgroundColor: '#F7F5F6',
+          fontWeight: 600
+        }
+      }
     },
-  },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          minHeight: 48,
+          fontWeight: 600
+        }
+      }
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: '#86788B'
+        }
+      }
+    }
+  }
 });
-
-export default theme;

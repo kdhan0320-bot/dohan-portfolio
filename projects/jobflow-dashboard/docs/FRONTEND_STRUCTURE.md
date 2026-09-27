@@ -1,143 +1,42 @@
-# JobFlow React / Vite 구조 설명
+# 갈피록 프론트엔드 구조
 
-이 문서는 현재 JobFlow의 React 18 + Vite 5 frontend 구조와 파일별 역할을 설명합니다.
+2026-09-27, 5차 수정 기준. 실제 라우트는 `src/App.jsx`가 기준입니다.
 
-## 1. 화면 구조와 HTML 역할
+## 화면과 흐름
 
-```text
-index.html          SPA의 단일 HTML entry와 React mount root
-src/App.jsx         HashRouter route·보호 route·document title
-src/pages/          route별 대표 화면을 JSX로 구성
-src/components/     layout과 재사용 UI를 JSX로 구성
-```
+- 비로그인: `/welcome` → 샘플 체험 또는 `/login` → `/overview`.
+- 주 메뉴: 오늘의 지원 / 지원 현황 / 마감 일정 / 준비 체크 / 면접 연습.
+- 지원 현황 `/`에서 `company` 또는 `new=1` 검색 매개변수로 오른쪽 회사 패널을 엽니다. `q`, `lane`, `view`는 검색·모바일 전형·보류함입니다.
+- 마감 일정 `/calendar`는 `month=YYYY-MM`, `date=YYYY-MM-DD`로 선택을 보존합니다. 회사 링크는 현황판의 해당 회사 패널을 엽니다.
+- 기존 `/applications`, 상세·수정·추가, `/kanban` URL은 현황판/회사 패널로 이동합니다. `/ai-prompt`는 `/document-helper`로 이동합니다.
 
-- `index.html`의 `#root`에 `src/main.jsx`가 React 앱을 mount합니다.
-- React Router가 hash URL에 맞는 page component를 렌더링합니다.
-- 실제 landmark, heading, form, card, navigation markup은 `pages/`와 `components/`의 JSX가 담당합니다.
-- `App.jsx`는 로그인하지 않았고 guest flag도 없는 사용자를 `/login`으로 보냅니다.
+## 역할별 파일
 
-## 2. 스타일 역할
+| 파일 | 역할 |
+| --- | --- |
+| `pages/WelcomePage.jsx`, `components/ui/ProductPreview.jsx` | 서비스 소개·샘플 진입·전환 가능한 제품 예시 |
+| `pages/DashboardPage.jsx` | 실제 기록으로 가까운 마감·지원 중 회사·남은 할 일 표시 |
+| `pages/ApplicationsPage.jsx`, `components/applications/ApplicationPanel.jsx` | 회사 카드·검색·상태 변경·추가·삭제·미저장 이탈 확인 |
+| `pages/CalendarPage.jsx`, `utils/calendar.js` | 마감 달력·날짜 검증·월 이동·미지원 회사 선택 |
+| `pages/ChecklistPage.jsx`, `pages/InterviewPage.jsx` | 할 일·면접 질문 관리 |
+| `context/AuthContext.jsx` | 실제 인증 상태와 샘플 데이터 3개 집합 관리 |
+| `hooks/useApplications.js`, `useChecklist.js`, `useInterviewNotes.js` | 사용자별 DB 요청 또는 샘플 메모리 변경 |
+| `components/ui/Field.jsx` | 외부 고정 라벨·입력·설명·오류 연결 |
+| `components/layout/` | 주 메뉴·모바일 Drawer·본문 포커스 |
+| `styles/global.css`, `responsive.css`, `website.css` | 공통 컴포넌트·반응형·소개/오늘/달력 스타일 |
 
-```text
-src/theme.js                 MUI palette·typography·component 기본값
-src/styles/global.css        box sizing·body/root·skip link·focus-visible
-src/styles/responsive.css    공통 터치 영역·reduced motion 규칙
-src/components/**/*.jsx      MUI sx 기반 layout·component별 반응형 geometry
-src/pages/**/*.jsx           MUI sx 기반 page별 layout
-```
+## 데이터 경계
 
-현재 화면 layout의 핵심 Source of Truth는 `Layout.jsx`, `Header.jsx`, `Sidebar.jsx`, 각 page의 MUI `sx`, 그리고 `theme.js`입니다.
+- 실제 인증은 Supabase Auth, 실제 데이터는 사용자별 DB 요청입니다. 이번 회차에 실제 인증 서버·DB 저장을 검증하지 않았습니다.
+- 연결 정보가 없는 미리보기는 계정 요청을 막고 샘플만 제공합니다. 게스트 데이터는 메모리 전용이며 새로고침 시 초기화됩니다. 샘플 진입 상태만 sessionStorage에 보관합니다.
+- 달력은 `관심`·`지원 예정` 회사의 유효한 `deadline`만 사용합니다. 면접 예약·알림은 제공하지 않습니다.
+- `documentTemplateHelpers.js`는 사용자가 입력한 내용을 로컬 템플릿으로 조합합니다. 외부 LLM/API 호출은 하지 않습니다.
+- `hooks/useToday.js`는 샘플 기준일과 실제 사용자의 로컬 날짜를 구분합니다.
 
-`src/index.css`는 `global.css` 다음에 `responsive.css`를 import해 전역 규칙 위에 반응형 규칙을 적용합니다.
+## 시각 자산과 보존 파일
 
-## 3. JavaScript·데이터 역할
-
-```text
-src/context/AuthContext.jsx          Supabase session·현재 탭 guest flag
-src/hooks/useApplications.js         applications 조회·mutation
-src/hooks/useChecklist.js            portfolio_checklists 조회·mutation
-src/hooks/useInterviewNotes.js       interview_notes 조회·mutation
-src/lib/supabase.js                  Supabase client 설정
-src/constants/index.js               navigation·status·고정 guest sample
-src/utils/authErrors.js              Auth 오류를 안전한 사용자 문구로 변환
-src/utils/dataErrors.js              data 오류를 안전한 사용자 문구로 변환
-src/utils/applicationPayload.js      applications mutable field allowlist·URL 검사
-src/utils/statusHelpers.js           상태 표시·체크리스트 진행률 계산
-src/utils/documentTemplateHelpers.js 문서 작성용 로컬 템플릿 생성
-```
-
-- 로그인 사용자의 data hook은 현재 사용자 ID와 RLS 경계 안에서 실제 Supabase row를 다룹니다.
-- 게스트는 `constants/index.js`의 고정된 가상 sample을 읽기 전용으로 사용합니다. 실제 row와 merge하지 않습니다.
-- `sessionStorage`에는 sample row가 아니라 현재 탭의 `jobflow-guest-mode` flag만 저장됩니다.
-- data 작업 오류는 raw Supabase/PostgREST message 대신 `dataErrors.js`가 만든 안전한 사용자 문구로 표시합니다.
-- applications insert/update 값은 `applicationPayload.js`의 mutable field allowlist를 통과합니다.
-
-## 4. 현재 폴더 구조
-
-```text
-jobflow-dashboard/
-├── .env.example
-├── .gitignore
-├── NOTICE.md
-├── README.md
-├── docs/
-│   └── FRONTEND_STRUCTURE.md
-├── public/
-│   └── favicon.svg
-├── index.html
-├── eslint.config.js
-├── package.json
-├── package-lock.json
-├── vite.config.js
-└── src/
-    ├── App.jsx
-    ├── index.css
-    ├── main.jsx
-    ├── theme.js
-    ├── components/
-    │   ├── layout/
-    │   │   ├── Header.jsx
-    │   │   ├── Layout.jsx
-    │   │   └── Sidebar.jsx
-    │   └── ui/
-    │       ├── ActionFeedback.jsx
-    │       ├── EmptyState.jsx
-    │       ├── GuestReadOnlyNotice.jsx
-    │       └── StatusChip.jsx
-    ├── constants/
-    │   └── index.js
-    ├── context/
-    │   └── AuthContext.jsx
-    ├── hooks/
-    │   ├── useApplications.js
-    │   ├── useChecklist.js
-    │   └── useInterviewNotes.js
-    ├── lib/
-    │   └── supabase.js
-    ├── pages/
-    │   ├── ApplicationDetailPage.jsx
-    │   ├── ApplicationFormPage.jsx
-    │   ├── ApplicationsPage.jsx
-    │   ├── ChecklistPage.jsx
-    │   ├── DashboardPage.jsx
-    │   ├── DocumentHelperPage.jsx
-    │   ├── InterviewPage.jsx
-    │   ├── KanbanPage.jsx
-    │   ├── LoginPage.jsx
-    │   ├── NotFoundPage.jsx
-    │   └── SettingsPage.jsx
-    ├── styles/
-    │   ├── global.css
-    │   └── responsive.css
-    └── utils/
-        ├── applicationPayload.js
-        ├── authErrors.js
-        ├── dataErrors.js
-        ├── documentTemplateHelpers.js
-        └── statusHelpers.js
-```
-
-## 5. Route·상태 계약
-
-- `App.jsx`는 HashRouter route와 route별 document title을 관리합니다.
-- `Layout.jsx`는 skip link, `main#main-content`, route 이동 뒤 focus, temporary Drawer 상태를 관리합니다.
-- `Sidebar.jsx`는 `constants/NAV_ITEMS`를 기준으로 Router link와 `aria-current`를 렌더링합니다.
-- `AuthContext.jsx`는 Supabase 사용자 session을 우선하고, 비인증 guest flag는 `sessionStorage`의 `jobflow-guest-mode`에 현재 탭 동안만 유지합니다.
-- `/applications`, `/applications/new`, `/applications/:id`, `/applications/:id/edit`는 하나의 `지원 현황` navigation family입니다.
-- `/kanban`은 상태별 column을 보여주지만 drag-and-drop 기능은 제공하지 않습니다.
-- 일정 날짜를 관리하는 calendar route는 없습니다. 면접 영역은 면접 준비 메모를 관리합니다.
-
-## 6. 문서 작성 도우미의 이름과 runtime 경계
-
-canonical route는 `/document-helper`이며 `src/pages/DocumentHelperPage.jsx`가 화면을, `src/utils/documentTemplateHelpers.js`가 로컬 템플릿 생성을 담당합니다. 기존 `/ai-prompt`는 canonical route로 이동하는 `replace` redirect alias입니다.
-
-사용자에게 보이는 제품명은 **문서 작성 도우미**입니다. 동작은 입력 내용을 브라우저 안에서 **local template** 문자열로 조합하고 복사하는 것입니다. 제품 runtime의 외부 LLM/API 호출은 **0건**이며, 앱이 AI 답변을 직접 생성하거나 저장하지 않습니다.
-
-## 7. 전통적인 분류와의 대응
-
-| 역할 | 전통적인 구성 | 현재 React/Vite 구성 |
-| --- | --- | --- |
-| HTML | page별 `.html` | `index.html` 1개 + JSX page/component |
-| CSS | 독립 CSS 파일 중심 | MUI `sx` + `theme.js` + 최소 전역 CSS |
-| JavaScript | 하나의 script 또는 파일 유형별 폴더 | route·component·hook·context·utility 역할별 module |
-| 상태·data | DOM 직접 갱신 | React state/context + Supabase hook |
+- 제품 예시와 날짜 티켓은 원본 JSX/CSS 구성입니다. 회사 마크는 가상 회사명 첫 글자입니다.
+- `Brand.jsx`의 로고 SVG, `public/fonts`의 Pretendard Variable과 OFL 전문을 사용합니다.
+- 생성 WebP 정물은 `JournalArt`를 통해 설정 화면에서 사용합니다. 외부 사진·상표 이미지를 추가하지 않았습니다.
+- 이전 `ApplicationDetailPage`, `ApplicationFormPage`, `StageJourney`, `applicationStages` 파일은 보존했지만 현재 라우트에서 사용하지 않습니다.
+- 모바일·마우스·키보드·잘림의 실제 브라우저 마감 검증은 미완료입니다. 코드 검사와 구분합니다.

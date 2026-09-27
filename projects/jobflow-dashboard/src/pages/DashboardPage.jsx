@@ -1,326 +1,55 @@
-import { useMemo } from 'react';
-import {
-  Box, Grid, Card, CardContent, Typography, LinearProgress,
-  Stack, Divider, Button, Skeleton, Alert, Link,
-} from '@mui/material';
-import WorkIcon from '@mui/icons-material/Work';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import EventIcon from '@mui/icons-material/Event';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import AddIcon from '@mui/icons-material/Add';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, Checkbox } from '@mui/material';
+import Add from '@mui/icons-material/Add';
+import ArrowForward from '@mui/icons-material/ArrowForward';
+import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
-import { APPLICATION_STATUSES } from '../constants';
-import { calcProgress } from '../utils/statusHelpers';
+import { useToday } from '../hooks/useToday';
+import { deadlineLabel, daysUntil } from '../utils/dates';
+import { companyDestination, pendingDeadlines, WEEKDAYS } from '../utils/calendar';
+import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
 import StatusChip from '../components/ui/StatusChip';
-import GuestReadOnlyNotice from '../components/ui/GuestReadOnlyNotice';
+import ActionFeedback from '../components/ui/ActionFeedback';
 
-const StatCard = ({ icon, title, value, subtitle, color = 'primary.main' }) => (
-  <Card sx={{ height: '100%' }}>
-    <CardContent>
-      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-        <Box>
-          <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.5 }}>
-            {title}
-          </Typography>
-          <Typography component="p" variant="h4" fontWeight={700} color={color} sx={{ mt: 0.5 }}>
-            {value}
-          </Typography>
-          {subtitle && (
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
-              {subtitle}
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ p: 1, bgcolor: 'action.hover', borderRadius: 2 }}>
-          {icon}
-        </Box>
-      </Box>
-    </CardContent>
-  </Card>
-);
-
-const DashboardPage = () => {
-  const navigate = useNavigate();
+export default function DashboardPage() {
+  const apps = useApplications();
+  const check = useChecklist();
   const { isGuest } = useAuth();
-  const {
-    applications,
-    loading,
-    error: applicationsError,
-    refresh: refreshApplications,
-  } = useApplications();
-  const {
-    items: checklistItems,
-    loading: checklistLoading,
-    error: checklistError,
-    refresh: refreshChecklist,
-  } = useChecklist();
-
-  const stats = useMemo(() => {
-    const total = applications.length;
-    const active = applications.filter((a) =>
-      ['서류 진행', '면접 예정', '지원 완료', '지원 예정'].includes(a.status)
-    ).length;
-    const interview = applications.filter((a) => a.status === '면접 예정').length;
-    const closed = applications.filter((a) =>
-      ['합격', '불합격', '보류'].includes(a.status)
-    ).length;
-    const { rate: checklistRate, done, total: checklistTotal } = calcProgress(checklistItems);
-    return { total, active, interview, closed, checklistRate, done, checklistTotal };
-  }, [applications, checklistItems]);
-
-  const recentApps = applications.slice(0, 5);
-
-  const statusSummary = useMemo(() => {
-    const map = {};
-    applications.forEach((a) => {
-      map[a.status] = (map[a.status] || 0) + 1;
-    });
-    return APPLICATION_STATUSES
-      .filter(({ value }) => map[value] > 0)
-      .map(({ value }) => ({ status: value, count: map[value] }));
-  }, [applications]);
-
-  return (
-    <Box>
-      {isGuest && (
-        <GuestReadOnlyNotice description="샘플 지원 현황과 할 일을 조회하고 화면 흐름을 체험할 수 있습니다. 변경과 저장은 로그인 후 사용할 수 있습니다." />
-      )}
-      {applicationsError && (
-        <Alert
-          severity="error"
-          sx={{ mb: 2 }}
-          action={<Button color="inherit" size="small" onClick={refreshApplications}>다시 시도</Button>}
-        >
-          지원 현황을 불러오지 못했습니다. {applicationsError}
-        </Alert>
-      )}
-      {checklistError && (
-        <Alert
-          severity="error"
-          sx={{ mb: 2 }}
-          action={<Button color="inherit" size="small" onClick={refreshChecklist}>다시 시도</Button>}
-        >
-          체크리스트를 불러오지 못했습니다. {checklistError}
-        </Alert>
-      )}
-
-      {/* 페이지 소개 */}
-      <Box sx={{ mb: 3 }}>
-        <Typography component="h1" variant="h5" fontWeight={700} color="text.primary">
-          지원 현황과 다음 행동을 확인하세요
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-          지원 회사·전형 상태·체크리스트·면접 메모를 함께 정리합니다.
-        </Typography>
-      </Box>
-
-      {/* 요약 카드 4개 */}
-      {!applicationsError && (
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          <Grid size={{ xs: 6, md: 3 }}>
-            <StatCard
-              icon={<WorkIcon sx={{ color: 'primary.main' }} />}
-              title="총 지원"
-              value={loading ? '-' : stats.total}
-              subtitle="개 회사"
-            />
-          </Grid>
-          <Grid size={{ xs: 6, md: 3 }}>
-            <StatCard
-              icon={<TrendingUpIcon sx={{ color: 'primary.main' }} />}
-              title="준비·진행"
-              value={loading ? '-' : stats.active}
-              color="primary.main"
-              subtitle="지원 예정·전형 진행"
-            />
-          </Grid>
-          <Grid size={{ xs: 6, md: 3 }}>
-            <StatCard
-              icon={<EventIcon sx={{ color: 'warning.main' }} />}
-              title="면접 예정"
-              value={loading ? '-' : stats.interview}
-              color="warning.main"
-              subtitle="건"
-            />
-          </Grid>
-          <Grid size={{ xs: 6, md: 3 }}>
-            <StatCard
-              icon={<DoneAllIcon sx={{ color: 'secondary.main' }} />}
-              title="종료·보류"
-              value={loading ? '-' : stats.closed}
-              color="secondary.main"
-              subtitle="합격·불합격·보류"
-            />
-          </Grid>
-        </Grid>
-      )}
-
-      {/* 하단 섹션 */}
-      <Grid container spacing={2}>
-        {!applicationsError && (
-          <Grid size={{ xs: 12, md: 7 }}>
-            <Card sx={{ mb: 2 }}>
-              <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography component="h2" variant="h6" fontWeight={700}>최근 지원 현황</Typography>
-                <Button size="small" onClick={() => navigate('/applications')}>전체 보기</Button>
-              </Box>
-              {loading ? (
-                [...Array(3)].map((_, i) => <Skeleton key={i} height={48} sx={{ mb: 1 }} />)
-              ) : recentApps.length === 0 ? (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <Typography variant="body2" color="text.secondary">지원 내역이 없습니다</Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} sx={{ mt: 2 }} onClick={() => navigate('/applications/new')}>
-                    첫 지원 등록
-                  </Button>
-                </Box>
-              ) : (
-                <Stack divider={<Divider />}>
-                  {recentApps.map((app) => (
-                    <Box
-                      key={app.id}
-                      sx={{
-                        py: 1.5, px: 1,
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        borderRadius: 1,
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          minWidth: 0,
-                          mr: 1,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <Link
-                          component={RouterLink}
-                          to={`/applications/${app.id}`}
-                          underline="hover"
-                          fontWeight={700}
-                          sx={{ display: 'inline-flex', alignItems: 'center', minHeight: 44 }}
-                        >
-                          {app.company_name}
-                        </Link>
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          noWrap
-                          sx={{ display: 'block', maxWidth: '100%' }}
-                        >
-                          {app.position}
-                        </Typography>
-                      </Box>
-                      <StatusChip status={app.status} />
-                    </Box>
-                  ))}
-                </Stack>
-              )}
-              </CardContent>
-            </Card>
-          </Grid>
-        )}
-
-        {(!applicationsError || !checklistError) && (
-          <Grid size={{ xs: 12, md: applicationsError ? 12 : 5 }}>
-            {!applicationsError && (
-              <Card sx={{ mb: 2 }}>
-                <CardContent>
-              <Typography component="h2" variant="h6" fontWeight={700} sx={{ mb: 2 }}>상태별 현황</Typography>
-              {statusSummary.length === 0 ? (
-                <Typography variant="body2" color="text.secondary">데이터 없음</Typography>
-              ) : (
-                statusSummary.map(({ status, count }) => {
-                  const found = APPLICATION_STATUSES.find((s) => s.value === status);
-                  const pct = stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
-                  return (
-                    <Box key={status} sx={{ mb: 1.5 }}>
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                        <Typography variant="caption" fontWeight={600} color="text.primary">{status}</Typography>
-                        <Typography variant="caption" color="text.secondary">{count}건 ({pct}%)</Typography>
-                      </Box>
-                      <LinearProgress
-                        variant="determinate"
-                        value={pct}
-                        aria-label={`${status} 비율`}
-                        aria-valuetext={`${count}건, ${pct}%`}
-                        sx={{
-                          height: 6, borderRadius: 1,
-                          bgcolor: `${found?.color ?? '#ccc'}20`,
-                          '& .MuiLinearProgress-bar': { bgcolor: found?.color ?? 'primary.main', borderRadius: 1 },
-                        }}
-                      />
-                    </Box>
-                  );
-                })
-              )}
-                </CardContent>
-              </Card>
-            )}
-
-            {!checklistError && (
-              <Card>
-                <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1.5 }}>
-                <Typography component="h2" variant="h6" fontWeight={700}>준비할 일</Typography>
-                <Button size="small" onClick={() => navigate('/checklist')}>전체 보기</Button>
-              </Box>
-              {checklistLoading ? (
-                <Stack spacing={1} aria-label="체크리스트 불러오는 중">
-                  <Skeleton variant="rounded" height={8} />
-                  <Skeleton width="45%" />
-                  <Skeleton width="80%" />
-                  <Skeleton width="70%" />
-                </Stack>
-              ) : (
-                <>
-                  <LinearProgress
-                    variant="determinate"
-                    value={stats.checklistRate}
-                    aria-label="체크리스트 진행률"
-                    aria-valuetext={`${stats.done}/${stats.checklistTotal} 항목 완료, ${stats.checklistRate}%`}
-                    sx={{ height: 6, borderRadius: 2, mb: 1.5, bgcolor: '#E2E8F0', '& .MuiLinearProgress-bar': { bgcolor: '#2563EB' } }}
-                  />
-                  <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5 }}>
-                    {stats.done}/{stats.checklistTotal} 항목 완료 ({stats.checklistRate}%)
-                  </Typography>
-                  <Stack spacing={0.5}>
-                    {checklistItems.slice(0, 5).map((item) => (
-                      <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {item.is_done ? (
-                          <CheckBoxIcon titleAccess="완료" sx={{ fontSize: 18, color: '#1D4ED8' }} />
-                        ) : (
-                          <CheckBoxOutlineBlankIcon titleAccess="미완료" sx={{ fontSize: 18, color: '#64748B' }} />
-                        )}
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            textDecoration: item.is_done ? 'line-through' : 'none',
-                            color: item.is_done ? 'text.secondary' : 'text.primary',
-                            lineHeight: 1.4,
-                          }}
-                        >
-                          {item.title}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Stack>
-                </>
-              )}
-                </CardContent>
-              </Card>
-            )}
-          </Grid>
-        )}
-      </Grid>
-    </Box>
-  );
-};
-
-export default DashboardPage;
+  const today = useToday();
+  const [busy, setBusy] = useState('');
+  const [feedback, setFeedback] = useState(null);
+  const upcoming = pendingDeadlines(apps.applications).filter(a => a.deadline >= today);
+  const overdue = pendingDeadlines(apps.applications).filter(a => a.deadline < today);
+  const focus = upcoming[0];
+  const todo = check.items.filter(i => !i.is_done);
+  const active = apps.applications.filter(a => ['지원 완료', '서류 진행', '면접 예정'].includes(a.status));
+  const date = new Date(`${today}T12:00:00Z`);
+  const dateText = `${Number(today.slice(5, 7))}월 ${Number(today.slice(8))}일 ${WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일${isGuest ? ' · 샘플 기준일' : ''}`;
+  const focusDate = focus && new Date(`${focus.deadline}T12:00:00Z`);
+  async function complete(item) {
+    if (busy) return;
+    setBusy(item.id);
+    try { await check.toggle(item.id, true); setFeedback({ message: '준비할 일을 완료했어요.' }); }
+    catch (e) { setFeedback({ severity: 'error', message: e.message }); }
+    finally { setBusy(''); }
+  }
+  return <>
+    <PageHeading title="오늘의 지원" description={dateText}><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>회사 추가</Button></PageHeading>
+    <LoadState loading={apps.loading || check.loading} error={apps.error || check.error} retry={() => { apps.refresh(); check.refresh(); }} />
+    {!apps.loading && !check.loading && !apps.error && !check.error && <>
+      <section className={`next-application ${focus ? '' : 'next-application-empty'}`} aria-labelledby="next-title">
+        <div className="next-application-copy"><span className="section-kicker">{focus ? '가장 가까운 지원 마감' : '나의 다음 기회'}</span><h2 id="next-title">{focus ? <>다음 지원은,<br />{focus.company_name}.</> : <>관심 있는 회사부터<br />시작해보세요.</>}</h2><p>{focus ? `${focus.position || '직무 미입력'} · ${deadlineLabel(focus.deadline, today)}` : '회사명 하나면 첫 기록을 만들 수 있어요.'}</p><Button component={Link} to={focus ? companyDestination(focus.id) : '/?new=1'} variant="contained" endIcon={<ArrowForward />}>{focus ? '지원 정보 열기' : '첫 회사 추가'}</Button></div>
+        <div className="deadline-visual" aria-hidden="true"><div className="date-ticket"><span>{focus ? `${Number(focus.deadline.slice(5, 7))}월 지원 마감` : '새로운 시작'}</span><strong>{focus ? Number(focus.deadline.slice(8)) : '+'}</strong><small>{focus ? `${WEEKDAYS[(focusDate.getUTCDay() + 6) % 7]}요일` : '관심 회사를 담아요'}</small><div className="ticket-stub">{focus ? daysUntil(focus.deadline, today) === 0 ? 'TODAY' : `D − ${daysUntil(focus.deadline, today)}` : '갈피록'}</div></div><span className="ticket-orbit ticket-orbit-one" /><span className="ticket-orbit ticket-orbit-two" /></div>
+      </section>
+      {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
+      <div className="overview-grid">
+        <section className="overview-panel" aria-labelledby="active-title"><header><h2 id="active-title">지원 중 <span>{active.length}</span></h2><Button component={Link} to="/">전체 현황 <ArrowOutward fontSize="small" /></Button></header><div className="active-company-list">{active.slice(0, 3).map(a => <Link className="active-company" to={companyDestination(a.id)} key={a.id}><CompanyMark name={a.company_name} /><span className="active-company-copy"><strong>{a.company_name}</strong><small>{a.position || '직무 미입력'}</small></span><StatusChip status={a.status} /></Link>)}{!active.length && <Empty title="진행 중인 지원이 없어요"><Button component={Link} to="/">지원 현황 열기</Button></Empty>}</div></section>
+        <section className="overview-panel" aria-labelledby="todo-title"><header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button component={Link} to="/checklist">전체 보기 <ArrowOutward fontSize="small" /></Button></header><div className="overview-tasks">{todo.slice(0, 3).map(item => <label className="overview-task" key={item.id}><Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료` } }} /><span>{item.title}</span></label>)}{!todo.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}</div></section>
+      </div>
+    </>}
+    <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
+  </>;
+}

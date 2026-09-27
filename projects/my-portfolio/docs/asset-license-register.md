@@ -141,6 +141,32 @@ active semantic reuse이므로 삭제·통합하지 않고 유지한다.
 | `public/thumbnails/normalized/feedback-hub-card-1600x1000.png` | browser capture normalized derivative | `projects/portfolio-feedback-hub #/` · public read-only list · `scrollY=293` · crop `80/50/1440/900` → uniform resize `1552×970` → place `24/15` on `#172432` · actual PNG 1600×1000 · 369,740 bytes · RGB, alpha channel 없음, 비불투명 pixel 0 · SHA-256 `DB03BAB0F893DBB7CB6A837386A71DB8E89942BB275F59E7184DC7497131AB75` | Projects More Works | 기존 `@mui/icons-material` MIT, public read-only list screenshot과 `projects/portfolio-feedback-hub/README.md`의 Pretendard OFL 기록을 연결한다. 외부 사진·타사 logo 및 신규 외부 asset 0. |
 | `public/thumbnails/normalized/ott-service-card-1600x1000.png` | browser capture normalized derivative | `projects/OTT Service/index.html` · initial SIGNAL / 01 Hero · crop `80/50/1440/900` → uniform resize `1552×970` → place `24/15` on `#172432` · actual PNG 1600×1000 · 907,185 bytes · RGB, alpha channel 없음, 비불투명 pixel 0 · SHA-256 `FFB9284BB4A4DEB8FECFA1493B1B38C5A97568CB66880353639C801C05793E20` | Home Selected · Projects More Works | 기존 Pretendard OFL, `USER_DECLARED_AI_ASSISTED` WebP, `REPOSITORY_DECLARATION_ONLY` SVG/icon 행을 연결한다. 외부 영화·인물·브랜드 및 신규 외부 asset 0. 독점성·법률상 무위험을 보증하지 않는다. |
 
+## 갈피록 리디자인 자산 추가 (2026-09-27, 미배포)
+
+| 자산 | 제작 근거 | 외부 입력 | 확인 범위 |
+| --- | --- | --- | --- |
+| `projects/jobflow-dashboard/public/favicon.svg` | 이번 대화의 코드 편집에서 접힌 종이와 책갈피 path를 새로 작성 | 없음 | AI 보조 제작 경로 확인. 기존 favicon 교체. 독점성·상표 권리 미확인. |
+| `projects/jobflow-dashboard/src/components/ui/Brand.jsx` | 이번 대화의 코드 편집에서 Brand·PaperScene SVG를 새로 작성 | 없음 | 원·사각형·path로 구성. 외부 사진·타사 로고 없음. AI 보조 제작이며 법적 무위험 보증 아님. |
+
+MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 첫 글자로 표시합니다. 2차 수정에서 `Brand.jsx`에 노트·달력·체크 카드로 구성된 원본 `JournalScene`을 추가했습니다. 위 자산은 아직 배포하지 않았습니다. 기존 JobFlow runtime screenshot·normalized thumbnail 행은 이전 화면의 이력이며 새 갈피록 화면의 검증 근거로 사용하지 않습니다.
+
+### 갈피록 로컬 폰트 추가 (2026-09-27, 미배포)
+
+- 자산: `projects/jobflow-dashboard/public/fonts/PretendardVariable.woff2`. 기존 `projects/OTT Service/assets/fonts/PretendardVariable.woff2`와 SHA-256 동일: `9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4`.
+- 출처: 공식 Pretendard 저장소 https://github.com/orioncactus/pretendard — 제작자 Kil Hyung-jin, SIL OFL 1.1. 공식 LICENSE를 직접 확인했고 전체 고지를 `projects/jobflow-dashboard/public/fonts/OFL.txt`에 저장했습니다. 웹 번들 포함과 재배포 시 해당 파일을 유지합니다.
+- 원본 글리프·폰트명·바이트를 수정하지 않았습니다. CDN 요청 없이 자체 파일로 로드합니다.
+
+### 갈피록 생성 이미지 추가 (2026-09-27, 미배포)
+
+이번 대화에서 내장 ImageGen을 두 번 호출해 텍스트 지시만으로 새 이미지를 생성했습니다. 외부 참조 사진·브랜드·특정 작가를 입력하지 않았습니다. 실제 사용 프롬프트 전문은 `projects/jobflow-dashboard/NOTICE.md`에 있습니다. 생성 경로를 확인한 AI 보조 제작 자산이며 법적 무위험·독점성은 보증하지 않습니다. 직접 촬영 사진으로 표시하지 않습니다.
+
+| 자산 | 배포 규격 | SHA-256 |
+| --- | --- | --- |
+| `projects/jobflow-dashboard/src/assets/galpi-desk.webp` | WebP, 61,352바이트 | `84c418fbcb150cc0f0ae8149d7828776c84a9cb57f2369755f475337ca16c8b6` |
+| `projects/jobflow-dashboard/src/assets/galpi-objects.webp` | WebP, 118,852바이트 | `17cc6b730799a31c308b139fe7bed3569e12f7673257737e0fec95f649810a94` |
+
+원본 PNG를 내용과 크기를 유지한 채 WebP 품질 90으로 인코딩했습니다. 홈·로그인·회사 담기·단계 보기에서 사용하며, 실제 화면의 브라우저 시각 검증은 아직 완료하지 않았습니다.
+
 ## 갱신 규칙
 - 새 외부 폰트/이미지/아이콘/영상/mockup/template/코드를 추가할 때는 위
   표에 한 행을 추가하고, 원 배포처 LICENSE를 직접 연 뒤에만 `상태`를

@@ -3,10 +3,11 @@ import { APPLICATION_STATUSES } from '../../constants';
 
 const StatusChip = ({ status, size = 'small' }) => {
   const found = APPLICATION_STATUSES.find((s) => s.value === status);
-  if (!found) return <Chip label={status} size={size} />;
+  if (!found) return <Chip component="span" label={status} size={size} />;
 
   return (
     <Chip
+      component="span"
       label={found.label}
       size={size}
       sx={{
