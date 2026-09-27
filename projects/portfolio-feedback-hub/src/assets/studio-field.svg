@@ -1,23 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1320" viewBox="0 0 1440 1320" fill="none">
   <defs>
-    <pattern id="field-dots" width="16" height="16" patternUnits="userSpaceOnUse">
-      <circle cx="1" cy="1" r=".65" fill="#8F8F7F" fill-opacity=".18"/>
+    <pattern id="focus-dots" width="9" height="9" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1" fill="#929A9E" fill-opacity=".26"/>
     </pattern>
-    <linearGradient id="silver-pane" x1="1150" y1="0" x2="1420" y2="310" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#C6C6BB" stop-opacity=".04"/>
-      <stop offset="1" stop-color="#C6C6BB" stop-opacity=".25"/>
-    </linearGradient>
   </defs>
-  <path d="M0 0H1440V1320H0Z" fill="url(#field-dots)"/>
-  <path d="M1268 -110L1524 -27L1411 321L1155 238Z" fill="url(#silver-pane)"/>
-  <path d="M1402 -18L1430 -9L1337 278L1309 269Z" fill="#E8D684" fill-opacity=".28"/>
-  <g stroke="#99998A" stroke-opacity=".3">
-    <path d="M1239 -96L1495 -13L1382 335L1126 252Z"/>
-    <path d="M1254 -105L1510 -22L1397 326L1141 243Z"/>
-    <path d="M28 306V824M1412 432V998" stroke-opacity=".2"/>
-    <path d="M16 306H40M28 294V318M1400 998H1424M1412 986V1010"/>
-    <rect x="-178" y="842" width="300" height="300" transform="rotate(-22 -178 842)"/>
-    <rect x="-160" y="852" width="300" height="300" transform="rotate(-22 -160 852)"/>
+  <!-- Original optical registration field: focal circles, not paper or folded panels. -->
+  <circle cx="1410" cy="164" r="205" fill="#ECEFF0"/>
+  <g stroke="#AEB6B9" stroke-width="1" stroke-opacity=".55">
+    <circle cx="1410" cy="164" r="229"/>
+    <circle cx="1410" cy="164" r="194"/>
+    <circle cx="1410" cy="164" r="174"/>
+    <circle cx="1410" cy="164" r="154"/>
+    <circle cx="1410" cy="164" r="134"/>
+    <circle cx="1410" cy="164" r="114"/>
+    <circle cx="1410" cy="164" r="94"/>
+    <path d="M1168 164H1215M1410 384V412M1244-2l19 19M1244 330l19-19"/>
   </g>
-  <path d="M-37 922L40 891L136 1128L59 1159Z" fill="#E8D684" fill-opacity=".2"/>
+  <path d="M1269 91A159 159 0 0 1 1390 6" stroke="#CED3D5" stroke-width="15"/>
+  <circle cx="1317" cy="57" r="16" fill="#F0DC80"/>
+  <circle cx="1317" cy="57" r="4" fill="#596165"/>
+  <path d="M1317 31V42M1317 72V83M1291 57H1302M1332 57H1343" stroke="#7C8589"/>
+  <circle cx="-28" cy="918" r="178" fill="url(#focus-dots)"/>
+  <g stroke="#ADB6B9" stroke-opacity=".5">
+    <circle cx="-28" cy="918" r="198"/>
+    <circle cx="-28" cy="918" r="148"/>
+    <circle cx="-28" cy="918" r="88"/>
+    <path d="M-28 918H92V1058H137M155 918H184M-28 1128H38"/>
+  </g>
+  <circle cx="92" cy="1058" r="9" fill="#F0DC80"/>
+  <circle cx="92" cy="1058" r="2" fill="#596165"/>
+  <g fill="#AEB6B9" fill-opacity=".65">
+    <circle cx="1396" cy="684" r="2"/><circle cx="1396" cy="700" r="2"/><circle cx="1396" cy="716" r="2"/>
+  </g>
+  <path d="M1384 748H1408M1396 736V760" stroke="#ADB6B9" stroke-opacity=".6"/>
 </svg>
