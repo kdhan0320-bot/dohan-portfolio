@@ -1,36 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1320" viewBox="0 0 1440 1320" fill="none">
-  <defs>
-    <pattern id="focus-dots" width="9" height="9" patternUnits="userSpaceOnUse">
-      <circle cx="1.5" cy="1.5" r="1" fill="#929A9E" fill-opacity=".26"/>
-    </pattern>
-  </defs>
-  <!-- Original optical registration field: focal circles, not paper or folded panels. -->
-  <circle cx="1410" cy="164" r="205" fill="#ECEFF0"/>
-  <g stroke="#AEB6B9" stroke-width="1" stroke-opacity=".55">
-    <circle cx="1410" cy="164" r="229"/>
-    <circle cx="1410" cy="164" r="194"/>
-    <circle cx="1410" cy="164" r="174"/>
-    <circle cx="1410" cy="164" r="154"/>
-    <circle cx="1410" cy="164" r="134"/>
-    <circle cx="1410" cy="164" r="114"/>
-    <circle cx="1410" cy="164" r="94"/>
-    <path d="M1168 164H1215M1410 384V412M1244-2l19 19M1244 330l19-19"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" fill="none">
+  <!-- Original focal study. Every ring and registration mark stays inside the canvas. -->
+  <circle cx="120" cy="120" r="97" fill="#ECEFF0"/>
+  <g stroke="#B0B9BD" stroke-width="1">
+    <circle cx="120" cy="120" r="97"/>
+    <circle cx="120" cy="120" r="81"/>
+    <circle cx="120" cy="120" r="65"/>
+    <circle cx="120" cy="120" r="49"/>
+    <circle cx="120" cy="120" r="33"/>
+    <path d="M120 7V35M120 205V233M7 120H35M205 120H233"/>
   </g>
-  <path d="M1269 91A159 159 0 0 1 1390 6" stroke="#CED3D5" stroke-width="15"/>
-  <circle cx="1317" cy="57" r="16" fill="#F0DC80"/>
-  <circle cx="1317" cy="57" r="4" fill="#596165"/>
-  <path d="M1317 31V42M1317 72V83M1291 57H1302M1332 57H1343" stroke="#7C8589"/>
-  <circle cx="-28" cy="918" r="178" fill="url(#focus-dots)"/>
-  <g stroke="#ADB6B9" stroke-opacity=".5">
-    <circle cx="-28" cy="918" r="198"/>
-    <circle cx="-28" cy="918" r="148"/>
-    <circle cx="-28" cy="918" r="88"/>
-    <path d="M-28 918H92V1058H137M155 918H184M-28 1128H38"/>
+  <path d="M29 88A97 97 0 0 1 87 29" stroke="#8C989E" stroke-width="7"/>
+  <path d="M151 212A97 97 0 0 0 212 151" stroke="#C4CDD1" stroke-width="7"/>
+  <circle cx="120" cy="120" r="15" fill="#F0DC80"/>
+  <circle cx="120" cy="120" r="3" fill="#535D62"/>
+  <circle cx="177" cy="63" r="9" fill="#F0DC80"/>
+  <g fill="#8C989E">
+    <circle cx="43" cy="197" r="2"/>
+    <circle cx="52" cy="205" r="2"/>
+    <circle cx="62" cy="212" r="2"/>
   </g>
-  <circle cx="92" cy="1058" r="9" fill="#F0DC80"/>
-  <circle cx="92" cy="1058" r="2" fill="#596165"/>
-  <g fill="#AEB6B9" fill-opacity=".65">
-    <circle cx="1396" cy="684" r="2"/><circle cx="1396" cy="700" r="2"/><circle cx="1396" cy="716" r="2"/>
-  </g>
-  <path d="M1384 748H1408M1396 736V760" stroke="#ADB6B9" stroke-opacity=".6"/>
 </svg>
