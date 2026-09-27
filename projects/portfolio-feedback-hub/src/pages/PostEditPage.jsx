@@ -158,7 +158,7 @@ const PostEditPage = () => {
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
         <SubPageHeader
           title="게시글 수정"
-          fallbackTo={sampleDetailPath || '/'}
+          fallbackTo={sampleDetailPath || '/works'}
           backLabel={sampleDetailPath ? '상세로' : '목록으로'}
         />
         <Container maxWidth="md" sx={{ py: 6 }}>
@@ -176,7 +176,7 @@ const PostEditPage = () => {
                 샘플 상세 보기
               </Button>
             )}
-            <Button variant={sampleDetailPath ? 'outlined' : 'contained'} onClick={() => navigate('/')}>
+            <Button variant={sampleDetailPath ? 'outlined' : 'contained'} onClick={() => navigate('/works')}>
               게시글 목록으로
             </Button>
             {user && (
@@ -193,12 +193,12 @@ const PostEditPage = () => {
   if (isInvalidPostId) {
     return (
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-        <SubPageHeader title="게시글 수정" fallbackTo="/" />
+        <SubPageHeader title="게시글 수정" fallbackTo="/works" />
         <Container maxWidth="md" sx={{ py: 6 }}>
           <Alert severity="warning" sx={{ mb: 3 }}>
             올바르지 않은 게시글 주소입니다.
           </Alert>
-          <Button variant="contained" onClick={() => navigate('/')}>
+          <Button variant="contained" onClick={() => navigate('/works')}>
             게시글 목록으로
           </Button>
         </Container>
@@ -208,14 +208,14 @@ const PostEditPage = () => {
 
   if (!user) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 수정" fallbackTo="/" />
+      <SubPageHeader title="게시글 수정" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }}>
         <Alert severity="info" sx={{ mb: 3 }}>
           게시글 편집은 로그인 후 이용할 수 있습니다.
         </Alert>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
           <Button variant="contained" onClick={() => navigate('/login')}>로그인하기</Button>
-          <Button variant="outlined" onClick={() => navigate('/')}>게시글 목록으로</Button>
+          <Button variant="outlined" onClick={() => navigate('/works')}>게시글 목록으로</Button>
         </Box>
       </Container>
     </Box>
@@ -223,7 +223,7 @@ const PostEditPage = () => {
 
   if (loading) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 수정" fallbackTo="/" />
+      <SubPageHeader title="게시글 수정" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }} role="status" aria-label="게시글 수정 정보를 불러오는 중입니다.">
         <Typography aria-hidden="true" sx={visuallyHiddenSx}>게시글 수정 정보를 불러오는 중입니다.</Typography>
         <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
@@ -233,10 +233,10 @@ const PostEditPage = () => {
 
   if (loadError) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 수정" fallbackTo="/" />
+      <SubPageHeader title="게시글 수정" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }}>
         <Alert severity="warning" sx={{ mb: 3 }}>{loadError}</Alert>
-        <Button variant="contained" onClick={() => navigate('/')}>게시글 목록으로</Button>
+        <Button variant="contained" onClick={() => navigate('/works')}>게시글 목록으로</Button>
       </Container>
     </Box>
   );

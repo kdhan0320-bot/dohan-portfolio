@@ -15,6 +15,7 @@ import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import { SAMPLE_POSTS, SAMPLE_COMMENTS, getCategoryLabel, getStatusBadge } from '../constants/samplePosts';
 import SubPageHeader from '../components/SubPageHeader';
+import SampleReviewPage from '../components/SampleReviewPage';
 import CategoryThumbnail from '../components/CategoryThumbnail';
 import { validateAndNormalizeImageUrl } from '../utils/imageUrlPolicy';
 import { getPostPageTitle, PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
@@ -194,7 +195,7 @@ const CommentItem = ({
                 size="small"
                 startIcon={<Reply sx={{ fontSize: 14 }} />}
                 onClick={() => setShowReply(p => !p)}
-                sx={{ fontSize: '0.72rem', px: 1, color: 'text.secondary', minWidth: 64, minHeight: 44 }}
+                sx={{ fontSize: '0.8125rem', px: 1, color: 'text.secondary', minWidth: 64, minHeight: 44 }}
               >
                 답글
               </Button>
@@ -249,7 +250,7 @@ const ReplyItem = ({
 
   return (
     <Box sx={{ display: 'flex', gap: 1.5, mt: 1.5, pl: 1, borderLeft: '2px solid', borderColor: 'divider' }}>
-      <Avatar sx={{ width: 26, height: 26, fontSize: '0.7rem', bgcolor: 'primary.dark', flexShrink: 0 }}>
+      <Avatar sx={{ width: 26, height: 26, fontSize: '0.8125rem', bgcolor: 'primary.dark', flexShrink: 0 }}>
         {reply.profiles?.username?.[0]?.toUpperCase()}
       </Avatar>
       <Box sx={{ flexGrow: 1 }}>
@@ -567,7 +568,7 @@ const PostDetailPage = () => {
     try {
       const { error } = await supabase.from('posts').delete().eq('id', id);
       if (error) throw error;
-      navigate('/', { replace: true });
+      navigate('/works', { replace: true });
       return true;
     } catch {
       showFeedback('게시글을 삭제하지 못했습니다.', 'error');
@@ -736,19 +737,19 @@ const PostDetailPage = () => {
 
   if (isInvalidPostId) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 상세" fallbackTo="/" />
+      <SubPageHeader title="게시글 상세" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }}>
         <Alert severity="warning" sx={{ mb: 3 }}>
           올바르지 않은 게시글 주소입니다.
         </Alert>
-        <Button variant="contained" onClick={() => navigate('/')}>게시글 목록으로</Button>
+        <Button variant="contained" onClick={() => navigate('/works')}>게시글 목록으로</Button>
       </Container>
     </Box>
   );
 
   if (loadState === 'loading') return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 상세" fallbackTo="/" />
+      <SubPageHeader title="게시글 상세" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }} role="status" aria-label="게시글 상세를 불러오는 중입니다.">
         <Typography aria-hidden="true" sx={visuallyHiddenSx}>게시글 상세를 불러오는 중입니다.</Typography>
         <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
@@ -760,7 +761,7 @@ const PostDetailPage = () => {
     const isNotFound = loadState === 'not-found';
     return (
       <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-        <SubPageHeader title="게시글 상세" fallbackTo="/" />
+        <SubPageHeader title="게시글 상세" fallbackTo="/works" />
         <Container maxWidth="md" sx={{ py: 6 }}>
           <Paper role={isNotFound ? undefined : 'alert'} sx={{ p: { xs: 3, sm: 4 }, borderRadius: 3 }}>
             <Typography variant="h2" sx={{ mb: 1.5 }}>
@@ -772,7 +773,7 @@ const PostDetailPage = () => {
                 : '잠시 후 다시 시도하거나 게시글 목록으로 이동해 주세요.'}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
-              <Button variant="contained" onClick={() => navigate('/')}>게시글 목록으로</Button>
+              <Button variant="contained" onClick={() => navigate('/works')}>게시글 목록으로</Button>
               {!isNotFound && (
                 <Button variant="outlined" onClick={() => setReloadKey(key => key + 1)}>다시 시도</Button>
               )}
@@ -785,12 +786,14 @@ const PostDetailPage = () => {
 
   if (!post) return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-      <SubPageHeader title="게시글 상세" fallbackTo="/" />
+      <SubPageHeader title="게시글 상세" fallbackTo="/works" />
       <Container maxWidth="md" sx={{ py: 6 }}>
         <Alert severity="error">게시글 상태를 확인할 수 없습니다.</Alert>
       </Container>
     </Box>
   );
+
+  if (isSamplePost) return <SampleReviewPage key={post.id} post={post} />;
 
   const isPostOwner = user?.id === post.user_id;
   const postCategory = getCategoryLabel(post);
@@ -800,7 +803,7 @@ const PostDetailPage = () => {
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <SubPageHeader
         title="게시글 상세"
-        fallbackTo="/"
+        fallbackTo="/works"
         rightActions={isPostOwner && (
           <Box sx={{ display: 'flex', gap: 0.5 }}>
             <Button
@@ -855,7 +858,7 @@ const PostDetailPage = () => {
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1.5 }}>
             {postCategory && (
               <Chip label={postCategory} size="small" variant="outlined"
-                sx={{ fontSize: '0.7rem', borderColor: 'divider', color: 'text.secondary' }} />
+                sx={{ fontSize: '0.8125rem', borderColor: 'divider', color: 'text.secondary' }} />
             )}
             {(() => {
               const status = getStatusBadge({
@@ -864,7 +867,7 @@ const PostDetailPage = () => {
               });
               return (
                 <Chip label={status.label} size="small"
-                  sx={{ fontSize: '0.7rem', bgcolor: `${status.color}1A`, color: status.color, fontWeight: 700 }} />
+                  sx={{ fontSize: '0.8125rem', bgcolor: `${status.color}1A`, color: status.color, fontWeight: 700 }} />
               );
             })()}
           </Box>
@@ -922,7 +925,7 @@ const PostDetailPage = () => {
                 display: 'block',
                 borderRadius: 2,
                 mb: 3,
-                bgcolor: '#F8FAFC',
+                bgcolor: '#F8F8FB',
               }}
             />
           ) : (

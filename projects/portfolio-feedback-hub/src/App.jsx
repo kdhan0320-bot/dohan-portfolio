@@ -4,6 +4,8 @@ import AuthProvider from './components/AuthProvider';
 import { useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
 import PostListPage from './pages/PostListPage';
+import HomePage from './pages/HomePage';
+import GuidePage from './pages/GuidePage';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostEditPage from './pages/PostEditPage';
@@ -58,7 +60,9 @@ const AppRoutes = () => (
       <Routes>
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/signup" element={<Navigate to="/login" replace />} />
-        <Route path="/" element={<PostListPage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/works" element={<PostListPage />} />
+        <Route path="/guide" element={<GuidePage />} />
         <Route path="/posts/:id" element={<PostDetailPage />} />
         <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
         <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />

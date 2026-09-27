@@ -115,7 +115,7 @@ const PostWritePage = () => {
             <Button
               type="button"
               variant="outlined"
-              onClick={() => navigate('/', { replace: true })}
+              onClick={() => navigate('/works', { replace: true })}
               disabled={loading}
               sx={{ minHeight: 44 }}
             >

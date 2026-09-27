@@ -2,7 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Container, Button, Typography, Box } from '@mui/material';
 import { ArrowBack } from '@mui/icons-material';
 
-const SubPageHeader = ({ title, rightActions, fallbackTo = '/', backLabel = '목록으로' }) => {
+const SubPageHeader = ({ title, rightActions, fallbackTo = '/works', backLabel = '목록으로' }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const handleBack = () => {

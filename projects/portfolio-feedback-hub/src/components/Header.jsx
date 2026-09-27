@@ -1,79 +1,26 @@
-import { useNavigate } from 'react-router-dom';
-import {
-  AppBar, Toolbar, Container, Box, Typography, Chip, Button,
-} from '@mui/material';
-import { Logout } from '@mui/icons-material';
+import { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import BrandMark from './BrandMark';
 
-const Header = () => {
-  const navigate = useNavigate();
+export default function Header() {
   const { user, signOut } = useAuth();
-
-  const handleLogout = async () => {
-    await signOut();
-    navigate('/login');
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [leaving, setLeaving] = useState(false);
+  const logout = async () => {
+    if (leaving) return;
+    setLeaving(true);
+    setError('');
+    try { await signOut(); navigate('/'); }
+    catch { setError('로그아웃하지 못했습니다. 다시 시도해 주세요.'); }
+    finally { setLeaving(false); }
   };
-
-  return (
-    <AppBar position="sticky">
-      <Container maxWidth="lg">
-        <Toolbar disableGutters sx={{ gap: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexGrow: 1, minWidth: 0 }}>
-            <Box sx={{
-              width: 32, height: 32, borderRadius: '8px', flexShrink: 0,
-              bgcolor: 'primary.main', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <Box component="svg" aria-hidden="true" viewBox="0 0 32 32" sx={{ width: 24, height: 24 }}>
-                <Box component="path" d="M5.5 6.5h21v14.5h-14l-5 4v-4h-2z" fill="none" stroke="#fff" strokeWidth="2" strokeLinejoin="round" />
-                <Box component="path" d="M10 11h12M10 15h8" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-              </Box>
-            </Box>
-            <Typography
-              component="span"
-              variant="h6"
-              sx={{ fontWeight: 800, letterSpacing: '-0.3px', whiteSpace: 'nowrap', flexShrink: 0 }}
-            >
-              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>Portfolio Feedback Hub</Box>
-              <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>Feedback Hub</Box>
-            </Typography>
-          </Box>
-
-          {user ? (
-            <Button
-              size="small"
-              variant="outlined"
-              onClick={handleLogout}
-              aria-label="로그아웃"
-              startIcon={<Logout fontSize="small" />}
-              sx={{
-                minWidth: 0,
-                minHeight: 44,
-                px: { xs: 1.25, sm: 1.5 },
-                flexShrink: 0,
-                whiteSpace: 'nowrap',
-                '& .MuiButton-startIcon': { mr: 0.75 },
-              }}
-            >
-              로그아웃
-            </Button>
-          ) : (
-            <Chip
-              label="읽기 전용 데모"
-              size="small"
-              sx={{
-                bgcolor: 'rgba(37,99,235,0.12)',
-                color: 'primary.dark',
-                fontSize: '0.68rem',
-                fontWeight: 700,
-                height: 28,
-                flexShrink: 0,
-              }}
-            />
-          )}
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
-};
-
-export default Header;
+  const links = [['/', '홈'], ['/works', '작업 갤러리'], ['/guide', '리뷰 방법']];
+  return <header className="site-header"><div className="header-inner">
+    <Link className="brand" to="/" aria-label="고른시선 홈"><BrandMark /><span>고른시선</span></Link>
+    <nav aria-label="주 메뉴">{links.map(([to, label]) => <Link key={to} to={to} aria-current={pathname === to ? 'page' : undefined} className={to === '/works' && pathname.startsWith('/posts/') ? 'is-section-active' : undefined}>{label}</Link>)}</nav>
+    <div className="header-actions"><Link className="nav-cta" to="/posts/sample-1">리뷰 체험 <span aria-hidden="true">↗</span></Link>{user && <button className="text-button" onClick={logout} disabled={leaving}>{leaving ? '로그아웃 중…' : '로그아웃'}</button>}</div>
+  </div>{error && <p className="inline-error" role="alert">{error}</p>}</header>;
+}
