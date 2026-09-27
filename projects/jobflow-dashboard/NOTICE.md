@@ -14,7 +14,7 @@
 
 | 자산 | 역할 | 현재 확인 범위 |
 | --- | --- | --- |
-| `public/favicon.svg` | 갈피록 favicon | 2026-09-27 이번 작업에서 단순 도형과 path로 새로 작성한 AI 보조 SVG입니다. 외부 이미지 입력 없음. |
+| `public/galpirok-favicon.svg`, `public/favicon.svg` | 갈피록 favicon (새 파일명으로 이전 아이콘 캐시와 분리) | 2026-09-27 이번 작업에서 단순 도형과 path로 새로 작성한 AI 보조 SVG입니다. 외부 이미지 입력 없음. |
 | `src/components/ui/Brand.jsx` | 갈피록 로고와 종이·노트 일러스트 | 2026-09-27 이번 작업에서 코드로 새로 작성. 외부 SVG·사진·실존 회사 로고 입력 없음. AI 보조 제작이며 독점성과 상표 권리는 별도 확인 사항입니다. |
 | `../my-portfolio/public/detail/jobflow-dashboard-1440.png` | 포트폴리오 JobFlow desktop Dashboard runtime screenshot | production guest sample read-only 화면의 browser capture로 중앙 등록부에 기록되어 있습니다. |
 | `../my-portfolio/public/detail/jobflow-dashboard-390.png` | 포트폴리오 JobFlow mobile Dashboard runtime screenshot | production guest sample read-only 화면의 browser capture로 중앙 등록부에 기록되어 있습니다. |
