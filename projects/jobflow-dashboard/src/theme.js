@@ -2,34 +2,34 @@ import { createTheme } from '@mui/material/styles';
 export default createTheme({
   palette: {
     primary: {
-      main: '#684C67',
-      dark: '#49374F',
-      light: '#AC91AA',
+      main: '#94394B',
+      dark: '#512E36',
+      light: '#CE9AA4',
       contrastText: '#FFFFFF'
     },
     secondary: {
       main: '#5D776A'
     },
     background: {
-      default: '#F7F7FA',
+      default: '#F7F5F1',
       paper: '#FFFFFF'
     },
     text: {
-      primary: '#302B35',
-      secondary: '#6B6470'
+      primary: '#302B2C',
+      secondary: '#6A6161'
     },
-    divider: '#E6E1E5',
+    divider: '#E3DDD7',
     success: {
       main: '#37644E'
     },
     error: {
-      main: '#AC363E'
+      main: '#A73E2B'
     },
     warning: {
       main: '#8A5C23'
     },
     info: {
-      main: '#684C67'
+      main: '#94394B'
     }
   },
   typography: {
@@ -100,7 +100,7 @@ export default createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          border: '1px solid #E6E1E5'
+          border: '1px solid #E3DDD7'
         }
       }
     },
@@ -110,20 +110,20 @@ export default createTheme({
           backgroundColor: '#FFFFFF'
         },
         notchedOutline: {
-          borderColor: '#978D99'
+          borderColor: '#A1858A'
         }
       }
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderColor: '#E6E1E5',
+          borderColor: '#E3DDD7',
           padding: '18px 20px'
         },
         head: {
           fontSize: 13,
-          color: '#6B6470',
-          backgroundColor: '#F7F5F6',
+          color: '#6A6161',
+          backgroundColor: '#F7F6F5',
           fontWeight: 600
         }
       }
@@ -140,7 +140,7 @@ export default createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: '#86788B'
+          color: '#927177'
         }
       }
     }

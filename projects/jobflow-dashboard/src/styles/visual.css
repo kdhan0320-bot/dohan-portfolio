@@ -1,68 +1,67 @@
 /* Galpirok's own paper, bookmark and filing motifs. Artwork stays outside inputs. */
 .paper-graphic { display: block; width: 180px; height: auto; flex-shrink: 0; }
-.welcome-page { background: #FBF9FB; }
+.welcome-page { background: #FCFAF7; }
 .welcome-nav { min-height: 100px; }
-.welcome-stage { position: relative; isolation: isolate; background: #F3ECEF; border-block: 1px solid #E5D9E2; overflow: hidden; }
+.welcome-stage { position: relative; isolation: isolate; background: #F8F5F0; border-block: 1px solid #E5DFD9; overflow: hidden; }
 .welcome-hero { min-height: 540px; padding-block: 24px; gap: 12px; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
-.welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: #684C67; }
-.welcome-kicker::before { content: ''; width: 12px; height: 21px; background: #9B7F96; clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
+.welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: #94394B; }
+.welcome-kicker::before { content: ''; width: 12px; height: 21px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
 .welcome-copy { position: relative; z-index: 1; }
 .welcome-copy h1 { font-size: clamp(39px, 4.2vw, 62px); }
-.welcome-copy h1 em { color: #76556C; }
-.welcome-copy > p { color: #625763; font-size: 16px; margin: 24px 0 30px; }
-.welcome-actions small { color: #625763; }
-.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
+.welcome-copy h1 em { color: #94394B; }
+.welcome-copy > p { color: #655D5B; font-size: 16px; margin: 24px 0 30px; }
+.welcome-actions small { color: #655D5B; }
+.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .welcome-showcase { width: min(1200px, calc(100% - 96px)); margin-inline: auto; padding: 56px 0 50px; scroll-margin-top: 20px; }
 .welcome-showcase > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
-.welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #49374F; }
-.welcome-showcase > header > span { color: #625763; font-size: 14px; padding-bottom: 7px; }
+.welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #512E36; }
+.welcome-showcase > header > span { color: #655D5B; font-size: 14px; padding-bottom: 7px; }
 .showcase-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); align-items: center; gap: 58px; }
 .showcase-controls { min-width: 0; }
 .showcase-controls .MuiTabs-indicator { display: none; }
-.showcase-controls .MuiTab-root { display: flex; flex-direction: row; justify-content: flex-start; gap: 18px; width: 100%; max-width: none; min-height: 80px; padding: 20px; border-bottom: 1px solid #E0D5DD; border-radius: 0; text-align: left; font-size: 19px; color: #625763; transition: background .15s, color .15s; }
-.showcase-controls .MuiTab-root.Mui-selected { background: #EEE3EB; color: #553C51; border-radius: 10px; border-color: transparent; }
-.showcase-controls .MuiTab-root:hover { background: #F2EAF0; }
+.showcase-controls .MuiTab-root { display: flex; flex-direction: row; justify-content: flex-start; gap: 18px; width: 100%; max-width: none; min-height: 80px; padding: 20px; border-bottom: 1px solid #E0DBD5; border-radius: 0; text-align: left; font-size: 19px; color: #655D5B; transition: background .15s, color .15s; }
+.showcase-controls .MuiTab-root.Mui-selected { background: #F4E4E6; color: #94394B; border-radius: 3px 10px 10px 3px; border-color: transparent; box-shadow: inset 3px 0 #94394B; }
+.showcase-controls .MuiTab-root:hover { background: #F1EEEB; }
 .showcase-controls .MuiTab-root:focus-visible { outline-offset: -4px; }
 .showcase-controls .MuiTab-root > svg { margin-left: auto; }
-.showcase-number { color: #76556C; font-size: 13px; font-variant-numeric: tabular-nums; }
+.showcase-number { color: #94394B; font-size: 13px; font-variant-numeric: tabular-nums; }
 .showcase-preview { position: relative; min-width: 0; padding: 18px 18px 0; }
-.showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #E4D7E1; transform: rotate(-2deg); pointer-events: none; }
+.showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #E4DED7; transform: rotate(-2deg); pointer-events: none; }
 .showcase-preview > div { position: relative; }
-.showcase-preview .product-window { border-color: #CEBECB; box-shadow: 0 12px 24px #4F33470D; }
-.showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: #625163; background: #FBF9FB; font-size: 14px; line-height: 1.6; text-align: center; }
-.welcome-footer { border-color: #E0D5DD; }
+.showcase-preview .product-window { border-color: #CFBDC0; box-shadow: 0 12px 24px #463C3E0D; }
+.showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: #664E52; background: #FCFAF7; font-size: 14px; line-height: 1.6; text-align: center; }
+.welcome-footer { border-color: #E0DBD5; }
 
 .workspace-shell { position: relative; isolation: isolate; }
-.workspace-content { position: relative; isolation: isolate; background-color: #F5F1F4; }
-.workspace-content::before { content: ''; position: absolute; inset: 64px 0 0; z-index: -1; background: url('../assets/galpi-paper-field.svg') top right / 1200px auto no-repeat; opacity: .6; pointer-events: none; }
-.workspace-content::after { content: ''; position: absolute; right: 0; bottom: 0; width: 310px; height: 230px; z-index: -1; background: url('../assets/galpi-sculpture.webp') center / cover no-repeat; opacity: .2; mask-image: linear-gradient(135deg, transparent 10%, #000); pointer-events: none; }
+.workspace-content { position: relative; isolation: isolate; background-color: #F6F4F0; }
+.workspace-content::before { content: ''; position: absolute; inset: 64px 0 0; z-index: -1; background: linear-gradient(90deg, transparent 35px, #E7E1DA 35px, #E7E1DA 36px, transparent 36px); pointer-events: none; }
 .workspace-content main { position: relative; }
-.workspace-content .MuiAppBar-root { background: #F7F4F7; }
+.workspace-content .MuiAppBar-root { background: #FAF8F4; }
 .page-heading { position: relative; }
-.page-heading-illustrated { min-height: 108px; gap: 18px; padding-bottom: 15px; margin-bottom: 25px; border-bottom: 1px solid #DFD2DC; }
+.page-heading-illustrated { min-height: 108px; gap: 18px; padding-bottom: 15px; margin-bottom: 25px; border-bottom: 1px solid #DFD8D2; }
 .page-heading-illustrated .page-heading-copy { flex: 1; min-width: 0; }
 .page-heading-illustrated .heading-graphic { width: 126px; margin-right: 12px; align-self: center; }
 .page-heading-illustrated .heading-actions:empty { display: none; }
 .page-heading-illustrated .heading-actions { flex-shrink: 0; }
-.page-heading .muted { color: #625763; }
-.next-application { background: #F3ECEF; border: 1px solid #DCC8D7; min-height: 320px; }
-.next-application::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #F3ECEF 56%, #F3ECEF00 78%), url('../assets/galpi-sculpture.webp') right center / 560px auto no-repeat; pointer-events: none; }
+.page-heading .muted { color: #655D5B; }
+.next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 320px; }
+.next-application::before { content: ''; position: absolute; inset: 0 0 0 57%; background: repeating-linear-gradient(0deg, transparent 0, transparent 35px, #94394B0D 35px, #94394B0D 36px), #F4E4E6; clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
 .next-application-copy { max-width: 520px; padding-right: 8px; }
-.next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #AA8DA1; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
+.next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
 .ticket-orbit { display: none; }
-.overview-panel, .calendar-surface, .agenda-company, .panel { box-shadow: 0 5px 16px #49374F04; }
-.overview-panel > header { background: #FAF7FA; border-bottom: 1px solid #EEE6EC; padding-bottom: 12px; }
-.job-lane { background: #F4EFF4; box-shadow: 0 8px 20px #49374F04; }
+.overview-panel, .calendar-surface, .agenda-company, .panel { box-shadow: 0 5px 16px #512E3604; }
+.overview-panel > header { background: #FAF8F7; border-bottom: 1px solid #EEEAE6; padding-bottom: 12px; }
+.job-lane { background: #F4F2EF; box-shadow: 0 8px 20px #512E3604; }
 .job-lane-heading { position: relative; }
-.job-tile { box-shadow: 0 3px 5px #49374F08; }
-.sidebar-content { position: relative; background: #F0EAF0; }
+.job-tile { box-shadow: 0 3px 5px #512E3608; }
+.sidebar-content { position: relative; background: #FCFAF7; }
 .sidebar-bottom { position: relative; }
 
-.login-story { position: relative; isolation: isolate; overflow: hidden; background: #F3ECEF; }
+.login-story { position: relative; isolation: isolate; overflow: hidden; background: #F8F5F0; }
 .login-story-center { padding-block: 28px; }
-.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
+.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .login-form-section { position: relative; }
-.login-form-section::before { content: ''; width: 15px; height: 26px; background: #99768F; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
+.login-form-section::before { content: ''; width: 15px; height: 26px; background: #B36C79; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
 
 @media (min-width: 1600px) {
   .welcome-hero { min-height: 590px; }
@@ -97,8 +96,7 @@
   .showcase-preview { padding: 12px 0 0; }
   .showcase-preview::before { inset: 0 8px 46px; }
   .showcase-caption { font-size: 13px; margin-top: 16px; }
-  .workspace-content::before { background-size: 720px auto; background-position: 36% 0; opacity: .43; }
-  .workspace-content::after { display: none; }
+  .workspace-content::before { display: none; }
   .page-heading-illustrated { gap: 12px; min-height: 100px; padding-bottom: 16px; flex-wrap: wrap; }
   .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 92px); }
   .page-heading-illustrated .heading-graphic { width: 77px; }
@@ -106,7 +104,7 @@
   .page-heading-illustrated .heading-actions .MuiButton-root { min-height: 44px; }
   .next-application::after { left: 25px; width: 18px; height: 15px; }
   .next-application { min-height: 0; }
-  .next-application::before { background-size: auto, 320px auto; background-position: center, right center; }
+  .next-application::before { inset-inline-start: 48%; }
   .login-brand-art { height: 220px; }
   .login-form-section::before { margin-bottom: 14px; }
 }

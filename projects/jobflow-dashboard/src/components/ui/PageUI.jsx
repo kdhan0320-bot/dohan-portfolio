@@ -68,7 +68,7 @@ export function Empty({
   children
 }) {
   return <div className="empty-state">
-  <svg className="empty-mark" width="54" height="62" viewBox="0 0 54 62" fill="none" aria-hidden="true"><path d="M10 4h23l11 11v43H10Z" fill="#EFE7EF" stroke="#BDA9BC" strokeWidth="1.5"/><path d="M33 4v12h11M18 29h18M18 37h18M18 45h11" stroke="#A287A0" strokeWidth="1.5" strokeLinecap="round"/></svg>
+  <svg className="empty-mark" width="54" height="62" viewBox="0 0 54 62" fill="none" aria-hidden="true"><path d="M10 4h23l11 11v43H10Z" fill="#EFEBE7" stroke="#BEA8AB" strokeWidth="1.5"/><path d="M33 4v12h11M18 29h18M18 37h18M18 45h11" stroke="#A2878B" strokeWidth="1.5" strokeLinecap="round"/></svg>
   <h2>
     {title}
   </h2>

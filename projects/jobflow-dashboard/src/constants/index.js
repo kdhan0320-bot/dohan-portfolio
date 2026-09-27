@@ -2,23 +2,23 @@ export const DEMO_TODAY = '2026-09-27';
 export const APPLICATION_STATUSES = [{
   value: '관심',
   label: '관심',
-  color: '#625E67',
-  bg: '#EEEBEF'
+  color: '#6F565A',
+  bg: '#EFEDEB'
 }, {
   value: '지원 예정',
   label: '지원 예정',
-  color: '#625E67',
-  bg: '#EEEBEF'
+  color: '#6F565A',
+  bg: '#EFEDEB'
 }, {
   value: '지원 완료',
   label: '지원 완료',
-  color: '#624760',
-  bg: '#F0E9EF'
+  color: '#62474C',
+  bg: '#F0ECE9'
 }, {
   value: '서류 진행',
   label: '서류 진행',
-  color: '#5D405D',
-  bg: '#E8DDE8'
+  color: '#55484A',
+  bg: '#E8E2DD'
 }, {
   value: '면접 예정',
   label: '면접 예정',
@@ -32,18 +32,18 @@ export const APPLICATION_STATUSES = [{
 }, {
   value: '불합격',
   label: '불합격',
-  color: '#991B1B',
+  color: '#963526',
   bg: '#F5E6E6'
 }, {
   value: '보류',
   label: '보류',
-  color: '#625E67',
-  bg: '#F2F0F3'
+  color: '#6F565A',
+  bg: '#F3F2F0'
 }];
 export const PRIORITY_OPTIONS = [{
   value: '낮음',
   label: '낮음',
-  color: '#625E67'
+  color: '#6F565A'
 }, {
   value: '보통',
   label: '보통',
@@ -57,7 +57,7 @@ export const COMPANY_SIZE_OPTIONS = ['스타트업', '중소기업', '중견기�
 export const IMPORTANCE_OPTIONS = [{
   value: '낮음',
   label: '낮음',
-  color: '#625E67'
+  color: '#6F565A'
 }, {
   value: '보통',
   label: '보통',

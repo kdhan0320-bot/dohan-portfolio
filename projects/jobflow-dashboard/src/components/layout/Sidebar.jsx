@@ -100,7 +100,7 @@ export default function Sidebar({
       },
       '& .MuiDrawer-paper': {
         width: DRAWER_WIDTH,
-        bgcolor: '#F1EEF3'
+        bgcolor: '#F5F2ED'
       }
     }}>
     <SidebarContent onNavigate={onRouteSelect} onClose={onMobileClose} closeButtonRef={mobileCloseButtonRef} isMobile />
@@ -112,8 +112,8 @@ export default function Sidebar({
       },
       '& .MuiDrawer-paper': {
         width: DRAWER_WIDTH,
-        bgcolor: '#F1EEF3',
-        borderRight: '1px solid #E6E1E5'
+        bgcolor: '#F5F2ED',
+        borderRight: '1px solid #E3DDD7'
       }
     }}>
     <SidebarContent onNavigate={onRouteSelect} />

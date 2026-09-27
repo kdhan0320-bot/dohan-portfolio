@@ -1,4 +1,4 @@
-import desk from '../../assets/galpi-desk.webp';
+import desk from '../../assets/galpi-rose-archive.webp';
 import objects from '../../assets/galpi-objects.webp';
 
 export function JournalArt({ className = '', eager = false }) {

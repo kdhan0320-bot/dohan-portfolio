@@ -34,7 +34,7 @@ export default function Header({
       ml: {
         md: `${DRAWER_WIDTH}px`
       },
-      bgcolor: '#F7F7FA',
+      bgcolor: '#F7F5F1',
       color: 'text.primary',
       borderBottom: '1px solid',
       borderColor: 'divider'

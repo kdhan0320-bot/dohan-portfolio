@@ -114,7 +114,7 @@ export default function ApplicationDetailPage() {
       </dl>
       {a.job_url && isValidApplicationUrl(a.job_url) && <Button component="a" href={a.job_url} target="_blank" rel="noopener noreferrer" endIcon={<OpenInNew />} variant="outlined">채용 공고 보기</Button>}
       <div style={{
-          borderTop: '1px solid #E6E1E5',
+          borderTop: '1px solid #E3DDD7',
           marginTop: 28,
           paddingTop: 24
         }}>
@@ -143,7 +143,7 @@ export default function ApplicationDetailPage() {
       </Panel>
       <div className="panel panel-body" style={{
           marginTop: 20,
-          background: '#F1EBF1'
+          background: '#F1EEEB'
         }}>
         <StageArt className="detail-stage-art" index={Math.max(0, APPLICATION_STAGES.findIndex(stage => stage.id === getApplicationStage(a.status)?.id))} />
         <h3>다음 준비도 이어서</h3>
