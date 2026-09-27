@@ -1,0 +1,171 @@
+/* 갈피록의 종이·분류함 모티프. 실제 기록과 진행도를 시각화한다. */
+.job-board { gap: 22px; padding-top: 23px; }
+.job-lane { position: relative; isolation: isolate; padding: 0 13px 16px; min-height: 460px; border: 1px solid color-mix(in srgb, var(--lane-color) 25%, white); border-radius: 0 18px 18px 18px; background: var(--lane-tint); box-shadow: 0 8px 22px #49384b06; }
+.job-lane::before { content: ''; position: absolute; z-index: -1; left: -1px; top: -24px; width: 68%; height: 25px; border: inherit; border-bottom: 0; border-radius: 14px 24px 0 0; background: var(--lane-tint); }
+.job-lane::after { content: ''; position: absolute; top: -10px; right: 16px; width: 22%; height: 9px; border: 1px solid #d9d3d6; border-radius: 5px 5px 0 0; background: #fffdfa; z-index: -2; }
+.job-lane-heading { min-height: 71px; padding: 12px 1px 17px; gap: 8px; }
+.job-lane-heading h2 { font-size: 16px; color: var(--lane-color); }
+.lane-number { border: 0; background: transparent; width: auto; height: auto; color: var(--lane-color); font-size: 13px; opacity: 1; font-variant-numeric: tabular-nums; }
+.lane-number::after { content: '.'; }
+.lane-count { display: grid; place-items: center; padding: 0 8px; height: 27px; min-width: 27px; border-radius: 20px; background: #ffffffb8; color: var(--lane-color); font-weight: 700; }
+.job-lane-cards { gap: 13px; }
+.job-tile { border-radius: 5px 14px 14px 14px; border-color: #ded9dc; padding: 18px 15px; box-shadow: 0 3px 0 #ffffff75, 0 7px 12px #46344a06; }
+.job-tile:hover { border-color: var(--lane-color, #806079); box-shadow: 0 3px 0 #ffffffc9, 0 10px 20px #46344a12; }
+.job-tile-heading { margin-bottom: 14px; }
+.job-tile .company-mark { border-radius: 50%; width: 36px; height: 36px; }
+.job-lane-empty { background: #ffffff59; border-color: color-mix(in srgb, var(--lane-color) 32%, white); min-height: 184px; }
+.job-lane-empty > span { background: transparent; color: var(--lane-color); }
+.lane-add.MuiButton-root { color: var(--lane-color); }
+.board-instruction { margin-top: 22px; }
+
+/* 준비 체크: 전체 진행도 → 분류 선택 → 실제 할 일 */
+.checklist-workspace { display: grid; grid-template-columns: 264px minmax(0, 1fr); gap: 30px; align-items: start; }
+.preparation-summary { position: relative; border: 1px solid #e1d8dd; border-radius: 24px 24px 12px 12px; background: linear-gradient(145deg, #f3e9ee, #f9f5f3 68%); padding: 28px 17px 20px; }
+.preparation-summary::before { content: ''; position: absolute; width: 21px; height: 49px; top: -1px; right: 27px; background: #99728b; clip-path: polygon(0 0,100% 0,100% 100%,50% 79%,0 100%); }
+.completion-ring { position: relative; width: 178px; height: 178px; margin: 0 auto; }
+.completion-ring svg { width: 100%; height: 100%; fill: none; stroke-width: 10px; }
+.completion-track { stroke: #e4d9df; }
+.completion-value { stroke: #84627b; stroke-linecap: round; transition: stroke-dasharray .25s ease; }
+.completion-ring > div { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; }
+.completion-ring strong { font-size: 47px; font-weight: 600; letter-spacing: -.05em; line-height: 1; color: #584252; font-variant-numeric: tabular-nums; }
+.completion-ring strong small { font-size: 21px; letter-spacing: 0; margin-left: 2px; }
+.completion-ring > div > span { font-size: 12px; color: #6c5b65; }
+.preparation-count { font-size: 14px; text-align: center; color: #6c5b65; margin: 8px 0 25px; }
+.preparation-count strong { color: #584252; }
+.preparation-filters { display: grid; gap: 5px; }
+.category-filter { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 9px; padding: 12px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: #574b55; text-align: left; cursor: pointer; min-height: 49px; transition: background .15s, border-color .15s; }
+.category-filter > span:first-child { font-size: 14px; font-weight: 600; }
+.category-filter > small, .category-filter > b { font-size: 12px; color: #6c5b65; font-variant-numeric: tabular-nums; }
+.category-filter:hover { background: #fffafacc; }
+.category-filter[aria-pressed='true'] { background: #fffdfa; border-color: #ad8d9f; box-shadow: 0 2px 4px #533b5007; }
+.category-meter { grid-column: 1 / -1; height: 4px; background: #e3dcdf; border-radius: 3px; overflow: hidden; }
+.category-meter i { display: block; height: 100%; background: #877e92; border-radius: inherit; }
+.category-all { margin-bottom: 6px; }
+.preparation-tasks { min-width: 0; }
+.preparation-tasks .add-task { display: grid; grid-template-columns: minmax(0, 1fr) 124px auto; gap: 13px; align-items: start; background: #fffdfa; padding: 21px; border: 1px solid #e2dadf; border-radius: 15px; margin-bottom: 24px; }
+.preparation-tasks .add-task > .MuiButton-root { margin-top: 29px; min-height: 45px; }
+.preparation-tasks .tabs-row { margin-bottom: 16px; }
+.task-collection { display: grid; gap: 10px; }
+.task-collection .list-task { min-height: 88px; padding: 13px 15px 13px 10px; border: 1px solid #e2dadf; border-radius: 12px; background: #fffefd; box-shadow: 0 3px 6px #51374904; gap: 8px; }
+.task-collection .list-task:hover { border-color: #bca8b6; }
+.task-copy { min-width: 0; flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.task-collection .task-category { background: transparent; color: #6e5968; border: 0; padding: 0; font-size: 12px; line-height: 1.5; }
+.task-collection .task-text { color: #3f3340; line-height: 1.65; font-size: 15px; overflow-wrap: anywhere; }
+.task-collection .done { background: #f1f4f0; border-color: #dce3da; }
+.task-collection .done .task-text { color: #5b675c; text-decoration: line-through; }
+.task-tools { display: flex; flex-shrink: 0; }
+.task-tools .MuiIconButton-root { width: 40px; height: 40px; color: #756575; }
+.task-collection .empty-state { background: #fffdfa; border: 1px dashed #c9bbc6; border-radius: 14px; }
+
+/* 면접 연습: 질문 갈피와 한 장씩 넘기는 연습 카드 */
+.interview-workspace { display: grid; grid-template-columns: 265px minmax(0, 1fr); gap: 28px; align-items: start; }
+.question-queue { min-width: 0; }
+.question-queue-heading { display: flex; justify-content: space-between; align-items: center; color: #6c5b65; font-size: 13px; padding: 13px 12px 19px; }
+.question-queue-heading > span:first-child { font-weight: 650; }
+.question-queue ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 9px; }
+.question-index { width: 100%; display: flex; align-items: flex-start; gap: 12px; min-height: 100px; border: 1px solid transparent; border-radius: 3px 12px 12px 3px; padding: 18px 13px; background: transparent; text-align: left; color: #554953; cursor: pointer; position: relative; transition: background .15s, border-color .15s; }
+.question-index:hover { background: #f3ecef; }
+.question-index[aria-current='true'] { border-color: #d6c5cf; background: #f6ecf1; box-shadow: 0 4px 10px #56354c05; }
+.question-index[aria-current='true']::before { content: ''; position: absolute; inset: 15px auto 15px -1px; width: 4px; background: #8d637e; border-radius: 0 3px 3px 0; }
+.question-index-number { flex-shrink: 0; padding-top: 1px; color: #75576c; font-size: 13px; font-variant-numeric: tabular-nums; }
+.question-index > span:nth-child(2) { flex: 1; min-width: 0; }
+.question-index small { display: block; font-size: 12px; color: #74616d; margin-bottom: 7px; line-height: 1.5; overflow-wrap: anywhere; }
+.question-index strong { display: block; font-size: 14px; font-weight: 550; line-height: 1.7; overflow-wrap: anywhere; }
+.question-index > svg { flex-shrink: 0; color: #55715f; }
+.practice-desk { min-width: 0; padding: 8px 28px 22px; border: 1px solid #e2d8de; border-radius: 24px; background: radial-gradient(ellipse at 85% 30%, #efe1e9 0, transparent 70%), #f3eeef; }
+.practice-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 2px 10px; color: #6a5664; font-size: 13px; }
+.practice-pagination strong { color: #513b4b; font-weight: 700; }
+.practice-pagination .MuiIconButton-root { width: 42px; height: 42px; }
+.practice-card { position: relative; isolation: isolate; background: #fffdfa; border: 1px solid #ded3d9; border-radius: 6px 6px 18px 6px; padding: 30px 34px; min-height: 368px; box-shadow: 0 5px 0 -1px #faf6f5, 0 6px 0 #dcd0d7, 0 10px 20px #563c5010; }
+.practice-card::after { content: ''; position: absolute; right: 23px; top: -1px; width: 24px; height: 55px; background: #b29ca8; clip-path: polygon(0 0,100% 0,100% 100%,50% 82%,0 100%); z-index: -1; }
+.practice-card-meta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; padding-right: 40px; color: #74616c; font-size: 12px; line-height: 1.65; }
+.practice-card-meta > span { overflow-wrap: anywhere; }
+.practice-question-mark { display: block; font-family: Georgia, serif; font-size: 64px; line-height: 1.1; color: #9b7b90; margin: 22px 0 8px; }
+.practice-card h2 { color: #483443; font-size: clamp(22px, 2.2vw, 29px); font-weight: 600; line-height: 1.55; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.practice-covered { display: grid; gap: 10px; margin: 28px 0 23px; width: 88%; }
+.practice-covered span { height: 6px; border-radius: 4px; background: #ebe3e7; }
+.practice-covered span:nth-child(2) { width: 93%; }
+.practice-covered span:nth-child(3) { width: 58%; }
+.practice-answer { margin: 25px 0 22px; border-top: 1px solid #e5dce1; padding-top: 22px; }
+.practice-answer > span { color: #776070; font-size: 12px; font-weight: 650; }
+.practice-answer p { margin: 11px 0 0; color: #4e4350; font-size: 16px; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; }
+.practice-reveal.MuiButton-root { margin-top: 4px; min-height: 42px; font-size: 14px; }
+.practice-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 23px 0 0; }
+.practice-toolbar .MuiIconButton-root { width: 42px; height: 42px; color: #705b6a; }
+.practice-empty { border-style: dashed; background: #fcf8fa; }
+.category-filter:focus-visible, .question-index:focus-visible { outline: 3px solid #806079; outline-offset: 3px; }
+
+@media (max-width: 1199px) {
+  .job-board { gap: 16px; }
+  .job-lane { padding-right: 10px; padding-left: 10px; }
+  .job-lane-heading { gap: 6px; }
+  .job-lane-heading h2 { font-size: 15px; }
+  .job-tile { padding: 17px 12px; }
+  .checklist-workspace { grid-template-columns: 225px minmax(0, 1fr); gap: 20px; }
+  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr) 120px; padding: 18px; }
+  .preparation-tasks .add-task > .MuiButton-root { grid-column: 1 / -1; margin-top: 0; justify-self: end; min-width: 98px; }
+  .interview-workspace { grid-template-columns: 230px minmax(0, 1fr); gap: 18px; }
+  .practice-desk { padding-right: 22px; padding-left: 22px; }
+  .practice-card { padding: 25px; }
+}
+@media (max-width: 959px) {
+  .job-board { row-gap: 44px; }
+  .job-lane { min-height: 330px; }
+  .checklist-workspace { grid-template-columns: 210px minmax(0, 1fr); }
+  .preparation-summary { padding-left: 12px; padding-right: 12px; }
+  .completion-ring { width: 162px; height: 162px; }
+  .task-tools { flex-direction: column; }
+  .interview-workspace { grid-template-columns: 195px minmax(0, 1fr); }
+  .question-index { padding-left: 10px; padding-right: 10px; gap: 8px; }
+}
+@media (max-width: 699px) {
+  .job-board { padding-top: 27px; row-gap: 0; }
+  .job-lane { min-height: 300px; padding: 0 14px 16px; }
+  .job-lane-heading { min-height: 66px; }
+  .job-lane-heading h2 { font-size: 16px; }
+  .job-tile { padding: 18px; }
+  .checklist-workspace { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .preparation-summary { display: grid; grid-template-columns: 125px minmax(0, 1fr); column-gap: 14px; padding: 21px 16px 16px; align-items: center; }
+  .preparation-summary::before { right: 20px; height: 31px; width: 16px; }
+  .completion-ring { width: 125px; height: 125px; grid-column: 1; grid-row: 1 / 3; }
+  .completion-ring strong { font-size: 33px; }
+  .completion-ring strong small { font-size: 16px; }
+  .completion-ring > div { gap: 5px; }
+  .completion-ring > div > span { font-size: 11px; }
+  .preparation-count { grid-column: 2; text-align: left; margin: 0; align-self: end; padding: 0 0 12px; font-size: 15px; }
+  .preparation-filters { grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 15px; gap: 6px; }
+  .category-filter { padding: 10px 8px; gap: 7px; }
+  .category-filter > span:first-child { font-size: 12px; }
+  .category-filter > small, .category-filter > b { font-size: 11px; }
+  .category-all { margin: 0; }
+  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr) 110px; padding: 16px; gap: 12px; }
+  .preparation-tasks .add-task > .form-field:first-child { grid-column: 1 / -1; }
+  .preparation-tasks .add-task > .MuiButton-root { grid-column: 2; margin-top: 29px; width: 100%; }
+  .task-collection .list-task { padding: 10px 8px 10px 3px; gap: 3px; }
+  .task-tools { flex-direction: row; }
+  .task-tools .MuiIconButton-root { width: 36px; height: 42px; }
+  .task-collection .task-text { font-size: 14px; }
+  .interview-workspace { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .question-queue-heading { padding-top: 0; padding-bottom: 12px; }
+  .question-queue ol { display: flex; gap: 9px; overflow-x: auto; padding: 3px 4px 10px; scroll-snap-type: x proximity; }
+  .question-queue li { flex: 0 0 215px; scroll-snap-align: start; }
+  .question-index { height: 100%; min-height: 96px; border-color: #e5dce1; background: #fffdfb; }
+  .question-index strong { font-size: 13px; }
+  .practice-desk { padding: 6px 16px 17px; border-radius: 18px; }
+  .practice-card { padding: 23px; min-height: 352px; }
+  .practice-card h2 { font-size: 23px; }
+  .practice-card-meta { gap: 5px 15px; padding-right: 30px; }
+  .practice-question-mark { font-size: 58px; }
+  .practice-answer p { font-size: 15px; }
+}
+@media (max-width: 359px) {
+  .preparation-summary { grid-template-columns: 110px minmax(0, 1fr); gap: 9px; }
+  .completion-ring { width: 110px; height: 110px; }
+  .preparation-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .task-tools { flex-direction: column; }
+  .practice-card { padding: 21px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .completion-value, .category-filter, .question-index { transition: none; }
+  .job-tile:hover { transform: none; }
+}

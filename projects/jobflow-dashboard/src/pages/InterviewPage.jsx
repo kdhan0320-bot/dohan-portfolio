@@ -5,6 +5,8 @@ import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import Check from '@mui/icons-material/Check';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
@@ -35,8 +37,14 @@ export default function InterviewPage() {
   const [busy, setBusy] = useState('');
   const [target, setTarget] = useState(null);
   const [feedback, setFeedback] = useState(null);
+  const [activeId, setActiveId] = useState(null);
   const done = notes.filter(n => n.is_reviewed).length;
   const filtered = notes.filter(n => tab === 'all' || n.is_reviewed === (tab === 'done'));
+  const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
+  const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
+  function startNew() {
+    setEditingId(null); setForm(INITIAL); setFormError(''); setOpen(true);
+  }
   async function review(n) {
     setBusy(n.id);
     try {
@@ -74,8 +82,10 @@ export default function InterviewPage() {
       else await add(payload);
       setOpen(false);
       setForm(INITIAL);
-      if (editingId) setRevealed(prev => ({ ...prev, [editingId]: true }));
-      else setTab('todo');
+      if (editingId) {
+        setRevealed(prev => ({ ...prev, [editingId]: true }));
+        setActiveId(editingId);
+      } else { setTab('todo'); setActiveId(null); }
       setFeedback({
         message: editingId ? '면접 노트를 수정했어요.' : '면접 노트를 추가했어요.'
       });
@@ -105,64 +115,57 @@ export default function InterviewPage() {
   }
   return <>
   <PageHeading art="chat" title="면접 연습" description="답변을 가리고, 내 말로 연습해요.">
-    <Button variant="contained" startIcon={<Add />} onClick={() => {
-        setEditingId(null);
-        setForm(INITIAL);
-        setOpen(true);
-        setFormError('');
-      }}>질문 추가</Button>
+    <Button variant="contained" startIcon={<Add />} onClick={startNew}>질문 추가</Button>
   </PageHeading>
   <div className="tabs-row">
-    <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="복습 상태">
+    <Tabs value={tab} onChange={(_, v) => { setTab(v); setActiveId(null); }} aria-label="복습 상태">
       <Tab value="todo" label={`복습할 질문 ${notes.length - done}`} />
       <Tab value="done" label={`복습 완료 ${done}`} />
       <Tab value="all" label="전체" />
     </Tabs>
   </div>
   <LoadState loading={loading} error={error} retry={refresh} />
-  {!loading && !error && <div className="notes-grid">
-    {filtered.map((n, i) => <article className="panel note-card" key={n.id}>
-      <div className="note-top">
-        <span>Q{String(i + 1).padStart(2, '0')} · {n.related_project || '일반 질문'}</span>
-        <span>중요도 {n.importance}</span>
+  {!loading && !error && (activeNote ? <div className="interview-workspace">
+    <nav className="question-queue" aria-label="연습할 질문 선택">
+      <div className="question-queue-heading"><span>질문 갈피</span><span>{filtered.length}개</span></div>
+      <ol>
+        {filtered.map((n, i) => <li key={n.id}>
+          <button type="button" className="question-index" aria-current={n.id === activeNote.id ? 'true' : undefined} onClick={() => setActiveId(n.id)}>
+            <span className="question-index-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span><small>{n.related_project || '일반 질문'}</small><strong>{n.question}</strong></span>
+            {n.is_reviewed && <Check fontSize="small" aria-label="복습 완료" />}
+          </button>
+        </li>)}
+      </ol>
+    </nav>
+    <section className="practice-desk" aria-label="면접 질문 연습">
+      <div className="practice-pagination">
+        <span aria-live="polite">질문 <strong>{activeIndex + 1}</strong> / {filtered.length}</span>
+        <div><IconButton aria-label="이전 질문" disabled={activeIndex === 0} onClick={() => setActiveId(filtered[activeIndex - 1].id)}><ChevronLeft /></IconButton><IconButton aria-label="다음 질문" disabled={activeIndex === filtered.length - 1} onClick={() => setActiveId(filtered[activeIndex + 1].id)}><ChevronRight /></IconButton></div>
       </div>
-      <h2>
-        {n.question}
-      </h2>
-      {revealed[n.id] && <p className="note-answer" id={`answer-${n.id}`}>
-        {n.answer}
-      </p>}
-      <div className="note-actions">
-        <Button variant="outlined" aria-expanded={Boolean(revealed[n.id])} aria-controls={revealed[n.id] ? `answer-${n.id}` : undefined} onClick={() => setRevealed(prev => ({
-            ...prev,
-            [n.id]: !prev[n.id]
-          }))}>
-          {revealed[n.id] ? '답변 접기' : '답변 펼치기'}
+      <article className="practice-card">
+        <div className="practice-card-meta"><span>{activeNote.related_project || '일반 질문'}</span><span>중요도 {activeNote.importance}</span></div>
+        <span className="practice-question-mark" aria-hidden="true">Q.</span>
+        <h2>{activeNote.question}</h2>
+        {revealed[activeNote.id] ? <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div> : <div className="practice-covered" aria-hidden="true"><span /><span /><span /></div>}
+        <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
+          {revealed[activeNote.id] ? '답변 접기' : '답변 펼치기'}
         </Button>
+      </article>
+      <div className="practice-toolbar">
         <div>
-          <IconButton aria-label={`${n.question} 수정`} disabled={Boolean(busy)} onClick={() => {
-            setEditingId(n.id);
-            setForm({ ...INITIAL, ...n });
-            setFormError('');
-            setOpen(true);
-          }}><EditOutlined fontSize="small" /></IconButton>
-          <Button startIcon={<Check />} disabled={Boolean(busy)} onClick={() => review(n)}>
-            {n.is_reviewed ? '복습 취소' : '복습 완료'}
-          </Button>
-          <IconButton aria-label={`${n.question} 삭제`} disabled={Boolean(busy)} onClick={() => setTarget(n)}>
-            <DeleteOutline fontSize="small" />
-          </IconButton>
+          <IconButton aria-label={`${activeNote.question} 수정`} disabled={Boolean(busy)} onClick={() => { setEditingId(activeNote.id); setForm({ ...INITIAL, ...activeNote }); setFormError(''); setOpen(true); }}><EditOutlined fontSize="small" /></IconButton>
+          <IconButton aria-label={`${activeNote.question} 삭제`} disabled={Boolean(busy)} onClick={() => setTarget(activeNote)}><DeleteOutline fontSize="small" /></IconButton>
         </div>
+        <Button variant={activeNote.is_reviewed ? 'outlined' : 'contained'} startIcon={<Check />} disabled={Boolean(busy)} onClick={() => review(activeNote)}>{activeNote.is_reviewed ? '복습 취소' : '복습 완료'}</Button>
       </div>
-    </article>)}
-    {!filtered.length && <div className="panel" style={{
-        gridColumn: '1/-1'
-      }}>
-      <Empty title={tab === 'todo' && notes.length ? '지금까지의 질문을 모두 복습했어요' : '아직 질문이 없어요'}>
-        <Button onClick={() => { setEditingId(null); setForm(INITIAL); setFormError(''); setOpen(true); }}>새 질문 기록하기</Button>
-      </Empty>
-    </div>}
-  </div>}
+    </section>
+  </div> : <div className="panel practice-empty">
+    <Empty title={tab === 'todo' && notes.length ? '지금까지의 질문을 모두 복습했어요' : tab === 'done' ? '아직 복습을 완료한 질문이 없어요' : '아직 질문이 없어요'}>
+      {notes.length > 0 && <Button onClick={() => setTab('all')}>전체 질문 보기</Button>}
+      <Button onClick={startNew}>새 질문 기록하기</Button>
+    </Empty>
+  </div>)}
   <Dialog aria-labelledby="note-dialog-title" open={open} onClose={busy ? undefined : () => setOpen(false)} fullWidth maxWidth="sm">
     <form onSubmit={submit} noValidate>
       <DialogTitle id="note-dialog-title">{editingId ? '면접 질문 수정' : '면접 질문 기록'}</DialogTitle>

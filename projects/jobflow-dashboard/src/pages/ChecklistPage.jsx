@@ -8,6 +8,7 @@ import useChecklist from '../hooks/useChecklist';
 import { CHECKLIST_CATEGORIES } from '../constants';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
+import CompletionRing from '../components/ui/CompletionRing';
 export default function ChecklistPage() {
   const {
     items,
@@ -79,9 +80,25 @@ export default function ChecklistPage() {
     finally { setBusy(''); }
   }
   return <>
-  <PageHeading art="check" title="준비 체크" description={`완료 ${done} / 전체 ${items.length}`} />
+  <PageHeading art="check" title="준비 체크" description="한 가지씩, 준비를 채워가요." />
   <LoadState loading={loading} error={error} retry={refresh} />
-  {!loading && !error && <>
+  {!loading && !error && <div className="checklist-workspace">
+    <aside className="preparation-summary" aria-label="준비 진행도와 분류">
+      <CompletionRing completed={done} total={items.length} />
+      <p className="preparation-count"><strong>{done}</strong> / {items.length}개 완료</p>
+      <div className="preparation-filters" aria-label="할 일 분류">
+        <button type="button" aria-pressed={filter === '전체'} onClick={() => setFilter('전체')} className="category-filter category-all"><span>전체 분류</span><b>{items.length}</b></button>
+        {CHECKLIST_CATEGORIES.map(c => {
+          const categoryItems = items.filter(i => i.category === c);
+          const categoryDone = categoryItems.filter(i => i.is_done).length;
+          return <button type="button" className="category-filter" aria-pressed={filter === c} aria-label={`${c}, ${categoryItems.length}개 중 ${categoryDone}개 완료`} key={c} onClick={() => setFilter(c)}>
+            <span>{c}</span><small>{categoryDone} / {categoryItems.length}</small>
+            <span className="category-meter" aria-hidden="true"><i style={{ width: `${categoryItems.length ? categoryDone / categoryItems.length * 100 : 0}%` }} /></span>
+          </button>;
+        })}
+      </div>
+    </aside>
+    <section className="preparation-tasks" aria-label="할 일 목록">
     <form className="add-task" onSubmit={submit} noValidate>
       <Field id="task-title" label="할 일" size="small" value={title} onChange={e => {
           setTitle(e.target.value);
@@ -102,39 +119,28 @@ export default function ChecklistPage() {
         <Tab value="done" label={`완료 ${done}`} />
         <Tab value="all" label="전체" />
       </Tabs>
-      <Field label="분류 필터" select size="small" value={filter} onChange={e => setFilter(e.target.value)} sx={{
-          minWidth: 130,
-          mb: 1
-        }}>
-        <MenuItem value="전체">전체 분류</MenuItem>
-        {CHECKLIST_CATEGORIES.map(c => <MenuItem key={c} value={c}>
-          {c}
-        </MenuItem>)}
-      </Field>
     </div>
-    <div className="panel">
+    <div className="task-collection" aria-label={`${filter} · ${filtered.length}개`}>
       {filtered.map(i => <div className={`list-task ${i.is_done ? 'done' : ''}`} key={i.id}>
         <Checkbox checked={i.is_done} disabled={Boolean(busy)} onChange={e => action(i.id, () => toggle(i.id, e.target.checked))} slotProps={{
             input: {
               'aria-label': `${i.title} ${i.is_done ? '완료 취소' : '완료'}`
             }
           }} />
-        <span className="task-text">
-          {i.title}
-        </span>
-        <span className="task-category">
-          {i.category}
-        </span>
+        <span className="task-copy"><span className="task-category">{i.category}</span><span className="task-text">{i.title}</span></span>
+        <span className="task-tools">
         <IconButton aria-label={`${i.title} 수정`} disabled={Boolean(busy)} onClick={() => { setEditing({ ...i }); setEditError(''); }}><EditOutlined fontSize="small" /></IconButton>
         <IconButton aria-label={`${i.title} 삭제`} onClick={() => setTarget(i)} disabled={Boolean(busy)}>
           <DeleteOutline fontSize="small" />
         </IconButton>
+        </span>
       </div>)}
       {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : '이 목록은 비어 있어요'}>
-        <p>분류를 바꾸거나 새로운 할 일을 추가해보세요.</p>
+        {filter !== '전체' ? <Button onClick={() => setFilter('전체')}>전체 분류 보기</Button> : <Button onClick={() => document.getElementById('task-title')?.focus()}>할 일 추가하기</Button>}
       </Empty>}
     </div>
-  </>}
+    </section>
+  </div>}
   <Dialog open={Boolean(editing)} onClose={busy ? undefined : () => setEditing(null)} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
     <form onSubmit={saveEdit} noValidate>
       <DialogTitle id="edit-task-dialog-title">할 일 수정</DialogTitle>

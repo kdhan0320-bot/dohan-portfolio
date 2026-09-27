@@ -24,6 +24,10 @@
 
 현재 `projects/jobflow-dashboard`의 source·`public` 범위를 확인한 결과 외부 사진과 실제 회사 logo는 사용하지 않습니다. 글꼴은 로컬 Pretendard Variable과 OS system UI 대체 글꼴을 사용하며, 화면 icon은 아래 `@mui/icons-material` package를 사용합니다. 이 확인은 현재 저장소 범위에 한정되며 독점성이나 법률상 무위험을 보증하지 않습니다.
 
+## 내부 작업 화면의 코드 그래픽 (2026-09-27)
+
+`src/styles/workspace.css`의 파일 탭·책갈피·종이 카드와 `CompletionRing.jsx`의 진행도 SVG는 이번 작업에서 새로 작성한 코드 기반 표현입니다. 외부 이미지·아이콘 파일을 복사하지 않았습니다. 진행도는 실제 체크리스트 건수로 계산하며 연습 카드 장식은 데이터를 나타내지 않습니다. 기존 MUI 아이콘의 라이선스는 아래와 같습니다.
+
 ## Direct runtime dependencies
 
 아래 버전과 license 표기는 현재 `package-lock.json`의 direct runtime package entry에 기록된 `version`과 `license`를 옮긴 것입니다.

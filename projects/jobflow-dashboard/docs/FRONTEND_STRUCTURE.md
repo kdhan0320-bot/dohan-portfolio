@@ -25,6 +25,8 @@
 | `components/layout/` | 주 메뉴·모바일 Drawer·본문 포커스 |
 | `components/ui/PaperGraphic.jsx`, `assets/galpi-paper-field.svg` | 원본 기능별 벡터와 장식용 종이 배경 |
 | `utils/recordPayload.js` | 기록 수정 필드 제한과 빈 값·분류 검증 |
+| `components/ui/CompletionRing.jsx` | 실제 완료 건수/전체 건수의 접근 가능한 SVG 진행도 |
+| `styles/workspace.css` | 파일 분류함·준비 진행판·면접 연습 카드와 해당 반응형 규칙 |
 | `styles/visual.css` | 소개·로그인·내부 화면의 배경 및 그래픽 배치 |
 | `styles/global.css`, `responsive.css`, `website.css` | 공통 컴포넌트·반응형·소개/오늘/달력 스타일 |
 
