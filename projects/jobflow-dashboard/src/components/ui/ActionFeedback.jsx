@@ -11,10 +11,16 @@ const ActionFeedback = ({ feedback, onClose }) => {
       open={Boolean(feedback)}
       autoHideDuration={4000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      sx={{
+        top: { xs: 64, sm: 72 },
+        pointerEvents: 'none',
+        '& .MuiAlert-action': { pointerEvents: 'auto' }
+      }}
     >
       <Alert
         onClose={handleClose}
+        closeText="알림 닫기"
         severity={feedback?.severity ?? 'success'}
         variant="filled"
         sx={{ width: '100%' }}

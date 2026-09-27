@@ -92,6 +92,7 @@
 .practice-answer p { margin: 11px 0 0; color: #4F4446; font-size: 16px; line-height: 1.9; white-space: pre-wrap; overflow-wrap: anywhere; }
 .practice-reveal.MuiButton-root { margin-top: 4px; min-height: 42px; font-size: 14px; }
 .practice-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 23px 0 0; }
+.practice-toolbar > .MuiButton-root { box-shadow: 0 0 0 7px #FFFDFAF2; }
 .practice-toolbar .MuiIconButton-root { width: 42px; height: 42px; color: #73585D; }
 .practice-empty { border-style: dashed; background: #FBFAF9; }
 .category-filter:focus-visible, .question-index:focus-visible { outline: 3px solid #806065; outline-offset: 3px; }

@@ -12,7 +12,7 @@
 .welcome-copy h1 em { color: #94394B; }
 .welcome-copy > p { color: #655D5B; font-size: 16px; margin: 24px 0 30px; }
 .welcome-actions small { color: #655D5B; }
-.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
+.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .welcome-showcase { width: min(1200px, calc(100% - 96px)); margin-inline: auto; padding: 56px 0 50px; scroll-margin-top: 20px; }
 .welcome-showcase > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
 .welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #512E36; }
@@ -35,7 +35,7 @@
 .welcome-footer { border-color: #E0DBD5; position: relative; background: #FCFAF7; }
 
 .workspace-shell { position: relative; isolation: isolate; }
-.workspace-content { position: relative; isolation: isolate; background: #F5F0EA url('../assets/galpi-paper-landscape.svg') right 64px / 100% auto repeat-y; }
+.workspace-content { position: relative; isolation: isolate; background: #F5F0EA url('../assets/galpi-paper-landscape.svg') right 64px / 100% 100% no-repeat; }
 .workspace-content::before { content: ''; position: absolute; inset: 64px 0 0 17px; width: 5px; z-index: -1; border-inline: 1px solid #CDAAB0; opacity: .6; pointer-events: none; }
 .workspace-content main { position: relative; }
 .workspace-content .MuiAppBar-root { background: #FAF8F4; }
@@ -46,7 +46,7 @@
 .page-heading-illustrated h1 { font-size: clamp(27px, 2.4vw, 32px); }
 .page-heading-illustrated .heading-graphic { width: 106px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #512E360A); }
 .page-heading-illustrated .heading-actions:empty { display: none; }
-.page-heading-illustrated .heading-actions { flex-shrink: 0; }
+.page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 7px; background: #FFFDFAF2; border: 1px solid #FFFFFF; border-radius: 13px; box-shadow: 0 3px 12px #512E3608; }
 .page-heading .muted { color: #655D5B; }
 .next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 320px; }
 .next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #F4E4E6; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
@@ -64,7 +64,7 @@
 
 .login-story { position: relative; isolation: isolate; overflow: hidden; background: #F8F5F0 url('../assets/galpi-paper-landscape.svg') center / cover no-repeat; }
 .login-story-center { padding-block: 28px; }
-.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
+.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .login-shell { background: #F9F5EF url('../assets/galpi-paper-landscape.svg') right bottom / auto 100% no-repeat; }
 .login-form-section { position: relative; isolation: isolate; background: #FFFDFA; border: 1px solid #E4D8CF; border-radius: 8px 24px 24px 8px; width: calc(100% - 64px); padding-inline: clamp(28px, 3vw, 45px); box-shadow: 0 8px 0 -3px #EEE4DA, 0 9px 0 -3px #D9CAC1, 0 20px 38px #512E3608; }
 .login-form-section::before { content: ''; width: 15px; height: 26px; background: #B36C79; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
