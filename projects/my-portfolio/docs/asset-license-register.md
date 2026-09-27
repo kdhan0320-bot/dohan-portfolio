@@ -173,7 +173,14 @@ MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 �
 - `projects/jobflow-dashboard/src/components/ui/PaperGraphic.jsx`: 폴더·진행 카드·달력·체크리스트·말풍선·필기 6종.
 - 이번 코드 편집에서 작성한 AI 보조 벡터이며 외부 이미지·로고·도안 입력 없음. 원본 제작 경로는 확인했으나 독점성·상표 권리의 보증은 아님. 기존 Pretendard OFL 및 MUI MIT 고지는 유지.
 
+### 갈피록 종이 조형 이미지 보강 (2026-09-27)
+
+- `projects/jobflow-dashboard/src/assets/galpi-sculpture.webp`: 이 대화의 내장 ImageGen으로 텍스트만 입력해 생성한 원본 조형 이미지. 1536×1024, 100,134바이트. PNG에서 WebP 품질 87로 형식 변환했으며 크기·내용 변경 없음.
+- 외부 참고 이미지·실존 로고·특정 작가 입력 없음. AI 보조 제작으로 표시하며 직접 촬영 또는 직접 모델링으로 주장하지 않습니다. 독점성·법적 무위험을 보증하는 확인은 아닙니다.
+- 소개·로그인·오늘의 지원 및 작업 공간 배경에서 사용. 실제 프롬프트는 `projects/jobflow-dashboard/NOTICE.md`에 보존합니다.
+
 ## 갱신 규칙
+
 - 새 외부 폰트/이미지/아이콘/영상/mockup/template/코드를 추가할 때는 위
   표에 한 행을 추가하고, 원 배포처 LICENSE를 직접 연 뒤에만 `상태`를
   "확인함"으로 표시한다.

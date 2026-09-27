@@ -104,7 +104,7 @@ export default function InterviewPage() {
     }
   }
   return <>
-  <PageHeading art="chat" title="면접 연습" description="답변을 보기 전에, 내 말로 먼저 떠올려보세요.">
+  <PageHeading art="chat" title="면접 연습" description="답변을 가리고, 내 말로 연습해요.">
     <Button variant="contained" startIcon={<Add />} onClick={() => {
         setEditingId(null);
         setForm(INITIAL);

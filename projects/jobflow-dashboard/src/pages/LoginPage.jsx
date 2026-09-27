@@ -9,8 +9,6 @@ import { useAuth } from '../context/AuthContext';
 import { isAuthConfigured } from '../lib/supabase';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { Brand } from '../components/ui/Brand';
-import { BOARD_COLUMNS } from '../utils/applicationBoard';
-import { CompanyMark } from '../components/ui/PageUI';
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export default function LoginPage() {
   const [tab, setTab] = useState(0);
@@ -84,17 +82,8 @@ export default function LoginPage() {
   <section className="login-story">
     <div className="login-brand-row"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link><Button className="login-jump" onClick={() => emailRef.current?.focus()}>로그인 / 가입</Button></div>
     <div className="login-story-center">
-      <span className="login-edition">나의 취업 지원 현황판</span>
       <h1>어디에 지원했는지,<br />한눈에.</h1>
-      <p className="login-summary">관심 회사부터 면접 결과까지 한곳에서 관리하세요.</p>
-      <div className="login-board-preview" role="img" aria-label="지원 전, 서류 전형, 면접, 결과에 회사 카드가 배치된 샘플 현황판">
-        <div className="preview-topbar"><span>지원 현황</span><small>샘플 화면</small></div>
-        <div className="preview-columns">{BOARD_COLUMNS.map((c, i) => <div className="preview-column" key={c.id} style={{ '--preview-tint': c.tint, '--preview-color': c.color }}>
-          <span className="preview-lane-name"><i />{c.label}</span>
-          {i < 3 && <div className="preview-company"><CompanyMark name={['모션브릿지', '라이트웨이브', '블루핀랩'][i]} /><strong>{['모션브릿지', '라이트웨이브', '블루핀랩'][i]}</strong><small>{['UX/UI 디자인', '웹 디자인', '프로덕트 디자인'][i]}</small><span>{['지원 예정', '서류 진행', '면접 예정'][i]}</span></div>}
-          {i === 3 && <div className="preview-result" aria-hidden="true"><span>✓</span></div>}
-        </div>)}</div>
-      </div>
+      <div className="login-brand-art" aria-hidden="true" />
       <div className="login-demo">
         <Button variant="contained" endIcon={<ArrowForward />} onClick={demo} disabled={busy}>가입 없이 둘러보기</Button>
         <small>가상 회사로 체험 · 새로고침하면 초기화</small>

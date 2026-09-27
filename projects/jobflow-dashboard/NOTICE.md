@@ -93,3 +93,14 @@ An original high-end editorial product still-life asset, a single EXTRA WIDE pan
 ## 2026-09-27 배경·기능별 그래픽
 
 `src/assets/galpi-paper-field.svg`는 겹친 종이 면·책갈피·연결선을 원본 path로 구성한 배경입니다. `PaperGraphic.jsx`의 폴더·진행 카드·달력·준비 체크·말풍선·필기 6종은 이번 코드 편집에서 직접 작성한 AI 보조 벡터입니다. 외부 이미지·로고·특정 작가의 도안을 입력하거나 복사하지 않았습니다. 장식 그림에는 `aria-hidden`을 적용하고 실제 기능 이름은 텍스트로 제공합니다. 기존 폰트·MUI 아이콘의 라이선스는 그대로 유지합니다.
+
+## 2026-09-27 종이 조형 브랜드 이미지
+
+- `src/assets/galpi-sculpture.webp`: 내장 ImageGen으로 이 프로젝트를 위해 생성한 종이 아치·파일 포켓·책갈피 리본 조형 이미지. 텍스트 지시만 사용했으며 외부 참조 이미지·상표·특정 작가를 입력하지 않았습니다.
+- 1536×1024, WebP 100,134바이트. 원본 PNG의 크기·내용을 바꾸지 않고 품질 87로 형식만 변환했습니다. 소개·로그인·오늘의 지원과 작업 공간 배경에 사용합니다.
+- AI 보조 제작 이미지이며 직접 촬영 사진이나 직접 모델링 작품으로 표시하지 않습니다. 정확한 기능·데이터는 별도 HTML로 표시하고 이미지는 장식으로 제공합니다. 생성 사실이 저작권상 독점성이나 유사성 부재를 보증하지는 않습니다.
+- 소개의 반복된 사용 방법 카드와 로그인 예시 회사 목록을 제거하고, 기능 설명은 한 개의 탭 미리보기에 모았습니다. 기존 자산 파일은 보존합니다.
+
+### 실제 생성 프롬프트
+
+Use case: stylized-concept. Asset type: original hero artwork for Galpirok, a calm Korean job-application organizer. Create a premium tactile paper sculpture, wide landscape 3:2 composition. On a seamless very pale blush-gray studio background (#F3ECEF), arrange three oversized sculptural bookmark ribbons and folded index-folder forms into one striking coherent still life, like a small architectural landscape: a dusty plum thick paper arch in the rear, an upright soft sage translucent file pocket holding just two blank ivory index cards, and a long pale pink ribbon with a crisp V-cut bookmark tip curling gently toward the viewer. One small matte mauve sphere as a restrained balancing element. Detailed fibrous cardstock edges, subtle translucent vellum, realistic soft contact shadows, studio photography-like 3D rendering, strong readable silhouette. Objects occupy middle and right of frame, generous empty margin around them, all forms fully visible, no cut-offs. Refined editorial art direction with clear dimensionality, asymmetric but balanced, soft directional light from upper left. Palette dusty rose, deeper muted plum, pale neutral ivory and small sage accent; avoid dominant lavender or blue. No desk, no notebook, no laptop, no piles of papers, no flowers, no cups, no people. Absolutely no text, letters, numerals, logos, watermarks, brands, UI, charts or pseudo-writing. This is an original brand sculpture, not a diagram and not a functional product screenshot. Calm, beautiful and distinctive, no plastic toy look, no glossy chrome, no neon, no glass blobs.
