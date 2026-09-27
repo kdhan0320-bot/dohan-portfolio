@@ -30,12 +30,12 @@ export default function WelcomePage() {
           <div className="welcome-actions"><Button variant="contained" size="large" endIcon={<ArrowForward />} onClick={start} disabled={busy || loading}>{busy ? '준비 중…' : user || isGuest ? '내 지원 이어보기' : '샘플로 시작하기'}</Button><small>가입 없이 체험 · 가상 데이터</small></div>
           {error && <Alert severity="error">{error}</Alert>}
         </div>
-        <div className="welcome-sculpture" aria-hidden="true"><span className="sculpture-seal">나의 다음을 담는 곳</span></div>
+        <div className="welcome-sculpture" aria-hidden="true" />
       </section></div>
       <section className="welcome-showcase" id="how-it-works" aria-labelledby="how-title" tabIndex={-1}>
-        <header><h2 id="how-title">흩어진 준비가,<br />한눈에.</h2><span>세 가지 갈피로 정리하세요.</span></header>
+        <header><h2 id="how-title">나의 취업 준비, 세 갈피.</h2><span>기능 미리보기</span></header>
         <div className="showcase-layout">
-          <div className="showcase-controls"><Tabs value={view} onChange={(_, value) => setView(value)} aria-label="기능 미리보기" orientation="vertical">{views.map((item, index) => <Tab key={item.id} value={item.id} id={`preview-tab-${item.id}`} aria-controls={`preview-panel-${item.id}`} label={<><span className="showcase-number">0{index + 1}</span><span>{item.label}</span><ArrowForward fontSize="small" /></>} />)}</Tabs><p className="showcase-hint">탭을 눌러 미리 볼 수 있어요.</p></div>
+          <div className="showcase-controls"><Tabs value={view} onChange={(_, value) => setView(value)} aria-label="기능 미리보기" orientation="vertical">{views.map((item, index) => <Tab key={item.id} value={item.id} id={`preview-tab-${item.id}`} aria-controls={`preview-panel-${item.id}`} label={<><span className="showcase-number">0{index + 1}</span><span>{item.label}</span><ArrowForward fontSize="small" /></>} />)}</Tabs></div>
           <div className="showcase-preview">{views.map(item => <div key={item.id} role="tabpanel" id={`preview-panel-${item.id}`} aria-labelledby={`preview-tab-${item.id}`} tabIndex={0} hidden={view !== item.id}><ProductPreview view={item.id} /><p className="showcase-caption">{item.caption}</p></div>)}</div>
         </div>
       </section>

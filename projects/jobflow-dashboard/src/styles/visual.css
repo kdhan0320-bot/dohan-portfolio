@@ -11,8 +11,7 @@
 .welcome-copy h1 em { color: #76556C; }
 .welcome-copy > p { color: #625763; font-size: 16px; margin: 24px 0 30px; }
 .welcome-actions small { color: #625763; }
-.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; }
-.sculpture-seal { position: absolute; right: 8%; bottom: 10%; padding: 10px 14px; border: 1px solid #A88A9F; border-radius: 30px; background: #FBF9FB; color: #684C67; font-size: 12px; transform: rotate(-6deg); }
+.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .welcome-showcase { width: min(1200px, calc(100% - 96px)); margin-inline: auto; padding: 56px 0 50px; scroll-margin-top: 20px; }
 .welcome-showcase > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
 .welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #49374F; }
@@ -26,7 +25,6 @@
 .showcase-controls .MuiTab-root:focus-visible { outline-offset: -4px; }
 .showcase-controls .MuiTab-root > svg { margin-left: auto; }
 .showcase-number { color: #76556C; font-size: 13px; font-variant-numeric: tabular-nums; }
-.showcase-hint { color: #625763; font-size: 12px; padding: 18px 20px 0; line-height: 1.7; }
 .showcase-preview { position: relative; min-width: 0; padding: 18px 18px 0; }
 .showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #E4D7E1; transform: rotate(-2deg); pointer-events: none; }
 .showcase-preview > div { position: relative; }
@@ -48,8 +46,8 @@
 .page-heading-illustrated .heading-actions { flex-shrink: 0; }
 .page-heading .muted { color: #625763; }
 .next-application { background: #F3ECEF; border: 1px solid #DCC8D7; min-height: 320px; }
-.next-application::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #F3ECEF 40%, #F3ECEF00 72%), url('../assets/galpi-sculpture.webp') right center / 560px auto no-repeat; pointer-events: none; }
-.next-application-copy { background: #F3ECEF; border-radius: 10px; padding-right: 8px; }
+.next-application::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #F3ECEF 56%, #F3ECEF00 78%), url('../assets/galpi-sculpture.webp') right center / 560px auto no-repeat; pointer-events: none; }
+.next-application-copy { max-width: 520px; padding-right: 8px; }
 .next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #AA8DA1; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
 .ticket-orbit { display: none; }
 .overview-panel, .calendar-surface, .agenda-company, .panel { box-shadow: 0 5px 16px #49374F04; }
@@ -62,7 +60,7 @@
 
 .login-story { position: relative; isolation: isolate; overflow: hidden; background: #F3ECEF; }
 .login-story-center { padding-block: 28px; }
-.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; }
+.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-sculpture.webp') center / contain no-repeat; mix-blend-mode: multiply; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .login-form-section { position: relative; }
 .login-form-section::before { content: ''; width: 15px; height: 26px; background: #99768F; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
 
@@ -90,14 +88,12 @@
   .welcome-copy h1 { font-size: clamp(32px, 9vw, 45px); }
   .welcome-copy > p { font-size: 14px; margin-bottom: 24px; }
   .welcome-sculpture { height: 280px; }
-  .sculpture-seal { font-size: 11px; bottom: 8%; padding: 8px 11px; }
   .welcome-showcase { width: calc(100% - 40px); padding-block: 32px; }
   .welcome-showcase > header { margin-bottom: 18px; gap: 12px; }
   .welcome-showcase h2 { font-size: 26px; }
   .welcome-showcase > header > span { font-size: 12px; max-width: 110px; line-height: 1.7; }
   .showcase-layout { grid-template-columns: 1fr; gap: 8px; }
   .showcase-controls .MuiTab-root { min-height: 58px; padding-block: 12px; font-size: 16px; }
-  .showcase-hint { padding: 10px 13px; }
   .showcase-preview { padding: 12px 0 0; }
   .showcase-preview::before { inset: 0 8px 46px; }
   .showcase-caption { font-size: 13px; margin-top: 16px; }
