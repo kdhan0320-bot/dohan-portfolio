@@ -1,6 +1,6 @@
 # 갈피록 프론트엔드 구조
 
-2026-09-27, 5차 수정 기준. 실제 라우트는 `src/App.jsx`가 기준입니다.
+2026-09-27, 공개 배포 및 마감 점검 기준. 실제 라우트는 `src/App.jsx`가 기준입니다.
 
 ## 화면과 흐름
 
@@ -39,4 +39,4 @@
 - `Brand.jsx`의 로고 SVG, `public/fonts`의 Pretendard Variable과 OFL 전문을 사용합니다.
 - 생성 WebP 정물은 `JournalArt`를 통해 설정 화면에서 사용합니다. 외부 사진·상표 이미지를 추가하지 않았습니다.
 - 이전 `ApplicationDetailPage`, `ApplicationFormPage`, `StageJourney`, `applicationStages` 파일은 보존했지만 현재 라우트에서 사용하지 않습니다.
-- 모바일·마우스·키보드·잘림의 실제 브라우저 마감 검증은 미완료입니다. 코드 검사와 구분합니다.
+- 공개 Chrome 1363×936에서 주요 샘플 기능, 폰트 로드, 입력란, 로그인 버튼 호버와 입력란 키보드 포커스를 확인했습니다. 모바일·태블릿 및 실제 인증/DB 검증은 남아 있습니다. 상세 범위는 README의 검사 기록을 참조합니다.

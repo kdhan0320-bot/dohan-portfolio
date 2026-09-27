@@ -77,7 +77,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
             <FormControlLabel control={<Checkbox checked={Boolean(form.portfolio_submitted)} onChange={e => change('portfolio_submitted', e.target.checked)} disabled={busy} />} label="포트폴리오 제출" />
           </div>}
           {!creating && field('memo', '준비 메모', { multiline: true, minRows: 3, placeholder: '다음에 할 일을 적어보세요.' })}
-          <details className="panel-extra" open={Boolean(errors.job_url || errors.company_name) || undefined}>
+          <details className="panel-extra" open={Boolean(errors.job_url || (!creating && errors.company_name)) || undefined}>
             <summary>{creating ? '공고·마감일 추가' : '회사·공고 정보 수정'}</summary>
             <div className="panel-extra-fields">
               {!creating && <>{field('company_name', '회사 이름', { required: true, inputRef: companyInput })}{field('position', '지원 직무')}</>}
