@@ -18,7 +18,7 @@
 .welcome-product .MuiTabs-root { border: 1px solid #D2BFCD; background: #FBF9FB; margin-bottom: 26px; box-shadow: 0 4px 12px #4F334707; }
 .welcome-product .product-window { border-color: #CDBCC7; box-shadow: 0 20px 32px #4F334713; }
 .welcome-product .product-window-bar { padding-right: 88px; background: #FFFCFD; }
-.product-caption { padding-top: 24px; color: #625163; }
+.welcome-product .product-caption { position: relative; z-index: 2; width: fit-content; max-width: calc(100% - 20px); min-height: 0; margin: 20px auto 0; padding: 8px 14px; border: 1px solid #DFD2DC; border-radius: 8px; color: #625163; background: #FBF9FB; }
 .welcome-steps { border-top: 0; padding-block: 44px 46px; }
 .welcome-steps > h2 { color: #4E3D50; font-size: 21px; font-weight: 650; margin-bottom: 26px; letter-spacing: -.035em; }
 .welcome-steps ol { gap: 18px; }
@@ -56,7 +56,6 @@
 .job-tile { box-shadow: 0 3px 5px #49374F08; }
 .sidebar-content { position: relative; background: #F0EAF0; }
 .sidebar-bottom { position: relative; }
-.sidebar-bottom::before { content: ''; display: block; width: 61px; height: 72px; margin: 20px 0 30px 18px; background: url('../assets/galpi-paper-field.svg') 77% 50% / 285px auto; border: 1px solid #D2BFCD; border-radius: 3px; transform: rotate(-9deg); box-shadow: 7px 5px 0 -1px #E9DFE7, 7px 5px 0 0 #D9C8D4; }
 
 .login-story { position: relative; isolation: isolate; overflow: hidden; background: #EDE4EB; }
 .login-story::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('../assets/galpi-paper-field.svg') 60% 50% / auto 110% no-repeat; pointer-events: none; }

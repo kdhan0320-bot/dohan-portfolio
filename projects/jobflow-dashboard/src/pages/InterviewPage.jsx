@@ -173,19 +173,19 @@ export default function InterviewPage() {
           {formError && <Alert severity="error">
             {formError}
           </Alert>}
-          <Field id="note-question" autoFocus label="질문" required value={form.question} onChange={e => setForm({
+          <Field id="note-question" disabled={Boolean(busy)} autoFocus label="질문" required value={form.question} onChange={e => setForm({
               ...form,
               question: e.target.value
             })} />
-          <Field id="note-answer" label="나의 답변" required multiline minRows={5} value={form.answer} onChange={e => setForm({
+          <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변" required multiline minRows={5} value={form.answer} onChange={e => setForm({
               ...form,
               answer: e.target.value
             })} />
-          <Field label="관련 프로젝트 또는 주제" value={form.related_project} onChange={e => setForm({
+          <Field disabled={Boolean(busy)} label="관련 프로젝트 또는 주제" value={form.related_project} onChange={e => setForm({
               ...form,
               related_project: e.target.value
             })} />
-          <Field select label="중요도" value={form.importance} onChange={e => setForm({
+          <Field disabled={Boolean(busy)} select label="중요도" value={form.importance} onChange={e => setForm({
               ...form,
               importance: e.target.value
             })}>
