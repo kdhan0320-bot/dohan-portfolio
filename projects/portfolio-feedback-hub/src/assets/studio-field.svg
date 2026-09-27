@@ -1,14 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1320" viewBox="0 0 1440 1320" fill="none">
-  <g stroke="#77776B" stroke-opacity=".1">
-    <path d="M40 0V1320M1400 0V1320"/>
-    <path d="M16 238H64M40 214V262M1376 1050H1424M1400 1026V1074"/>
-    <rect x="1270" y="326" width="280" height="280" transform="rotate(24 1270 326)"/>
-    <rect x="1288" y="344" width="280" height="280" transform="rotate(24 1288 344)"/>
-    <rect x="-174" y="860" width="290" height="290" transform="rotate(-20 -174 860)"/>
+  <defs>
+    <pattern id="field-dots" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r=".65" fill="#8F8F7F" fill-opacity=".18"/>
+    </pattern>
+    <linearGradient id="silver-pane" x1="1150" y1="0" x2="1420" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C6C6BB" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#C6C6BB" stop-opacity=".25"/>
+    </linearGradient>
+  </defs>
+  <path d="M0 0H1440V1320H0Z" fill="url(#field-dots)"/>
+  <path d="M1268 -110L1524 -27L1411 321L1155 238Z" fill="url(#silver-pane)"/>
+  <path d="M1402 -18L1430 -9L1337 278L1309 269Z" fill="#E8D684" fill-opacity=".28"/>
+  <g stroke="#99998A" stroke-opacity=".3">
+    <path d="M1239 -96L1495 -13L1382 335L1126 252Z"/>
+    <path d="M1254 -105L1510 -22L1397 326L1141 243Z"/>
+    <path d="M28 306V824M1412 432V998" stroke-opacity=".2"/>
+    <path d="M16 306H40M28 294V318M1400 998H1424M1412 986V1010"/>
+    <rect x="-178" y="842" width="300" height="300" transform="rotate(-22 -178 842)"/>
+    <rect x="-160" y="852" width="300" height="300" transform="rotate(-22 -160 852)"/>
   </g>
-  <path d="M1432 583L1326 818L1382 843L1488 608Z" fill="#E3D38B" fill-opacity=".14"/>
-  <g fill="#77776B" fill-opacity=".17">
-    <circle cx="24" cy="704" r="1.5"/><circle cx="40" cy="704" r="1.5"/><circle cx="56" cy="704" r="1.5"/>
-    <circle cx="24" cy="720" r="1.5"/><circle cx="40" cy="720" r="1.5"/><circle cx="56" cy="720" r="1.5"/>
-  </g>
+  <path d="M-37 922L40 891L136 1128L59 1159Z" fill="#E8D684" fill-opacity=".2"/>
 </svg>

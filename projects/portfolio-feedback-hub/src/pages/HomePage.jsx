@@ -28,9 +28,9 @@ export default function HomePage() {
           <span className="hero-footnote">로그인 없이 체험할 수 있어요.</span>
         </div>
         </div>
-        <div className="hero-stage">
+        <div className="shell hero-stage">
         <PerspectiveBackdrop />
-        <div className="shell hero-exhibit">
+        <div className="hero-exhibit">
         <Link className="hero-preview" to="/posts/sample-1" aria-label="시선의 모양 피드백 예시 체험하기">
           <div className="preview-bar"><span className="preview-project"><svg className="preview-window-mark" width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 3H3V7M13 3H17V7M17 13V17H13M7 17H3V13" stroke="currentColor" strokeWidth="1.5" /><circle cx="10" cy="10" r="2" fill="currentColor" /></svg>시선의 모양</span><span>리뷰 예시 <i /></span></div>
           <div className="preview-canvas"><WorkArtwork kind="gallery" title="전시 웹사이트와 제목 위치에 연결된 피드백 예시" /><span className="preview-pin" aria-hidden="true">1</span></div>
