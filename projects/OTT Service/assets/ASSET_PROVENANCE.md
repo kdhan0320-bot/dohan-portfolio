@@ -168,3 +168,8 @@ Lighting/mood: subtle cool powder-blue light passing through translucent film, s
 Constraints: original generic unbranded film material only. Must work as a dark website background with pale readable text over it. No movie stills inside the film, no people or faces, no text, letters, numbers, logos, watermarks or film brands.
 Avoid: strong straight diagonal bands, rectangular page outlines, sharp geometric interface lines, rainbow or neon or purple chrome ribbons, unrelated decorative objects.
 ```
+
+
+## 2026-09-28 최종 반응형 마감
+
+기존 `cinema-film-atmosphere.webp`와 여섯 작품 스틸의 원본 바이트는 유지했습니다. 새 외부 이미지·폰트·아이콘·영상은 추가하지 않았습니다. 1100px 이하의 배경 위치를 오른쪽 기준으로 보정하고, CSS로 약한 청회색 방사형 빛을 더했습니다. 768~1000px 카드 배치와 CSS 크롭 비율을 보정했으며 래스터 자산 자체는 편집하지 않았습니다. 낮은 우선순위의 이미지 preload와 버전이 붙은 스타일 주소를 사용합니다.
