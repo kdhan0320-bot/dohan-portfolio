@@ -2,9 +2,112 @@
 
 최신 수정일: 2026-09-28 (한국 시간)
 
+## 현재 사용하는 영화 키아트 — 2026-09-28 개편
+
+풍경 위주였던 이전 장면을 인물·관계·사건이 드러나는 2:3 포스터 6종과 와이드 대표 장면 1종으로 교체했습니다. 아래 자산은 내장 OpenAI image_gen 도구로 각각 생성했습니다. 외부 입력 이미지, 특정 배우·유명인, 실제 영화 포스터·스틸, 브랜드·로고는 참조하지 않았습니다. 도구가 정확한 모델 버전을 제공하지 않아 모델명은 추정하지 않습니다.
+
+출력 후 처리는 비율을 유지한 리사이즈와 WebP 인코딩이며, 창작적 합성·리터칭은 하지 않았습니다. 제목과 장르·러닝타임은 HTML로 표시합니다. 작품 6편과 이야기는 가상 설정이며 실제 배급·상영·영상 제공 사실을 주장하지 않습니다.
+
+기존 이미지와 필름 배경 파일은 삭제하지 않고 보존했습니다. 현재 HTML/CSS/JS는 `posters-v8/`의 아래 7개 이미지만 사용합니다. 자체 SVG 로고·아이콘과 로컬 Pretendard/OFL은 유지합니다. AI 이미지와 가상 작품임을 홈페이지 하단 및 이용안내에 표시했습니다.
+
+외부 영화 자산을 복제하지 않은 사실이 저작권·상표·유사성에 관한 법적 무위험이나 독점권을 보증하지는 않습니다. 상표 등록 가능성이나 법률 적합성에 대한 전문 검토는 수행하지 않았습니다.
+
+| 파일 | 치수 | 용량 | SHA-256 |
+| --- | --- | ---: | --- |
+| `posters-v8/forest.webp` | 800×1200 | 109,050 B | `b53d05e393c8c7fd694208deaa910320c7437833c3467bac608f5ddd1d66a25b` |
+| `posters-v8/greenhouse-hero.webp` | 1916×821 | 112,404 B | `7935262954f7ef7852021e44f4e2bf22d35a1e224985ca17980502b04be1da4d` |
+| `posters-v8/greenhouse.webp` | 800×1200 | 93,118 B | `9fd782e36b4bd9fb30ada99f0571e834dedfb6c88b75359722e3083d207d7b48` |
+| `posters-v8/letters.webp` | 800×1200 | 82,450 B | `5d993dd6f717a20311314cac5733b49ad9203a015417190714e3a9f61fc2cbdc` |
+| `posters-v8/orbit.webp` | 800×1200 | 102,934 B | `faaea82789545e3b774e87c2084e1dbbf761a0ffe2748bd7fb31ca11baa16f8c` |
+| `posters-v8/tide.webp` | 800×1200 | 75,918 B | `8983922e4441bfc2ec7845f326017395efdca530b891b5c37ad5a672d29b6f22` |
+| `posters-v8/windows.webp` | 800×1200 | 69,468 B | `e59a94c15366e5ddd46214bc5551841fbd0adeac7755640f0537dd65d8af5b0a` |
+
+### 생성 프롬프트 원문
+
+#### tide
+
+```text
+Use case: ads-marketing. Asset type: original cinematic key art for a fictional Korean drama in an independent-film discovery website; single portrait poster background, 2:3 aspect ratio.
+Primary request: a gripping, emotionally nuanced FILM POSTER photographic composition, not a landscape illustration. Fictional Korean woman in her early thirties, realistic and distinctive face with no resemblance to any famous person. Close / medium portrait occupies about sixty percent of the frame. She stands inside a weathered seaside house and turns toward an empty wooden chair that suggests an absent father, with grief held quietly in her eyes. Her face and shoulders are the unmistakable focal point. Restrained stormy teal, deep navy and desaturated ivory; natural cold side-light, slightly damp dark hair, real skin texture, subtle 35 mm film grain. Through one blurred window only a small trace of the sea; the house and sea are supporting narrative cues, never the primary subject. A precise, elegant theatrical-drama composition with believable cinematography and natural anatomy, not fashion advertising. Let the lower twenty percent fall gradually into deep navy shadow for separately rendered HTML title text while preserving a continuous photographic scene.
+Constraints: one vertical composition, not a collage or grid. Photorealistic live-action cinema. NO text, letters, titles, captions, credits, logos, brands, watermark, famous actors or existing film references. No generic landscape, no illustration, no bright sky dominating. Opaque background.
+```
+
+#### letters
+
+```text
+Use case: ads-marketing. Asset type: original cinematic key art for a fictional Korean relationship drama in an independent-film discovery website; a single portrait poster background in 2:3 aspect ratio.
+Primary request: a cinematic photograph of TWO fictional Korean adults in their late twenties, a woman and a man, facing each other at very close conversational distance at an old summer boardinghouse. The woman holds one folded unposted plain letter between them at chest level, and both look intently at each other with unresolved affection and hesitation. Their distinct, believable faces and shoulders occupy about sixty percent of the whole poster; their eyes tell a story. Neither face resembles a famous person. A tactile, elegant live-action romantic drama keyart, not a fashion campaign. Late-afternoon golden amber light entering the boardinghouse, soft sunlit cream curtains and old olive painted wood behind them out of focus. Photograph at eye level with a 50mm cinematic lens, realistic fine hair and skin, subtle analog film grain. Foreground characters sharply rendered, environment only a supporting cue.
+Palette: warm faded amber and muted olive, deep brown/navy lower shadows, luminous skin, distinct from teal thriller art. Composition: portrait close/medium shot, balanced two figures, faces clearly readable even as a small movie poster. Let the bottom twenty percent darken naturally into continuous deep shadow, suitable for separately overlaid HTML title.
+Constraints: NO words or letters visible anywhere, even on the letter. No titles, captions, credits, logos, brands, watermark, real actors, existing-film reference, collage, grid, illustration or scenic landscape. One opaque photographic poster composition.
+```
+
+#### greenhouse
+
+```text
+Use case: ads-marketing. Asset type: original cinematic key art for a fictional Korean mystery film in an independent-film discovery website. Single 2:3 portrait poster background.
+Primary request: striking photorealistic live-action mystery FILM POSTER with one fictional Korean woman researcher in her thirties, strongly recognizable human protagonist taking sixty percent of the composition. Close / medium portrait of her face and shoulders, looking suddenly sideways with alert restrained apprehension, her gloved hand holding a small practical flashlight close to her chest. Half her face lit by warm amber bounce, the other half in deep teal shadow. She wears a dark practical field jacket, not a glamorous costume. No resemblance to any known person. Behind her, night-time glasshouse panes fogged with condensation and faint ordered silhouettes of unusual leaves; dark botanical geometry suggests a secret without competing with her face. Flashlight beam cuts the damp air diagonally but is believable, delicate, not a giant graphic streak. Premium theatrical mystery keyart, eye-level 65mm cinema lens, realistic skin pores, convincing hands and natural anatomy, subtle 35mm grain, restrained high contrast. Deep teal-green, midnight navy, small amber highlights. Large legible expressive eyes as the focal point; no landscape panorama. Preserve the upper face and flashlight clearly. Bottom twenty percent gradually becomes continuous deep navy shadow for HTML title overlay; it must not look like an added black rectangle.
+Constraints: one opaque vertical image; NO text, lettering, film titles, captions, logos, brands, billing blocks, watermark, existing film references or famous actors. No illustration, no collage, no grid, no gore or horror monster.
+```
+
+#### orbit
+
+```text
+Use case: ads-marketing
+Asset type: original portrait film key art for a fictional Korean cinema portfolio, 2:3 portrait ratio, 1024x1536.
+Primary request: a striking photorealistic science-fiction movie poster BACKGROUND, no typography. Fictional Korean male astronaut in his thirties, extremely compelling close portrait through an open clear visor, introspective and isolated. He is an invented person, not an actor or celebrity. His face, helmet and shoulders occupy about 65 percent of the entire frame; the human story must be the immediate focus.
+Scene: a quiet spacecraft communications alcove in deep orbit. A tiny distant Earth reflected in one side of the visor and indistinct unlettered communication indicators create story context. The face is anatomically natural, slightly tired, subtle moisture in the eyes, precise real skin texture.
+Composition: head and torso in upper 75 percent, three-quarter turn with eyes looking just beyond camera. Asymmetric cinematic framing, large readable silhouette, no collage. Bottom 20 percent naturally falls into deep navy shadow, an uncluttered zone for later HTML film title.
+Lighting: rich electric blue side light and a delicate pale violet rim, realistic dramatic cinematic exposure, cinematic film grain, restrained color grading, high-end contemporary theatrical key art.
+Constraints: ONLY one continuous original cinematic photo scene. No text, no letters, no logos, no credits, no watermarks, no brands, no recognizable real people, no existing movie visual composition. Do not show any readable screen text. Do not produce a landscape postcard, drawn illustration, flat avatar, or generic glowing nebula. Entire image edge to edge.
+```
+
+#### windows
+
+```text
+Use case: ads-marketing
+Asset type: original portrait film key art for a fictional Korean ensemble drama, 2:3 portrait ratio, 1024x1536.
+Primary request: cinematic photorealistic movie poster BACKGROUND, no typography. Two fictional Korean adult neighbors, a man in his early forties and a woman in her thirties, inside a stopped apartment elevator. Both are invented ordinary people, not celebrities. The mood suggests two strangers slowly finding connection during a delay. Their large faces and upper bodies occupy approximately 65 percent of the composition and carry the story.
+Scene: gently worn steel-blue elevator interior, close and tactile, no readable floor displays. The man is nearer the left in three-quarter profile looking toward the closed door, the woman a little further right looking the opposite direction, a subtle reflective surface quietly unites them without duplicating faces. Their body language is restrained and emotionally believable.
+Composition: close/mid two-person portrait, layered depth, natural adult anatomy, clear separation of faces in upper two thirds. The bottom 20 percent fades through real coat shadows into near-navy, quiet for HTML titles. No graphic borders or collage.
+Lighting: a warm practical ceiling light falls softly on realistic skin, contrasted against cool steel-blue shadows, subtle amber highlights, polished contemporary arthouse film key art, intimate cinematic 35mm photographic realism.
+Constraints: no typography, no text, no logos, no credits, no brands, no watermarks, no real actors or recognizable public figures, no imitation of a specific movie poster. No scenic postcard, no cartoon or painterly treatment, no flat stock-photo smiles. Edge-to-edge photograph.
+```
+
+#### forest
+
+```text
+Use case: ads-marketing
+Asset type: original portrait key art for a fictional human-led nature documentary, 2:3 portrait ratio, 1024x1536.
+Primary request: compelling cinematic photorealistic documentary poster BACKGROUND, no typography. An invented Korean adult female field sound recordist, about thirty-five, wearing professional unbranded over-ear headphones and holding a small field recorder in a misty forest at dawn. Her attentive face and upper torso occupy about 60 percent of the frame; she is the unmistakable protagonist, not a tiny figure in scenery. Serious curious expression, listening with intent, looking slightly off camera. Realistic face and hands, tactile outdoor jacket, subtly damp hair.
+Scene: soft out-of-focus trunks and fine emerald-green dawn mist receding behind the sound recordist, with only enough nature to tell the story of her work. No sweeping landscape. A plain recorder and coiled cable suggest a documentary mission, no readable manufacturer markings or display text.
+Composition: cinematic close/mid portrait, slightly asymmetrical, face high in frame with substantial believable photographic detail. Upper 75 percent carries the subject; bottom 20 percent becomes dark jacket and deep green-navy shadow as a clean area for later HTML titles.
+Lighting: soft luminous dawn from behind with natural reflected light on the face, rich forest emerald and charcoal blue, controlled contrast, fine film grain, sophisticated theatrical documentary key art rather than travel advertising.
+Constraints: no text, no lettering, no logos, no credits, no brands, no watermarks, no celebrities, no existing film poster imitation. No postcard-like landscape, no tiny human silhouette, no drawing or fantasy illustration. One continuous edge-to-edge original photographic scene.
+```
+
+#### greenhouse-hero
+
+```text
+Use case: photorealistic-natural.
+Asset type: cinematic widescreen website hero image for an original fictional Korean mystery film called "밤의온실" (do NOT render the title or any text).
+Create a genuinely cinematic narrative frame with a clear human dramatic focus, not a landscape or botanical photograph.
+Scene: a dim abandoned botanical research greenhouse at night, fogged glass panes and shadowy structural frames receding into deep space. Practical amber light from a distant interior contrasts with restrained cool teal night light.
+Main subject: an entirely fictional Korean woman researcher in her early thirties, waist-up, occupying the right-center foreground at approximately 65–80 percent of the width. A believable natural face with a tense, alert expression; she turns her head back toward the camera as if she has heard someone behind her. Plain dark field jacket, no labels, one hand naturally holding a small flashlight pointed down. Realistic hands and anatomy. Her face must remain legible with soft motivated edge light and nuanced natural skin texture.
+Narrative background: one indistinct human silhouette, far behind her through a misted glass door, slightly out of focus. A suggestion of suspense, no violence, no horror monster.
+Composition: wide landscape ratio approximately 2:1. Subject dominates the right 60 percent, while the left 35 percent contains organically dark shadowed greenhouse atmosphere with a few barely visible leaf shapes and glass reflections, suitable for a large HTML title overlay. It must feel like one continuous scene, not a blank black panel, split screen, collage or poster graphic.
+Style: high-end contemporary live-action film still, anamorphic cinematic lens, selective focus, strong foreground-to-background depth, subtle fine film grain, realistic light falloff, careful restrained teal/amber grade. Emotionally suspenseful and visually convincing.
+Avoid: generic scenic nature, relaxing landscape, wallpaper, glossy stock photography, oversaturated colors, overdone lens flares, illustrated/anime look, graphics, typography, text, watermark, logos, brands, famous actors, recognizable existing film compositions. No text anywhere.
+```
+
+---
+
+## 이전 작업 자산 보존 기록
+
+최신 수정일: 2026-09-28 (한국 시간)
+
 2차 마감: 로고 파비콘의 배경·선 색상을 새 청회색 UI 팔레트에 맞춤. 작품 이미지 6종은 재생성하거나 교체하지 않음.
 
-## 현재 화면에서 사용하는 새 자산
+### 이전 화면에서 사용한 자산
 
 - 이미지 6종: 이 대화에서 OpenAI 이미지 생성 도구로 신규 생성. 실제 이미지 입력, 배우·인물 사진, 기존 영화 스틸·포스터, 특정 작가 스타일·브랜드·캐릭터 참조 없음. 정확한 모델 버전은 도구가 제공하지 않아 기록하지 않음.
 - 최초 출력: PNG, 각 1672×941. 웹용 WebP로 Pillow 인코딩(quality=86, method=6). 파일 형식 변환 외 자르기·합성·보정 없음. 화면의 크롭과 음영은 CSS로 적용.
@@ -15,7 +118,7 @@
 
 외부 영화 자산을 가져오지 않은 사실과 법률상 무위험·독점성 보장은 다릅니다. 상표 등록/사용 가능성의 법률 검토는 수행하지 않았습니다. 생성 자산의 저작권 성립·제3자 유사성에 대한 법적 보증은 하지 않습니다. 기존 자산은 삭제하지 않았으며 현재 HTML/CSS/JS에서 참조하지 않습니다.
 
-## 현재 배포 후보 파일 검증값
+### 이전 배포 파일 검증값
 
 | 파일 | 크기 | SHA-256 |
 | --- | ---: | --- |
