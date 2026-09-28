@@ -1312,6 +1312,7 @@ dialog::backdrop {
   margin-top: 14px;
 }
 .detail-description {
+  text-wrap: pretty;
   font-size: 16px;
   line-height: 1.85;
   color: #d4dbde;
