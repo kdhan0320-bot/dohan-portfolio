@@ -250,18 +250,26 @@
       ? "이 브라우저에 저장된 작품입니다."
       : "브라우저 저장 공간을 사용할 수 없어, 이 페이지를 닫으면 찜 목록이 사라집니다.";
   }
+  // Keep long movie names in deliberate phrase groups at every card size.
+  const titleLines = {
+    tide: ["파도가", "머문 자리"],
+    windows: ["불이", "켜지는 시간"],
+  };
   function makeCard(film) {
     const article = document.createElement("article");
     article.className = "film-card";
     article.dataset.filmId = film.id;
-    article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><small>${film.english}</small><span class="film-title">${film.title}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
+    const displayTitle = (titleLines[film.id] || [film.title])
+      .map((line) => `<span class="film-title-line">${line}</span>`)
+      .join(" ");
+    article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
     return article;
   }
   function renderThemes(id) {
     const theme = themes.find((t) => t.id === id) || themes[0];
     $("themeNumber").textContent = theme.number;
     $("themeTagline").textContent = theme.english;
-    $("themeTitle").textContent = theme.title;
+    $("themeTitle").textContent = theme.name;
     $("themeDescription").textContent = theme.description;
     const selectedFilms = theme.films.map((id) =>
       films.find((f) => f.id === id),
@@ -288,14 +296,28 @@
         `<a href="#themes/${theme.id}" data-theme="${theme.id}"><span aria-hidden="true">${theme.number}</span>${theme.name}</a>`,
     )
     .join("");
+  const articleTitleLines = {
+    faces: ["풍경보다 오래 남는,", "사람의 얼굴"],
+    "running-time": ["18분부터 42분까지,", "오늘의 러닝타임"],
+    "enclosed-spaces": ["닫힌 공간에서", "시작되는 이야기"],
+  };
   function makeArticleCard(article) {
     const film = films.find((item) => item.id === article.film);
     const card = document.createElement("article");
     card.className = "journal-card";
-    card.innerHTML = `<button class="journal-card-button" data-article="${article.id}"><span class="journal-card-image"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"></span><span class="journal-card-copy"><span class="eyebrow">${article.category}</span><h3>${article.title}</h3><p>${article.description}</p><span class="journal-card-link">읽어보기 ${icon("arrow")}</span></span></button>`;
+    const displayTitle = (articleTitleLines[article.id] || [article.title])
+      .map((line) => `<span class="journal-title-line">${line}</span>`)
+      .join(" ");
+    card.innerHTML = `<button class="journal-card-button" data-article="${article.id}"><span class="journal-card-image"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"></span><span class="journal-card-copy"><span class="eyebrow">${article.category}</span><h3>${displayTitle}</h3><p>${article.description}</p><span class="journal-card-link">읽어보기 ${icon("arrow")}</span></span></button>`;
     return card;
   }
-  $("homeFilms").replaceChildren(...films.map(makeCard));
+  // The hero and theme banners already introduce greenhouse and forest.
+  const homeSelection = ["tide", "letters", "orbit", "windows"];
+  $("homeFilms").replaceChildren(
+    ...homeSelection.map((id) =>
+      makeCard(films.find((film) => film.id === id)),
+    ),
+  );
   $("journalGrid").replaceChildren(...articles.map(makeArticleCard));
   $("homeJournal").replaceChildren(
     ...articles.slice(0, 1).map(makeArticleCard),

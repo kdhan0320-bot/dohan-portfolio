@@ -9,7 +9,11 @@
       content="잔상관 — 영화를 발견하고, 마음에 남는 장면을 담는 곳. 가상 영화로 만든 반응형 영화 탐색 콘셉트."
     />
     <title>영화를 발견하는 곳 — 잔상관</title>
-    <link rel="icon" href="assets/favicon.svg?v=a2d7f469" type="image/svg+xml" />
+    <link
+      rel="icon"
+      href="assets/favicon.svg?v=a2d7f469"
+      type="image/svg+xml"
+    />
     <link
       rel="preload"
       href="assets/fonts/PretendardVariable.woff2"
@@ -30,8 +34,8 @@
       as="image"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="css/style.css?v=3984796a" />
-    <script src="js/main.js?v=4c1e7ef7" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=c39f61b3" />
+    <script src="js/main.js?v=a9102bb7" defer></script>
   </head>
   <body>
     <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -199,10 +203,7 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <h1 id="themesTitle" tabindex="-1">취향을 넓히는 기획전</h1>
-            <p class="page-description">
-              지금의 기분에 따라, 함께 보면 좋은 두 편.
-            </p>
+            <h1 id="themesTitle" tabindex="-1">기획전</h1>
           </div>
           <nav class="theme-tabs" aria-label="기획전 선택" id="themeTabs"></nav>
           <div class="theme-collection" id="themeCollection">
@@ -213,13 +214,13 @@
               <h2 id="themeTitle" tabindex="-1"></h2>
               <p id="themeDescription"></p>
               <p class="theme-duration" id="themeDuration"></p>
-              <a class="text-link" href="#browse"
-                >다른 영화도 둘러보기<svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></a>
             </div>
             <div class="film-grid theme-films" id="themeFilms"></div>
           </div>
+          <a class="text-link theme-more" href="#browse"
+            >다른 영화도 둘러보기<svg class="icon" aria-hidden="true">
+              <use href="#i-arrow" /></svg
+          ></a>
         </div>
       </section>
       <div class="catalog-shell interior-page" id="catalogView" hidden>
