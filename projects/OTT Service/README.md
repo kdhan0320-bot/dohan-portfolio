@@ -57,7 +57,7 @@
 
 ## 소스와 자산
 
-HTML, CSS, Vanilla JavaScript이며 별도 빌드·설치가 필요 없습니다. 이 디렉터리를 로컬 HTTP 서버로 열면 됩니다. `/ott-service/` 배포 경로와 `OTT Service` 폴더명은 유지합니다.
+HTML, CSS, Vanilla JavaScript이며 별도 빌드·설치가 필요 없습니다. CSS·JavaScript URL에는 파일 해시 앞 8자리를 버전으로 붙여 배포 직후 이전 캐시와 새 HTML이 섞이지 않도록 했습니다. 두 파일 수정 시 해당 버전도 갱신합니다. 이 디렉터리를 로컬 HTTP 서버로 열면 됩니다. `/ott-service/` 배포 경로와 `OTT Service` 폴더명은 유지합니다.
 
 - `index.html`: 네 화면의 구조, 자체 SVG symbol, 상세·안내 dialog.
 - `css/style.css`: 토큰, 메뉴, 홈/작품/테마/찜, 상태, 반응형.
