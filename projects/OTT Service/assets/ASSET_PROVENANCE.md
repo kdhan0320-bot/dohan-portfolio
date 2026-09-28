@@ -1,4 +1,71 @@
-# Streaming UI Concept Asset Provenance
+# 잔상관 Asset Provenance
+
+최신 수정일: 2026-09-28 (한국 시간)
+
+2차 마감: 로고 파비콘의 배경·선 색상을 새 청회색 UI 팔레트에 맞춤. 작품 이미지 6종은 재생성하거나 교체하지 않음.
+
+## 현재 화면에서 사용하는 새 자산
+
+- 이미지 6종: 이 대화에서 OpenAI 이미지 생성 도구로 신규 생성. 실제 이미지 입력, 배우·인물 사진, 기존 영화 스틸·포스터, 특정 작가 스타일·브랜드·캐릭터 참조 없음. 정확한 모델 버전은 도구가 제공하지 않아 기록하지 않음.
+- 최초 출력: PNG, 각 1672×941. 웹용 WebP로 Pillow 인코딩(quality=86, method=6). 파일 형식 변환 외 자르기·합성·보정 없음. 화면의 크롭과 음영은 CSS로 적용.
+- 제목·작품 설명·러닝타임: 프로젝트용 가상 설정. 실제 영화 및 실제 제공 영상 정보가 아님.
+- 로고 `jansang-mark.svg` 및 inline symbol 7종(mark, arrow, bookmark, search, close, check, back): 이 수정에서 직접 작성한 단순 SVG 도형. 외부 아이콘/브랜드 로고를 가져오지 않음.
+- 글꼴: 기존 로컬 Pretendard Variable와 `fonts/OFL.txt` 유지.
+- AI 이미지 사용 사실은 페이지 하단과 프로젝트 안내에 고지.
+
+외부 영화 자산을 가져오지 않은 사실과 법률상 무위험·독점성 보장은 다릅니다. 상표 등록/사용 가능성의 법률 검토는 수행하지 않았습니다. 생성 자산의 저작권 성립·제3자 유사성에 대한 법적 보증은 하지 않습니다. 기존 자산은 삭제하지 않았으며 현재 HTML/CSS/JS에서 참조하지 않습니다.
+
+## 현재 배포 후보 파일 검증값
+
+| 파일 | 크기 | SHA-256 |
+| --- | ---: | --- |
+| `stills/forest.webp` | 453,800 bytes | `93bf23fb55c66eb0e7b1eeccd1f8dc950e1b71b19ce916bb680b030d941ce49c` |
+| `stills/greenhouse.webp` | 319,818 bytes | `90f4c5715997ba1e81ef3725a52c4d876ca4f7c1781454ecbe86d1bf16c16b29` |
+| `stills/letters.webp` | 169,138 bytes | `3d09a89bb1451e3fa5091e36ffd70c7642c04e442790d3bb499d9b8195c89ba6` |
+| `stills/orbit.webp` | 137,656 bytes | `3c4baf133fc0d92c1c7750e0eca2754d436138fd525ce2fb00aeed774ce56125` |
+| `stills/tide.webp` | 163,612 bytes | `7beed8ce22686214667b7004b0c3546da9a69ce4011ca290a37fef7cc615f46e` |
+| `stills/windows.webp` | 245,666 bytes | `2f5726f69289803de9d6e642e2bfac45458e105fc58468955cdcd2f4bd8efa39` |
+| `jansang-mark.svg` | 236 bytes | `57dca14d3397e43223fedff41fd91ff3d9c57aec5d6e9ce610a7399e36180486` |
+
+## 신규 이미지 생성 프롬프트 원문
+
+### tide.webp
+
+```text
+Use case: photorealistic-natural. Asset: cinematic hero still for an original fictional Korean independent film named 'Where the tide stays' (do not render text). Create an ultra-wide 16:9 landscape film still, quiet fictional coastal village at blue hour. A small weathered seaside house on the right third has a single warm amber window; dark rocks and sea grass in foreground, luminous silver blue sea through the center, a faint distant headland and soft fog. Left third must be naturally dark uncluttered shoreline and deep blue atmospheric space for white UI type. Restrained analog film grain, subtle halation, believable natural light, richly detailed tactile surfaces, poetic contemplative framing, premium cinema photography, not a painting. Deep desaturated petrol blue, sea mist and tiny warm light. No text, letters, logo, watermark, people, recognizable landmarks, existing film references, protected characters, brand elements or artist imitation. Output one wide image.
+```
+
+### letters.webp
+
+```text
+Use case: photorealistic-natural. Create one cinematic landscape 16:9 still for an original fictional gentle drama. Close but spacious interior of a quiet summer seaside room. Off-white translucent curtains softly billowing beside a large open window, worn honey oak writing desk with a single blank folded envelope and a small clear glass holding a pale yellow flower. Late-afternoon sunlight casts beautiful tall shadows. A glimpse of out-of-focus soft sea blue beyond. Tactile linen, wood and paper, warm ivory and muted apricot, analog cinema photograph, restrained fine grain, elegant imperfect realism. No readable writing, text, logos, watermarks, people, recognizable landmarks, existing movie references or artist imitation.
+```
+
+### greenhouse.webp
+
+```text
+Use case: photorealistic-natural. Create one cinematic landscape 16:9 still for an original fictional mystery film. An abandoned Victorian-style glass greenhouse deep in a misty forest at midnight, mossy window frames, rich fern silhouettes, a single subtle pale amber bulb inside illuminating one empty wooden chair. Geometric glass roof, rain droplets, atmospheric volumetric moonlight. Frame greenhouse in the middle with balanced surrounding vegetation. Desaturated forest green, black olive, silver moonlight. Premium analog cinema photograph, natural texture, restrained film grain, quiet mysterious composition. No people, text, logos, watermarks, recognizable landmarks, existing film references, artist imitation or protected characters.
+```
+
+### orbit.webp
+
+```text
+Use case: stylized-concept. Asset: original fictional quiet science-fiction cinema still, wide landscape 16:9. View from an elegant empty observation room in a small orbital research station; an immense softly lit blue-gray ringed planet fills a tall curved window, tiny ivory console with no writing in foreground, gentle cream reflection on brushed metal. Architectural, tangible, restrained analog science fiction, subtle film grain, photoreal cinematic lighting, vast silence and wonder. One coherent photograph-like frame, not collage. Pearl gray, washed steel blue, a restrained muted orange indicator glow. No people, astronaut characters, franchise designs, recognizable spaceship designs, text, logos, watermarks or existing film references.
+```
+
+### windows.webp
+
+```text
+Use case: photorealistic-natural. Create one cinematic wide 16:9 landscape still for an original fictional urban drama. Quiet courtyard between understated mid-century apartment buildings in an invented city at twilight, four stories, dusky muted terracotta and warm pale concrete, many small windows with a few amber lights just coming on. A wet courtyard reflects a pale salmon dusk sky; a modest tree silhouette, stillness after rain. Frontal architectural composition with intimate human scale, no people. Original premium independent cinema art direction, restrained analog grain, rich detail, natural lens and light. Emphasis on terracotta, dusty rose and pale amber, different from a blue science fiction image. No text, logos, watermarks, recognizable real buildings, existing film references or artists.
+```
+
+### forest.webp
+
+```text
+Use case: photorealistic-natural. Create one cinematic wide 16:9 frame for an original fictional nature documentary. Ethereal pale morning mist weaving through a deep mountain forest of tall slender trees, tiny wooden footbridge crossing still water in the lower center, lush moss and ferns, delicate beams of diffused dawn light. Soft silver sage and emerald palette, quiet contemplative framing with depth, real botanical detail, high-end nature cinema photograph, subtle film grain. No people, signs, text, logos, watermarks, identifiable famous locations, existing film references or artist imitation. Balanced image suitable for wide film card and atmospheric collection backdrop.
+```
+
+## 기존 버전 기록 (아래 내용은 2026-08-15 기록)
 
 확인일: 2026-08-15
 
@@ -56,3 +123,17 @@ WebP 11개는 `2026-08-04T10:16:08+09:00`에 ChatGPT Python 환경에서 Pillow�
 - 라이선스: SIL Open Font License 1.1
 - 로딩: 외부 CDN 없이 local WOFF2
 - 고지: `fonts/OFL.txt` 유지
+
+
+## 2026-09-28 구성 단순화
+
+기존 잔상관 생성 이미지 6종과 프레임 로고를 재사용했습니다. 새 외부 이미지나 폰트를 추가하지 않았습니다. 같은 숲 장면을 반복하는 하단 큐레이션 배너를 화면에서 제외하고, 모바일 대표 이미지의 CSS object-position을 88% center로 조정했습니다. WebP 원본 바이트와 해시는 그대로이며, 래스터 합성·재생성은 하지 않았습니다. 이미지에는 실제 작품의 배급·상영 권한을 주장하는 정보가 없습니다.
+
+
+## 최종 배경 장식
+
+`cinema-atmosphere.svg`는 이 작업에서 직접 작성한 두 개의 방사형 그라데이션과 세 개의 겹친 직사각형입니다. 외부 이미지·인물·상표·폰트·스크립트를 포함하지 않으며 래스터 이미지 편집을 하지 않았습니다. CSS의 대표 이미지 하단 그라데이션과 함께 화면을 연결합니다.
+
+- 크기: 1600×1120 SVG viewBox
+- bytes: 1390
+- SHA-256: `0109e9772375d42f813974c0501b3f72f1cc20060a2b6b77ced269604e2e4cd4`

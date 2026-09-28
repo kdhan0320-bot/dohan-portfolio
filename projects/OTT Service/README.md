@@ -1,79 +1,103 @@
-# Streaming UI Concept
+# 잔상관 · JANSANG CINEMA
 
-## 1. 한 줄 목적
+가상 단편 여섯 편을 분위기와 검색으로 탐색하는 영화 큐레이션 UI입니다. 기존 Streaming UI Concept을 2026-09-28(한국 시간) 잔상관으로 리디자인했습니다. 실제 영상 서비스와 사용자 연구 결과를 주장하지 않는 포트폴리오 콘셉트입니다.
 
-가상 콘텐츠 탐색을 장르 필터·native dialog·찜 상태 동기화로 구현한 Vanilla JavaScript 반응형 퍼블리싱입니다.
+## 디자인 방향
 
-## 2. 구현 과제
+- 짙은 청회색 배경, 부드러운 흰색 텍스트, 옅은 블루 포인트와 새로 생성한 시네마틱 이미지.
+- 여운이 겹치는 프레임 형태의 자체 SVG 로고. 차분한 취향을 표현하되, 영화의 장면이 화면을 주도하도록 설계.
+- 대표 작품 → 탐색 목록의 두 구간. 같은 분위기 필터로 돌아가던 하단 큐레이션은 덜어내고, 이용 흐름은 프로젝트 안내 안에 짧게 표시.
+- 데스크톱 3열과 모바일 2열 작품 카드, 작은 화면의 세로 이미지 크롭, 로컬 Pretendard Variable.
+- 사진의 색과 어울리는 절제된 공통 팔레트. 작은 모바일 영문은 덜고 한글 작품명을 우선.
 
-어두운 콘텐츠 UI의 분위기를 유지하면서 정보 가독성·keyboard flow·filter·dialog·page-memory 상태를 반응형으로 일관되게 구현했습니다.
 
-## 3. 기술 스택
+## 구조를 줄인 이유
 
-- HTML
-- CSS (`css/style.css`)
-- Vanilla JavaScript (`js/main.js`)
-- Static HTML·JavaScript data
-- 별도 framework·package·build tool 없음
+- 작품 6편에 분위기·검색·시간·큐레이션을 모두 노출하면 선택 수단이 내용보다 많아집니다. 분위기와 검색을 남기고, 상영 시간은 판단에 필요한 정보로 표시합니다.
+- 포스터의 화살표는 정보 확인, 글자가 있는 찜 버튼은 저장으로 역할을 분리합니다. 상세에서는 이미지 → 제목·장르·시간 → 짧은 줄거리 → 찜하기 순서를 유지합니다.
+- 카페·교통·기록형 프로젝트와 구분되도록, 어두운 상영관 배경·넓은 영화 장면·포스터형 카드를 사용합니다. 성향이나 퍼스널컬러를 서비스 기능의 근거로 과장하지 않습니다.
+- 대표 작품이 전체 목록에 다시 보이는 것은 전체 목록의 완결성을 위한 의도적인 반복입니다. 같은 필터로 연결되는 별도 이미지 배너는 줄였습니다.
 
-## 4. 주요 화면·인터랙션
+| 요소 | 공통 기준 |
+| --- | --- |
+| 배경 / 기본 글자 | `#111820` / `#EDF2F8` |
+| 강조 / 강조 위 글자 | `#C2D7EF` / `#162535` |
+| 글꼴 | 로컬 Pretendard Variable, 제목·본문·보조 정보의 3단계 위계 |
+| 작품 카드 | 데스크톱 3열, 모바일 2열; 한글 제목과 상영 정보 우선 |
+| 저장 상태 | 찜 → 찜함, 찜하기 → 찜 완료; 글자와 색, aria-pressed 함께 갱신 |
+| 핵심 조작 | 모바일 카드 찜 버튼 최소 44px 높이, 키보드 포커스 표시 |
 
-- Hero와 번호 기반 가상 catalog 10개
-- 장르 filter 6종
-- native `<dialog>` 기반 프로젝트 안내·작품 정보·미리보기 UI
-- Hero·card·dialog 사이에서 동기화되는 찜 상태
-- 데스크톱·모바일 navigation과 실제 포트폴리오·GitHub 링크
+## 최종 시각 마감
 
-## 5. ACTUAL INTERACTION · STATIC DATA · PAGE MEMORY 계약
+단색 목록 배경에 차가운 영사광과 옅은 보랏빛 반사광, 겹쳐진 스크린 프레임을 추가했습니다. 첫 화면의 하단을 기본 배경으로 천천히 연결하며, 장식 프레임은 필터·검색창과 겹치지 않도록 제목 옆으로 제한했습니다. 모바일에서는 배경의 일부만 보이도록 크롭합니다. 새로운 사진이나 영상, 반복되는 콘텐츠 섹션은 추가하지 않았습니다.
 
-장르 필터·native dialog·찜 상태 동기화는 실제 browser interaction으로 구현했습니다. Catalog의 제목·장르·설명·연도·회차·데모 평점은 static data입니다. Favorite는 현재 page memory에서만 유지되며 `localStorage`와 `sessionStorage`를 사용하지 않고, reload 시 모두 초기화됩니다.
+- 배경은 정적 SVG 약 1.5KB로 표현하며 움직임·외부 요청을 추가하지 않습니다.
+- 필터의 선택 상태를 찜 상태와 같은 옅은 블루 토큰으로 통일했습니다.
+- [Handled Entertainment · Eyal Gantz](https://eyalgantz.com/work/handled): 2026년 8월 업데이트 사례. 시각 작품 중심의 탐색과 가벼운 미디어 제공 원칙을 참고했습니다. 실제 영상이 없는 잔상관에는 자동 재생·스크롤 제어를 추가하지 않았습니다.
+- [Cineway · Allunan](https://www.allunan.com/en/works/cineway): 어두운 바탕에서 작품을 우선하는 갤러리 구성 참고. 게시 연도와 자체 성과 주장은 검증하지 않았습니다.
 
-## 6. 포함하지 않은 기능
+## 구현 범위
 
-- 실제 영상 재생·스트리밍
-- 회원가입·로그인
-- 결제·구독
-- API·DB·Storage
-- 새로고침 이후 상태 유지
-- runtime AI
+- 작품 제목·장르·분위기·키워드 검색과 검색어 지우기.
+- 전체/잔잔한/따뜻한/미스터리/새로운 세계 필터. 여섯 작품의 길이는 카드와 상세에 표시하며, 별도 시간 필터는 제거.
+- 작품 상세 6개, 두 문장 줄거리, visible 찜하기 버튼, native dialog, Escape·배경 클릭·닫기, 키보드 포커스 순환과 복귀.
+- Hero·작품 카드·상세의 찜 상태 동기화, 별도 찜 목록, 빈 결과와 초기화.
+- 같은 출처의 브라우저 localStorage로 찜 유지. 브라우저 탭 사이의 storage event 동기화.
+- 저장 공간에 접근할 수 없으면 페이지 메모리로 동작하고, 유지되지 않는다는 안내 제공.
+- 호버, focus-visible, 줄어든 모션 설정, skip link, 버튼 이름과 선택 상태.
 
-## 7. 실행 방법
+실제 영상 재생·회원가입·로그인·아이디/비밀번호 입력·게시물 작성·결제·추천 API·서버/DB 연동은 제공하지 않습니다. 이 기능들을 동작하는 것처럼 보이는 버튼이나 폼으로 넣지 않았습니다. 작품명·설명·길이는 가상 데이터입니다.
 
-별도 설치나 빌드 과정이 없습니다. 저장소 루트에서 로컬 HTTP server를 실행한 뒤 `projects/OTT Service/index.html`을 엽니다.
+## 소스와 실행
 
-별도 승인 Figma는 없습니다. 현재 HTML·CSS·JavaScript와 운영 화면이 구현 Source of Truth입니다.
+HTML, CSS, Vanilla JavaScript만 사용하며 별도 빌드·패키지 설치가 필요 없습니다. 이 디렉터리를 로컬 HTTP 서버로 열면 됩니다.
 
-## 8. 폴더·파일 역할
+- `index.html`: 페이지 구조, SVG symbol, 상세·안내 dialog.
+- `css/style.css`: 색상, 타이포그래피, 반응형, 상태별 스타일.
+- `js/main.js`: 정적 작품 데이터, 검색, 필터, 라우팅, 찜, 저장, 포커스.
+- `assets/stills/*.webp`: 신규 생성 이미지 6종.
+- `assets/cinema-atmosphere.svg`: 직접 작성한 영사광 그라데이션·겹친 스크린 프레임 장식. 외부 이미지·폰트·스크립트 참조 없음.
+- `assets/jansang-mark.svg`: 신규 파비콘·프레임 심볼.
+- `assets/ASSET_PROVENANCE.md`: 신규 생성 프롬프트, 인코딩 방식, SHA-256, 이전 자산 기록.
+- `assets/fonts/`: 기존 Pretendard Variable와 OFL 라이선스.
 
-```text
-projects/OTT Service/
-├─ index.html                  # 화면 구조와 자체 SVG symbol sprite
-├─ css/style.css              # dark UI·responsive·focus style
-├─ js/main.js                 # filter·dialog·찜·mobile menu 상태
-└─ assets/
-   ├─ ASSET_PROVENANCE.md     # 이미지·SVG·icon·font provenance
-   ├─ favicon.svg             # 자체 signal geometry favicon
-   ├─ backdrops/              # Hero fallback SVG
-   ├─ posters/                # procedural WebP와 fallback SVG
-   └─ fonts/                  # Pretendard Variable WOFF2·OFL
-```
+기존 배포 경로 `/ott-service/`와 폴더명 `OTT Service`는 유지합니다. 별도 승인 Figma는 없으며 이번 수정의 Source of Truth는 검토용 HTML/CSS/JavaScript입니다. 상위 포트폴리오 목록의 제목/썸네일은 이번 프로젝트 내부 수정에 포함하지 않았습니다.
 
-폴더명 `OTT Service`와 공개 경로 `/ott-service/`는 기존 배포 copy 계약 때문에 유지합니다. 사용자 노출 작품명은 `Streaming UI Concept`입니다.
+## 참고한 방향과 출처
 
-## 9. 접근성·반응형
+- [Mucho · Filmin](https://wearemucho.com/work/filmin): 영화 중심의 정체성과 정보 위계 참고. 게시 연도 미확인; 2026년 사례라고 주장하지 않음.
+- [C. Gill · Filmable](https://c-gill.com/works/filmable): 작품 선택에서 저장으로 이어지는 탐색 흐름 참고. 게시 연도 미확인.
+- [Movie Streaming Landing Page / Website Design](https://www.behance.net/gallery/248524473/Movie-Streaming-Landing-Page-Website-Design): 2026-04-30 공개 사례에서 장면 중심 다크 UI 구성 참고. 해당 작품의 이미지·로고·코드를 가져오지 않음.
+- [Netflix · New Mobile Experience](https://about.netflix.com/en/news/introducing-exciting-new-ways-to-find-and-enjoy-your-next-favorite-on-mobile): 2026-04-30 발표, 2026-08-25 글로벌 적용 업데이트를 확인. 탐색을 간소화하고 발견한 작품을 저장으로 연결하는 원칙 참고. 잔상관에는 영상 피드·개인화 엔진을 구현하지 않음.
+- [Meltem Bayrav · Letterboxd redesign](https://portfolio-meltem-bayrav.figma.site/letterboxd): 2025년 작업. 큰 작품 이미지, 제목·줄거리·핵심 행동의 위계와 포트폴리오의 변경 전후 설명 구조를 참고. 2026년 신작 사례로 분류하지 않음.
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/): 텍스트 대비, 키보드 조작, 포커스, 리플로우 점검 기준. 전체 적합성 인증을 의미하지 않음.
 
-- `본문으로 바로가기` skip link와 programmatic main focus target
-- CSS의 767px mobile 경계와 같은 `matchMedia('(min-width: 768px)')` 상태 동기화
-- mobile menu 초기 focus, 외부 pointer·Escape·link 닫기, desktop 전환 시 동등 navigation target으로 focus 이동
-- dialog 초기 focus, Tab·Shift+Tab 순환, Escape·backdrop 닫기와 trigger focus 복귀
-- button `aria-label`·`aria-pressed`, 장식 icon `aria-hidden`, `prefers-reduced-motion` 대응
+레퍼런스는 구성 원칙 확인에 사용했으며, 그 사례의 상업적 성과나 채용 효과를 검증했다고 주장하지 않습니다.
 
-## 10. 자산·폰트 요약
+## 실제 검증 (2026-09-28)
 
-WebP 11개는 ChatGPT Python 환경에서 Pillow·NumPy를 이용해 기하 도형, gradient, procedural noise와 blur를 조합한 절차형 이미지입니다. 외부 입력 이미지와 실제 인물·브랜드·영화·게임·캐릭터 참조를 사용하지 않았고 이미지 내부 문자·워터마크가 없습니다. fallback SVG 7개, favicon과 inline symbol icon 7종은 프로젝트 내부에서 단순 geometry로 새로 작성했습니다.
+기존 `tools/site-audit-kit`의 대상별 임시 검사를 허용하는 방침에 따라 저장소 밖의 일회성 Playwright 스크립트로 이 디렉터리만 로컬 HTTP에서 검사했습니다. 이 검사는 배포 전 로컬 소스 기준입니다. 배포 완료 여부는 해당 커밋의 GitHub Actions 실행 결과와 공개 URL로 별도 확인합니다.
 
-글꼴은 로컬 `PretendardVariable.woff2` v1.3.9를 사용하며 `OFL.txt`의 SIL Open Font License 1.1을 유지합니다. 파일별 dimensions·scene brief·seed·SHA-256과 세부 근거는 [`assets/ASSET_PROVENANCE.md`](assets/ASSET_PROVENANCE.md)에 기록합니다.
+- Chromium: 360·390·768·1024·1440·1920 CSS px에서 가로 넘침 없음, 로컬 폰트 로딩, 작품 6개, 깨진 이미지 없음. 320px 추가 리플로우 확인.
+- 검색·검색어 삭제·빈 결과·조건 초기화, 분위기 전체 5종 확인. 중복 큐레이션과 시간 필터가 제거된 현재 구조 확인.
+- 상세 6개, Tab/Shift+Tab, Escape, 배경 클릭, 포커스 복귀 확인.
+- Hero/카드/상세 찜 동기화, 찜 화면, 새로고침 유지, 마지막 항목 삭제, 상세에서 삭제한 후 안전한 포커스 확인.
+- 다른 탭의 찜 상태 동기화 및 localStorage 접근 불가 시 메모리 대체·안내·새로고침 초기화 확인.
+- 카드 호버 확대, reduced-motion 시 호버·키보드 확대 해제, 390px 검색·상세·빈 찜 화면 확인.
+- 카드 찜 버튼 62×44px(390px 화면), 찜/찜함 표시와 accessible name 일치, 상세에서 찜 후 알림이 modal 위에 표시되는지 확인.
+- 상세의 닫기·돌아가기, 안내의 닫기·확인, 헤더·푸터 홈 링크, 목록 앵커, 브라우저 뒤로가기 확인. 계정·게시물 작성 폼이 없음을 확인하고 미구현으로 구분.
+- 검사 중 포착된 JavaScript pageerror 없음.
+- 데스크톱 전체, 모바일 전체, 모바일 대표·상세·빈 목록의 브라우저 캡처를 직접 검토. 모바일 이미지 크롭·작은 글씨·클릭 영역 조정.
+- `node --check js/main.js` 및 `git diff --check` 확인.
+- 단색 배경 기준 계산 스타일: 기본 본문 15.87:1, 검색 placeholder 8.09:1, 검색창 경계 5.56:1. 장식 배경을 포함한 실제 렌더링은 아래 픽셀 표본으로 별도 확인.
+- 1440px·390px의 사진·배경 장식·목록·필터·카드·푸터의 문구 76곳을 추가 점검. 글자의 실제 텍스트 범위에서 배경만 캡처해 가장 낮은 대비를 보수적으로 계산. 현재 이미지 크롭과 음영을 반영한 표본 최솟값 5.41:1. 전체 WCAG 적합성 인증이나 모든 기기/상태의 보증은 아님.
+- 다른 탭에서 localStorage 전체 삭제 시 동기화, 목록 갱신 중 키보드 포커스 유지, 손상된 JSON 처리, 높이 400px에서 상세 재열기 시 스크롤 초기화를 추가 검증.
+- 기존 전달 HTML은 로컬 HTTP 환경에서 오류를 재현하지 못함. 사용자 측 오류 문구를 확보하지 못했으므로 원인을 확정하지 않음. 이번 회차의 로컬 검사 브라우저 손상은 복구했으며, 이를 사용자 측 오류의 원인이라고 단정하지 않음. 채팅 내 실제 캡처 전환 보기와 독립 HTML을 별도로 확인. 독립 HTML에는 내장 폰트의 OFL 전문도 포함.
 
-## 11. 현재 한계
+검사 한계: 실제 iOS/Safari·Firefox·스크린리더 낭독, 사용자 과제 수행 실험, 운영 배포 후 검증은 수행하지 않았습니다. 계정/결제 기능은 구현 범위 밖이므로 PASS로 기록하지 않습니다. 이전 버전의 이미지 자산은 이 화면에서 참조하지 않으며 삭제하지 않았습니다.
 
-과거 자산 생성 기록에는 `manifest.json`·`manifest.md`·`validation.json`이 언급되지만 현재 저장소에서 해당 파일 위치는 확인되지 않습니다. 현재 보존된 근거는 파일별 dimensions·scene brief·seed·SHA-256을 기록한 `ASSET_PROVENANCE.md`와 `OFL.txt`입니다. 완전한 generator source와 원본 prompt도 확인되지 않아 같은 결과의 정확한 재생성을 주장하지 않습니다. 절차형 결과의 독점성이나 법률상 무위험도 보증하지 않습니다. screen reader의 실제 수동 낭독과 모든 상태의 수치형 contrast 측정은 별도 사용자 환경 검토가 필요합니다.
+## 취업 포트폴리오 표기
+
+영화 탐색 UI 콘셉트 / 반응형 웹 퍼블리싱으로 소개할 수 있습니다. 디자인 방향·정보 위계·상태 설계·구현 범위와 AI 이미지 사용 사실을 구분해 기재하세요. 실제 서비스 운영·사용자 지표 개선·독자적인 일러스트 제작 실적으로 표시하지 않습니다. AI 이미지 생성은 저작권 무위험이나 상표 권리 확보를 보증하지 않습니다.
+
+포트폴리오 설명 페이지에서는 대표 화면 → 기존 문제 2가지 → 변경 전후 화면 → 탐색·상세·찜 상태 → 구현 범위 순서로 제시하면 됩니다. 사용자 조사나 성과 수치 대신 실제 변경 근거를 보여주는 구성입니다. 이 회차에서는 앱 안에 긴 디자인 프로세스 설명을 추가하지 않았습니다.

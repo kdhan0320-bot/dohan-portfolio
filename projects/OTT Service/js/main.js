@@ -1,387 +1,434 @@
-/* 포트폴리오용 반응형 스트리밍 UI 콘셉트 */
-
-'use strict';
-
-// ──────────────────────────────────────────────
-// 1. 헤더 스크롤 시 배경 변경
-// ──────────────────────────────────────────────
-const header = document.getElementById('header');
-
-function handleScroll() {
-  header.classList.toggle('scrolled', window.scrollY > 60);
-}
-
-window.addEventListener('scroll', handleScroll, { passive: true });
-handleScroll();
-
-
-// ──────────────────────────────────────────────
-// 2. 모바일 메뉴
-// ──────────────────────────────────────────────
-const hamburger  = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
-const headerLogo = document.querySelector('.header__logo');
-const desktopViewport = window.matchMedia('(min-width: 768px)');
-
-function openMobileMenu() {
-  mobileMenu.hidden = false;
-  mobileMenu.classList.add('open');
-  hamburger.classList.add('active');
-  hamburger.setAttribute('aria-expanded', 'true');
-  hamburger.setAttribute('aria-label', '메뉴 닫기');
-  mobileMenu.setAttribute('aria-hidden', 'false');
-  requestAnimationFrame(() => mobileMenu.querySelector('.mobile-nav__link')?.focus());
-}
-
-function closeMobileMenu({ restoreFocus = true, focusTarget = null } = {}) {
-  const wasOpen = mobileMenu.classList.contains('open');
-  mobileMenu.classList.remove('open');
-  hamburger.classList.remove('active');
-  hamburger.setAttribute('aria-expanded', 'false');
-  hamburger.setAttribute('aria-label', '메뉴 열기');
-  mobileMenu.setAttribute('aria-hidden', 'true');
-  mobileMenu.hidden = true;
-  if (!wasOpen) return;
-  if (focusTarget?.isConnected && focusTarget.getClientRects().length) {
-    focusTarget.focus();
-  } else if (restoreFocus && !desktopViewport.matches) {
-    hamburger.focus();
+/* 잔상관: fictional catalogue / real client-side interactions / no account or streaming API */
+(() => {
+  "use strict";
+  const films = [
+    {
+      id: "tide",
+      title: "파도가 머문 자리",
+      english: "WHERE THE TIDE STAYS",
+      genre: "드라마",
+      minutes: 24,
+      mood: "calm",
+      moodText: "잔잔한 여운",
+      image: "tide",
+      position: "66% center",
+      description:
+        "바닷가 집으로 돌아온 서윤은 아버지가 남긴 파도 소리를 발견한다. 오래 미뤄둔 마음을 마주하는 24분.",
+      keywords: "바다 해변 힐링 가족 잔잔한 단편",
+    },
+    {
+      id: "letters",
+      title: "여름의 편지",
+      english: "LETTERS FROM SUMMER",
+      genre: "드라마",
+      minutes: 18,
+      mood: "warm",
+      moodText: "다정한 온기",
+      image: "letters",
+      position: "58% center",
+      description:
+        "하숙집을 정리하던 두 친구에게 나타난 부치지 않은 편지. 잊고 지냈던 여름의 오후가 다시 펼쳐진다.",
+      keywords: "여름 편지 친구 따뜻한 다정한 짧은 단편",
+    },
+    {
+      id: "greenhouse",
+      title: "밤의 온실",
+      english: "THE GLASSHOUSE AT NIGHT",
+      genre: "미스터리",
+      minutes: 42,
+      mood: "mystery",
+      moodText: "고요한 긴장",
+      image: "greenhouse",
+      position: "50% center",
+      description:
+        "버려진 온실에 매일 자정, 불이 켜진다. 사라진 관리자의 일지를 따라 연구원은 닫힌 문 너머로 향한다.",
+      keywords: "밤 온실 숲 미스터리 추리 긴장 식물",
+    },
+    {
+      id: "orbit",
+      title: "느린 궤도",
+      english: "A SLOW ORBIT",
+      genre: "SF",
+      minutes: 36,
+      mood: "wonder",
+      moodText: "낯선 경이",
+      image: "orbit",
+      position: "63% center",
+      description:
+        "지구로 돌아갈 날을 기다리는 우주 기록원. 마지막 메시지 한 통이 고요한 관측 기지의 일상을 바꾼다.",
+      keywords: "우주 행성 미래 SF 새로운 세계 경이",
+    },
+    {
+      id: "windows",
+      title: "불이 켜지는 시간",
+      english: "WHEN THE LIGHTS COME ON",
+      genre: "드라마",
+      minutes: 27,
+      mood: "warm",
+      moodText: "다정한 온기",
+      image: "windows",
+      position: "48% center",
+      description:
+        "서로의 이름도 모르던 아파트 이웃들. 멈춰버린 엘리베이터가 스쳐 지나가던 사람들을 한자리에 모은다.",
+      keywords: "도시 이웃 아파트 저녁 따뜻한 일상 단편",
+    },
+    {
+      id: "forest",
+      title: "숲의 호흡",
+      english: "THE BREATH OF THE FOREST",
+      genre: "자연 다큐",
+      minutes: 21,
+      mood: "calm",
+      moodText: "잔잔한 여운",
+      image: "forest",
+      position: "48% center",
+      description:
+        "물길과 잎사귀, 빛이 머무는 자리를 따라 걷는 숲. 설명 대신 풍경의 소리에 귀 기울이는 21분의 산책.",
+      keywords: "자연 숲 다큐 산책 힐링 잔잔한 편안한 짧은",
+    },
+  ];
+  const $ = (id) => document.getElementById(id);
+  const storageKey = "jansang-cinema:saved:v1";
+  const validIds = new Set(films.map((f) => f.id));
+  const state = {
+    view: "browse",
+    mood: "all",
+    query: "",
+    saved: new Set(),
+    storageAvailable: true,
+  };
+  function readSaved(value) {
+    try {
+      const data = JSON.parse(value || "[]");
+      return new Set(
+        Array.isArray(data) ? data.filter((id) => validIds.has(id)) : [],
+      );
+    } catch {
+      return new Set();
+    }
   }
-}
-
-hamburger.addEventListener('click', () => {
-  if (mobileMenu.classList.contains('open')) closeMobileMenu();
-  else openMobileMenu();
-});
-
-document.querySelectorAll('.mobile-nav__link').forEach((link) => {
-  link.addEventListener('click', () => closeMobileMenu());
-});
-
-document.addEventListener('pointerdown', (event) => {
-  if (!mobileMenu.classList.contains('open')) return;
-  if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) closeMobileMenu();
-});
-
-function handleDesktopViewport(event) {
-  if (!event.matches) return;
-  const activeElement = document.activeElement;
-  const focusWasInMobileMenu = mobileMenu.contains(activeElement);
-  const focusWasOnHamburger = activeElement === hamburger;
-  let desktopFocusTarget = null;
-
-  if (focusWasInMobileMenu && activeElement.matches('a[href]')) {
-    const href = activeElement.getAttribute('href');
-    desktopFocusTarget = document.querySelector(`.header__nav a[href="${href}"]`);
+  try {
+    state.saved = readSaved(localStorage.getItem(storageKey));
+  } catch {
+    state.storageAvailable = false;
   }
-  if ((focusWasInMobileMenu || focusWasOnHamburger) && !desktopFocusTarget) {
-    desktopFocusTarget = headerLogo;
+  const icon = (name) =>
+    `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  let toastTimer;
+  function notify(message) {
+    const el = $("toast");
+    const host = document.querySelector("dialog[open]") || document.body;
+    host.append(el);
+    clearTimeout(toastTimer);
+    el.textContent = message;
+    el.classList.add("visible");
+    toastTimer = setTimeout(() => el.classList.remove("visible"), 2800);
   }
-
-  closeMobileMenu({ restoreFocus: false, focusTarget: desktopFocusTarget });
-}
-
-desktopViewport.addEventListener('change', handleDesktopViewport);
-handleDesktopViewport(desktopViewport);
-
-const skipLink = document.querySelector('.skip-link');
-const mainContent = document.getElementById('main-content');
-
-skipLink.addEventListener('click', (event) => {
-  event.preventDefault();
-  mainContent.scrollIntoView({ block: 'start' });
-  mainContent.focus({ preventScroll: true });
-});
-
-// ──────────────────────────────────────────────
-// 3. 장르 필터 버튼 → 카드 필터링
-// ──────────────────────────────────────────────
-const filterBtns   = document.querySelectorAll('.filter-btn');
-const contentCards = document.querySelectorAll('#contentsGrid .card');
-const filterStatus = document.getElementById('filterStatus');
-
-filterBtns.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const selected = btn.dataset.filter;
-
-    filterBtns.forEach((b) => {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
+  function saveState() {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify([...state.saved]));
+      state.storageAvailable = true;
+    } catch {
+      state.storageAvailable = false;
+    }
+  }
+  function updateSaveButtons() {
+    document.querySelectorAll("[data-save]").forEach((btn) => {
+      const film = films.find((f) => f.id === btn.dataset.save);
+      if (!film) return;
+      const on = state.saved.has(film.id);
+      btn.setAttribute("aria-pressed", String(on));
+      const labelText = btn.classList.contains("card-save")
+        ? on
+          ? "찜함"
+          : "찜"
+        : on
+          ? "찜 완료"
+          : "찜하기";
+      btn.setAttribute(
+        "aria-label",
+        `${film.title} ${labelText}${on ? ", 찜 해제" : ""}`,
+      );
+      const label = btn.querySelector("span");
+      if (label) label.textContent = labelText;
     });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-
-    let visibleCardCount = 0;
-    contentCards.forEach((card) => {
-      const match = selected === 'all' || card.dataset.genre === selected;
-      card.classList.toggle('hidden', !match);
-      if (match) visibleCardCount += 1;
-    });
-
-    filterStatus.textContent = `${btn.textContent.trim()} 필터 적용: 콘텐츠 ${visibleCardCount}개가 표시됩니다.`;
-  });
-});
-
-
-// ──────────────────────────────────────────────
-// 4. 정적 콘텐츠 데이터와 native dialog
-// ──────────────────────────────────────────────
-const contents = {
-  'catalog-01': {
-    title: 'SIGNAL / 01',
-    genre: '미스터리 스릴러',
-    description: '도시 전력망이 멈춘 밤, 분석가는 정전 직전 반복된 좌표 신호를 추적한다.',
-    year: '2026',
-    episodes: '12화',
-    rating: '4.8 · 데모 평점'
-  },
-  'catalog-02': {
-    title: 'BLUE / 02',
-    genre: '로맨스 드라마',
-    description: '해가 지기 전 짧은 푸른 시간, 두 사람은 사라진 약속의 기록을 다시 마주한다.',
-    year: '2025',
-    episodes: '8화',
-    rating: '4.6 · 데모 평점'
-  },
-  'catalog-03': {
-    title: 'CITY / 03',
-    genre: 'SF',
-    description: '지도에서 삭제된 구역에 진입한 조사팀이 반복되는 하루의 원인을 찾는다.',
-    year: '2026',
-    episodes: '10화',
-    rating: '4.9 · 데모 평점'
-  },
-  'catalog-04': {
-    title: 'ROOM / 04',
-    genre: '심리',
-    description: '소리가 사라진 실험실에서 한 연구원이 벽 너머의 규칙적인 진동을 기록한다.',
-    year: '2025',
-    episodes: '6화',
-    rating: '4.7 · 데모 평점'
-  },
-  'catalog-05': {
-    title: 'ARCHIVE / 05',
-    genre: '다큐멘터리',
-    description: '폐쇄 직전의 기록 보관소에서 마지막 관리자가 누락된 문서의 순서를 복원한다.',
-    year: '2026',
-    episodes: '5화',
-    rating: '4.5 · 데모 평점'
-  },
-  'catalog-06': {
-    title: 'RUNWAY / 06',
-    genre: '테크 스릴러',
-    description: '운항 기록에 없는 활주로 신호가 매일 같은 시각 관제 화면에 나타난다.',
-    year: '2026',
-    episodes: '9화',
-    rating: '4.8 · 데모 평점'
-  },
-  'catalog-07': {
-    title: 'FOCUS / 07',
-    genre: '드라마',
-    description: '사진가는 현상되지 않은 필름 속에서 반복되는 인물의 흔적을 발견한다.',
-    year: '2026',
-    episodes: '10화',
-    rating: '4.6 · 데모 평점'
-  },
-  'catalog-08': {
-    title: 'MIDNIGHT / 08',
-    genre: '스릴러',
-    description: '자정 이후에만 연결되는 호출이 한 도시의 오래된 사건을 다시 연다.',
-    year: '2026',
-    episodes: '8화',
-    rating: '4.7 · 데모 평점'
-  },
-  'catalog-09': {
-    title: 'FREQUENCY / 09',
-    genre: '미스터리',
-    description: '서로 다른 지역의 라디오에서 같은 음성이 동시에 송출되기 시작한다.',
-    year: '2026',
-    episodes: '7화',
-    rating: '4.8 · 데모 평점'
-  },
-  'catalog-10': {
-    title: 'OCEAN / 10',
-    genre: 'SF',
-    description: '해저 관측망의 오류를 추적하던 팀이 지도에 없는 구조물을 감지한다.',
-    year: '2026',
-    episodes: '11화',
-    rating: '4.5 · 데모 평점'
+    $("savedCount").textContent = state.saved.size;
+    $("storageNote").textContent = state.storageAvailable
+      ? "이 브라우저에 저장된 작품입니다."
+      : "브라우저 저장 공간을 사용할 수 없어, 이 페이지를 닫으면 찜 목록이 사라집니다.";
   }
-};
-
-const projectGuideDialog = document.getElementById('projectGuideDialog');
-const contentInfoDialog = document.getElementById('contentInfoDialog');
-const trailerModal = document.getElementById('trailerModal');
-const dialogs = [projectGuideDialog, contentInfoDialog, trailerModal];
-const dialogTriggers = new WeakMap();
-const focusableSelector = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
-let currentContentId = 'catalog-01';
-
-function syncPageScroll() {
-  document.body.style.overflow = dialogs.some((dialog) => dialog.open) ? 'hidden' : '';
-}
-
-function openDialog(dialog, trigger, initialFocus) {
-  dialogTriggers.set(dialog, trigger || document.activeElement);
-  if (!dialog.open) dialog.showModal();
-  syncPageScroll();
-  requestAnimationFrame(() => initialFocus.focus());
-}
-
-function closeDialog(dialog) {
-  if (dialog.open) dialog.close();
-}
-
-dialogs.forEach((dialog) => {
-  dialog.querySelectorAll('.js-dialog-close').forEach((button) => {
-    button.addEventListener('click', () => closeDialog(dialog));
+  function makeCard(film) {
+    const article = document.createElement("article");
+    article.className = "film-card";
+    article.dataset.filmId = film.id;
+    article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/stills/${film.image}.webp" alt="" width="1672" height="941" loading="lazy" style="object-position:${film.position}"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><small>${film.english}</small><span class="film-title">${film.title}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
+    return article;
+  }
+  function matches(film) {
+    const q = state.query.toLocaleLowerCase("ko").replace(/\s+/g, "");
+    return (
+      (state.view !== "saved" || state.saved.has(film.id)) &&
+      (state.mood === "all" || state.mood === film.mood) &&
+      (!q ||
+        `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords}`
+          .toLocaleLowerCase("ko")
+          .replace(/\s+/g, "")
+          .includes(q))
+    );
+  }
+  function render({ preserveFocus = false } = {}) {
+    const focused =
+      preserveFocus && $("filmGrid").contains(document.activeElement)
+        ? document.activeElement.closest("[data-detail], [data-save]")
+        : null;
+    const focusedAttribute = focused?.hasAttribute("data-detail")
+      ? "data-detail"
+      : "data-save";
+    const focusedId = focused?.getAttribute(focusedAttribute);
+    const visible = films.filter(matches),
+      grid = $("filmGrid");
+    grid.replaceChildren(...visible.map(makeCard));
+    const filtered = state.query.trim() || state.mood !== "all";
+    $("resultCount").textContent =
+      `${state.view === "saved" ? "찜한 작품" : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
+    $("resetFilters").hidden = !filtered;
+    $("clearSearch").hidden = !state.query;
+    document
+      .querySelectorAll("[data-mood]")
+      .forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.mood === state.mood)),
+      );
+    $("emptyState").hidden = visible.length > 0;
+    grid.hidden = visible.length === 0;
+    const emptySaved = state.view === "saved" && state.saved.size === 0;
+    $("emptyTitle").textContent = emptySaved
+      ? "아직 담아둔 장면이 없어요."
+      : "찾는 장면이 아직 없어요.";
+    $("emptyText").textContent = emptySaved
+      ? "마음에 남는 작품을 찜해보세요."
+      : "다른 검색어나 분위기로 다시 찾아보세요.";
+    $("emptyAction").innerHTML =
+      `${emptySaved ? "작품 둘러보기" : "조건 초기화"}${icon("arrow")}`;
+    $("storageNote").hidden = state.view !== "saved";
+    updateSaveButtons();
+    if (focusedId) {
+      const replacement =
+        grid.querySelector(`[${focusedAttribute}="${focusedId}"]`) ||
+        grid.querySelector("[data-detail]") ||
+        $("emptyAction");
+      replacement.focus({ preventScroll: true });
+    }
+  }
+  function resetFilters() {
+    state.mood = "all";
+    state.query = "";
+    $("searchInput").value = "";
+    render();
+  }
+  function setView(view, { scroll = false, reset = true } = {}) {
+    state.view = view;
+    document.body.classList.toggle("saved-view", view === "saved");
+    $("home").hidden = view === "saved";
+    $("catalogTitle").textContent =
+      view === "saved" ? "찜한 작품" : "작품 둘러보기";
+    $("catalogKicker").textContent =
+      view === "saved" ? "YOUR COLLECTION" : "THE SCREENING ROOM";
+    document.querySelectorAll("[data-view]").forEach((a) => {
+      if (a.dataset.view === view) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    if (reset) resetFilters();
+    else render();
+    if (scroll) {
+      $("browse").scrollIntoView({ block: "start" });
+      $("catalogTitle").focus({ preventScroll: true });
+    }
+  }
+  function navigate(view) {
+    const hash = view === "saved" ? "#saved" : "#browse";
+    if (location.hash === hash) setView(view, { scroll: true });
+    else location.hash = hash;
+  }
+  function route() {
+    if (location.hash === "#saved") setView("saved", { scroll: true });
+    else if (location.hash === "#browse") setView("browse", { scroll: true });
+    else if (location.hash === "#home") {
+      setView("browse");
+      $("home").scrollIntoView({ block: "start" });
+    } else setView("browse");
+  }
+  window.addEventListener("hashchange", route);
+  document.querySelectorAll("[data-view]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      navigate(a.dataset.view);
+    }),
+  );
+  document.querySelectorAll(".brand").forEach((a) =>
+    a.addEventListener("click", () => {
+      setView("browse");
+      if (location.hash === "#home")
+        $("home").scrollIntoView({ block: "start" });
+    }),
+  );
+  $("searchShortcut").addEventListener("click", () => {
+    $("browse").scrollIntoView({ block: "start" });
+    $("searchInput").focus({ preventScroll: true });
   });
-
-  dialog.addEventListener('click', (event) => {
-    if (event.target === dialog) closeDialog(dialog);
+  $("searchInput").addEventListener("input", (e) => {
+    state.query = e.target.value;
+    render();
   });
-
-  dialog.addEventListener('keydown', (event) => {
-    const topmostDialog = dialogs.filter((item) => item.open).at(-1);
-    if (event.key === 'Escape') {
-      if (dialog === topmostDialog) {
-        event.preventDefault();
-        closeDialog(dialog);
+  $("clearSearch").addEventListener("click", () => {
+    state.query = "";
+    $("searchInput").value = "";
+    render();
+    $("searchInput").focus();
+  });
+  document.querySelectorAll("[data-mood]").forEach((b) =>
+    b.addEventListener("click", () => {
+      state.mood = b.dataset.mood;
+      render();
+    }),
+  );
+  $("resetFilters").addEventListener("click", () => {
+    resetFilters();
+    document.querySelector('[data-mood="all"]').focus();
+  });
+  $("emptyAction").addEventListener("click", () => {
+    if (state.view === "saved" && state.saved.size === 0) navigate("browse");
+    else {
+      resetFilters();
+      $("searchInput").focus();
+    }
+  });
+  let activeTrigger = null,
+    activeDetailId = null;
+  function openDialog(dialog, trigger, heading) {
+    activeTrigger = trigger;
+    dialog.showModal();
+    dialog.scrollTop = 0;
+    document.body.classList.add("dialog-open");
+    heading.focus({ preventScroll: true });
+  }
+  function showDetail(id, trigger) {
+    const film = films.find((f) => f.id === id);
+    if (!film) return;
+    activeDetailId = id;
+    $("detailTitle").textContent = film.title;
+    $("detailMood").textContent = film.moodText;
+    $("detailMeta").textContent = `${film.genre} · ${film.minutes}분`;
+    $("detailDescription").textContent = film.description;
+    $("detailImage").src = `assets/stills/${film.image}.webp`;
+    $("detailImage").alt = `${film.title}의 가상 장면`;
+    $("detailImage").style.objectPosition = film.position;
+    $("detailSave").dataset.save = id;
+    updateSaveButtons();
+    openDialog($("detailDialog"), trigger, $("detailTitle"));
+  }
+  document.addEventListener("click", (event) => {
+    const detail = event.target.closest("[data-detail]");
+    if (detail) showDetail(detail.dataset.detail, detail);
+    const save = event.target.closest("[data-save]");
+    if (save) {
+      const id = save.dataset.save;
+      if (!validIds.has(id)) return;
+      const film = films.find((f) => f.id === id),
+        wasSaved = state.saved.has(id);
+      wasSaved ? state.saved.delete(id) : state.saved.add(id);
+      saveState();
+      if (state.view === "saved") {
+        const cardIds = [...$("filmGrid").querySelectorAll(".film-card")].map(
+            (el) => el.dataset.filmId,
+          ),
+          index = cardIds.indexOf(id);
+        render();
+        if (!document.querySelector("dialog[open]")) {
+          const target =
+            $("filmGrid").querySelectorAll("[data-save]")[
+              Math.min(
+                index,
+                $("filmGrid").querySelectorAll("[data-save]").length - 1,
+              )
+            ];
+          (target || $("emptyAction")).focus({ preventScroll: true });
+        }
+      } else updateSaveButtons();
+      notify(
+        `${film.title} · ${wasSaved ? "찜 목록에서 뺐어요." : state.storageAvailable ? "이 브라우저에 저장했어요." : "잠시 담았어요. 새로고침하면 사라져요."}`,
+      );
+    }
+    const close = event.target.closest("[data-close]");
+    if (close) $(close.dataset.close).close();
+  });
+  $("aboutButton").addEventListener("click", (e) =>
+    openDialog($("aboutDialog"), e.currentTarget, $("aboutTitle")),
+  );
+  document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) {
+        const rect = dialog.getBoundingClientRect();
+        if (
+          e.clientX < rect.left ||
+          e.clientX > rect.right ||
+          e.clientY < rect.top ||
+          e.clientY > rect.bottom
+        )
+          dialog.close();
       }
+    });
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key !== "Tab") return;
+      const focusable = [
+        ...dialog.querySelectorAll(
+          'button:not([disabled]),a[href],input,select,[tabindex="0"]',
+        ),
+      ].filter((el) => el.getClientRects().length);
+      if (!focusable.length) return;
+      const first = focusable[0],
+        last = focusable.at(-1);
+      if (!focusable.includes(document.activeElement)) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+    dialog.addEventListener("close", () => {
+      document.body.classList.remove("dialog-open");
+      clearTimeout(toastTimer);
+      $("toast").classList.remove("visible");
+      document.body.append($("toast"));
+      const currentReplacement =
+        activeDetailId &&
+        document.querySelector(`.film-grid [data-detail="${activeDetailId}"]`);
+      const target =
+        activeTrigger?.isConnected && activeTrigger.getClientRects().length
+          ? activeTrigger
+          : currentReplacement || $("catalogTitle");
+      target.focus({ preventScroll: true });
+      activeTrigger = null;
+      activeDetailId = null;
+    });
+  });
+  window.addEventListener("storage", (e) => {
+    try {
+      if (e.storageArea !== localStorage) return;
+    } catch {
       return;
     }
-    if (event.key !== 'Tab') return;
-    const focusable = Array.from(dialog.querySelectorAll(focusableSelector))
-      .filter((element) => !element.hidden && element.getClientRects().length);
-    if (!focusable.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (!focusable.includes(document.activeElement)) {
-      event.preventDefault();
-      (event.shiftKey ? last : first).focus();
-    } else if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+    if (e.key !== storageKey && e.key !== null) return;
+    state.saved = readSaved(e.newValue);
+    render({ preserveFocus: true });
   });
-
-  dialog.addEventListener('close', () => {
-    syncPageScroll();
-    const trigger = dialogTriggers.get(dialog);
-    if (trigger?.isConnected && trigger.getClientRects().length) trigger.focus();
-    dialogTriggers.delete(dialog);
+  document.querySelector(".skip").addEventListener("click", (e) => {
+    e.preventDefault();
+    $("main-content").focus();
+    $("main-content").scrollIntoView({ block: "start" });
   });
-});
-
-document.querySelectorAll('.js-project-guide').forEach((button) => {
-  button.addEventListener('click', () => {
-    const fromMobileMenu = Boolean(button.closest('#mobileMenu'));
-    if (fromMobileMenu) closeMobileMenu({ restoreFocus: false });
-    openDialog(
-      projectGuideDialog,
-      fromMobileMenu ? hamburger : button,
-      document.getElementById('projectGuideTitle')
-    );
-  });
-});
-
-function openTrailer(trigger, title) {
-  document.getElementById('modalTitle').textContent = `${title} — 미리보기 UI`;
-  document.getElementById('modalVideoTitle').textContent = title;
-  openDialog(trailerModal, trigger, document.getElementById('modalTitle'));
-}
-
-document.querySelectorAll('.js-trailer-btn').forEach((button) => {
-  button.addEventListener('click', () => {
-    const content = contents[button.dataset.contentId];
-    openTrailer(button, content?.title || 'SIGNAL / 01');
-  });
-});
-
-function openContentInfo(trigger, contentId) {
-  const content = contents[contentId];
-  if (!content) return;
-  currentContentId = contentId;
-  document.getElementById('contentInfoTitle').textContent = content.title;
-  document.getElementById('contentInfoGenre').textContent = content.genre;
-  document.getElementById('contentInfoDescription').textContent = content.description;
-  document.getElementById('contentInfoYear').textContent = content.year;
-  document.getElementById('contentInfoEpisodes').textContent = content.episodes;
-  const contentInfoRating = document.getElementById('contentInfoRating');
-  contentInfoRating.querySelector('.rating-value').textContent = content.rating.split(' ')[0];
-  contentInfoRating.setAttribute('aria-label', `데모 평점 ${content.rating.split(' ')[0]}점`);
-  document.getElementById('contentInfoLike').dataset.likeId = contentId;
-  syncLikeButtons(contentId);
-  openDialog(contentInfoDialog, trigger, document.getElementById('contentInfoTitle'));
-}
-
-document.querySelectorAll('.js-info-btn').forEach((button) => {
-  button.addEventListener('click', () => openContentInfo(button, button.dataset.contentId));
-});
-
-document.querySelector('.js-info-trailer').addEventListener('click', (event) => {
-  openTrailer(event.currentTarget, contents[currentContentId].title);
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !dialogs.some((dialog) => dialog.open) && mobileMenu.classList.contains('open')) {
-    closeMobileMenu();
-  }
-});
-
-
-// ──────────────────────────────────────────────
-// 5. 찜하기 상태 (현재 페이지 메모리에서만 유지)
-// ──────────────────────────────────────────────
-const likedContentIds = new Set();
-
-function syncLikeButtons(contentId) {
-  const isLiked = likedContentIds.has(contentId);
-  const contentTitle = contents[contentId]?.title;
-  document.querySelectorAll('.js-like-btn').forEach((button) => {
-    if (button.dataset.likeId !== contentId) return;
-    button.classList.toggle('liked', isLiked);
-    button.setAttribute('aria-pressed', String(isLiked));
-    const actionLabel = isLiked ? '찜 해제' : '찜하기';
-    button.setAttribute('aria-label', contentTitle ? `${contentTitle} ${actionLabel}` : actionLabel);
-    const label = button.querySelector('.js-like-label');
-    if (label) label.textContent = actionLabel;
-  });
-}
-
-document.querySelectorAll('.js-like-btn').forEach((button) => {
-  button.addEventListener('click', () => {
-    const contentId = button.dataset.likeId;
-    if (!contentId) return;
-    if (likedContentIds.has(contentId)) likedContentIds.delete(contentId);
-    else likedContentIds.add(contentId);
-    syncLikeButtons(contentId);
-  });
-});
-
-// ──────────────────────────────────────────────
-// 6. 스크롤 감지 → 네비 링크 active 전환
-// ──────────────────────────────────────────────
-const sections = document.querySelectorAll('section[id]');
-const navLinks  = document.querySelectorAll('.nav__link, .mobile-nav__link');
-
-const sectionObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      const id = entry.target.id;
-      navLinks.forEach((link) => {
-        const isCurrent = link.getAttribute('href') === `#${id}`;
-        if (link.classList.contains('nav__link')) link.classList.toggle('active', isCurrent);
-        if (isCurrent) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-      });
-    });
-  },
-  { rootMargin: '-40% 0px -40% 0px', threshold: 0 }
-);
-
-sections.forEach((sec) => sectionObserver.observe(sec));
+  route();
+})();
