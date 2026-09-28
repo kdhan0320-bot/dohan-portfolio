@@ -130,12 +130,41 @@ WebP 11개는 `2026-08-04T10:16:08+09:00`에 ChatGPT Python 환경에서 Pillow�
 기존 잔상관 생성 이미지 6종과 프레임 로고를 재사용했습니다. 새 외부 이미지나 폰트를 추가하지 않았습니다. 같은 숲 장면을 반복하는 하단 큐레이션 배너를 화면에서 제외하고, 모바일 대표 이미지의 CSS object-position을 88% center로 조정했습니다. WebP 원본 바이트와 해시는 그대로이며, 래스터 합성·재생성은 하지 않았습니다. 이미지에는 실제 작품의 배급·상영 권한을 주장하는 정보가 없습니다.
 
 
-## 현재 배경 장식 — 2026-09-28 구성 개편
+## 이전 배경 장식 — 2026-09-28 구성 개편 (현재 화면 미사용)
 
-`cinema-atmosphere.svg`는 직접 작성한 양쪽 청색 방사형 그라데이션·옅은 보랏빛 반사광·낮은 불투명도의 사선과 가장자리 선입니다. 이전의 작은 겹친 직사각형 장식을 교체했습니다. 외부 이미지·인물·상표·폰트·스크립트를 포함하지 않으며 래스터 이미지 편집을 하지 않았습니다. 홈·작품·테마·찜 화면에서 같은 배경 자산을 재사용합니다.
+`cinema-atmosphere.svg`는 직접 작성한 양쪽 청색 방사형 그라데이션·옅은 보랏빛 반사광·낮은 불투명도의 사선과 가장자리 선입니다. 이전의 작은 겹친 직사각형 장식을 교체했습니다. 외부 이미지·인물·상표·폰트·스크립트를 포함하지 않으며 래스터 이미지 편집을 하지 않았습니다. 당시 홈·작품·테마·찜 화면에 사용했습니다. 이후 시각 마감에서 선과 그리드가 맞지 않아 화면 참조를 해제했으며 원본 파일은 보존합니다.
 
 - 크기: 1600×1200 SVG viewBox
 - bytes: 958
 - SHA-256: `1513c275ad5c331b6e038de3a751bfdf4e9bb1de842dd1f2e87fc4513ce4e962`
 
 작품·테마 카드와 장식용 필름 묶음은 기존 생성 스틸 6종을 CSS로 크롭·배치한 것입니다. 원본 WebP 바이트와 위 해시는 그대로 유지됩니다. 새로운 외부 영화 자산이나 사진을 추가하지 않았습니다.
+
+
+## 현재 필름 배경 — 2026-09-28 시각 마감
+
+`cinema-film-atmosphere.webp`는 이 대화의 OpenAI 이미지 생성 도구로 새로 만든 영화 탐색 UI 배경입니다. 외부 입력 이미지를 사용하지 않았으며 기존 영화·배우·브랜드·특정 작가를 참조하지 않았습니다. 프롬프트는 일반적인 아날로그 필름 소재와 푸른 빛, 중앙의 어두운 빈 공간만 요청했습니다. 출력에서 글자·로고·워터마크·얼굴·영화 스틸은 보이지 않았습니다. 제3자 유사성이나 법률상 독점성을 보증하는 검토는 아닙니다.
+
+- 생성 1회, PNG 1672×941 / 1,534,955 bytes.
+- 원본 PNG SHA-256: `0fe612b1497faccc9772dd4b115e8bc3467ffe7c7a656c324903b0f62cc2f230`.
+- Pillow WebP quality=88, method=6으로 형식 변환. 래스터 자르기·합성·보정 없음.
+- 배포 WebP: 1672×941 / 34,528 bytes.
+- 배포 WebP SHA-256: `053a987696b33d05ecadd68cf66f52c2433936dd9ef763bdd52ba3f2fda15977`.
+- 화면에서 CSS 그라데이션·마스크로 어둡기와 가장자리 페이드를 적용. 클릭·포커스를 받지 않는 장식 레이어.
+- 작품 스틸 6종의 바이트·해시는 유지. tide 이미지의 CSS object-position만 82% center로 조정.
+- 정확한 생성 모델 버전은 도구가 제공하지 않아 기록하지 않음.
+
+### 배경 생성 프롬프트 원문
+
+```text
+Use case: photorealistic-natural.
+Asset type: original editorial background asset for a quiet Korean independent-cinema film-discovery website, intended to sit behind UI.
+Primary request: create a restrained tactile film-material background, ultra-wide 16:9 composition.
+Scene/backdrop: almost-black ink navy (#101820).
+Subject: a real analogue 35mm photographic film strip curling loosely and organically along only the far-right outer edge and a small lower-left corner, recognizable tiny sprocket perforations and unexposed dark-blue frames.
+Style/medium: realistic macro editorial photography with subtle material texture and soft depth of field, quiet premium cinema mood, not shiny plastic CGI.
+Composition/framing: wide landscape 16:9; peripheral objects should occupy no more than about 25% of the composition, large central and left-central 70% remains dark low-contrast negative space for interface text. Film extends naturally beyond the canvas edges.
+Lighting/mood: subtle cool powder-blue light passing through translucent film, soft broad projector-light falloff, restrained silver-blue edge reflections.
+Constraints: original generic unbranded film material only. Must work as a dark website background with pale readable text over it. No movie stills inside the film, no people or faces, no text, letters, numbers, logos, watermarks or film brands.
+Avoid: strong straight diagonal bands, rectangular page outlines, sharp geometric interface lines, rainbow or neon or purple chrome ribbons, unrelated decorative objects.
+```

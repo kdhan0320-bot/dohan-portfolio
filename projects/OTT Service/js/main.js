@@ -11,7 +11,7 @@
       mood: "calm",
       moodText: "잔잔한 여운",
       image: "tide",
-      position: "66% center",
+      position: "82% center",
       description:
         "바닷가 집으로 돌아온 서윤은 아버지가 남긴 파도 소리를 발견한다. 오래 미뤄둔 마음을 마주하는 24분.",
       keywords: "바다 해변 힐링 가족 잔잔한 단편",
