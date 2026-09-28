@@ -1,4 +1,4 @@
-:root { --page:#f5f7f7; --ink:#252525; --muted:#505653; --accent:#252525; --line:#d7d7d7; --soft:#e9e9e9; --atmosphere:url('./assets/ambient-light-field.webp'); }
+:root { --page:#f5f7f7; --ink:#252525; --muted:#505653; --accent:#252525; --line:#d7d7d7; --soft:#e9e9e9; --atmosphere:url('./assets/ambient-light-balanced.webp'); }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { margin:0; min-width:320px; background:var(--page); color:var(--ink); }

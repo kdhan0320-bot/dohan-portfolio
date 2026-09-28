@@ -194,6 +194,20 @@
 - 배포 전 `npm run lint`, `npm run build`, 기존 로직·정적 렌더링 15개 검사와 `git diff --check`를 통과했습니다. 실제 브라우저 로그인 성공·서버 게시물 CRUD·모바일 렌더링을 이 정적 검사로 대체하지 않습니다. 공개 회원가입 미제공 및 이전 인증 연결 거절 상태는 유지합니다.
 - 2026-09-28 Framer Kern 소개에서 제한된 강조색, 명확한 격자와 홈/작업 목록/상세 분리를 다시 확인했습니다. 외부 템플릿이나 자산을 복제하지 않았고 새 이미지·폰트·패키지·DB 변경은 없습니다.
 
+## 2026-09-28 배경 좌우 균형 마감
+
+- 첫 화면에서 오른쪽에만 배경이 있는 듯 보인 원인은 기존 세로 이미지의 우상단/좌하단에 집중된 빛 분포였습니다. 전체 면에 이미지를 적용했다는 사실만으로 시각적인 불균형이 해결되지는 않았습니다.
+- 기존 배경을 내장 이미지 생성 도구로 수정하여 상단의 양쪽에 서로 다른 굴절광이 이어지도록 했습니다. 새 `src/assets/ambient-light-balanced.webp`(1086×1448, 33,320 bytes)는 원본 PNG를 같은 크기로 WebP 변환·압축한 자산입니다. 외부 이미지는 추가하지 않았고, 기존 자산은 이력 보존을 위해 유지합니다. AI 보조 생성물이며 법적 권리 비침해 보증은 아닙니다.
+- `--atmosphere` 참조만 교체해 홈·갤러리·리뷰·안내·로그인·오류 화면의 공통 배경과 배너/푸터에 적용했습니다. 중앙 정물·리뷰 미리보기의 역할, 메뉴, 글꼴, 레이아웃, 인증·게시물 로직은 유지합니다.
+- 새 WebP 전체 픽셀의 대비 계산: 40% 밝은 오버레이에서 가장 어두운 배경 `rgb(206,209,211)`, 본문 9.99:1, 보조 글자 4.89:1, 포커스 3.84:1입니다. 모바일 규칙의 약 55% 오버레이에서는 각각 11.01:1, 5.39:1, 4.23:1입니다. 색 조합 계산이며 전체 접근성 인증이나 실제 모바일 렌더링 검사가 아닙니다.
+- 2026-09-28 다시 확인한 Framer Kern(2026-08-05 갱신)의 제한된 강조색·정렬 체계·홈/작업 목록/상세 분리 원칙을 유지합니다. 구성 참고이며 템플릿 자산은 복제하지 않았습니다. 실제 계정 생성·로그인 성공·서버 CRUD는 기존 인증 연결 거절 상태로 재검증하지 않습니다.
+
+### ambient-light-balanced.webp 수정 프롬프트
+
+배포 전 lint·build·기존 로직/정적 렌더링 검사 15개·`git diff --check`를 통과했습니다. 이 검사는 실제 계정·서버 기능 검사와 구분합니다.
+
+> Use case: lighting-weather. Asset type: full-page ambient background for the Korean design critique portfolio website Goreunsiseon. Image 1 is the edit target. Keep the existing refined silver-grey surface, frosted-glass refracted daylight, restrained pale champagne-yellow highlights, very fine material texture and airy low-contrast quality. Change only the DISTRIBUTION of the light: the current top-left is almost empty while top-right is busy. Rebalance the image so its UPPER THIRD already contains clearly visible but soft light textures on BOTH the LEFT and RIGHT, of comparable visual weight. Add broad, delicate refracted light drifting naturally in from the upper-left edge across the left quarter; retain a softer complementary light on the upper-right. Continue a quiet irregular light field along both sides toward the bottom. Do not mirror or repeat identical patches: make one natural continuous photographic surface. The central area and the upper-left text zone must stay high-key and readable for dark website headings, with subtle low-frequency tonal variation, no dark shadows behind copy. Preserve portrait orientation and the original silver/offwhite/champagne palette; no mint, teal, lavender, blue, pink or burgundy. Avoid large blank halves, hard diagonals, physical objects, circles, rings, arcs, targets, spheres, paper folds, ribbons, geometric panels, grid, borders, text, logos, UI, people, watermark. Light should dissolve gently into the pale base at the edges. This is a background-only refinement, not a website screenshot.
+
 ## 실행 방법
 
 ```bash
