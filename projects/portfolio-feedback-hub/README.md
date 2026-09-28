@@ -172,6 +172,19 @@
 - Framer Kern(2026-08-05 수정)과 Aperture Folio(2026-09-25 수정)의 공개 설명을 재확인했습니다. 명확한 격자·제한된 강조색·일관된 기하 그래픽의 원칙만 참고했으며 템플릿 자산을 복제하지 않았습니다.
 - 배포 전 lint·build·기존 상태/정적 렌더링 검사 15개·`git diff --check`를 통과했습니다. 실제 배포 화면과 공개 기능 조작은 별도 확인 대상입니다. 이전 관리자 인증 연결 거절로 계정 생성·로그인 성공·서버 CRUD 검사는 수행하지 않았으며, 실제 모바일 렌더링 검사도 미완료입니다.
 
+## 2026-09-28 전체 배경의 빛·질감 재구성
+
+- 원을 작은 독립 장식으로 배치한 이전 방향은 사용자가 요청한 ‘전체 배경에 자연스럽게 이어지는 시각 요소’와 달랐습니다. 홈·갤러리·배너·푸터에서 과녁형 장식의 사용을 종료하고, 페이지 전체에 하나의 광학적 빛·질감 이미지를 적용했습니다. 기존 SVG 파일은 이력 보존을 위해 유지합니다.
+- `src/assets/ambient-light-field.webp`는 내장 이미지 생성 도구로 새로 만든 실버/옅은 노랑 굴절광 배경입니다. 원본 1086×1448 PNG를 같은 크기의 WebP(26,142 bytes)로 형식 변환·압축했습니다. 이미지 자체의 자르기·합성은 하지 않았고 화면 배치는 CSS로 처리합니다. 외부 사진·템플릿 자산·새 폰트는 추가하지 않았습니다. AI 보조 생성물이며 제3자 권리 비침해를 법적으로 보증하지 않습니다.
+- 전체 배경은 반복 타일 없이 연속된 면으로 표시하고 40% 밝은 오버레이를 둡니다. 600px 이하에서는 오버레이를 약 55%로 높입니다. 배경 위 보조 글은 `#505653`으로 조정하고 로그인 폼은 밝은 판 위에 배치했습니다. 배너·푸터에는 같은 자산을 어두운 면과 함께 사용합니다. 중앙 정물·리뷰 카드 정렬, 짧은 카피와 홈/갤러리/리뷰 흐름은 유지합니다.
+- 2026-09-28 Webflow의 2026 디자인 경향, Framer Kern(2026-08-05 수정), Aperture Folio(2026-09-25 수정)를 확인하고 고유한 시각 체계, 그래픽과 제품 UI의 결합, 짧은 카피와 명확한 격자를 참고했습니다. 특정 효과를 2026년의 필수 조건이나 취업 성과의 근거로 삼지 않았습니다.
+- 공개 가입은 미제공이며 이전 관리자 인증 연결 거절 상태를 유지합니다. 실제 계정 생성·로그인 성공·서버 CRUD, 실제 모바일 렌더링 검수는 이번 수정의 완료 검사로 간주하지 않습니다. 임시 계정과 서버 게시물은 생성하지 않습니다.
+- 배포 전 lint·build·기존 로직/정적 렌더링 검사 15개·`git diff --check`를 통과했습니다. WebP의 모든 픽셀에 40% 오버레이를 합성해 계산한 가장 어두운 배경색은 `rgb(202,206,206)`이며 본문 대비 9.66:1, 보조 글 4.73:1, 포커스 3.71:1입니다. 지정 색 조합의 계산이며 전체 페이지 WCAG 적합 판정은 아닙니다. 실제 배포 화면 검수와 구분합니다.
+
+### ambient-light-field.webp 생성 프롬프트
+
+> Use case: stylized-concept. Asset type: an original full-page ambient background image for a polished Korean design-feedback web portfolio, not a hero picture and not an interface. Create a portrait 3:4 composition, ideally 1536x2048, of luminous silver-white light softly refracted through invisible frosted optical glass onto a seamless pale neutral surface. The subject is the LIGHT itself: broad delicate caustic sweeps, a few long tapering silver-grey shadows, and thin champagne-yellow highlights. Gentle tangible depth, photographic optical material, refined art-direction, not a flat vector pattern. Across the upper RIGHT quarter a softly flowing translucent silvery light band bends slowly downward along the right margin; across the lower LEFT quarter a second broad feathered caustic sweep opens upward, with a very restrained pale butter reflection. These are continuous ambient light fields that integrate into the surface, not separate ornaments. Keep the upper-left 45% and the middle broad vertical corridor quiet, luminous and very pale so black web text remains readable. Base palette near #F5F7F7, softly visible silver shading around #D2D9DC and light greys; only a trace of #F0DC80 in refracted highlights. No saturated blues, mint, green, lavender, pink, burgundy. Very subtle fine material texture only, no noisy grain. Natural broad diffused daylight, smooth falloff, no harsh contrast, no hard image borders. Let light gracefully dissolve into the neutral base at the outer edges and especially top/bottom. Background should be visually present but restrained enough behind real website text and white cards. Do not depict any physical object, ring, circle, orb, target, concentric line, ripple, sphere, lens, recognizable shape, ribbon, folded paper, diagonal paper panel, rectangle, sculpture, frame, grid, dot pattern, typography, letters, logo, watermark, mockup, UI or people. Do not imitate an existing artist or commercial image. The result is one cohesive quietly expressive spatial atmosphere across the entire canvas.
+
 ## 실행 방법
 
 ```bash
