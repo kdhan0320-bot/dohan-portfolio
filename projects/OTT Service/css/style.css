@@ -9,9 +9,9 @@
   color-scheme: dark;
   --bg: #0b1017;
   --surface: #131c27;
-  --text: #f1f4f8;
-  --muted: #aebdcb;
-  --accent: #c0d9f2;
+  --text: #f4f3f0;
+  --muted: #b6bcc5;
+  --accent: #c5d9eb;
   --line: #2e3b4a;
   --radius: 6px;
   --wrap: 1440px;
@@ -212,6 +212,7 @@ textarea:focus-visible {
   min-height: 48px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   position: relative;
   white-space: nowrap;
@@ -221,15 +222,17 @@ textarea:focus-visible {
 }
 .nav a[aria-current] {
   color: var(--text);
-  font-weight: 750;
+  font-weight: 650;
 }
 .nav a[aria-current]:after {
   content: "";
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
+  left: 50%;
+  width: 24px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 2px;
   background: var(--accent);
 }
 .saved-count {
@@ -688,7 +691,7 @@ textarea:focus-visible {
 .theme-preview h3 {
   margin-top: 12px;
   font-size: 30px;
-  font-weight: 720;
+  font-weight: 650;
   letter-spacing: -1px;
 }
 .theme-preview-copy .eyebrow {
@@ -788,7 +791,7 @@ textarea:focus-visible {
 .page-heading h1 {
   font-size: 42px;
   letter-spacing: -1.8px;
-  font-weight: 740;
+  font-weight: 650;
 }
 .page-description {
   margin-top: 15px;
@@ -1101,7 +1104,7 @@ dialog::backdrop {
 }
 .detail-content h2 {
   font-size: 32px;
-  font-weight: 720;
+  font-weight: 650;
   letter-spacing: -1px;
   padding-right: 18px;
 }
@@ -1585,7 +1588,6 @@ body > .toast.visible {
     margin-top: 8px;
   }
   .theme-films {
-    max-width: 650px;
     gap: 26px;
   }
   .theme-films .film-title {
@@ -2410,4 +2412,351 @@ body > .toast.visible {
   .hero-topline .dot {
     margin-right: 6px;
   }
+}
+
+/* Cinema identity: expressive titles, quiet controls, visible film atmosphere. */
+@font-face {
+  font-family: "Jansang Display";
+  src: url("../assets/fonts/JansangDisplay-600-700.woff2") format("woff2");
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+.brand {
+  gap: 11px;
+}
+.brand-mark {
+  width: 42px;
+  height: 32px;
+  color: #d5e4f2;
+}
+.brand > span {
+  font-family: "Jansang Display", Pretendard, serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 1.25;
+}
+.brand small {
+  font-family: Pretendard, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-align: center;
+  margin-top: 3px;
+  padding-left: 0.3em;
+  color: #c0c4ca;
+}
+.hero h1 {
+  font-family: "Jansang Display", Pretendard, serif;
+  font-weight: 600;
+  letter-spacing: -0.065em;
+  line-height: 1.3;
+  color: #f4f3f0;
+}
+.hero-english {
+  color: #d0d3d8;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+.hero-intro {
+  color: #d9dce1;
+}
+.hero-copy {
+  padding-top: 75px;
+}
+.hero-meta {
+  margin-top: 22px;
+  color: #d2d5dc;
+}
+.hero-actions {
+  margin-top: 32px;
+}
+.hero-bottom p {
+  color: #c1c6ce;
+}
+.section-heading {
+  align-items: center;
+  margin-bottom: 28px;
+}
+.section-heading h2 {
+  font-weight: 650;
+  font-size: 28px;
+  letter-spacing: -0.035em;
+}
+.section-heading .text-link {
+  font-size: 14px;
+}
+.home-films {
+  position: relative;
+  z-index: 1;
+  padding-top: 45px;
+  padding-bottom: 72px;
+}
+#homeView {
+  background-image:
+    linear-gradient(
+      180deg,
+      #0b1017 500px,
+      #0b101740 900px,
+      #0b101720 1350px,
+      #0b1017 2000px
+    ),
+    url("../assets/cinema-film-atmosphere.webp");
+  background-position:
+    center top,
+    center 640px;
+  background-size:
+    100% 100%,
+    max(100%, 1500px) auto;
+  background-repeat: no-repeat;
+}
+.home-themes {
+  background: linear-gradient(105deg, #101924b8, #10192438);
+  border-color: #c5d9eb15;
+  padding-block: 64px 72px;
+}
+.home-journal {
+  padding-block: 72px 82px;
+}
+.interior-page {
+  background-image:
+    linear-gradient(90deg, #0b1017f5, #0b10176b),
+    linear-gradient(0deg, #0b1017 0%, transparent 100%),
+    url("../assets/cinema-film-atmosphere.webp");
+  background-size:
+    cover,
+    cover,
+    max(100%, 1500px) auto;
+  background-position:
+    center,
+    center,
+    right top;
+  background-repeat: no-repeat;
+}
+.film-label small {
+  display: none;
+}
+.film-title {
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: -0.035em;
+}
+.film-art[data-detail="tide"] .film-title,
+.film-art[data-detail="letters"] .film-title,
+.film-art[data-detail="greenhouse"] .film-title,
+.film-art[data-detail="forest"] .film-title {
+  font-family: "Jansang Display", Pretendard, serif;
+  font-weight: 600;
+}
+.film-art[data-detail="orbit"] .film-title {
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.film-foot p,
+.film-foot p span + span,
+.card-save {
+  color: #bcc2cb;
+}
+.theme-preview h3 {
+  font-weight: 600;
+  margin-top: 0;
+}
+.theme-preview-copy .eyebrow {
+  display: none;
+}
+.theme-preview-image img {
+  object-position: 50% 18%;
+  opacity: 0.9;
+}
+.theme-preview[href="#themes/warmth"] img {
+  object-position: 50% 15%;
+}
+.theme-preview[href="#themes/beyond"] img {
+  object-position: 50% 27%;
+}
+.theme-preview:after {
+  background:
+    linear-gradient(90deg, #0b1017db, #0b101780 55%, #0b101726),
+    linear-gradient(0deg, #0b1017b8, transparent 80%);
+}
+.theme-preview-copy {
+  justify-content: flex-end;
+}
+.theme-preview-meta {
+  margin-top: 0;
+  padding-top: 15px;
+}
+.theme-caption {
+  display: none;
+}
+.theme-story h2 {
+  font-weight: 600;
+}
+.page-heading h1 {
+  letter-spacing: -0.04em;
+}
+.journal-card-copy .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: #cad6e2;
+}
+.detail-content > .eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+.footer-top p {
+  color: var(--muted);
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  .brand-mark {
+    width: 34px;
+  }
+  .brand > span {
+    font-size: 25px;
+  }
+  .brand small {
+    font-size: 9px;
+  }
+  .hero-copy {
+    padding-top: 75px;
+  }
+}
+@media (max-width: 600px) {
+  .brand {
+    gap: 9px;
+  }
+  .brand-mark {
+    width: 34px;
+    height: 27px;
+  }
+  .brand > span {
+    font-size: 25px;
+  }
+  .brand small {
+    display: none;
+  }
+  .nav {
+    margin-top: 3px;
+  }
+  .nav a {
+    font-size: 14px;
+  }
+  .hero-copy {
+    padding-top: 215px;
+  }
+  .hero h1 {
+    font-size: clamp(49px, 14.8vw, 61px);
+    letter-spacing: -0.065em;
+    line-height: 1.32;
+  }
+  .hero-intro {
+    font-size: 14px;
+  }
+  .hero-english {
+    font-size: 10px;
+    letter-spacing: 0.17em;
+    margin-top: 9px;
+  }
+  .hero-meta {
+    font-size: 13px;
+    margin-top: 19px;
+  }
+  .hero-actions {
+    margin-top: 25px;
+  }
+  .genre-tag {
+    font-size: 12px;
+  }
+  .hero-bottom {
+    padding-top: 25px;
+  }
+  .section-heading {
+    gap: 10px;
+    margin-bottom: 23px;
+  }
+  .section-heading h2 {
+    font-size: 22px;
+  }
+  .section-heading .text-link {
+    font-size: 13px;
+    gap: 4px;
+  }
+  .home-films {
+    padding-block: 42px 46px;
+  }
+  .home-themes {
+    padding-block: 44px 48px;
+  }
+  .home-journal {
+    padding-block: 44px 54px;
+  }
+  #homeView {
+    background-position:
+      center top,
+      right 780px;
+    background-size:
+      100% 100%,
+      auto 1100px;
+    background-image:
+      linear-gradient(
+        180deg,
+        #0b1017 650px,
+        #0b101790 1000px,
+        #0b101760 1750px,
+        #0b1017 2200px
+      ),
+      url("../assets/cinema-film-atmosphere.webp");
+  }
+  .interior-page {
+    background-position:
+      center,
+      center,
+      right top;
+  }
+  .theme-preview h3 {
+    font-size: 27px;
+  }
+  .film-title,
+  .home-film-grid .film-title {
+    font-size: 24px;
+  }
+  .footer-brand .brand-mark {
+    width: 34px;
+    height: 27px;
+  }
+  .footer-brand > span {
+    font-size: 25px;
+  }
+}
+@media (max-width: 359px) {
+  .nav a {
+    font-size: 13px;
+  }
+  .hero-intro {
+    font-size: 13px;
+  }
+  .section-heading h2 {
+    font-size: 20px;
+  }
+  .film-title,
+  .home-film-grid .film-title,
+  .theme-films .film-title {
+    font-size: 21px;
+  }
+}
+
+/* Keep the atmosphere in the gutters, with stable contrast under small controls. */
+.film-foot {
+  background: #0b1017f0;
+  border-radius: 0 0 4px 4px;
+}
+.section-heading .text-link {
+  background: #0b1017ed;
+  padding-inline: 10px;
+  border-radius: 4px;
+}
+
+.theme-tabs {
+  background: #0b1017ed;
 }

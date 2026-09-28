@@ -9,10 +9,17 @@
       content="잔상관 — 영화를 발견하고, 마음에 남는 장면을 담는 곳. 가상 영화로 만든 반응형 영화 탐색 콘셉트."
     />
     <title>영화를 발견하는 곳 — 잔상관</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="assets/favicon.svg?v=a2d7f469" type="image/svg+xml" />
     <link
       rel="preload"
       href="assets/fonts/PretendardVariable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="assets/fonts/JansangDisplay-600-700.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -23,19 +30,17 @@
       as="image"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="css/style.css?v=68aa0751" />
+    <link rel="stylesheet" href="css/style.css?v=3984796a" />
     <script src="js/main.js?v=4c1e7ef7" defer></script>
   </head>
   <body>
     <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <defs>
-        <symbol id="i-mark" viewBox="0 0 36 36">
-          <path
-            d="M4 12V4h21M11 32h21V11M11 10v15h15V10H11Z"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          />
+        <symbol id="i-mark" viewBox="0 0 40 30">
+          <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22" />
+          <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45" />
+          <path d="M9 10h29v18H9z" fill="currentColor" />
+          <path d="M12 13h23v12H12z" fill="#0b1017" />
         </symbol>
         <symbol id="i-arrow" viewBox="0 0 24 24">
           <path d="M5 12h14m-6-6 6 6-6 6" />
@@ -64,7 +69,7 @@
         <a class="brand" href="#home" aria-label="잔상관 홈"
           ><svg class="brand-mark" aria-hidden="true">
             <use href="#i-mark" /></svg
-          ><span>잔상관<small>JANSANG CINEMA</small></span></a
+          ><span>잔상관<small>CINEMA</small></span></a
         >
         <nav class="nav" aria-label="주 메뉴">
           <a href="#home" data-view="home" aria-current="page">홈</a>
@@ -113,7 +118,6 @@
                 <span class="genre-tag">미스터리</span><span>42분</span
                 ><span>고요한 긴장</span>
               </p>
-              <p class="hero-desc">닫힌 문 너머, 누군가 기다리고 있다.</p>
               <div class="hero-actions">
                 <button class="button light" data-detail="greenhouse">
                   영화 살펴보기<svg class="icon" aria-hidden="true">
@@ -148,11 +152,10 @@
         >
           <div class="section-heading">
             <div>
-              <p class="eyebrow section-kicker">THE SELECTION</p>
-              <h2 id="homeFilmsTitle">지금, 눈여겨볼 영화</h2>
+              <h2 id="homeFilmsTitle">지금 눈여겨볼 영화</h2>
             </div>
             <a class="text-link" href="#browse"
-              >영화 전체보기<svg class="icon" aria-hidden="true">
+              >전체보기<svg class="icon" aria-hidden="true">
                 <use href="#i-arrow" /></svg
             ></a>
           </div>
@@ -162,11 +165,10 @@
           <div class="wrap">
             <div class="section-heading">
               <div>
-                <p class="eyebrow section-kicker">CURATED FOR YOUR MOOD</p>
                 <h2 id="homeThemesTitle">기분 따라 고르는 영화</h2>
               </div>
               <a class="text-link" href="#themes"
-                >기획전 전체보기<svg class="icon" aria-hidden="true">
+                >전체보기<svg class="icon" aria-hidden="true">
                   <use href="#i-arrow" /></svg
               ></a>
             </div>
@@ -179,11 +181,10 @@
         >
           <div class="section-heading">
             <div>
-              <p class="eyebrow section-kicker">JANSANG JOURNAL</p>
               <h2 id="homeJournalTitle">영화를 읽는 시간</h2>
             </div>
             <a class="text-link" href="#journal"
-              >매거진 전체보기<svg class="icon" aria-hidden="true">
+              >전체보기<svg class="icon" aria-hidden="true">
                 <use href="#i-arrow" /></svg
             ></a>
           </div>
@@ -198,7 +199,6 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <p class="eyebrow section-kicker">CURATED COLLECTIONS</p>
             <h1 id="themesTitle" tabindex="-1">취향을 넓히는 기획전</h1>
             <p class="page-description">
               지금의 기분에 따라, 함께 보면 좋은 두 편.
@@ -225,9 +225,7 @@
       <div class="catalog-shell interior-page" id="catalogView" hidden>
         <section class="catalog wrap" aria-labelledby="catalogTitle">
           <div class="page-heading">
-            <p class="eyebrow section-kicker" id="catalogKicker">
-              THE FILM LIBRARY
-            </p>
+            <p class="sr-only" id="catalogKicker">THE FILM LIBRARY</p>
             <h1 id="catalogTitle" tabindex="-1">영화 둘러보기</h1>
             <p class="page-description" id="catalogDescription">
               오늘의 기분에 맞는 한 편을 찾아보세요.
@@ -298,7 +296,6 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <p class="eyebrow section-kicker">JANSANG JOURNAL</p>
             <h1 id="journalTitle" tabindex="-1">영화를 읽는 시간</h1>
             <p class="page-description">
               장면과 사람, 이야기를 따라 만나는 영화.

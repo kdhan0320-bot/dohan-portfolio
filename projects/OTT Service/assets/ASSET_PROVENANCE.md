@@ -276,3 +276,18 @@ Avoid: strong straight diagonal bands, rectangular page outlines, sharp geometri
 ## 2026-09-28 최종 반응형 마감
 
 기존 `cinema-film-atmosphere.webp`와 여섯 작품 스틸의 원본 바이트는 유지했습니다. 새 외부 이미지·폰트·아이콘·영상은 추가하지 않았습니다. 1100px 이하의 배경 위치를 오른쪽 기준으로 보정하고, CSS로 약한 청회색 방사형 빛을 더했습니다. 768~1000px 카드 배치와 CSS 크롭 비율을 보정했으며 래스터 자산 자체는 편집하지 않았습니다. 낮은 우선순위의 이미지 preload와 버전이 붙은 스타일 주소를 사용합니다.
+
+
+## 2026-09-28 브랜드 마감 v9
+
+- `jansang-mark.svg`, `favicon.svg`, HTML 내 `i-mark`: 가로 스크린 프레임과 잔상3겹을 코드로 구성한 자체 벡터. 외부 로고 파일·트레이싱·상표를 사용하지 않음. 상표 등록 가능성이나 기존 모든 상표와의 비유사성을 보증한 것은 아님.
+- 기존 `cinema-film-atmosphere.webp`를 실제 배경으로 다시 참조. 새로 생성하거나 다른 이미지를 합성하지 않았음. 원 생성 내역은 위 기록 유지.
+- 기존 `posters-v8` 이미지7개 유지. 가로 배너의 CSS 크롭만 보정.
+- `fonts/JansangDisplay-600-700.woff2`: Google Fonts 공식 Noto Serif KR 원본에서 FontTools로600–700 범위와 실제 제목 문자125개를 남긴 로컬 WOFF2 서브셋. 내부 family를 `Jansang Display`로 변경하고 Adobe 저작권 메타데이터 유지.72,660B.
+- 원본: https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifkr/NotoSerifKR%5Bwght%5D.ttf
+- 원본 SHA-256: `11f8d5de6f1b79195efba3828aaa2ec95c1178f5ae976fb23c8d53250a9938f3`
+- 서브셋 SHA-256: `973095a0e0f14e11c8315b85de24bead9dcc1921f1e9d51b4e70e078f826daf3`
+- 라이선스: SIL OFL1.1 원문 `fonts/OFL-NotoSerifKR.txt` 포함. 공식 원문 https://raw.githubusercontent.com/google/fonts/main/ofl/notoserifkr/OFL.txt
+- OFL SHA-256: `5e0da210fb04058a8c0087985d2d456b931c2579811a49655721d3cf0c36b6d6`
+- 수록 문자: ASCII U+0020–007E + `가간관궤느는도름리린머문밤불상숲시실여온의이자잔지켜파편호흡`. 브랜드와 현재6편 제목 전부 포함. 새 영화명을 추가할 때는 이 서브셋의 문자 범위를 갱신하거나 UI 폰트로 표시할 것.
+- 자체 제작/생성 자산과 허용 라이선스 사용은 출처 추적을 위한 조치이며, 모든 법적 위험이0이라는 보증은 아님.
