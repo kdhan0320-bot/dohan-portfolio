@@ -47,8 +47,11 @@ const focusMainContent = (event) => {
   event.preventDefault();
   const main = document.getElementById('main-content');
   if (!main) return;
-  main.focus({ preventScroll: true });
-  main.scrollIntoView({ block: 'start' });
+  // The shared header is inside main, so focus the page title to skip its links.
+  const target = main.querySelector('h1') ?? main;
+  target.tabIndex = -1;
+  target.focus({ preventScroll: true });
+  target.scrollIntoView({ block: 'start', behavior: 'instant' });
 };
 
 const AppRoutes = () => (

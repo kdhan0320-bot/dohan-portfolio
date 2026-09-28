@@ -1,28 +1,24 @@
-import { Box, Button, Container, Paper, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import SiteFooter from '../components/SiteFooter';
 import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const NotFoundPage = () => {
-  const navigate = useNavigate();
-
   usePageTitle(PAGE_TITLES.notFound);
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+    <div className="app-surface">
       <Header />
-      <Container maxWidth="sm" sx={{ py: { xs: 8, sm: 12 } }}>
-        <Paper sx={{ p: { xs: 3, sm: 5 }, borderRadius: 3, textAlign: 'center' }}>
-          <Typography component="h1" variant="h1" sx={{ mb: 2 }}>페이지를 찾을 수 없습니다</Typography>
-          <Typography color="text.secondary" sx={{ mb: 3 }}>
-            주소가 잘못되었거나 이동된 페이지입니다. 게시글 목록에서 다시 시작해주세요.
-          </Typography>
-          <Button variant="contained" onClick={() => navigate('/', { replace: true })}>
-            게시글 목록으로
-          </Button>
-        </Paper>
-      </Container>
-    </Box>
+      <section className="shell not-found-page" aria-labelledby="not-found-title">
+        <div className="not-found-card">
+          <span className="section-kicker">404 · PAGE NOT FOUND</span>
+          <h1 id="not-found-title">페이지를 찾을 수 없어요.</h1>
+          <p>주소를 확인하거나 작업 갤러리에서 다시 시작해 주세요.</p>
+          <Link className="primary-link" to="/works" replace>작업 갤러리로 <span aria-hidden="true">↗</span></Link>
+        </div>
+      </section>
+      <SiteFooter />
+    </div>
   );
 };
 

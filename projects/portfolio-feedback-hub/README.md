@@ -186,6 +186,14 @@
 
 > Use case: stylized-concept. Asset type: an original full-page ambient background image for a polished Korean design-feedback web portfolio, not a hero picture and not an interface. Create a portrait 3:4 composition, ideally 1536x2048, of luminous silver-white light softly refracted through invisible frosted optical glass onto a seamless pale neutral surface. The subject is the LIGHT itself: broad delicate caustic sweeps, a few long tapering silver-grey shadows, and thin champagne-yellow highlights. Gentle tangible depth, photographic optical material, refined art-direction, not a flat vector pattern. Across the upper RIGHT quarter a softly flowing translucent silvery light band bends slowly downward along the right margin; across the lower LEFT quarter a second broad feathered caustic sweep opens upward, with a very restrained pale butter reflection. These are continuous ambient light fields that integrate into the surface, not separate ornaments. Keep the upper-left 45% and the middle broad vertical corridor quiet, luminous and very pale so black web text remains readable. Base palette near #F5F7F7, softly visible silver shading around #D2D9DC and light greys; only a trace of #F0DC80 in refracted highlights. No saturated blues, mint, green, lavender, pink, burgundy. Very subtle fine material texture only, no noisy grain. Natural broad diffused daylight, smooth falloff, no harsh contrast, no hard image borders. Let light gracefully dissolve into the neutral base at the outer edges and especially top/bottom. Background should be visually present but restrained enough behind real website text and white cards. Do not depict any physical object, ring, circle, orb, target, concentric line, ripple, sphere, lens, recognizable shape, ribbon, folded paper, diagonal paper panel, rectangle, sculpture, frame, grid, dot pattern, typography, letters, logo, watermark, mockup, UI or people. Do not imitate an existing artist or commercial image. The result is one cohesive quietly expressive spatial atmosphere across the entire canvas.
 
+## 2026-09-28 최종 사용성 마감
+
+- 중앙 미리보기의 왼쪽 정물은 브랜드 분위기, 오른쪽 카드는 실제 리뷰 예시를 담당하는 의도적인 비대칭 구성입니다. 페이지 바탕의 연속된 빛 이미지는 양쪽에 적용됩니다. 이번에는 배경·팔레트·메뉴를 다시 바꾸지 않았습니다.
+- 배포 화면 1363×936에서 홈 상단·하단, 이미지와 Pretendard 로드, 공통 정렬, 가로 넘침 없음을 재확인했습니다. 실제 키보드 점검 중 ‘본문으로 바로가기’ 다음 Tab이 로고로 돌아오는 문제를 재현했습니다. 페이지 제목으로 초점을 보내도록 수정하고 고정 메뉴 높이를 고려한 스크롤 여백을 적용했습니다.
+- 존재하지 않는 주소의 복귀 버튼은 ‘게시글 목록으로’라고 표시하면서 홈으로 이동했습니다. ‘작업 갤러리로’라는 실제 목적지와 링크를 일치시키고, 해당 화면에도 공통 배경·버튼·푸터를 적용했습니다.
+- 배포 전 `npm run lint`, `npm run build`, 기존 로직·정적 렌더링 15개 검사와 `git diff --check`를 통과했습니다. 실제 브라우저 로그인 성공·서버 게시물 CRUD·모바일 렌더링을 이 정적 검사로 대체하지 않습니다. 공개 회원가입 미제공 및 이전 인증 연결 거절 상태는 유지합니다.
+- 2026-09-28 Framer Kern 소개에서 제한된 강조색, 명확한 격자와 홈/작업 목록/상세 분리를 다시 확인했습니다. 외부 템플릿이나 자산을 복제하지 않았고 새 이미지·폰트·패키지·DB 변경은 없습니다.
+
 ## 실행 방법
 
 ```bash
