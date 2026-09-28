@@ -253,6 +253,9 @@
   // Keep long movie names in deliberate phrase groups at every card size.
   const titleLines = {
     tide: ["파도가", "머문 자리"],
+    letters: ["여름의", "편지"],
+    greenhouse: ["밤의", "온실"],
+    orbit: ["느린", "궤도"],
     windows: ["불이", "켜지는 시간"],
   };
   function makeCard(film) {
@@ -265,12 +268,24 @@
     article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
     return article;
   }
+  const themeDescriptionLines = {
+    quiet: ["파도와 숲 사이,", "잠시 쉬어가는 두 편."],
+    warmth: ["편지와 이웃이 전하는", "작은 다정함."],
+    beyond: ["미스터리와 SF,", "낯선 세계로의 초대."],
+  };
   function renderThemes(id) {
     const theme = themes.find((t) => t.id === id) || themes[0];
     $("themeNumber").textContent = theme.number;
     $("themeTagline").textContent = theme.english;
     $("themeTitle").textContent = theme.name;
-    $("themeDescription").textContent = theme.description;
+    $("themeDescription").replaceChildren(
+      ...themeDescriptionLines[theme.id].flatMap((text, index) => {
+        const line = document.createElement("span");
+        line.className = "theme-description-line";
+        line.textContent = text;
+        return index ? [document.createTextNode(" "), line] : [line];
+      }),
+    );
     const selectedFilms = theme.films.map((id) =>
       films.find((f) => f.id === id),
     );
@@ -421,9 +436,9 @@
       Object.assign(state, catalogFilters[view]);
       $("searchInput").value = state.query;
       $("catalogTitle").textContent =
-        view === "saved" ? "찜한 작품" : "작품 둘러보기";
+        view === "saved" ? "찜한 영화" : "영화 둘러보기";
       $("catalogKicker").textContent =
-        view === "saved" ? "YOUR OWN COLLECTION" : "THE FILM LIBRARY";
+        view === "saved" ? "나만의 영화 컬렉션" : "잔상관의 모든 영화";
       $("catalogDescription").textContent =
         view === "saved"
           ? "다시 만나고 싶은 장면들을 한곳에."
@@ -554,6 +569,7 @@
       trigger = dialogContexts.get($("articleDialog"))?.trigger || trigger;
     activeDetailId = id;
     $("detailTitle").textContent = film.title;
+    $("detailDialog").dataset.filmId = film.id;
     $("detailMood").textContent = film.moodText;
     $("detailMeta").textContent =
       `${film.genre} · ${film.minutes}분 · 가상 단편`;

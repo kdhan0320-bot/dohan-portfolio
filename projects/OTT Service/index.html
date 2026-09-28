@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b1017" />
+    <meta name="theme-color" content="#0b0e12" />
     <meta
       name="description"
       content="잔상관 — 영화를 발견하고, 마음에 남는 장면을 담는 곳. 가상 영화로 만든 반응형 영화 탐색 콘셉트."
@@ -11,7 +11,7 @@
     <title>영화를 발견하는 곳 — 잔상관</title>
     <link
       rel="icon"
-      href="assets/favicon.svg?v=a2d7f469"
+      href="assets/favicon.svg?v=e3331b87"
       type="image/svg+xml"
     />
     <link
@@ -34,8 +34,8 @@
       as="image"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="css/style.css?v=c39f61b3" />
-    <script src="js/main.js?v=a9102bb7" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=c7b5756c" />
+    <script src="js/main.js?v=7e311bfa" defer></script>
   </head>
   <body>
     <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -44,7 +44,7 @@
           <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22" />
           <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45" />
           <path d="M9 10h29v18H9z" fill="currentColor" />
-          <path d="M12 13h23v12H12z" fill="#0b1017" />
+          <path d="M12 13h23v12H12z" fill="#0b0e12" />
         </symbol>
         <symbol id="i-arrow" viewBox="0 0 24 24">
           <path d="M5 12h14m-6-6 6 6-6 6" />
@@ -111,16 +111,20 @@
           <div class="hero-inner wrap">
             <div class="hero-topline">
               <span class="eyebrow"
-                ><span class="dot"></span>잔상관이 고른 영화</span
+                ><span class="dot"></span>잔상관 스포트라이트</span
               ><span class="concept-label">영화 탐색 UI 콘셉트</span>
             </div>
             <div class="hero-copy">
-              <p class="hero-intro">매일 자정, 사라진 사람의 불이 켜진다.</p>
-              <h1 id="heroTitle" tabindex="-1">밤의 온실</h1>
+              <h1 id="heroTitle" tabindex="-1">
+                <span>밤의</span> <span class="hero-title-accent">온실</span>
+              </h1>
               <p class="hero-english">THE GLASSHOUSE AT NIGHT</p>
               <p class="hero-meta">
                 <span class="genre-tag">미스터리</span><span>42분</span
                 ><span>고요한 긴장</span>
+              </p>
+              <p class="hero-intro">
+                <span>매일 자정,</span> <span>사라진 사람의 불이 켜진다.</span>
               </p>
               <div class="hero-actions">
                 <button class="button light" data-detail="greenhouse">
@@ -139,10 +143,13 @@
               </div>
             </div>
             <div class="hero-bottom">
-              <p>
-                좋은 영화의 시작은,<br class="mobile-only" />
-                한 장면의 끌림으로부터.
-              </p>
+              <a class="hero-library-link" href="#browse"
+                ><span>다음 이야기를 찾아보세요</span
+                ><strong
+                  >영화 6편 둘러보기
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#i-arrow" /></svg></strong
+              ></a>
               <a class="text-link" href="#themes/beyond"
                 >기획전 · 낯선 세계<svg class="icon" aria-hidden="true">
                   <use href="#i-arrow" /></svg
@@ -156,7 +163,8 @@
         >
           <div class="section-heading">
             <div>
-              <h2 id="homeFilmsTitle">지금 눈여겨볼 영화</h2>
+              <p class="section-kicker">잔상관의 선택</p>
+              <h2 id="homeFilmsTitle">지금, <em>이 영화</em></h2>
             </div>
             <a class="text-link" href="#browse"
               >전체보기<svg class="icon" aria-hidden="true">
@@ -169,7 +177,8 @@
           <div class="wrap">
             <div class="section-heading">
               <div>
-                <h2 id="homeThemesTitle">기분 따라 고르는 영화</h2>
+                <p class="section-kicker">취향별 기획전</p>
+                <h2 id="homeThemesTitle">어떤 이야기가 <em>끌리나요?</em></h2>
               </div>
               <a class="text-link" href="#themes"
                 >전체보기<svg class="icon" aria-hidden="true">
@@ -185,7 +194,8 @@
         >
           <div class="section-heading">
             <div>
-              <h2 id="homeJournalTitle">영화를 읽는 시간</h2>
+              <p class="section-kicker">매거진</p>
+              <h2 id="homeJournalTitle">장면 너머의 <em>이야기</em></h2>
             </div>
             <a class="text-link" href="#journal"
               >전체보기<svg class="icon" aria-hidden="true">
@@ -203,7 +213,8 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <h1 id="themesTitle" tabindex="-1">기획전</h1>
+            <p class="section-kicker">분위기로 만나는 두 편</p>
+            <h1 id="themesTitle" tabindex="-1">취향별 기획전</h1>
           </div>
           <nav class="theme-tabs" aria-label="기획전 선택" id="themeTabs"></nav>
           <div class="theme-collection" id="themeCollection">
@@ -226,7 +237,7 @@
       <div class="catalog-shell interior-page" id="catalogView" hidden>
         <section class="catalog wrap" aria-labelledby="catalogTitle">
           <div class="page-heading">
-            <p class="sr-only" id="catalogKicker">THE FILM LIBRARY</p>
+            <p class="section-kicker" id="catalogKicker">잔상관의 모든 영화</p>
             <h1 id="catalogTitle" tabindex="-1">영화 둘러보기</h1>
             <p class="page-description" id="catalogDescription">
               오늘의 기분에 맞는 한 편을 찾아보세요.
@@ -297,7 +308,8 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <h1 id="journalTitle" tabindex="-1">영화를 읽는 시간</h1>
+            <p class="section-kicker">매거진</p>
+            <h1 id="journalTitle" tabindex="-1">장면 너머의 이야기</h1>
             <p class="page-description">
               장면과 사람, 이야기를 따라 만나는 영화.
             </p>
