@@ -12,7 +12,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 /* Route changes focus this non-interactive landmark; controls retain their visible focus rings. */
 #main-content:focus { outline:none; }
 /* One continuous light field behind every section; no tiled or detached ornaments. */
-.app-surface { min-height:100vh; background-color:var(--page); background-image:linear-gradient(#f5f7f766,#f5f7f766),var(--atmosphere); background-size:cover; background-position:center top; background-repeat:no-repeat; }
+.app-surface { display:flex; flex-direction:column; min-height:100vh; background-color:var(--page); background-image:linear-gradient(#f5f7f766,#f5f7f766),var(--atmosphere); background-size:cover; background-position:center top; background-repeat:no-repeat; }
+.app-surface>.site-header,.app-surface>.footer-band { flex-shrink:0; }
+.app-surface>.footer-band { margin-top:auto; }
 .shell,.header-inner { width:min(1200px,calc(100% - 80px)); margin-inline:auto; }
 .site-header { position:sticky; top:0; z-index:100; background:#f5f7f7eb; backdrop-filter:blur(16px); border-bottom:1px solid #b9c1c34d; }
 .header-inner { min-height:80px; display:flex; align-items:center; gap:40px; }
