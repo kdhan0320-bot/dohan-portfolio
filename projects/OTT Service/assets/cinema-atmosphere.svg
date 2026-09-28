@@ -1,25 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1120" viewBox="0 0 1600 1120" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200" fill="none">
   <defs>
-    <radialGradient id="blue" gradientUnits="userSpaceOnUse" cx="1250" cy="160" r="680" gradientTransform="translate(0 56) scale(1 .66)">
-      <stop stop-color="#6989BA" stop-opacity=".24"/>
-      <stop offset=".48" stop-color="#3D567B" stop-opacity=".12"/>
-      <stop offset="1" stop-color="#111820" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="violet" gradientUnits="userSpaceOnUse" cx="140" cy="760" r="670" gradientTransform="translate(0 304) scale(1 .6)">
-      <stop stop-color="#777196" stop-opacity=".12"/>
-      <stop offset="1" stop-color="#111820" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="screen" x1="1030" y1="10" x2="1350" y2="300" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#A4BCD9" stop-opacity=".02"/>
-      <stop offset=".55" stop-color="#A4BCD9" stop-opacity=".25"/>
-      <stop offset="1" stop-color="#A4BCD9" stop-opacity="0"/>
-    </linearGradient>
+    <radialGradient id="blue"><stop stop-color="#50769B" stop-opacity=".24"/><stop offset="1" stop-color="#50769B" stop-opacity="0"/></radialGradient>
+    <radialGradient id="lavender"><stop stop-color="#787BA6" stop-opacity=".12"/><stop offset="1" stop-color="#787BA6" stop-opacity="0"/></radialGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#B7D5F6" stop-opacity=".035"/><stop offset="1" stop-color="#B7D5F6" stop-opacity="0"/></linearGradient>
   </defs>
-  <path fill="url(#blue)" d="M0 0h1600v1120H0z"/>
-  <path fill="url(#violet)" d="M0 0h1600v1120H0z"/>
-  <g stroke="url(#screen)" stroke-width="1">
-    <rect x="1110" y="18" width="240" height="96" rx="2"/>
-    <rect x="1130" y="35" width="240" height="96" rx="2"/>
-    <rect x="1150" y="52" width="240" height="96" rx="2"/>
-  </g>
+  <ellipse cx="90" cy="300" rx="590" ry="570" fill="url(#blue)"/>
+  <ellipse cx="1510" cy="170" rx="600" ry="510" fill="url(#blue)"/>
+  <ellipse cx="1240" cy="800" rx="680" ry="400" fill="url(#lavender)"/>
+  <path d="M0 80 1150 640 1600 530 0 0Z" fill="url(#beam)"/>
+  <path d="M45 0V1200M1555 0V1200" stroke="#A7C5E7" stroke-opacity=".06"/>
 </svg>

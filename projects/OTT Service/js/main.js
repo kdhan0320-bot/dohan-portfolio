@@ -87,11 +87,43 @@
       keywords: "자연 숲 다큐 산책 힐링 잔잔한 편안한 짧은",
     },
   ];
+  const themes = [
+    {
+      id: "quiet",
+      name: "고요한 밤",
+      number: "01",
+      english: "A QUIETER NIGHT",
+      image: "forest",
+      title: "세상의 소리를 잠시 낮추고.",
+      description: "파도와 숲 사이, 생각을 비워내는 두 편.",
+      films: ["tide", "forest"],
+    },
+    {
+      id: "warmth",
+      name: "다정한 하루",
+      number: "02",
+      english: "A LITTLE WARMTH",
+      image: "letters",
+      title: "작은 다정함이 필요한 날.",
+      description: "오래된 편지와 이웃의 불빛에서 만나는 온기.",
+      films: ["letters", "windows"],
+    },
+    {
+      id: "beyond",
+      name: "낯선 세계",
+      number: "03",
+      english: "BEYOND THE FAMILIAR",
+      image: "orbit",
+      title: "익숙한 풍경 너머로.",
+      description: "한밤의 온실에서 먼 궤도까지, 낯선 곳으로의 초대.",
+      films: ["greenhouse", "orbit"],
+    },
+  ];
   const $ = (id) => document.getElementById(id);
   const storageKey = "jansang-cinema:saved:v1";
   const validIds = new Set(films.map((f) => f.id));
   const state = {
-    view: "browse",
+    view: "home",
     mood: "all",
     query: "",
     saved: new Set(),
@@ -164,6 +196,37 @@
     article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/stills/${film.image}.webp" alt="" width="1672" height="941" loading="lazy" style="object-position:${film.position}"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><small>${film.english}</small><span class="film-title">${film.title}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
     return article;
   }
+  function renderThemes(id) {
+    const theme = themes.find((t) => t.id === id) || themes[0];
+    $("themeNumber").textContent = theme.number;
+    $("themeTagline").textContent = theme.english;
+    $("themeTitle").textContent = theme.title;
+    $("themeDescription").textContent = theme.description;
+    const selectedFilms = theme.films.map((id) =>
+      films.find((f) => f.id === id),
+    );
+    $("themeDuration").textContent =
+      `작품 ${selectedFilms.length}편 · 총 ${selectedFilms.reduce((sum, f) => sum + f.minutes, 0)}분`;
+    $("themeFilms").replaceChildren(...selectedFilms.map(makeCard));
+    document.querySelectorAll("[data-theme]").forEach((link) => {
+      if (link.dataset.theme === theme.id)
+        link.setAttribute("aria-current", "true");
+      else link.removeAttribute("aria-current");
+    });
+    updateSaveButtons();
+  }
+  $("themePreviews").innerHTML = themes
+    .map(
+      (theme) =>
+        `<a class="theme-preview" href="#themes/${theme.id}"><div class="theme-preview-image"><img src="assets/stills/${theme.image}.webp" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><span class="theme-preview-meta">작품 2편 ${icon("arrow")}</span></div></a>`,
+    )
+    .join("");
+  $("themeTabs").innerHTML = themes
+    .map(
+      (theme) =>
+        `<a href="#themes/${theme.id}" data-theme="${theme.id}"><span aria-hidden="true">${theme.number}</span>${theme.name}</a>`,
+    )
+    .join("");
   function matches(film) {
     const q = state.query.toLocaleLowerCase("ko").replace(/\s+/g, "");
     return (
@@ -225,55 +288,89 @@
     $("searchInput").value = "";
     render();
   }
-  function setView(view, { scroll = false, reset = true } = {}) {
-    state.view = view;
-    document.body.classList.toggle("saved-view", view === "saved");
-    $("home").hidden = view === "saved";
-    $("catalogTitle").textContent =
-      view === "saved" ? "찜한 작품" : "작품 둘러보기";
-    $("catalogKicker").textContent =
-      view === "saved" ? "YOUR COLLECTION" : "THE SCREENING ROOM";
-    document.querySelectorAll("[data-view]").forEach((a) => {
-      if (a.dataset.view === view) a.setAttribute("aria-current", "page");
-      else a.removeAttribute("aria-current");
-    });
-    if (reset) resetFilters();
-    else render();
-    if (scroll) {
-      $("browse").scrollIntoView({ block: "start" });
-      $("catalogTitle").focus({ preventScroll: true });
-    }
-  }
-  function navigate(view) {
-    const hash = view === "saved" ? "#saved" : "#browse";
-    if (location.hash === hash) setView(view, { scroll: true });
+  const catalogFilters = {
+    browse: { mood: "all", query: "" },
+    saved: { mood: "all", query: "" },
+  };
+  let searchRequested = false;
+  let firstRoute = true;
+  function navigate(path) {
+    const hash = `#${path}`;
+    if (location.hash === hash) route();
     else location.hash = hash;
   }
   function route() {
-    if (location.hash === "#saved") setView("saved", { scroll: true });
-    else if (location.hash === "#browse") setView("browse", { scroll: true });
-    else if (location.hash === "#home") {
-      setView("browse");
-      $("home").scrollIntoView({ block: "start" });
-    } else setView("browse");
+    document
+      .querySelectorAll("dialog[open]")
+      .forEach((dialog) => dialog.close());
+    const [path, themeId] = location.hash.slice(1).split("/");
+    const view = ["browse", "saved", "themes"].includes(path) ? path : "home";
+    const previousView = state.view;
+    if (catalogFilters[previousView])
+      catalogFilters[previousView] = { mood: state.mood, query: state.query };
+    state.view = view;
+    document.body.dataset.view = view;
+    document.body.classList.toggle("saved-view", view === "saved");
+    $("homeView").hidden = view !== "home";
+    $("themesView").hidden = view !== "themes";
+    $("catalogView").hidden = !["browse", "saved"].includes(view);
+    document.querySelectorAll(".nav [data-view]").forEach((a) => {
+      if (a.dataset.view === view) a.setAttribute("aria-current", "page");
+      else a.removeAttribute("aria-current");
+    });
+    let heading = $("heroTitle");
+    if (catalogFilters[view]) {
+      Object.assign(state, catalogFilters[view]);
+      $("searchInput").value = state.query;
+      $("catalogTitle").textContent =
+        view === "saved" ? "찜한 작품" : "작품 둘러보기";
+      $("catalogKicker").textContent =
+        view === "saved" ? "YOUR OWN COLLECTION" : "THE FILM LIBRARY";
+      $("catalogDescription").textContent =
+        view === "saved"
+          ? "다시 만나고 싶은 장면들을 한곳에."
+          : "분위기로 좁히거나, 마음에 둔 작품을 찾아보세요.";
+      if (searchRequested) resetFilters();
+      else render();
+      heading = $("catalogTitle");
+    } else if (view === "themes") {
+      renderThemes(themeId);
+      heading =
+        previousView === "themes" && !firstRoute
+          ? $("themeTitle")
+          : $("themesTitle");
+    } else updateSaveButtons();
+    document.title = `${view === "home" ? "오래 남을 한 장면" : view === "themes" ? "테마로 고르는 한 편" : $("catalogTitle").textContent} — 잔상관`;
+    if (!firstRoute) {
+      if (previousView !== "themes" || view !== "themes")
+        window.scrollTo({ top: 0, behavior: "instant" });
+      if (searchRequested) $("searchInput").focus({ preventScroll: true });
+      else heading.focus({ preventScroll: true });
+    }
+    searchRequested = false;
+    firstRoute = false;
   }
   window.addEventListener("hashchange", route);
-  document.querySelectorAll("[data-view]").forEach((a) =>
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      navigate(a.dataset.view);
-    }),
-  );
-  document.querySelectorAll(".brand").forEach((a) =>
-    a.addEventListener("click", () => {
-      setView("browse");
-      if (location.hash === "#home")
-        $("home").scrollIntoView({ block: "start" });
-    }),
-  );
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest('a[href^="#"]');
+    if (
+      !link ||
+      link.classList.contains("skip") ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    )
+      return;
+    const hash = link.getAttribute("href");
+    if (!/^#(home|browse|saved|themes)(\/|$)/.test(hash)) return;
+    event.preventDefault();
+    navigate(hash.slice(1));
+  });
   $("searchShortcut").addEventListener("click", () => {
-    $("browse").scrollIntoView({ block: "start" });
-    $("searchInput").focus({ preventScroll: true });
+    searchRequested = true;
+    navigate("browse");
   });
   $("searchInput").addEventListener("input", (e) => {
     state.query = e.target.value;
@@ -405,11 +502,20 @@
       document.body.append($("toast"));
       const currentReplacement =
         activeDetailId &&
-        document.querySelector(`.film-grid [data-detail="${activeDetailId}"]`);
+        [
+          ...document.querySelectorAll(
+            `.film-grid [data-detail="${activeDetailId}"]`,
+          ),
+        ].find((el) => el.getClientRects().length);
       const target =
         activeTrigger?.isConnected && activeTrigger.getClientRects().length
           ? activeTrigger
-          : currentReplacement || $("catalogTitle");
+          : currentReplacement ||
+            (state.view === "themes"
+              ? $("themesTitle")
+              : state.view === "home"
+                ? $("heroTitle")
+                : $("catalogTitle"));
       target.focus({ preventScroll: true });
       activeTrigger = null;
       activeDetailId = null;

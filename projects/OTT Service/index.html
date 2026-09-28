@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#111820" />
+    <meta name="theme-color" content="#101820" />
     <meta
       name="description"
       content="잔상관 — 오늘의 끝에, 오래 남을 한 장면. 가상 작품으로 만든 영화 탐색 포트폴리오 콘셉트."
@@ -62,7 +62,9 @@
           ><span>잔상관<small>JANSANG CINEMA</small></span></a
         >
         <nav class="nav" aria-label="주 메뉴">
-          <a href="#browse" data-view="browse" aria-current="page">둘러보기</a>
+          <a href="#home" data-view="home" aria-current="page">홈</a>
+          <a href="#browse" data-view="browse">작품</a>
+          <a href="#themes" data-view="themes">테마</a>
           <a href="#saved" data-view="saved"
             >찜한 작품 <span class="saved-count" id="savedCount">0</span></a
           >
@@ -72,71 +74,157 @@
           id="searchShortcut"
           aria-label="작품 검색"
         >
-          <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+          <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg
+          ><span>검색</span>
         </button>
       </div>
     </header>
     <main id="main-content" tabindex="-1">
-      <section class="hero" id="home" aria-labelledby="heroTitle">
-        <img
-          class="hero-image"
-          src="assets/stills/tide.webp"
-          width="1672"
-          height="941"
-          alt="푸른 저녁 바다 옆 작은 집에 켜진 따뜻한 불빛"
-          fetchpriority="high"
-        />
-        <div class="hero-shade"></div>
-        <div class="hero-inner wrap">
-          <div class="hero-topline">
-            <span class="eyebrow"><span class="dot"></span>오늘의 한 편</span
-            ><span class="concept-label">가상 영화 큐레이션</span>
-          </div>
-          <div class="hero-copy">
-            <p class="hero-intro">오늘의 끝에, 오래 남을 한 장면.</p>
-            <h1 id="heroTitle">
-              파도가<br />머문 자리<span class="title-dot">.</span>
-            </h1>
-            <p class="hero-desc">돌아온 바닷가, 끝내 전하지 못한 말.</p>
-            <p class="hero-meta">
-              드라마 <span>·</span> 24분 <span>·</span> 잔잔한 여운
-            </p>
-            <div class="hero-actions">
-              <button class="button light" data-detail="tide">
-                작품 정보<svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" />
-                </svg>
-              </button>
-              <button
-                class="button ghost save-button"
-                data-save="tide"
-                aria-pressed="false"
+      <div id="homeView">
+        <section class="hero" id="home" aria-labelledby="heroTitle">
+          <img
+            class="hero-image"
+            src="assets/stills/tide.webp"
+            width="1672"
+            height="941"
+            alt="푸른 저녁 바다 옆 작은 집에 켜진 따뜻한 불빛"
+            fetchpriority="high"
+          />
+          <div class="hero-shade"></div>
+          <div class="hero-inner wrap">
+            <div class="hero-topline">
+              <span class="eyebrow"
+                ><span class="dot"></span>잔상관이 고른 한 편</span
+              ><span class="concept-label">영화 탐색 UI 콘셉트</span>
+            </div>
+            <div class="hero-copy">
+              <p class="hero-intro">오늘의 끝에, 오래 남을 한 장면.</p>
+              <h1 id="heroTitle" tabindex="-1">
+                파도가<br />머문 자리<span class="title-dot">.</span>
+              </h1>
+              <p class="hero-desc">돌아온 바닷가, 끝내 전하지 못한 말.</p>
+              <p class="hero-meta">
+                드라마 <span>·</span> 24분 <span>·</span> 잔잔한 여운
+              </p>
+              <div class="hero-actions">
+                <button class="button light" data-detail="tide">
+                  작품 살펴보기<svg class="icon" aria-hidden="true">
+                    <use href="#i-arrow" />
+                  </svg>
+                </button>
+                <button
+                  class="button ghost save-button"
+                  data-save="tide"
+                  aria-pressed="false"
+                >
+                  <svg class="icon" aria-hidden="true">
+                    <use href="#i-bookmark" /></svg
+                  ><span>찜하기</span>
+                </button>
+              </div>
+            </div>
+            <div class="hero-bottom">
+              <a href="#browse" class="text-link"
+                >전체 작품 6편 <span aria-hidden="true">↗</span></a
               >
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-bookmark" /></svg
-                ><span>찜하기</span>
-              </button>
+              <span class="hero-edition" aria-hidden="true"
+                >JANSANG SELECTION <span>01 — 06</span></span
+              >
             </div>
           </div>
-          <div class="hero-bottom">
-            <a href="#browse" class="text-link"
-              >전체 작품 보기 <span aria-hidden="true">↓</span></a
+        </section>
+        <section
+          class="home-themes atmosphere"
+          aria-labelledby="homeThemesTitle"
+        >
+          <div class="wrap">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow section-kicker">THREE WAYS TO FEEL</p>
+                <h2 id="homeThemesTitle">오늘은, 어떤 여운인가요?</h2>
+              </div>
+              <a class="text-link" href="#themes"
+                >테마 모두 보기<svg class="icon" aria-hidden="true">
+                  <use href="#i-arrow" /></svg
+              ></a>
+            </div>
+            <div class="theme-preview-grid" id="themePreviews"></div>
+            <p class="home-caption">
+              <span class="caption-rule" aria-hidden="true"></span>서두르지 않고
+              고르는, 여섯 편의 작은 영화.
+            </p>
+          </div>
+        </section>
+      </div>
+      <section
+        class="themes-page atmosphere"
+        id="themesView"
+        aria-labelledby="themesTitle"
+        hidden
+      >
+        <div class="wrap">
+          <div class="page-heading">
+            <div>
+              <p class="eyebrow section-kicker">CURATED COLLECTIONS</p>
+              <h1 id="themesTitle" tabindex="-1">테마로 고르는 한 편</h1>
+              <p class="page-description">
+                지금의 기분에 닿는 두 작품을 함께 골랐어요.
+              </p>
+            </div>
+            <span class="page-edition" aria-hidden="true"
+              >03 <small>THEMES</small></span
             >
+          </div>
+          <nav class="theme-tabs" aria-label="테마 선택" id="themeTabs"></nav>
+          <div class="theme-collection" id="themeCollection">
+            <div class="theme-story">
+              <p class="theme-number" id="themeNumber" aria-hidden="true"></p>
+              <p class="eyebrow" id="themeTagline"></p>
+              <h2 id="themeTitle" tabindex="-1"></h2>
+              <p id="themeDescription"></p>
+              <p class="theme-duration" id="themeDuration"></p>
+              <a class="text-link" href="#browse"
+                >전체 작품 보기<svg class="icon" aria-hidden="true">
+                  <use href="#i-arrow" /></svg
+              ></a>
+            </div>
+            <div class="film-grid theme-films" id="themeFilms"></div>
           </div>
         </div>
       </section>
-      <div class="catalog-shell">
+      <div class="catalog-shell atmosphere" id="catalogView" hidden>
         <section
           class="catalog wrap"
           id="browse"
           aria-labelledby="catalogTitle"
         >
-          <div class="section-heading">
+          <div class="page-heading">
             <div>
               <p class="eyebrow section-kicker" id="catalogKicker">
-                THE SCREENING ROOM
+                THE FILM LIBRARY
               </p>
-              <h2 id="catalogTitle" tabindex="-1">작품 둘러보기</h2>
+              <h1 id="catalogTitle" tabindex="-1">작품 둘러보기</h1>
+              <p class="page-description" id="catalogDescription">
+                분위기로 좁히거나, 마음에 둔 작품을 찾아보세요.
+              </p>
+            </div>
+            <div class="catalog-reel" aria-hidden="true">
+              <img
+                src="assets/stills/letters.webp"
+                alt=""
+                width="1672"
+                height="941"
+              /><img
+                src="assets/stills/orbit.webp"
+                alt=""
+                width="1672"
+                height="941"
+              /><img
+                src="assets/stills/forest.webp"
+                alt=""
+                width="1672"
+                height="941"
+              /><span>THE JANSANG COLLECTION</span>
             </div>
           </div>
           <div class="catalog-tools">
@@ -287,7 +375,7 @@
       <p>가상 영화 6편으로 만든 탐색 UI 콘셉트입니다.</p>
       <ol class="about-flow" aria-label="주요 이용 흐름">
         <li>
-          <span>01</span><strong>작품 탐색</strong><small>분위기 · 검색</small>
+          <span>01</span><strong>작품 선택</strong><small>검색 · 테마</small>
         </li>
         <li>
           <span>02</span><strong>정보 확인</strong
@@ -303,8 +391,8 @@
         사용하지 않았습니다.
       </p>
       <p>
-        회원가입·로그인·영상 재생·결제 기능은 제공하지 않습니다. 계정과
-        비밀번호를 수집하지 않습니다.
+        회원가입·로그인·게시물 작성·영상 재생·결제 기능은 제공하지 않습니다.
+        계정과 비밀번호를 수집하지 않습니다.
       </p>
       <a
         class="text-link"
