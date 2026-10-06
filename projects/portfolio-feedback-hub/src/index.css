@@ -58,7 +58,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .preview-bar i { width:6px; height:6px; border-radius:50%; background:#f0dc80; }
 .preview-canvas { position:relative; background:#ededed; }
 .preview-pin { position:absolute; left:8%; top:30%; display:grid; place-items:center; width:33px; height:33px; border:2px solid #fff; border-radius:50% 50% 50% 6px; background:#252525; color:#fff; box-shadow:0 4px 12px #22222230; font-size:13px; font-weight:700; }
-.preview-comment { position:absolute; right:18px; bottom:76px; display:flex; align-items:flex-start; gap:10px; width:75%; padding:17px 16px; border:1px solid #cdcdcd; border-radius:9px; background:#fff; box-shadow:0 8px 24px #43434318; }
+.hero-preview .preview-pin { left:3%; top:22%; }
+.preview-comment { position:absolute; right:18px; bottom:76px; display:flex; align-items:flex-start; gap:10px; width:70%; padding:17px 16px; border:1px solid #cdcdcd; border-radius:9px; background:#fff; box-shadow:0 8px 24px #43434318; }
 .preview-comment .note-number { color:#fff; background:#252525; }
 .preview-comment strong { font-size:14px; font-weight:650; line-height:1.5; }
 .preview-comment p { margin-top:5px; color:#666666; font-size:13px; line-height:1.6; word-break:keep-all; overflow-wrap:anywhere; }
@@ -224,8 +225,8 @@ body:has(.artwork-dialog[open]) { overflow:hidden; }
 .guide-steps>li { min-width:0; overflow:hidden; border:1px solid #dcdcdc; border-radius:10px; background:#fff; }
 .guide-visual { height:225px; position:relative; overflow:hidden; border-bottom:1px solid #dcdcdc; background:#e9e9e9; }
 .guide-locate { display:grid; align-content:center; }
-.guide-locate .preview-pin { left:17%; top:42%; }
-.guide-pointer { position:absolute; left:24%; top:54%; color:#393939; font-size:36px; line-height:1; text-shadow:0 1px 0 white; }
+.guide-locate .preview-pin { left:1%; top:38%; }
+.guide-pointer { position:absolute; left:11%; top:54%; color:#393939; font-size:36px; line-height:1; text-shadow:0 1px 0 white; }
 .guide-write { display:grid; place-items:center; padding:24px; }
 .guide-comment-card { display:grid; grid-template-columns:auto minmax(0,1fr); gap:10px; width:100%; padding:16px; border:1px solid #cdcdcd; border-radius:7px; background:#fff; }
 .guide-comment-card strong { font-size:13px; font-weight:600; line-height:25px; }
