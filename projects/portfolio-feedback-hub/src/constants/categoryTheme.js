@@ -6,6 +6,7 @@ import AutoAwesomeOutlined from '@mui/icons-material/AutoAwesomeOutlined';
 import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import ForumOutlined from '@mui/icons-material/ForumOutlined';
 import GridViewOutlined from '@mui/icons-material/GridViewOutlined';
+import TouchAppOutlined from '@mui/icons-material/TouchAppOutlined';
 
 /* 필터 아이콘과 코드 기반 미니 리뷰 보드가 같은 카테고리 색상 체계를 공유한다. */
 export const CATEGORY_THEME = {
@@ -16,6 +17,30 @@ export const CATEGORY_THEME = {
     surface: '#F8FAFC',
     soft: '#DDE4EC',
     preview: 'portfolio',
+  },
+  '정보 위계': {
+    icon: ViewQuiltOutlined,
+    label: '정보 위계',
+    accent: '#454B4A',
+    surface: '#F3F5F4',
+    soft: '#D9DFDC',
+    preview: 'portfolio',
+  },
+  '주요 행동': {
+    icon: TouchAppOutlined,
+    label: '주요 행동',
+    accent: '#484848',
+    surface: '#F4F4F4',
+    soft: '#DDDDDD',
+    preview: 'figma',
+  },
+  '입력·안내': {
+    icon: FactCheckOutlined,
+    label: '입력·안내',
+    accent: '#5A5543',
+    surface: '#F7F5ED',
+    soft: '#E3DECE',
+    preview: 'job',
   },
   '포트폴리오 피드백': {
     icon: FactCheckOutlined,

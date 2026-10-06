@@ -2,7 +2,7 @@
 
 홈에서 용도를 이해하고, 작업을 선택해 디자인의 위치와 의견을 연결해 보는 포트폴리오용 피드백 데모입니다.
 
-2026-09-28 마감 개편을 GitHub Pages에 반영했습니다. 공개 체험 검수와 미완료 인증/모바일 검수를 아래에 구분합니다.
+흑연·실버 테마의 공개 리뷰 데모입니다. 최신 가독성 보완과 실제 확인 범위는 아래에 기록하며, 인증·모바일 검수는 별도로 구분합니다.
 
 - 배포 주소: https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/
 
@@ -207,6 +207,15 @@
 배포 전 lint·build·기존 로직/정적 렌더링 검사 15개·`git diff --check`를 통과했습니다. 이 검사는 실제 계정·서버 기능 검사와 구분합니다.
 
 > Use case: lighting-weather. Asset type: full-page ambient background for the Korean design critique portfolio website Goreunsiseon. Image 1 is the edit target. Keep the existing refined silver-grey surface, frosted-glass refracted daylight, restrained pale champagne-yellow highlights, very fine material texture and airy low-contrast quality. Change only the DISTRIBUTION of the light: the current top-left is almost empty while top-right is busy. Rebalance the image so its UPPER THIRD already contains clearly visible but soft light textures on BOTH the LEFT and RIGHT, of comparable visual weight. Add broad, delicate refracted light drifting naturally in from the upper-left edge across the left quarter; retain a softer complementary light on the upper-right. Continue a quiet irregular light field along both sides toward the bottom. Do not mirror or repeat identical patches: make one natural continuous photographic surface. The central area and the upper-left text zone must stay high-key and readable for dark website headings, with subtle low-frequency tonal variation, no dark shadows behind copy. Preserve portrait orientation and the original silver/offwhite/champagne palette; no mint, teal, lavender, blue, pink or burgundy. Avoid large blank halves, hard diagonals, physical objects, circles, rings, arcs, targets, spheres, paper folds, ribbons, geometric panels, grid, borders, text, logos, UI, people, watermark. Light should dissolve gently into the pale base at the edges. This is a background-only refinement, not a website screenshot.
+
+## 가독성과 리뷰 맥락 마감
+
+- 홈의 분위기 설명을 번호 선택·의견 입력·수정안 비교라는 실제 행동으로 바꿨습니다. 기존 금속/유리 자산과 팔레트를 유지하면서 미리보기 폭을 늘리고, 핵심 화면 부분을 보여줘 첫 화면의 높이를 줄였습니다. 홈과 안내 페이지의 체험 순서를 일치시켰습니다.
+- 리뷰 제목 아래에 검토 질문을 표시하고 작업 종류·검토 초점을 함께 보존했습니다. 수정안에서는 선택한 번호의 ‘바꾼 점·확인할 점’ 한 세트만 표시합니다. 확인 기준은 제안이며 측정된 사용자 성과가 아닙니다.
+- 샘플 분류를 ‘정보 위계·주요 행동·입력·안내’라는 검토 기준으로 맞췄습니다. 기존 분류 URL은 해당 구분 버튼과 이전 결과를 유지하며, 검색은 작업 맥락도 포함합니다.
+- 제목 24px, 검토 질문 16px, 의견 본문 15px, 입력 16px, 의견 소멸 안내 14px로 역할을 나눴습니다. 리뷰 상세에서는 공통 배경 위 밝은 덮개를 강화해 검토 화면과 글의 대비를 높였습니다. 갤러리·안내의 제목 배너 높이와 공통 간격도 줄였습니다.
+- 새 이미지·외부 템플릿·패키지·인증 설정·DB 변경은 없습니다. 고른시선 외 프로젝트는 변경하지 않았습니다.
+- 배포 전 ESLint·Vite build·`git diff --check`와 분류/검색/기존 URL 호환 로직 검사를 통과했습니다. 실제 화면 검수는 배포 후 진행하며, 실제 모바일 렌더링과 비공개 계정 로그인·서버 CRUD는 이 검사에 포함되지 않습니다. 공개 회원가입은 기존처럼 제공하지 않습니다.
 
 ## 실행 방법
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
-import { SAMPLE_POSTS, CATEGORIES, getCategoryLabel } from '../constants/samplePosts';
+import { SAMPLE_POSTS, CATEGORIES, LEGACY_SAMPLE_CATEGORIES, getCategoryLabel } from '../constants/samplePosts';
 import Header from '../components/Header';
 import SiteFooter from '../components/SiteFooter';
 import WorkCard from '../components/WorkCard';
@@ -18,7 +18,8 @@ export default function PostListPage() {
   const [dataState, setDataState] = useState('loading');
   const searchRef = useRef(null);
   const query = searchParams.get('q') || '';
-  const categories = useMemo(() => [...new Set([...CATEGORIES, ...posts.map(getCategoryLabel)])], [posts]);
+  const requestedCategory = searchParams.get('category');
+  const categories = useMemo(() => [...new Set([...CATEGORIES, ...posts.map(getCategoryLabel), ...(LEGACY_SAMPLE_CATEGORIES.includes(requestedCategory) ? [requestedCategory] : [])])], [posts, requestedCategory]);
   const category = categories.includes(searchParams.get('category')) ? searchParams.get('category') : '전체';
   const sort = ['latest', 'comments', 'likes'].includes(searchParams.get('sort')) ? searchParams.get('sort') : 'latest';
   const sample = dataState.startsWith('sample');
@@ -72,7 +73,7 @@ export default function PostListPage() {
       <section className="gallery-section" id="gallery" aria-labelledby="gallery-title">
         <div className="gallery-title-row"><h2 id="gallery-title" tabIndex={-1}>{hasFilters ? '검색 결과' : sample ? '샘플 리뷰' : '공개 작업'} <span>{dataState === 'loading' ? '' : visiblePosts.length}</span></h2>{user && <button className="text-button" onClick={() => navigate('/write')}>작업 올리기 +</button>}</div>
         <div className="gallery-toolbar">
-          <div className="category-filters" role="group" aria-label="작업 분류">{categories.map(item => <button key={item} aria-pressed={category === item} onClick={() => update({ category: item })}>{item}</button>)}</div>
+          <div className="category-filters" role="group" aria-label="검토 기준">{categories.map(item => <button key={item} aria-pressed={category === item} onClick={() => update({ category: item })}>{item}</button>)}</div>
           <div className="search-sort"><label className="search-box"><input ref={searchRef} type="search" aria-label="작업 검색" placeholder="작업 검색" value={query} onChange={event => update({ q: event.target.value })} /></label>{hasFilters && <button className="text-button filter-reset" onClick={reset}>초기화</button>}{!sample && <select aria-label="작업 정렬" value={sort} onChange={event => update({ sort: event.target.value })}><option value="latest">최신순</option><option value="comments">의견순</option><option value="likes">인기순</option></select>}</div>
         </div>
         <div className="sr-only" role="status">{dataState === 'loading' ? '작업을 불러오는 중입니다.' : `${visiblePosts.length}개 작업을 표시합니다.`}</div>

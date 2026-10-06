@@ -12,8 +12,8 @@ export function selectWorks(posts, {
 } = {}) {
   const keyword = query.trim().toLocaleLowerCase('ko');
   const selected = posts.filter(post => {
-    if (category !== '전체' && getCategoryLabel(post) !== category) return false;
-    const text = [post.title, post.content, post.profiles?.username, ...(post.hashtags || [])].filter(Boolean).join(' ').toLocaleLowerCase('ko');
+    if (category !== '전체' && getCategoryLabel(post) !== category && post.legacyCategory !== category) return false;
+    const text = [post.title, post.content, post.subtitle, post.legacyCategory, post.profiles?.username, ...(post.hashtags || [])].filter(Boolean).join(' ').toLocaleLowerCase('ko');
     return text.includes(keyword);
   });
   return selected.sort((a, b) => sort === 'comments' ? (b.comment_count || 0) - (a.comment_count || 0) : sort === 'likes' ? (b.like_count || 0) - (a.like_count || 0) : new Date(b.created_at) - new Date(a.created_at));
