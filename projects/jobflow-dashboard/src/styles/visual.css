@@ -32,6 +32,11 @@
 .showcase-preview > div { position: relative; }
 .showcase-preview .product-window { border-color: #CFBDC0; box-shadow: 0 12px 24px #463C3E0D; }
 .showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: #664E52; background: #FCFAF7; font-size: 14px; line-height: 1.6; text-align: center; }
+.welcome-closing { width: min(1200px, calc(100% - 96px)); margin: 10px auto 64px; padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #D9C5C7; border-left: 4px solid #94394B; border-radius: 5px 18px 18px 5px; background: #FAF3EF; }
+.welcome-closing h2 { margin-top: 9px; color: #512E36; font-size: 25px; line-height: 1.5; letter-spacing: -.035em; }
+.welcome-closing .section-kicker { color: #79535B; font-size: 13px; }
+.welcome-closing-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
+.welcome-closing-actions small { color: #655D5B; font-size: 13px; }
 .welcome-footer { border-color: #E0DBD5; position: relative; background: #FCFAF7; }
 
 .workspace-shell { position: relative; isolation: isolate; }
@@ -40,13 +45,13 @@
 .workspace-content main { position: relative; }
 .workspace-content .MuiAppBar-root { background: #FAF8F4; }
 .page-heading { position: relative; }
-.page-heading-illustrated { isolation: isolate; overflow: hidden; min-height: 154px; gap: 20px; padding: 22px 28px 22px 20px; margin-bottom: 28px; border: 1px solid #DDCEC5; border-radius: 6px 22px 22px 6px; background: #FAF7F2; box-shadow: 0 5px 0 -2px #ECE0D7, 0 6px 0 -2px #D8C9C0, 0 12px 22px #512E3607; }
-.page-heading-illustrated::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #FAF7F2 38%, #FAF7F2B3 62%, #FAF7F200 80%), url('../assets/galpi-ribbon-paper.webp') right 48% / 620px auto no-repeat; pointer-events: none; }
+.page-heading-illustrated { isolation: isolate; overflow: hidden; min-height: 106px; gap: 18px; padding: 20px 24px 20px 18px; margin-bottom: 28px; border: 1px solid #DDCEC5; border-radius: 5px 16px 16px 5px; background: #FAF7F2; box-shadow: -3px 0 #B36C79, 0 4px 0 -2px #E5D9D0; }
+.page-heading-illustrated::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, #FAF7F2 35%, #F4E8E5); pointer-events: none; }
 .page-heading-illustrated .page-heading-copy { flex: 1; min-width: 0; }
-.page-heading-illustrated h1 { font-size: clamp(27px, 2.4vw, 32px); }
-.page-heading-illustrated .heading-graphic { width: 106px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #512E360A); }
+.page-heading-illustrated h1 { font-size: clamp(26px, 2.2vw, 30px); line-height: 1.35; }
+.page-heading-illustrated .heading-graphic { width: 64px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #512E360A); }
 .page-heading-illustrated .heading-actions:empty { display: none; }
-.page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 7px; background: #FFFDFAF2; border: 1px solid #FFFFFF; border-radius: 13px; box-shadow: 0 3px 12px #512E3608; }
+.page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 0; }
 .page-heading .muted { color: #655D5B; }
 .next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 320px; }
 .next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #F4E4E6; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
@@ -83,12 +88,16 @@
   .welcome-copy h1 { font-size: 48px; }
   .welcome-sculpture { height: 360px; width: 100%; max-width: 620px; margin: 0 auto; }
   .welcome-showcase { width: calc(100% - 64px); }
+  .welcome-closing { width: calc(100% - 64px); padding: 28px; }
   .showcase-layout { grid-template-columns: 190px minmax(0, 1fr); gap: 18px; }
   .showcase-controls .MuiTab-root { gap: 12px; padding-inline: 13px; font-size: 17px; }
-  .page-heading-illustrated .heading-graphic { width: 86px; margin-right: 0; }
+  .page-heading-illustrated .heading-graphic { width: 64px; margin-right: 0; }
 }
 @media (max-width: 699px) {
   .welcome-nav { min-height: 88px; }
+  .welcome-closing { width: calc(100% - 40px); margin-bottom: 36px; padding: 26px 22px; flex-direction: column; align-items: flex-start; }
+  .welcome-closing h2 { font-size: 23px; }
+  .welcome-closing-actions { align-items: flex-start; }
   .welcome-hero { min-height: 0; padding-block: 32px 4px; }
   .welcome-copy h1 { font-size: clamp(32px, 9vw, 45px); }
   .welcome-copy > p { font-size: 14px; margin-bottom: 24px; }
@@ -103,12 +112,12 @@
   .showcase-preview::before { inset: 0 8px 46px; }
   .showcase-caption { font-size: 13px; margin-top: 16px; }
   .workspace-content::before { display: none; }
-  .page-heading-illustrated { gap: 12px; min-height: 134px; padding: 20px 18px; border-radius: 6px 17px 17px 6px; flex-wrap: wrap; }
-  .page-heading-illustrated::before { background-size: auto, 420px auto; background-position: center, right top; opacity: .38; }
+  .page-heading-illustrated { gap: 14px; min-height: 100px; padding: 18px 16px; border-radius: 6px 17px 17px 6px; flex-wrap: wrap; }
+  .page-heading-illustrated::before { opacity: 1; }
   .page-heading-illustrated h1 { font-size: 25px; }
-  .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 78px); }
-  .page-heading-illustrated .heading-graphic { width: 66px; }
-  .page-heading-illustrated .heading-actions { width: 100%; }
+  .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 62px); }
+  .page-heading-illustrated .heading-graphic { width: 48px; }
+  .page-heading-illustrated .heading-actions { width: 100%; justify-content: flex-end; }
   .page-heading-illustrated .heading-actions .MuiButton-root { min-height: 44px; }
   .next-application::after { left: 25px; width: 18px; height: 15px; }
   .next-application { min-height: 0; }

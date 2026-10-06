@@ -51,7 +51,7 @@ function SidebarContent({
   </nav>
   <div className="sidebar-bottom">
     <nav className="secondary-nav" aria-label="보조 메뉴">
-      <Link to="/document-helper" onClick={() => onNavigate?.(isMobile)} aria-current={pathname === '/document-helper' ? 'page' : undefined}><EditNote fontSize="small" />문장 도우미</Link>
+      <Link to="/document-helper" onClick={() => onNavigate?.(isMobile)} aria-current={pathname === '/document-helper' ? 'page' : undefined}><EditNote fontSize="small" />작성 요청문</Link>
       <Link to="/welcome" onClick={() => onNavigate?.(isMobile)}><InfoOutlined fontSize="small" />서비스 소개</Link>
       <Link to="/settings" onClick={() => onNavigate?.(isMobile)} aria-current={pathname === '/settings' ? 'page' : undefined}><SettingsOutlined fontSize="small" />설정</Link>
     </nav>

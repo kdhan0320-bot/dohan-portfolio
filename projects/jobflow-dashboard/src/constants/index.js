@@ -75,7 +75,7 @@ export const NAV_ITEMS = [
   { path: '/calendar', label: '마감 일정', icon: 'calendar', match: 'exact' },
   { path: '/checklist', label: '준비 체크', icon: 'checklist', match: 'exact' },
   { path: '/interview', label: '면접 연습', icon: 'interview', match: 'exact' },
-  { path: '/document-helper', label: '문장 도우미', icon: 'document-helper', match: 'exact' },
+  { path: '/document-helper', label: '작성 요청문', icon: 'document-helper', match: 'exact' },
   { path: '/settings', label: '설정', icon: 'settings', match: 'exact' }
 ];
 export const getRouteTitle = pathname => {

@@ -7,6 +7,7 @@ import EditOutlined from '@mui/icons-material/EditOutlined';
 import Check from '@mui/icons-material/Check';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
+import VisibilityOffOutlined from '@mui/icons-material/VisibilityOffOutlined';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
@@ -147,7 +148,7 @@ export default function InterviewPage() {
         <div className="practice-card-meta"><span>{activeNote.related_project || '일반 질문'}</span><span>중요도 {activeNote.importance}</span></div>
         <span className="practice-question-mark" aria-hidden="true">Q.</span>
         <h2>{activeNote.question}</h2>
-        {revealed[activeNote.id] ? <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div> : <div className="practice-covered" aria-hidden="true"><span /><span /><span /></div>}
+        {revealed[activeNote.id] ? <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div> : <div className="practice-answer-hidden"><VisibilityOffOutlined aria-hidden="true" fontSize="small" /><span>답변을 가렸어요</span></div>}
         <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
           {revealed[activeNote.id] ? '답변 접기' : '답변 펼치기'}
         </Button>

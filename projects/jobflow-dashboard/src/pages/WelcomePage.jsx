@@ -39,6 +39,16 @@ export default function WelcomePage() {
           <div className="showcase-preview">{views.map(item => <div key={item.id} role="tabpanel" id={`preview-panel-${item.id}`} aria-labelledby={`preview-tab-${item.id}`} tabIndex={0} hidden={view !== item.id}><ProductPreview view={item.id} /><p className="showcase-caption">{item.caption}</p></div>)}</div>
         </div>
       </section>
+      <section className="welcome-closing" aria-labelledby="welcome-closing-title">
+        <div className="welcome-closing-copy">
+          <span className="section-kicker">나의 다음 갈피</span>
+          <h2 id="welcome-closing-title">지원 준비, 한곳에서 시작해요.</h2>
+        </div>
+        <div className="welcome-closing-actions">
+          <Button variant="contained" size="large" endIcon={<ArrowForward />} onClick={start} disabled={busy || loading}>{busy ? '준비 중…' : user || isGuest ? '내 지원 이어보기' : '샘플로 시작하기'}</Button>
+          {!user && <small>가상 데이터로 먼저 체험해보세요.</small>}
+        </div>
+      </section>
     </main>
     <footer className="welcome-footer"><span>갈피록 · 김도한의 포트폴리오 프로젝트</span><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기 ↗</a></footer>
   </div>;
