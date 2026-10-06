@@ -224,6 +224,13 @@ export const PROJECT_DETAIL_READY = {
     },
   },
   jobflow: {
+    sectionHeadings: {
+      context: ['흩어진 지원 기록을, 한곳에서.'],
+      decisions: ['다음 행동을 찾는 세 가지 화면.'],
+      screens: ['오늘의 할 일부터 회사별 기록까지.'],
+      scope: ['체험할 수 있는 기능과 구현 범위.'],
+      result: ['구현한 것과 더 확인할 것.'],
+    },
     meta: {
       type: 'WEB APPLICATION',
       role: 'UX/UI · REACT FRONTEND',
