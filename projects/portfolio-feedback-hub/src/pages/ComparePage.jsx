@@ -28,6 +28,7 @@ export default function ComparePage() {
           <label className="compare-select">비교할 예제<select value={post.id} onChange={selectSample}>{SAMPLE_POSTS.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</select></label>
         </div>
         <p className="compare-question"><strong>검토 질문</strong><span>{post.question}</span></p>
+        <p className="comparison-artwork-note">검토용 디자인 이미지 · 화면 안의 버튼은 동작하지 않습니다.</p>
         <div className="comparison-grid" key={post.id}>
           <figure className="comparison-panel">
             <figcaption><span className="comparison-label">수정 전</span><span>검토할 화면</span></figcaption>
@@ -44,6 +45,14 @@ export default function ComparePage() {
             <div><h3>{note.title}</h3><p className="comparison-change">{note.change}</p><p>{note.check}</p></div>
           </article>)}
         </div>
+        {post.rationale && <details className="comparison-rationale" key={`${post.id}-rationale`}>
+          <summary><span><strong>수정 이유</strong><span>{post.rationale.title}</span></span><span className="rationale-toggle" aria-hidden="true">+</span></summary>
+          <div className="rationale-body">
+            <p className="rationale-goal">{post.rationale.goal}</p>
+            <dl>{post.rationale.decisions.map(decision => <div key={decision.label}><dt>{decision.label}</dt><dd>{decision.text}</dd></div>)}</dl>
+            <p className="rationale-disclaimer">가상 예제의 설계 판단입니다. 실제 사용자 검증 결과는 아닙니다.</p>
+          </div>
+        </details>}
         <div className="comparison-footer">
           <p>미리 제작한 수정 예시입니다. 입력한 의견에 따라 자동으로 바뀌지는 않습니다.</p>
           <Link className="primary-link" to={`/posts/${post.id}`}>이 화면에 의견 남기기</Link>

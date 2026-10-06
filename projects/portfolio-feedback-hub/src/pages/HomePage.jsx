@@ -10,7 +10,7 @@ import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 import { getLegacyWorksPath } from '../utils/workList';
 
 function ReviewPreview() {
-  const [after, setAfter] = useState(false);
+  const [after, setAfter] = useState(true);
   const [active, setActive] = useState(0);
   const id = useId();
   const post = SAMPLE_POSTS[0];
@@ -27,19 +27,19 @@ function ReviewPreview() {
       <div className="product-preview-canvas">
         <div className="product-preview-art">
           <WorkArtwork kind="gallery" before={!after} viewBox="0 125 960 480" title={`전시 웹사이트 · ${after ? '수정안' : '수정 전'} 미리보기`} />
-          {post.notes.map((item, index) => <button key={item.title} className="feedback-pin" aria-label={`미리보기 ${index + 1}번: ${item.title}`} aria-pressed={active === index} aria-controls={`${id}-note`} style={{ left: 'max(26px, 5%)', top: `${(item.y * 6.8 - 125) / 4.8}%` }} onClick={() => setActive(index)}>{index + 1}</button>)}
+          {post.notes.map((item, index) => <button key={item.title} className="feedback-pin" aria-label={`미리보기 ${index + 1}번: ${item.title}`} aria-pressed={active === index} aria-controls={`${id}-note`} style={{ top: `${(item.y * 6.8 - 125) / 4.8}%` }} onClick={() => setActive(index)}>{index + 1}</button>)}
         </div>
-        <p>번호를 눌러 의견을 확인해 보세요.</p>
+        <div className="product-preview-caption"><strong>검토용 디자인 이미지</strong><span>이미지 속 버튼은 동작하지 않습니다.</span></div>
       </div>
       <aside className="product-preview-feedback">
-        <span className="section-kicker">화면의 위치와 연결된 의견</span>
+        <span className="section-kicker">{after ? '수정 전 받은 예시 의견' : '이 화면에서 살펴볼 점'}</span>
         <div id={`${id}-note`} className="product-note" aria-live="polite" aria-atomic="true">
           <h3><span className="note-number">{active + 1}</span>{note.title}</h3>
           <p>{note.text}</p>
           <div className="product-note-change"><span>{after ? '바꾼 점' : '수정 방향'}</span><strong>{note.change}</strong></div>
         </div>
         <Link className="primary-link" to={`/posts/${post.id}${after ? '?view=after' : ''}`}>이 화면에 의견 남기기</Link>
-        <span className="product-preview-hint">미리 준비된 디자인 예시입니다.</span>
+        <Link className="preview-reason-link" to={`/compare?sample=${post.id}`}>수정 이유 함께 보기</Link>
       </aside>
     </div>
     <ol className="product-preview-steps" aria-label="리뷰 체험 순서"><li><span>01</span> 번호 선택</li><li><span>02</span> 의견 남기기</li><li><span>03</span> 수정안 비교</li></ol>
@@ -56,7 +56,7 @@ export default function HomePage() {
     <div className="home-page">
       <section className="shell product-intro" aria-labelledby="home-title">
         <div><span className="section-kicker">고른시선 · 디자인 피드백 보드</span><h1 id="home-title">화면에 의견을 남기고,<br /><span>수정 전후</span>를 비교하세요.</h1></div>
-        <div className="product-intro-copy"><p>웹·앱 디자인의 어느 부분을 바꿀지,<br />화면과 의견을 함께 보며 살펴보세요.</p><Link className="primary-link" to="/posts/sample-1">샘플 리뷰 시작하기</Link><span>로그인 없이 체험 · 의견은 저장되지 않습니다.</span></div>
+        <div className="product-intro-copy"><p>웹·앱 예제에 의견을 남기고,<br />준비된 수정안과 이유를 살펴보세요.</p><Link className="primary-link" to="/posts/sample-1">샘플 리뷰 시작하기</Link><span>로그인 없이 체험 · 의견은 저장되지 않습니다.</span></div>
       </section>
       <div className="shell"><ReviewPreview /></div>
       <div className="shell home-challenge"><ChallengeBanner /></div>

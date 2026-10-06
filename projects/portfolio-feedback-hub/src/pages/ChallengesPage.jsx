@@ -6,21 +6,21 @@ import { SAMPLE_POSTS } from '../constants/samplePosts';
 import { usePageTitle } from '../utils/pageMeta';
 
 const challenges = [
-  { sample: 'sample-1', title: '제목이 먼저 읽히도록', description: '이미지와 제목 사이에서 무엇을 먼저 보게 할지 정해 보세요.' },
-  { sample: 'sample-4', title: '재생 버튼을 찾기 쉽게', description: '화면을 처음 본 사람이 재생 버튼을 바로 찾을 수 있을까요?' },
-  { sample: 'sample-11', title: '입력 안내를 분명하게', description: '이메일 예시와 비밀번호 조건이 입력 전에 읽히는지 살펴보세요.' },
+  { sample: 'sample-1', title: '제목이 먼저 읽히도록', description: '제목이 먼저 읽히려면, 이미지와 제목의 크기를 어떻게 조절할까요?' },
+  { sample: 'sample-4', title: '재생 버튼을 찾기 쉽게', description: '재생 버튼을 다른 조작 버튼과 구분하려면, 무엇을 강조할까요?' },
+  { sample: 'sample-11', title: '입력 전에 필요한 안내', description: '입력을 시작하기 전에 이메일 예시와 비밀번호 조건을 어디에 보여줄까요?' },
 ];
 
 export default function ChallengesPage() {
-  usePageTitle('연습 챌린지 | 고른시선');
+  usePageTitle('피드백 연습 | 고른시선');
   return <div className="app-surface"><Header />
     <div className="shell challenges-page">
       <header className="page-heading challenge-intro">
-        <span className="section-kicker">연습 챌린지</span>
+        <span className="section-kicker">피드백 연습</span>
         <h1>작은 화면,<br className="mobile-break" /> 한 가지 개선.</h1>
-        <p>주제를 고르고, 화면의 번호에 구체적인 의견을 남겨보세요.</p>
+        <p>주제를 고르고, 바꿀 부분과 이유를 적어보세요.</p>
       </header>
-      <p className="challenge-notice"><span className="sample-tag">가상 챌린지</span>연습용 콘텐츠 · 실제 모집·제출·시상은 없습니다.</p>
+      <p className="challenge-notice"><span className="sample-tag">연습용 예제</span>미리 만든 화면과 수정안을 사용하는 체험입니다.</p>
       <section className="challenge-grid" aria-label="디자인 피드백 연습 주제">
         {challenges.map((challenge, index) => {
           const post = SAMPLE_POSTS.find(item => item.id === challenge.sample);

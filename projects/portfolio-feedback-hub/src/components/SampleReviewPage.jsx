@@ -50,14 +50,14 @@ export function ReviewBoard({ post, view: controlledView, onViewChange, standalo
           <WorkArtwork kind={post.kind} before={!after} title={`${post.title} · ${after ? '수정안' : '수정 전'} 디자인 예시`} />
           {post.notes.map((note, index) => <button className="feedback-pin" key={note.title} aria-label={`${index + 1}번 위치: ${note.title}`} aria-pressed={active === index} aria-controls={`${id}-note-${index}`} style={{ left: `${note.x}%`, top: `${note.y}%` }} onClick={() => selectNote(index, true)}>{index + 1}</button>)}
         </div>
-        <p className="canvas-caption">번호를 누르면 해당 의견으로 이동합니다.<span>그림 속 버튼과 입력창은 디자인 예시입니다.</span></p>
+        <p className="canvas-caption"><strong>검토용 디자인 이미지</strong><span>번호로 의견을 선택하세요. 이미지 속 버튼·입력창은 동작하지 않습니다.</span></p>
         {after && <div className="review-decision" aria-live="polite" aria-atomic="true">
           <p className="decision-label">{active + 1}번 위치의 수정 방향</p>
           <dl><div><dt>바꾼 점</dt><dd>{activeNote.change}</dd></div><div><dt>확인할 점</dt><dd>{activeNote.check}</dd></div></dl>
         </div>}
       </div>
       <aside className="board-feedback" aria-labelledby={`${id}-feedback-title`}>
-        <div className="feedback-heading"><h3 id={`${id}-feedback-title`}>의견 <span>{post.notes.length + replies.length}</span></h3><span>번호로 연결된 위치</span></div>
+        <div className="feedback-heading"><h3 id={`${id}-feedback-title`}>의견 <span>{post.notes.length + replies.length}</span></h3><span>{after ? '수정 전 받은 예시 의견' : '번호로 연결된 위치'}</span></div>
         <ol className="feedback-list">
           {post.notes.map((note, index) => <li key={note.title} className={active === index ? 'is-selected' : ''}>
             <button id={`${id}-note-${index}`} ref={node => { noteRefs.current[index] = node; }} className="feedback-comment" aria-pressed={active === index} onClick={() => selectNote(index)}>

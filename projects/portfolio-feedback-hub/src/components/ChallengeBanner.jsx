@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 export default function ChallengeBanner() {
   return <section className="challenge-banner" aria-labelledby="challenge-banner-title">
     <div className="challenge-banner-copy">
-      <span className="section-kicker">디자인 피드백 연습</span>
+      <span className="section-kicker">피드백 연습</span>
       <h2 id="challenge-banner-title">한 가지를 바꾸면,<br />화면은 어떻게 달라질까요?</h2>
-      <p>제목, 버튼, 입력 안내.<br />작은 차이를 발견하는 세 가지 연습.</p>
+      <p>제목·버튼·입력 안내에서<br />바꿀 부분과 이유를 찾아보세요.</p>
     </div>
     <svg className="challenge-banner-art" viewBox="0 0 440 260" aria-hidden="true" focusable="false">
       <rect x="34" y="25" width="260" height="196" rx="10" fill="#F9F4ED" stroke="#DFB8A6" strokeWidth="2" />
@@ -27,6 +27,6 @@ export default function ChallengeBanner() {
       <circle cx="368" cy="53" r="22" fill="#F5B197" />
       <path d="M358 53l7 7 13-15" fill="none" stroke="#643829" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
-    <div className="challenge-banner-action"><Link className="primary-link" to="/challenges">연습 챌린지 보기</Link><span>연습용 콘텐츠 · 실제 모집·시상 없음</span></div>
+    <div className="challenge-banner-action"><Link className="primary-link" to="/challenges">피드백 연습 보기</Link><span>예제 연습 · 의견은 저장되지 않아요.</span></div>
   </section>;
 }
