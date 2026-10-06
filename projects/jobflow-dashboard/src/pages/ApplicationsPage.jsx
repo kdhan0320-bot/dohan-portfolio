@@ -36,6 +36,10 @@ export default function ApplicationsPage() {
     setParams(prev => { const next = new URLSearchParams(prev); Object.entries(values).forEach(([key,value]) => { if (value == null || value === '') next.delete(key); else next.set(key, value); }); return next; }, { replace });
   }
   function closePanel() { changeParams({ company: null, new: null }, true); }
+  function clearSearch() {
+    changeParams({ q: null }, true);
+    window.requestAnimationFrame(() => document.getElementById('board-company-search')?.focus());
+  }
   async function save(payload) {
     const row = creating ? await add(payload) : await update(selected.id, payload);
     const destination = boardColumn(row.status);
@@ -60,12 +64,12 @@ export default function ApplicationsPage() {
       <Button id="board-add-company" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>회사 추가</Button>
     </PageHeading>
     <div className="board-toolbar">
-      <Field className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => changeParams({ q: e.target.value }, true)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={() => changeParams({ q: null }, true)} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
+      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => changeParams({ q: e.target.value }, true)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
       <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
-      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>‘{query.trim()}’와 일치하는 회사·직무가 {paused ? '보류함' : '지원 현황'}에 없어요.</p><Button variant="outlined" onClick={() => changeParams({ q: null }, true)}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>지원 현황으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
+      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>‘{query.trim()}’와 일치하는 회사·직무가 {paused ? '보류함' : '지원 현황'}에 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>지원 현황으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
         <Tabs className="mobile-board-tabs" value={lane} onChange={(_,value) => changeParams({ lane: value }, true)} variant="fullWidth" aria-label="전형 단계">
           {BOARD_COLUMNS.map(c => <Tab key={c.id} id={`lane-tab-${c.id}`} aria-controls={`lane-${c.id}`} value={c.id} label={<span>{c.label}<b>{filtered.filter(a => boardColumn(a.status) === c.id).length}</b></span>} />)}
         </Tabs>

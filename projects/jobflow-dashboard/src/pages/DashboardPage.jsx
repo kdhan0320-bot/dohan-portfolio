@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Button, Checkbox } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import ArrowForward from '@mui/icons-material/ArrowForward';
-import ArrowOutward from '@mui/icons-material/ArrowOutward';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
@@ -46,8 +45,8 @@ export default function DashboardPage() {
       </section>
       {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
       <div className="overview-grid">
-        <section className="overview-panel" aria-labelledby="active-title"><header><h2 id="active-title">지원 중 <span>{active.length}</span></h2><Button component={Link} to="/">전체 현황 <ArrowOutward fontSize="small" /></Button></header><div className="active-company-list">{active.slice(0, 3).map(a => <Link className="active-company" to={companyDestination(a.id)} key={a.id}><CompanyMark name={a.company_name} /><span className="active-company-copy"><strong>{a.company_name}</strong><small>{a.position || '직무 미입력'}</small></span><StatusChip status={a.status} /></Link>)}{!active.length && <Empty title="진행 중인 지원이 없어요"><Button component={Link} to="/">지원 현황 열기</Button></Empty>}</div></section>
-        <section className="overview-panel" aria-labelledby="todo-title"><header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button component={Link} to="/checklist">전체 보기 <ArrowOutward fontSize="small" /></Button></header><div className="overview-tasks">{todo.slice(0, 3).map(item => <label className="overview-task" key={item.id}><Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료` } }} /><span>{item.title}</span></label>)}{!todo.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}</div></section>
+        <section className="overview-panel" aria-labelledby="active-title"><header><h2 id="active-title">지원 중 <span>{active.length}</span></h2><Button component={Link} to="/">전체 현황 <ArrowForward fontSize="small" /></Button></header><div className="active-company-list">{active.slice(0, 3).map(a => <Link className="active-company" to={companyDestination(a.id)} key={a.id}><CompanyMark name={a.company_name} /><span className="active-company-copy"><strong>{a.company_name}</strong><small>{a.position || '직무 미입력'}</small></span><StatusChip status={a.status} /></Link>)}{!active.length && <Empty title="진행 중인 지원이 없어요"><Button component={Link} to="/">지원 현황 열기</Button></Empty>}</div></section>
+        <section className="overview-panel" aria-labelledby="todo-title"><header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button component={Link} to="/checklist">전체 보기 <ArrowForward fontSize="small" /></Button></header><div className="overview-tasks">{todo.slice(0, 3).map(item => <label className="overview-task" key={item.id}><Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료` } }} /><span>{item.title}</span></label>)}{!todo.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}</div></section>
       </div>
     </>}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

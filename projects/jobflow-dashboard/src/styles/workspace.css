@@ -128,7 +128,7 @@
 .helper-input-heading h2 { font-size: 21px; line-height: 1.45; }
 .helper-input-heading p, .helper-note { color: #6A6161; font-size: 14px; line-height: 1.7; margin: 7px 0 0; }
 .helper-note { margin-top: 0; }
-.calendar-reference-note { color: #6A6161; font-size: 13px; line-height: 1.65; margin: 12px 0 0; }
+.calendar-reference-note { color: #6A6161; font-size: 13px; line-height: 1.65; margin: 0; padding: 0 24px 12px; }
 
 @media (max-width: 1199px) {
   .job-board { gap: 16px; }
@@ -155,6 +155,7 @@
   .question-index { padding-left: 10px; padding-right: 10px; gap: 8px; }
 }
 @media (max-width: 699px) {
+  .calendar-reference-note { padding-inline: 14px; }
   .settings-card, .settings-card .MuiCardContent-root { padding: 22px; }
   .settings-summary { gap: 14px; }
   .settings-mark { width: 60px; }
