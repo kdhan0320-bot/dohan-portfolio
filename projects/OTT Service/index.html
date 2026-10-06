@@ -1,115 +1,117 @@
 <!doctype html>
+
 <html lang="ko">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#08131f" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="#08131f" name="theme-color" />
     <meta
+      content="취향으로 만나는 영화, 잔상관. 가상 영화 12편의 탐색·기획전·매거진과 개인 기록을 체험하는 포트폴리오 콘셉트."
       name="description"
-      content="취향으로 만나는 영화, 잔상관. 작품 탐색과 기획전, 매거진, 영화 소식을 한곳에서."
     />
     <title>취향으로 만나는 영화 — 잔상관</title>
     <link
-      rel="icon"
       href="assets/favicon.svg?v=ec2dbbb4"
+      rel="icon"
       type="image/svg+xml"
     />
     <link
-      rel="preload"
+      as="font"
+      crossorigin=""
       href="assets/fonts/PretendardVariable.woff2"
-      as="font"
+      rel="preload"
       type="font/woff2"
-      crossorigin
     />
     <link
-      rel="preload"
+      as="font"
+      crossorigin=""
       href="assets/fonts/JansangDisplay-600-700.woff2"
-      as="font"
+      rel="preload"
       type="font/woff2"
-      crossorigin
     />
     <link
-      rel="preload"
-      href="assets/posters-v13/bluehour-hero.webp"
       as="image"
       fetchpriority="high"
+      href="assets/posters-v13/bluehour-hero.webp"
+      rel="preload"
     />
-    <link rel="stylesheet" href="css/style.css?v=48d2a92f" />
-    <script src="js/main.js?v=5680eb26" defer></script>
+    <link href="css/style.css?v=65b3d50d" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=7ff658d5"></script>
   </head>
   <body>
-    <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <symbol id="i-mark" viewBox="0 0 40 30">
-          <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22" />
-          <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45" />
-          <path d="M9 10h29v18H9z" fill="currentColor" />
-          <path d="M12 13h23v12H12z" fill="#08131f" />
+        <symbol id="i-mark" viewbox="0 0 40 30">
+          <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22"></path>
+          <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45"></path>
+          <path d="M9 10h29v18H9z" fill="currentColor"></path>
+          <path d="M12 13h23v12H12z" fill="#08131f"></path>
         </symbol>
-        <symbol id="i-arrow" viewBox="0 0 24 24">
-          <path d="M5 12h14m-6-6 6 6-6 6" />
+        <symbol id="i-arrow" viewbox="0 0 24 24">
+          <path d="M5 12h14m-6-6 6 6-6 6"></path>
         </symbol>
-        <symbol id="i-bookmark" viewBox="0 0 24 24">
-          <path d="M6 4h12v17l-6-4-6 4V4Z" />
+        <symbol id="i-bookmark" viewbox="0 0 24 24">
+          <path d="M6 4h12v17l-6-4-6 4V4Z"></path>
         </symbol>
-        <symbol id="i-search" viewBox="0 0 24 24">
-          <circle cx="10.5" cy="10.5" r="6.5" />
-          <path d="m16 16 5 5" />
+        <symbol id="i-search" viewbox="0 0 24 24">
+          <circle cx="10.5" cy="10.5" r="6.5"></circle>
+          <path d="m16 16 5 5"></path>
         </symbol>
-        <symbol id="i-close" viewBox="0 0 24 24">
-          <path d="m6 6 12 12M18 6 6 18" />
+        <symbol id="i-close" viewbox="0 0 24 24">
+          <path d="m6 6 12 12M18 6 6 18"></path>
         </symbol>
-        <symbol id="i-check" viewBox="0 0 24 24">
-          <path d="m5 12 4 4L19 6" />
+        <symbol id="i-check" viewbox="0 0 24 24">
+          <path d="m5 12 4 4L19 6"></path>
         </symbol>
-        <symbol id="i-back" viewBox="0 0 24 24">
-          <path d="M19 12H5m6-6-6 6 6 6" />
+        <symbol id="i-back" viewbox="0 0 24 24">
+          <path d="M19 12H5m6-6-6 6 6 6"></path>
         </symbol>
       </defs>
     </svg>
-
     <a class="skip" href="#main-content">본문으로 바로가기</a>
     <header class="header">
       <div class="header-inner wrap">
-        <a class="brand" href="#home" aria-label="잔상관 홈"
-          ><svg class="brand-mark" aria-hidden="true">
-            <use href="#i-mark" /></svg
+        <a aria-label="잔상관 홈" class="brand" href="#home"
+          ><svg aria-hidden="true" class="brand-mark">
+            <use href="#i-mark"></use></svg
           ><span>잔상관<small>FILM DISCOVERY</small></span></a
         >
-        <nav class="nav" aria-label="주 메뉴">
-          <a href="#browse" data-view="browse">영화</a
-          ><a href="#themes" data-view="themes">기획전</a
-          ><a href="#journal" data-view="journal">매거진</a
-          ><a href="#news" data-view="news">소식·혜택</a
-          ><a href="#saved" data-view="saved"
+        <nav aria-label="주 메뉴" class="nav">
+          <a data-view="browse" href="#browse">영화</a
+          ><a data-view="themes" href="#themes">기획전</a
+          ><a data-view="journal" href="#journal">매거진</a
+          ><a data-view="news" href="#news">차트·이벤트</a
+          ><a data-view="saved" href="#saved"
             >내 보관함
-            <span class="saved-count" id="savedCount" aria-hidden="true"
+            <span aria-hidden="true" class="saved-count" id="savedCount"
               >0</span
             ></a
           >
         </nav>
         <div class="header-tools">
-          <button class="text-link header-help" data-about>이용안내</button
+          <button class="text-link header-help" data-about="">이용안내</button
           ><button
+            aria-label="영화 검색"
             class="icon-button header-search"
             id="searchShortcut"
-            aria-label="영화 검색"
           >
-            <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg>
+            <svg aria-hidden="true" class="icon">
+              <use href="#i-search"></use>
+            </svg>
           </button>
         </div>
       </div>
     </header>
     <main id="main-content" tabindex="-1">
       <div id="homeView">
-        <section class="hero" aria-labelledby="heroTitle">
+        <section aria-labelledby="heroTitle" class="hero">
           <img
+            alt="해안 도시의 다리에서 자전거를 멈춘 두 성인 배달원. 가상 애니메이션 파란 오후의 장면"
             class="hero-image"
+            fetchpriority="high"
+            height="800"
             src="assets/posters-v13/bluehour-hero.webp"
             width="1920"
-            height="800"
-            alt="해안 도시의 다리에서 자전거를 멈춘 두 성인 배달원. 가상 애니메이션 파란 오후의 장면"
-            fetchpriority="high"
           />
           <div class="hero-shade"></div>
           <div class="hero-inner wrap">
@@ -132,19 +134,16 @@
               </p>
               <div class="hero-actions">
                 <button class="button light" data-detail="bluehour">
-                  영화 소개 보기
-                  <svg class="icon" aria-hidden="true">
-                    <use href="#i-arrow" />
-                  </svg></button
+                  영화 소개 보기</button
                 ><button
+                  aria-label="파란 오후 찜하기"
+                  aria-pressed="false"
                   class="icon-button save-button hero-save"
                   data-save="bluehour"
-                  aria-label="파란 오후 찜하기"
                   title="파란 오후 찜하기"
-                  aria-pressed="false"
                 >
-                  <svg class="icon" aria-hidden="true">
-                    <use href="#i-bookmark" />
+                  <svg aria-hidden="true" class="icon">
+                    <use href="#i-bookmark"></use>
                   </svg>
                 </button>
               </div>
@@ -153,179 +152,134 @@
               <span class="hero-index">SPOTLIGHT <strong>01</strong> / 12</span
               ><a class="text-link" href="#themes/beyond"
                 >상상 바깥으로, 기획전
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></a>
+              </a>
             </div>
           </div>
         </section>
         <section
-          class="home-films wrap section"
           aria-labelledby="homeFilmsTitle"
+          class="home-films wrap section"
         >
           <div class="section-heading">
             <div>
               <p class="section-kicker">YOUR NEXT DISCOVERY</p>
               <h2 id="homeFilmsTitle">지금 발견할 영화</h2>
             </div>
-            <a class="text-link" href="#browse"
-              >전체 영화
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg
-            ></a>
+            <a class="text-link" href="#browse">전체 영화 </a>
           </div>
           <div class="rail-shell">
             <div
+              aria-label="추천 콘셉트 영화 12편"
               class="film-rail"
               id="homeFilms"
               role="region"
-              aria-label="추천 콘셉트 영화 12편"
               tabindex="0"
             ></div>
             <div class="rail-controls">
               <span
+                aria-live="polite"
                 class="rail-status"
                 data-rail-status="homeFilms"
-                aria-live="polite"
               ></span
               ><button
+                aria-label="이전 영화"
                 class="icon-button rail-prev"
                 data-rail-prev="homeFilms"
-                aria-label="이전 영화"
               >
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-back" />
+                <svg aria-hidden="true" class="icon">
+                  <use href="#i-back"></use>
                 </svg></button
               ><button
+                aria-label="다음 영화"
                 class="icon-button rail-next"
                 data-rail-next="homeFilms"
-                aria-label="다음 영화"
               >
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" />
+                <svg aria-hidden="true" class="icon">
+                  <use href="#i-arrow"></use>
                 </svg>
               </button>
             </div>
           </div>
         </section>
-        <section class="wrap campaign-wrap" aria-label="잔상관 주말 기획전">
+        <section aria-label="잔상관 주말 기획전" class="wrap campaign-wrap">
           <a class="campaign campaign-weekend" href="#themes/beyond"
             ><img
-              src="assets/campaigns-v13/film-weekend.webp"
               alt=""
-              width="1440"
               height="480"
-              loading="lazy" />
+              loading="lazy"
+              src="assets/campaigns-v13/film-weekend.webp"
+              width="1440"
+            />
             <div class="campaign-copy">
               <span class="campaign-tag">잔상관 큐레이션</span>
               <h2>이번 주말은,<br />다른 세계로.</h2>
               <p>애니메이션부터 미스터리까지, 상상 밖의 네 편.</p>
-              <span class="campaign-link"
-                >기획전 만나기
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></span></div
-          ></a>
+              <span class="campaign-link">기획전 만나기 </span>
+            </div></a
+          >
         </section>
-        <section class="home-themes section" aria-labelledby="homeThemesTitle">
+        <section aria-labelledby="homeThemesTitle" class="home-themes section">
           <div class="wrap">
             <div class="section-heading">
               <div>
                 <p class="section-kicker">CURATED COLLECTIONS</p>
                 <h2 id="homeThemesTitle">같은 취향, 다른 이야기</h2>
               </div>
-              <a class="text-link" href="#themes"
-                >기획전 전체
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></a>
+              <a class="text-link" href="#themes">기획전 전체 </a>
             </div>
             <div class="theme-preview-grid" id="themePreviews"></div>
           </div>
         </section>
         <section
-          class="home-boxoffice section wrap"
-          aria-labelledby="homeBoxofficeTitle"
+          aria-labelledby="homeChartTitle"
+          class="home-chart section wrap"
         >
-          <div class="section-heading">
-            <div>
-              <p class="section-kicker">실제 개봉작 · KOBIS</p>
-              <h2 id="homeBoxofficeTitle">극장에서 주목받은 영화</h2>
+          <div class="chart-panel">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">JANSANG CHART</p>
+                <h2 id="homeChartTitle">잔상관 인기 차트</h2>
+              </div>
+              <a class="text-link" href="#news">TOP 5 보기</a>
             </div>
-            <a class="text-link" href="#news"
-              >영화 소식
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg
-            ></a>
+            <p class="chart-disclosure">
+              가상 작품으로 구성한 포트폴리오용 예시 순위
+            </p>
+            <ol class="concept-chart chart-home" id="homeChart"></ol>
           </div>
-          <p class="data-stamp">2026.10.05 일별 관객 수 기준</p>
-          <ol class="boxoffice-grid">
-            <li class="boxoffice-card">
-              <span class="rank-number" aria-label="1위">01</span>
-              <div>
-                <span class="rank-genre">범죄 · 드라마</span>
-                <h3>암살자(들)</h3>
-                <p>일 관객 <strong>178,856</strong>명</p>
-              </div>
-            </li>
-            <li class="boxoffice-card">
-              <span class="rank-number" aria-label="2위">02</span>
-              <div>
-                <span class="rank-genre">애니메이션</span>
-                <h3>극장판 치이카와: 인어 섬의 비밀</h3>
-                <p>일 관객 <strong>131,280</strong>명</p>
-              </div>
-            </li>
-            <li class="boxoffice-card">
-              <span class="rank-number" aria-label="3위">03</span>
-              <div>
-                <span class="rank-genre">범죄 · 드라마</span>
-                <h3>타짜: 벨제붑의 노래</h3>
-                <p>일 관객 <strong>96,714</strong>명</p>
-              </div>
-            </li>
-          </ol>
-          <p class="source-note">
-            출처: 영화진흥위원회 KOBIS · 실시간 순위가 아닌 집계일의 기록입니다.
-          </p>
         </section>
         <section
-          class="home-journal section wrap"
           aria-labelledby="homeJournalTitle"
+          class="home-journal section wrap"
         >
           <div class="section-heading">
             <div>
               <p class="section-kicker">JANSANG JOURNAL</p>
               <h2 id="homeJournalTitle">한 편을 더 깊게</h2>
             </div>
-            <a class="text-link" href="#journal"
-              >매거진 전체
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg
-            ></a>
+            <a class="text-link" href="#journal">매거진 전체 </a>
           </div>
           <div class="journal-grid" id="homeJournal"></div>
         </section>
-        <section class="wrap benefit-strip-wrap" aria-label="OTT 혜택 안내">
-          <a class="benefit-strip" href="#news"
-            ><div>
-              <span class="eyebrow">OTT 혜택 안내</span>
-              <h2>
-                구독하기 전,<br class="mobile-only" />
-                혜택부터 살펴보세요.
-              </h2>
-              <p>멤버십에 포함된 Netflix 혜택과 이용 조건.</p>
-            </div>
-            <span class="benefit-strip-art" aria-hidden="true"
-              ><span>PLAY</span><span>PLUS</span></span
-            ><span class="round-arrow" aria-hidden="true"
-              ><svg class="icon" aria-hidden="true">
-                <use href="#i-arrow" /></svg></span
-          ></a>
+        <section aria-label="가상 OTT 프로모션" class="wrap benefit-strip-wrap">
+          <button class="promo-teaser" data-promotion="" type="button">
+            <span class="promo-teaser-copy"
+              ><span class="demo-badge">가상 OTT 프로모션</span
+              ><strong>영화와 더 가까운<br />첫 한 달.</strong
+              ><span class="promo-note"
+                >포트폴리오 디자인 예시 · 실제 할인 없음</span
+              ><span class="promo-cta">프로모션 미리보기</span></span
+            ><span aria-hidden="true" class="promo-teaser-number"
+              >30<span>%</span><small>FIRST MONTH</small></span
+            >
+          </button>
         </section>
       </div>
       <section
-        class="themes-page interior-page"
-        id="themesView"
         aria-labelledby="themesTitle"
-        hidden
+        class="themes-page interior-page"
+        hidden=""
+        id="themesView"
       >
         <div class="wrap">
           <div class="page-heading">
@@ -336,10 +290,10 @@
             </p>
           </div>
           <div class="theme-overview" id="themeOverview"></div>
-          <div id="themeDetail" hidden>
+          <div hidden="" id="themeDetail">
             <nav
-              class="theme-tabs"
               aria-label="기획전 선택"
+              class="theme-tabs"
               id="themeTabs"
             ></nav>
             <div class="theme-collection" id="themeCollection">
@@ -352,24 +306,21 @@
                 <p class="theme-duration" id="themeDuration"></p>
               </div>
               <img
-                id="themeCover"
+                alt=""
                 class="theme-cover"
+                height="1200"
+                id="themeCover"
                 src="assets/posters-v13/bluehour.webp"
                 width="800"
-                height="1200"
-                alt=""
               />
               <div class="film-grid theme-films" id="themeFilms"></div>
             </div>
-            <a class="text-link theme-more" href="#themes"
-              >모든 기획전 보기
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg
-            ></a>
+            <a class="text-link theme-more" href="#themes">모든 기획전 보기 </a>
           </div>
         </div>
       </section>
-      <div class="catalog-shell interior-page" id="catalogView" hidden>
-        <section class="catalog wrap" aria-labelledby="catalogTitle">
+      <div class="catalog-shell interior-page" hidden="" id="catalogView">
+        <section aria-labelledby="catalogTitle" class="catalog wrap">
           <div class="page-heading">
             <p class="section-kicker" id="catalogKicker">
               CONCEPT FILM COLLECTION
@@ -380,69 +331,70 @@
             </p>
           </div>
           <div
+            aria-label="보관함 분류"
             class="library-filters"
+            hidden=""
             id="libraryFilters"
             role="group"
-            aria-label="보관함 분류"
-            hidden
           >
-            <button type="button" data-library-filter="all" aria-pressed="true">
+            <button aria-pressed="true" data-library-filter="all" type="button">
               전체</button
             ><button
-              type="button"
-              data-library-filter="saved"
               aria-pressed="false"
+              data-library-filter="saved"
+              type="button"
             >
               찜한 영화</button
             ><button
-              type="button"
-              data-library-filter="noted"
               aria-pressed="false"
+              data-library-filter="noted"
+              type="button"
             >
               노트 있는 영화
             </button>
           </div>
           <div class="catalog-tools" id="catalogTools">
             <div
+              aria-label="영화 분위기"
               class="filters"
               id="moodFilters"
               role="group"
-              aria-label="영화 분위기"
             >
-              <button data-mood="all" aria-pressed="true">전체</button
-              ><button data-mood="calm" aria-pressed="false">잔잔한</button
-              ><button data-mood="warm" aria-pressed="false">따뜻한</button
-              ><button data-mood="mystery" aria-pressed="false">긴장되는</button
-              ><button data-mood="wonder" aria-pressed="false">경이로운</button>
+              <button aria-pressed="true" data-mood="all">전체</button
+              ><button aria-pressed="false" data-mood="calm">잔잔한</button
+              ><button aria-pressed="false" data-mood="warm">따뜻한</button
+              ><button aria-pressed="false" data-mood="mystery">긴장되는</button
+              ><button aria-pressed="false" data-mood="wonder">경이로운</button>
             </div>
             <div class="search-field">
-              <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg
+              <svg aria-hidden="true" class="icon">
+                <use href="#i-search"></use></svg
               ><label class="sr-only" for="searchInput"
                 >영화 제목, 장르 검색</label
               ><input
-                id="searchInput"
-                type="search"
-                placeholder="영화 제목, 장르 검색"
                 autocomplete="off"
+                id="searchInput"
+                placeholder="영화 제목, 장르 검색"
+                type="search"
               /><button
-                class="icon-button"
-                id="clearSearch"
                 aria-label="검색어 지우기"
-                hidden
+                class="icon-button"
+                hidden=""
+                id="clearSearch"
               >
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-close" />
+                <svg aria-hidden="true" class="icon">
+                  <use href="#i-close"></use>
                 </svg>
               </button>
             </div>
           </div>
           <div class="results-bar">
-            <p id="resultCount" role="status" aria-live="polite"></p>
+            <p aria-live="polite" id="resultCount" role="status"></p>
             <div class="result-actions">
-              <button class="text-link" id="resetFilters" hidden>
+              <button class="text-link" hidden="" id="resetFilters">
                 조건 초기화
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-close" />
+                <svg aria-hidden="true" class="icon">
+                  <use href="#i-close"></use>
                 </svg>
               </button>
               <div class="sort-field" id="sortField">
@@ -456,29 +408,26 @@
             </div>
           </div>
           <div class="film-grid" id="filmGrid"></div>
-          <div class="empty-state" id="emptyState" hidden>
-            <svg class="empty-mark" aria-hidden="true">
-              <use href="#i-bookmark" />
+          <div class="empty-state" hidden="" id="emptyState">
+            <svg aria-hidden="true" class="empty-mark">
+              <use href="#i-bookmark"></use>
             </svg>
             <h2 id="emptyTitle">아직 보관한 영화가 없어요.</h2>
             <p id="emptyText">
               마음에 드는 영화의 북마크를 누르거나 노트를 남겨보세요.
             </p>
-            <button class="button light" id="emptyAction">
-              영화 둘러보기
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg>
-            </button>
+            <button class="button light" id="emptyAction">영화 둘러보기</button>
           </div>
-          <p class="storage-note" id="storageNote" hidden>
+          <p class="storage-note" hidden="" id="storageNote">
             찜한 영화와 나의 영화 노트가 이 브라우저에 저장됩니다.
           </p>
         </section>
       </div>
       <section
-        class="journal-page interior-page"
-        id="journalView"
         aria-labelledby="journalTitle"
-        hidden
+        class="journal-page interior-page"
+        hidden=""
+        id="journalView"
       >
         <div class="wrap">
           <div class="page-heading journal-heading">
@@ -495,178 +444,94 @@
           <div class="journal-grid journal-editorial" id="journalGrid"></div>
           <a class="journal-endcap" href="#browse"
             ><span>읽다가 마음에 남은 영화가 있나요?</span
-            ><strong
-              >이제 한 편을 골라보세요
-              <svg class="icon" aria-hidden="true">
-                <use href="#i-arrow" /></svg></strong
-          ></a>
+            ><strong>이제 한 편을 골라보세요 </strong></a
+          >
         </div>
       </section>
       <section
-        class="news-page interior-page"
-        id="newsView"
         aria-labelledby="newsTitle"
-        hidden
+        class="news-page interior-page"
+        hidden=""
+        id="newsView"
       >
         <div class="wrap">
           <div class="page-heading">
-            <p class="section-kicker">FILM NEWS & BENEFITS</p>
-            <h1 id="newsTitle" tabindex="-1">소식·혜택</h1>
+            <p class="section-kicker">JANSANG CHART &amp; EVENTS</p>
+            <h1 id="newsTitle" tabindex="-1">차트·이벤트</h1>
             <p class="page-description">
-              극장의 흐름과, 더 가볍게 영화를 만나는 방법.
+              눈길이 가는 영화, 취향을 넓히는 작은 제안.
             </p>
           </div>
-          <section class="news-boxoffice" aria-labelledby="boxofficeTitle">
+          <div class="chart-events-layout">
+            <section
+              aria-labelledby="conceptChartTitle"
+              class="chart-panel chart-detail-panel"
+            >
+              <div class="section-heading">
+                <div>
+                  <p class="section-kicker">CONCEPT TOP 5</p>
+                  <h2 id="conceptChartTitle">잔상관 인기 차트</h2>
+                </div>
+                <span class="demo-badge">예시 순위</span>
+              </div>
+              <p class="chart-disclosure">
+                가상 작품으로 구성한 포트폴리오용 순위입니다.<br />실제 관객
+                수나 이용자 집계와 관련이 없습니다.
+              </p>
+              <ol class="concept-chart chart-list" id="conceptChart"></ol>
+            </section>
+            <section aria-labelledby="offerTitle" class="demo-offer">
+              <div class="offer-copy">
+                <span class="demo-badge">가상 OTT 프로모션</span>
+                <p class="offer-kicker">FIRST MONTH OFFER</p>
+                <h2 id="offerTitle">영화와 더 가까운<br />첫 한 달.</h2>
+              </div>
+              <div aria-label="첫 달 30퍼센트 할인 콘셉트" class="offer-number">
+                <span>첫 달</span><strong>30<small>%</small></strong
+                ><span>할인 프로모션 콘셉트</span>
+              </div>
+              <div class="offer-action">
+                <button
+                  class="button offer-button"
+                  data-promotion=""
+                  type="button"
+                >
+                  프로모션 미리보기
+                </button>
+                <p>디자인 예시 · 실제 할인·가입·결제 없음</p>
+              </div>
+            </section>
+          </div>
+          <section aria-labelledby="campaignsTitle" class="news-campaigns">
             <div class="section-heading">
               <div>
-                <span class="info-chip">실제 개봉작</span>
-                <h2 id="boxofficeTitle">극장에서 주목받은 영화</h2>
-              </div>
-              <a
-                class="text-link"
-                href="https://www.kobis.or.kr/kobis/business/stat/boxs/findDailyBoxOfficeList.do"
-                target="_blank"
-                rel="noopener noreferrer"
-                >KOBIS 최신 순위
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></a>
-            </div>
-            <p class="data-stamp">
-              2026.10.05 일별 관객 수 기준 · 2026.10.06 확인
-            </p>
-            <ol class="boxoffice-grid">
-              <li class="boxoffice-card">
-                <span class="rank-number" aria-label="1위">01</span>
-                <div>
-                  <span class="rank-genre">범죄 · 드라마</span>
-                  <h3>암살자(들)</h3>
-                  <p>일 관객 <strong>178,856</strong>명</p>
-                </div>
-              </li>
-              <li class="boxoffice-card">
-                <span class="rank-number" aria-label="2위">02</span>
-                <div>
-                  <span class="rank-genre">애니메이션</span>
-                  <h3>극장판 치이카와: 인어 섬의 비밀</h3>
-                  <p>일 관객 <strong>131,280</strong>명</p>
-                </div>
-              </li>
-              <li class="boxoffice-card">
-                <span class="rank-number" aria-label="3위">03</span>
-                <div>
-                  <span class="rank-genre">범죄 · 드라마</span>
-                  <h3>타짜: 벨제붑의 노래</h3>
-                  <p>일 관객 <strong>96,714</strong>명</p>
-                </div>
-              </li>
-            </ol>
-            <p class="source-note">
-              영화진흥위원회 KOBIS 집계. 실시간 순위가 아니며 관객 수는 사후
-              보정될 수 있습니다.
-            </p>
-          </section>
-          <section class="benefits-section" aria-labelledby="benefitsTitle">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">공식 서비스 혜택 안내</p>
-                <h2 id="benefitsTitle">OTT, 알고 구독하기</h2>
-              </div>
-            </div>
-            <article class="membership-banner">
-              <div class="membership-copy">
-                <span class="campaign-tag">유료 멤버십 결합 혜택</span>
-                <h3>멤버십으로 만나는<br /><em>Netflix</em></h3>
-                <p>
-                  네이버플러스 멤버십에서<br />광고형 스탠다드를 콘텐츠 혜택으로
-                  선택하세요.
-                </p>
-                <a
-                  class="button light"
-                  href="https://mkt.naver.com/netflix"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >공식 조건 확인
-                  <svg class="icon" aria-hidden="true">
-                    <use href="#i-arrow" /></svg
-                ></a>
-              </div>
-              <div class="membership-price">
-                <span>네이버플러스 월간 이용권</span
-                ><strong>4,900<small>원 / 월</small></strong
-                ><span>VAT 포함 · 정기결제</span>
-                <p>유료 멤버십 · 광고 포함<br />혜택 선택 및 계정 연결 필요</p>
-              </div>
-            </article>
-            <details class="benefit-conditions">
-              <summary>가입 전 확인할 조건</summary>
-              <ul>
-                <li>
-                  매달 선택형 디지털 콘텐츠는 한 가지이며, 패밀리 중 콘텐츠
-                  선택권은 한 명에게 제공됩니다.
-                </li>
-                <li>
-                  광고 없는 Netflix 요금제로 업그레이드하면 추가 요금이
-                  발생합니다.
-                </li>
-                <li>
-                  통신사·다른 플랫폼으로 결제 중인 계정은 전환 조건을 공식
-                  안내에서 확인하세요.
-                </li>
-              </ul>
-              <a
-                class="text-link"
-                href="https://help.naver.com/service/23168/contents/21564?lang=ko&amp;osType=COMMONOS"
-                target="_blank"
-                rel="noopener noreferrer"
-                >공식 결제 금액 안내
-                <svg class="icon" aria-hidden="true">
-                  <use href="#i-arrow" /></svg
-              ></a>
-            </details>
-            <p class="source-note">
-              2026.10.06 확인 · 잔상관과의 제휴·유료 광고가 아닌 외부 정보
-              안내입니다. 가입·결제는 공식 서비스에서 진행되며 조건은 변경될 수
-              있습니다.
-            </p>
-          </section>
-          <section class="news-campaigns" aria-labelledby="campaignsTitle">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">잔상관 큐레이션 캠페인</p>
-                <h2 id="campaignsTitle">영화와 가까워지는 시간</h2>
+                <p class="section-kicker">MORE WAYS TO DISCOVER</p>
+                <h2 id="campaignsTitle">취향을 넓히는 방법</h2>
               </div>
             </div>
             <div class="campaign-pair">
               <a class="campaign campaign-weekend" href="#themes/beyond"
                 ><img
-                  src="assets/campaigns-v13/film-weekend.webp"
                   alt=""
-                  width="1440"
                   height="480"
-                  loading="lazy" />
+                  loading="lazy"
+                  src="assets/campaigns-v13/film-weekend.webp"
+                  width="1440"
+                />
                 <div class="campaign-copy">
                   <span class="campaign-tag">WEEKEND EDIT</span>
                   <h3>이번 주말은,<br />다른 세계로.</h3>
-                  <span class="campaign-link"
-                    >기획전 만나기
-                    <svg class="icon" aria-hidden="true">
-                      <use href="#i-arrow" /></svg
-                  ></span></div></a
+                  <span class="campaign-link">기획전 만나기</span>
+                </div></a
               ><a class="campaign campaign-notes" href="#saved"
                 ><div class="campaign-copy">
                   <span class="campaign-tag">MY FILM NOTES</span>
                   <h3>한 편의 발견,<br />한 줄의 기록.</h3>
                   <p>마음에 남은 영화와 나의 생각을 모아보세요.</p>
-                  <span class="campaign-link"
-                    >내 보관함 열기
-                    <svg class="icon" aria-hidden="true">
-                      <use href="#i-arrow" /></svg
-                  ></span>
+                  <span class="campaign-link">내 보관함 열기</span>
                 </div>
-                <span class="note-visual" aria-hidden="true"
-                  ><svg class="icon" aria-hidden="true">
-                    <use href="#i-bookmark" /></svg></span
+                <span aria-hidden="true" class="note-visual"
+                  ><svg class="icon"><use href="#i-bookmark"></use></svg></span
               ></a>
             </div>
           </section>
@@ -677,51 +542,48 @@
       <div class="wrap">
         <div class="footer-top">
           <div>
-            <a class="brand footer-brand" href="#home" aria-label="잔상관 홈"
-              ><svg class="brand-mark" aria-hidden="true">
-                <use href="#i-mark" /></svg
+            <a aria-label="잔상관 홈" class="brand footer-brand" href="#home"
+              ><svg aria-hidden="true" class="brand-mark">
+                <use href="#i-mark"></use></svg
               ><span>잔상관<small>FILM DISCOVERY</small></span></a
             >
             <p>취향으로 만나고, 마음에 남기는 영화.</p>
           </div>
           <div class="footer-links">
-            <button class="text-link" id="aboutButton" data-about>
+            <button class="text-link" data-about="" id="aboutButton">
               이용안내</button
-            ><a class="text-link" href="../"
-              >포트폴리오로
-              <svg class="icon" aria-hidden="true"><use href="#i-arrow" /></svg
-            ></a>
+            ><a class="text-link" href="../">포트폴리오로 </a>
           </div>
         </div>
         <div class="footer-bottom">
           <p>© 2026 JANSANG</p>
           <p>
-            콘셉트 영화 12편 · AI 생성 이미지 · 예매 및 영상 재생 없음<br />실제
-            개봉작·외부 혜택은 출처와 확인일을 표시합니다.
+            포트폴리오 콘셉트 · 영화 12편·순위·프로모션은 가상 설정<br />AI 생성
+            이미지 · 실제 영상·예매·할인 제공 없음
           </p>
         </div>
       </div>
     </footer>
     <dialog
+      aria-labelledby="detailTitle"
       class="detail-dialog"
       id="detailDialog"
-      aria-labelledby="detailTitle"
     >
       <button
+        aria-label="영화 정보 닫기"
         class="icon-button close-button"
         data-close="detailDialog"
-        aria-label="영화 정보 닫기"
       >
-        <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+        <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
       </button>
       <div class="detail-layout">
         <div class="detail-visual">
           <img
+            alt=""
+            height="1200"
             id="detailImage"
             src="assets/posters-v8/greenhouse.webp"
             width="800"
-            height="1200"
-            alt=""
           />
         </div>
         <div class="detail-content">
@@ -731,18 +593,16 @@
           <p class="detail-description" id="detailDescription"></p>
           <div class="detail-actions">
             <button
-              class="icon-button save-button detail-bookmark"
-              id="detailSave"
               aria-label="영화 찜하기"
               aria-pressed="false"
+              class="icon-button save-button detail-bookmark"
+              id="detailSave"
             >
-              <svg class="icon" aria-hidden="true">
-                <use href="#i-bookmark" />
+              <svg aria-hidden="true" class="icon">
+                <use href="#i-bookmark"></use>
               </svg></button
             ><button class="text-link" data-close="detailDialog">
-              돌아가기<svg class="icon" aria-hidden="true">
-                <use href="#i-back" />
-              </svg>
+              돌아가기
             </button>
           </div>
           <form class="note-form" id="noteForm">
@@ -754,17 +614,17 @@
               이 브라우저에만 저장돼요. 다른 사람에게 공개되지 않아요.
             </p>
             <textarea
+              aria-describedby="noteHint noteStatus"
               id="noteText"
               maxlength="280"
-              rows="3"
               placeholder="이 영화에서 기대되는 장면, 나의 생각을 남겨보세요."
-              aria-describedby="noteHint noteStatus"
+              rows="3"
             ></textarea>
             <div class="note-controls">
-              <p id="noteStatus" role="status" aria-live="polite"></p>
-              <button class="text-link" type="button" id="noteDelete" hidden>
+              <p aria-live="polite" id="noteStatus" role="status"></p>
+              <button class="text-link" hidden="" id="noteDelete" type="button">
                 삭제</button
-              ><button class="button small" type="submit" id="noteSave">
+              ><button class="button small" id="noteSave" type="submit">
                 노트 저장
               </button>
             </div>
@@ -774,24 +634,24 @@
       </div>
     </dialog>
     <dialog
+      aria-labelledby="articleTitle"
       class="article-dialog"
       id="articleDialog"
-      aria-labelledby="articleTitle"
     >
       <button
+        aria-label="매거진 닫기"
         class="icon-button close-button"
         data-close="articleDialog"
-        aria-label="매거진 닫기"
       >
-        <svg class="icon" aria-hidden="true">
-          <use href="#i-close" />
+        <svg aria-hidden="true" class="icon">
+          <use href="#i-close"></use>
         </svg></button
       ><img
-        id="articleImage"
-        class="article-image"
         alt=""
-        width="800"
+        class="article-image"
         height="1200"
+        id="articleImage"
+        width="800"
       />
       <div class="article-content">
         <p class="eyebrow" id="articleCategory"></p>
@@ -802,19 +662,19 @@
         </button>
       </div>
     </dialog>
-    <dialog class="about-dialog" id="aboutDialog" aria-labelledby="aboutTitle">
+    <dialog aria-labelledby="aboutTitle" class="about-dialog" id="aboutDialog">
       <button
+        aria-label="이용안내 닫기"
         class="icon-button close-button"
         data-close="aboutDialog"
-        aria-label="이용안내 닫기"
       >
-        <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+        <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
       </button>
       <p class="eyebrow">WELCOME TO JANSANG</p>
       <h2 id="aboutTitle" tabindex="-1">
         발견하고, 담고,<br />나의 생각을 남기세요.
       </h2>
-      <ol class="about-flow" aria-label="주요 이용 흐름">
+      <ol aria-label="주요 이용 흐름" class="about-flow">
         <li>
           <span>01</span><strong>영화 발견</strong
           ><small>영화 · 기획전 · 매거진</small>
@@ -831,9 +691,9 @@
       <div class="about-facts">
         <p>
           잔상관은 영화를 발견하고 보관하는 서비스의 포트폴리오 콘셉트입니다.
-          작품 탐색에 등장하는 영화 12편은 가상이며, 인물과 이미지는 AI로
-          생성했습니다. 소식·혜택의 실제 개봉작과 외부 정보는 출처·확인일을
-          별도로 표시합니다.
+          영화 12편과 차트 순위·프로모션은 모두 가상 설정이며, 인물과 이미지는
+          AI로 생성했습니다. 실제 흥행 집계나 할인·제휴 상품을 제공하지
+          않습니다.
         </p>
         <p>
           찜과 나의 영화 노트는 이 브라우저에 저장됩니다. 브라우저 데이터를
@@ -845,22 +705,44 @@
         </p>
       </div>
       <div class="about-actions">
-        <a
-          class="text-link"
-          href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/OTT%20Service"
-          target="_blank"
-          rel="noopener noreferrer"
-          >소스와 자산 출처<svg class="icon" aria-hidden="true">
-            <use href="#i-arrow" /></svg></a
-        ><button class="button light" data-close="aboutDialog">확인</button>
+        <button class="button light" data-close="aboutDialog">확인</button>
+      </div>
+    </dialog>
+    <dialog
+      aria-labelledby="promotionTitle"
+      class="promotion-dialog"
+      id="promotionDialog"
+    >
+      <button
+        aria-label="프로모션 미리보기 닫기"
+        class="icon-button close-button"
+        data-close="promotionDialog"
+      >
+        <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
+      </button>
+      <div class="promotion-art">
+        <span class="demo-badge">PORTFOLIO PROMOTION</span
+        ><strong aria-hidden="true">30<small>%</small></strong
+        ><span>FIRST MONTH</span>
+      </div>
+      <div class="promotion-content">
+        <p class="section-kicker">가상 OTT 프로모션</p>
+        <h2 id="promotionTitle" tabindex="-1">
+          첫 달 30% 할인<br />프로모션 미리보기
+        </h2>
+        <p>
+          잔상관의 캠페인 화면을 보여주기 위한 디자인 예시입니다. 실제
+          상품·할인·쿠폰·가입·결제는 제공하지 않습니다.
+        </p>
+        <a class="button light" href="#browse">영화 둘러보기</a>
       </div>
     </dialog>
     <div
+      aria-atomic="true"
+      aria-live="polite"
       class="toast"
       id="toast"
       role="status"
-      aria-live="polite"
-      aria-atomic="true"
     ></div>
     <noscript
       ><div class="noscript-notice">

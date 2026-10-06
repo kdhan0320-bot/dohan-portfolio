@@ -172,6 +172,8 @@
       keywords: "드라마 새벽 식당 식탁 음식 위로 대화 따뜻한 일상",
     },
   ];
+  // Portfolio sample order, not audience data or a live box-office ranking.
+  const conceptChart = ["bluehour", "signal", "atlas", "rooftop", "relay"];
   const themes = [
     {
       id: "quiet",
@@ -404,6 +406,12 @@
     article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><small class="film-english">${film.english}</small></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>노트 있음</span>`;
     return article;
   }
+  function makeChartItem(id, index) {
+    const film = films.find((item) => item.id === id);
+    const item = document.createElement("li");
+    item.innerHTML = `<button class="chart-film" type="button" data-detail="${film.id}" aria-label="콘셉트 차트 ${index + 1}위 · ${film.title} 작품 보기"><span class="chart-rank" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="chart-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span></span><span class="chart-tag">가상 작품</span></button>`;
+    return item;
+  }
   function renderThemes(id) {
     const theme = themes.find((item) => item.id === id);
     $("themeOverview").hidden = Boolean(theme);
@@ -451,7 +459,7 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.style.setProperty("--theme-accent", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편 ${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편</span></div>`;
     return link;
   }
   $("themePreviews").replaceChildren(
@@ -480,7 +488,7 @@
     const displayTitle = (articleTitleLines[article.id] || [article.title])
       .map((line) => `<span class="journal-title-line">${line}</span>`)
       .join(" ");
-    card.innerHTML = `<button class="journal-card-button" data-article="${article.id}"><span class="journal-card-image"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"></span><span class="journal-card-copy"><span class="eyebrow">${article.category}</span><h3>${displayTitle}</h3><p>${article.description}</p><span class="journal-card-link">읽어보기 ${icon("arrow")}</span></span></button>`;
+    card.innerHTML = `<button class="journal-card-button" data-article="${article.id}"><span class="journal-card-image"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"></span><span class="journal-card-copy"><span class="eyebrow">${article.category}</span><h3>${displayTitle}</h3><p>${article.description}</p><span class="journal-card-link">읽어보기</span></span></button>`;
     return card;
   }
   const homeSelection = [
@@ -501,6 +509,10 @@
     films.find((film) => film.id === id),
   );
   $("homeFilms").replaceChildren(...orderedFilms.map(makeCard));
+  $("homeChart").replaceChildren(
+    ...conceptChart.slice(0, 3).map(makeChartItem),
+  );
+  $("conceptChart").replaceChildren(...conceptChart.map(makeChartItem));
   const journalSelection = [articles[3], ...articles.slice(0, 3)];
   $("journalGrid").replaceChildren(...journalSelection.map(makeArticleCard));
   $("homeJournal").replaceChildren(
@@ -677,8 +689,11 @@
           ? "다른 검색어나 보관함 분류로 다시 찾아보세요."
           : "다른 검색어나 분위기로 다시 찾아보세요.";
     $("emptyAction").dataset.action = emptyLibrary ? "browse" : "reset";
-    $("emptyAction").innerHTML =
-      `${emptyLibrary ? "영화 둘러보기" : emptyCategory ? "보관함 전체보기" : "조건 초기화"}${icon("arrow")}`;
+    $("emptyAction").textContent = emptyLibrary
+      ? "영화 둘러보기"
+      : emptyCategory
+        ? "보관함 전체보기"
+        : "조건 초기화";
     $("storageNote").hidden = state.view !== "saved";
     updateSaveButtons();
     if (focusedId) {
@@ -760,7 +775,7 @@
       journal: "매거진",
       browse: "작품 둘러보기",
       saved: "내 보관함",
-      news: "소식·혜택",
+      news: "차트·이벤트",
     }[view];
     document.title = `${pageTitle} — 잔상관`;
     if (!firstRoute) {
@@ -966,6 +981,9 @@
     if (article) showArticle(article.dataset.article, article);
     const about = event.target.closest("[data-about], #aboutButton");
     if (about) openDialog($("aboutDialog"), about, $("aboutTitle"));
+    const promotion = event.target.closest("[data-promotion]");
+    if (promotion)
+      openDialog($("promotionDialog"), promotion, $("promotionTitle"));
     const save = event.target.closest("[data-save]");
     if (save) {
       const id = save.dataset.save;
