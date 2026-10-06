@@ -186,14 +186,14 @@ textarea:focus-visible {
 .brand > span {
   font-family: Pretendard, sans-serif;
   font-size: 27px;
-  font-weight: 850;
-  letter-spacing: -0.075em;
+  font-weight: 800;
+  letter-spacing: -0.045em;
   line-height: 1.1;
 }
 .brand small {
   display: block;
   color: #b8c197;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 650;
   letter-spacing: 0.31em;
   text-align: center;
@@ -479,6 +479,15 @@ textarea:focus-visible {
   border-color: #e3f0b7;
   color: #1a2610;
 }
+.hero .save-button[aria-pressed="true"] {
+  background: #152014e8;
+  border-color: #b5ce77;
+  color: #e3f0b7;
+}
+.hero .save-button[aria-pressed="true"]:hover {
+  background: #283624;
+  border-color: #e3f0b7;
+}
 .hero-bottom {
   display: flex;
   align-items: flex-end;
@@ -518,8 +527,8 @@ textarea:focus-visible {
     linear-gradient(
       180deg,
       #0b0e12 600px,
-      #0b0e1240 1000px,
-      #0b0e1220 1500px,
+      #0b0e12c7 1000px,
+      #0b0e12c2 1500px,
       #0b0e12 2200px
     ),
     url("../assets/cinema-film-atmosphere.webp");
@@ -556,7 +565,7 @@ textarea:focus-visible {
 }
 .section-heading h2 em {
   font-style: normal;
-  color: #e0edb7;
+  color: inherit;
 }
 .section-heading > .text-link {
   font-size: 13px;
@@ -577,8 +586,49 @@ textarea:focus-visible {
   gap: 26px 24px;
 }
 .film-card {
+  position: relative;
   min-width: 0;
   --film-color: #e5edf4;
+}
+.film-note-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 5px 9px;
+  border: 1px solid #92a39b;
+  border-radius: 4px;
+  color: #f2f6ef;
+  background: #13201ef0;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.library-filters button {
+  min-height: 46px;
+  padding: 10px 18px;
+  border: 1px solid #626d72;
+  border-radius: 5px;
+  background: #11191d;
+  color: #d4dae0;
+  font-size: 15px;
+  font-weight: 600;
+}
+.library-filters button:hover {
+  background: #263136;
+}
+.library-filters button[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #17200d;
+  font-weight: 750;
 }
 [data-film-id="tide"] {
   --film-color: #e1eef7;
@@ -804,10 +854,10 @@ textarea:focus-visible {
   transition: transform 0.4s;
 }
 .theme-preview[href="#themes/warmth"] img {
-  object-position: 50% 14%;
+  object-position: 68% center;
 }
 .theme-preview[href="#themes/beyond"] img {
-  object-position: 50% 25%;
+  object-position: 65% center;
 }
 .theme-preview:after {
   content: "";
@@ -842,6 +892,15 @@ textarea:focus-visible {
   margin-top: 12px;
   font-size: 13px;
   color: #d4dbd9;
+}
+.theme-preview-description {
+  margin-top: 9px;
+  max-width: 28ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #e1e5e6;
+  word-break: keep-all;
+  text-wrap: pretty;
 }
 .theme-preview-meta .icon {
   margin-left: auto;
@@ -1006,6 +1065,14 @@ textarea:focus-visible {
   padding-block: 20px;
   border-block: 1px solid var(--line);
   background: #0b0e12c9;
+}
+.catalog-tools.library-tools {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.library-tools .search-field {
+  width: min(100%, 480px);
 }
 .filters {
   display: flex;
@@ -1760,13 +1827,13 @@ dialog .toast.visible {
     width: calc(100% - 40px);
   }
   .header-inner {
-    min-height: 118px;
+    min-height: 106px;
     gap: 0;
     flex-wrap: wrap;
     justify-content: space-between;
   }
   .brand {
-    min-height: 62px;
+    min-height: 54px;
   }
   .brand > span {
     font-size: 24px;
@@ -1802,13 +1869,14 @@ dialog .toast.visible {
   }
   .hero,
   .hero-inner {
-    min-height: 650px;
+    min-height: 0;
   }
   .hero-copy {
-    padding-top: 85px;
+    padding-top: 238px;
   }
   .hero-image {
-    object-position: 65% center;
+    height: 300px;
+    object-position: 66% 29%;
   }
   .hero h1 {
     font-size: 82px;
@@ -1823,9 +1891,19 @@ dialog .toast.visible {
     font-size: 17px;
   }
   .hero-shade {
-    background:
-      linear-gradient(90deg, #080d10c4, #080d109c 43%, #080d1025),
-      linear-gradient(0deg, #0b0e12 2%, #0b0e1299 42%, #0b0e121a 88%);
+    height: 302px;
+    background: linear-gradient(
+      180deg,
+      #0b0e1259 0%,
+      #0b0e1200 36%,
+      #0b0e1255 68%,
+      #0b0e12 100%
+    );
+  }
+  .hero-topline .eyebrow {
+    padding: 4px 6px;
+    border-radius: 3px;
+    background: #0b0e12d9;
   }
   .film-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1867,10 +1945,10 @@ dialog .toast.visible {
       linear-gradient(0deg, #080e15a6, transparent);
   }
   .theme-preview[href="#themes/warmth"] img {
-    object-position: 50% 19%;
+    object-position: 65% center;
   }
   .theme-preview[href="#themes/beyond"] img {
-    object-position: 50% 28%;
+    object-position: 65% center;
   }
   .page-heading h1 {
     font-size: 40px;
@@ -1940,29 +2018,34 @@ dialog .toast.visible {
   }
   .hero,
   .hero-inner {
-    min-height: 635px;
+    min-height: 0;
   }
   .hero-inner {
-    padding-block: 23px 22px;
+    padding-block: 16px 20px;
   }
   .hero-image {
-    object-position: 66% 20%;
+    height: 246px;
+    object-position: 66% 28%;
+  }
+  .hero-shade {
+    height: 248px;
   }
   .hero-copy {
-    padding-top: 122px;
+    padding-top: 208px;
     max-width: 100%;
   }
   .hero h1 {
-    font-size: 74px;
+    font-size: clamp(52px, 14.5vw, 72px);
+    letter-spacing: -0.055em;
   }
   .hero-english {
-    font-size: 10px;
-    letter-spacing: 0.17em;
-    margin-top: 11px;
+    font-size: 11px;
+    letter-spacing: 0.13em;
+    margin-top: 10px;
   }
   .hero-meta {
     font-size: 13px;
-    margin-top: 20px;
+    margin-top: 16px;
     gap: 10px;
   }
   .hero-meta > span + span:not(.genre-tag):before {
@@ -1974,7 +2057,7 @@ dialog .toast.visible {
     margin-top: 16px;
   }
   .hero-actions {
-    margin-top: 23px;
+    margin-top: 20px;
     gap: 10px;
   }
   .button {
@@ -1986,14 +2069,14 @@ dialog .toast.visible {
     padding-inline: 16px;
   }
   .hero-bottom {
-    padding-top: 26px;
+    padding-top: 16px;
     gap: 20px;
   }
   .hero-library-link > span {
     display: none;
   }
   .hero-library-link strong {
-    font-size: 13px;
+    font-size: 14px;
     gap: 7px;
   }
   .hero-library-link .icon {
@@ -2001,8 +2084,7 @@ dialog .toast.visible {
     height: 17px;
   }
   .hero-bottom > .text-link {
-    font-size: 11px;
-    gap: 6px;
+    display: none;
   }
   .hero-bottom > .text-link .icon {
     width: 16px;
@@ -2012,7 +2094,7 @@ dialog .toast.visible {
     gap: 10px;
   }
   .hero-topline .eyebrow {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0;
   }
   .dot {
@@ -2021,11 +2103,11 @@ dialog .toast.visible {
     margin-right: 6px;
   }
   .concept-label {
-    font-size: 10px;
+    font-size: 11px;
     padding: 4px 6px;
   }
   .section-kicker {
-    font-size: 11px;
+    font-size: 12px;
     letter-spacing: 0.04em;
     margin-bottom: 7px;
   }
@@ -2077,7 +2159,7 @@ dialog .toast.visible {
     gap: 4px;
   }
   .film-foot p {
-    font-size: 12px;
+    font-size: 13px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -2088,7 +2170,7 @@ dialog .toast.visible {
     padding: 0;
   }
   .card-save {
-    font-size: 12px;
+    font-size: 13px;
     min-width: 46px;
     gap: 3px;
   }
@@ -2114,12 +2196,30 @@ dialog .toast.visible {
     padding: 24px;
   }
   .theme-preview h3 {
-    font-size: 29px;
+    font-size: 27px;
   }
   .theme-preview-meta {
     font-size: 13px;
     margin-top: 8px;
     max-width: none;
+  }
+  .theme-preview-description {
+    max-width: 24ch;
+    font-size: 14px;
+    margin-top: 7px;
+  }
+  .library-filters {
+    gap: 7px;
+    margin-bottom: 20px;
+  }
+  .library-filters button {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+  .film-note-badge {
+    top: 9px;
+    left: 9px;
+    padding: 4px 7px;
   }
   .journal-card-button,
   #homeJournal .journal-card-button {
@@ -2382,19 +2482,19 @@ dialog .toast.visible {
   }
   .hero,
   .hero-inner {
-    min-height: 620px;
+    min-height: 0;
   }
   .hero h1 {
-    font-size: 66px;
+    font-size: 52px;
   }
   .hero-copy {
-    padding-top: 118px;
+    padding-top: 208px;
   }
   .hero-topline .eyebrow {
-    font-size: 10px;
+    font-size: 11px;
   }
   .concept-label {
-    font-size: 9px;
+    font-size: 11px;
   }
   .hero-intro {
     font-size: 15px;
@@ -2407,7 +2507,7 @@ dialog .toast.visible {
     gap: 12px;
   }
   .hero-library-link strong {
-    font-size: 12px;
+    font-size: 14px;
   }
   .hero-bottom > .text-link {
     font-size: 10px;
@@ -2443,7 +2543,7 @@ dialog .toast.visible {
   }
   .film-foot p,
   .card-save {
-    font-size: 11px;
+    font-size: 12px;
   }
   .card-save {
     min-width: 44px;

@@ -34,8 +34,8 @@
       as="image"
       fetchpriority="high"
     />
-    <link rel="stylesheet" href="css/style.css?v=c40be282" />
-    <script src="js/main.js?v=7e311bfa" defer></script>
+    <link rel="stylesheet" href="css/style.css?v=b616457b" />
+    <script src="js/main.js?v=491e08bf" defer></script>
   </head>
   <body>
     <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -81,7 +81,14 @@
           <a href="#themes" data-view="themes">기획전</a>
           <a href="#journal" data-view="journal">매거진</a>
           <a href="#saved" data-view="saved"
-            >나의 찜 <span class="saved-count" id="savedCount">0</span></a
+            >내 보관함
+            <span
+              class="saved-count"
+              id="savedCount"
+              title="찜하거나 노트를 남긴 영화 수"
+              aria-hidden="true"
+              >0</span
+            ></a
           >
         </nav>
         <div class="header-tools">
@@ -243,15 +250,41 @@
               오늘의 기분에 맞는 한 편을 찾아보세요.
             </p>
           </div>
-          <div class="catalog-tools">
-            <div class="filters" role="group" aria-label="영화 분위기">
+          <div
+            class="library-filters"
+            id="libraryFilters"
+            role="group"
+            aria-label="보관함 분류"
+            hidden
+          >
+            <button type="button" data-library-filter="all" aria-pressed="true">
+              전체</button
+            ><button
+              type="button"
+              data-library-filter="saved"
+              aria-pressed="false"
+            >
+              찜한 영화</button
+            ><button
+              type="button"
+              data-library-filter="noted"
+              aria-pressed="false"
+            >
+              노트 있는 영화
+            </button>
+          </div>
+          <div class="catalog-tools" id="catalogTools">
+            <div
+              class="filters"
+              id="moodFilters"
+              role="group"
+              aria-label="영화 분위기"
+            >
               <button data-mood="all" aria-pressed="true">전체</button
               ><button data-mood="calm" aria-pressed="false">잔잔한</button
               ><button data-mood="warm" aria-pressed="false">따뜻한</button
-              ><button data-mood="mystery" aria-pressed="false">미스터리</button
-              ><button data-mood="wonder" aria-pressed="false">
-                새로운 세계
-              </button>
+              ><button data-mood="mystery" aria-pressed="false">긴장되는</button
+              ><button data-mood="wonder" aria-pressed="false">경이로운</button>
             </div>
             <div class="search-field">
               <svg class="icon" aria-hidden="true"><use href="#i-search" /></svg
@@ -287,8 +320,8 @@
             <svg class="empty-mark" aria-hidden="true">
               <use href="#i-bookmark" />
             </svg>
-            <h2 id="emptyTitle">아직 찜한 영화가 없어요.</h2>
-            <p id="emptyText">마음에 남는 영화를 담아보세요.</p>
+            <h2 id="emptyTitle">아직 보관한 영화가 없어요.</h2>
+            <p id="emptyText">영화를 찜하거나 나의 영화 노트를 남겨보세요.</p>
             <button class="button light" id="emptyAction">
               영화 둘러보기<svg class="icon" aria-hidden="true">
                 <use href="#i-arrow" />
@@ -296,7 +329,7 @@
             </button>
           </div>
           <p class="storage-note" id="storageNote" hidden>
-            이 브라우저에 저장된 작품입니다.
+            찜한 영화와 나의 영화 노트가 이 브라우저에 저장됩니다.
           </p>
         </section>
       </div>
@@ -390,7 +423,7 @@
           </div>
           <form class="note-form" id="noteForm">
             <div class="note-heading">
-              <label for="noteText">나의 감상 노트</label
+              <label for="noteText">나의 영화 노트</label
               ><span id="noteCount">0 / 280</span>
             </div>
             <p class="note-hint" id="noteHint">
@@ -477,8 +510,8 @@
           이미지는 AI로 생성했습니다.
         </p>
         <p>
-          찜과 감상 노트는 이 브라우저에 저장됩니다. 브라우저 데이터를 지우면
-          사라지며, 다른 기기와 동기화되지 않습니다.
+          찜과 나의 영화 노트는 이 브라우저에 저장됩니다. 브라우저 데이터를
+          지우면 사라지며, 다른 기기와 동기화되지 않습니다.
         </p>
         <p>
           회원가입·로그인·공개 게시물·영상 재생·예매·결제는 제공하지 않습니다.
@@ -505,7 +538,7 @@
     ></div>
     <noscript
       ><div class="noscript-notice">
-        영화 검색과 찜 기능을 사용하려면 JavaScript를 켜주세요.
+        영화 검색·찜·노트 기능을 사용하려면 JavaScript를 켜주세요.
       </div></noscript
     >
   </body>

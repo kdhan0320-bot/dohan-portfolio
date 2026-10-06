@@ -96,6 +96,10 @@
       image: "forest",
       title: "세상의 소리를 잠시 낮추고.",
       description: "파도와 숲 사이, 생각을 비워내는 두 편.",
+      previewDescription: "파도와 숲, 조용히 쉬어가는 두 편",
+      previewImage: "assets/posters-v8/forest.webp",
+      previewWidth: 800,
+      previewHeight: 1200,
       films: ["tide", "forest"],
     },
     {
@@ -106,6 +110,10 @@
       image: "letters",
       title: "작은 다정함이 필요한 날.",
       description: "오래된 편지와 이웃의 불빛에서 만나는 온기.",
+      previewDescription: "편지와 이웃에게서 발견하는 다정함",
+      previewImage: "assets/stills/letters.webp",
+      previewWidth: 1672,
+      previewHeight: 941,
       films: ["letters", "windows"],
     },
     {
@@ -116,6 +124,10 @@
       image: "orbit",
       title: "익숙한 풍경 너머로.",
       description: "한밤의 온실에서 먼 궤도까지, 낯선 곳으로의 초대.",
+      previewDescription: "미스터리와 SF, 익숙함 너머의 이야기",
+      previewImage: "assets/stills/orbit.webp",
+      previewWidth: 1672,
+      previewHeight: 941,
       films: ["greenhouse", "orbit"],
     },
   ];
@@ -163,6 +175,7 @@
     view: "home",
     mood: "all",
     query: "",
+    libraryFilter: "all",
     saved: new Set(),
     storageAvailable: true,
     notes: {},
@@ -225,6 +238,14 @@
       state.storageAvailable = false;
     }
   }
+  function inLibrary(id) {
+    return state.saved.has(id) || Boolean(state.notes[id]);
+  }
+  function inLibraryFilter(id) {
+    if (state.libraryFilter === "saved") return state.saved.has(id);
+    if (state.libraryFilter === "noted") return Boolean(state.notes[id]);
+    return inLibrary(id);
+  }
   function updateSaveButtons() {
     document.querySelectorAll("[data-save]").forEach((btn) => {
       const film = films.find((f) => f.id === btn.dataset.save);
@@ -245,10 +266,18 @@
       const label = btn.querySelector("span");
       if (label) label.textContent = labelText;
     });
-    $("savedCount").textContent = state.saved.size;
-    $("storageNote").textContent = state.storageAvailable
-      ? "이 브라우저에 저장된 작품입니다."
-      : "브라우저 저장 공간을 사용할 수 없어, 이 페이지를 닫으면 찜 목록이 사라집니다.";
+    document.querySelectorAll("[data-note-for]").forEach((badge) => {
+      badge.hidden = !state.notes[badge.dataset.noteFor];
+    });
+    const count = films.filter((film) => inLibrary(film.id)).length;
+    $("savedCount").textContent = count;
+    $("savedCount")
+      .closest("a")
+      .setAttribute("aria-label", `내 보관함, 영화 ${count}편`);
+    $("storageNote").textContent =
+      state.storageAvailable && state.notesStorageAvailable
+        ? "찜한 영화와 나의 영화 노트가 이 브라우저에 저장됩니다."
+        : "브라우저 저장 공간을 사용할 수 없어 일부 변경은 이 페이지에서만 유지됩니다.";
   }
   // Keep long movie names in deliberate phrase groups at every card size.
   const titleLines = {
@@ -265,7 +294,7 @@
     const displayTitle = (titleLines[film.id] || [film.title])
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
-    article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div>`;
+    article.innerHTML = `<h3><button class="film-art" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="assets/posters-v8/${film.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="film-arrow" aria-hidden="true">${icon("arrow")}</span><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><button class="card-save save-button" data-save="${film.id}" aria-label="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}<span>찜</span></button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>노트 있음</span>`;
     return article;
   }
   const themeDescriptionLines = {
@@ -302,7 +331,7 @@
   $("themePreviews").innerHTML = themes
     .map(
       (theme) =>
-        `<a class="theme-preview" href="#themes/${theme.id}"><div class="theme-preview-image"><img src="assets/posters-v8/${theme.image}.webp" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><span class="theme-preview-meta">작품 2편 ${icon("arrow")}</span></div></a>`,
+        `<a class="theme-preview" href="#themes/${theme.id}"><div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="${theme.previewWidth}" height="${theme.previewHeight}" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 2편 ${icon("arrow")}</span></div></a>`,
     )
     .join("");
   $("themeTabs").innerHTML = themes
@@ -340,7 +369,7 @@
   function matches(film) {
     const q = state.query.toLocaleLowerCase("ko").replace(/\s+/g, "");
     return (
-      (state.view !== "saved" || state.saved.has(film.id)) &&
+      (state.view !== "saved" || inLibraryFilter(film.id)) &&
       (state.mood === "all" || state.mood === film.mood) &&
       (!q ||
         `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords}`
@@ -361,9 +390,28 @@
     const visible = films.filter(matches),
       grid = $("filmGrid");
     grid.replaceChildren(...visible.map(makeCard));
-    const filtered = state.query.trim() || state.mood !== "all";
+    const filtered =
+      state.query.trim() ||
+      state.mood !== "all" ||
+      (state.view === "saved" && state.libraryFilter !== "all");
+    const libraryLabels = {
+      all: "보관함 전체",
+      saved: "찜한 영화",
+      noted: "노트 있는 영화",
+    };
     $("resultCount").textContent =
-      `${state.view === "saved" ? "찜한 작품" : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
+      `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
+    $("libraryFilters").hidden = state.view !== "saved";
+    $("moodFilters").hidden = state.view === "saved";
+    $("catalogTools").classList.toggle("library-tools", state.view === "saved");
+    document
+      .querySelectorAll("[data-library-filter]")
+      .forEach((button) =>
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.libraryFilter === state.libraryFilter),
+        ),
+      );
     $("resetFilters").hidden = !filtered;
     $("clearSearch").hidden = !state.query;
     document
@@ -373,15 +421,29 @@
       );
     $("emptyState").hidden = visible.length > 0;
     grid.hidden = visible.length === 0;
-    const emptySaved = state.view === "saved" && state.saved.size === 0;
-    $("emptyTitle").textContent = emptySaved
-      ? "아직 담아둔 장면이 없어요."
-      : "찾는 장면이 아직 없어요.";
-    $("emptyText").textContent = emptySaved
-      ? "마음에 남는 작품을 찜해보세요."
-      : "다른 검색어나 분위기로 다시 찾아보세요.";
+    const emptyLibrary =
+      state.view === "saved" && !films.some((film) => inLibrary(film.id));
+    const emptyCategory =
+      state.view === "saved" &&
+      !emptyLibrary &&
+      !films.some((film) => inLibraryFilter(film.id));
+    $("emptyTitle").textContent = emptyLibrary
+      ? "아직 보관한 영화가 없어요."
+      : emptyCategory
+        ? state.libraryFilter === "saved"
+          ? "아직 찜한 영화가 없어요."
+          : "아직 노트를 남긴 영화가 없어요."
+        : "조건에 맞는 영화가 없어요.";
+    $("emptyText").textContent = emptyLibrary
+      ? "영화를 찜하거나 나의 영화 노트를 남겨보세요."
+      : emptyCategory
+        ? "전체 보관함에서 영화를 골라 찜하거나 노트를 남겨보세요."
+        : state.view === "saved"
+          ? "다른 검색어나 보관함 분류로 다시 찾아보세요."
+          : "다른 검색어나 분위기로 다시 찾아보세요.";
+    $("emptyAction").dataset.action = emptyLibrary ? "browse" : "reset";
     $("emptyAction").innerHTML =
-      `${emptySaved ? "작품 둘러보기" : "조건 초기화"}${icon("arrow")}`;
+      `${emptyLibrary ? "영화 둘러보기" : emptyCategory ? "보관함 전체보기" : "조건 초기화"}${icon("arrow")}`;
     $("storageNote").hidden = state.view !== "saved";
     updateSaveButtons();
     if (focusedId) {
@@ -395,6 +457,7 @@
   function resetFilters() {
     state.mood = "all";
     state.query = "";
+    if (state.view === "saved") state.libraryFilter = "all";
     $("searchInput").value = "";
     render();
   }
@@ -434,14 +497,15 @@
     let heading = $("heroTitle");
     if (catalogFilters[view]) {
       Object.assign(state, catalogFilters[view]);
+      if (view === "saved") state.mood = "all";
       $("searchInput").value = state.query;
       $("catalogTitle").textContent =
-        view === "saved" ? "찜한 영화" : "영화 둘러보기";
+        view === "saved" ? "내 보관함" : "영화 둘러보기";
       $("catalogKicker").textContent =
-        view === "saved" ? "나만의 영화 컬렉션" : "잔상관의 모든 영화";
+        view === "saved" ? "찜과 노트를 한곳에" : "잔상관의 모든 영화";
       $("catalogDescription").textContent =
         view === "saved"
-          ? "다시 만나고 싶은 장면들을 한곳에."
+          ? "찜한 영화와 노트를 남긴 영화를 다시 만나보세요."
           : "분위기로 좁히거나, 마음에 둔 작품을 찾아보세요.";
       if (searchRequested) resetFilters();
       else render();
@@ -461,7 +525,7 @@
       themes: "기획전",
       journal: "매거진",
       browse: "작품 둘러보기",
-      saved: "찜한 작품",
+      saved: "내 보관함",
     }[view];
     document.title = `${pageTitle} — 잔상관`;
     if (!firstRoute) {
@@ -511,12 +575,24 @@
       render();
     }),
   );
+  document.querySelectorAll("[data-library-filter]").forEach((button) =>
+    button.addEventListener("click", () => {
+      state.libraryFilter = button.dataset.libraryFilter;
+      render();
+    }),
+  );
   $("resetFilters").addEventListener("click", () => {
     resetFilters();
-    document.querySelector('[data-mood="all"]').focus();
+    document
+      .querySelector(
+        state.view === "saved"
+          ? '[data-library-filter="all"]'
+          : '[data-mood="all"]',
+      )
+      .focus();
   });
   $("emptyAction").addEventListener("click", () => {
-    if (state.view === "saved" && state.saved.size === 0) navigate("browse");
+    if ($("emptyAction").dataset.action === "browse") navigate("browse");
     else {
       resetFilters();
       $("searchInput").focus();
@@ -537,7 +613,7 @@
   }
   function noteSavedMessage() {
     return state.notesStorageAvailable
-      ? "이 브라우저에 저장했어요. 다른 사람에게 공개되지 않습니다."
+      ? "노트를 저장했어요."
       : "이 페이지에서만 보관 중이에요. 새로고침하면 사라집니다.";
   }
   function updateNoteCount() {
@@ -552,7 +628,11 @@
     updateNoteCount();
     $("noteStatus").textContent = state.notes[activeDetailId]
       ? noteSavedMessage()
-      : "작품에서 궁금한 점이나 남겨둘 생각을 기록해 보세요.";
+      : "영화에서 궁금한 점이나 남겨둘 생각을 노트로 남겨보세요.";
+  }
+  function refreshLibrary({ preserveFocus = false } = {}) {
+    if (state.view === "saved") render({ preserveFocus });
+    else updateSaveButtons();
   }
   function persistNotes() {
     try {
@@ -619,22 +699,24 @@
     if (!activeDetailId) return;
     const value = $("noteText").value.trim();
     if (!value || value.length > 280) {
-      $("noteStatus").textContent = "1~280자로 기록을 입력한 뒤 저장해 주세요.";
+      $("noteStatus").textContent = "1~280자로 노트를 입력한 뒤 저장해 주세요.";
       $("noteText").focus();
       return;
     }
     state.notes[activeDetailId] = value;
     persistNotes();
     loadNote();
+    refreshLibrary();
   });
   $("noteDelete").addEventListener("click", () => {
     if (!activeDetailId || !state.notes[activeDetailId]) return;
     delete state.notes[activeDetailId];
     persistNotes();
     loadNote();
+    refreshLibrary();
     $("noteStatus").textContent = state.notesStorageAvailable
-      ? "이 작품의 기록을 삭제했어요."
-      : "이 페이지의 기록을 지웠어요. 브라우저 저장 공간은 사용할 수 없습니다.";
+      ? "이 영화의 노트를 삭제했어요."
+      : "이 페이지의 노트를 지웠어요. 브라우저 저장 공간은 사용할 수 없습니다.";
     $("noteText").focus();
   });
   document.addEventListener("click", (event) => {
@@ -670,7 +752,7 @@
         }
       } else updateSaveButtons();
       notify(
-        `${film.title} · ${wasSaved ? "찜 목록에서 뺐어요." : state.storageAvailable ? "이 브라우저에 저장했어요." : "잠시 담았어요. 새로고침하면 사라져요."}`,
+        `${film.title} · ${wasSaved ? (state.notes[id] ? "찜을 해제했어요. 노트는 보관함에 남아 있어요." : "찜 목록에서 뺐어요.") : state.storageAvailable ? "이 브라우저에 저장했어요." : "잠시 담았어요. 새로고침하면 사라져요."}`,
       );
     }
     const close = event.target.closest("[data-close]");
@@ -736,7 +818,10 @@
       const target =
         trigger?.isConnected && trigger.getClientRects().length
           ? trigger
-          : currentReplacement || heading;
+          : currentReplacement ||
+            (state.view === "saved" && !$("emptyState").hidden
+              ? $("emptyAction")
+              : heading);
       target.focus({ preventScroll: true });
     });
   });
@@ -746,24 +831,30 @@
     } catch {
       return;
     }
-    if (event.key === storageKey || event.key === null) {
+    const savedChanged = event.key === storageKey || event.key === null;
+    const notesChanged = event.key === notesKey || event.key === null;
+    if (!savedChanged && !notesChanged) return;
+    if (savedChanged) {
       state.saved = readSaved(event.key === null ? null : event.newValue);
       state.storageAvailable = true;
-      if (["browse", "saved"].includes(state.view))
-        render({ preserveFocus: true });
-      else updateSaveButtons();
     }
-    if (event.key === notesKey || event.key === null) {
+    if (notesChanged) {
+      const previousNote = state.notes[activeDetailId];
       state.notes = readNotes(event.key === null ? null : event.newValue);
       state.notesStorageAvailable = true;
-      if (activeDetailId && $("detailDialog").open) {
+      if (
+        activeDetailId &&
+        $("detailDialog").open &&
+        previousNote !== state.notes[activeDetailId]
+      ) {
         if (noteDirty) {
           updateNoteCount();
           $("noteStatus").textContent =
-            "다른 탭의 기록이 변경됐어요. 입력 중인 내용은 유지했어요.";
+            "다른 탭의 노트가 변경됐어요. 입력 중인 내용은 유지했어요.";
         } else loadNote();
       }
     }
+    refreshLibrary({ preserveFocus: true });
   });
   document.querySelector(".skip").addEventListener("click", (e) => {
     e.preventDefault();
