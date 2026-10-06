@@ -24,12 +24,12 @@ const FEATURED_REFS = [
     },
   },
   {
-    id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow',
-    proof: '지원 현황·면접 일정·체크리스트를 실제 저장 구조로 연결한 개인 구직 관리 대시보드',
-    role: 'DASHBOARD UX · REACT FRONTEND', data: 'ACTUAL / SAMPLE',
+    id: 'jobflow', slug: 'jobflow', displayTitle: '갈피록',
+    proof: '지원 회사·마감·준비할 일을 한곳에서 정리하는 취업 준비 기록장',
+    role: 'UX/UI · REACT FRONTEND', data: 'SUPABASE / SAMPLE',
     media: {
-      src: `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`,
-      alt: 'JobFlow Dashboard 대표 화면',
+      src: `${BASE}detail/galpirok-board-pc.jpg`,
+      alt: '갈피록 지원 현황 — 가상 샘플을 보여주는 PC 실행 화면',
     },
   },
   {

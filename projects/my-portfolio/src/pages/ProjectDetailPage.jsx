@@ -42,7 +42,7 @@ const getNextSlug = (slug) => {
 
 const CASE_STUDY_LABELS = {
   gongjeongbom: 'GONGJEONGBOM',
-  jobflow: 'JOBFLOW',
+  jobflow: 'GALPIROK',
   seolbiit: 'SEOLBIIT',
   'feedback-hub': 'PORTFOLIO FEEDBACK HUB',
   'bus-arrival': 'ULSAN BUS ARRIVAL',
@@ -833,7 +833,7 @@ const ProjectDetailPage = () => {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <FieldRow label="선택">{d.choice}</FieldRow>
                     <FieldRow label="이유">{d.reason}</FieldRow>
-                    <FieldRow label="검증">{d.verification}</FieldRow>
+                    <FieldRow label={d.verificationLabel ?? '검증'}>{d.verification}</FieldRow>
                   </Box>
                 </Box>
               </Box>

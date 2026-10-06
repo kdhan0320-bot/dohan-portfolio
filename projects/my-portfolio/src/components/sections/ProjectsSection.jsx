@@ -27,7 +27,7 @@ const FEATURED_RAIL_OFFSET = HOME_PROJECT_MAX_WIDTH / 2 + 24;
  *   Soft White/Paper Deep로 번갈아지는 full-bleed 색상 band는 없다(이전
  *   구현의 alternating band를 제거).
  * - row 사이는 얇은 divider 하나로만 구분한다.
- * - 공정봄·JobFlow·설비잇은 공통 ThumbnailStage에 실제 승인 화면을 넣고,
+ * - 공정봄·갈피록·설비잇은 공통 ThumbnailStage에 실제 승인 화면을 넣고,
  *   새 browser toolbar나 프로젝트별 임의 비율을 추가하지 않는다.
  * - CTA는 검은 filled 버튼이 아니라 orange text link + arrow("프로젝트 상세
  *   보기", Figma 263:23/264:20/265:65)다. */
@@ -41,8 +41,8 @@ const FEATURED_IDS = [
     },
   },
   {
-    id: 'jobflow', slug: 'jobflow', displayTitle: 'JobFlow', stageTone: 'deep',
-    media: { kind: 'single', src: `${BASE}thumbnails/normalized/jobflow-card-1600x1000.png`, alt: '실제 브라우저 실행 화면 · JobFlow Dashboard' },
+    id: 'jobflow', slug: 'jobflow', displayTitle: '갈피록', stageTone: 'deep',
+    media: { kind: 'single', src: `${BASE}detail/galpirok-board-pc.jpg`, alt: '갈피록 지원 현황 — 가상 샘플을 보여주는 PC 실행 화면' },
   },
   {
     id: 'seolbiit', slug: 'seolbiit', displayTitle: '설비잇', stageTone: 'soft',
