@@ -30,7 +30,7 @@ export default function WorkArtwork({
       <text x="100" y={before ? '306' : '341'} fill={before ? '#776F84' : ink} fontSize={before ? '36' : '65'} fontWeight="700" letterSpacing="-3">새로운 모양.</text>
       <text x="102" y="394" fill="#625B70" fontSize="16">일상의 틈에서 만나는 조형의 아름다움</text>
       <rect x="102" y="435" width={before ? '133' : '168'} height={before ? '36' : '50'} rx="3" fill={before ? '#D8D0E5' : ink} />
-      <text x={before ? '116' : '127'} y={before ? '458' : '466'} fill={before ? '#625B70' : '#fff'} fontSize={before ? '14' : '16'} fontWeight="600">전시 둘러보기 ↗</text>
+      <text x={before ? '168.5' : '186'} textAnchor="middle" y={before ? '458' : '466'} fill={before ? '#625B70' : '#fff'} fontSize={before ? '14' : '16'} fontWeight="600">전시 둘러보기</text>
       <rect x="552" y="147" width="304" height="374" fill="#EEE8F4" />
       <image href={sculpture} x="506" y="147" width="350" height="374" preserveAspectRatio="xMidYMid slice" />
       <text x="104" y="567" fill="#71677E" fontSize="13">가상의 전시 웹 디자인 · 화면 구성 예시</text>
@@ -74,7 +74,7 @@ export default function WorkArtwork({
       <text x="119" y="270" fill={ink} fontSize={before ? '38' : '60'} fontWeight="700">오래 머무는</text><text x="119" y="347" fill={ink} fontSize={before ? '38' : '60'} fontWeight="700">계절의 색.</text>
       <text x="121" y="404" fill="#63446E" fontSize="17">꽃에서 시작한 작은 그래픽 컬렉션</text>
       <text x="94" y="548" fill={ink} fontSize="23" fontWeight="600">이번 계절의 형태</text><path d="M94 581H868" stroke="#DCC8E1" />
-      <text x="737" y="548" fill={ink} fontSize="15">전체 보기 ↗</text>
+      <text x="868" y="548" textAnchor="end" fill={ink} fontSize="15">전체 보기</text>
     </>}
     {kind === 'walk' && <>
       <rect x="56" y="48" width="848" height="584" rx="5" fill="#F6F8F3" />
@@ -97,7 +97,7 @@ export default function WorkArtwork({
       <text x="180" y="222" fontSize={before ? '24' : '35'} fontWeight="700" fill={ink}>처음 만나 반가워요.</text>
       <text x="182" y="255" fill="#626887" fontSize="15">시작에 필요한 정보만 먼저 알려주세요.</text>
       {['이메일', '비밀번호'].map((s, i) => <g key={s}><text x="182" y={309 + i * 92} fill={ink} fontSize="15" fontWeight="600">{s}</text><rect x="181" y={323 + i * 92} width="597" height="52" rx="4" fill="#fff" stroke="#B5BAD2" /><text x="199" y={356 + i * 92} fill={before ? '#B4B8C9' : '#68708B'} fontSize="15">{i ? '8자 이상 입력해주세요' : 'name@example.com'}</text></g>)}
-      <rect x="181" y="500" width="597" height="53" rx="4" fill={accent} /><text x="459" y="533" fill="#fff" fontSize="17" fontWeight="600">다음 →</text>
+      <rect x="181" y="500" width="597" height="53" rx="4" fill={accent} /><text x="479.5" y="533" textAnchor="middle" fill="#fff" fontSize="17" fontWeight="600">다음</text>
       <text x="329" y="591" fill="#626887" fontSize="13">검토용 화면 예시 · 실제 가입 폼이 아닙니다</text>
     </>}
   </svg>;

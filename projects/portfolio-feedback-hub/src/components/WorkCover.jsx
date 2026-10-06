@@ -40,7 +40,7 @@ export default function WorkCover({
       <rect width="960" height="640" fill="#D6D9EC" /><circle cx="260" cy="352" r="174" fill="#9EA7D0" /><path d="M82 333c139-266 176 239 349-40" stroke="#EEF0FA" strokeWidth="17" fill="none" />
       <rect x="473" y="64" width="386" height="512" rx="12" fill="#F9FAFD" /><circle cx="523" cy="115" r="12" fill="#575C94" /><text x="548" y="122" fill="#323857" fontSize="20" fontWeight="650">작은 시작</text><text x="511" y="201" fill="#323857" fontSize="28" fontWeight="650">반가워요.</text><text x="512" y="235" fill="#666D86" fontSize="16">필요한 정보만, 간결하게.</text>
       {[0, 1].map(n => <g key={n}><text x="513" y={289 + n * 87} fill="#454C67" fontSize="15">{n ? '비밀번호' : '이메일'}</text><rect x="511" y={303 + n * 87} width="309" height="48" rx="4" stroke="#A6ABC0" fill="#FFF" /><path d={`M530 ${326 + n * 87}h${n ? 83 : 154}`} stroke="#959CB5" strokeWidth="3" /></g>)}
-      <rect x="511" y="471" width="309" height="54" rx="4" fill="#575C94" /><text x="640" y="504" fill="#FFF" fontSize="17">다음 →</text><text x="55" y="590" fontSize="17" fill="#434C72">작은 입력에서 시작되는 경험.</text>
+      <rect x="511" y="471" width="309" height="54" rx="4" fill="#575C94" /><text x="665.5" y="504" textAnchor="middle" fill="#FFF" fontSize="17">다음</text><text x="55" y="590" fontSize="17" fill="#434C72">작은 입력에서 시작되는 경험.</text>
     </>}
   </svg>;
 }

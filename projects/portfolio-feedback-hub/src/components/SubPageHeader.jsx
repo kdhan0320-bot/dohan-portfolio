@@ -1,6 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppBar, Toolbar, Container, Button, Typography, Box } from '@mui/material';
-import { ArrowBack } from '@mui/icons-material';
 
 const SubPageHeader = ({ title, rightActions, fallbackTo = '/works', backLabel = '목록으로' }) => {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const SubPageHeader = ({ title, rightActions, fallbackTo = '/works', backLabel =
             type="button"
             color="inherit"
             onClick={handleBack}
-            startIcon={<ArrowBack aria-hidden="true" />}
             aria-label={`${backLabel} 돌아가기`}
             sx={{ minHeight: 44, px: 1, flexShrink: 0 }}
           >

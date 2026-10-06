@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import PostListPage from './pages/PostListPage';
 import HomePage from './pages/HomePage';
 import GuidePage from './pages/GuidePage';
+import ComparePage from './pages/ComparePage';
+import ChallengesPage from './pages/ChallengesPage';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostEditPage from './pages/PostEditPage';
@@ -66,6 +68,8 @@ const AppRoutes = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/works" element={<PostListPage />} />
         <Route path="/guide" element={<GuidePage />} />
+        <Route path="/compare" element={<ComparePage />} />
+        <Route path="/challenges" element={<ChallengesPage />} />
         <Route path="/posts/:id" element={<PostDetailPage />} />
         <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
         <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />

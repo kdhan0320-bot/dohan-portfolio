@@ -4,27 +4,27 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#252525',
+      main: '#302C32',
       light: '#a0a0a0',
       dark: '#111111',
       contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#61615b',
+      main: '#665950',
       light: '#f2f2f2',
-      dark: '#61615b',
+      dark: '#665950',
       contrastText: '#FFFFFF',
     },
     background: {
-      default: '#f5f7f7',
+      default: '#FFF8F4',
       paper:   '#FFFFFF',
     },
     text: {
-      primary:   '#252525',
-      secondary: '#61615b',
+      primary:   '#302C32',
+      secondary: '#665950',
       disabled:  '#6d6d6d',
     },
-    divider: '#e2e2e2',
+    divider: '#E3D8D2',
     error:   { main: '#B42F3B' },
     success: { main: '#2E7D32' },
     warning: { main: '#8D641A' },
@@ -39,7 +39,7 @@ const theme = createTheme({
     h6: { fontSize: '0.875rem', fontWeight: 600 },
     body1: { fontSize: '1rem', lineHeight: 1.65 },
     body2: { fontSize: '0.875rem',  lineHeight: 1.6 },
-    caption: { fontSize: '0.8125rem', color: '#61615b' },
+    caption: { fontSize: '0.8125rem', color: '#665950' },
     button: { fontSize: '0.875rem', fontWeight: 600, textTransform: 'none' },
   },
   spacing: 8,
@@ -47,9 +47,9 @@ const theme = createTheme({
   components: {
     MuiCssBaseline: {
       styleOverrides: {
-        body: { backgroundColor: '#f6f6f2' },
+        body: { backgroundColor: '#FFF8F4' },
         'button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [role="button"]:focus-visible, [role="combobox"]:focus-visible': {
-          outline: '3px solid #252525',
+          outline: '3px solid #302C32',
           outlineOffset: 3,
           scrollMarginTop: 72,
         },
@@ -66,7 +66,7 @@ const theme = createTheme({
           fontSize: '0.875rem',
         },
         containedPrimary: {
-          backgroundColor: '#252525',
+          backgroundColor: '#302C32',
           '&:hover': { backgroundColor: '#111111' },
         },
       },
@@ -76,7 +76,7 @@ const theme = createTheme({
         root: {
           borderRadius: 12,
           boxShadow: '0 1px 8px rgba(26,26,46,0.06)',
-          border: '1px solid #e2e2e2',
+          border: '1px solid #E3D8D2',
           backgroundImage: 'none',
         },
       },
@@ -86,8 +86,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           backgroundColor: '#FFFFFF',
-          color: '#252525',
-          borderBottom: '1px solid #e2e2e2',
+          color: '#302C32',
+          borderBottom: '1px solid #E3D8D2',
           boxShadow: 'none',
         },
       },
@@ -99,27 +99,27 @@ const theme = createTheme({
           '& .MuiOutlinedInput-root': {
             borderRadius: 10,
             backgroundColor: '#FFFFFF',
-            '&:hover fieldset': { borderColor: '#252525' },
-            '&.Mui-focused fieldset': { borderColor: '#252525', borderWidth: 2 },
+            '&:hover fieldset': { borderColor: '#302C32' },
+            '&.Mui-focused fieldset': { borderColor: '#302C32', borderWidth: 2 },
           },
         },
       },
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        notchedOutline: { borderColor: '#828279' }, input: { '&::placeholder': { color: '#61615b', opacity: 1 } },
+        notchedOutline: { borderColor: '#978579' }, input: { '&::placeholder': { color: '#665950', opacity: 1 } },
       },
     },
     MuiFormHelperText: {
       styleOverrides: {
-        root: { color: '#61615b' },
+        root: { color: '#665950' },
       },
     },
     MuiChip: {
       styleOverrides: { root: { borderRadius: 8, fontWeight: 500 } },
     },
     MuiDivider: {
-      styleOverrides: { root: { borderColor: '#e2e2e2' } },
+      styleOverrides: { root: { borderColor: '#E3D8D2' } },
     },
   },
 });

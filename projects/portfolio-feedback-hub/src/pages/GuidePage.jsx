@@ -13,13 +13,13 @@ const questions = [
 export default function GuidePage() {
   usePageTitle(PAGE_TITLES.guide);
   return <div className="app-surface"><Header /><div className="shell guide-page">
-    <header className="page-heading"><span className="section-kicker">리뷰 방법</span><h1>화면을 짚고,<br className="mobile-break" /> 의견을 나눠요.</h1></header>
+    <header className="page-heading"><span className="section-kicker">이용 안내</span><h1>화면을 짚고,<br className="mobile-break" /> 의견을 나눠요.</h1></header>
     <ol className="guide-steps" aria-label="샘플 리뷰 이용 순서">
-      <li><div className="guide-visual guide-locate" aria-hidden="true"><WorkArtwork kind="gallery" before /><span className="preview-pin">1</span><span className="guide-pointer">↖</span></div><div className="guide-step-copy"><span>01</span><div><h2>위치를 고르세요</h2><p>화면의 번호와 같은 번호의 의견이 연결됩니다.</p></div></div></li>
-      <li><div className="guide-visual guide-write" aria-hidden="true"><div className="guide-comment-card"><span className="note-number">1</span><strong>이 부분에 의견 남기기</strong><p>제목을 더 크게 보여주면 좋겠어요.<span className="example-caret" /></p><span className="example-submit">의견 추가 ↑</span></div></div><div className="guide-step-copy"><span>02</span><div><h2>의견을 남겨보세요</h2><p>선택한 위치에 의견을 적어봅니다. 저장되지는 않아요.</p></div></div></li>
+      <li><div className="guide-visual guide-locate" aria-hidden="true"><WorkArtwork kind="gallery" before /><span className="preview-pin">1</span></div><div className="guide-step-copy"><span>01</span><div><h2>위치를 고르세요</h2><p>화면의 번호와 같은 번호의 의견이 연결됩니다.</p></div></div></li>
+      <li><div className="guide-visual guide-write" aria-hidden="true"><div className="guide-comment-card"><span className="note-number">1</span><strong>이 부분에 의견 남기기</strong><p>제목을 더 크게 보여주면 좋겠어요.<span className="example-caret" /></p><span className="example-submit">의견 추가</span></div></div><div className="guide-step-copy"><span>02</span><div><h2>의견을 남겨보세요</h2><p>선택한 위치에 의견을 적어봅니다. 저장되지는 않아요.</p></div></div></li>
       <li><div className="guide-visual guide-compare" aria-hidden="true"><div><span>수정 전</span><WorkArtwork kind="gallery" before viewBox="80 190 445 165" /></div><div><span>수정안</span><WorkArtwork kind="gallery" viewBox="80 190 445 165" /></div></div><div className="guide-step-copy"><span>03</span><div><h2>수정안을 확인하세요</h2><p>미리 준비된 수정안과 바꾼 이유를 비교합니다.</p></div></div></li>
     </ol>
-    <div className="guide-start"><Link className="primary-link" to="/posts/sample-1">직접 체험하기 <span aria-hidden="true">↗</span></Link></div>
+    <div className="guide-start"><Link className="primary-link" to="/posts/sample-1">샘플 리뷰 시작하기</Link></div>
     <section className="guide-faq" aria-labelledby="faq-title"><h2 id="faq-title">궁금한 점</h2><div>{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
   </div><SiteFooter /></div>;
 }

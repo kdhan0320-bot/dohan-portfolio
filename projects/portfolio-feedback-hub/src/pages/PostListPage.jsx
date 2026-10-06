@@ -69,7 +69,7 @@ export default function PostListPage() {
 
   return <div className="app-surface"><Header />
     <div className="shell works-page">
-      <header className="page-heading"><span className="section-kicker">작업 갤러리</span><h1>어떤 디자인을<br className="mobile-break" /> 함께 볼까요?</h1><p>궁금한 작업을 고르면, 화면과 의견을 함께 볼 수 있어요.</p></header>
+      <header className="page-heading"><span className="section-kicker">리뷰 예제</span><h1>어느 화면에<br className="mobile-break" /> 의견을 남길까요?</h1><p>검토할 화면을 고르고, 번호로 연결된 의견을 살펴보세요.</p></header>
       <section className="gallery-section" id="gallery" aria-labelledby="gallery-title">
         <div className="gallery-title-row"><h2 id="gallery-title" tabIndex={-1}>{hasFilters ? '검색 결과' : sample ? '샘플 리뷰' : '공개 작업'} <span>{dataState === 'loading' ? '' : visiblePosts.length}</span></h2>{user && <button className="text-button" onClick={() => navigate('/write')}>작업 올리기 +</button>}</div>
         <div className="gallery-toolbar">

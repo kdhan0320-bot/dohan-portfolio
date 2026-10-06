@@ -18,7 +18,7 @@ export default function WorkCard({ post, onNavigate }) {
       <div className="work-card-image">
         {post.kind ? <WorkCover kind={post.kind} /> : image && !failed ? <img className="cover-art" src={image} alt="" onError={() => setFailed(true)} /> : <CategoryThumbnail category={getCategoryLabel(post)} height={250} />}
         {post.kind && <span className="cover-label">샘플 리뷰</span>}
-        <span className="card-image-arrow" aria-hidden="true">↗</span>
+        <span className="card-image-action" aria-hidden="true">리뷰 열기</span>
       </div>
       <div className="card-caption"><div><h3>{post.title}</h3>{post.notes?.[0]?.title && <p>{post.notes[0].title}</p>}</div><span>{getCategoryLabel(post)}</span></div>
     </Link>

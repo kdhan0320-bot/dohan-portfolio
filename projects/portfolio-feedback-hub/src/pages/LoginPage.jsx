@@ -59,7 +59,7 @@ const LoginPage = () => {
   return <div className="app-surface"><Header /><div className="shell login-layout">
     <section className="login-art" aria-label="고른시선 소개"><PerspectiveBackdrop /><div><span className="eyebrow">고른시선</span><h2>다른 시선이<br />만나는 곳.</h2></div></section>
     <section className="login-form"><BrandMark size={42} /><h1>다시, 고른시선.</h1><p>작업은 로그인 없이 둘러볼 수 있어요.</p>
-      <Button fullWidth variant="contained" onClick={handleGuestMode}>로그인 없이 둘러보기 ↗</Button>
+      <Button fullWidth variant="contained" onClick={handleGuestMode}>로그인 없이 둘러보기</Button>
       <Box component="form" onSubmit={handleSubmit} noValidate>
         <Divider sx={{
             mb: 3

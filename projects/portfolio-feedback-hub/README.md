@@ -1,8 +1,8 @@
 # 고른시선 · Portfolio Feedback Hub
 
-홈에서 용도를 이해하고, 작업을 선택해 디자인의 위치와 의견을 연결해 보는 포트폴리오용 피드백 데모입니다.
+디자인 화면에 의견을 남기고 수정 전후를 비교하는 **디자인 피드백 보드**의 포트폴리오용 체험 서비스입니다.
 
-흑연·실버 테마의 공개 리뷰 데모입니다. 최신 가독성 보완과 실제 확인 범위는 아래에 기록하며, 인증·모바일 검수는 별도로 구분합니다.
+코랄·피치·크림 바탕과 짙은 본문색을 사용합니다. 홈의 실제 리뷰 미리보기, 리뷰 예제, 수정 전후 비교, 연습 챌린지, 이용 안내로 구성합니다. 인증·모바일 검수는 실제 확인 범위와 구분합니다.
 
 - 배포 주소: https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/
 
@@ -10,16 +10,18 @@
 
 ## 제작 목적
 
-포트폴리오를 만들었지만 객관적인 피드백을 받기 어려운 문제를 해결하기 위해, 게시글 탐색과 댓글 중심의 공개 피드백 흐름을 구현했습니다.
+디자인 피드백에서 의견이 가리키는 위치와 수정 이유를 함께 살펴보도록, 화면의 번호·의견·수정 예시를 연결합니다.
 
-포트폴리오 피드백이라는 목적에 맞춰 소개·작업 탐색·화면 위치별 의견 체험의 역할을 나누고, 짧은 설명과 실제 디자인 예시로 사용 방법을 전달합니다.
+실제 협업 플랫폼의 완성을 주장하지 않습니다. 준비된 6종 예제로 위치별 의견 작성과 전후 비교를 체험하는 범위입니다.
 
 ---
 
 ## 주요 기능
 
-- 홈·작업 갤러리·리뷰 방법을 별도 화면으로 제공하고 공통 메뉴에서 이동
-- 홈은 짧은 소개·금속/유리 배경과 리뷰 미리보기·샘플 카드 3개, 작업 목록은 6종 샘플 또는 실제 공개 작업의 검색·분류·정렬 제공
+- 로고 클릭으로 홈 이동. 오른쪽 메뉴는 리뷰 예제·수정 전후·챌린지·이용 안내
+- 홈은 목적 문장·번호 선택과 버전 전환이 가능한 리뷰 미리보기·연습 챌린지 배너 1개·리뷰 예제 3개
+- 리뷰 예제에서 6종 샘플 또는 실제 공개 작업을 검색·분류·정렬
+- 수정 전후는 6종 예제를 선택해 나란히 비교. 챌린지는 3가지 연습 주제를 해당 샘플 리뷰에 연결
 - 이용 방법은 그림 3장과 접이식 질문 3개로 구성. 리뷰 체험은 상세 화면에서 제공
 - 목록 복귀 상태 복원과 기존 검색 링크의 `/works` 이동 유지
 - live / sample-empty / error / sample-error 상태 구분
@@ -298,3 +300,15 @@ README에는 실제 구현된 기능과 향후 개선 예정 기능을 구분해
 ### perspective-studio.webp
 
 > Use case: original editorial 3D still life, architectural material study for a design critique website called Goreunsiseon. Create a wide landscape 3:2 image, no interface, no text. An elegant sculptural arrangement of three large upright rectangular viewfinder frames with generous square openings, at subtly different angles, made of brushed silver aluminum, smoked translucent glass, and matte graphite. One very thin pale butter-yellow translucent glass plate intersects a frame, giving a restrained warm light reflection. These are substantial precise architectural objects resting on a pale neutral silver-grey studio floor, not floating. Frames are gathered on the LEFT 52 percent of the composition, filling roughly 80 percent of the image height. The RIGHT 48 percent is quiet seamless light grey negative space, for a separate real UI card to be overlaid in HTML. Soft daylight from upper left, beautifully graduated shadows cast diagonally toward the lower right, tactile microtexture and delicate film grain, crisp material edges, realistic ambient occlusion. A small flat charcoal circular disk lies at the base. Palette strictly neutral graphite, aluminum silver, offwhite, and one pale yellow accent. A refined contemporary design studio mood with bold silhouette and meaningful spatial depth. Camera front three-quarter view, long lens, floor horizon seamless, carefully cropped close enough to see materials. No purple, pink, blue, green, teal, neon, glossy plastic blobs, organic loops, flowers, transport motifs, brands, logos, watermark, typography, UI, people or mockup devices. Entirely original composition, no imitation of an identifiable artist or commercial artwork.
+
+
+## 2026-10-07 목적·메뉴·코랄 테마 개편
+
+- 홈 첫 문장을 ‘화면에 의견을 남기고, 수정 전후를 비교하세요.’로 바꾸고 실제 리뷰 UI를 가장 크게 배치했습니다. 첫 화면의 두 번호 선택과 수정 전/수정안 전환이 동작합니다.
+- 홈 메뉴를 없애고 로고로 홈에 돌아갑니다. 오른쪽 메뉴는 리뷰 예제·수정 전후·챌린지·이용 안내입니다. 설명을 반복하는 대신 `/compare`와 `/challenges`를 추가했습니다.
+- 링크·버튼의 장식 화살표를 제거했습니다. 샘플 음악 화면의 되감기/앞으로 감기 아이콘은 의미가 있는 화면 요소이므로 유지합니다.
+- 사용자가 제공한 소셜 앱 시안의 코랄·피치·크림·짙은 패널 색 비중을 참고했습니다. 이미지 속 인물 사진·브랜드·화면 배치는 복제하지 않았습니다. 주색 `#302C32`, 바탕 `#FFF8F4`, 포인트 `#F18C7C`, 짙은 강조 `#A44438`을 공통 UI에 적용했습니다. 장식 배경의 대비를 낮춰 리뷰 화면을 먼저 보게 합니다. 확인되지 않은 퍼스널컬러·성격을 사실로 단정하지 않습니다.
+- 배너 그림은 코드로 만든 화면·댓글 SVG입니다. 챌린지는 가상 연습이며 실제 모집·제출·시상·상금이 없음을 배너와 목록에서 명시합니다. 기존 이미지와 라이선스 범위는 유지합니다.
+- [MarkUp](https://www.markup.io/)과 [Pastel](https://usepastel.com/)의 화면 위치에 연결되는 피드백 구조, [Webflow 2026 trends](https://webflow.com/blog/web-design-trends-2026)의 짧은 카피와 제품 UI 중심 구성을 2026-10-07 KST에 확인했습니다. 원본 이미지·브랜드·성과 수치를 가져오지 않았고 유행이나 채용 성과를 보증하지 않습니다.
+- 기존 Auth·DB·가입 정책·패키지·배포 워크플로는 이번 변경 대상이 아닙니다. 공개 의견은 브라우저 메모리에서만 체험하며 저장·협업·자동 디자인 생성으로 표현하지 않습니다.
+- 배포 전 `npm run lint`, `npm run build`, `git diff --check` 통과. 주요 색상 대비 7쌍은 본문 13.05:1, 보조 글 6.45:1, 코랄 버튼/핀 5.73:1, 배너 본문 5.29:1, 배너 고지 5.30:1, 수정 방향 5.73:1, 초점 윤곽 5.77:1입니다. 전체 WCAG 적합 판정은 아닙니다.

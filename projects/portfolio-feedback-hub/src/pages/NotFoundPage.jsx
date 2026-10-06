@@ -13,8 +13,8 @@ const NotFoundPage = () => {
         <div className="not-found-card">
           <span className="section-kicker">404 · PAGE NOT FOUND</span>
           <h1 id="not-found-title">페이지를 찾을 수 없어요.</h1>
-          <p>주소를 확인하거나 작업 갤러리에서 다시 시작해 주세요.</p>
-          <Link className="primary-link" to="/works" replace>작업 갤러리로 <span aria-hidden="true">↗</span></Link>
+          <p>주소를 확인하거나 리뷰 예제에서 다시 시작해 주세요.</p>
+          <Link className="primary-link" to="/works" replace>리뷰 예제 보기</Link>
         </div>
       </section>
       <SiteFooter />

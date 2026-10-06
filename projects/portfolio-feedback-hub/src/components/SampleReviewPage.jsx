@@ -71,7 +71,7 @@ export function ReviewBoard({ post, view: controlledView, onViewChange, standalo
           <label htmlFor={`${id}-comment`}><span className="note-number">{active + 1}</span>이 부분에 의견 남기기</label>
           <textarea id={`${id}-comment`} ref={inputRef} rows={3} maxLength={280} value={draft} onChange={event => dispatch({ type: 'draft', value: event.target.value })} placeholder="어떻게 바꾸면 좋을지 적어주세요." aria-invalid={Boolean(error)} aria-describedby={`${id}-demo-hint${error ? ` ${id}-error` : ''}`} />
           {error && <p id={`${id}-error`} className="comment-error" role="alert">{error}</p>}
-          <div className="comment-submit"><span>{draft.length}/280</span><button className="primary-link" type="submit">의견 추가 <span aria-hidden="true">↑</span></button></div>
+          <div className="comment-submit"><span>{draft.length}/280</span><button className="primary-link" type="submit">의견 추가</button></div>
           <p id={`${id}-demo-hint`} className="demo-hint">화면을 나가거나 새로고침하면 의견이 사라집니다.</p>
           <p className={status ? 'comment-status' : 'sr-only'} role="status">{status}</p>
         </form>
@@ -93,7 +93,7 @@ export default function SampleReviewPage({ post }) {
   const changeView = value => setParams({ view: value }, { replace: true, state: location.state });
   return <div className="app-surface review-surface"><Header />
     <div className="shell review-page">
-      <button className="back-link" onClick={() => location.state?.routeReturn ? navigate(-1) : navigate('/works')}>← 작업 목록</button>
+      <button className="back-link" onClick={() => location.state?.routeReturn ? navigate(-1) : navigate('/works')}>리뷰 예제 목록</button>
       <ReviewBoard key={post.id} post={post} view={view} onViewChange={changeView} standalone />
     </div>
     <SiteFooter />
