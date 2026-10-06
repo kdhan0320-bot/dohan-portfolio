@@ -181,7 +181,7 @@
       number: "01",
       english: "TAKE A BLUE BREATH",
       previewDescription: "파도와 숲, 색과 식탁 사이에서 잠시 쉬어가는 네 편",
-      previewImage: "assets/posters-v13/bluehour.webp",
+      previewImage: "assets/posters-v8/forest.webp",
       accent: "#9CBFDF",
       descriptionLines: ["풍경에서 마음으로,", "잠시 숨을 고르는 네 편."],
       films: ["tide", "forest", "bluehour", "nocturne"],
@@ -513,7 +513,7 @@
     ...conceptChart.slice(0, 3).map(makeChartItem),
   );
   $("conceptChart").replaceChildren(...conceptChart.map(makeChartItem));
-  const journalSelection = [articles[3], ...articles.slice(0, 3)];
+  const journalSelection = articles;
   $("journalGrid").replaceChildren(...journalSelection.map(makeArticleCard));
   $("homeJournal").replaceChildren(
     ...journalSelection.slice(0, 2).map(makeArticleCard),
@@ -725,7 +725,7 @@
   function route() {
     document
       .querySelectorAll("dialog[open]")
-      .forEach((dialog) => dialog.close());
+      .forEach((dialog) => closeDialog(dialog, { restoreFocus: false }));
     const [path, themeId] = location.hash.slice(1).split("/");
     const view = ["browse", "saved", "themes", "journal", "news"].includes(path)
       ? path
@@ -775,7 +775,7 @@
       journal: "매거진",
       browse: "작품 둘러보기",
       saved: "내 보관함",
-      news: "차트·이벤트",
+      news: "차트·큐레이션",
     }[view];
     document.title = `${pageTitle} — 잔상관`;
     if (!firstRoute) {
@@ -854,13 +854,47 @@
     }
   });
   const dialogContexts = new Map();
+  const pendingDialogClosures = new WeakMap();
+  // Drafts survive internal navigation, but never count as saved library notes.
+  // They are intentionally memory-only and disappear on refresh or tab close.
+  const noteDrafts = new Map();
   let activeDetailId = null;
   let noteDirty = false;
+  function rememberNoteDraft() {
+    if (!activeDetailId) return;
+    const value = $("noteText").value;
+    noteDirty = value !== (state.notes[activeDetailId] || "");
+    if (noteDirty) {
+      noteDrafts.set(activeDetailId, {
+        value,
+        conflicted: noteDrafts.get(activeDetailId)?.conflicted || false,
+      });
+    } else noteDrafts.delete(activeDetailId);
+  }
+  function closeDialog(dialog, { restoreFocus = true } = {}) {
+    if (!dialog?.open) return;
+    const context = dialogContexts.get(dialog) || {};
+    context.restoreFocus = restoreFocus;
+    dialogContexts.delete(dialog);
+    if (dialog.id === "detailDialog") {
+      rememberNoteDraft();
+      activeDetailId = null;
+      noteDirty = false;
+    }
+    const pending = pendingDialogClosures.get(dialog) || [];
+    pending.push(context);
+    pendingDialogClosures.set(dialog, pending);
+    dialog.close();
+  }
   function openDialog(dialog, trigger, heading) {
     document.querySelectorAll("dialog[open]").forEach((open) => {
-      if (open !== dialog) open.close();
+      if (open !== dialog) closeDialog(open, { restoreFocus: false });
     });
-    dialogContexts.set(dialog, { trigger });
+    dialogContexts.set(dialog, {
+      trigger,
+      detailId: dialog.id === "detailDialog" ? activeDetailId : null,
+      restoreFocus: true,
+    });
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
     document.body.classList.add("dialog-open");
@@ -878,12 +912,29 @@
     $("noteDelete").disabled = !hasSavedNote;
   }
   function loadNote() {
-    $("noteText").value = state.notes[activeDetailId] || "";
-    noteDirty = false;
+    if (
+      noteDrafts.get(activeDetailId)?.value ===
+      (state.notes[activeDetailId] || "")
+    )
+      noteDrafts.delete(activeDetailId);
+    const draft = noteDrafts.get(activeDetailId);
+    $("noteText").value = draft
+      ? draft.value
+      : state.notes[activeDetailId] || "";
+    noteDirty = Boolean(draft);
     updateNoteCount();
-    $("noteStatus").textContent = state.notes[activeDetailId]
-      ? noteSavedMessage()
-      : "영화에서 궁금한 점이나 남겨둘 생각을 노트로 남겨보세요.";
+    $("noteStatus").textContent = draft
+      ? noteDraftMessage(true)
+      : state.notes[activeDetailId]
+        ? noteSavedMessage()
+        : "영화에서 궁금한 점이나 남겨둘 생각을 노트로 남겨보세요.";
+  }
+  function noteDraftMessage(restored = false) {
+    if (noteDrafts.get(activeDetailId)?.conflicted)
+      return "다른 탭의 저장본이 바뀌었어요. 이 초안을 저장하면 최신 저장본을 덮어씁니다.";
+    return restored
+      ? "저장 전 초안을 이어 쓸 수 있어요. 새로고침하거나 탭을 닫으면 사라집니다."
+      : "저장 전 초안이에요. 화면을 닫아도 유지되며, 새로고침하면 사라집니다.";
   }
   function refreshLibrary({ preserveFocus = false } = {}) {
     if (state.view === "saved") render({ preserveFocus });
@@ -902,6 +953,7 @@
     if (!film) return;
     if (trigger?.closest("#articleDialog"))
       trigger = dialogContexts.get($("articleDialog"))?.trigger || trigger;
+    if ($("detailDialog").open) rememberNoteDraft();
     activeDetailId = id;
     $("detailTitle").textContent = film.title;
     $("detailDialog").dataset.filmId = film.id;
@@ -941,10 +993,10 @@
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
   $("noteText").addEventListener("input", () => {
-    noteDirty = $("noteText").value !== (state.notes[activeDetailId] || "");
+    rememberNoteDraft();
     updateNoteCount();
     $("noteStatus").textContent = noteDirty
-      ? "아직 저장하지 않은 변경 내용이 있어요."
+      ? noteDraftMessage()
       : state.notes[activeDetailId]
         ? noteSavedMessage()
         : "";
@@ -959,6 +1011,7 @@
       return;
     }
     state.notes[activeDetailId] = value;
+    noteDrafts.delete(activeDetailId);
     persistNotes();
     loadNote();
     refreshLibrary();
@@ -966,6 +1019,7 @@
   $("noteDelete").addEventListener("click", () => {
     if (!activeDetailId || !state.notes[activeDetailId]) return;
     delete state.notes[activeDetailId];
+    noteDrafts.delete(activeDetailId);
     persistNotes();
     loadNote();
     refreshLibrary();
@@ -981,9 +1035,6 @@
     if (article) showArticle(article.dataset.article, article);
     const about = event.target.closest("[data-about], #aboutButton");
     if (about) openDialog($("aboutDialog"), about, $("aboutTitle"));
-    const promotion = event.target.closest("[data-promotion]");
-    if (promotion)
-      openDialog($("promotionDialog"), promotion, $("promotionTitle"));
     const save = event.target.closest("[data-save]");
     if (save) {
       const id = save.dataset.save;
@@ -1014,9 +1065,13 @@
       );
     }
     const close = event.target.closest("[data-close]");
-    if (close) $(close.dataset.close).close();
+    if (close) closeDialog($(close.dataset.close));
   });
   document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeDialog(dialog);
+    });
     dialog.addEventListener("click", (e) => {
       if (e.target === dialog) {
         const rect = dialog.getBoundingClientRect();
@@ -1026,7 +1081,7 @@
           e.clientY < rect.top ||
           e.clientY > rect.bottom
         )
-          dialog.close();
+          closeDialog(dialog);
       }
     });
     dialog.addEventListener("keydown", (e) => {
@@ -1051,15 +1106,17 @@
       }
     });
     dialog.addEventListener("close", () => {
-      const trigger = dialogContexts.get(dialog)?.trigger;
-      dialogContexts.delete(dialog);
-      const detailId = dialog.id === "detailDialog" ? activeDetailId : null;
-      if (dialog.id === "detailDialog") activeDetailId = null;
+      const pending = pendingDialogClosures.get(dialog);
+      const context = pending?.shift();
+      if (!pending?.length) pendingDialogClosures.delete(dialog);
+      const { trigger, detailId } = context || {};
       if (document.querySelector("dialog[open]")) return;
       document.body.classList.remove("dialog-open");
       clearTimeout(toastTimer);
       $("toast").classList.remove("visible");
       document.body.append($("toast"));
+      // A queued close event must not steal focus from the new route heading.
+      if (!context?.restoreFocus) return;
       const currentReplacement =
         detailId &&
         [...document.querySelectorAll(`[data-detail="${detailId}"]`)].find(
@@ -1099,18 +1156,22 @@
       state.storageAvailable = true;
     }
     if (notesChanged) {
-      const previousNote = state.notes[activeDetailId];
+      const previousNotes = state.notes;
       state.notes = readNotes(event.key === null ? null : event.newValue);
       state.notesStorageAvailable = true;
+      noteDrafts.forEach((draft, id) => {
+        if (draft.value === (state.notes[id] || "")) noteDrafts.delete(id);
+        else if (previousNotes[id] !== state.notes[id]) draft.conflicted = true;
+      });
       if (
         activeDetailId &&
         $("detailDialog").open &&
-        previousNote !== state.notes[activeDetailId]
+        previousNotes[activeDetailId] !== state.notes[activeDetailId]
       ) {
+        noteDirty = noteDrafts.has(activeDetailId);
         if (noteDirty) {
           updateNoteCount();
-          $("noteStatus").textContent =
-            "다른 탭의 노트가 변경됐어요. 입력 중인 내용은 유지했어요.";
+          $("noteStatus").textContent = noteDraftMessage();
         } else loadNote();
       }
     }

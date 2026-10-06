@@ -22,6 +22,7 @@
   --coral: #f6b797;
   --line: #ffffff24;
   --display: Pretendard, sans-serif;
+  --section-space: clamp(48px, 5vw, 72px);
 }
 * {
   box-sizing: border-box;
@@ -199,7 +200,7 @@ button:focus:not(:focus-visible),
 }
 .brand small {
   display: block;
-  font-size: 8px;
+  font-size: 0.75rem;
   font-weight: 650;
   letter-spacing: 0.18em;
   margin-top: 7px;
@@ -254,7 +255,7 @@ button:focus:not(:focus-visible),
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 0.75rem;
   line-height: 1;
   background: #24404e;
   color: #c0ecf7;
@@ -316,7 +317,7 @@ button:focus:not(:focus-visible),
 }
 .eyebrow,
 .section-kicker {
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.5;
   letter-spacing: 0.1em;
   font-weight: 650;
@@ -448,7 +449,7 @@ button:focus:not(:focus-visible),
   margin-right: 9px;
 }
 .concept-label {
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.5;
   color: #d5e7ed;
   background: #091e30b8;
@@ -541,7 +542,7 @@ button:focus:not(:focus-visible),
   padding-top: 20px;
 }
 .hero-index {
-  font-size: 10px;
+  font-size: 0.75rem;
   letter-spacing: 0.13em;
   color: #aecbd9;
   display: flex;
@@ -696,7 +697,7 @@ button:focus:not(:focus-visible),
   color: #e1edf4;
 }
 .film-foot .film-english {
-  font-size: 9px;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
   color: #a4bac8;
   max-width: 52%;
@@ -732,7 +733,7 @@ button:focus:not(:focus-visible),
   width: fit-content;
   margin-top: 8px;
   color: #bae5f3;
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.4;
   font-weight: 550;
   padding: 3px 6px;
@@ -981,7 +982,7 @@ button:focus:not(:focus-visible),
   color: #40202a;
 }
 .campaign-tag {
-  font-size: 11px;
+  font-size: 0.75rem;
   font-weight: 750;
   letter-spacing: 0.06em;
   display: inline-flex;
@@ -1227,7 +1228,7 @@ button:focus:not(:focus-visible),
   padding: 26px 28px;
 }
 .journal-card-copy > .eyebrow {
-  font-size: 11px;
+  font-size: 0.75rem;
   color: var(--accent);
   font-weight: 650;
   letter-spacing: 0.05em;
@@ -1589,7 +1590,7 @@ button:focus:not(:focus-visible),
   color: #c3d5df;
 }
 .theme-tabs a span {
-  font-size: 10px;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
 }
 .theme-tabs a[aria-current] {
@@ -1614,7 +1615,7 @@ button:focus:not(:focus-visible),
 .theme-caption {
   display: flex;
   gap: 14px;
-  font-size: 11px;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: #a6c9dc;
   margin-bottom: 21px;
@@ -1733,7 +1734,7 @@ button:focus:not(:focus-visible),
 }
 .info-chip {
   display: inline-flex;
-  font-size: 11px;
+  font-size: 0.75rem;
   color: #cae6f6;
   border: 1px solid #668ca4;
   border-radius: 4px;
@@ -1936,11 +1937,11 @@ button:focus:not(:focus-visible),
   padding-top: 23px;
   margin-top: 25px;
   color: #9fb8c8;
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.9;
 }
 .footer-bottom p:first-child {
-  font-size: 11px;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
 }
 .footer-bottom p:last-child {
@@ -2388,7 +2389,7 @@ dialog .toast.visible {
     font-size: 18px;
   }
   .hero-category {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .campaign-copy {
     padding: 32px;
@@ -2445,7 +2446,7 @@ dialog .toast.visible {
   .benefit-strip-art span {
     width: 72px;
     height: 52px;
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .benefit-strip {
     gap: 22px;
@@ -2599,7 +2600,7 @@ dialog .toast.visible {
   .saved-count {
     min-width: 16px;
     height: 16px;
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .hero,
   .hero-inner {
@@ -2627,13 +2628,13 @@ dialog .toast.visible {
     background: #08131f;
   }
   .hero-topline .eyebrow {
-    font-size: 11px;
+    font-size: 0.75rem;
     background: #081827b3;
     border-radius: 3px;
     padding: 4px 6px;
   }
   .concept-label {
-    font-size: 10px;
+    font-size: 0.75rem;
     padding: 4px 6px;
     background: #091e30cd;
   }
@@ -2643,7 +2644,7 @@ dialog .toast.visible {
     max-width: 100%;
   }
   .hero-category {
-    font-size: 11px;
+    font-size: 0.75rem;
     color: #b7d7e7;
     margin-bottom: 15px;
   }
@@ -2651,7 +2652,7 @@ dialog .toast.visible {
     font-size: 80px;
   }
   .hero-english {
-    font-size: 11px;
+    font-size: 0.75rem;
     margin-top: 14px;
     letter-spacing: 0.23em;
   }
@@ -2674,7 +2675,7 @@ dialog .toast.visible {
     font-size: 12px;
   }
   .hero-index {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .hero-index strong {
     font-size: 15px;
@@ -2694,7 +2695,7 @@ dialog .toast.visible {
     font-size: 28px;
   }
   .section-kicker {
-    font-size: 10px;
+    font-size: 0.75rem;
     letter-spacing: 0.09em;
     margin-bottom: 8px;
   }
@@ -2815,13 +2816,13 @@ dialog .toast.visible {
     gap: 4px 14px;
   }
   .boxoffice-card p {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .rank-genre {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .source-note {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .home-journal {
     padding-bottom: 40px;
@@ -2973,7 +2974,7 @@ dialog .toast.visible {
     max-width: 28ch;
   }
   .theme-overview .theme-preview-copy .eyebrow {
-    font-size: 10px;
+    font-size: 0.75rem;
     margin-bottom: 12px;
   }
   .theme-overview .theme-preview-meta {
@@ -3007,7 +3008,7 @@ dialog .toast.visible {
   }
   .theme-caption {
     margin-bottom: 15px;
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .theme-story > p:not(.theme-caption) {
     font-size: 14px;
@@ -3168,7 +3169,7 @@ dialog .toast.visible {
     align-items: flex-end;
   }
   .footer-bottom {
-    font-size: 10px;
+    font-size: 0.75rem;
     gap: 16px;
     align-items: flex-start;
   }
@@ -3243,7 +3244,7 @@ dialog .toast.visible {
     font-size: 14px;
   }
   .about-flow small {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .about-facts p {
     font-size: 13px;
@@ -3273,7 +3274,7 @@ dialog .toast.visible {
     font-size: 16px;
   }
   .hero-bottom .text-link {
-    font-size: 11px;
+    font-size: 0.75rem;
     gap: 7px;
   }
   .hero-bottom .text-link .icon {
@@ -3287,11 +3288,11 @@ dialog .toast.visible {
     gap: 10px;
   }
   .hero-topline .eyebrow {
-    font-size: 10px;
+    font-size: 0.75rem;
     letter-spacing: 0;
   }
   .concept-label {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .section-heading h2 {
     font-size: 26px;
@@ -3417,14 +3418,14 @@ dialog .toast.visible {
     max-width: 11ch;
   }
   .data-stamp {
-    font-size: 11px;
+    font-size: 0.75rem;
     margin-top: -7px;
   }
   .boxoffice-card > div {
     display: block;
   }
   .boxoffice-card .rank-genre {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .boxoffice-card h3 {
     font-size: 17px;
@@ -3432,7 +3433,7 @@ dialog .toast.visible {
     margin-top: 3px;
   }
   .boxoffice-card p {
-    font-size: 11px;
+    font-size: 0.75rem;
     margin-top: 8px;
   }
   .rank-number {
@@ -3493,13 +3494,13 @@ dialog .toast.visible {
     gap: 5px;
   }
   .result-actions .text-link {
-    font-size: 11px;
+    font-size: 0.75rem;
     gap: 3px;
   }
   .sort-field select {
     width: 128px;
     padding-left: 8px;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .library-filters button {
     font-size: 13px;
@@ -3606,7 +3607,7 @@ dialog .toast.visible {
     max-width: none;
     text-align: left;
     margin-top: 10px;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .footer-links .text-link {
     font-size: 12px;
@@ -3627,13 +3628,13 @@ dialog .toast.visible {
     font-size: 14px;
   }
   .note-hint {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .note-controls p {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .detail-disclaimer {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .article-content {
     padding: 25px;
@@ -3675,17 +3676,17 @@ dialog .toast.visible {
     gap: 4px;
   }
   .nav a {
-    font-size: 11px;
+    font-size: 0.75rem;
     gap: 3px;
   }
   .brand > span {
     font-size: 23px;
   }
   .hero-topline .eyebrow {
-    font-size: 9px;
+    font-size: 0.75rem;
   }
   .concept-label {
-    font-size: 8px;
+    font-size: 0.75rem;
   }
   .hero h1 {
     font-size: 62px;
@@ -3700,24 +3701,24 @@ dialog .toast.visible {
     height: 284px;
   }
   .hero-meta {
-    font-size: 11px;
+    font-size: 0.75rem;
     gap: 8px;
   }
   .hero-meta > span + span::before {
     margin-right: 8px;
   }
   .hero-bottom .text-link {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .hero-index {
-    font-size: 8px;
+    font-size: 0.75rem;
     gap: 5px;
   }
   .section-heading h2 {
     font-size: 24px;
   }
   .section-heading .text-link {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .film-grid {
     gap: 25px 12px;
@@ -3742,17 +3743,17 @@ dialog .toast.visible {
     font-size: 20px;
   }
   .film-grid .film-foot p {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .film-note-badge {
-    font-size: 10px;
+    font-size: 0.75rem;
   }
   .film-rail > .film-card {
     flex-basis: 77%;
   }
   .filters button {
     padding-inline: 9px;
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .sort-field select {
     width: 120px;
@@ -3764,7 +3765,7 @@ dialog .toast.visible {
     display: none;
   }
   .results-bar {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .library-filters button {
     font-size: 12px;
@@ -3781,7 +3782,7 @@ dialog .toast.visible {
     font-size: 28px;
   }
   .theme-tabs a {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .theme-story h2 {
     font-size: 27px;
@@ -3967,7 +3968,7 @@ dialog .toast.visible {
   color: #486375;
 }
 .chart-tag {
-  font-size: 10px;
+  font-size: 0.75rem;
   color: #456375;
   white-space: nowrap;
 }
@@ -3986,7 +3987,7 @@ dialog .toast.visible {
   border: 1px solid #74649f;
   padding: 4px 9px;
   border-radius: 4px;
-  font-size: 11px;
+  font-size: 0.75rem;
   line-height: 1.3;
   font-weight: 650;
   letter-spacing: 0.01em;
@@ -4067,7 +4068,7 @@ dialog .toast.visible {
     0 0 0 90px #b3a7cf22;
 }
 .offer-kicker {
-  font-size: 11px;
+  font-size: 0.75rem;
   letter-spacing: 0.14em;
   font-weight: 650;
   margin-top: 29px;
@@ -4079,30 +4080,6 @@ dialog .toast.visible {
   font-weight: 750;
   letter-spacing: -0.055em;
   margin-top: 13px;
-}
-.offer-number {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 30px 0;
-  color: #3e285b;
-}
-.offer-number > span {
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.6;
-}
-.offer-number strong {
-  font-size: 145px;
-  font-weight: 750;
-  line-height: 1.03;
-  letter-spacing: -0.085em;
-  margin: 7px 0 10px;
-}
-.offer-number small {
-  font-size: 0.45em;
-  letter-spacing: -0.04em;
-  margin-left: 7px;
 }
 .offer-button {
   background: #36234f;
@@ -4191,89 +4168,10 @@ dialog .toast.visible {
 .promo-teaser:hover .promo-cta {
   background: #54346f;
 }
-.promo-teaser-number {
-  display: block;
-  font-size: 130px;
-  line-height: 1;
-  font-weight: 750;
-  letter-spacing: -0.08em;
-  position: relative;
-  margin: 0 45px 0 0;
-  color: #482d67;
-  transform: rotate(-8deg);
-  flex: none;
-}
-.promo-teaser-number > span {
-  font-size: 0.48em;
-  letter-spacing: -0.03em;
-}
-.promo-teaser-number > small {
-  display: block;
-  font-size: 10px;
-  line-height: 1.5;
-  letter-spacing: 0.2em;
-  text-align: right;
-  margin-top: 16px;
-}
 .promo-teaser:focus-visible,
 .offer-button:focus-visible {
   outline-color: #633581;
   outline-offset: 4px;
-}
-.promotion-dialog {
-  width: min(calc(100% - 40px), 850px);
-}
-.promotion-dialog[open] {
-  display: grid;
-  grid-template-columns: 38% 1fr;
-}
-.promotion-art {
-  background: #dcd4f1;
-  color: #422c5d;
-  padding: 35px 27px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 420px;
-  gap: 25px;
-}
-.promotion-art > strong {
-  font-size: 113px;
-  line-height: 1;
-  letter-spacing: -0.075em;
-  transform: rotate(-8deg);
-}
-.promotion-art > strong small {
-  font-size: 0.43em;
-}
-.promotion-art > span:last-child {
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  font-weight: 650;
-}
-.promotion-content {
-  align-self: center;
-  padding: 56px 38px 39px;
-}
-.promotion-content h2 {
-  font-size: 30px;
-  line-height: 1.35;
-  letter-spacing: -0.045em;
-  font-weight: 750;
-  margin-top: 16px;
-}
-.promotion-content > p:not(.section-kicker) {
-  font-size: 15px;
-  line-height: 1.85;
-  color: #c6dbe7;
-  word-break: keep-all;
-  margin-top: 21px;
-}
-.promotion-content .button {
-  margin-top: 27px;
-  min-height: 48px;
-  justify-content: center;
 }
 @media (max-width: 1199px) {
   .chart-home {
@@ -4351,22 +4249,11 @@ dialog .toast.visible {
     gap: 25px 40px;
     padding: 34px;
   }
-  .offer-number {
-    grid-column: 2;
-    grid-row: 1/3;
-    justify-self: center;
-    align-self: center;
-    margin: 0;
-  }
   .offer-action {
     grid-column: 1;
   }
   .offer-copy h2 {
     font-size: 36px;
-  }
-  .promo-teaser-number {
-    font-size: 110px;
-    margin-right: 12px;
   }
 }
 @media (max-width: 767px) {
@@ -4396,34 +4283,9 @@ dialog .toast.visible {
   .promo-teaser-copy > strong {
     font-size: 29px;
   }
-  .promo-teaser-number {
-    font-size: 86px;
-    margin-right: 0;
-  }
   .journal-endcap strong {
     font-size: 14px;
     padding: 8px 15px;
-  }
-  .promotion-dialog[open] {
-    display: block;
-  }
-  .promotion-art {
-    min-height: 180px;
-    padding: 23px;
-    flex-direction: row;
-    gap: 28px;
-  }
-  .promotion-art > strong {
-    font-size: 88px;
-  }
-  .promotion-art > span:last-child {
-    display: none;
-  }
-  .promotion-content {
-    padding: 28px;
-  }
-  .promotion-content h2 {
-    font-size: 28px;
   }
 }
 @media (max-width: 600px) {
@@ -4439,7 +4301,7 @@ dialog .toast.visible {
   }
   .chart-panel .section-heading > .text-link {
     min-width: 82px;
-    font-size: 11px;
+    font-size: 0.75rem;
     padding: 8px 9px;
   }
   .chart-home .chart-film {
@@ -4498,17 +4360,6 @@ dialog .toast.visible {
   .offer-copy h2 {
     font-size: 33px;
   }
-  .offer-number {
-    align-self: flex-end;
-    align-items: flex-end;
-    margin: 22px 0;
-  }
-  .offer-number strong {
-    font-size: 118px;
-  }
-  .offer-number > span {
-    font-size: 12px;
-  }
   .offer-action {
     width: 100%;
   }
@@ -4528,16 +4379,6 @@ dialog .toast.visible {
   .promo-teaser-copy > strong {
     font-size: 29px;
   }
-  .promo-teaser-number {
-    position: absolute;
-    right: 25px;
-    bottom: 28px;
-    font-size: 75px;
-    opacity: 1;
-  }
-  .promo-teaser-number > small {
-    display: none;
-  }
   .promo-cta {
     margin-top: 70px;
     font-size: 12px;
@@ -4545,29 +4386,7 @@ dialog .toast.visible {
   }
   .promo-note {
     max-width: 23ch;
-    font-size: 11px;
-  }
-  .promotion-content > p:not(.section-kicker) {
-    font-size: 14px;
-  }
-  .promotion-art {
-    justify-content: flex-start;
-    gap: 20px;
-    padding: 26px 22px;
-    min-height: 160px;
-  }
-  .promotion-art .demo-badge {
-    max-width: 100px;
-    text-align: center;
-  }
-  .promotion-art > strong {
-    font-size: 75px;
-  }
-  .promotion-content h2 {
-    font-size: 25px;
-  }
-  .promotion-content .button {
-    width: 100%;
+    font-size: 0.75rem;
   }
 }
 @media (max-width: 359px) {
@@ -4589,7 +4408,7 @@ dialog .toast.visible {
     font-size: 17px;
   }
   .chart-copy > span {
-    font-size: 11px;
+    font-size: 0.75rem;
   }
   .promo-teaser {
     padding: 23px;
@@ -4597,22 +4416,589 @@ dialog .toast.visible {
   .promo-teaser-copy > strong {
     font-size: 27px;
   }
-  .promo-teaser-number {
-    right: 21px;
-    bottom: 78px;
-    font-size: 67px;
-  }
   .promo-cta {
     margin-top: 74px;
   }
-  .promotion-content {
-    padding: 25px 21px;
+}
+
+/* v15: readable interface type, consistent spacing and purposeful campaigns. */
+.theme-collection[data-theme="quiet"] .theme-cover,
+.theme-collection[data-theme="beyond"] .theme-cover {
+  object-position: center 8%;
+}
+.journal-card-button {
+  display: flex;
+  flex-direction: column;
+}
+.journal-card-image {
+  flex: none;
+}
+.journal-card-copy,
+.journal-editorial .journal-card:not(:first-child) .journal-card-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  width: 100%;
+}
+.journal-card-copy > p:not(.journal-card-category) {
+  margin-bottom: 20px;
+}
+.journal-card-copy .journal-card-link {
+  margin-top: auto;
+}
+.section {
+  padding-block: var(--section-space);
+}
+.home-films {
+  padding-top: 40px;
+  padding-bottom: 36px;
+}
+.home-themes {
+  padding-bottom: var(--section-space);
+}
+.home-chart {
+  padding-block: 0;
+}
+.home-journal {
+  padding-block: var(--section-space);
+}
+.benefit-strip-wrap {
+  padding-bottom: var(--section-space);
+}
+.eyebrow,
+.section-kicker,
+.campaign-tag {
+  font-size: 0.75rem;
+}
+.section-heading > .text-link,
+.campaign-link,
+.promo-cta,
+.filters button,
+.library-filters button,
+.sort-field select,
+.result-actions .text-link,
+.theme-tabs a,
+.footer-links .text-link {
+  font-size: 0.875rem;
+}
+.page-description,
+.detail-description,
+.article-content #articleBody,
+.empty-state p {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+.theme-preview-description,
+.campaign-copy p,
+.journal-card-copy > p:not(.journal-card-category),
+.journal-editorial
+  .journal-card:not(:first-child)
+  .journal-card-copy
+  > p:not(.journal-card-category) {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+}
+.film-foot p,
+.chart-copy > span,
+.hero-meta,
+.storage-note,
+.note-hint,
+.note-controls p,
+.detail-disclaimer,
+.promo-note,
+.offer-action p,
+.chart-disclosure {
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+.film-foot .film-english {
+  display: none;
+}
+.film-foot {
+  flex-wrap: wrap;
+  gap: 5px 12px;
+}
+.hero-topline .eyebrow {
+  font-size: 0.875rem;
+  letter-spacing: 0;
+}
+.concept-label {
+  font-size: 0.75rem;
+  flex: none;
+}
+.hero-index {
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+}
+.hero-bottom .text-link {
+  font-size: 0.875rem;
+}
+.hero-category {
+  font-size: 0.8125rem;
+}
+.rail-shell {
+  container-type: inline-size;
+  --rail-card-width: calc((100cqi - 90px) / 4.3);
+}
+.rail-controls {
+  min-height: 24px;
+  margin-top: 10px;
+}
+.rail-status {
+  margin-right: 0;
+  font-size: 0.8125rem;
+}
+.rail-controls button {
+  position: absolute;
+  top: calc(var(--rail-card-width) * 0.75 + 4px);
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 48px;
+  height: 48px;
+  background: #0b2333f5;
+  border: 1px solid #a2c3d3;
+  box-shadow: 0 4px 18px #0005;
+  color: #f1fbff;
+}
+.rail-controls [data-rail-prev] {
+  left: -22px;
+}
+.rail-controls [data-rail-next] {
+  right: -22px;
+}
+.rail-controls button:disabled {
+  opacity: 0.4;
+}
+.rail-controls button:not(:disabled):hover {
+  background: #244c61;
+}
+.chart-panel .section-heading h2 {
+  font-size: 30px;
+}
+.chart-panel .section-heading > .text-link {
+  font-size: 0.875rem;
+}
+.demo-badge {
+  font-size: 0.75rem;
+}
+.promo-teaser {
+  min-height: 280px;
+}
+.promo-teaser-copy {
+  max-width: 60%;
+}
+.promo-cta {
+  margin-top: 8px;
+}
+.film-note-art {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 220px;
+  flex: none;
+  margin: 18px 45px 18px 0;
+  color: #533f6c;
+}
+.film-note-sheet {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 156px;
+  min-height: 190px;
+  padding: 27px 24px;
+  border: 1px solid #a99cbd;
+  border-radius: 6px;
+  background: #f4effb;
+  box-shadow:
+    10px 10px 0 #c7b8df,
+    11px 11px 0 1px #a99cbd;
+  transform: rotate(8deg);
+}
+.film-note-sheet .icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 7px;
+}
+.film-note-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #b8a9ca;
+}
+.film-note-line:last-child {
+  width: 65%;
+}
+.film-note-caption {
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+}
+.demo-offer .film-note-art {
+  align-self: center;
+  margin: 32px 0;
+}
+.offer-kicker {
+  font-size: 0.75rem;
+}
+.campaign-discovery .note-visual {
+  transform: rotate(-10deg);
+  border-radius: 50%;
+  width: 110px;
+  height: 110px;
+}
+.footer-bottom,
+.footer-bottom p:last-child {
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+.note-hint {
+  max-width: 47ch;
+}
+.note-controls p {
+  min-height: 1.65em;
+}
+.about-facts p {
+  font-size: 0.9375rem;
+}
+@media (max-width: 1199px) {
+  .rail-shell {
+    --rail-card-width: calc((100cqi - 60px) / 3.4);
   }
-  .promotion-art {
-    gap: 15px;
+}
+@media (max-width: 999px) {
+  .rail-shell {
+    --rail-card-width: calc((100cqi - 48px) / 3.2);
   }
-  .promotion-art > strong {
-    font-size: 67px;
+  .demo-offer > .film-note-art {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    margin: 18px 0;
+    width: 170px;
+  }
+  .promo-teaser > .film-note-art {
+    margin-right: 0;
+    width: 180px;
+  }
+}
+@media (max-width: 767px) {
+  .nav a {
+    font-size: 0.875rem;
+  }
+  .nav {
+    gap: 4px;
+  }
+  .saved-count {
+    font-size: 0.75rem;
+    min-width: 18px;
+    height: 18px;
+  }
+  .hero-topline {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    position: absolute;
+    inset: 16px 0 auto;
+  }
+  .hero-topline .eyebrow {
+    max-width: 28ch;
+    font-size: 0.8125rem;
+    background: #071827e8;
+    padding: 7px 10px;
+    line-height: 1.55;
+  }
+  .hero-inner {
+    position: relative;
+    padding-top: 20px;
+  }
+  .concept-label {
+    padding: 5px 9px;
+    background: #071827e8;
+  }
+  .hero-copy {
+    padding-top: 282px;
+  }
+  .hero-bottom {
+    gap: 8px;
+    padding-top: 20px;
+    flex-wrap: wrap;
+  }
+  .home-films {
+    padding-top: 32px;
+    padding-bottom: 28px;
+  }
+  .rail-shell {
+    --rail-card-width: calc((100cqi - 26px) / 2.4);
+  }
+  .rail-controls button {
+    width: 44px;
+    height: 44px;
+  }
+  .rail-controls [data-rail-prev] {
+    left: -12px;
+  }
+  .rail-controls [data-rail-next] {
+    right: -12px;
+  }
+  .section-heading {
+    gap: 12px;
+    align-items: center;
+  }
+  .section-heading > .text-link {
+    padding-inline: 11px;
+  }
+  .film-grid .film-foot p {
+    font-size: 0.8125rem;
+  }
+  .theme-preview {
+    min-height: 240px;
+  }
+  .theme-overview .theme-preview {
+    height: auto;
+    min-height: 295px;
+  }
+  .theme-overview .theme-preview-description {
+    font-size: 0.9375rem;
+  }
+  .chart-panel .section-heading h2 {
+    font-size: 26px;
+  }
+  .chart-panel .section-heading > .text-link {
+    padding-inline: 10px;
+    min-width: auto;
+  }
+  .filters {
+    flex-wrap: wrap;
+  }
+  .filters button {
+    padding: 9px 9px;
+  }
+  .results-bar {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-block: 16px;
+    font-size: 0.8125rem;
+  }
+  .sort-field select {
+    width: 146px;
+  }
+  .result-actions {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .library-filters button {
+    padding: 10px 12px;
+  }
+  .theme-tabs {
+    flex-wrap: wrap;
+  }
+  .theme-tabs a {
+    padding: 10px 8px;
+    font-size: 0.8125rem;
+  }
+  .theme-story > p:not(.theme-caption) {
+    font-size: 1rem;
+  }
+  .journal-heading .page-description {
+    margin-top: 16px;
+  }
+  .journal-card-copy {
+    padding: 24px;
+  }
+  .promo-teaser {
+    padding: 28px;
+  }
+  .promo-teaser-copy {
+    max-width: 62%;
+  }
+  .promo-teaser > .film-note-art {
+    width: 135px;
+  }
+  .film-note-sheet {
+    width: 130px;
+    min-height: 164px;
+    padding: 23px 20px;
+  }
+  .film-note-caption {
+    letter-spacing: 0.06em;
+  }
+}
+@media (max-width: 600px) {
+  .hero-copy {
+    padding-top: 230px;
+  }
+  .hero h1 {
+    font-size: clamp(60px, 18vw, 76px);
+  }
+  .hero-meta {
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+  .hero-meta > span + span::before {
+    margin-right: 9px;
+  }
+  .hero-english {
+    letter-spacing: 0.23em;
+  }
+  .rail-shell {
+    --rail-card-width: 68cqi;
+  }
+  .film-rail > .film-card {
+    flex-basis: 68%;
+  }
+  .chart-panel .section-heading {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .chart-panel .section-heading h2 {
+    font-size: 25px;
+  }
+  .chart-panel {
+    padding: 24px 20px;
+  }
+  .chart-copy > span {
+    font-size: 0.8125rem;
+  }
+  .chart-detail-panel .section-heading > .demo-badge {
+    margin-top: 8px;
+  }
+  .promo-teaser {
+    display: flex;
+    align-items: center;
+    min-height: 0;
+    padding: 26px;
+    gap: 16px;
+  }
+  .promo-teaser-copy {
+    max-width: none;
+    flex: 1;
+  }
+  .promo-teaser-copy > strong {
+    font-size: 27px;
+  }
+  .promo-teaser > .film-note-art {
+    width: 64px;
+    margin: 0;
+  }
+  .promo-teaser .film-note-sheet {
+    width: 64px;
+    min-height: 100px;
+    padding: 14px 11px;
+    gap: 9px;
+    box-shadow:
+      5px 5px 0 #c7b8df,
+      6px 6px 0 1px #a99cbd;
+  }
+  .promo-teaser .film-note-sheet .icon {
+    width: 21px;
+    height: 21px;
+    margin-bottom: 3px;
+  }
+  .promo-teaser .film-note-caption {
+    display: none;
+  }
+  .promo-teaser .promo-note {
+    max-width: 25ch;
+  }
+  .promo-cta {
+    margin-top: 7px;
+    padding: 9px 13px;
+  }
+  .demo-offer {
+    padding: 28px;
+  }
+  .demo-offer .film-note-art {
+    width: 170px;
+    margin: 35px auto;
+  }
+  .demo-offer .film-note-sheet {
+    width: 144px;
+    min-height: 174px;
+  }
+  .campaign-copy,
+  .campaign-pair .campaign-copy {
+    padding: 26px;
+  }
+  .campaign-copy p {
+    font-size: 0.875rem;
+  }
+  .campaign-pair .campaign-copy {
+    max-width: 100%;
+  }
+  .campaign-discovery .note-visual {
+    width: 88px;
+    height: 88px;
+    right: 22px;
+    bottom: 25px;
+  }
+  .footer-top > div > p {
+    font-size: 0.8125rem;
+  }
+  .detail-content,
+  .article-content {
+    padding: 26px 22px;
+  }
+  .note-heading label {
+    font-size: 0.9375rem;
+  }
+  .detail-meta {
+    font-size: 0.8125rem;
+  }
+}
+@media (max-width: 359px) {
+  .filters {
+    gap: 4px;
+  }
+  .filters button {
+    font-size: 0.8125rem;
+    padding-inline: 5px;
+  }
+  .hero-copy {
+    padding-top: 222px;
+  }
+  .nav a {
+    font-size: 0.8125rem;
+    gap: 3px;
+  }
+  .hero-bottom .text-link {
+    font-size: 0.8125rem;
+  }
+  .section-heading h2 {
+    font-size: 24px;
+  }
+  .section-heading > .text-link {
+    font-size: 0.8125rem;
+    padding-inline: 10px;
+  }
+  .rail-shell {
+    --rail-card-width: 77cqi;
+  }
+  .film-rail > .film-card {
+    flex-basis: 77%;
+  }
+  .promo-teaser {
+    padding: 24px;
+    gap: 12px;
+  }
+  .promo-teaser-copy > strong {
+    font-size: 25px;
+  }
+  .promo-teaser > .film-note-art {
+    width: 40px;
+  }
+  .promo-teaser .film-note-sheet {
+    width: 44px;
+    min-height: 80px;
+    padding: 11px 7px;
+  }
+  .promo-note {
+    font-size: 0.8125rem;
+  }
+  .chart-home .chart-film {
+    gap: 10px;
   }
 }
 

@@ -35,35 +35,35 @@
       href="assets/posters-v13/bluehour-hero.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=65b3d50d" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=7ff658d5"></script>
+    <link href="css/style.css?v=4099ce3e" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=9272eab6"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <symbol id="i-mark" viewbox="0 0 40 30">
+        <symbol id="i-mark" viewBox="0 0 40 30">
           <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22"></path>
           <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45"></path>
           <path d="M9 10h29v18H9z" fill="currentColor"></path>
           <path d="M12 13h23v12H12z" fill="#08131f"></path>
         </symbol>
-        <symbol id="i-arrow" viewbox="0 0 24 24">
+        <symbol id="i-arrow" viewBox="0 0 24 24">
           <path d="M5 12h14m-6-6 6 6-6 6"></path>
         </symbol>
-        <symbol id="i-bookmark" viewbox="0 0 24 24">
+        <symbol id="i-bookmark" viewBox="0 0 24 24">
           <path d="M6 4h12v17l-6-4-6 4V4Z"></path>
         </symbol>
-        <symbol id="i-search" viewbox="0 0 24 24">
+        <symbol id="i-search" viewBox="0 0 24 24">
           <circle cx="10.5" cy="10.5" r="6.5"></circle>
           <path d="m16 16 5 5"></path>
         </symbol>
-        <symbol id="i-close" viewbox="0 0 24 24">
+        <symbol id="i-close" viewBox="0 0 24 24">
           <path d="m6 6 12 12M18 6 6 18"></path>
         </symbol>
-        <symbol id="i-check" viewbox="0 0 24 24">
+        <symbol id="i-check" viewBox="0 0 24 24">
           <path d="m5 12 4 4L19 6"></path>
         </symbol>
-        <symbol id="i-back" viewbox="0 0 24 24">
+        <symbol id="i-back" viewBox="0 0 24 24">
           <path d="M19 12H5m6-6-6 6 6 6"></path>
         </symbol>
       </defs>
@@ -80,7 +80,7 @@
           <a data-view="browse" href="#browse">영화</a
           ><a data-view="themes" href="#themes">기획전</a
           ><a data-view="journal" href="#journal">매거진</a
-          ><a data-view="news" href="#news">차트·이벤트</a
+          ><a data-view="news" href="#news">차트</a
           ><a data-view="saved" href="#saved"
             >내 보관함
             <span aria-hidden="true" class="saved-count" id="savedCount"
@@ -117,8 +117,8 @@
           <div class="hero-inner wrap">
             <div class="hero-topline">
               <span class="eyebrow"
-                ><span class="dot"></span>취향으로 만나는 영화</span
-              ><span class="concept-label">가상 영화로 만든 UI 콘셉트</span>
+                ><span class="dot"></span>짧은 영화의 발견, 나만의 기록</span
+              ><span class="concept-label">포트폴리오 콘셉트</span>
             </div>
             <div class="hero-copy">
               <p class="hero-category">잔상관 스포트라이트 · 애니메이션</p>
@@ -149,7 +149,7 @@
               </div>
             </div>
             <div class="hero-bottom">
-              <span class="hero-index">SPOTLIGHT <strong>01</strong> / 12</span
+              <span class="hero-index">이달의 스포트라이트</span
               ><a class="text-link" href="#themes/beyond"
                 >상상 바깥으로, 기획전
               </a>
@@ -238,7 +238,7 @@
             <div class="section-heading">
               <div>
                 <p class="section-kicker">JANSANG CHART</p>
-                <h2 id="homeChartTitle">잔상관 인기 차트</h2>
+                <h2 id="homeChartTitle">잔상관 차트</h2>
               </div>
               <a class="text-link" href="#news">TOP 5 보기</a>
             </div>
@@ -261,18 +261,23 @@
           </div>
           <div class="journal-grid" id="homeJournal"></div>
         </section>
-        <section aria-label="가상 OTT 프로모션" class="wrap benefit-strip-wrap">
-          <button class="promo-teaser" data-promotion="" type="button">
+        <section aria-label="나의 영화 노트" class="wrap benefit-strip-wrap">
+          <a class="promo-teaser" href="#saved">
             <span class="promo-teaser-copy"
-              ><span class="demo-badge">가상 OTT 프로모션</span
-              ><strong>영화와 더 가까운<br />첫 한 달.</strong
+              ><span class="demo-badge">나의 영화 노트</span
+              ><strong>한 편의 발견,<br />한 줄의 기록.</strong
               ><span class="promo-note"
-                >포트폴리오 디자인 예시 · 실제 할인 없음</span
-              ><span class="promo-cta">프로모션 미리보기</span></span
-            ><span aria-hidden="true" class="promo-teaser-number"
-              >30<span>%</span><small>FIRST MONTH</small></span
+                >마음에 남은 영화와 나의 생각을 모아보세요.</span
+              ><span class="promo-cta">내 보관함 열기</span></span
+            ><span aria-hidden="true" class="film-note-art"
+              ><span class="film-note-sheet"
+                ><svg class="icon"><use href="#i-bookmark"></use></svg
+                ><span class="film-note-line"></span
+                ><span class="film-note-line"></span
+                ><span class="film-note-line"></span></span
+              ><span class="film-note-caption">MY FILM NOTES</span></span
             >
-          </button>
+          </a>
         </section>
       </div>
       <section
@@ -456,8 +461,8 @@
       >
         <div class="wrap">
           <div class="page-heading">
-            <p class="section-kicker">JANSANG CHART &amp; EVENTS</p>
-            <h1 id="newsTitle" tabindex="-1">차트·이벤트</h1>
+            <p class="section-kicker">CHART &amp; CURATION</p>
+            <h1 id="newsTitle" tabindex="-1">차트·큐레이션</h1>
             <p class="page-description">
               눈길이 가는 영화, 취향을 넓히는 작은 제안.
             </p>
@@ -470,7 +475,7 @@
               <div class="section-heading">
                 <div>
                   <p class="section-kicker">CONCEPT TOP 5</p>
-                  <h2 id="conceptChartTitle">잔상관 인기 차트</h2>
+                  <h2 id="conceptChartTitle">잔상관 차트</h2>
                 </div>
                 <span class="demo-badge">예시 순위</span>
               </div>
@@ -482,23 +487,21 @@
             </section>
             <section aria-labelledby="offerTitle" class="demo-offer">
               <div class="offer-copy">
-                <span class="demo-badge">가상 OTT 프로모션</span>
-                <p class="offer-kicker">FIRST MONTH OFFER</p>
-                <h2 id="offerTitle">영화와 더 가까운<br />첫 한 달.</h2>
+                <span class="demo-badge">나의 영화 노트</span>
+                <p class="offer-kicker">KEEP YOUR IMPRESSION</p>
+                <h2 id="offerTitle">영화가 남긴 생각,<br />나의 노트로.</h2>
               </div>
-              <div aria-label="첫 달 30퍼센트 할인 콘셉트" class="offer-number">
-                <span>첫 달</span><strong>30<small>%</small></strong
-                ><span>할인 프로모션 콘셉트</span>
-              </div>
+              <span aria-hidden="true" class="film-note-art"
+                ><span class="film-note-sheet"
+                  ><svg class="icon"><use href="#i-bookmark"></use></svg
+                  ><span class="film-note-line"></span
+                  ><span class="film-note-line"></span
+                  ><span class="film-note-line"></span></span
+                ><span class="film-note-caption">MY FILM NOTES</span></span
+              >
               <div class="offer-action">
-                <button
-                  class="button offer-button"
-                  data-promotion=""
-                  type="button"
-                >
-                  프로모션 미리보기
-                </button>
-                <p>디자인 예시 · 실제 할인·가입·결제 없음</p>
+                <a class="button offer-button" href="#saved">내 보관함 열기</a>
+                <p>찜한 영화와 저장한 노트를 이 브라우저에 모아두세요.</p>
               </div>
             </section>
           </div>
@@ -523,15 +526,17 @@
                   <h3>이번 주말은,<br />다른 세계로.</h3>
                   <span class="campaign-link">기획전 만나기</span>
                 </div></a
-              ><a class="campaign campaign-notes" href="#saved"
+              ><a
+                class="campaign campaign-notes campaign-discovery"
+                href="#browse"
                 ><div class="campaign-copy">
-                  <span class="campaign-tag">MY FILM NOTES</span>
-                  <h3>한 편의 발견,<br />한 줄의 기록.</h3>
-                  <p>마음에 남은 영화와 나의 생각을 모아보세요.</p>
-                  <span class="campaign-link">내 보관함 열기</span>
+                  <span class="campaign-tag">FIND YOUR FILM</span>
+                  <h3>오늘은 어떤 영화가<br />보고 싶나요?</h3>
+                  <p>분위기와 러닝타임으로 나에게 맞는 한 편을 찾아보세요.</p>
+                  <span class="campaign-link">영화 둘러보기</span>
                 </div>
                 <span aria-hidden="true" class="note-visual"
-                  ><svg class="icon"><use href="#i-bookmark"></use></svg></span
+                  ><svg class="icon"><use href="#i-search"></use></svg></span
               ></a>
             </div>
           </section>
@@ -558,8 +563,8 @@
         <div class="footer-bottom">
           <p>© 2026 JANSANG</p>
           <p>
-            포트폴리오 콘셉트 · 영화 12편·순위·프로모션은 가상 설정<br />AI 생성
-            이미지 · 실제 영상·예매·할인 제공 없음
+            포트폴리오 콘셉트 · 영화 12편과 순위는 가상 설정<br />AI 생성 이미지
+            · 실제 영상·예매 제공 없음
           </p>
         </div>
       </div>
@@ -611,7 +616,8 @@
               ><span id="noteCount">0 / 280</span>
             </div>
             <p class="note-hint" id="noteHint">
-              이 브라우저에만 저장돼요. 다른 사람에게 공개되지 않아요.
+              저장한 노트는 이 브라우저에만 남아요. 저장 전 초안은 화면을
+              이동해도 유지되며, 새로고침하거나 탭을 닫으면 사라져요.
             </p>
             <textarea
               aria-describedby="noteHint noteStatus"
@@ -691,9 +697,8 @@
       <div class="about-facts">
         <p>
           잔상관은 영화를 발견하고 보관하는 서비스의 포트폴리오 콘셉트입니다.
-          영화 12편과 차트 순위·프로모션은 모두 가상 설정이며, 인물과 이미지는
-          AI로 생성했습니다. 실제 흥행 집계나 할인·제휴 상품을 제공하지
-          않습니다.
+          영화 12편과 차트 순위는 모두 가상 설정이며, 작품 이미지는 AI로
+          생성했습니다. 차트는 실제 흥행 집계를 반영하지 않습니다.
         </p>
         <p>
           찜과 나의 영화 노트는 이 브라우저에 저장됩니다. 브라우저 데이터를
@@ -706,35 +711,6 @@
       </div>
       <div class="about-actions">
         <button class="button light" data-close="aboutDialog">확인</button>
-      </div>
-    </dialog>
-    <dialog
-      aria-labelledby="promotionTitle"
-      class="promotion-dialog"
-      id="promotionDialog"
-    >
-      <button
-        aria-label="프로모션 미리보기 닫기"
-        class="icon-button close-button"
-        data-close="promotionDialog"
-      >
-        <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
-      </button>
-      <div class="promotion-art">
-        <span class="demo-badge">PORTFOLIO PROMOTION</span
-        ><strong aria-hidden="true">30<small>%</small></strong
-        ><span>FIRST MONTH</span>
-      </div>
-      <div class="promotion-content">
-        <p class="section-kicker">가상 OTT 프로모션</p>
-        <h2 id="promotionTitle" tabindex="-1">
-          첫 달 30% 할인<br />프로모션 미리보기
-        </h2>
-        <p>
-          잔상관의 캠페인 화면을 보여주기 위한 디자인 예시입니다. 실제
-          상품·할인·쿠폰·가입·결제는 제공하지 않습니다.
-        </p>
-        <a class="button light" href="#browse">영화 둘러보기</a>
       </div>
     </dialog>
     <div
