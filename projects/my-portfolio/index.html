@@ -2,39 +2,12 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=human-signal-d2" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="사용자 흐름과 정보 구조를 정리하고, Figma 설계와 React/MUI 구현으로 연결한 김도한의 UX/UI·웹퍼블리싱 포트폴리오입니다." />
+    <meta name="theme-color" content="#F7F8FA" />
+    <meta name="description" content="김도한의 UX/UI 디자인·웹퍼블리싱 포트폴리오. 일상 서비스부터 현장 업무까지, 화면 설계와 웹 구현 작업을 소개합니다." />
     <title>김도한 | UX/UI·웹퍼블리싱 포트폴리오</title>
-    <!-- 다크모드 초기 깜빡임 방지: React 렌더링 전에 테마 적용 -->
-    <script>
-      (function () {
-        try {
-          var m = localStorage.getItem('portfolio-theme-mode');
-          if (m !== 'dark' && m !== 'light') {
-            m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          }
-          document.documentElement.setAttribute('data-color-scheme', m);
-          document.documentElement.style.colorScheme = m;
-          if (m === 'dark') {
-            document.documentElement.style.background = '#0B0F14';
-          }
-        } catch (e) {}
-      })();
-    </script>
-    <!-- 한글 본문/제목은 SUIT Variable(npm, main.jsx에서 번들에 포함)을 쓴다.
-         IBM Plex Mono는 라벨/메타 전용으로 CDN을 유지하고, 실제로 어디서도
-         참조하지 않는 IBM Plex Sans KR CDN 로드는 제거한다(Phase 4A, rg로
-         src/ 전체에서 참조 0건 확인).
-         Noto Sans KR(Phase 5A-F)은 /projects 페이지 전용 Figma typography다
-         (theme.js FONT_SANS는 그대로 SUIT Variable — Home/Detail에 영향 없음).
-         필요한 weight(Regular 400 · Medium 500 · Bold 700)만 로드한다. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&display=swap"
-    />
+    <style>html { color-scheme: light; background: #F7F8FA; }</style>
   </head>
   <body>
     <div id="root"></div>

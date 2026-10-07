@@ -221,3 +221,25 @@ MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 �
 | `public/detail/galpirok-checklist-pc.jpg` | 준비 체크 | 1348×926 |
 
 첨부한 워터마크 UI는 색의 역할과 배치 원리 검토에만 사용했으며 제품/포트폴리오 자산으로 복제하지 않았습니다. 배너는 기존 원본 종이 조형 이미지와 코드 SVG를 재배치했습니다. 기존 폰트·아이콘·생성 이미지의 출처와 권리 확인 범위는 위 기록을 유지합니다.
+
+
+## 현재 포트폴리오 리디자인에서 추가한 화면
+
+다음 이미지는 사용자의 기존 Figma 작업과 공개 웹앱을 직접 내보내거나 캡처한 화면이다. 첨부 레퍼런스의 사진·템플릿은 사이트에 포함하지 않았다. 화면 안에 포함된 개별 사진·아이콘의 권리는 각 원본 프로젝트의 자산 기록을 따른다. 아래 출처 확인은 제3자 자산 전체의 권리 검증을 대신하지 않는다.
+
+| 현재 파일(`public/detail/current/`) | 원본 | 실제 픽셀 크기 |
+| --- | --- | --- |
+| `gijunseon-home.png` | Figma `3ZJ4TUGqBNAewsJYzheOWo`, `451:747` | 1440×1824 |
+| `seolbigyeol-home.png` | Figma `GInxTqHo6Y87DEe3vuhmMw`, `336:229` | 1440×1200 |
+| `seolbigyeol-requests.png` | 같은 파일, `336:329` | 1440×1200 |
+| `seolbigyeol-review.png` | 같은 파일, `372:361` | 1440×1200 |
+| `soyobit-home.png` | Figma `cvfT9QazAFaXVAxZfeUdvr`, `1289:674` | 390×1038 |
+| `soyobit-menu.png` | 같은 파일, `1289:708` | 390×980 |
+| `onjeongryu-home.png` | Figma `bzwp6FhsZaaenOA4ABIAFs`, `671:797` | 390×1084 |
+| `onjeongryu-station.png` | 같은 파일, `673:1314` | 390×900 |
+| `goreunsiseon-home.jpg` | 공개 `/portfolio-feedback-hub/` 실제 첫 화면 | 1348×926 |
+| `jansang-home.jpg` | 공개 `/ott-service/` 실제 첫 화면 | 1348×926 |
+
+Figma 화면 8개는 텍스트·이미지를 재생성하지 않은 직접 export다. 웹 2개는 CSS viewport 1363×936에서 저장한 JPEG이며 viewport와 저장 픽셀 크기는 다르다. 현재 갈피록 PC 이미지 4개는 기존 실제 캡처를 재사용한다. 모든 신규 이미지의 형식·실제 디코딩을 확인했다.
+
+메인 글꼴은 기존 `@sun-typeface/suit`의 SUIT Variable(SIL OFL 1.1)만 번들링한다. 이전 Google Fonts 링크는 현행 index에서 사용하지 않는다. favicon은 기존 자체 SVG의 색상만 현행 팔레트로 바꿨다. 상단 표의 과거 runtime active/일치 기록은 기록 시점에만 적용되며 현재 사용 여부는 프로젝트 코드가 우선한다.

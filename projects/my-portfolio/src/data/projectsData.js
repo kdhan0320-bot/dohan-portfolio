@@ -8,14 +8,14 @@ import { fallbackProjects, FALLBACK_FILTER_TABS } from './projectsFallbackData';
 const BASE = import.meta.env.BASE_URL;
 
 const THUMB_MAP = {
-  gongjeongbom: `${BASE}thumbnails/normalized/gongjeongbom-card-1600x1000.png`,
+  gongjeongbom: `${BASE}detail/current/gijunseon-home.png`,
   jobflow:      `${BASE}detail/galpirok-board-pc.jpg`,
-  seolbiit:     `${BASE}thumbnails/normalized/seolbiit-card-1600x1000.png`,
+  seolbiit:     `${BASE}detail/current/seolbigyeol-home.png`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}thumbnails/normalized/ott-service-card-1600x1000.png`,
-  'bus-arrival-app': `${BASE}thumbnails/normalized/bus-arrival-card-1600x1000.png`,
-  brewstep: `${BASE}thumbnails/normalized/brewstep-card-1600x1000.png`,
-  'feedback-hub': `${BASE}thumbnails/normalized/feedback-hub-card-1600x1000.png`,
+  'ott-service': `${BASE}detail/current/jansang-home.jpg`,
+  'bus-arrival-app': `${BASE}detail/current/onjeongryu-home.png`,
+  brewstep: `${BASE}detail/current/soyobit-home.png`,
+  'feedback-hub': `${BASE}detail/current/goreunsiseon-home.jpg`,
 };
 
 export const ALL_PROJECTS = [...fallbackProjects]
@@ -23,6 +23,8 @@ export const ALL_PROJECTS = [...fallbackProjects]
   .map((p) => ({
     ...p,
     thumbnailUrl: THUMB_MAP[p.id] ?? p.thumbnailUrl ?? null,
+    thumbnailAlt: `${p.title} 실제 ${p.is_figma_project ? 'Figma 디자인' : '웹'} 화면`,
+    previewDevice: ['bus-arrival-app', 'brewstep'].includes(p.id) ? 'mobile' : 'desktop',
     detail: {
       overview:       p.overview,
       problem:        p.problem,

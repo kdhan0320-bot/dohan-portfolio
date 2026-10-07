@@ -1,1150 +1,195 @@
-import { useParams, useNavigate, useLocation, Navigate, Link as RouterLink } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { ALL_PROJECTS } from '../data/projectsData';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
-import ProjectMediaStage from '../components/ui/ProjectMediaStage';
-import ActionIcon from '../components/ui/ActionIcon';
-import DMark from '../components/brand/DMark';
-import QhdAmbientSignal from '../components/ui/QhdAmbientSignal';
-import QhdSectionIndex from '../components/ui/QhdSectionIndex';
-import { FONT_MONO, HUMAN_SIGNAL, ULTRAWIDE_CONTENT_MAX_WIDTH, HOME_WIDE_MAX_WIDTH, HOME_READING_MAX_WIDTH } from '../theme';
+import './portfolioEditorial.css';
 
 const BASE = import.meta.env.BASE_URL;
-const mediaUrl = (path) => `${BASE}${path}`;
+const mediaUrl = (path) => /^(https?:|data:|blob:)/.test(path) ? path : `${BASE}${path.replace(/^\//, '')}`;
+const projectSlug = (project) => project.slug || (project.id === 'bus-arrival-app' ? 'bus-arrival' : project.id);
 
-/* Human Signal Phase 5D-F2: Figma Detail READY(file 53Ppn2hIgrvs9Jra3eejFs,
- * 2560=201:2 / 1440=196:5 / 1024=377:254 / 390=202:2)는 "HS/Detail Template"라는
- * 이름 그대로 교체용 템플릿 프레임이라 문구는 전부 placeholder다("프로젝트
- * 제목", "판단 01/02/03" 등). 이 페이지는 그 구조(Hero split → navy Context
- * Problem/Goal card → 교차형 Key Decisions row → primary/secondary Main
- * Screens → navy Responsive & Scope + 내부 AI Collaboration → D mark Result
- * & Limit closing)만 복구하고, 실제 문구는 전부 `PROJECT_DETAIL_READY`
- * (portfolioMeta.js)의 프로젝트별 실제 데이터를 쓴다. 섹션 큰 제목만 Figma
- * 템플릿 프레이밍을 그대로 쓰는 고정 UI chrome이다(프로젝트별 사실이 아닌
- * 일반 안내 문구). */
-const SLUG_TO_ID = {
-  gongjeongbom: 'gongjeongbom',
-  jobflow: 'jobflow',
-  'bus-arrival': 'bus-arrival-app',
-  'feedback-hub': 'feedback-hub',
-  'ott-service': 'ott-service',
-  brewstep: 'brewstep',
-  seolbiit: 'seolbiit',
-};
-const SLUG_ORDER = ['gongjeongbom', 'jobflow', 'seolbiit', 'feedback-hub', 'bus-arrival', 'ott-service', 'brewstep'];
-const getNextSlug = (slug) => {
-  const i = SLUG_ORDER.indexOf(slug);
-  if (i < 0 || i >= SLUG_ORDER.length - 1) return null;
-  return SLUG_ORDER[i + 1];
-};
+// A long desktop page is not a mobile frame. Only explicit device-width metadata
+// constrains the image; source aspect ratio alone cannot identify a phone screen.
+const isPortrait = (media) => Boolean(media.frameWidth);
 
-const CASE_STUDY_LABELS = {
-  gongjeongbom: 'GONGJEONGBOM',
-  jobflow: 'GALPIROK',
-  seolbiit: 'SEOLBIIT',
-  'feedback-hub': 'PORTFOLIO FEEDBACK HUB',
-  'bus-arrival': 'ULSAN BUS ARRIVAL',
-  'ott-service': 'STREAMING UI CONCEPT',
-  brewstep: 'BREWSTEP',
-};
-
-const PROJECT_INDEX_DESCRIPTION = '대표 프로젝트와 추가 작업을\n같은 기준으로 확인할 수 있습니다.';
-
-// Figma Responsive & Scope(199:6~17 등)의 390/768/1440/2560 breakpoint 카드 4개 —
-// 실제 프로젝트별 수치가 아니라 React/MUI 반응형 웹 공통 규칙을 설명하는 고정 UI
-// chrome이다(SectionHeading과 같은 성격). Bus(Figma prototype)에는 쓰지 않는다.
-const BREAKPOINT_CARDS = [
-  { width: '390px', rule: '390·430 핵심 행동 우선' },
-  { width: '768px', rule: '768·820·1024 1열 전환' },
-  { width: '1440px', rule: '1366·1440 교차 레이아웃' },
-  { width: '2560px', rule: '1920·2560 확장 배경' },
-];
-
-const SPLIT_MQ = '@media (min-width:900px)';
-// Hero copy 열 안에서 4개 메타 카드가 각각 약 120px 이상의 읽을 폭을
-// 확보하는 시점부터만 한 줄로 전환한다. 1024 split layout은 2×2를 유지한다.
-const META_FOUR_COLUMN_MQ = '@media (min-width:1280px)';
-
-const SHELL_SX = {
-  px: { xs: 3, sm: 6, md: 8 }, maxWidth: { xl: ULTRAWIDE_CONTENT_MAX_WIDTH + 128 }, mx: 'auto',
-  '@media (min-width:1920px)': { maxWidth: HOME_WIDE_MAX_WIDTH, px: 8 },
-};
-// 읽기 전용 문단(Context/Decisions/Scope/AI/Result)의 reading column — QHD에서도
-// 한 줄이 과도하게 길어지지 않게 상한을 둔다.
-const READING_SX = { maxWidth: { md: HOME_READING_MAX_WIDTH + 120 } };
-
-const PROTECTED_COPY_PATTERN = /(Product Detail|Vanilla JS|reduced-motion|STATIC \/ DEMO|실제 견적·CRM·DB는)/g;
-
-const ProtectedCopy = ({ text, tokens = [] }) => (
-  tokens.length === 0
-    ? text
-    : text.split(PROTECTED_COPY_PATTERN).map((part, index) => (
-      tokens.includes(part) ? (
-        <Box key={`${part}-${index}`} component="span" sx={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-          {part}
-        </Box>
-      ) : part
-    ))
+const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
+  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${className}`}>
+    <div className="case-figure__surface">
+      <img
+        src={mediaUrl(media.src)}
+        alt={media.alt || label || '프로젝트 화면'}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    </div>
+    <figcaption>
+      <span>{label || '화면 상세'}</span>
+      <a href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer">
+        원본 보기 <ArrowOutwardIcon aria-hidden="true" />
+      </a>
+    </figcaption>
+  </figure>
 );
 
-const DetailEndNavigation = ({ currentSlug, nextSlug, nextProject, nextRole }) => {
-  const isLast = !nextSlug;
-  const primaryHref = isLast ? '/projects' : `/projects/${nextSlug}`;
-  const primaryTitle = isLast ? '전체 프로젝트 보기' : nextProject?.title;
-  const primaryLabel = isLast ? '전체 프로젝트 보기' : `다음 프로젝트: ${primaryTitle}`;
-  const footerRight = `${CASE_STUDY_LABELS[currentSlug]} · CASE STUDY`;
+const ExternalAction = ({ href, children, primary = false }) => href ? (
+  <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer">
+    {children}<ArrowOutwardIcon aria-hidden="true" />
+  </a>
+) : null;
 
-  return (
-    <Box
-      data-detail-end-navigation={isLast ? 'last' : 'standard'}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%', mb: { xs: 4, md: 1 } }}
-    >
-      <Box
-        component="nav"
-        aria-label="프로젝트 상세 탐색"
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
-      >
-        <Box
-          component={RouterLink}
-          to={primaryHref}
-          aria-label={primaryLabel}
-          data-detail-end-navigation-primary="true"
-          sx={{
-            bgcolor: HUMAN_SIGNAL.deepHarbor,
-            color: HUMAN_SIGNAL.softWhite,
-            borderRadius: '24px',
-            p: { xs: 2, md: 4 },
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            alignItems: { xs: 'flex-end', md: 'center' },
-            justifyContent: 'space-between',
-            gap: 2,
-            width: '100%',
-            minWidth: 0,
-            overflow: 'hidden',
-            textDecoration: 'none',
-            WebkitTapHighlightColor: 'transparent',
-            '&:focus-visible': {
-              outline: `3px solid ${HUMAN_SIGNAL.burntOrange}`,
-              outlineOffset: '4px',
-            },
-          }}
-        >
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%', minWidth: 0 }}>
-            <Typography
-              component="p"
-              data-detail-end-navigation-eyebrow="true"
-              sx={{
-                m: 0,
-                color: HUMAN_SIGNAL.brightOrangeOnDark,
-                fontFamily: FONT_MONO,
-                fontWeight: 600,
-                fontSize: '0.75rem',
-                lineHeight: '16px',
-                letterSpacing: '0.02em',
-              }}
-            >
-              {isLast ? 'PROJECT INDEX' : 'NEXT PROJECT'}
-            </Typography>
-            <Typography
-              component="h3"
-              data-detail-end-navigation-title="true"
-              sx={{
-                m: 0,
-                color: HUMAN_SIGNAL.softWhite,
-                fontWeight: 700,
-                fontSize: { xs: '1.5rem', md: '2.5rem' },
-                lineHeight: { xs: '32px', md: '50px' },
-                letterSpacing: { xs: '-0.008em', md: '-0.015em' },
-                wordBreak: 'keep-all',
-                overflowWrap: 'normal',
-              }}
-            >
-              {primaryTitle}
-            </Typography>
-            {isLast ? (
-              <Typography
-                component="p"
-                data-detail-end-navigation-description="true"
-                sx={{
-                  m: 0,
-                  color: HUMAN_SIGNAL.steelMist,
-                  fontSize: { xs: '0.9375rem', md: '1rem' },
-                  lineHeight: { xs: '25px', md: '27px' },
-                  whiteSpace: 'pre-line',
-                  wordBreak: 'keep-all',
-                  overflowWrap: 'normal',
-                }}
-              >
-                {PROJECT_INDEX_DESCRIPTION}
-              </Typography>
-            ) : (
-              <Typography
-                component="p"
-                data-detail-end-navigation-role="true"
-                sx={{
-                  m: 0,
-                  color: HUMAN_SIGNAL.steelMist,
-                  fontFamily: FONT_MONO,
-                  fontWeight: 600,
-                  fontSize: '0.75rem',
-                  lineHeight: '16px',
-                  letterSpacing: '0.02em',
-                  wordBreak: 'keep-all',
-                  overflowWrap: 'normal',
-                }}
-              >
-                {nextRole}
-              </Typography>
-            )}
-          </Box>
-          <Box
-            aria-hidden="true"
-            sx={{
-              width: { xs: 54, md: 56 },
-              height: { xs: 54, md: 56 },
-              minWidth: { xs: 54, md: 56 },
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: HUMAN_SIGNAL.brightOrangeOnDark,
-              fontSize: '2rem',
-              pointerEvents: 'none',
-            }}
-          >
-            <ActionIcon variant="internal" sx={{ fontSize: '2rem' }} />
-          </Box>
-        </Box>
-
-        {!isLast && (
-          <Box
-            component={RouterLink}
-            to="/projects"
-            aria-label="전체 프로젝트 보기"
-            data-detail-end-navigation-secondary="true"
-            sx={{
-              color: HUMAN_SIGNAL.inkNavy,
-              minHeight: { xs: 54, md: 56 },
-              px: { xs: 2, md: 3 },
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: 2,
-              textDecoration: 'none',
-              fontWeight: 700,
-              fontSize: '0.9375rem',
-              lineHeight: '22px',
-              wordBreak: 'keep-all',
-              WebkitTapHighlightColor: 'transparent',
-              '&:focus-visible': {
-                outline: `3px solid ${HUMAN_SIGNAL.burntOrange}`,
-                outlineOffset: '3px',
-              },
-            }}
-          >
-            <Box component="span">전체 프로젝트 보기</Box>
-            <ActionIcon variant="internal" sx={{ color: HUMAN_SIGNAL.burntOrange, fontSize: '1.0625rem' }} />
-          </Box>
-        )}
-      </Box>
-
-      <Box
-        component="footer"
-        data-detail-end-navigation-footer="true"
-        sx={{
-          borderTop: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-          pt: 2,
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          alignItems: { xs: 'flex-start', md: 'center' },
-          justifyContent: { md: 'space-between' },
-          gap: { xs: 1, md: 2 },
-          width: '100%',
-          color: HUMAN_SIGNAL.inkNavy,
-          fontFamily: FONT_MONO,
-          fontWeight: 600,
-          fontSize: '0.75rem',
-          lineHeight: '16px',
-          letterSpacing: '0.02em',
-          wordBreak: 'keep-all',
-        }}
-      >
-        <Box component="span" data-detail-end-navigation-footer-left="true">DOHAN KIM · HUMAN SIGNAL</Box>
-        <Box component="span" data-detail-end-navigation-footer-right="true">{footerRight}</Box>
-      </Box>
-    </Box>
-  );
-};
-
-const SectionLabel = ({ index, children, tone = 'onLight' }) => (
-  <Typography sx={{
-    fontFamily: FONT_MONO, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 2,
-    color: tone === 'onLight' ? HUMAN_SIGNAL.burntOrange : HUMAN_SIGNAL.brightOrangeOnDark,
-  }}>
-    {index ? `${index} / ` : ''}{children}
-  </Typography>
-);
-
-// Figma의 큰 section statement — 페이지 chrome(고정 안내 문구)이며 프로젝트별
-// 사실 데이터가 아니다. 프로젝트마다 결정 개수가 달라(2~3개) "세 가지"처럼
-// 특정 개수를 못박는 표현은 쓰지 않는다.
-const SectionHeading = ({ lines, tone = 'onLight' }) => (
-  <Typography component="h2" sx={{
-    fontWeight: 800, letterSpacing: '-0.02em', mb: { xs: 4, md: 5 },
-    fontSize: { xs: '1.75rem', sm: '2.15rem', md: '2.6rem' },
-    lineHeight: { xs: 1.25, md: 1.15 },
-    color: tone === 'onLight' ? HUMAN_SIGNAL.inkNavy : HUMAN_SIGNAL.softWhite,
-    '@media (min-width:1920px)': { fontSize: '3.1rem' },
-  }}>
-    {lines.map((line) => (
-      <Box key={line} component="span" sx={{ display: 'block' }}>{line}</Box>
-    ))}
-  </Typography>
-);
-
-const SectionIntro = ({ text, tone = 'onLight', tokens = [], compact = false }) => (
-  <Typography component="p" sx={{
-    mt: { xs: -2, md: -3 },
-    mb: compact ? 0 : { xs: 4, md: 5 },
-    color: tone === 'onLight' ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist,
-    fontSize: { xs: '0.9375rem', md: '1rem' },
-    lineHeight: 1.7,
-    wordBreak: 'keep-all',
-    ...READING_SX,
-  }}>
-    <ProtectedCopy text={text} tokens={tokens} />
-  </Typography>
-);
-
-const DEFAULT_SECTION_HEADINGS = {
-  context: ['무엇이 복잡했고,', '어떤 판단이 더 빨라졌는가'],
-  decisions: ['핵심 설계 판단을,', '화면 증거와 함께 보여줍니다.'],
-  screens: ['실제 화면을 크게 보여주고,', '설명은 짧게 남깁니다.'],
-  scope: ['반응형과 구현 범위를,', '같은 화면에서 구분합니다.'],
-  result: ['완료한 범위와 남은 한계를,', '같은 무게로 보여줍니다.'],
-};
-
-const FieldRow = ({ label, children, tone = 'onLight' }) => (
-  <Typography sx={{ fontSize: '0.9375rem', color: tone === 'onLight' ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist, lineHeight: 1.65, wordBreak: 'keep-all' }}>
-    <Box component="span" sx={{ fontFamily: FONT_MONO, color: tone === 'onLight' ? HUMAN_SIGNAL.burntOrange : HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mr: 1 }}>
-      {label}
-    </Box>
-    {children}
-  </Typography>
-);
-
-const DecisionEvidence = ({ rows }) => (
-  <Box component="dl" sx={{ m: 0, display: 'grid', gap: 1.5 }}>
-    {rows.map(({ label, text }) => (
-      <Box key={label} sx={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 1fr)', gap: 1.5, alignItems: 'baseline' }}>
-        <Typography component="dt" sx={{ m: 0, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.8125rem', fontWeight: 700, lineHeight: 1.8 }}>
-          {label}
-        </Typography>
-        <Typography component="dd" sx={{ m: 0, minWidth: 0, color: HUMAN_SIGNAL.inkText, fontSize: '0.9375rem', lineHeight: 1.8, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
-          {text}
-        </Typography>
-      </Box>
-    ))}
-  </Box>
-);
-
-const BulletList = ({ items, tone = 'onLight', protectedTokens = [] }) => (
-  <Box component="ul" sx={{ m: 0, pl: 2.25, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
-    {items.map((item) => (
-      <Typography key={item} component="li" sx={{
-        fontSize: '0.875rem', lineHeight: 1.6, wordBreak: 'keep-all',
-        color: tone === 'onLight' ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist,
-      }}>
-        <ProtectedCopy text={item} tokens={protectedTokens} />
-      </Typography>
-    ))}
-  </Box>
-);
-
-const ApprovedSlotImage = ({ media, loading = 'lazy', fluidMobile = false }) => (
-  <Box
-    component="picture"
-    sx={{
-      display: 'block',
-      width: '100%',
-      height: fluidMobile ? { xs: 'auto', md: '100%' } : '100%',
-    }}
-  >
-    {media.sources?.mobile && <source media="(max-width: 899.98px)" srcSet={mediaUrl(media.sources.mobile)} />}
-    {media.sources?.compact && <source media="(max-width: 1199.98px)" srcSet={mediaUrl(media.sources.compact)} />}
-    <Box
-      component="img"
-      src={mediaUrl(media.src)}
-      alt={media.alt}
-      loading={loading}
-      sx={{
-        display: 'block',
-        width: '100%',
-        height: fluidMobile ? { xs: 'auto', md: '100%' } : '100%',
-        objectFit: fluidMobile
-          ? { xs: media.objectFit ?? 'contain', md: media.objectFit ?? 'cover' }
-          : media.objectFit ?? 'cover',
-        objectPosition: media.objectPosition ?? 'center',
-      }}
-    />
-  </Box>
-);
-
-/* Bus는 Figma 프로토타입 모바일 화면 설계라 일반 웹 반응형 breakpoint 카드
- * 대신 "MOBILE PROTOTYPE / 360px"와 "RESPONSIVE: NOT APPLICABLE"을 명시한다
- * (지시서 3-C). JobFlow/Feedback Hub는 실제 React/MUI 반응형 웹이라
- * BREAKPOINT_CARDS(390/768/1440/2560) 4개 카드를 대신 보여준다. */
-const ResponsiveNotApplicableField = () => (
-  <Box>
-    <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>RESPONSIVE</Typography>
-    <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.25rem', md: '1.5rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.4, mb: 1.5 }}>
-      NOT APPLICABLE
-    </Typography>
-    <Typography sx={{ fontSize: '0.9375rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.7, wordBreak: 'keep-all' }}>
-      MOBILE PROTOTYPE / 360px. 일반 웹 프로젝트의 390·768·1440·2560 반응형 대응이 아닙니다.
-    </Typography>
-  </Box>
-);
-
-/* Main Screens 카드 1개 — `large`면 Figma의 "Main Desktop Slot"(primary)처럼
- * 라벨을 조금 더 크게 보여준다. `extra`는 Feedback Hub 390 evidence처럼
- * 카드 하단에 controlled viewport 보조 증거를 붙일 때만 쓴다. */
-const ScreenCard = ({ s, large = false, extra, sx }) => (
-  <Box data-main-screen={s.label} sx={sx}>
-    <Box sx={{ borderRadius: '16px', overflow: 'hidden', aspectRatio: s.media.aspectRatio ?? '16 / 10' }}>
-      {s.media.sources ? (
-        <ApprovedSlotImage media={s.media} />
-      ) : (
-        <ProjectMediaStage image={mediaUrl(s.media.src)} alt={s.media.alt} aspectRatio={s.media.aspectRatio ?? '16 / 10'} objectFit={s.media.objectFit ?? 'contain'} objectPosition={s.media.objectPosition ?? 'center'} />
-      )}
-    </Box>
-    <Typography sx={{
-      fontFamily: FONT_MONO, color: HUMAN_SIGNAL.inkNavy, fontWeight: 700, letterSpacing: '0.02em', mt: 1.5,
-      fontSize: large ? { xs: '0.9375rem', md: '1rem' } : '0.8125rem',
-    }}>
-      {s.label}
-    </Typography>
-    {extra && (
-      <Box sx={{ mt: 1.5, display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-        <Box sx={{ width: extra.frameWidth ?? 160, flexShrink: 0, aspectRatio: extra.aspectRatio }}>
-          <ProjectMediaStage
-            image={mediaUrl(extra.src)} alt={extra.alt}
-            aspectRatio={extra.aspectRatio} objectFit={extra.objectFit} objectPosition={extra.objectPosition}
-          />
-        </Box>
-        <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.inkText, fontSize: '0.6875rem', lineHeight: 1.5, pt: 0.5 }}>
-          {extra.caption}
-        </Typography>
-      </Box>
-    )}
-  </Box>
-);
+const ScopeList = ({ title, items }) => items?.length ? (
+  <div className="case-scope__column">
+    <h3>{title}</h3>
+    <ul>{items.map((item) => <li key={item}>{item}</li>)}</ul>
+  </div>
+) : null;
 
 const ProjectDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const id = SLUG_TO_ID[slug];
-  const project = id ? ALL_PROJECTS.find((p) => p.id === id) : null;
-  const ready = slug ? PROJECT_DETAIL_READY[slug] : null;
+  const publicProjects = ALL_PROJECTS.filter((item) => item.is_featured || item.moreWorksPublished);
+  const project = publicProjects.find((item) => projectSlug(item) === slug);
+  const ready = PROJECT_DETAIL_READY[slug];
 
-  // 존재하지 않는 slug, 데이터가 없는 프로젝트, Detail READY presentation 데이터가
-  // 없는 경우 모두 가짜 페이지를 만들지 않고 전체 프로젝트 목록으로 돌려보낸다.
   if (!project || !ready) return <Navigate to="/projects" replace />;
 
-  const { tools = [], liveUrl, githubUrl, figmaPrototypeUrl, figmaPrototypeLabel, categoryLabel } = project;
-  const resolvedFigmaLabel = figmaPrototypeLabel || 'Figma 화면 보기';
-
-  // 스마트 back: 브라우저 history가 있으면(=Home/Projects에서 들어옴) 뒤로가기로
-  // 스크롤 위치까지 보존, history가 없는 직접 URL 진입/새로고침이면 /projects로
-  // 이동한다. location.key === 'default'는 React Router가 진입 시 history 항목이
-  // 없을 때(직접 진입) 부여하는 값이다.
   const goBack = () => {
     if (location.key === 'default') navigate('/projects');
     else navigate(-1);
   };
-
-  const nextSlug = getNextSlug(slug);
-  const nextProject = nextSlug
-    ? ALL_PROJECTS.find((p) => p.id === SLUG_TO_ID[nextSlug])
-    : null;
-  const nextRole = nextSlug
-    ? (PROJECT_DETAIL_READY[nextSlug]?.meta?.role ?? nextProject?.role ?? null)
-    : null;
-
-  // AI Collaboration은 현재 로컬 프로젝트 데이터에 실제 aiContribution 필드가
-  // 있을 때만 표시한다. Figma 프로젝트는 구현 앱과 다른 AI·검증 문구를 사용한다.
-  const hasAI = Boolean(project.detail.aiContribution);
-  const isFigmaProject = Boolean(project.is_figma_project);
-  const implementationLine = (project.tech_stack ?? tools).join(' + ') || null;
-  const implementationLabel = isFigmaProject ? 'TOOLS / METHOD' : 'IMPLEMENTATION';
-  const aiSupportLabel = isFigmaProject
-    ? '화면 감사 · 카피 · Figma 편집 · 검사 보조'
-    : '초안 · 구현 보조 · 검사 보조';
-  const verificationLabel = isFigmaProject
-    ? 'Figma screenshot · metadata · Prototype · 접근성 QA'
-    : 'diff · build · lint · responsive · browser QA';
-  // 기본은 primary(첫 화면 크게) + secondary(나머지 작게) 위계다. 프로젝트별
-  // 화면 증거의 무게가 같을 때만 portfolioMeta.js에서 equal을 명시한다.
-  const mainScreensEqual = ready.mainScreensLayout === 'equal';
-  const mainScreensBalanced = ready.mainScreensLayout === 'balanced-five';
-  const hasMainScreens = ready.mainScreens.length > 0;
-  const scopeIndex = hasMainScreens ? '04' : '03';
-  const resultIndex = hasMainScreens ? '05' : '04';
-  const heroMediaCentered = ready.hero.mediaLayout === 'centered-pair';
-  const secondaryScreens = ready.mainScreens.slice(1);
-  const responsiveCards = ready.responsiveCards ?? BREAKPOINT_CARDS;
-  const sectionHeadings = { ...DEFAULT_SECTION_HEADINGS, ...ready.sectionHeadings };
-  const sectionIntros = ready.sectionIntros ?? {};
-  const protectedCopyTokens = ready.protectedCopyTokens ?? [];
-
-  // Figma Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개(196:25~36 등) — 값이 있는
-  // 필드만 표시한다. TYPE은 EvidenceBadges의 derivePlatform과 같은 판단 기준
-  // (Figma 프로젝트인지 실제 React/MUI 웹인지)을 쓴다.
-  const typeLabel = project.is_figma_project
-    ? 'Figma Prototype'
-    : tools.includes('React') ? 'Web (React/MUI)' : (tools.length ? 'Web' : null);
-  const toolsShort = tools.length ? tools.slice(0, 3).join(' · ') : null;
-  const metaFacts = [
-    { label: 'TYPE', value: ready.meta?.type ?? typeLabel },
-    { label: 'ROLE', value: ready.meta?.role ?? project.role ?? null },
-    { label: 'TOOLS', value: ready.meta?.tools ?? toolsShort },
-    { label: 'DATA', value: ready.meta?.data ?? project.cardScope ?? null },
-  ].filter((f) => f.value);
+  const currentIndex = publicProjects.findIndex((item) => item.id === project.id);
+  const nextProject = publicProjects[(currentIndex + 1) % publicProjects.length];
+  const figmaUrl = project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
+  const heroMedia = (ready.hero?.media || []).filter((media) => media?.src);
+  const usedImages = new Set(heroMedia.map((media) => media.src));
+  const decisions = (ready.decisions || []).map((decision) => {
+    const showMedia = decision.media?.src && !usedImages.has(decision.media.src);
+    if (showMedia) usedImages.add(decision.media.src);
+    return { ...decision, showMedia };
+  });
+  const additionalScreens = (ready.mainScreens || []).filter((screen) => {
+    if (!screen.media?.src || usedImages.has(screen.media.src)) return false;
+    usedImages.add(screen.media.src);
+    return true;
+  });
+  const facts = [
+    { label: '작업 분야', value: project.categoryLabel || ready.meta?.type },
+    { label: '역할', value: project.role || ready.meta?.role },
+    { label: '사용 도구', value: (project.tools || []).join(' · ') || ready.meta?.tools },
+  ].filter((item) => item.value);
 
   return (
-    <Box sx={{ bgcolor: HUMAN_SIGNAL.warmPaper, minHeight: '100vh' }}>
-      {/* ── Detail Hero (split: 카피 왼쪽 / navy media stage 오른쪽, 390은 카피 →
-       * CTA → media 순서로 자연스럽게 stack된다) ── */}
-      <Box component="section" sx={{ position: 'relative', overflow: 'hidden', pt: { xs: 5, md: 7 }, pb: { xs: 5, md: 6 } }}>
-        {/* 지시서 3-F3-3: Figma Hero(201:3)의 BG/Sage Halo는 y=-80(섹션 상단 위로
-         * bleed, overflow:hidden에 실제로 잘림)에서 시작한다 — left는 Home Hero-left와
-         * 동일한 공식(gutter offset 470px)을 그대로 유지해 기존 배치와 어긋나지
-         * 않게 하고, top만 살짝 음수로 올려 Figma의 상단 bleed에 한 단계 더
-         * 접근한다. */}
-        <QhdAmbientSignal
-          variant="hero-left"
-          sx={{ left: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 470px)`, top: -30 }}
-        />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <Box
-            component="button"
-            type="button"
-            onClick={goBack}
-            aria-label="이전 화면으로 돌아가기"
-            sx={{
-              display: 'inline-flex', alignItems: 'center', gap: 0.75, mb: { xs: 3, md: 4 },
-              bgcolor: 'transparent', border: 0, cursor: 'pointer', p: 0, minHeight: 44,
-              fontFamily: FONT_MONO, fontSize: '0.75rem', color: HUMAN_SIGNAL.inkText, fontWeight: 600,
-              '&:hover': { color: HUMAN_SIGNAL.burntOrange },
-              '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
-            }}
-          >
-            <ActionIcon variant="internal" sx={{ transform: 'rotate(180deg)' }} /> 이전 화면
-          </Box>
+    <article className="case-page" data-page-id="project-detail" data-project-slug={slug}>
+      <div className="portfolio-shell">
+        <header className="case-intro">
+          <button className="case-back" onClick={goBack} type="button">
+            <ArrowBackIcon aria-hidden="true" /> 작업으로 돌아가기
+          </button>
+          <div className="case-intro__grid">
+            <div>
+              <p className="case-eyebrow">{project.is_figma_project ? 'Figma 디자인' : '웹사이트 · 인터랙션'}</p>
+              <h1>{project.title}</h1>
+            </div>
+            <div className="case-intro__description">
+              <p className="case-lead">{ready.hero?.summary || project.description}</p>
+              <div className="case-actions" aria-label="프로젝트 바로 보기">
+                <ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction>
+                <ExternalAction href={figmaUrl} primary={!project.liveUrl}>
+                  {project.figmaDesignUrl ? 'Figma 디자인 보기' : (project.figmaPrototypeLabel || 'Figma 화면 보기')}
+                </ExternalAction>
+                <ExternalAction href={project.githubUrl}>코드 보기</ExternalAction>
+              </div>
+            </div>
+          </div>
+          <dl className="case-facts">
+            {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
+          </dl>
+        </header>
 
-          <Box sx={{ [SPLIT_MQ]: { display: 'grid', gridTemplateColumns: '1fr 1fr', columnGap: { md: 6, xl: 9 }, alignItems: 'center' } }}>
-            {/* 좌측 — 카피 + CTA */}
-            <Box>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.75rem', letterSpacing: '0.04em', mb: 1.5 }}>
-                {categoryLabel}
-              </Typography>
-              <Typography component="h1" sx={{
-                fontWeight: 750, fontSize: { xs: '2rem', sm: '2.6rem', md: '3.1rem' }, lineHeight: { xs: 1.22, md: 1.15 }, letterSpacing: '-0.02em',
-                color: HUMAN_SIGNAL.inkNavy, mb: 2, '@media (min-width:1920px)': { fontSize: '4rem' },
-              }}>
-                {project.title}
-              </Typography>
-              <Typography sx={{
-                color: HUMAN_SIGNAL.inkText, fontSize: { xs: '1.0625rem', md: '1.125rem' }, lineHeight: 1.7, mb: 3, maxWidth: 560,
-                '@media (min-width:1920px)': { fontSize: '1.25rem' },
-              }}>
-                {ready.hero.summary}
-              </Typography>
+        {heroMedia.length > 0 && <div className={`case-cover ${heroMedia.length > 1 ? 'case-cover--pair' : ''}`}>
+          {heroMedia.map((media, index) => <ScreenFigure
+            key={media.src} media={media} priority={index === 0}
+            label={index === 0 ? ready.hero.mediaLabel : '화면 구성'}
+          />)}
+        </div>}
 
-              {/* Hero Meta/TYPE·ROLE·TOOLS·DATA 카드 4개 — 좁은 split layout까지
-               * 2×2를 유지하고 각 카드의 읽을 폭이 확보될 때만 한 줄로 배치한다. */}
-              {metaFacts.length > 0 && (
-                <Box sx={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-                  columnGap: 1.5,
-                  rowGap: 1.5,
-                  width: '100%',
-                  minWidth: 0,
-                  mb: 3,
-                  maxWidth: 560,
-                  [META_FOUR_COLUMN_MQ]: { gridTemplateColumns: `repeat(${metaFacts.length}, minmax(0, 1fr))` },
-                }}>
-                  {metaFacts.map((f) => (
-                    <Box key={f.label} sx={{
-                      bgcolor: HUMAN_SIGNAL.softWhite,
-                      border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-                      borderRadius: '14px',
-                      p: 1.75,
-                      minWidth: isFigmaProject ? 0 : undefined,
-                      maxWidth: isFigmaProject ? '100%' : undefined,
-                    }}>
-                      <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.06em', mb: 0.75 }}>
-                        {f.label}
-                      </Typography>
-                      <Typography sx={{
-                        fontSize: '0.8125rem',
-                        color: HUMAN_SIGNAL.inkNavy,
-                        lineHeight: 1.5,
-                        whiteSpace: isFigmaProject ? 'normal' : undefined,
-                        wordBreak: 'keep-all',
-                        overflowWrap: isFigmaProject ? 'normal' : undefined,
-                      }}>
-                        {f.value}
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              )}
+        <section className="case-section case-context" aria-labelledby="case-context-heading">
+          <div className="case-section__heading">
+            <p className="case-eyebrow">01 / 프로젝트 배경</p>
+            <h2 id="case-context-heading">어떤 문제에서<br />시작했나요?</h2>
+          </div>
+          <div className="case-context__body">
+            <div><h3>출발점</h3><p>{ready.context?.problem || project.problem}</p></div>
+            <div><h3>목표</h3><p>{ready.context?.goal || project.goal}</p></div>
+          </div>
+        </section>
 
-              {(liveUrl || githubUrl || figmaPrototypeUrl) && (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5 }}>
-                  {liveUrl && (
-                    <Box component="a" href={liveUrl} target="_blank" rel="noopener noreferrer" aria-label="실행 화면 새 탭에서 열기"
-                      sx={{
-                        bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, height: 48, px: 2.5, borderRadius: '12px',
-                        display: 'inline-flex', alignItems: 'center', gap: 1, textDecoration: 'none',
-                        fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
-                        '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
-                      }}>
-                      실행 화면 보기 <OpenInNewIcon sx={{ fontSize: '1rem' }} />
-                    </Box>
-                  )}
-                  {figmaPrototypeUrl && (
-                    <Box component="a" href={figmaPrototypeUrl} target="_blank" rel="noopener noreferrer" aria-label={`${resolvedFigmaLabel} 새 탭에서 열기`}
-                      sx={{
-                        bgcolor: HUMAN_SIGNAL.inkNavy, color: HUMAN_SIGNAL.softWhite, height: 48, px: 2.5, borderRadius: '12px',
-                        display: 'inline-flex', alignItems: 'center', gap: 1, textDecoration: 'none',
-                        fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
-                        '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
-                      }}>
-                      {resolvedFigmaLabel} <OpenInNewIcon sx={{ fontSize: '1rem' }} />
-                    </Box>
-                  )}
-                  {githubUrl && (
-                    <Box component="a" href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub 새 탭에서 열기"
-                      sx={{
-                        bgcolor: 'transparent', color: HUMAN_SIGNAL.inkNavy, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, height: 48, px: 2.5, borderRadius: '12px',
-                        display: 'inline-flex', alignItems: 'center', gap: 1, textDecoration: 'none',
-                        fontWeight: 500, fontSize: '0.875rem', whiteSpace: 'nowrap',
-                        '&:hover': { borderColor: HUMAN_SIGNAL.inkNavy },
-                        '&:focus-visible': { outline: `2px solid ${HUMAN_SIGNAL.burntOrange}`, outlineOffset: '3px' },
-                      }}>
-                      <GitHubIcon sx={{ fontSize: '1rem' }} /> GitHub
-                    </Box>
-                  )}
-                </Box>
-              )}
-            </Box>
+        {decisions.length > 0 && <section className="case-section case-decisions" aria-labelledby="case-decisions-heading">
+          <div className="case-section__heading case-section__heading--inline">
+            <div><p className="case-eyebrow">02 / 화면과 판단</p><h2 id="case-decisions-heading">이렇게 구성했습니다.</h2></div>
+            <p className="case-section__note">화면에 반영한 선택과 그 이유입니다.</p>
+          </div>
+          <div className="case-decisions__list">
+            {decisions.map((decision, index) => {
+              const evidence = decision.evidence || [
+                { label: '선택', text: decision.choice },
+                { label: '이유', text: decision.reason },
+                { label: '확인', text: decision.verification },
+              ];
+              return <section key={decision.title} className={`case-decision${decision.showMedia ? '' : ' case-decision--text'}`}>
+                <div className="case-decision__copy">
+                  <span className="case-decision__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{decision.title}</h3>
+                  <dl>{evidence.filter((item) => item.text).map((item) => <div key={item.label}>
+                    <dt>{item.label}</dt><dd>{item.text}</dd>
+                  </div>)}</dl>
+                </div>
+                {decision.showMedia && <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />}
+              </section>;
+            })}
+          </div>
+        </section>}
 
-            {/* 우측 — navy media stage(Figma "Hero Media Stage" 구조: 어두운 무대 위
-             * 실제 evidence PNG 프레임 1~2장 + 하단 caption + 저대비 D mark). */}
-            <Box sx={{ mt: { xs: 4, md: 0 } }}>
-              <Box data-hero-media-stage="true" sx={{
-                position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.deepHarbor,
-                borderRadius: '20px', p: { xs: 2, sm: 2.5, md: 3 },
-              }}>
-                {ready.hero.mediaLayout === 'approved-pair' ? (
-                  <Box sx={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'flex-start', gap: '4%' }}>
-                    <Box sx={{
-                      width: '73.5%', mt: '4.4%',
-                      aspectRatio: ready.hero.media[0].aspectRatio, borderRadius: '12px', overflow: 'hidden',
-                    }}>
-                      <ApprovedSlotImage media={ready.hero.media[0]} loading="eager" />
-                    </Box>
-                    <Box sx={{
-                      width: '22.5%',
-                      aspectRatio: ready.hero.media[1].aspectRatio, borderRadius: '10px', overflow: 'hidden',
-                    }}>
-                      <ApprovedSlotImage media={ready.hero.media[1]} loading="eager" />
-                    </Box>
-                  </Box>
-                ) : (
-                  <Box
-                    data-hero-media-layout={ready.hero.mediaLayout ?? 'default'}
-                    sx={{
-                      position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap',
-                      alignItems: heroMediaCentered ? 'center' : 'flex-end',
-                      justifyContent: heroMediaCentered ? 'center' : 'flex-start',
-                      gap: 2,
-                    }}
-                  >
-                    {ready.hero.media.map((m, index) => (
-                      <Box key={m.src} data-hero-media-frame={index === 0 ? 'desktop' : 'mobile'} sx={{
-                        borderRadius: '14px', overflow: 'hidden',
-                        flex: m.frameWidth ? '0 0 auto' : '1 1 260px',
-                        width: m.frameWidth ?? undefined,
-                        minWidth: m.frameWidth ? undefined : 220,
-                      }}>
-                        <Box sx={{ aspectRatio: m.aspectRatio ?? '16 / 10' }}>
-                          {m.plainEvidence ? (
-                            <Box
-                              component="img"
-                              src={mediaUrl(m.src)}
-                              alt={m.alt}
-                              loading="eager"
-                              data-plain-evidence="true"
-                              sx={{
-                                display: 'block', width: '100%', height: '100%',
-                                objectFit: m.objectFit ?? 'contain',
-                                objectPosition: m.objectPosition ?? 'center',
-                                bgcolor: HUMAN_SIGNAL.softWhite,
-                                border: `1px solid ${HUMAN_SIGNAL.paperDeep}`,
-                                borderRadius: '10px',
-                                boxSizing: 'border-box',
-                                boxShadow: '0 8px 18px rgba(0,0,0,0.16)',
-                              }}
-                            />
-                          ) : (
-                            <ProjectMediaStage
-                              image={mediaUrl(m.src)} alt={m.alt} loading="eager"
-                              aspectRatio={m.aspectRatio ?? '16 / 10'}
-                              objectFit={m.objectFit ?? 'contain'}
-                              objectPosition={m.objectPosition ?? 'center'}
-                            />
-                          )}
-                        </Box>
-                      </Box>
-                    ))}
-                  </Box>
-                )}
-                <Typography data-hero-media-caption="true" sx={{ position: 'relative', zIndex: 1, fontFamily: FONT_MONO, color: HUMAN_SIGNAL.steelMist, fontSize: '0.75rem', mt: 2 }}>
-                  {heroMediaCentered && ready.hero.mediaLabel.includes('STATIC / DEMO') ? (
-                    <>
-                      {ready.hero.mediaLabel.split('STATIC / DEMO')[0]}
-                      <Box component="span" data-hero-caption-token="static-demo" sx={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-                        STATIC / DEMO
-                      </Box>
-                      {ready.hero.mediaLabel.split('STATIC / DEMO')[1]}
-                    </>
-                  ) : ready.hero.mediaLabel}
-                </Typography>
-                <Box sx={{ position: 'absolute', right: -12, bottom: -12, width: 96, height: 96, opacity: 0.12, pointerEvents: 'none' }} aria-hidden="true">
-                  <DMark size="100%" tone="onDark" sx={{ width: '100%', height: '100%' }} />
-                </Box>
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+        {additionalScreens.length > 0 && <section className="case-section" aria-labelledby="case-screens-heading">
+          <div className="case-section__heading"><h2 id="case-screens-heading">함께 살펴볼 화면</h2></div>
+          <div className="case-screen-grid">
+            {additionalScreens.map((screen) => <ScreenFigure key={screen.media.src} media={screen.media} label={screen.label} />)}
+          </div>
+        </section>}
 
-      {/* ── 01 / Context — navy full-width + Problem/Goal card ── */}
-      <Box component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy, py: { xs: 6, md: 9 } }}>
-        {/* Figma Context(201:51)의 BG/Orange Arc(y=360)·BG/D Watermark(y=300)는 620px
-         * 섹션의 아래쪽 절반에 몰려 있다(원래 top:18%는 근사값으로 위쪽에 치우쳐
-         * 있었다) — 기존 contact-left shape/scene은 그대로 두고 top만 조정한다. */}
-        <QhdAmbientSignal
-          variant="contact-left"
-          sx={{ right: `calc((100vw - ${HOME_WIDE_MAX_WIDTH}px) / 2 - 40px)`, left: 'auto', top: '55%', width: 340 }}
-        />
-        <QhdSectionIndex id="context" index="01" label="CONTEXT / PROBLEM" side="left" indexTop="16%" labelTop="44%" indexOffset={502} labelOffset={436} indexColor={HUMAN_SIGNAL.softWhite} />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <SectionLabel index="01" tone="onDark">CONTEXT</SectionLabel>
-          <SectionHeading tone="onDark" lines={sectionHeadings.context} />
-          {sectionIntros.context && (
-            <SectionIntro text={sectionIntros.context} tone="onDark" tokens={protectedCopyTokens} />
-          )}
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: { xs: 3, md: 4 } }}>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '20px', p: { xs: 3, md: 4 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 2 }}>PROBLEM</Typography>
-              <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.45, letterSpacing: '-0.01em', wordBreak: 'keep-all' }}>
-                {ready.context.problem}
-              </Typography>
-              {ready.context.problemNote && (
-                <Typography sx={{ mt: 2, color: HUMAN_SIGNAL.steelMist, fontSize: '0.875rem', lineHeight: 1.65, wordBreak: 'keep-all' }}>
-                  {ready.context.problemNote}
-                </Typography>
-              )}
-            </Box>
-            <Box sx={{ position: 'relative', bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: '20px', p: { xs: 3, md: 4 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 2 }}>GOAL</Typography>
-              <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.45, letterSpacing: '-0.01em', wordBreak: 'keep-all' }}>
-                {ready.context.goal}
-              </Typography>
-              {ready.context.goalNote && (
-                <Typography sx={{ mt: 2, pr: 5, color: HUMAN_SIGNAL.inkText, fontSize: '0.875rem', lineHeight: 1.65, wordBreak: 'keep-all' }}>
-                  {ready.context.goalNote}
-                </Typography>
-              )}
-              <Box aria-hidden="true" sx={{ position: 'absolute', right: 24, bottom: 24, display: 'flex', alignItems: 'flex-end', gap: 1 }}>
-                <Box sx={{ width: 18, height: 18, borderRadius: '6px', bgcolor: HUMAN_SIGNAL.mutedSage }} />
-                <Box sx={{ width: 9, height: 9, borderRadius: '3px', bgcolor: HUMAN_SIGNAL.brightOrange }} />
-              </Box>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
+        <section className="case-section case-scope" aria-labelledby="case-scope-heading">
+          <div className="case-section__heading case-section__heading--inline">
+            <div><p className="case-eyebrow">03 / 제작 범위</p><h2 id="case-scope-heading">완성한 것과 남은 것</h2></div>
+          </div>
+          <div className="case-scope__grid">
+            <ScopeList title="제작한 범위" items={ready.scope?.actual} />
+            <ScopeList title="데모·샘플의 범위" items={ready.scope?.demoStatic} />
+            <ScopeList title="포함하지 않은 기능" items={ready.scope?.notIncluded} />
+          </div>
+          {(ready.resultLimit?.done || ready.resultLimit?.limit) && <div className="case-outcome">
+            {ready.resultLimit.done && <div><h3>작업 결과</h3><p>{ready.resultLimit.done}</p></div>}
+            {ready.resultLimit.limit && <div><h3>한계</h3><p>{ready.resultLimit.limit}</p></div>}
+          </div>}
+          {(ready.aiCollaboration?.length || project.detail?.aiContribution) && <div className="case-contribution">
+            <h3>작업 기여와 AI 활용</h3>
+            {ready.aiCollaboration?.length ? <dl>{ready.aiCollaboration.map((item) => <div key={item.label}>
+              <dt>{item.label}</dt><dd>{item.value}</dd>
+            </div>)}</dl> : <p>{project.detail.aiContribution}</p>}
+          </div>}
+        </section>
 
-      {/* ── 02 / Key Decisions — 프로젝트별 2~3개, media/설명 교차형 full-width row ── */}
-      <Box id="decisions" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="decisions" index="02" label="DECISIONS / EVIDENCE" side="right" indexTop="7%" labelTop="18%" indexOffset={210} labelOffset={140} />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <SectionLabel index="02">KEY DECISIONS</SectionLabel>
-          <SectionHeading lines={sectionHeadings.decisions} />
-          {sectionIntros.decisions && (
-            <SectionIntro text={sectionIntros.decisions} tokens={protectedCopyTokens} />
-          )}
-          {/* 지시서 3-F3-4: 이전 구현은 부모 flex의 gap과 각 항목의 pt가 같은 값으로
-           * 중복 적용돼(예: md에서 56px+56px=112px) DECISION 사이 간격이 의도한
-           * 값의 2배였다 — 부모 gap을 없애고 각 항목의 pt(+구분선)만으로 간격을
-           * 준다(i===0은 pt:0이라 첫 항목 앞에는 여전히 간격이 없다). */}
-          <Box sx={{
-            display: 'flex', flexDirection: 'column',
-            borderBottom: { xs: `1px solid ${HUMAN_SIGNAL.paperDeep}`, md: 'none' },
-          }}>
-            {ready.decisions.map((d, i) => (
-              <Box key={d.title} sx={{
-                display: 'flex', flexDirection: { xs: 'column', md: i % 2 === 0 ? 'row' : 'row-reverse' },
-                alignItems: { xs: 'stretch', md: 'center' }, gap: { xs: 3, md: 5 },
-                pt: i === 0 ? 0 : { xs: 0, md: 7 },
-                mb: i === ready.decisions.length - 1 ? 0 : { xs: 8, md: 0 },
-                borderTop: i === 0 ? 'none' : { xs: 'none', md: `1px solid ${HUMAN_SIGNAL.paperDeep}` },
-              }}>
-                <Box sx={{ order: { xs: 2, md: 0 }, flex: { md: '1 1 55%' }, width: '100%', minWidth: 0 }}>
-                  {['portrait-pair', 'wide-stack'].includes(d.media.layout) ? (
-                    <Box sx={{
-                      display: 'grid',
-                      gridTemplateColumns: {
-                        xs: d.media.layout === 'wide-stack' ? '1fr' : 'repeat(2, minmax(0, 1fr))',
-                        md: 'repeat(2, minmax(0, 1fr))',
-                      },
-                      gap: { xs: d.media.layout === 'wide-stack' ? 2 : '8px', md: 1 },
-                    }}>
-                      {d.media.items.map((item) => (
-                        <Box
-                          key={item.src}
-                          sx={{
-                            minWidth: 0,
-                            aspectRatio: d.media.layout === 'wide-stack'
-                              ? { xs: 'auto', md: d.media.aspectRatio }
-                              : d.media.aspectRatio,
-                            borderRadius: '14px',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <ApprovedSlotImage media={item} fluidMobile={d.media.layout === 'wide-stack'} />
-                        </Box>
-                      ))}
-                    </Box>
-                  ) : (
-                    <Box sx={{ borderRadius: '18px', overflow: 'hidden', aspectRatio: d.media.aspectRatio ?? '16 / 10' }}>
-                      <ProjectMediaStage image={mediaUrl(d.media.src)} alt={d.media.alt} aspectRatio={d.media.aspectRatio ?? '16 / 10'} objectFit={d.media.objectFit ?? 'contain'} objectPosition={d.media.objectPosition ?? 'center'} />
-                    </Box>
-                  )}
-                </Box>
-                <Box sx={{ order: { xs: 1, md: 0 }, flex: { md: '1 1 45%' }, width: '100%', display: 'flex', flexDirection: 'column', gap: 1.75 }}>
-                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em' }}>
-                    DECISION {String(i + 1).padStart(2, '0')}
-                  </Typography>
-                  <Typography component={d.evidence ? 'h3' : 'p'} sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.4, wordBreak: 'keep-all' }}>
-                    {d.title}
-                  </Typography>
-                  {d.evidence ? <DecisionEvidence rows={d.evidence} /> : <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <FieldRow label="선택">{d.choice}</FieldRow>
-                    <FieldRow label="이유">{d.reason}</FieldRow>
-                    <FieldRow label={d.verificationLabel ?? '검증'}>{d.verification}</FieldRow>
-                  </Box>}
-                </Box>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </Box>
-
-      {/* ── 03 / Main Screens — primary + secondary 위계(Feedback Hub만 동일 비중).
-       * Figma(197:82/201:118)는 앞뒤 beige Key Decisions/navy Scope와 다른 Soft
-       * White 배경 + border-radius를 쓴다 — 페이지 기본 배경(warmPaper)과 색이
-       * 갈려 상하단 모서리가 둥근 독립 카드로 보인다(지시서 3-D). ── */}
-      {hasMainScreens && <Box id="screens" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: { xs: '20px', md: '24px' }, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="screens" index="03" label="SCREENS / PROOF" side="left" indexTop="14%" labelTop="37%" indexOffset={502} labelOffset={436} />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <SectionLabel index="03">MAIN SCREENS</SectionLabel>
-          <SectionHeading lines={sectionHeadings.screens} />
-          {sectionIntros.screens && (
-            <SectionIntro text={sectionIntros.screens} tokens={protectedCopyTokens} />
-          )}
-          {/* 지시서 3-F3-1: Feedback Hub Main Screens는 Figma 기준 Post List/Post
-           * Detail 2개여야 한다 — 이전에는 첫 카드에 responsiveEvidence(390px
-           * 세로 캡처)를 extra로 붙여 시각적으로 세 번째 화면처럼 보이고 넓은
-           * 빈 공간을 만들었다. 390px 확인 사실은 Responsive & Scope에 이미
-           * 있으므로 여기서는 extra를 더 이상 전달하지 않는다(데이터 자체는
-           * portfolioMeta.js에 그대로 남겨 evidence mapping을 유지한다). */}
-          <Box
-            data-main-screens-layout={ready.mainScreensLayout ?? 'primary-secondary'}
-            sx={mainScreensBalanced ? {
-              display: 'grid', gridTemplateColumns: '1fr', alignItems: 'start', gap: 3,
-              '@media (min-width:1024px)': { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' },
-              '@media (min-width:1440px)': { gridTemplateColumns: 'repeat(12, minmax(0, 1fr))' },
-            } : { display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}
-          >
-            {mainScreensBalanced ? (
-              ready.mainScreens.map((s, index) => (
-                <ScreenCard
-                  key={s.label}
-                  s={s}
-                  large={index === 0}
-                  sx={{
-                    minWidth: 0,
-                    '@media (min-width:1024px)': { gridColumn: index === 0 ? '1 / -1' : 'auto' },
-                    '@media (min-width:1440px)': {
-                      // M2 mosaic-five: Home과 오른쪽 2단 stack, 하단 6/6을
-                      // 명시 배치하되 DOM 순서는 그대로 유지한다.
-                      gridColumn: index === 0
-                        ? '1 / span 8'
-                        : index === 1 || index === 2
-                          ? '9 / span 4'
-                          : index === 3
-                            ? '1 / span 6'
-                            : '7 / span 6',
-                      gridRow: index === 0
-                        ? '1 / span 2'
-                        : index === 1
-                          ? '1'
-                          : index === 2
-                            ? '2'
-                            : '3',
-                      alignSelf: index === 0 ? 'center' : 'start',
-                    },
-                  }}
-                />
-              ))
-            ) : ready.mainScreensLayout === 'approved-brewstep' ? (
-              <>
-                <ScreenCard
-                  s={ready.mainScreens[0]} large
-                  sx={{
-                    flex: { md: '0 0 auto' }, width: { xs: '100%', md: 'calc(62% - 12px)' },
-                    '& > .MuiTypography-root': { width: 'max-content', whiteSpace: 'nowrap' },
-                  }}
-                />
-                <Box sx={{
-                  display: { xs: 'flex', md: 'grid' },
-                  flexDirection: 'column',
-                  gridTemplateColumns: { md: '1fr' },
-                  alignItems: 'start',
-                  gap: { xs: 3, md: 3 },
-                  [SPLIT_MQ]: {
-                    position: 'relative',
-                    display: 'block',
-                    alignSelf: 'flex-start',
-                    flex: '0 0 auto',
-                    width: 'calc(38% - 12px)',
-                    aspectRatio: '466.8 / 430',
-                  },
-                }}>
-                  {secondaryScreens.map((s, index) => (
-                    <ScreenCard
-                      key={s.label}
-                      s={s}
-                      sx={{
-                        width: { xs: '100%' },
-                        '& > .MuiTypography-root': { width: 'max-content', whiteSpace: 'nowrap' },
-                        [SPLIT_MQ]: index === 0
-                          ? {
-                              position: 'absolute', top: 0, left: 0, width: '44%',
-                              '& > .MuiTypography-root': { width: 'max-content', whiteSpace: 'nowrap' },
-                            }
-                          : {
-                              position: 'absolute', top: '39%', right: 0, width: '69%',
-                              '& > .MuiTypography-root': {
-                                width: 'max-content', mt: '28px', ml: 'auto', textAlign: 'right', whiteSpace: 'nowrap',
-                              },
-                            },
-                      }}
-                    />
-                  ))}
-                </Box>
-              </>
-            ) : mainScreensEqual ? (
-              ready.mainScreens.map((s) => (
-                <ScreenCard
-                  key={s.label} s={s} large
-                  sx={{ flex: { md: '1 1 0' } }}
-                />
-              ))
-            ) : (
-              <>
-                <ScreenCard
-                  s={ready.mainScreens[0]} large
-                  sx={{ flex: { md: '1 1 60%' } }}
-                />
-                {secondaryScreens.length > 0 && (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, flex: { md: '1 1 38%' } }}>
-                    {secondaryScreens.map((s) => <ScreenCard key={s.label} s={s} />)}
-                  </Box>
-                )}
-              </>
-            )}
-          </Box>
-        </Box>
-      </Box>}
-
-      {/* ── 04 / Responsive & Scope — navy section, Bus는 N/A 카드, 나머지는
-       * breakpoint 카드 + Actual/Demo·Static/Not Included 카드 + 조건부 내부
-       * AI Collaboration 카드까지 한 섹션 안에 통합한다. ── */}
-      <Box id="scope" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="scope" index={scopeIndex} label="SCOPE / READY" side="right" indexTop="14%" labelTop="34%" indexOffset={210} labelOffset={140} indexColor={HUMAN_SIGNAL.softWhite} />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <SectionLabel index={scopeIndex} tone="onDark">RESPONSIVE &amp; SCOPE</SectionLabel>
-          <SectionHeading tone="onDark" lines={sectionHeadings.scope} />
-
-          {ready.responsiveNotApplicable ? (
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: implementationLine ? 'repeat(2, 1fr)' : '1fr' }, gap: 3, mb: { xs: 4, md: 5 } }}>
-              <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
-                <ResponsiveNotApplicableField />
-              </Box>
-              {implementationLine && (
-                <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
-                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>{implementationLabel}</Typography>
-                  <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.0625rem', md: '1.1875rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.5, wordBreak: 'keep-all' }}>{implementationLine}</Typography>
-                </Box>
-              )}
-            </Box>
-          ) : (
-            <>
-              {/* Figma Responsive/390·768·1440·2560 카드 4개(199:6~17) 복구 —
-               * JobFlow/Feedback Hub는 실제 React/MUI 반응형 웹이라 breakpoint별
-               * 규칙을 그대로 보여준다. Figma는 2560(QHD) 카드만 Soft White로
-               * 밝게 강조하고 나머지 3개는 Deep Harbor다(199:15~17) — 지시서
-               * 3-F3-2에 따라 그 대비를 그대로 복구한다. */}
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: `repeat(${responsiveCards.length}, 1fr)` }, gap: { xs: 2, md: 3 }, mb: { xs: 3, md: 4 } }}>
-                {responsiveCards.map((b, index, cards) => {
-                  const isQhd = index === cards.length - 1;
-                  return (
-                    <Box key={b.width} sx={{ bgcolor: isQhd ? HUMAN_SIGNAL.softWhite : HUMAN_SIGNAL.deepHarbor, borderRadius: '16px', p: { xs: 2.25, md: 3 } }}>
-                      <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.125rem', md: '1.25rem' }, color: isQhd ? HUMAN_SIGNAL.inkNavy : HUMAN_SIGNAL.softWhite, letterSpacing: '-0.01em', mb: 1 }}>
-                        {b.width}
-                      </Typography>
-                      <Typography sx={{ fontSize: '0.8125rem', color: isQhd ? HUMAN_SIGNAL.inkText : HUMAN_SIGNAL.steelMist, lineHeight: 1.6, wordBreak: 'keep-all' }}>
-                        {b.rule}
-                      </Typography>
-                    </Box>
-                  );
-                })}
-              </Box>
-              {implementationLine && (
-                <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 }, mb: { xs: 4, md: 5 } }}>
-                  <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 1.5 }}>{implementationLabel}</Typography>
-                  <Typography sx={{ fontWeight: 700, fontSize: { xs: '1.0625rem', md: '1.1875rem' }, color: HUMAN_SIGNAL.softWhite, lineHeight: 1.5, wordBreak: 'keep-all' }}>{implementationLine}</Typography>
-                </Box>
-              )}
-            </>
-          )}
-
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3, mb: { xs: 4, md: 5 } }}>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.deepSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
-                <ProtectedCopy text={ready.scopeLabels?.actual ?? 'ACTUAL'} tokens={protectedCopyTokens} />
-              </Typography>
-              {ready.scopeTitles?.actual && (
-                <Typography sx={{ color: HUMAN_SIGNAL.inkNavy, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
-                  {ready.scopeTitles.actual}
-                </Typography>
-              )}
-              <BulletList items={ready.scope.actual} protectedTokens={protectedCopyTokens} />
-            </Box>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
-                <ProtectedCopy text={ready.scopeLabels?.demoStatic ?? 'DEMO / STATIC'} tokens={protectedCopyTokens} />
-              </Typography>
-              {ready.scopeTitles?.demoStatic && (
-                <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
-                  {ready.scopeTitles.demoStatic}
-                </Typography>
-              )}
-              <BulletList items={ready.scope.demoStatic} tone="onDark" protectedTokens={protectedCopyTokens} />
-            </Box>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 3.5 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>
-                <ProtectedCopy text={ready.scopeLabels?.notIncluded ?? 'NOT INCLUDED'} tokens={protectedCopyTokens} />
-              </Typography>
-              {ready.scopeTitles?.notIncluded && (
-                <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 800, fontSize: '1.0625rem', lineHeight: 1.45, mb: 1.5, wordBreak: 'keep-all' }}>
-                  {ready.scopeTitles.notIncluded}
-                </Typography>
-              )}
-              <BulletList items={ready.scope.notIncluded} tone="onDark" protectedTokens={protectedCopyTokens} />
-            </Box>
-          </Box>
-
-          {/* AI Collaboration — 실제 aiContribution 데이터가 있는 프로젝트만
-           * 표시하며 Figma 프로젝트는 화면 설계·검증에 맞는 문구를 사용한다.
-           * 별도 섹션이 아니라 이 navy 섹션 안의 카드 1개로 통합한다. */}
-          {hasAI && (
-            <Box id="ai" sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '20px', p: { xs: 3, md: 4 }, scrollMarginTop: '96px' }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.75rem', letterSpacing: '0.06em', mb: 3 }}>
-                AI COLLABORATION
-              </Typography>
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: { xs: 3, md: 4 }, mb: 3 }}>
-                {(ready.aiCollaboration ?? [
-                  { label: '사용자', value: '요구사항 · 범위 · 디자인 선택 · 최종 판단' },
-                  { label: 'AI', value: aiSupportLabel },
-                  { label: '검증', value: verificationLabel },
-                ]).map((item) => (
-                  <Box key={item.label}>
-                    <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.mutedSage, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1 }}>{item.label}</Typography>
-                    <Typography sx={{ fontSize: '0.875rem', color: HUMAN_SIGNAL.steelMist, lineHeight: 1.6 }}>{item.value}</Typography>
-                  </Box>
-                ))}
-              </Box>
-              <Typography sx={{ fontSize: '0.9375rem', color: HUMAN_SIGNAL.softWhite, lineHeight: 1.7, wordBreak: 'keep-all', ...READING_SX }}>
-                {project.detail.aiContribution}
-              </Typography>
-            </Box>
-          )}
-        </Box>
-      </Box>
-
-      {/* ── 05 / Result & Limit — D mark + closing heading + Done/Limit card + Next CTA ── */}
-      <Box id="result" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="result" index={resultIndex} label="RESULT / LIMIT" side="left" indexTop="18%" labelTop="45%" indexOffset={502} labelOffset={436} />
-        <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' }, gap: { xs: 3, md: 5 }, mb: { xs: 4, md: 5 } }}>
-            <Box aria-hidden="true" sx={{ width: { xs: 56, md: 84 }, height: { xs: 56, md: 84 }, flexShrink: 0 }}>
-              <DMark size="100%" tone="onLight" sx={{ width: '100%', height: '100%' }} />
-            </Box>
-            <Box>
-              <SectionLabel index={resultIndex}>RESULT &amp; LIMIT</SectionLabel>
-              <SectionHeading lines={sectionHeadings.result} />
-              {sectionIntros.result && (
-                <SectionIntro text={sectionIntros.result} tokens={protectedCopyTokens} compact />
-              )}
-            </Box>
-          </Box>
-
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: { xs: 3, md: 4 }, mb: { xs: 4, md: 5 } }}>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.softWhite, border: `1px solid ${HUMAN_SIGNAL.paperDeep}`, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>DONE</Typography>
-              <Typography sx={{ color: HUMAN_SIGNAL.inkNavy, fontWeight: 600, fontSize: { xs: '1rem', md: '1.0625rem' }, lineHeight: 1.7, wordBreak: 'keep-all' }}>
-                <ProtectedCopy text={ready.resultLimit.done} tokens={protectedCopyTokens} />
-              </Typography>
-            </Box>
-            <Box sx={{ bgcolor: HUMAN_SIGNAL.deepHarbor, borderRadius: '18px', p: { xs: 3, md: 4 } }}>
-              <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.brightOrangeOnDark, fontSize: '0.6875rem', letterSpacing: '0.04em', mb: 1.5 }}>LIMIT</Typography>
-              <Typography sx={{ color: HUMAN_SIGNAL.softWhite, fontWeight: 600, fontSize: { xs: '1rem', md: '1.0625rem' }, lineHeight: 1.7, wordBreak: 'keep-all' }}>
-                <ProtectedCopy text={ready.resultLimit.limit} tokens={protectedCopyTokens} />
-              </Typography>
-            </Box>
-          </Box>
-
-          <DetailEndNavigation
-            currentSlug={slug}
-            nextSlug={nextSlug}
-            nextProject={nextProject}
-            nextRole={nextRole}
-          />
-        </Box>
-      </Box>
-    </Box>
+        <footer className="case-footer">
+          <Link className="case-list-link" to="/projects"><ArrowBackIcon aria-hidden="true" />전체 작업</Link>
+          {nextProject && nextProject.id !== project.id && <Link className="case-next" to={`/projects/${projectSlug(nextProject)}`}>
+            <span><small>다음 프로젝트</small><strong>{nextProject.title}</strong></span>
+            <ArrowForwardIcon aria-hidden="true" />
+          </Link>}
+        </footer>
+      </div>
+    </article>
   );
 };
 

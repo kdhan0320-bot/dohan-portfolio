@@ -1,3 +1,13 @@
+# 현행 디자인 기준
+
+사용자의 전면 리디자인 요청에 따라 현재 코드는 밝은 회청색의 편집형 구성으로 전환했다. 건축 포트폴리오 첨부는 이미지 비중·그리드, Adobe Portfolio 첨부는 색감, Collector 첨부는 목록·상세의 배치를 참고했다. 참조 자료의 이미지·템플릿·서체를 복제하지 않았으며 정확한 제작 시점·서체를 확인했다고 주장하지 않는다.
+
+현재 화면과 토큰은 `README.md`, `src/index.css`, `src/pages/portfolioEditorial.css`를 기준으로 한다. 이전 Human Signal Figma와 다르게 구현하는 것은 이번 사용자 요청 범위다. Figma 원본은 수정하지 않았다.
+
+아래 내용은 이전 디자인의 참조 기록이며 현행 코드의 일치 판정 기준으로 사용하지 않는다.
+
+---
+
 # Human Signal — 디자인 참고 문서
 
 이 문서는 `projects/my-portfolio/README.md`의 디자인 방향을 구현 수준까지

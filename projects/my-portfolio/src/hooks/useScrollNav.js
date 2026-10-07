@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-const SECTION_IDS = ['home', 'about', 'projects', 'contact'];
+const SECTION_IDS = ['home', 'projects', 'about', 'contact'];
 const HIDE_THRESHOLD = 80; // 이 위치 이하에서만 헤더 숨김 트리거
 const STICKY_COMPACT_THRESHOLD = 24; // 이 위치를 넘으면 Header가 Sticky Compact 상태로 전환
 
@@ -164,6 +164,8 @@ export const scrollToSection = (sectionId) => {
   const el = document.getElementById(sectionId);
   if (!el) return;
 
+  el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: true });
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const HEADER_OFFSET = 84;
   const top = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
