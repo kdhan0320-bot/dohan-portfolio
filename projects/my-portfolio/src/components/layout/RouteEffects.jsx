@@ -17,8 +17,9 @@ const SLUG_TO_ID = {
 };
 
 const resolveTitle = (pathname) => {
-  if (pathname === '/') return `Home | ${SITE_TITLE}`;
-  if (pathname === '/projects') return `Projects | ${SITE_TITLE}`;
+  if (pathname === '/') return SITE_TITLE;
+  if (pathname === '/about') return `소개 | ${SITE_TITLE}`;
+  if (pathname === '/projects') return `작업 | ${SITE_TITLE}`;
   const detailMatch = pathname.match(/^\/projects\/([^/]+)$/);
   if (detailMatch) {
     const id = SLUG_TO_ID[detailMatch[1]];

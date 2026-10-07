@@ -4,7 +4,7 @@ import ProjectCover from '../projects/ProjectCover';
 const MORE_IDS = ['gongjeongbom', 'feedback-hub', 'bus-arrival-app', 'brewstep'];
 const MoreWorksSection = () => (
   <section className="more-work portfolio-shell" id="more-projects" aria-labelledby="more-title">
-    <div className="section-heading"><div><p className="eyebrow">MORE PROJECTS</p><h2 id="more-title">다른 주제, 같은 관심<span className="section-count">04</span></h2></div><Link className="text-link" to="/projects">전체 프로젝트 보기</Link></div>
+    <div className="section-heading"><div><p className="eyebrow">MORE PROJECTS</p><h2 id="more-title">다른 작업들<span className="section-count">04</span></h2></div><Link className="text-link" to="/projects">전체 프로젝트 보기</Link></div>
     <div className="more-grid">
       {MORE_IDS.map((id) => ALL_PROJECTS.find((project) => project.id === id)).filter(Boolean).map((project) => (
         <article className="more-project" key={project.id}>

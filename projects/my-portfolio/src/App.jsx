@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,6 +8,7 @@ import Navbar from './components/layout/Navbar';
 import RouteEffects from './components/layout/RouteEffects';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
+const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ProjectsPage = lazy(() => import('./pages/ProjectsPage'));
 const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
@@ -45,10 +46,7 @@ const App = () => (
       <Suspense fallback={<RouteFallback />}>
         <Routes>
           <Route path="/"              element={<HomePage />} />
-          {/* 예전 별도 /about 페이지는 제거했다. 기존 주소로 들어온 방문자가 빈 화면/404를
-           * 보지 않도록 Home의 About 섹션으로 안전하게 리다이렉트한다(HomePage.jsx의
-           * location.state.scrollTo 처리 로직 재사용). */}
-          <Route path="/about"         element={<Navigate to="/" state={{ scrollTo: 'about' }} replace />} />
+          <Route path="/about"         element={<AboutPage />} />
           <Route path="/projects"      element={<ProjectsPage />} />
           <Route path="/projects/:slug" element={<ProjectDetailPage />} />
           <Route path="*"              element={<NotFoundPage />} />

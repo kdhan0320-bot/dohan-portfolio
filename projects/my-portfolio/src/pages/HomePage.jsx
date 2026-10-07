@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import HeroSection from '../components/sections/HeroSection';
-import AboutSection from '../components/sections/AboutSection';
 import ProjectsSection from '../components/sections/ProjectsSection';
 import MoreWorksSection from '../components/sections/MoreWorksSection';
 import ContactSection from '../components/sections/ContactSection';
@@ -21,8 +20,8 @@ const HomePage = () => {
    * 기다리는 명시적 완료 신호. 화면에는 아무 영향 없음(속성만 부여, 스타일 없음).
    *
    * review 캡처 모드(data-review-mode="true", addInitScript로 미리 심어짐)에서는
-   * Hero의 fadeIn 진입 애니메이션이 스킵되어 즉시 최종 상태로 렌더링되지만(HeroSection
-   * 참고), "정말 화면에 보이는지"를 타이밍 추측 없이 실제 computed opacity로 확인한
+   * Hero의 화면 패널 진입 애니메이션이 스킵되어 즉시 최종 상태로 렌더링되지만,
+   * 소개 문구가 보이는지 타이밍 추측 없이 실제 computed opacity로 확인한
    * 뒤에만 신호를 세운다. 일반 사용자 경로는 기존과 동일하게 두 번의 rAF로만 판단한다.
    *
    * 제한 시간 안에 Hero 텍스트가 실제로 보이지 않으면 data-review-ready를 세우지
@@ -97,8 +96,13 @@ const HomePage = () => {
     <>
       <HeroSection />
       <ProjectsSection />
-      <AboutSection />
       <MoreWorksSection />
+      <section className="home-about" id="about" aria-labelledby="home-about-title">
+        <div className="portfolio-shell home-about__inner">
+          <div><p className="eyebrow">ABOUT</p><h2 id="home-about-title">좋은 화면을 향한,<br />작은 선택들.</h2></div>
+          <div><p>무엇을 먼저 보여줄지, 어떤 표현이 더 분명할지.<br className="desktop-break" /> 화면의 인상과 사용 흐름을 함께 살펴봅니다.</p><Link className="portfolio-button portfolio-button--secondary" to="/about">작업 배경과 소개</Link></div>
+        </div>
+      </section>
       <ContactSection />
     </>
   );

@@ -1,0 +1,201 @@
+.about-page {
+  padding-block: 76px 52px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.about-page * { min-width: 0; }
+.about-page :is(h1, h2, h3, p, dt, dd) { word-break: keep-all; overflow-wrap: break-word; }
+.about-page dl, .about-page dd { margin: 0; }
+
+.about-intro,
+.about-block {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  column-gap: 72px;
+}
+
+.about-intro { padding-bottom: 68px; align-items: end; }
+.about-intro h1 {
+  margin-top: 16px;
+  font-size: clamp(48px, 5vw, 70px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -.065em;
+}
+.about-intro h1 > span { color: var(--accent); }
+.about-intro__copy { padding-bottom: 6px; }
+.about-intro__role {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: baseline;
+  margin-bottom: 22px;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.6;
+  letter-spacing: -.025em;
+}
+.about-intro__role > span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+.about-intro__copy > p:not(.about-intro__role) {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.85;
+  letter-spacing: -.02em;
+}
+.about-intro__copy > p + p:not(.about-intro__role) { margin-top: 14px; }
+
+.about-block {
+  padding-block: 64px;
+  border-top: 1px solid var(--line);
+}
+.about-block__heading h2 {
+  margin-top: 16px;
+  font-size: clamp(28px, 2.7vw, 36px);
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: -.045em;
+}
+.about-block__heading > p:last-child {
+  max-width: 365px;
+  margin-top: 20px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.85;
+  letter-spacing: -.015em;
+}
+
+.about-work-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-content: start;
+}
+.about-work {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.about-work__image {
+  aspect-ratio: 4 / 3;
+  padding: 18px 16px 0;
+  overflow: hidden;
+  background: var(--mist);
+  border: 1px solid var(--line);
+}
+.about-work:nth-child(2) .about-work__image { background: #e8e5f0; }
+.about-work__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  border: 1px solid #c7d0d9;
+  border-bottom: 0;
+  transition: transform 180ms ease;
+}
+.about-work:hover .about-work__image img { transform: translateY(-3px); }
+.about-work__caption { padding-top: 15px; }
+.about-work__caption h3 { font-size: 21px; font-weight: 650; line-height: 1.5; letter-spacing: -.03em; }
+.about-work__caption p { margin-top: 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.about-work__caption > span {
+  display: inline-block;
+  margin-top: 11px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-decoration: underline;
+  text-decoration-color: #a0b4c6;
+  text-underline-offset: 5px;
+}
+.about-work:hover .about-work__caption > span { text-decoration-color: currentColor; }
+
+.about-jobs { display: grid; gap: 28px; }
+.about-job + .about-job { padding-top: 28px; border-top: 1px solid var(--line); }
+.about-job__category { color: var(--accent); font-size: 13px; font-weight: 600; line-height: 1.6; }
+.about-job h3 { margin-top: 6px; font-size: 25px; font-weight: 650; line-height: 1.45; letter-spacing: -.035em; }
+.about-job__role {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+.about-job__role > span { color: var(--muted); font-size: 14px; font-weight: 500; }
+.about-job > p:last-child { margin-top: 7px; color: var(--muted); font-size: 16px; line-height: 1.85; }
+
+.about-contributions { display: grid; gap: 26px; }
+.about-contributions > div { padding-left: 23px; border-left: 2px solid #b8c9d7; }
+.about-contributions dt { margin-bottom: 9px; font-size: 18px; font-weight: 650; line-height: 1.5; letter-spacing: -.025em; }
+.about-contributions dd { color: var(--muted); font-size: 16px; line-height: 1.85; }
+
+.about-closing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 34px 40px;
+  margin-top: 4px;
+  background: var(--mist);
+}
+.about-closing h2 { margin-top: 10px; font-size: 29px; font-weight: 650; line-height: 1.4; letter-spacing: -.04em; }
+.about-closing__break { display: none; }
+.about-closing__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 1050px) {
+  .about-intro, .about-block { column-gap: 40px; }
+  .about-page { padding-top: 56px; }
+  .about-intro { padding-bottom: 54px; }
+  .about-block { padding-block: 50px; }
+  .about-work-grid { gap: 18px; }
+  .about-work__image { padding: 13px 10px 0; }
+  .about-closing { padding: 30px; }
+  .about-closing__break { display: block; }
+}
+
+@media (max-width: 760px) {
+  .about-page { padding-block: 38px 36px; }
+  .about-intro, .about-block { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .about-intro { padding-bottom: 38px; }
+  .about-intro h1 { margin-top: 11px; font-size: clamp(43px, 9vw, 58px); }
+  .about-intro__copy { padding-bottom: 0; }
+  .about-intro__role { margin-bottom: 16px; font-size: 16px; }
+  .about-intro__copy > p:not(.about-intro__role) { font-size: 16px; line-height: 1.85; }
+  .about-intro__copy > p + p:not(.about-intro__role) { margin-top: 12px; }
+  .about-block { padding-block: 38px; }
+  .about-block__heading h2 { margin-top: 11px; font-size: 29px; line-height: 1.4; }
+  .about-block__heading > p:last-child { max-width: 550px; margin-top: 15px; }
+  .about-work-grid { gap: 16px; }
+  .about-work__caption { padding-top: 12px; }
+  .about-work__caption h3 { font-size: 21px; }
+  .about-work__caption p { font-size: 13px; }
+  .about-work__caption > span { margin-top: 10px; font-size: 13px; }
+  .about-job h3 { font-size: 24px; }
+  .about-jobs { gap: 24px; }
+  .about-job + .about-job { padding-top: 24px; }
+  .about-contributions { gap: 24px; }
+  .about-contributions > div { padding-left: 18px; }
+  .about-closing { display: block; padding: 27px 24px; }
+  .about-closing h2 { font-size: 26px; }
+  .about-closing__break { display: none; }
+  .about-closing__actions { margin-top: 23px; gap: 8px; }
+}
+
+@media (max-width: 359px) {
+  .about-intro h1 { font-size: 41px; }
+  .about-block__heading h2 { font-size: 27px; }
+  .about-work-grid { gap: 12px; }
+  .about-work__image { aspect-ratio: 1; padding: 10px 8px 0; }
+  .about-closing { padding: 25px 20px; }
+  .about-closing h2 { font-size: 24px; }
+  .about-closing__actions { flex-direction: column; align-items: stretch; }
+}

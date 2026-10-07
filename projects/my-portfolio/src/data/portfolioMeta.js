@@ -4,14 +4,14 @@ import { fallbackProjects } from './projectsFallbackData.js';
 export const NAME = '김도한';
 export const HERO_BADGE = `${NAME} | UX/UI · 웹퍼블리싱`;
 export const HERO_EYEBROW = 'DOHAN KIM · SELECTED WORK';
-export const HERO_HEADLINE_LINES = ['일의 맥락을 알고, ', '화면을 설계합니다.'];
+export const HERO_HEADLINE_LINES = ['김도한.'];
 export const HERO_DESCRIPTION_LINES = [
-  '구매·회계·총무와 생산 현장을 경험했습니다.',
-  '이제 그 경험을 바탕으로, 필요한 정보와 다음 행동이 분명한 화면을 고민합니다.',
+  '사무·현장 경험을 바탕으로,',
+  '업무와 일상을 정리하는 화면을 고민합니다.',
 ];
-export const POSITIONING_PREFIX = '일의 맥락을 알고,';
-export const POSITIONING_EMPHASIS = '화면을';
-export const POSITIONING_SUFFIX = '설계합니다.';
+export const POSITIONING_PREFIX = '복잡한 정보를,';
+export const POSITIONING_EMPHASIS = '명확한';
+export const POSITIONING_SUFFIX = '화면으로.';
 export const POSITIONING_LINE = `${POSITIONING_PREFIX} ${POSITIONING_EMPHASIS} ${POSITIONING_SUFFIX}`;
 export const SUB_DESCRIPTION = '김도한은 주제와 요구사항, 개선 피드백과 방향 선택을 맡고 AI와 디자인·구현을 협업했습니다. 프로젝트별 작업 범위와 실제 결과물을 구분해 소개합니다.';
 export const APPLICATION_FOCUS = ['UX/UI 디자인', '웹퍼블리싱'];

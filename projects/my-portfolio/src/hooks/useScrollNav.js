@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-const SECTION_IDS = ['home', 'projects', 'experience', 'about', 'more-projects', 'contact'];
+const SECTION_IDS = ['home', 'projects', 'more-projects', 'about', 'contact'];
 const HIDE_THRESHOLD = 80; // 이 위치 이하에서만 헤더 숨김 트리거
 const STICKY_COMPACT_THRESHOLD = 24; // 이 위치를 넘으면 Header가 Sticky Compact 상태로 전환
 
@@ -135,6 +135,13 @@ export const useActiveSection = (pathname) => {
         if (el.getBoundingClientRect().top <= ACTIVE_OFFSET) {
           current = id;
         }
+      }
+      // 짧은 마지막 섹션은 문서 끝에서도 상단 기준선까지 올라오지 못한다.
+      const contact = document.getElementById('contact');
+      const atBottom = window.scrollY > 0 &&
+        window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      if (pathname === '/' && atBottom && contact?.getBoundingClientRect().top < window.innerHeight) {
+        current = 'contact';
       }
       setActiveSection(current);
       ticking.current = false;
