@@ -99,7 +99,6 @@
   border-bottom: 0;
   transition: transform 180ms ease;
 }
-.about-work:hover .about-work__image img { transform: translateY(-3px); }
 .about-work__caption { padding-top: 15px; }
 .about-work__caption h3 { font-size: 21px; font-weight: 650; line-height: 1.5; letter-spacing: -.03em; }
 .about-work__caption p { margin-top: 3px; color: var(--muted); font-size: 14px; line-height: 1.65; }
@@ -133,10 +132,27 @@
 .about-job__role > span { color: var(--muted); font-size: 14px; font-weight: 500; }
 .about-job > p:last-child { margin-top: 7px; color: var(--muted); font-size: 16px; line-height: 1.85; }
 
-.about-contributions { display: grid; gap: 26px; }
-.about-contributions > div { padding-left: 23px; border-left: 2px solid #b8c9d7; }
-.about-contributions dt { margin-bottom: 9px; font-size: 18px; font-weight: 650; line-height: 1.5; letter-spacing: -.025em; }
-.about-contributions dd { color: var(--muted); font-size: 16px; line-height: 1.85; }
+.about-review__label {
+  margin-bottom: 22px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.6;
+}
+.about-decisions { display: grid; gap: 24px; }
+.about-decisions > div + div { padding-top: 24px; border-top: 1px solid var(--line); }
+.about-decisions dt { margin-bottom: 9px; font-size: 19px; font-weight: 650; line-height: 1.5; letter-spacing: -.025em; }
+.about-decisions dd { color: var(--muted); font-size: 16px; line-height: 1.85; }
+.about-review__roles {
+  display: grid;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 20px 22px;
+  background: var(--mist);
+}
+.about-review__roles p { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; font-size: 14px; line-height: 1.75; }
+.about-review__roles strong { font-weight: 650; }
+.about-review__roles span { color: var(--muted); }
 
 .about-closing {
   display: flex;
@@ -182,12 +198,23 @@
   .about-job h3 { font-size: 24px; }
   .about-jobs { gap: 24px; }
   .about-job + .about-job { padding-top: 24px; }
-  .about-contributions { gap: 24px; }
-  .about-contributions > div { padding-left: 18px; }
+  .about-review__label { margin-bottom: 20px; }
+  .about-decisions { gap: 22px; }
+  .about-decisions > div + div { padding-top: 22px; }
+  .about-review__roles { margin-top: 24px; padding: 18px; }
+  .about-review__roles p { grid-template-columns: 56px minmax(0, 1fr); gap: 10px; }
   .about-closing { display: block; padding: 27px 24px; }
   .about-closing h2 { font-size: 26px; }
   .about-closing__break { display: none; }
   .about-closing__actions { margin-top: 23px; gap: 8px; }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .about-work:hover .about-work__image img { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-work__image img { transition: none; }
 }
 
 @media (max-width: 359px) {

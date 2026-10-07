@@ -31,7 +31,7 @@ const AboutPage = () => (
         <div className="about-intro__copy">
           <p className="about-intro__role">UX/UI 디자인 · 웹퍼블리싱 <span>신입 지원</span></p>
           <p>사무와 생산 현장에서 일한 경험을 바탕으로, 복잡한 정보 속에서 필요한 내용을 찾고 다음 행동을 판단하는 화면에 관심을 두고 있습니다.</p>
-          <p>차분하게 살피고, 분명하게 다듬는 디자인을 지향합니다.</p>
+          <p>작품마다 다룬 문제와 선택한 방향, 저와 AI가 맡은 범위를 함께 소개합니다.</p>
         </div>
       </header>
 
@@ -81,20 +81,31 @@ const AboutPage = () => (
 
       <section className="about-block about-making" aria-labelledby="about-making-title">
         <div className="about-block__heading">
-          <p className="eyebrow">03 / 제작 방식</p>
-          <h2 id="about-making-title">선택한 방향과<br />함께 만든 과정.</h2>
-          <p>각 프로젝트의 상세 페이지에서 제작 범위와 기여, 구현의 한계를 함께 설명합니다.</p>
+          <p className="eyebrow">03 / 검토와 개선</p>
+          <h2 id="about-making-title">문제를 짚고,<br />수정 방향을 정하는 일.</h2>
+          <p>이 포트폴리오를 다듬으며 제가 제기한 문제와 반영한 방향입니다. 작품별 제작 범위와 기여는 각 상세 페이지에서 설명합니다.</p>
         </div>
-        <dl className="about-contributions">
-          <div>
-            <dt>제가 맡은 부분</dt>
-            <dd>요구사항과 방향을 정하고 디자인 안을 비교·선택합니다. 글자·여백·색상·사용 흐름을 검토하고, 수정할 내용을 구체적으로 피드백합니다.</dd>
+        <div className="about-review">
+          <p className="about-review__label">실제 사례 · 이 포트폴리오의 개선</p>
+          <dl className="about-decisions">
+            <div>
+              <dt>작품이 더 먼저 보이도록</dt>
+              <dd>썸네일이 아래로 치우쳐 보인다고 피드백했습니다. 첫 화면에 실제 작품 화면을 배치하고, 목록의 화면 높이와 상단선을 맞추는 방향을 선택했습니다.</dd>
+            </div>
+            <div>
+              <dt>버튼은 간결하게</dt>
+              <dd>반복되는 화살표를 줄이고 버튼을 활용하자고 요청했습니다. 홈 버튼의 화살표를 덜어내고, 글자와 버튼 형태로 동작을 구분하는 방향을 선택했습니다.</dd>
+            </div>
+            <div>
+              <dt>작업과 경력의 위치를 구분</dt>
+              <dd>홈에 회사명과 연혁을 넣은 구성을 재검토했습니다. 홈은 작품 중심으로, 자세한 경력은 소개 페이지에서 읽도록 방향을 정했습니다.</dd>
+            </div>
+          </dl>
+          <div className="about-review__roles" aria-label="이 사이트 개선의 기여 구분">
+            <p><strong>김도한</strong><span>문제 제기 · 수정 요청 · 방향 승인</span></p>
+            <p><strong>AI 협업</strong><span>디자인 제안 · 편집 · 코드 수정 · 점검</span></p>
           </div>
-          <div>
-            <dt>AI와 함께한 제작</dt>
-            <dd>디자인 제안·이미지 제작·코드 작성과 점검에 AI를 활용했습니다. 각 작업에서 맡은 부분과 AI의 기여를 구분해 정리했습니다.</dd>
-          </div>
-        </dl>
+        </div>
       </section>
 
       <footer className="about-closing">

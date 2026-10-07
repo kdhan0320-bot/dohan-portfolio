@@ -76,8 +76,11 @@ const ProjectDetailPage = () => {
   });
   const facts = [
     { label: '작업 분야', value: project.categoryLabel || ready.meta?.type },
-    { label: '역할', value: project.role || ready.meta?.role },
     { label: '사용 도구', value: (project.tools || []).join(' · ') || ready.meta?.tools },
+    ...(ready.aiCollaboration || []).map((item) => ({
+      label: item.label === '김도한' ? '김도한의 기여' : item.label,
+      value: item.value,
+    })),
   ].filter((item) => item.value);
 
   return (
@@ -89,7 +92,7 @@ const ProjectDetailPage = () => {
           </button>
           <div className="case-intro__grid">
             <div>
-              <p className="case-eyebrow">{project.is_figma_project ? '디자인 시안 · Figma' : '웹 구현 · 인터랙션'}</p>
+              <p className="case-eyebrow">{project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · 웹 구현'}</p>
               <h1>{project.title}</h1>
             </div>
             <div className="case-intro__description">
@@ -138,7 +141,7 @@ const ProjectDetailPage = () => {
                 { label: '이유', text: decision.reason },
                 { label: '확인', text: decision.verification },
               ];
-              return <section key={decision.title} className={`case-decision${decision.showMedia ? '' : ' case-decision--text'}`}>
+              return <section key={decision.title} className={`case-decision${decision.comparison ? ' case-decision--comparison' : decision.showMedia ? '' : ' case-decision--text'}`}>
                 <div className="case-decision__copy">
                   <span className="case-decision__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                   <h3>{decision.title}</h3>
@@ -146,7 +149,21 @@ const ProjectDetailPage = () => {
                     <dt>{item.label}</dt><dd>{item.text}</dd>
                   </div>)}</dl>
                 </div>
-                {decision.showMedia && <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />}
+                {decision.comparison ? <div className="case-comparison">
+                  <div className="case-comparison__grid">
+                    <div>
+                      <p className="case-comparison__label">이전 화면</p>
+                      <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
+                      <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
+                    </div>
+                    <div>
+                      <p className="case-comparison__label case-comparison__label--current">현재 화면</p>
+                      <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
+                      <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
+                    </div>
+                  </div>
+                  <p className="case-comparison__note">{decision.comparison.note}</p>
+                </div> : decision.showMedia && <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />}
               </section>;
             })}
           </div>
@@ -171,12 +188,6 @@ const ProjectDetailPage = () => {
           {(ready.resultLimit?.done || ready.resultLimit?.limit) && <div className="case-outcome">
             {ready.resultLimit.done && <div><h3>작업 결과</h3><p>{ready.resultLimit.done}</p></div>}
             {ready.resultLimit.limit && <div><h3>한계</h3><p>{ready.resultLimit.limit}</p></div>}
-          </div>}
-          {(ready.aiCollaboration?.length || project.detail?.aiContribution) && <div className="case-contribution">
-            <h3>작업 기여와 AI 활용</h3>
-            {ready.aiCollaboration?.length ? <dl>{ready.aiCollaboration.map((item) => <div key={item.label}>
-              <dt>{item.label}</dt><dd>{item.value}</dd>
-            </div>)}</dl> : <p>{project.detail.aiContribution}</p>}
           </div>}
         </section>
 

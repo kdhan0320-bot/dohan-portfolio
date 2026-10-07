@@ -99,8 +99,8 @@ const HomePage = () => {
       <MoreWorksSection />
       <section className="home-about" id="about" aria-labelledby="home-about-title">
         <div className="portfolio-shell home-about__inner">
-          <div><p className="eyebrow">ABOUT</p><h2 id="home-about-title">좋은 화면을 향한,<br />작은 선택들.</h2></div>
-          <div><p>무엇을 먼저 보여줄지, 어떤 표현이 더 분명할지.<br className="desktop-break" /> 화면의 인상과 사용 흐름을 함께 살펴봅니다.</p><Link className="portfolio-button portfolio-button--secondary" to="/about">작업 배경과 소개</Link></div>
+          <div><p className="eyebrow">ABOUT</p><h2 id="home-about-title">업무 경험과,<br />화면을 보는 기준.</h2></div>
+          <div><p>구매·문서·현장에서 쌓은 경험,<br className="desktop-break" /> 직접 제기한 개선 의견과 AI 협업 범위를 소개합니다.</p><Link className="portfolio-button portfolio-button--secondary" to="/about">경력과 작업 기여 보기</Link></div>
         </div>
       </section>
       <ContactSection />

@@ -6,8 +6,8 @@ export const HERO_BADGE = `${NAME} | UX/UI · 웹퍼블리싱`;
 export const HERO_EYEBROW = 'DOHAN KIM · SELECTED WORK';
 export const HERO_HEADLINE_LINES = ['김도한.'];
 export const HERO_DESCRIPTION_LINES = [
-  '사무·현장 경험을 바탕으로,',
-  '업무와 일상을 정리하는 화면을 고민합니다.',
+  '구매·문서·현장 업무를 경험했습니다.',
+  '업무 UI 디자인과 반응형 웹 작업을 소개합니다.',
 ];
 export const POSITIONING_PREFIX = '복잡한 정보를,';
 export const POSITIONING_EMPHASIS = '명확한';
@@ -22,10 +22,11 @@ export const PROJECT_GITHUB_URL = 'https://github.com/kdhan0320-bot/dohan-portfo
 const media = (src, alt, aspectRatio, extra = {}) => ({
   src, alt, aspectRatio, objectFit: 'contain', objectPosition: 'top', ...extra,
 });
-const evidence = (title, choice, reason, detailMedia) => ({
+const evidence = (title, choice, reason, detailMedia, comparison) => ({
   title,
   evidence: [{ label: '구성', text: choice }, { label: '이유', text: reason }],
   ...(detailMedia ? { media: detailMedia } : {}),
+  ...(comparison ? { comparison } : {}),
 });
 function detail(id, image, decisions, scope, extra = {}) {
   const project = fallbackProjects.find((item) => item.id === id);
@@ -68,10 +69,18 @@ export const PROJECT_DETAIL_READY = {
         media('detail/galpirok-overview-pc.jpg', '갈피록 오늘의 지원 — 가까운 마감과 남은 준비', '1348 / 926'),
       ),
       evidence(
-        '이동은 메뉴로, 상태는 분류로.',
-        '상단 5개 메뉴와 지원 전·서류·면접·결과의 네 단계로 역할을 나눴습니다.',
-        '어디로 이동할지와 각 회사가 어떤 단계인지를 구분하기 위해서입니다.',
+        '지원 상태를 네 단계로 묶었습니다.',
+        '상단 메뉴와 지원 전·서류 전형·면접·결과의 네 단계로 이동과 상태 구분을 나눴습니다. 세부 상태는 카드 안에 남겼습니다.',
+        '지원 흐름의 큰 단계를 한 화면에서 비교하고, 세부 정보는 각 카드에서 확인하도록 구성했습니다.',
         media('detail/galpirok-board-pc.jpg', '갈피록 지원 현황 — 네 단계와 회사 카드', '1348 / 926'),
+        {
+          before: media('detail/jobflow-kanban-1440.png', '이전 JobFlow 전형 보드 — 좌측 메뉴와 가로로 이어지는 상태별 열', '1440 / 900'),
+          beforeLabel: '이전 · JobFlow 전형 보드',
+          afterLabel: '현재 · 갈피록 지원 현황',
+          beforeSummary: '세부 상태마다 열이 나뉘어 있고, 나머지 열은 가로로 스크롤해 확인하는 구성이었습니다.',
+          afterSummary: '네 전형 단계로 묶고 세부 상태는 카드에서 표시합니다. 보류 기록은 별도 보류함으로 구분했습니다.',
+          note: '이전 화면은 구성 비교용 기록입니다. 화면 속 읽기 전용·저장 안내는 현재 갈피록과 다릅니다.',
+        },
       ),
       evidence(
         '작은 글자와 빈 상태도 분명하게.',
@@ -96,7 +105,20 @@ export const PROJECT_DETAIL_READY = {
     'seolbiit',
     media('detail/current/seolbigyeol-home.png', '설비결 작업 현황 — 상태 요약과 우선 작업 카드', '1440 / 1200'),
     [
-      evidence('요청을 고르고 담당자를 배정합니다.', '요청 목록과 선택한 설비의 상세, 담당자 배정 영역을 한 화면에 나눴습니다.', '요청의 내용과 완료 기한을 확인한 뒤 배정으로 이어가도록 구성했습니다.', media('detail/current/seolbigyeol-requests.png', '설비결 정비 요청 — 요청 목록과 선택 상세, 담당자 배정', '1440 / 1200')),
+      evidence(
+        '요청 확인과 배정 영역을 구분했습니다.',
+        '접수 목록과 선택 요청 상세 옆에 담당자·완료 기한·배정 버튼을 별도 영역으로 묶었습니다.',
+        '요청의 내용을 읽는 영역과 배정에 필요한 정보를 확인하는 영역을 구분하려는 설계입니다.',
+        media('detail/current/seolbigyeol-requests.png', '설비결 정비 요청 — 요청 목록과 선택 상세, 담당자 배정', '1440 / 1200'),
+        {
+          before: media('detail/seolbiit-desktop-management.png', '이전 설비잇 정비 작업 관리 — 작업표와 진행 단계·최근 기록이 모인 상세 패널', '1440 / 900'),
+          beforeLabel: '이전 · 설비잇 정비 작업 관리',
+          afterLabel: '현재 · 설비결 정비 요청',
+          beforeSummary: '작업 표 옆의 상세 패널에 요청 정보, 진행 단계, 최근 기록과 배정 버튼이 함께 놓여 있었습니다.',
+          afterSummary: '요청을 확인하는 영역과 담당자·기한을 확인하고 배정하는 영역을 분리했습니다.',
+          note: '동일 프로젝트의 이전·현재 Figma 시안입니다. 화면 구성의 변화이며, 현장 사용자 검증은 진행하지 않았습니다.',
+        },
+      ),
       evidence('조치 결과를 확인한 뒤 완료합니다.', '보고 검토 창에서 조치 내용과 재확인 결과를 함께 보여주고 보완 요청과 완료를 구분했습니다.', '작업이 끝났다는 표시만으로 넘기지 않고 확인할 근거를 가까이 두었습니다.', media('detail/current/seolbigyeol-review.png', '설비결 정비 보고 검토 — 조치 내용과 재확인 결과', '1440 / 1200')),
     ],
     {

@@ -1,5 +1,7 @@
 # 자산 라이선스 등록부
 
+2026-10-07 변경 비교 보완: 아래에 등록된 기존 `public/detail/jobflow-kanban-1440.png`와 `public/detail/seolbiit-desktop-management.png`를 각각 갈피록·설비결 상세의 이전 화면으로 다시 사용한다. 현행 화면과 원본 비율을 유지해 비교하며, 과거 서비스명과 기능 안내가 현재와 다름을 페이지에서 명시한다. 신규 외부 이미지·폰트·라이브러리는 추가하지 않았다.
+
 이 문서는 `projects/my-portfolio`에서 쓰는 폰트/이미지/아이콘/영상/mockup/
 template/외부 코드의 출처와 라이선스를 기록한다. 판단 기준은 이 문서의 아래
 라이선스 원칙과 루트 `AGENTS.md`의 승인·보안 기준을 따른다.
