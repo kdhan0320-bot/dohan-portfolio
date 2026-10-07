@@ -17,10 +17,10 @@ html { scroll-padding-top: 140px; }
 .site-menu-toggle.MuiIconButton-root { display: none; }
 .site-header-meta { background: #F5F0EB; border-top: 1px solid #EEE6DF; }
 .site-header-meta-inner { min-height: 36px; display: flex; justify-content: space-between; align-items: center; gap: 18px; }
-.site-header-meta p { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: #6A6161; font-size: 12px; line-height: 1.6; padding-block: 6px; }
+.site-header-meta p { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; color: #6A6161; font-size: 13px; line-height: 1.6; padding-block: 6px; }
 .site-sample-badge { font-weight: 650; color: #94394B; }
 .site-secondary-nav { display: flex; gap: 22px; flex-shrink: 0; }
-.site-secondary-nav a { font-size: 12px; line-height: 1.5; color: #6A6161; padding: 9px 0; }
+.site-secondary-nav a { display: inline-flex; align-items: center; min-height: 40px; font-size: 14px; line-height: 1.5; color: #6A6161; padding: 8px 0; }
 .site-secondary-nav a:hover, .site-secondary-nav a.is-current { color: #94394B; text-decoration: underline; text-underline-offset: 4px; }
 .site-header a:focus-visible, .site-mobile-drawer a:focus-visible { outline: 3px solid #94394B; outline-offset: 3px; }
 .site-header a[aria-disabled='true'], .site-mobile-drawer a[aria-disabled='true'] { opacity: .65; }
@@ -83,7 +83,7 @@ html { scroll-padding-top: 140px; }
   .site-brand-link .brand-sub { font-size: 10px; }
   .site-account-actions { gap: 3px; }
   .site-account-button.MuiButton-root { min-width: 60px; font-size: 12px; padding-inline: 10px; }
-  .site-header-meta p { gap: 7px; font-size: 11px; }
+  .site-header-meta p { gap: 7px; font-size: 12px; }
   .workspace-main { padding: 24px 20px 36px; scroll-margin-top: 128px; }
   .guide-steps { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   .guide-steps > li { padding: 24px; }

@@ -42,7 +42,7 @@
 .preparation-count { font-size: 14px; text-align: center; color: #70575B; margin: 6px 0 20px; }
 .preparation-count strong { color: #534749; }
 .preparation-filters { display: grid; gap: 5px; }
-.category-filter { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 9px; padding: 12px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: #574B4D; text-align: left; cursor: pointer; min-height: 49px; transition: background .15s, border-color .15s; }
+.category-filter { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 12px; border: 1px solid transparent; border-radius: 10px; background: transparent; color: #574B4D; text-align: left; cursor: pointer; min-height: 49px; transition: background .15s, border-color .15s; }
 .category-filter > span:first-child { font-size: 14px; font-weight: 600; }
 .category-filter > small, .category-filter > b { font-size: 12px; color: #70575B; font-variant-numeric: tabular-nums; }
 .category-filter:hover { background: #fffafacc; }
@@ -51,7 +51,7 @@
 .category-meter i { display: block; height: 100%; background: #94394B; border-radius: inherit; }
 .category-all { margin-bottom: 6px; }
 .preparation-tasks { min-width: 0; }
-.preparation-tasks .add-task { display: grid; grid-template-columns: minmax(0, 1fr) 124px auto; gap: 13px; align-items: start; background: #fffdfa; padding: 21px; border: 1px solid #E2DEDA; border-radius: 15px; margin-bottom: 24px; }
+.preparation-tasks .add-task { display: grid; grid-template-columns: minmax(0, 1fr) 148px auto; gap: 13px; align-items: start; background: #fffdfa; padding: 21px; border: 1px solid #E2DEDA; border-radius: 15px; margin-bottom: 24px; }
 .preparation-tasks .add-task > .MuiButton-root { margin-top: 29px; min-height: 45px; }
 .preparation-tasks .tabs-row { margin-bottom: 16px; }
 .task-collection { display: grid; gap: 10px; }
@@ -137,7 +137,7 @@
   .job-lane-heading h2 { font-size: 15px; }
   .job-tile { padding: 17px 12px; }
   .checklist-workspace { grid-template-columns: 225px minmax(0, 1fr); gap: 20px; }
-  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr) 120px; padding: 18px; }
+  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr) 148px; padding: 18px; }
   .preparation-tasks .add-task > .MuiButton-root { grid-column: 1 / -1; margin-top: 0; justify-self: end; min-width: 98px; }
   .interview-workspace { grid-template-columns: 230px minmax(0, 1fr); gap: 18px; }
   .practice-desk { padding-right: 22px; padding-left: 22px; }
@@ -172,14 +172,14 @@
   .completion-ring strong { font-size: 33px; }
   .completion-ring strong small { font-size: 16px; }
   .completion-ring > div { gap: 5px; }
-  .completion-ring > div > span { font-size: 11px; }
+  .completion-ring > div > span { font-size: 12px; }
   .preparation-count { grid-column: 2; text-align: left; margin: 0; align-self: end; padding: 0 0 12px; font-size: 15px; }
   .preparation-filters { grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 15px; gap: 6px; }
-  .category-filter { padding: 10px 8px; gap: 7px; }
-  .category-filter > span:first-child { font-size: 12px; }
-  .category-filter > small, .category-filter > b { font-size: 11px; }
+  .category-filter { grid-template-columns: minmax(0, 1fr); align-content: start; padding: 12px 10px; gap: 6px; }
+  .category-filter > span:first-child { font-size: 13px; }
+  .category-filter > small, .category-filter > b { font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
   .category-all { margin: 0; }
-  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr) 110px; padding: 16px; gap: 12px; }
+  .preparation-tasks .add-task { grid-template-columns: minmax(148px, 1fr) 110px; padding: 16px; gap: 12px; }
   .preparation-tasks .add-task > .form-field:first-child { grid-column: 1 / -1; }
   .preparation-tasks .add-task > .MuiButton-root { grid-column: 2; margin-top: 29px; width: 100%; }
   .task-collection .list-task { padding: 10px 8px 10px 3px; gap: 3px; }
@@ -199,10 +199,18 @@
   .practice-question-mark { font-size: 44px; }
   .practice-answer p { font-size: 15px; }
 }
+@media (max-width: 479px) {
+  .preparation-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 399px) {
+  .preparation-tasks .add-task { grid-template-columns: minmax(0, 1fr); }
+  .preparation-tasks .add-task > .form-field,
+  .preparation-tasks .add-task > .MuiButton-root { grid-column: 1; min-width: 0; }
+  .preparation-tasks .add-task > .MuiButton-root { margin-top: 0; }
+}
 @media (max-width: 359px) {
   .preparation-summary { grid-template-columns: 110px minmax(0, 1fr); gap: 9px; }
   .completion-ring { width: 110px; height: 110px; }
-  .preparation-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .task-tools { flex-direction: column; }
   .practice-card { padding: 21px 18px; }
 }

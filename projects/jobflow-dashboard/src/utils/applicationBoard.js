@@ -2,7 +2,7 @@
 export const BOARD_COLUMNS = [
   { id: 'before', label: '지원 전', statuses: ['관심', '지원 예정'], color: '#42627D', tint: '#E5EFF7' },
   { id: 'documents', label: '서류 전형', statuses: ['지원 완료', '서류 진행'], color: '#8E4758', tint: '#F4E5E7' },
-  { id: 'interview', label: '면접', statuses: ['면접 예정'], color: '#88652D', tint: '#F5EEDD' },
+  { id: 'interview', label: '면접', statuses: ['면접 예정'], color: '#795322', tint: '#F5EEDD' },
   { id: 'result', label: '결과', statuses: ['합격', '불합격'], color: '#386553', tint: '#E4EFE9' },
 ];
 export function boardColumn(status) {

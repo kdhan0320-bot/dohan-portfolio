@@ -91,9 +91,9 @@ export default function ChecklistPage() {
         {CHECKLIST_CATEGORIES.map(c => {
           const categoryItems = items.filter(i => i.category === c);
           const categoryDone = categoryItems.filter(i => i.is_done).length;
-          return <button type="button" className="category-filter" aria-pressed={filter === c} aria-label={`${c}, ${categoryItems.length}개 중 ${categoryDone}개 완료`} key={c} onClick={() => setFilter(c)}>
-            <span>{c}</span><small>{categoryDone} / {categoryItems.length}</small>
-            <span className="category-meter" aria-hidden="true"><i style={{ width: `${categoryItems.length ? categoryDone / categoryItems.length * 100 : 0}%` }} /></span>
+          return <button type="button" className="category-filter" aria-pressed={filter === c} aria-label={categoryItems.length ? `${c}, ${categoryItems.length}개 중 ${categoryDone}개 완료` : `${c}, 등록한 일 없음`} key={c} onClick={() => setFilter(c)}>
+            <span>{c}</span><small>{categoryItems.length ? `${categoryDone} / ${categoryItems.length}` : '등록 없음'}</small>
+            {categoryItems.length > 0 && <span className="category-meter" aria-hidden="true"><i style={{ width: `${categoryDone / categoryItems.length * 100}%` }} /></span>}
           </button>;
         })}
       </div>
@@ -104,9 +104,7 @@ export default function ChecklistPage() {
           setTitle(e.target.value);
           setInputError('');
         }} error={Boolean(inputError)} helperText={inputError} placeholder="예: 자기소개서 마지막 문단 다듬기" disabled={busy === 'add'} />
-      <Field label="분류" select size="small" value={category} onChange={e => setCategory(e.target.value)} sx={{
-          minWidth: 125
-        }}>
+      <Field label="분류" select size="small" value={category} onChange={e => setCategory(e.target.value)}>
         {CHECKLIST_CATEGORIES.map(c => <MenuItem key={c} value={c}>
           {c}
         </MenuItem>)}

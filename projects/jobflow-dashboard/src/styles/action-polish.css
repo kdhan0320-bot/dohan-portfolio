@@ -1,3 +1,13 @@
+/* Keep the nearest deadline visible without pushing the working lists down. */
+@media (min-width: 1200px) {
+  .next-application { padding-block: 24px; }
+  .next-application h2 { margin-block: 12px 10px; }
+  .next-application-copy > p { margin-bottom: 20px; }
+  .date-ticket { width: 184px; padding-top: 16px; }
+  .date-ticket > strong { font-size: 84px; }
+  .date-ticket > small { margin-bottom: 16px; }
+}
+
 /* The preparation banner reuses Galpirok's original decorative vector artwork. */
 .prep-banner {
   display: grid;

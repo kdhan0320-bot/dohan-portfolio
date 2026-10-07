@@ -53,7 +53,7 @@
 .page-heading-illustrated .heading-actions:empty { display: none; }
 .page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 0; }
 .page-heading .muted { color: #655D5B; }
-.next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 320px; }
+.next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 288px; }
 .next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #F4E4E6; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
 .next-application-copy { max-width: 520px; padding-right: 8px; }
 .next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
