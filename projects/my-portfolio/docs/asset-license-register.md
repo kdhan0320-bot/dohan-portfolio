@@ -208,3 +208,16 @@ MUI 아이콘은 기존 MIT 패키지를 유지하고, 가상 회사는 이름 �
 | --- | --- | --- |
 | `projects/jobflow-dashboard/src/assets/galpi-ribbon-paper.webp` | 내장 ImageGen 텍스트 생성, 외부 이미지 입력 없음. 실제 1774×887, WebP 품질 84, 88,014바이트. AI 보조 제작이며 원본 촬영물 아님. 프롬프트는 프로젝트 NOTICE. | 페이지 상단·날짜 티켓 뒤·면접 연습 바탕 |
 | `projects/jobflow-dashboard/src/assets/galpi-paper-landscape.svg` | 프로젝트용 원본 path·gradient·작은 섬유 패턴을 코드로 작성. 외부 도안 입력 없음. | 소개·작업 공간·로그인 배경 |
+
+## 갈피록 상단 메뉴 개편 캡처 — 2026-10-07
+
+공개 GitHub Pages 앱 `97cd7f5`에서 직접 저장한 JPEG입니다. 비회원 소개 또는 가상 샘플 데이터이며 실제 사용자 기록·외부 제작자 UI를 캡처한 것이 아닙니다. CSS viewport 1363×936, 실제 저장 픽셀은 아래와 같습니다. 캡처 후 확대·합성·이미지 생성·텍스트 교체 없음.
+
+| 파일 | 화면 | 저장 픽셀 |
+| --- | --- | --- |
+| `public/detail/galpirok-welcome-pc.jpg` | 비회원 첫 화면·제품 미리보기 | 1348×926 |
+| `public/detail/galpirok-overview-pc.jpg` | 오늘의 지원 | 1348×926 |
+| `public/detail/galpirok-board-pc.jpg` | 전형별 지원 현황 | 1348×926 |
+| `public/detail/galpirok-checklist-pc.jpg` | 준비 체크 | 1348×926 |
+
+첨부한 워터마크 UI는 색의 역할과 배치 원리 검토에만 사용했으며 제품/포트폴리오 자산으로 복제하지 않았습니다. 배너는 기존 원본 종이 조형 이미지와 코드 SVG를 재배치했습니다. 기존 폰트·아이콘·생성 이미지의 출처와 권리 확인 범위는 위 기록을 유지합니다.

@@ -51,8 +51,8 @@ export default function DashboardPage() {
       <section className="prep-banner" aria-labelledby="prep-banner-title">
         <PaperGraphic kind="check" className="prep-banner-art" />
         <div className="prep-banner-copy">
-          <h2 id="prep-banner-title">지원 전에, 제출할 자료부터.</h2>
-          <p>회사별로 이력서·포트폴리오 준비 여부를 표시해두세요.</p>
+          <h2 id="prep-banner-title">지원 기록에, 제출 자료도 함께.</h2>
+          <p>회사별로 이력서·포트폴리오 제출 여부를 확인하세요.</p>
         </div>
         <Button component={Link} to="/" variant="contained" className="prep-banner-action">지원 현황 확인</Button>
       </section>

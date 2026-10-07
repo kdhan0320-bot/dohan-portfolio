@@ -225,7 +225,7 @@ export const PROJECT_DETAIL_READY = {
   },
   jobflow: {
     sectionHeadings: {
-      context: ['흩어진 지원 기록을, 한곳에서.'],
+      context: ['나의 입사 지원을, 한곳에서.'],
       decisions: ['다음 행동을 찾는 세 가지 화면.'],
       screens: ['오늘의 할 일부터 회사별 기록까지.'],
       scope: ['체험할 수 있는 기능과 구현 범위.'],
@@ -238,15 +238,15 @@ export const PROJECT_DETAIL_READY = {
       data: 'SUPABASE / SAMPLE',
     },
     hero: {
-      summary: '지원 회사와 마감, 준비할 일을 한곳에서 정리하는 취업 준비 기록장입니다. 가입 없이 샘플을 편집하며 주요 흐름을 체험할 수 있습니다.',
+      summary: '지원할 회사와 전형 상태, 마감·준비할 일을 정리하는 개인 입사 지원 관리 웹앱입니다. 가입 없이 샘플을 편집해볼 수 있습니다.',
       media: [
-        { src: 'detail/galpirok-board-pc.jpg', alt: '갈피록 지원 현황 — 샘플 회사의 전형 상태와 마감일을 분류함으로 보여주는 PC 화면', aspectRatio: '1348 / 926', objectFit: 'contain', objectPosition: 'top' },
+        { src: 'detail/galpirok-welcome-pc.jpg', alt: '갈피록 첫 화면 — 개인 입사지원 관리 소개와 지원 현황 미리보기', aspectRatio: '1348 / 926', objectFit: 'contain', objectPosition: 'top' },
       ],
       mediaLabel: 'PC 실행 화면 · 가상 샘플 데이터',
     },
     context: {
       problem: '지원 회사와 준비할 일이 흩어지면 현재 상태와 가까운 마감을 함께 확인하기 어렵습니다.',
-      goal: '오늘 할 일 → 회사별 진행 상태 → 준비 체크를 명확하게 나눠 보여줍니다.',
+      goal: '회사 등록과 지원 상태 확인, 준비 작업을 이어갈 수 있도록 구성합니다.',
     },
     decisions: [
       {
@@ -255,14 +255,14 @@ export const PROJECT_DETAIL_READY = {
         reason: '전체 기록을 읽기 전에 다음 행동을 찾도록',
         verificationLabel: '구현',
         verification: '오늘의 지원에서 마감·할 일을 확인하고 관련 화면으로 이동',
-        media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 — 가까운 지원 마감과 준비할 일을 보여주는 샘플 PC 화면', aspectRatio: '1363 / 936' },
+        media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 — 가까운 지원 마감과 준비할 일을 보여주는 샘플 PC 화면', aspectRatio: '1348 / 926' },
       },
       {
         title: '회사마다 진행 상태를 구분합니다.',
-        choice: '네 전형 분류함과 별도 보류함, 회사 상세 패널',
-        reason: '회사별 상태를 비교하고 필요한 기록만 펼치도록',
+        choice: '지원 전·서류·면접·결과 분류와 별도 보류함',
+        reason: '전형별 이름·색으로 상태를 구분하고 회사별 기록을 펼치도록',
         verificationLabel: '구현',
-        verification: '회사·직무 검색, 상태 변경, 마감·제출물·메모 관리',
+        verification: '회사 등록·검색, 상세 패널에서 상태·마감·제출물 관리',
         media: { src: 'detail/galpirok-board-pc.jpg', alt: '갈피록 지원 현황 — 네 전형 분류함과 샘플 회사 카드가 보이는 PC 화면', aspectRatio: '1348 / 926' },
       },
       {
@@ -275,7 +275,7 @@ export const PROJECT_DETAIL_READY = {
       },
     ],
     mainScreens: [
-      { label: '오늘의 지원', media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 샘플 PC 화면', aspectRatio: '1363 / 936' } },
+      { label: '오늘의 지원', media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 샘플 PC 화면', aspectRatio: '1348 / 926' } },
       { label: '지원 현황', media: { src: 'detail/galpirok-board-pc.jpg', alt: '갈피록 지원 현황 샘플 PC 화면', aspectRatio: '1348 / 926' } },
       { label: '준비 체크', media: { src: 'detail/galpirok-checklist-pc.jpg', alt: '갈피록 준비 체크 샘플 PC 화면', aspectRatio: '1348 / 926' } },
     ],
@@ -295,7 +295,7 @@ export const PROJECT_DETAIL_READY = {
       { label: '검증 범위', value: '샘플 UI 검수와 실제 계정·DB 검증을 구분합니다. 현재 인증·모바일 실기기 검증은 별도 과제입니다.' },
     ],
     resultLimit: {
-      done: '지원 상태·마감·준비 기록을 한 서비스로 구성하고, 로그인 없이 편집 가능한 샘플을 제공합니다.',
+      done: '개인 입사 지원 기록을 상단 메뉴로 나누고, 이용 안내와 편집 가능한 샘플로 주요 작업을 체험하도록 구현했습니다.',
       limit: '샘플은 실제 사용자 데이터가 아닙니다. 요청문 만들기는 로컬 템플릿이며 제품 내 AI 호출은 없습니다. 사용자 조사와 성과 측정은 수행하지 않았습니다.',
     },
   },

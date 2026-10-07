@@ -1,4 +1,6 @@
 /* One navigation system for the introduction and the signed-in workspace. */
+html { scroll-padding-top: 140px; }
+.workspace-main button, .workspace-main input, .workspace-main a { scroll-margin-top: 140px; }
 .site-header { position: sticky; top: 0; z-index: 1100; background: #FCFAF7; color: #302B2C; border-bottom: 1px solid #DED6CF; }
 .site-header-inner, .site-header-meta-inner { width: min(1280px, calc(100% - 64px)); margin-inline: auto; }
 .site-header-inner { min-height: 86px; display: flex; align-items: center; gap: 28px; }
