@@ -35,7 +35,7 @@ export function Panel({
     <h2>
       {title}
     </h2>
-    {to && <Button component={Link} to={to} size="small">{label} →</Button>}
+    {to && <Button component={Link} to={to} size="small">{label}</Button>}
   </div>
   {children}
 </section>;

@@ -3,7 +3,6 @@ import { Button, IconButton } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import Add from '@mui/icons-material/Add';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import useApplications from '../hooks/useApplications';
 import { useToday } from '../hooks/useToday';
 import { useAuth } from '../context/AuthContext';
@@ -26,7 +25,7 @@ export default function CalendarPage() {
   function selectMonth(value) { setParams({ month: value }); }
   function selectDate(value) { setParams({ month: value.slice(0, 7), date: value }); }
   return <>
-    <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>회사 추가</Button></PageHeading>
+    <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>지원할 회사 등록</Button></PageHeading>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
       <div className="calendar-layout">
@@ -45,12 +44,12 @@ export default function CalendarPage() {
           <div className="calendar-legend"><span><i className="legend-today" />{referenceLabel}</span><span><i className="legend-deadline" />지원 마감</span></div>
         </section>
         <section className="calendar-agenda" aria-labelledby="agenda-title"><div className="agenda-heading"><span className="section-kicker">지원 전 확인</span><h2 id="agenda-title">{date ? `${Number(date.slice(5, 7))}월 ${Number(date.slice(8))}일` : `${Number(month.slice(5))}월의 마감`}<span>{visible.length}곳</span></h2>{date && <Button size="small" onClick={() => selectMonth(month)}>이번 달 전체 보기</Button>}</div>
-          <div className="agenda-list" aria-live="polite">{visible.map(a => <Link className="agenda-company" key={a.id} to={companyDestination(a.id)}><div className="agenda-company-top"><CompanyMark name={a.company_name} /><span className={a.deadline < today ? 'deadline-pill overdue' : 'deadline-pill'}>{deadlineLabel(a.deadline, today)}</span></div><strong>{a.company_name}</strong><p>{a.position || '직무 미입력'}</p><div className="agenda-company-bottom"><span>{Number(a.deadline.slice(5, 7))}.{Number(a.deadline.slice(8))} 마감</span><ArrowForward fontSize="small" /></div></Link>)}
+          <div className="agenda-list" aria-live="polite">{visible.map(a => <Link className="agenda-company" key={a.id} to={companyDestination(a.id)}><div className="agenda-company-top"><CompanyMark name={a.company_name} /><span className={a.deadline < today ? 'deadline-pill overdue' : 'deadline-pill'}>{deadlineLabel(a.deadline, today)}</span></div><strong>{a.company_name}</strong><p>{a.position || '직무 미입력'}</p><div className="agenda-company-bottom"><span>{Number(a.deadline.slice(5, 7))}.{Number(a.deadline.slice(8))} 마감</span></div></Link>)}
             {!visible.length && <Empty title={date ? '이 날은 마감이 없어요' : '이 달은 마감이 없어요'}><p>다른 날짜나 달을 선택해보세요.</p></Empty>}
           </div>
         </section>
       </div>
-      {(undated > 0 || overdue > 0) && <div className="calendar-followup">{overdue > 0 && <span>마감이 지난 미지원 회사 {overdue}곳</span>}{undated > 0 && <span>마감일 미등록 {undated}곳</span>}<Button component={Link} to="/?lane=before">지원 전 회사 확인 <ArrowForward fontSize="small" /></Button></div>}
+      {(undated > 0 || overdue > 0) && <div className="calendar-followup">{overdue > 0 && <span>마감이 지난 미지원 회사 {overdue}곳</span>}{undated > 0 && <span>마감일 미등록 {undated}곳</span>}<Button component={Link} to="/?lane=before">지원 전 회사 확인</Button></div>}
     </>}
   </>;
 }

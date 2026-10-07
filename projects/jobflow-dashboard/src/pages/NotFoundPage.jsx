@@ -2,9 +2,8 @@ import { Box, Button, Card, CardContent, Stack, Typography } from '@mui/material
 import HomeIcon from '@mui/icons-material/Home';
 import WorkIcon from '@mui/icons-material/Work';
 import SearchOffIcon from '@mui/icons-material/SearchOff';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const NotFoundPage = () => {
-  const navigate = useNavigate();
   return <Box sx={{
     maxWidth: 640,
     mx: 'auto',
@@ -39,11 +38,11 @@ const NotFoundPage = () => {
         }} spacing={1.5} sx={{
           justifyContent: 'center'
         }}>
-        <Button variant="contained" startIcon={<HomeIcon />} onClick={() => navigate('/')}>
-              오늘의 갈피로
+        <Button component={Link} to="/overview" variant="contained" startIcon={<HomeIcon />}>
+              오늘의 지원
             </Button>
-        <Button variant="outlined" startIcon={<WorkIcon />} onClick={() => navigate('/applications')}>
-              지원 관리로
+        <Button component={Link} to="/" variant="outlined" startIcon={<WorkIcon />}>
+              지원 현황
             </Button>
       </Stack>
     </CardContent>

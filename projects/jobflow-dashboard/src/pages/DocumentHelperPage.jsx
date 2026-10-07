@@ -2,7 +2,6 @@ import Field from '../components/ui/Field';
 import { useState } from 'react';
 import { MenuItem, Button } from '@mui/material';
 import ContentCopy from '@mui/icons-material/ContentCopy';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import { PROMPT_TYPES } from '../constants';
 import { generatePrompt } from '../utils/documentTemplateHelpers';
 import { PageHeading, Empty } from '../components/ui/PageUI';
@@ -46,7 +45,7 @@ export default function DocumentHelperPage() {
       <Field label="지원 회사" value={company} onChange={e => setCompany(e.target.value)} />
       <Field label="프로젝트 또는 주제" value={project} onChange={e => setProject(e.target.value)} />
       <Field label="실제로 한 일과 결과" value={experience} onChange={e => setExperience(e.target.value)} multiline minRows={4} placeholder="내 역할, 선택한 방법, 직접 확인한 결과를 적어주세요." />
-      <Button type="submit" variant="contained" endIcon={<ArrowForward />}>요청문 구성하기</Button>
+      <Button type="submit" variant="contained">요청문 구성하기</Button>
       <p className="helper-note">여기서는 AI 답변을 생성하지 않아요. 입력한 내용은 저장되지 않아요.</p>
     </form>
     <section className="panel helper-output">

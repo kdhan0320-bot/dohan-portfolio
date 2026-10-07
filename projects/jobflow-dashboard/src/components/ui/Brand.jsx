@@ -8,7 +8,7 @@ export function Brand({
     <path d="M11 3v16l4-3 4 3V3" fill="#E9BBC3" />
     <path d="M11 25h10M11 29h6" stroke="#FFFDFA" strokeWidth="1.5" />
   </svg>
-  {!compact && <span>갈피록<span className="brand-sub">취업 지원 관리</span></span>}
+  {!compact && <span>갈피록<span className="brand-sub">개인 입사지원 관리</span></span>}
 </span>;
 }
 export function PaperScene({

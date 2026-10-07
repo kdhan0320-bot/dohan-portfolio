@@ -2,23 +2,23 @@ export const DEMO_TODAY = '2026-09-27';
 export const APPLICATION_STATUSES = [{
   value: '관심',
   label: '관심',
-  color: '#6F565A',
-  bg: '#EFEDEB'
+  color: '#42627D',
+  bg: '#E5EFF7'
 }, {
   value: '지원 예정',
   label: '지원 예정',
-  color: '#6F565A',
-  bg: '#EFEDEB'
+  color: '#42627D',
+  bg: '#E5EFF7'
 }, {
   value: '지원 완료',
   label: '지원 완료',
-  color: '#62474C',
-  bg: '#F0ECE9'
+  color: '#8E4758',
+  bg: '#F4E5E7'
 }, {
   value: '서류 진행',
   label: '서류 진행',
-  color: '#55484A',
-  bg: '#E8E2DD'
+  color: '#8E4758',
+  bg: '#F4E5E7'
 }, {
   value: '면접 예정',
   label: '면접 예정',
@@ -80,7 +80,7 @@ export const NAV_ITEMS = [
 ];
 export const getRouteTitle = pathname => {
   if (pathname === '/login') return '로그인';
-  if (pathname === '/welcome') return '취업 준비를 한곳에서';
+  if (pathname === '/welcome') return '나의 입사지원 관리';
   if (pathname === '/') return '지원 현황';
   if (pathname === '/applications/new') return '지원 정보 추가';
   if (/^\/applications\/[^/]+\/edit$/.test(pathname)) return '지원 정보 수정';

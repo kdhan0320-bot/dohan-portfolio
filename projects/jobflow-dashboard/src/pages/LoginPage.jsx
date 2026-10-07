@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { Button, Alert, Tabs, Tab, IconButton, InputAdornment } from '@mui/material';
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlined from '@mui/icons-material/VisibilityOffOutlined';
-import ArrowForward from '@mui/icons-material/ArrowForward';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { isAuthConfigured } from '../lib/supabase';
@@ -85,14 +84,14 @@ export default function LoginPage() {
       <h1>어디에 지원했는지,<br />한눈에.</h1>
       <div className="login-brand-art" aria-hidden="true" />
       <div className="login-demo">
-        <Button variant="contained" endIcon={<ArrowForward />} onClick={demo} disabled={busy}>가입 없이 둘러보기</Button>
+        <Button variant="contained" onClick={demo} disabled={busy}>가입 없이 둘러보기</Button>
         <small>가상 회사로 체험 · 새로고침하면 초기화</small>
       </div>
     </div>
-    <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">← 포트폴리오로 돌아가기</a>
+    <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a>
   </section>
   <section className="login-form-section">
-    <Button component={Link} to="/welcome" className="login-back">← 서비스 소개</Button>
+    <Button component={Link} to="/welcome" className="login-back">서비스 소개</Button>
 
     <h2>
       {tab === 0 ? '다시 만나 반가워요' : '내 지원 현황 만들기'}

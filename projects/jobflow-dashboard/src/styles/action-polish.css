@@ -1,0 +1,53 @@
+/* The preparation banner reuses Galpirok's original decorative vector artwork. */
+.prep-banner {
+  display: grid;
+  grid-template-columns: 108px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 22px 28px 22px 20px;
+  border: 1px solid #DDCEC8;
+  border-radius: 16px;
+  background: linear-gradient(110deg, #F7EEEA, #FFFDFA 72%);
+}
+.prep-banner-art {
+  display: block;
+  width: 108px;
+  height: 84px;
+  pointer-events: none;
+}
+.prep-banner-copy { min-width: 0; }
+.prep-banner-copy h2 {
+  margin: 0 0 8px;
+  color: #512E36;
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -.035em;
+  word-break: keep-all;
+}
+.prep-banner-copy p {
+  margin: 0;
+  color: #655D5B;
+  font-size: 14px;
+  line-height: 1.7;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.prep-banner-action.MuiButton-root {
+  min-height: 44px;
+  padding-inline: 18px;
+  white-space: nowrap;
+  box-shadow: none;
+}
+@media (max-width: 1099px) {
+  .prep-banner { grid-template-columns: 84px minmax(0, 1fr); gap: 14px 20px; }
+  .prep-banner-art { width: 84px; height: 72px; grid-row: span 2; }
+  .prep-banner-action.MuiButton-root { justify-self: start; }
+}
+@media (max-width: 599px) {
+  .prep-banner { grid-template-columns: 62px minmax(0, 1fr); padding: 20px 18px; gap: 16px 12px; }
+  .prep-banner-art { width: 62px; height: 56px; grid-row: auto; align-self: start; }
+  .prep-banner-copy h2 { font-size: 20px; }
+  .prep-banner-action.MuiButton-root { grid-column: 1 / -1; width: 100%; }
+}

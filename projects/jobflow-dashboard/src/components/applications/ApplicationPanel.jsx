@@ -54,7 +54,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
   return <>
     <Drawer anchor="right" open onClose={close} slotProps={{ paper: { className: 'company-panel', role: 'dialog', 'aria-modal': true, 'aria-labelledby': 'company-panel-title' } }}>
       <div className="company-panel-head">
-        <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '회사 추가' : application.company_name}</h2></div>
+        <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
         <IconButton onClick={close} disabled={busy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>
       <form onSubmit={save} noValidate className="company-panel-form">
@@ -91,7 +91,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
           </details>
           {!creating && <Button className="company-delete" color="error" startIcon={<DeleteOutlined />} onClick={() => setDeleting(true)} disabled={busy}>회사 삭제</Button>}
         </div>
-        <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '추가하기' : '변경 저장'}</Button></div>
+        <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>
     </Drawer>
     <ConfirmDelete open={deleting} title={application?.company_name} busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
