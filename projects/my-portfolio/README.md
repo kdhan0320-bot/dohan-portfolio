@@ -73,6 +73,8 @@ Portfolio Feedback Hub의 공개 목록·상세는 읽기 전용으로 운영합
 
 갈피록 소개에는 `public/detail/galpirok-{welcome,overview,board,checklist}-pc.jpg` PC 실행 캡처를 사용합니다. 이전 JobFlow 390/1440px 캡처와 과거 검증 기록을 현재 디자인의 검증 증거로 재사용하지 않습니다. 현행 인증·DB 저장과 모바일 실기기 검증은 별도 과제로 표시합니다. 기존 이미지 파일은 이 갱신에서 삭제하지 않습니다.
 
+갈피록의 사례 설명은 김도한의 실제 개선 요청과 화면 검토를 연결합니다. 목적의 모호함을 Context에 명시하고, 마감·준비의 우선순위 / 메뉴와 전형 분류 / 글자와 빈 상태를 ‘문제·수정·확인’ 세 행으로 정리했습니다. 라벨 13px·본문 15px의 정렬된 열을 사용하고, 같은 세 화면을 다시 나열하던 Main Screens 구간은 갈피록에서만 생략합니다. 섹션 번호도 01~04로 연결하며 다른 프로젝트의 구성·데이터는 유지합니다. 확인은 PC 구현과 샘플 조작의 범위이며 사용자 조사나 사용성 성과를 뜻하지 않습니다.
+
 
 고정된 내부 경로 이동(홈으로 돌아가기, 대표 프로젝트 상세 보기, 다음 프로젝트, 404의 홈/전체 프로젝트)은 모두 React Router `Link`로 구현해 실제 `<a href>`를 렌더합니다(새 탭 열기·주소 복사·기본 브라우저 동작 지원). 조건에 따라 다른 곳으로 이동하는 Detail의 "스마트 뒤로가기"만 버튼으로 유지합니다.
 일반 PUSH·REPLACE route는 새 본문의 `main#main-content`로 focus와 scroll을 함께 옮기고, browser Back·Forward POP은 pathname별 scroll memory를 복원합니다. Home의 section 이동은 `location.state.scrollTo` 계약을 유지합니다.

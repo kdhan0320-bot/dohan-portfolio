@@ -225,11 +225,13 @@ export const PROJECT_DETAIL_READY = {
   },
   jobflow: {
     sectionHeadings: {
-      context: ['나의 입사 지원을, 한곳에서.'],
-      decisions: ['다음 행동을 찾는 세 가지 화면.'],
-      screens: ['오늘의 할 일부터 회사별 기록까지.'],
+      context: ['설명보다, 용도와 할 일이 먼저.'],
+      decisions: ['피드백을 화면으로 바꾼 세 가지 판단.'],
       scope: ['체험할 수 있는 기능과 구현 범위.'],
       result: ['구현한 것과 더 확인할 것.'],
+    },
+    sectionIntros: {
+      decisions: '김도한의 개선 요청과 AI의 화면 검토를 바탕으로 조정했습니다.',
     },
     meta: {
       type: 'WEB APPLICATION',
@@ -245,40 +247,40 @@ export const PROJECT_DETAIL_READY = {
       mediaLabel: 'PC 실행 화면 · 가상 샘플 데이터',
     },
     context: {
-      problem: '지원 회사와 준비할 일이 흩어지면 현재 상태와 가까운 마감을 함께 확인하기 어렵습니다.',
-      goal: '회사 등록과 지원 상태 확인, 준비 작업을 이어갈 수 있도록 구성합니다.',
+      problem: '초기 화면은 설명이 많아 서비스의 용도와 시작점이 모호했습니다.',
+      problemNote: '김도한이 직접 살펴보고 제기한 개선 과제입니다.',
+      goal: '개인 입사지원 관리라는 목적과 지금 할 일을 먼저 보여줍니다.',
     },
     decisions: [
       {
-        title: '오늘 확인할 일을 먼저 보여줍니다.',
-        choice: '가까운 마감과 미완료 준비 항목을 첫 화면에 배치',
-        reason: '전체 기록을 읽기 전에 다음 행동을 찾도록',
-        verificationLabel: '구현',
-        verification: '오늘의 지원에서 마감·할 일을 확인하고 관련 화면으로 이동',
+        title: '마감과 준비가 먼저 보이도록.',
+        evidence: [
+          { label: '문제', text: '큰 배너와 여백이 실제 지원 기록을 아래로 밀었습니다.' },
+          { label: '수정', text: '날짜 티켓은 유지하고 배너 높이와 목록 간격을 줄였습니다.' },
+          { label: '확인', text: '검수한 PC 첫 화면에서 회사와 준비 항목을 각각 3개 확인했습니다.' },
+        ],
         media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 — 가까운 지원 마감과 준비할 일을 보여주는 샘플 PC 화면', aspectRatio: '1348 / 926' },
       },
       {
-        title: '회사마다 진행 상태를 구분합니다.',
-        choice: '지원 전·서류·면접·결과 분류와 별도 보류함',
-        reason: '전형별 이름·색으로 상태를 구분하고 회사별 기록을 펼치도록',
-        verificationLabel: '구현',
-        verification: '회사 등록·검색, 상세 패널에서 상태·마감·제출물 관리',
+        title: '이동은 메뉴로, 상태는 분류로.',
+        evidence: [
+          { label: '문제', text: '화살표가 많고 메뉴의 역할이 불분명하다는 피드백이 있었습니다.' },
+          { label: '수정', text: '상단 5개 메뉴와 전형 4단계로 정리하고 장식 화살표를 덜었습니다.' },
+          { label: '확인', text: '메뉴로 작업을 선택하고, 회사 카드를 열어 기록을 수정합니다.' },
+        ],
         media: { src: 'detail/galpirok-board-pc.jpg', alt: '갈피록 지원 현황 — 네 전형 분류함과 샘플 회사 카드가 보이는 PC 화면', aspectRatio: '1348 / 926' },
       },
       {
-        title: '남은 준비와 완료를 구분합니다.',
-        choice: '할 일의 분류·완료 상태와 진행률을 함께 배치',
-        reason: '마친 일과 다음 준비 작업을 구별하도록',
-        verificationLabel: '구현',
-        verification: '할 일 추가·수정·완료·삭제, 분류별 보기',
+        title: '작은 글자와 빈 상태도 분명하게.',
+        evidence: [
+          { label: '문제', text: '좁은 선택 칸과 작은 글씨, 의미가 모호한 0 / 0 표시가 남아 있었습니다.' },
+          { label: '수정', text: '글자와 선택 칸을 키우고, 비어 있는 분류는 ‘등록 없음’으로 표시했습니다.' },
+          { label: '확인', text: '긴 분류명이 온전히 보이고, 할 일을 추가하면 실제 진행 수로 바뀝니다.' },
+        ],
         media: { src: 'detail/galpirok-checklist-pc.jpg', alt: '갈피록 준비 체크 — 진행률과 분류별 할 일을 보여주는 샘플 PC 화면', aspectRatio: '1348 / 926' },
       },
     ],
-    mainScreens: [
-      { label: '오늘의 지원', media: { src: 'detail/galpirok-overview-pc.jpg', alt: '갈피록 오늘의 지원 샘플 PC 화면', aspectRatio: '1348 / 926' } },
-      { label: '지원 현황', media: { src: 'detail/galpirok-board-pc.jpg', alt: '갈피록 지원 현황 샘플 PC 화면', aspectRatio: '1348 / 926' } },
-      { label: '준비 체크', media: { src: 'detail/galpirok-checklist-pc.jpg', alt: '갈피록 준비 체크 샘플 PC 화면', aspectRatio: '1348 / 926' } },
-    ],
+    mainScreens: [],
     responsiveCards: [
       { width: 'PC 화면', rule: '공개 사이트의 실제 브라우저 캡처' },
       { width: '반응형 CSS', rule: '좁은 화면 대응 구현 · 실기기 검증 별도' },
@@ -290,12 +292,12 @@ export const PROJECT_DETAIL_READY = {
       notIncluded: ['면접 일정 등록·실시간 알림', '외부 채용 API·통계·드래그 이동', '제품 내 AI 문장 생성'],
     },
     aiCollaboration: [
-      { label: '김도한', value: '요구사항 · 개선 피드백 · 방향 선택 · 공개 승인' },
+      { label: '김도한', value: '목적 명확화 · 메뉴와 화살표 정리 요청 · 가독성 기준 제시 · 방향 선택' },
       { label: 'AI 지원', value: '디자인 제안·검토 · 그래픽 제작 · 코드 작성·검사' },
       { label: '검증 범위', value: '샘플 UI 검수와 실제 계정·DB 검증을 구분합니다. 현재 인증·모바일 실기기 검증은 별도 과제입니다.' },
     ],
     resultLimit: {
-      done: '개인 입사 지원 기록을 상단 메뉴로 나누고, 이용 안내와 편집 가능한 샘플로 주요 작업을 체험하도록 구현했습니다.',
+      done: '피드백을 서비스 목적·메뉴·글자와 상태 표현에 반영했습니다. 공개 PC 화면과 편집 가능한 샘플에서 결과를 확인할 수 있습니다.',
       limit: '샘플은 실제 사용자 데이터가 아닙니다. 요청문 만들기는 로컬 템플릿이며 제품 내 AI 호출은 없습니다. 사용자 조사와 성과 측정은 수행하지 않았습니다.',
     },
   },

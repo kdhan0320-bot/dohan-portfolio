@@ -336,6 +336,21 @@ const FieldRow = ({ label, children, tone = 'onLight' }) => (
   </Typography>
 );
 
+const DecisionEvidence = ({ rows }) => (
+  <Box component="dl" sx={{ m: 0, display: 'grid', gap: 1.5 }}>
+    {rows.map(({ label, text }) => (
+      <Box key={label} sx={{ display: 'grid', gridTemplateColumns: '44px minmax(0, 1fr)', gap: 1.5, alignItems: 'baseline' }}>
+        <Typography component="dt" sx={{ m: 0, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.8125rem', fontWeight: 700, lineHeight: 1.8 }}>
+          {label}
+        </Typography>
+        <Typography component="dd" sx={{ m: 0, minWidth: 0, color: HUMAN_SIGNAL.inkText, fontSize: '0.9375rem', lineHeight: 1.8, wordBreak: 'keep-all', overflowWrap: 'anywhere' }}>
+          {text}
+        </Typography>
+      </Box>
+    ))}
+  </Box>
+);
+
 const BulletList = ({ items, tone = 'onLight', protectedTokens = [] }) => (
   <Box component="ul" sx={{ m: 0, pl: 2.25, display: 'flex', flexDirection: 'column', gap: 0.75 }}>
     {items.map((item) => (
@@ -476,6 +491,9 @@ const ProjectDetailPage = () => {
   // 화면 증거의 무게가 같을 때만 portfolioMeta.js에서 equal을 명시한다.
   const mainScreensEqual = ready.mainScreensLayout === 'equal';
   const mainScreensBalanced = ready.mainScreensLayout === 'balanced-five';
+  const hasMainScreens = ready.mainScreens.length > 0;
+  const scopeIndex = hasMainScreens ? '04' : '03';
+  const resultIndex = hasMainScreens ? '05' : '04';
   const heroMediaCentered = ready.hero.mediaLayout === 'centered-pair';
   const secondaryScreens = ready.mainScreens.slice(1);
   const responsiveCards = ready.responsiveCards ?? BREAKPOINT_CARDS;
@@ -827,14 +845,14 @@ const ProjectDetailPage = () => {
                   <Typography sx={{ fontFamily: FONT_MONO, color: HUMAN_SIGNAL.burntOrange, fontSize: '0.6875rem', letterSpacing: '0.04em' }}>
                     DECISION {String(i + 1).padStart(2, '0')}
                   </Typography>
-                  <Typography sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.4, wordBreak: 'keep-all' }}>
+                  <Typography component={d.evidence ? 'h3' : 'p'} sx={{ fontWeight: 800, fontSize: { xs: '1.375rem', md: '1.5rem' }, color: HUMAN_SIGNAL.inkNavy, lineHeight: 1.4, wordBreak: 'keep-all' }}>
                     {d.title}
                   </Typography>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {d.evidence ? <DecisionEvidence rows={d.evidence} /> : <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <FieldRow label="선택">{d.choice}</FieldRow>
                     <FieldRow label="이유">{d.reason}</FieldRow>
                     <FieldRow label={d.verificationLabel ?? '검증'}>{d.verification}</FieldRow>
-                  </Box>
+                  </Box>}
                 </Box>
               </Box>
             ))}
@@ -846,7 +864,7 @@ const ProjectDetailPage = () => {
        * Figma(197:82/201:118)는 앞뒤 beige Key Decisions/navy Scope와 다른 Soft
        * White 배경 + border-radius를 쓴다 — 페이지 기본 배경(warmPaper)과 색이
        * 갈려 상하단 모서리가 둥근 독립 카드로 보인다(지시서 3-D). ── */}
-      <Box id="screens" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: { xs: '20px', md: '24px' }, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
+      {hasMainScreens && <Box id="screens" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.softWhite, borderRadius: { xs: '20px', md: '24px' }, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
         <QhdSectionIndex id="screens" index="03" label="SCREENS / PROOF" side="left" indexTop="14%" labelTop="37%" indexOffset={502} labelOffset={436} />
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
           <SectionLabel index="03">MAIN SCREENS</SectionLabel>
@@ -968,15 +986,15 @@ const ProjectDetailPage = () => {
             )}
           </Box>
         </Box>
-      </Box>
+      </Box>}
 
       {/* ── 04 / Responsive & Scope — navy section, Bus는 N/A 카드, 나머지는
        * breakpoint 카드 + Actual/Demo·Static/Not Included 카드 + 조건부 내부
        * AI Collaboration 카드까지 한 섹션 안에 통합한다. ── */}
       <Box id="scope" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.inkNavy, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="scope" index="04" label="SCOPE / READY" side="right" indexTop="14%" labelTop="34%" indexOffset={210} labelOffset={140} indexColor={HUMAN_SIGNAL.softWhite} />
+        <QhdSectionIndex id="scope" index={scopeIndex} label="SCOPE / READY" side="right" indexTop="14%" labelTop="34%" indexOffset={210} labelOffset={140} indexColor={HUMAN_SIGNAL.softWhite} />
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
-          <SectionLabel index="04" tone="onDark">RESPONSIVE &amp; SCOPE</SectionLabel>
+          <SectionLabel index={scopeIndex} tone="onDark">RESPONSIVE &amp; SCOPE</SectionLabel>
           <SectionHeading tone="onDark" lines={sectionHeadings.scope} />
 
           {ready.responsiveNotApplicable ? (
@@ -1088,14 +1106,14 @@ const ProjectDetailPage = () => {
 
       {/* ── 05 / Result & Limit — D mark + closing heading + Done/Limit card + Next CTA ── */}
       <Box id="result" component="section" sx={{ position: 'relative', overflow: 'hidden', bgcolor: HUMAN_SIGNAL.warmPaper, py: { xs: 6, md: 9 }, scrollMarginTop: '96px' }}>
-        <QhdSectionIndex id="result" index="05" label="RESULT / LIMIT" side="left" indexTop="18%" labelTop="45%" indexOffset={502} labelOffset={436} />
+        <QhdSectionIndex id="result" index={resultIndex} label="RESULT / LIMIT" side="left" indexTop="18%" labelTop="45%" indexOffset={502} labelOffset={436} />
         <Box sx={{ ...SHELL_SX, position: 'relative' }}>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' }, gap: { xs: 3, md: 5 }, mb: { xs: 4, md: 5 } }}>
             <Box aria-hidden="true" sx={{ width: { xs: 56, md: 84 }, height: { xs: 56, md: 84 }, flexShrink: 0 }}>
               <DMark size="100%" tone="onLight" sx={{ width: '100%', height: '100%' }} />
             </Box>
             <Box>
-              <SectionLabel index="05">RESULT &amp; LIMIT</SectionLabel>
+              <SectionLabel index={resultIndex}>RESULT &amp; LIMIT</SectionLabel>
               <SectionHeading lines={sectionHeadings.result} />
               {sectionIntros.result && (
                 <SectionIntro text={sectionIntros.result} tokens={protectedCopyTokens} compact />
