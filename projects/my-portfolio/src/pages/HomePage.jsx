@@ -97,8 +97,8 @@ const HomePage = () => {
     <>
       <HeroSection />
       <ProjectsSection />
-      <MoreWorksSection />
       <AboutSection />
+      <MoreWorksSection />
       <ContactSection />
     </>
   );

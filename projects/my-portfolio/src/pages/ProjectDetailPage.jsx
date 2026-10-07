@@ -1,7 +1,6 @@
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
 import { ALL_PROJECTS } from '../data/projectsData';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
@@ -26,16 +25,16 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
     </div>
     <figcaption>
       <span>{label || '화면 상세'}</span>
-      <a href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer">
-        원본 보기 <ArrowOutwardIcon aria-hidden="true" />
+      <a href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
+        원본 보기
       </a>
     </figcaption>
   </figure>
 );
 
 const ExternalAction = ({ href, children, primary = false }) => href ? (
-  <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer">
-    {children}<ArrowOutwardIcon aria-hidden="true" />
+  <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>
+    {children}
   </a>
 ) : null;
 
@@ -90,7 +89,7 @@ const ProjectDetailPage = () => {
           </button>
           <div className="case-intro__grid">
             <div>
-              <p className="case-eyebrow">{project.is_figma_project ? 'Figma 디자인' : '웹사이트 · 인터랙션'}</p>
+              <p className="case-eyebrow">{project.is_figma_project ? '디자인 시안 · Figma' : '웹 구현 · 인터랙션'}</p>
               <h1>{project.title}</h1>
             </div>
             <div className="case-intro__description">
