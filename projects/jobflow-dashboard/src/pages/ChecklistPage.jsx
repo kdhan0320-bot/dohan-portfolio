@@ -214,13 +214,12 @@ export default function ChecklistPage() {
               <Tab value="done" label={`완료 ${scopedDone}`} />
               <Tab value="all" label={`전체 ${scopedItems.length}`} />
             </Tabs>
-            <span className="checklist-sheet-bookmark" aria-hidden="true" />
           </div>
           <div className="checklist-category-chips" aria-label="할 일 분류">
             {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}
           </div>
           <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
-            {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} key={item.id}>
+            {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>
               <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={e => toggleTask(item, e.target.checked)} slotProps={{ input: { id: `task-check-${item.id}`, 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}` } }} />
               <span className="task-copy">
                 <span className="task-text">{item.title}</span>

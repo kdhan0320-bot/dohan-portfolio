@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 460" fill="none">
+  <!-- Original Galpirok artwork. Whole folded bookmarks; no text, stock art or data. -->
+  <path d="M51 329C104 350 113 410 217 415C329 421 362 361 459 347" stroke="#B8C9D8" stroke-width="1.5"/>
+  <path d="M57 344C115 365 123 425 217 430C326 436 376 373 464 365" stroke="#D4DFE8" stroke-width="1.5"/>
+  <g transform="rotate(-17 170 218)">
+    <path d="M108 57H221V371L165 334L108 371V57Z" fill="#DFE9F3" stroke="#BECFDF" stroke-width="1.5"/>
+    <path d="M108 57H194L221 85H108V57Z" fill="#C4D7E7"/>
+    <path d="M194 57V85H221" stroke="#A6BED2" stroke-width="1.5"/>
+    <path d="M127 111V330L165 305L202 330V111" stroke="#F7FAFD" stroke-width="2"/>
+  </g>
+  <g transform="rotate(13 328 214)">
+    <path d="M273 62H378V362L326 329L273 362V62Z" fill="#EBE5F1" stroke="#D0C3DD" stroke-width="1.5"/>
+    <path d="M273 62H352L378 88H273V62Z" fill="#D9CFE5"/>
+    <path d="M352 62V88H378" stroke="#BEADCE" stroke-width="1.5"/>
+    <path d="M291 111V326L326 303L360 326V111" stroke="#FAF8FC" stroke-width="2"/>
+  </g>
+  <path d="M207 181H279V393L243 369L207 393V181Z" fill="#E6EFEC" stroke="#C1D6CF" stroke-width="1.5"/>
+  <path d="M207 181H257L279 203H207V181Z" fill="#CDDCD6"/>
+  <path d="M257 181V203H279" stroke="#ACC5BC" stroke-width="1.5"/>
+</svg>

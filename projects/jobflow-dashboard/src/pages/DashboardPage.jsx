@@ -13,6 +13,7 @@ import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
 import StatusChip from '../components/ui/StatusChip';
 import ActionFeedback from '../components/ui/ActionFeedback';
+import PaperGraphic from '../components/ui/PaperGraphic';
 import '../styles/overview-refinement.css';
 
 export default function DashboardPage() {
@@ -81,7 +82,7 @@ export default function DashboardPage() {
       </section>
       </div>
       {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
-      <div className="overview-grid">
+      <div className="overview-grid overview-preparation-surface">
         <section className="overview-panel overview-preparation-panel" aria-labelledby="todo-title">
           <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button component={Link} to="/checklist">준비 전체</Button></header>
           <div className="overview-tasks">
@@ -115,6 +116,7 @@ export default function DashboardPage() {
             })}
             {!interviewCompanies.length && <Empty title="면접 예정인 회사가 없어요"><Button component={Link} to="/interview">{remainingQuestions.length ? `남은 질문 ${remainingQuestions.length}개 연습` : '면접 질문 준비하기'}</Button></Empty>}
           </div>
+          {interviewCompanies.length === 1 && <div className="overview-interview-art" aria-hidden="true"><PaperGraphic kind="chat" /></div>}
         </section>
       </div>
     </>}

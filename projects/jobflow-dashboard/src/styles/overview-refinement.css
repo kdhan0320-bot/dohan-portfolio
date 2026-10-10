@@ -1,6 +1,6 @@
 /* The date is the focal point; the adjacent folders summarize current records. */
 .overview-focus-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr); gap: 24px; align-items: stretch; }
-.overview-deadline { min-width: 0; border: 1px solid #DFD5BD; border-radius: 14px; background: linear-gradient(120deg, #FFFDF8, #FAF1DE); }
+.overview-deadline { min-width: 0; border: 1px solid #D8C7A3; border-radius: 14px; background: linear-gradient(120deg, #FFFCF5, #F7EAD0); box-shadow: 0 4px 0 #AE8D4A0A; }
 .overview-deadline-heading, .overview-stages > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px 8px; }
 .overview-deadline-heading h2, .overview-stages h2 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 26px; }
 .overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { flex-shrink: 0; font-size: 14px; }
@@ -21,9 +21,9 @@
 .overview-deadline-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 10px 24px 26px; }
 .overview-deadline-empty h3 { color: var(--ink); font-size: 22px; font-weight: 500; line-height: 1.5; }
 .overview-deadline-empty p { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.65; }
-.overview-stages { min-width: 0; border: 1px solid var(--line); border-radius: 14px; background: #FFFFFF; padding-bottom: 16px; }
+.overview-stages { min-width: 0; border: 1px solid #CFDAE4; border-radius: 14px; background: linear-gradient(140deg, #FFFFFF 55%, #F0F4F8); padding-bottom: 16px; }
 .overview-stages dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 17px 20px 0; }
-.overview-stages dl > div { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; background: var(--stage-tint); border-radius: 0 8px 8px 8px; padding: 13px 10px 11px; color: var(--stage-ink); }
+.overview-stages dl > div { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; background: var(--stage-tint); border-radius: 0 8px 8px 8px; padding: 13px 10px 11px; color: var(--stage-ink); box-shadow: inset 0 -2px 0 #40587218, 0 3px 5px #40587206; }
 .overview-stages dl > div::before { content: ''; position: absolute; left: 0; top: -8px; width: 66%; height: 9px; border-radius: 5px 8px 0 0; background: var(--stage-tint); }
 .overview-stages dt { font-size: 13px; line-height: 20px; white-space: nowrap; }
 .overview-stages dd { margin: 0; font-size: 30px; line-height: 38px; font-weight: 450; font-variant-numeric: tabular-nums; }
@@ -31,15 +31,20 @@
 .overview-paused { display: inline-flex; align-items: center; min-height: 44px; margin: 7px 22px -6px; font-size: 13px; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; }
 .overview-paused:hover { color: var(--ink-action); }
 .overview-paused:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.overview-page .overview-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 24px; margin-top: 24px; }
-.overview-page .overview-panel { display: flex; flex-direction: column; border-color: var(--line); box-shadow: none; border-radius: 12px; }
-.overview-page .overview-panel > header { padding: 12px 20px; background: #FFFFFF; border-bottom-color: #E6EBEF; border-top: 3px solid #6D9D8E; }
-.overview-page .overview-interview-panel > header { border-top-color: #9B89B3; }
+.overview-page .overview-grid { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: stretch; gap: 0; margin-top: 24px; }
+.overview-preparation-surface { border: 1px solid #D4DEE4; border-radius: 14px; background: #FFFFFF; overflow: hidden; }
+.overview-page .overview-panel { position: relative; display: flex; flex-direction: column; border: 0; background: transparent; box-shadow: none; border-radius: 0; }
+.overview-page .overview-panel > header { position: relative; padding: 16px 24px 12px; background: transparent; border-bottom: 1px solid #E6EBEF; border-top: 0; }
+.overview-page .overview-panel > header::before { content: ''; position: absolute; top: 0; left: 24px; width: 20px; height: 7px; background: #6D9D8E; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 60%, 0 100%); }
+.overview-page .overview-interview-panel { border-left: 1px solid #DDE3E8; background: linear-gradient(140deg, #FCFBFE, #F6F3FA); }
+.overview-page .overview-interview-panel > header::before { background: #9B89B3; }
 .overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 27px; }
 .overview-page .overview-panel h2 > span { display: inline-grid; place-items: center; margin-left: 8px; min-width: 28px; height: 25px; padding-inline: 6px; border-radius: 5px; background: #E6F2ED; color: #326D61; font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; }
 .overview-page .overview-interview-panel h2 > span { background: #F0ECF6; color: #6B5985; }
 .overview-page .overview-panel > header .MuiButton-root { flex-shrink: 0; }
-.overview-page .overview-task { min-height: 88px; padding: 12px 16px; gap: 8px; cursor: default; }
+.overview-page .overview-tasks { padding: 0 16px; }
+.overview-page .overview-task { min-height: 80px; padding: 10px 0; gap: 8px; cursor: default; }
+.overview-page .overview-task:hover { background: #F6FAF8; }
 .overview-page .overview-task .MuiCheckbox-root { flex: 0 0 44px; width: 44px; height: 44px; }
 .overview-page .overview-task > .overview-task-copy { display: grid; min-width: 0; gap: 4px; font-size: 16px; font-weight: 400; line-height: 25px; }
 .overview-task-copy > span { overflow-wrap: anywhere; }
@@ -47,14 +52,16 @@
 .overview-task-copy > a { justify-self: start; text-decoration: underline; text-decoration-color: #BCC5CE; text-underline-offset: 3px; }
 .overview-task-copy > a:hover { color: var(--ink-action); text-decoration-color: currentColor; }
 .overview-task-copy > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
-.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 96px; padding: 16px 20px; border-bottom: 1px solid #E9EDF0; }
+.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 92px; padding: 18px 24px; border-bottom: 1px solid #E5E1EA; }
 .overview-interview:last-child { border-bottom: 0; }
 .overview-interview .company-mark { width: 40px; height: 40px; font-size: 16px; }
 .overview-interview-copy { display: grid; min-width: 0; gap: 4px; }
 .overview-interview-copy > strong { font-size: 16px; font-weight: 500; line-height: 25px; overflow-wrap: anywhere; }
 .overview-interview-copy > small { color: var(--muted); font-size: 13px; line-height: 21px; overflow-wrap: anywhere; }
 .overview-interview .MuiButton-root { min-width: 80px; min-height: 44px; padding-inline: 12px; white-space: nowrap; }
-.overview-page .overview-panel .empty-state { min-height: 190px; padding: 26px 20px; }
+.overview-interview-art { display: flex; justify-content: flex-end; flex: 1; align-items: flex-end; padding: 0 30px 18px; pointer-events: none; }
+.overview-interview-art .paper-graphic { width: 138px; }
+.overview-page .overview-panel .empty-state { min-height: 220px; padding: 24px 20px; }
 .overview-page .overview-panel .empty-state h2 { font-size: 17px; }
 .overview-page .overdue-note { gap: 12px; padding: 8px 18px; margin-top: 18px; line-height: 1.6; }
 .overview-page .overdue-note .MuiButton-root { flex-shrink: 0; }
@@ -66,11 +73,13 @@
 }
 @media (max-width: 899px) {
   .overview-focus-grid, .overview-page .overview-grid { grid-template-columns: minmax(0, 1fr); }
+  .overview-page .overview-interview-panel { border-left: 0; border-top: 1px solid #DDE3E8; }
+  .overview-interview-art { display: none; }
   .overview-stages dl { margin-inline: 24px; }
   .overview-stages dl > div { flex-direction: row; align-items: center; justify-content: space-between; gap: 4px; }
 }
 @media (max-width: 599px) {
-  .overview-focus-grid, .overview-page .overview-grid { gap: 18px; }
+  .overview-focus-grid { gap: 18px; }
   .overview-deadline-heading, .overview-stages > header { padding: 10px 18px 8px; gap: 8px; }
   .overview-deadline-heading h2, .overview-stages h2 { font-size: 16px; }
   .overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { padding-inline: 4px; }
@@ -88,10 +97,12 @@
   .overview-stages dl > div { padding: 8px 12px; }
   .overview-stages dd { font-size: 26px; }
   .overview-paused { margin-left: 20px; }
-  .overview-page .overview-panel > header { padding: 10px 16px; gap: 8px; }
+  .overview-page .overview-panel > header { padding: 16px 16px 10px; gap: 8px; }
+  .overview-page .overview-panel > header::before { left: 16px; }
   .overview-page .overview-panel h2 { font-size: 17px; }
   .overview-interview { padding: 14px 16px; gap: 10px; }
-  .overview-page .overview-task { padding: 12px 10px; }
+  .overview-page .overview-tasks { padding-inline: 10px; }
+  .overview-page .overview-task { padding: 10px 0; }
 }
 @media (max-width: 399px) {
   .overview-deadline-body { grid-template-columns: 74px minmax(0, 1fr); gap: 12px; padding-inline: 14px; }
