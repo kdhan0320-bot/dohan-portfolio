@@ -1,0 +1,25 @@
+/* A compact heading leaves the actual records in the first screen. */
+.workspace-main > .page-heading-illustrated { min-height: 80px; padding: 0 0 24px; gap: 16px; border: 0; border-bottom: 1px solid #DCD6D2; border-radius: 0; background: transparent; box-shadow: none; margin-bottom: 24px; overflow: visible; }
+.workspace-main > .page-heading-illustrated::before { display: none; }
+.workspace-main > .page-heading-illustrated .heading-graphic { width: 48px; }
+.workspace-main > .page-heading-illustrated h1 { font-size: 30px; letter-spacing: -.04em; }
+.workspace-main > .page-heading-illustrated .muted { font-size: 14px; line-height: 1.7; }
+.workspace-content { background-size: 1400px auto; background-position: center top; }
+.job-lane { box-shadow: 0 4px 0 -2px #E8E0D9; }
+.job-lane-heading { min-height: 65px; }
+.job-position { font-size: 14px; line-height: 1.6; }
+.job-tile-bottom { align-items: flex-start; flex-direction: column; gap: 10px; }
+.job-deadline { color: #713545; font-size: 13px; }
+.job-tile:focus-visible { outline: 3px solid #94394B; outline-offset: 3px; }
+.form-field input { min-width: 0; }
+.preparation-tasks .tabs-row { gap: 12px; }
+.preparation-tasks .task-collection:focus { outline: none; }
+@media (max-width: 699px) {
+  .workspace-main > .page-heading-illustrated { padding-bottom: 20px; gap: 12px; }
+  .workspace-main > .page-heading-illustrated h1 { font-size: 26px; }
+  .workspace-main > .page-heading-illustrated .heading-graphic { width: 40px; }
+  .workspace-main > .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 54px); }
+  .workspace-main > .page-heading-illustrated .heading-actions { justify-content: stretch; }
+  .workspace-main > .page-heading-illustrated .heading-actions > .MuiButton-root { width: 100%; }
+  .job-tile-bottom { flex-direction: row; align-items: center; flex-wrap: wrap; }
+}

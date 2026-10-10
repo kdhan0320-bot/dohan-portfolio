@@ -33,6 +33,8 @@ export default function InterviewPage() {
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(INITIAL);
+  const [originalForm, setOriginalForm] = useState(INITIAL);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [formError, setFormError] = useState('');
   const [revealed, setRevealed] = useState({});
   const [busy, setBusy] = useState('');
@@ -44,7 +46,19 @@ export default function InterviewPage() {
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
   function startNew() {
-    setEditingId(null); setForm(INITIAL); setFormError(''); setOpen(true);
+    setEditingId(null); setForm(INITIAL); setOriginalForm(INITIAL); setConfirmDiscard(false); setFormError(''); setOpen(true);
+  }
+  function startEdit(note) {
+    const draft = { ...INITIAL, ...note };
+    setEditingId(note.id); setForm(draft); setOriginalForm(draft); setConfirmDiscard(false); setFormError(''); setOpen(true);
+  }
+  function requestClose() {
+    if (busy) return;
+    if (Object.keys(INITIAL).some(key => form[key] !== originalForm[key])) setConfirmDiscard(true);
+    else setOpen(false);
+  }
+  function discardDraft() {
+    setConfirmDiscard(false); setOpen(false); setEditingId(null); setForm(INITIAL); setFormError('');
   }
   async function review(n) {
     setBusy(n.id);
@@ -155,7 +169,7 @@ export default function InterviewPage() {
       </article>
       <div className="practice-toolbar">
         <div>
-          <IconButton aria-label={`${activeNote.question} 수정`} disabled={Boolean(busy)} onClick={() => { setEditingId(activeNote.id); setForm({ ...INITIAL, ...activeNote }); setFormError(''); setOpen(true); }}><EditOutlined fontSize="small" /></IconButton>
+          <IconButton aria-label={`${activeNote.question} 수정`} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}><EditOutlined fontSize="small" /></IconButton>
           <IconButton aria-label={`${activeNote.question} 삭제`} disabled={Boolean(busy)} onClick={() => setTarget(activeNote)}><DeleteOutline fontSize="small" /></IconButton>
         </div>
         <Button variant={activeNote.is_reviewed ? 'outlined' : 'contained'} startIcon={<Check />} disabled={Boolean(busy)} onClick={() => review(activeNote)}>{activeNote.is_reviewed ? '복습 취소' : '복습 완료'}</Button>
@@ -167,7 +181,7 @@ export default function InterviewPage() {
       <Button onClick={startNew}>새 질문 기록하기</Button>
     </Empty>
   </div>)}
-  <Dialog aria-labelledby="note-dialog-title" open={open} onClose={busy ? undefined : () => setOpen(false)} fullWidth maxWidth="sm">
+  <Dialog aria-labelledby="note-dialog-title" open={open} onClose={requestClose} fullWidth maxWidth="sm">
     <form onSubmit={submit} noValidate>
       <DialogTitle id="note-dialog-title">{editingId ? '면접 질문 수정' : '면접 질문 기록'}</DialogTitle>
       <DialogContent>
@@ -200,10 +214,18 @@ export default function InterviewPage() {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button disabled={Boolean(busy)} onClick={() => setOpen(false)}>취소</Button>
+        <Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button>
         <Button type="submit" variant="contained" disabled={Boolean(busy)}>{editingId ? '수정 저장' : '질문 저장'}</Button>
       </DialogActions>
     </form>
+  </Dialog>
+  <Dialog open={confirmDiscard} onClose={() => setConfirmDiscard(false)} aria-labelledby="discard-note-title" aria-describedby="discard-note-description" fullWidth maxWidth="xs">
+    <DialogTitle id="discard-note-title">작성 내용을 저장하지 않았어요</DialogTitle>
+    <DialogContent><p id="discard-note-description">닫으면 방금 입력하거나 수정한 내용이 사라집니다.</p></DialogContent>
+    <DialogActions>
+      <Button autoFocus onClick={() => setConfirmDiscard(false)}>계속 작성</Button>
+      <Button onClick={discardDraft}>저장하지 않고 닫기</Button>
+    </DialogActions>
   </Dialog>
   <ConfirmDelete open={Boolean(target)} title={target?.question} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={deleteNote} />
   <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

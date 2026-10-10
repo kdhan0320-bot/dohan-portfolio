@@ -16,6 +16,7 @@ const mainLinks = [
   { to: '/guide', label: '이용 안내' }
 ];
 const secondaryLinks = [
+  { to: '/overview', label: '오늘의 지원' },
   { to: '/document-helper', label: '작성 요청문' },
   { to: '/settings', label: '설정' },
   { to: '/welcome', label: '서비스 소개' }
@@ -36,7 +37,7 @@ export default function SiteHeader({ publicMode = false }) {
   const closeFocusRef = useRef('menu');
   const navigationLock = useRef(false);
   const hasWorkspace = Boolean(user || isGuest);
-  const homePath = hasWorkspace ? '/overview' : '/welcome';
+  const homePath = publicMode || !hasWorkspace ? '/welcome' : '/overview';
 
   function focusContent() {
     window.requestAnimationFrame(() => {
@@ -103,19 +104,19 @@ export default function SiteHeader({ publicMode = false }) {
   return <>
     <header className={`site-header ${publicMode ? 'site-header-public' : ''}`}>
       <div className="site-header-inner">
-        <Link className="site-brand-link" to={homePath} aria-label={hasWorkspace ? '갈피록 오늘의 지원' : '갈피록 서비스 소개'} onClick={event => visit(event, homePath)}><Brand /></Link>
+        <Link className="site-brand-link" to={homePath} aria-label={homePath === '/overview' ? '갈피록 오늘의 지원' : '갈피록 서비스 소개'} onClick={event => visit(event, homePath)}><Brand /></Link>
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
         <div className="site-account-actions">
           <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>{user ? '내 계정' : '로그인'}</Button>
           <IconButton className="site-menu-toggle" ref={menuButtonRef} aria-label="메뉴 열기" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'site-mobile-menu' : undefined} onClick={() => setMobileOpen(true)}><MenuOutlined /></IconButton>
         </div>
       </div>
-      <div className="site-header-meta">
+      {!publicMode && <div className="site-header-meta">
         <div className="site-header-meta-inner">
           <p>{isGuest ? <><span className="site-sample-badge">샘플 체험</span><span>가상 데이터 · 새로고침하면 초기화</span></> : !user ? '메뉴를 선택하면 가상 데이터로 체험해요.' : '나의 지원 기록을 한곳에서 관리해요.'}</p>
           {hasWorkspace && <nav className="site-secondary-nav" aria-label="보조 메뉴">{secondaryLinks.map(item => menuLink(item))}</nav>}
         </div>
-      </div>
+      </div>}
     </header>
     <Drawer anchor="right" open={mobileOpen} onClose={closeMenu} ModalProps={{ disableRestoreFocus: true }} slotProps={{
       paper: { className: 'site-mobile-drawer', id: 'site-mobile-menu', role: 'dialog', 'aria-modal': true, 'aria-label': '전체 메뉴' },

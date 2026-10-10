@@ -1,5 +1,5 @@
 import Field from '../components/ui/Field';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Checkbox, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
@@ -28,10 +28,23 @@ export default function ChecklistPage() {
   const [busy, setBusy] = useState('');
   const [target, setTarget] = useState(null);
   const [editing, setEditing] = useState(null);
+  const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [editError, setEditError] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const editOriginal = useRef(null);
+  const taskListRef = useRef(null);
   const done = items.filter(i => i.is_done).length;
-  const filtered = items.filter(i => (tab === 'all' || i.is_done === (tab === 'done')) && (filter === '전체' || i.category === filter));
+  const scopedItems = items.filter(i => filter === '전체' || i.category === filter);
+  const scopedDone = scopedItems.filter(i => i.is_done).length;
+  const filtered = scopedItems.filter(i => tab === 'all' || i.is_done === (tab === 'done'));
+  const editDirty = Boolean(editing && editOriginal.current && (
+    editing.title !== editOriginal.current.title || editing.category !== editOriginal.current.category
+  ));
+  function closeEdit() {
+    if (busy) return;
+    if (editDirty) setConfirmDiscard(true);
+    else setEditing(null);
+  }
   async function action(key, fn, message) {
     setBusy(key);
     try {
@@ -39,14 +52,27 @@ export default function ChecklistPage() {
       if (message) setFeedback({
         message
       });
+      return true;
     } catch (e) {
       setFeedback({
         severity: 'error',
         message: e.message
       });
+      return false;
     } finally {
       setBusy('');
     }
+  }
+  async function toggleTask(item, checked) {
+    if (busy) return;
+    const index = filtered.findIndex(i => i.id === item.id);
+    const nextId = tab === 'all' ? item.id : (filtered[index + 1]?.id ?? filtered[index - 1]?.id);
+    const saved = await action(item.id, () => toggle(item.id, checked), checked ? '할 일을 완료했어요.' : '완료를 취소했어요.');
+    if (saved) window.requestAnimationFrame(() => {
+      const nextInput = nextId ? document.getElementById(`task-check-${nextId}`) : null;
+      if (nextInput) nextInput.focus();
+      else taskListRef.current?.focus({ preventScroll: true });
+    });
   }
   async function submit(e) {
     e.preventDefault();
@@ -83,9 +109,9 @@ export default function ChecklistPage() {
   <PageHeading art="check" title="준비 체크" description="한 가지씩, 준비를 채워가요." />
   <LoadState loading={loading} error={error} retry={refresh} />
   {!loading && !error && <div className="checklist-workspace">
-    <aside className="preparation-summary" aria-label="준비 진행도와 분류">
+    <aside className="preparation-summary" aria-label="전체 할 일의 진행도와 분류">
       <CompletionRing completed={done} total={items.length} />
-      <p className="preparation-count"><strong>{done}</strong> / {items.length}개 완료</p>
+      <p className="preparation-count">전체 <strong>{done}</strong> / {items.length}개 완료</p>
       <div className="preparation-filters" aria-label="할 일 분류">
         <button type="button" aria-pressed={filter === '전체'} onClick={() => setFilter('전체')} className="category-filter category-all"><span>전체 분류</span><b>{items.length}</b></button>
         {CHECKLIST_CATEGORIES.map(c => {
@@ -98,7 +124,7 @@ export default function ChecklistPage() {
         })}
       </div>
     </aside>
-    <section className="preparation-tasks" aria-label="할 일 목록">
+    <section className="preparation-tasks" aria-label={`${filter} 분류의 할 일 목록`}>
     <form className="add-task" onSubmit={submit} noValidate>
       <Field id="task-title" label="할 일" size="small" value={title} onChange={e => {
           setTitle(e.target.value);
@@ -112,22 +138,23 @@ export default function ChecklistPage() {
       <Button type="submit" variant="contained" startIcon={<Add />} disabled={Boolean(busy)}>추가</Button>
     </form>
     <div className="tabs-row">
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label="할 일 상태">
-        <Tab value="todo" label={`진행 중 ${items.length - done}`} />
-        <Tab value="done" label={`완료 ${done}`} />
-        <Tab value="all" label="전체" />
+      <Tabs value={tab} onChange={(_, v) => setTab(v)} aria-label={`${filter} 분류의 할 일 상태`}>
+        <Tab value="todo" label={`진행 중 ${scopedItems.length - scopedDone}`} />
+        <Tab value="done" label={`완료 ${scopedDone}`} />
+        <Tab value="all" label={`전체 ${scopedItems.length}`} />
       </Tabs>
     </div>
-    <div className="task-collection" aria-label={`${filter} · ${filtered.length}개`}>
+    <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
       {filtered.map(i => <div className={`list-task ${i.is_done ? 'done' : ''}`} key={i.id}>
-        <Checkbox checked={i.is_done} disabled={Boolean(busy)} onChange={e => action(i.id, () => toggle(i.id, e.target.checked))} slotProps={{
+        <Checkbox checked={i.is_done} disabled={Boolean(busy)} onChange={e => toggleTask(i, e.target.checked)} slotProps={{
             input: {
+              id: `task-check-${i.id}`,
               'aria-label': `${i.title} ${i.is_done ? '완료 취소' : '완료'}`
             }
           }} />
         <span className="task-copy"><span className="task-category">{i.category}</span><span className="task-text">{i.title}</span></span>
         <span className="task-tools">
-        <IconButton aria-label={`${i.title} 수정`} disabled={Boolean(busy)} onClick={() => { setEditing({ ...i }); setEditError(''); }}><EditOutlined fontSize="small" /></IconButton>
+        <IconButton aria-label={`${i.title} 수정`} disabled={Boolean(busy)} onClick={() => { editOriginal.current = { title: i.title, category: i.category }; setEditing({ ...i }); setEditError(''); setConfirmDiscard(false); }}><EditOutlined fontSize="small" /></IconButton>
         <IconButton aria-label={`${i.title} 삭제`} onClick={() => setTarget(i)} disabled={Boolean(busy)}>
           <DeleteOutline fontSize="small" />
         </IconButton>
@@ -139,7 +166,7 @@ export default function ChecklistPage() {
     </div>
     </section>
   </div>}
-  <Dialog open={Boolean(editing)} onClose={busy ? undefined : () => setEditing(null)} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
+  <Dialog open={Boolean(editing)} onClose={closeEdit} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
     <form onSubmit={saveEdit} noValidate>
       <DialogTitle id="edit-task-dialog-title">할 일 수정</DialogTitle>
       <DialogContent><div className="field-stack" style={{ paddingTop: 12 }}>
@@ -149,8 +176,13 @@ export default function ChecklistPage() {
           {CHECKLIST_CATEGORIES.map(c => <MenuItem value={c} key={c}>{c}</MenuItem>)}
         </Field>
       </div></DialogContent>
-      <DialogActions><Button disabled={Boolean(busy)} onClick={() => setEditing(null)}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>수정 저장</Button></DialogActions>
+      <DialogActions><Button disabled={Boolean(busy)} onClick={closeEdit}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>수정 저장</Button></DialogActions>
     </form>
+  </Dialog>
+  <Dialog open={confirmDiscard} onClose={() => setConfirmDiscard(false)} aria-labelledby="discard-task-title" aria-describedby="discard-task-description" fullWidth maxWidth="xs">
+    <DialogTitle id="discard-task-title">수정 내용을 저장하지 않았어요</DialogTitle>
+    <DialogContent><p id="discard-task-description">닫으면 방금 수정한 내용이 사라집니다.</p></DialogContent>
+    <DialogActions><Button autoFocus onClick={() => setConfirmDiscard(false)}>계속 수정</Button><Button onClick={() => { setConfirmDiscard(false); setEditing(null); }}>저장하지 않고 닫기</Button></DialogActions>
   </Dialog>
   <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => {
       await remove(target.id);

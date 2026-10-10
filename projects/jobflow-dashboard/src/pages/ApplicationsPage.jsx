@@ -34,6 +34,11 @@ export default function ApplicationsPage() {
   function changeParams(values, replace = false) {
     setParams(prev => { const next = new URLSearchParams(prev); Object.entries(values).forEach(([key,value]) => { if (value == null || value === '') next.delete(key); else next.set(key, value); }); return next; }, { replace });
   }
+  function searchCompanies(value) {
+    const matches = boardRows(applications, value).filter(row => paused ? row.status === '보류' : row.status !== '보류');
+    const firstLane = mobile && !paused && value.trim() && matches.length ? boardColumn(matches[0].status) : null;
+    changeParams({ q: value, ...(firstLane ? { lane: firstLane } : {}) }, true);
+  }
   function closePanel() { changeParams({ company: null, new: null }, true); }
   function clearSearch() {
     changeParams({ q: null }, true);
@@ -55,15 +60,15 @@ export default function ApplicationsPage() {
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-label={`${a.company_name}, ${a.position || '직무 미입력'}, ${a.status}. 정보 열기`}>
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /></span>
       <strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span>
-      <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
+      <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
     </button>;
   }
   return <>
-    <PageHeading art="folder" title="취업 지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
+    <PageHeading art="folder" title="내 입사지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
       <Button id="board-add-company" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>지원할 회사 등록</Button>
     </PageHeading>
     <div className="board-toolbar">
-      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => changeParams({ q: e.target.value }, true)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
+      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
       <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
@@ -78,7 +83,7 @@ export default function ApplicationsPage() {
             return <section className={`job-lane ${lane === column.id ? 'mobile-selected' : ''}`} id={`lane-${column.id}`} key={column.id} role={mobile ? 'tabpanel' : undefined} aria-labelledby={mobile ? `lane-tab-${column.id}` : `lane-title-${column.id}`} style={{ '--lane-color': column.color, '--lane-tint': column.tint }}>
               <header className="job-lane-heading"><span className="lane-number" aria-hidden="true">{index + 1}</span><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}</span></header>
               <div className="job-lane-cards">{rows.map(card)}</div>
-              {!rows.length && <div className="job-lane-empty" aria-label="회사 없음"><span aria-hidden="true">—</span>{column.id === 'before' && <p>{query ? '검색 결과 없음' : '지원할 회사를 등록해보세요'}</p>}</div>}
+              {!rows.length && <div className="job-lane-empty" aria-label="회사 없음"><span aria-hidden="true">—</span>{column.id === 'before' && <p>{query ? '이 단계에는 검색 결과가 없어요' : '지원할 회사를 등록해보세요'}</p>}</div>}
               {column.id === 'before' && <Button className="lane-add" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>지원할 회사 등록</Button>}
             </section>;
           })}
