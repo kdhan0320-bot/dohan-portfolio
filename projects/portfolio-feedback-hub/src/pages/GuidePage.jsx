@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import SiteFooter from '../components/SiteFooter';
+import PracticeIcon from '../components/PracticeIcon';
 import { PAGE_TITLES, usePageTitle } from '../utils/pageMeta';
 
 const steps = [
@@ -24,6 +25,6 @@ export default function GuidePage() {
       {steps.map(([title, description], index) => <li key={title}><span aria-hidden="true">0{index + 1}</span><h2>{title}</h2><p>{description}</p></li>)}
     </ol>
     <Link className="practice-primary" to="/practice/sample-1">바로 연습하기</Link>
-    <section className="practice-faq" aria-labelledby="faq-title"><h2 id="faq-title">궁금한 점</h2>{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</section>
+    <section className="practice-faq" aria-labelledby="faq-title"><h2 id="faq-title">궁금한 점</h2>{questions.map(([question, answer]) => <details key={question}><summary><span>{question}</span><PracticeIcon name="plus" /></summary><p>{answer}</p></details>)}</section>
   </div><SiteFooter /></div>;
 }
