@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import AuthProvider from './components/AuthProvider';
 import { useAuth } from './hooks/useAuth';
@@ -6,8 +6,9 @@ import LoginPage from './pages/LoginPage';
 import PostListPage from './pages/PostListPage';
 import HomePage from './pages/HomePage';
 import GuidePage from './pages/GuidePage';
-import ComparePage from './pages/ComparePage';
-import ChallengesPage from './pages/ChallengesPage';
+import ExercisesPage from './pages/ExercisesPage';
+import PracticePage from './pages/PracticePage';
+import { EXERCISES, getExercise } from './constants/exercises';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostEditPage from './pages/PostEditPage';
@@ -45,6 +46,17 @@ const PublicRoute = ({ children }) => {
   return !user ? children : <Navigate to="/" replace />;
 };
 
+const LegacyCompareRoute = () => {
+  const [params] = useSearchParams();
+  const exercise = getExercise(params.get('sample')) ?? EXERCISES[0];
+  return <Navigate to={`/practice/${exercise.id}`} replace />;
+};
+
+const LegacyPostRoute = () => {
+  const { id } = useParams();
+  return getExercise(id) ? <Navigate to={`/practice/${id}`} replace /> : <PostDetailPage />;
+};
+
 const focusMainContent = (event) => {
   event.preventDefault();
   const main = document.getElementById('main-content');
@@ -66,11 +78,14 @@ const AppRoutes = () => (
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/signup" element={<Navigate to="/login" replace />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/works" element={<PostListPage />} />
+        <Route path="/exercises" element={<ExercisesPage />} />
+        <Route path="/practice/:id" element={<PracticePage />} />
+        <Route path="/works" element={<Navigate to="/exercises" replace />} />
+        <Route path="/archive" element={<PostListPage />} />
         <Route path="/guide" element={<GuidePage />} />
-        <Route path="/compare" element={<ComparePage />} />
-        <Route path="/challenges" element={<ChallengesPage />} />
-        <Route path="/posts/:id" element={<PostDetailPage />} />
+        <Route path="/compare" element={<LegacyCompareRoute />} />
+        <Route path="/challenges" element={<Navigate to="/exercises" replace />} />
+        <Route path="/posts/:id" element={<LegacyPostRoute />} />
         <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
         <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />
         <Route path="*" element={<NotFoundPage />} />

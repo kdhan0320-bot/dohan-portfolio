@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 
 export const PAGE_TITLES = {
-  home: '고른시선 | 디자인 피드백 보드',
+  home: '고른시선 | UI 디자인 비교 연습',
+  exercises: '연습 모음 | 고른시선',
+  practice: 'UI 디자인 비교 연습 | 고른시선',
   list: '리뷰 예제 | 고른시선',
   guide: '이용 안내 | 고른시선',
   login: '비공개 로그인 | 고른시선',
