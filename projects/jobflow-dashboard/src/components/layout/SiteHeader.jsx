@@ -38,7 +38,7 @@ export default function SiteHeader({ publicMode = false }) {
   const closeFocusRef = useRef('menu');
   const navigationLock = useRef(false);
   const hasWorkspace = Boolean(user || isGuest);
-  const homePath = publicMode || !hasWorkspace ? '/welcome' : '/overview';
+  const homePath = '/welcome';
 
   function focusContent() {
     window.requestAnimationFrame(() => {
@@ -105,7 +105,7 @@ export default function SiteHeader({ publicMode = false }) {
   return <>
     <header className={`site-header ${publicMode ? 'site-header-public' : ''}`}>
       <div className="site-header-inner">
-        <Link className="site-brand-link" to={homePath} aria-label={homePath === '/overview' ? '갈피록 오늘의 지원' : '갈피록 서비스 소개'} onClick={event => visit(event, homePath)}><Brand /></Link>
+        <Link className="site-brand-link" to={homePath} aria-label="갈피록 홈" onClick={event => visit(event, homePath)}><Brand /></Link>
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
         <div className="site-account-actions">
           {isGuest && <Tooltip title="샘플 설정"><IconButton className="site-settings-button" component={Link} to="/settings" aria-label="샘플 설정" aria-current={pathname === '/settings' ? 'page' : undefined} disabled={busy || loading} onClick={event => visit(event, '/settings')}><SettingsOutlined /></IconButton></Tooltip>}
