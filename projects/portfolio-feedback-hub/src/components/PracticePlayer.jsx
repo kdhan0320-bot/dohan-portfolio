@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import ExerciseArtwork from './ExerciseArtwork';
 import PracticeIcon from './PracticeIcon';
 
-export default function PracticePlayer({ exercise, nextExercise, number = 1, total = 6 }) {
+export default function PracticePlayer({ exercise, nextExercise, number = 1, total = 6, standalone = false }) {
   const [selected, setSelected] = useState(null);
   const [revealed, setRevealed] = useState(false);
   const [hint, setHint] = useState(false);
@@ -13,6 +13,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const dialogRef = useRef(null);
   const resultRef = useRef(null);
   const questionRef = useRef(null);
+  const QuestionHeading = standalone ? 'h1' : 'h2';
   const variantFor = side => side === exercise.revisedSide ? 'revised' : 'original';
   const descriptionFor = side => side === exercise.revisedSide ? exercise.revisedDescription : exercise.originalDescription;
 
@@ -37,9 +38,12 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   };
 
   return <section className="practice-player" aria-labelledby={`${id}-question`}>
-    <div className="practice-meta"><span className="practice-step">{String(number).padStart(2, '0')}<span> / {String(total).padStart(2, '0')}</span></span><span className="practice-step-track" aria-hidden="true">{Array.from({ length: total }, (_, index) => <i key={index} className={index === number - 1 ? 'is-current' : undefined} />)}</span><span>{exercise.context}</span></div>
+    <div className={`practice-toolbar${standalone ? ' practice-toolbar-standalone' : ''}`}>
+      {standalone && <Link className="practice-back" to="/exercises">연습 모음</Link>}
+      <div className="practice-meta"><span className="practice-step">{String(number).padStart(2, '0')}<span> / {String(total).padStart(2, '0')}</span></span><span className="practice-step-track" aria-hidden="true">{Array.from({ length: total }, (_, index) => <i key={index} className={index === number - 1 ? 'is-current' : undefined} />)}</span><span>{exercise.context}</span></div>
+    </div>
     <div className="practice-question">
-      <h2 id={`${id}-question`} ref={questionRef} tabIndex={-1}>{exercise.question}</h2>
+      <QuestionHeading id={`${id}-question`} ref={questionRef} tabIndex={-1}>{exercise.question}</QuestionHeading>
       <button className="practice-hint-button" aria-expanded={hint} aria-controls={`${id}-hint`} onClick={() => setHint(!hint)}>힌트 {hint ? '닫기' : '보기'}</button>
     </div>
     {hint && <p className="practice-hint" id={`${id}-hint`}>{exercise.cue}</p>}
@@ -56,7 +60,8 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       {!revealed && <div className="practice-confirm"><span className="sr-only" aria-live="polite">{selected ? `${selected} 화면을 골랐어요.` : 'A 또는 B를 골라보세요.'}</span><button className="practice-primary" disabled={!selected} onClick={() => setRevealed(true)}>설계 이유 보기</button></div>}
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
-      <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{exercise.revisedSide}</span><div><p>내 선택 {selected} <span>·</span> 이 목표에서는 {exercise.revisedSide}안을 제안해요.</p><h3>{exercise.takeaway}</h3></div></div>
+      <p className="practice-result-status">내 선택 {selected}<span>·</span>이 목표의 제안 {exercise.revisedSide}</p>
+      <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{exercise.revisedSide}</span><h3>{exercise.takeaway}</h3></div>
       <div className="practice-result-details">
         <details><summary><span>설계 이유 더 보기</span><PracticeIcon name="plus" /></summary><p>{exercise.explanation}</p><p>{exercise.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
         <details><summary><span>내 생각 한 줄 <span className="practice-optional">선택</span></span><PracticeIcon name="plus" /></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value.slice(0, 160))} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>

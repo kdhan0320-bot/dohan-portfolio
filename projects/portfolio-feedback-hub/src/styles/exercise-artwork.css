@@ -55,7 +55,7 @@
 .exercise-artwork .ea-project-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
 .exercise-artwork .ea-project-mark { flex: 0 0 13px; width: 13px; height: 13px; background: #7285a6; border-radius: 2px; }
 .exercise-artwork .ea-project-mark-coral { background: #b97961; border-radius: 50%; }
-.exercise-artwork .ea-project-description { color: #5c6676; font-size: 12px; white-space: nowrap; }
+.exercise-artwork .ea-project-description { padding-left: 21px; color: #5c6676; font-size: 12px; white-space: nowrap; }
 .exercise-artwork.ea-flower { background: #f8f3f7; }
 .exercise-artwork .ea-flower-image { position: relative; height: 216px; overflow: hidden; background-color: #e6d9ec; background-size: cover; background-position: 50% 47%; }
 /* Both options share the same light photo treatment. Only the title panel changes. */
@@ -99,7 +99,6 @@
 .exercise-artwork.ea-compact .ea-gallery-description,
 .exercise-artwork.ea-compact .ea-flower-edition,
 .exercise-artwork.ea-compact .ea-progress,
-.exercise-artwork.ea-compact .ea-project-description,
 .exercise-artwork.ea-compact .ea-signup-heading,
 .exercise-artwork.ea-compact .ea-faux-field:first-child,
 .exercise-artwork.ea-compact .ea-map-legend { display: none; }
@@ -115,14 +114,18 @@
 .exercise-artwork.ea-compact .ea-player-control > span:last-child { display: none; }
 .exercise-artwork.ea-compact .ea-player-circle { width: 30px; height: 30px; margin-block: 7px; }
 .exercise-artwork.ea-compact.ea-revised .ea-play { width: 44px; height: 44px; margin: 0; }
-.exercise-artwork.ea-compact .ea-work-heading { font-size: 16px; margin: 0 0 20px; }
+.exercise-artwork.ea-compact .ea-work-heading { font-size: 16px; line-height: 1.25; margin: 0 0 10px; }
 .exercise-artwork.ea-compact .ea-project-list,
-.exercise-artwork.ea-compact.ea-revised .ea-project-list { gap: 18px; }
-.exercise-artwork.ea-compact .ea-project-title { font-size: 13px; }
+.exercise-artwork.ea-compact .ea-project-group { gap: 7px; }
+.exercise-artwork.ea-compact.ea-revised .ea-project-list { gap: 15px; }
+.exercise-artwork.ea-compact.ea-revised .ea-project-group { gap: 3px; }
+.exercise-artwork.ea-compact .ea-project-title { font-size: 13px; line-height: 1.35; }
+.exercise-artwork.ea-compact .ea-project-description { font-size: 11px; line-height: 1.45; white-space: nowrap; }
 .exercise-artwork.ea-compact .ea-flower-image { height: 121px; }
 .exercise-artwork.ea-compact .ea-flower-title { top: 9px; left: 10px; padding: 9px 12px; font-size: 23px; }
 .exercise-artwork.ea-compact .ea-walk-heading { font-size: 14px; margin-bottom: 8px; }
 .exercise-artwork.ea-compact .ea-map { height: 94px; }
+.exercise-artwork.ea-compact .ea-map-start { top: auto; bottom: 3px; }
 .exercise-artwork.ea-compact .ea-faux-field { margin-bottom: 9px; }
 .exercise-artwork.ea-compact .ea-field-box { height: 32px; }
 .exercise-artwork.ea-compact .ea-faux-submit { height: 27px; }

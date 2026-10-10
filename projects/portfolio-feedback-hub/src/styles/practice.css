@@ -38,16 +38,18 @@
 .practice-intro p { margin-top: 10px; font-size: 15px; color: var(--practice-muted); line-height: 1.6; }
 .comparison-motif { width: 204px; height: 94px; flex-shrink: 0; }
 .practice-player { padding: 0; background: transparent; border: 0; }
+.practice-toolbar { margin-bottom: 8px; }
+.practice-toolbar-standalone { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 16px; }
 .practice-question { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 20px; }
-.practice-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 12px; line-height: 1.5; color: #60616e; }
+.practice-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; line-height: 1.5; color: #60616e; }
 .practice-step { color: #6250c7; font-weight: 500; font-variant-numeric: tabular-nums; }
 .practice-step-track { display: flex; gap: 4px; }
 .practice-step-track i { width: 12px; height: 3px; background: #d5d1e8; border-radius: 2px; }
 .practice-step-track i.is-current { background: #6250c7; }
 .practice-step > span { color: #6a6b76; font-weight: 500; }
-.practice-question h2 { min-width: 0; font-size: 22px; line-height: 1.5; font-weight: 400; letter-spacing: -.02em; }
-.practice-question h2[tabindex] { scroll-margin-top: 140px; }
-.practice-question h2[tabindex]:focus { outline: none; }
+.practice-question :is(h1,h2) { min-width: 0; font-size: 22px; line-height: 1.5; font-weight: 400; letter-spacing: -.02em; }
+.practice-question :is(h1,h2)[tabindex] { scroll-margin-top: 140px; }
+.practice-question :is(h1,h2)[tabindex]:focus { outline: none; }
 .practice-hint-button { flex-shrink: 0; min-height: 44px; padding: 9px 13px; color: #51535f; font-size: 13px; background: #fff; border: 1px solid #8b8d9b; border-radius: 7px; }
 .practice-hint-button:hover, .practice-secondary:hover { background: #f0f0f7; }
 .practice-hint { padding: 12px 16px; margin-bottom: 20px !important; border-left: 3px solid #a99ce3; background: #eeebfa; font-size: 14px; line-height: 1.65; }
@@ -77,10 +79,9 @@
 .practice-result { margin-top: 22px; padding: 24px; border-radius: 8px; background: #f2f0fa; border: 1px solid #dcd7ef; scroll-margin-top: 100px; }
 .practice-result:focus { outline: none; }
 .practice-result:focus-visible { outline: 2px solid #6250c7; outline-offset: 4px; }
-.practice-result-heading { display: flex; align-items: center; gap: 16px; }
-.practice-result-symbol { display: grid; place-items: center; flex: 0 0 48px; height: 48px; border-radius: 8px; background: #dfd8f6; color: #5f4bb7; font-size: 24px; font-weight: 500; }
-.practice-result-heading p { margin-bottom: 7px; color: #62606f; font-size: 12px; line-height: 1.6; }
-.practice-result-heading p span { margin-inline: 4px; }
+.practice-result-heading { display: flex; align-items: flex-start; gap: 12px; }
+.practice-result-symbol { display: grid; place-items: center; flex: 0 0 32px; height: 32px; border-radius: 5px; background: #dfd8f6; color: #5f4bb7; font-size: 16px; font-weight: 500; line-height: 1; }
+.practice-result .practice-result-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; color: #62606f; font-size: 12px; line-height: 1.6; }
 .practice-result h3 { font-size: 21px; font-weight: 400; line-height: 1.5; letter-spacing: -.025em; }
 .practice-result-details { margin-top: 20px; border-top: 1px solid #d6d2e4; }
 .practice-result-details details { border-bottom: 1px solid #d6d2e4; }
@@ -129,18 +130,15 @@
 .exercise-filters button[aria-pressed=true] { color: #fff; background: #6250c7; border-color: #6250c7; }
 .exercise-filters button:hover { border-color: #8576c3; }
 .practice-page { padding-block: 28px 60px; }
-.practice-page-title { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-block: 12px 26px; }
-.practice-page-title h1 { font-size: 28px; font-weight: 400; line-height: 1.4; letter-spacing: -.03em; }
-.practice-page-title > span { color: #696b78; font-size: 12px; }
 .practice-empty { min-height: 380px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 22px; }
-.practice-guide { max-width: 900px; padding-block: 48px 68px; }
+.practice-guide { padding-block: 46px 72px; }
 .practice-guide > header > p { margin-top: 14px; color: #626471; font-size: 16px; line-height: 1.7; }
 .practice-guide-steps { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; padding: 0; margin: 30px 0 24px; list-style: none; }
 .practice-guide-steps li { padding: 22px; background: #fff; border: 1px solid #dedde7; border-radius: 9px; }
 .practice-guide-steps li > span { display: inline-block; margin-bottom: 18px; color: #6650c1; font-size: 13px; font-weight: 400; }
 .practice-guide-steps h2 { margin-bottom: 10px; font-size: 19px; font-weight: 400; letter-spacing: -.02em; }
 .practice-guide-steps p { color: #626471; font-size: 14px; line-height: 1.8; }
-.practice-faq { margin-top: 48px; }
+.practice-faq { max-width: 900px; margin-top: 48px; }
 .practice-faq > h2 { margin-bottom: 20px; font-size: 23px; font-weight: 400; letter-spacing: -.025em; }
 .practice-faq details { border-bottom: 1px solid #d8d8e2; }
 .practice-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 19px 0; font-size: 15px; font-weight: 400; line-height: 1.6; cursor: pointer; list-style: none; }
@@ -159,7 +157,7 @@
   .practice-surface .shell, .practice-surface .header-inner { width: calc(100% - 48px); }
   .practice-action-row { align-items: flex-start; }
   .practice-confirm { flex-direction: column; align-items: flex-end; gap: 8px; }
-  .practice-question h2 { font-size: 21px; }
+  .practice-question :is(h1,h2) { font-size: 21px; }
   .exercise-grid { gap: 16px; }
   .exercise-card-art { padding-inline: 15px; }
   .exercise-card-copy { padding: 18px 16px; }
@@ -181,7 +179,7 @@
   .practice-player { padding: 0; }
   .practice-question { gap: 12px; }
   .practice-hint-button { font-size: 12px; padding-inline: 10px; }
-  .practice-question h2 { font-size: 20px; }
+  .practice-question :is(h1,h2) { font-size: 20px; }
   .practice-options { gap: 14px; }
   .practice-option { padding: 10px; }
   .practice-action-row { flex-direction: column; gap: 14px; }
@@ -193,7 +191,6 @@
   .exercise-library { padding-block: 30px 48px; }
   .exercise-library-heading { flex-direction: column; align-items: flex-start; gap: 14px; }
   .exercise-library h1, .practice-guide h1 { font-size: 29px; }
-  .practice-page-title h1 { font-size: 24px; }
   .practice-guide { padding-block: 30px 48px; }
   .practice-guide-steps { grid-template-columns: 1fr; gap: 12px; }
   .practice-guide-steps li { padding: 20px; }
@@ -204,7 +201,7 @@
   .practice-options { grid-template-columns: 1fr; }
   .practice-question { flex-wrap: nowrap; }
   .practice-hint-button { min-height: 44px; }
-  .practice-question h2 { flex: 1; }
+  .practice-question :is(h1,h2) { flex: 1; }
 }
 @media (max-width: 480px) {
   .practice-player { padding: 0; }
@@ -214,15 +211,14 @@
   .practice-intro h1 { font-size: 26px; }
   .practice-intro p { max-width: 280px; }
   .practice-question { align-items: flex-start; }
-  .practice-question h2 { padding-top: 7px; font-size: 19px; }
+  .practice-question :is(h1,h2) { padding-top: 7px; font-size: 19px; }
   .practice-step-track { display: none; }
   .practice-confirm { flex-direction: column; align-items: stretch; gap: 10px; }
   .practice-confirm > span { text-align: center; }
   .practice-result { padding: 18px 14px; }
   .practice-result-heading { align-items: flex-start; gap: 12px; }
-  .practice-result-symbol { flex-basis: 36px; height: 36px; font-size: 20px; }
+  .practice-result-symbol { flex-basis: 28px; height: 28px; }
   .practice-result h3 { font-size: 18px; }
-  .practice-result-heading p { font-size: 11px; }
   .practice-result-actions > * { flex: 1; padding-inline: 10px; }
   .practice-memo-meta { align-items: flex-start; }
   .practice-memo-meta > span { max-width: 200px; line-height: 1.7; }
@@ -235,7 +231,6 @@
   .exercise-library h1 { font-size: 27px; }
   .exercise-filters { gap: 6px; }
   .exercise-filters button { padding-inline: 13px; font-size: 12px; }
-  .practice-page-title { align-items: flex-start; flex-direction: column; gap: 8px; }
   .practice-surface .footer-links { flex-wrap: wrap; column-gap: 22px; }
 }
 @media (prefers-reduced-motion: reduce) {
