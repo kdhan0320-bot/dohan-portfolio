@@ -58,8 +58,7 @@ export default function ApplicationsPage() {
   function card(a) {
     const pending = boardColumn(a.status) === 'before';
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-label={`${a.company_name}, ${a.position || '직무 미입력'}, ${a.status}. 정보 열기`}>
-      <span className="job-tile-heading"><CompanyMark name={a.company_name} /></span>
-      <strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span>
+      <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
       <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
     </button>;
   }

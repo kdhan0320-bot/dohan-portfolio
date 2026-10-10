@@ -111,6 +111,50 @@ export default createTheme({
         }
       }
     },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          fontSize: 20,
+          lineHeight: '28px',
+          fontWeight: 500,
+          paddingInline: 24,
+          '@media (max-width: 600px)': {
+            paddingInline: 20
+          }
+        }
+      }
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          paddingInline: 24,
+          '@media (max-width: 600px)': {
+            paddingInline: 20
+          }
+        }
+      }
+    },
+    MuiDialogActions: {
+      defaultProps: {
+        disableSpacing: true
+      },
+      styleOverrides: {
+        root: {
+          padding: '8px 24px 24px',
+          gap: 8,
+          '@media (max-width: 600px)': {
+            padding: '8px 20px 20px'
+          },
+          '@media (max-width: 399px)': {
+            flexDirection: 'column',
+            alignItems: 'stretch',
+            '& > .MuiButton-root': {
+              width: '100%'
+            }
+          }
+        }
+      }
+    },
     MuiCard: {
       styleOverrides: {
         root: {

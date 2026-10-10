@@ -19,6 +19,10 @@
   box-sizing: border-box;
 }
 html { scrollbar-gutter: stable; }
+/* Dialogs share MUI's scroll lock; the root already reserves scrollbar space. */
+@supports (scrollbar-gutter: stable) {
+  body:has(.MuiDialog-root) { padding-right: 0 !important; }
+}
 body {
   margin: 0;
   font-weight: 400;
@@ -668,6 +672,7 @@ h3 {
 .form-field .MuiOutlinedInput-input { box-sizing: content-box; height: auto; min-height: 24px; line-height: 24px; padding: 13px 15px; }
 .form-field .MuiOutlinedInput-root.MuiInputBase-sizeSmall { min-height: 46px; }
 .form-field .MuiOutlinedInput-root.MuiInputBase-sizeSmall .MuiOutlinedInput-input { padding: 10px 13px; }
+.form-field .MuiOutlinedInput-root.MuiInputBase-adornedStart .MuiOutlinedInput-input { padding-left: 0; }
 .form-field .MuiOutlinedInput-root.MuiInputBase-multiline { padding: 13px 15px; }
 .form-field .MuiOutlinedInput-root textarea.MuiOutlinedInput-input { padding: 0; line-height: 1.7; }
 .form-field .MuiInputBase-input::placeholder { color: #816368; opacity: 1; }

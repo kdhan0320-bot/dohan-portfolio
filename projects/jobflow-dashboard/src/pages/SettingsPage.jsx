@@ -94,15 +94,13 @@ const SettingsPage = () => {
           <div className="settings-summary">
             <PaperGraphic kind="folder" className="settings-mark" />
             <div>
-              <span className="settings-status">샘플 체험 중</span>
+              <span className="settings-status">가상 샘플 체험 중</span>
               <h2 id="sample-settings-title">샘플 기록장</h2>
-              <p>가상 회사와 질문으로 기능을 체험하고 있어요.</p>
             </div>
           </div>
           <div className="settings-control">
             <div className="settings-control-copy">
-              <h3>처음 상태로 돌아가기</h3>
-              <p>수정한 샘플을 되돌려요. 새로고침해도 초기화돼요.</p>
+              <p>수정한 샘플은 초기화하거나 새로고침하면 사라져요.</p>
             </div>
             <Button className="settings-control-action" variant="outlined" onClick={() => {
               resetDemo();
@@ -143,7 +141,6 @@ const SettingsPage = () => {
             </Avatar>
             <div>
               <Typography component="h2" variant="h6" fontWeight={550}>{displayName || '이름 미설정'}</Typography>
-              <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
             </div>
           </div>
           {saved && <Alert severity="success" sx={{ mb: 2 }}>프로필을 저장했어요.</Alert>}
