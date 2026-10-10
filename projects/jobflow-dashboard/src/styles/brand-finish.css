@@ -9,9 +9,9 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: url('../assets/galpi-fold-field.svg') right 20px top 2px / 390px auto no-repeat,
-    url('../assets/galpi-fold-field.svg') left 14px bottom 18px / 290px auto no-repeat;
-  opacity: .7;
+  /* Keep the working controls clear; the full motif rests at the lower edge. */
+  background: url('../assets/galpi-fold-field.svg') left 14px bottom 18px / 260px auto no-repeat;
+  opacity: .42;
 }
 .workspace-main { padding-bottom: 48px; }
 .workspace-main .page-heading {
@@ -92,16 +92,16 @@
 .workspace-main .interview-page .practice-card::after { box-shadow: inset 3px 0 0 #FFFFFF24; }
 
 @media (min-width: 1600px) {
-  .workspace-with-topnav .workspace-content::before { background-size: 460px auto, 360px auto; background-position: right 5% top 8px, left 4% bottom 18px; }
+  .workspace-with-topnav .workspace-content::before { background-size: 320px auto; background-position: left 4% bottom 18px; }
   .welcome-product-first > main::before { background-size: 530px auto, 380px auto; background-position: right 5% top 6px, left 3% bottom 12px; }
 }
 @media (max-width: 999px) {
-  .workspace-with-topnav .workspace-content::before { background-size: 290px auto, 230px auto; opacity: .55; }
+  .workspace-with-topnav .workspace-content::before { background-size: 220px auto; opacity: .38; }
   .welcome-product-first > main::before { background-size: 350px auto, 230px auto; }
 }
 @media (max-width: 699px) {
   .workspace-main .page-heading { min-height: 0; margin-bottom: 24px; padding-bottom: 20px; }
-  .workspace-with-topnav .workspace-content::before { background-size: 200px auto, 190px auto; background-position: right 8px top 0, left 8px bottom 8px; opacity: .42; }
+  .workspace-with-topnav .workspace-content::before { background-size: 180px auto; background-position: left 8px bottom 8px; opacity: .32; }
   .welcome-product-first > main::before { background-size: 250px auto, 190px auto; background-position: right 6px top 230px, left 8px bottom 8px; opacity: .45; }
   .galpi-intro-visual::before { inset: 8px 4px 20px; border-top-right-radius: 44px; }
 }

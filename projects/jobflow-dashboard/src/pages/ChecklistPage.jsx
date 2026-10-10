@@ -208,15 +208,17 @@ export default function ChecklistPage() {
           </div>
         </section>
         <section className="checklist-sheet" aria-label={`${scopeLabel}의 할 일 목록`}>
-          <div className="checklist-sheet-toolbar">
-            <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
-              <Tab value="todo" label={`진행 중 ${scopedItems.length - scopedDone}`} />
-              <Tab value="done" label={`완료 ${scopedDone}`} />
-              <Tab value="all" label={`전체 ${scopedItems.length}`} />
-            </Tabs>
-          </div>
-          <div className="checklist-category-chips" aria-label="할 일 분류">
-            {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}
+          <div className="checklist-filterbar">
+            <div className="checklist-sheet-toolbar">
+              <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
+                <Tab value="todo" label={`진행 중 ${scopedItems.length - scopedDone}`} />
+                <Tab value="done" label={`완료 ${scopedDone}`} />
+                <Tab value="all" label={`전체 ${scopedItems.length}`} />
+              </Tabs>
+            </div>
+            <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
+              {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}
+            </div>
           </div>
           <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
             {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>
