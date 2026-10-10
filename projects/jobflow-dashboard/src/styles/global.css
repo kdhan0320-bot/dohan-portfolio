@@ -1,7 +1,9 @@
 /* Shared palette: neutral work surfaces; color has a specific role. */
 :root {
   --ink: #292F35;
-  --ink-action: #303943;
+  --ink-action: #3D6594;
+  --action-hover: #2D507B;
+  --action-tint: #E7EFF8;
   --muted: #606973;
   --surface: #F6F7F8;
   --line: #DCE1E5;

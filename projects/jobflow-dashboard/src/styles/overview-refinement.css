@@ -1,114 +1,101 @@
-.overview-page .page-heading { margin-bottom: 24px; }
-.overview-page .page-heading .muted { font-size: 14px; line-height: 1.6; }
-
-.overview-deadline {
-  min-width: 0;
-  border: 1px solid var(--line);
-  border-left: 3px solid #C6AA70;
-  border-radius: 5px 16px 16px 5px;
-  background: linear-gradient(100deg, #FFFFFF 25%, #FBF7ED);
-  box-shadow: 0 4px 14px #29374604;
-}
-.overview-deadline-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 24px 6px;
-}
-.overview-deadline-heading h2 {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.5;
-}
-.overview-deadline-heading .MuiButton-root { flex-shrink: 0; font-size: 14px; }
-.overview-deadline-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(250px, .52fr);
-  align-items: center;
-  gap: 28px;
-  padding: 8px 24px 24px;
-}
-.overview-deadline-company { display: flex; align-items: center; gap: 16px; min-width: 0; }
-.overview-deadline-company .company-mark { flex: 0 0 52px; width: 52px; height: 52px; font-size: 21px; border-radius: 12px; }
+/* The date is the focal point; the adjacent folders summarize current records. */
+.overview-focus-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr); gap: 24px; align-items: stretch; }
+.overview-deadline { min-width: 0; border: 1px solid #DFD5BD; border-radius: 14px; background: linear-gradient(120deg, #FFFDF8, #FAF1DE); }
+.overview-deadline-heading, .overview-stages > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px 8px; }
+.overview-deadline-heading h2, .overview-stages h2 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 26px; }
+.overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { flex-shrink: 0; font-size: 14px; }
+.overview-deadline-body { display: grid; grid-template-columns: 124px minmax(0, 1fr); align-items: center; gap: 26px; padding: 8px 24px 24px; }
+.overview-date-leaf { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: stretch; gap: 3px; min-height: 148px; padding: 20px 10px 15px; border: 1px solid #D4C8AB; border-top: 6px solid #AD8541; border-radius: 7px 7px 12px 12px; background: #FFFFFF; color: #805E24; box-shadow: 0 4px 0 -1px #FFFDF7, 0 5px 0 #D4C8AB; font-variant-numeric: tabular-nums; }
+.overview-date-leaf::before, .overview-date-leaf::after { content: ''; position: absolute; width: 5px; height: 15px; top: -12px; background: #6E5935; border-radius: 3px; }
+.overview-date-leaf::before { left: 24px; }
+.overview-date-leaf::after { right: 24px; }
+.overview-date-leaf > strong { font-size: 56px; line-height: 1.1; letter-spacing: -.04em; font-weight: 450; }
+.overview-date-leaf > span { font-size: 14px; line-height: 22px; }
+.overview-date-leaf > span:last-child { color: var(--muted); font-size: 13px; }
 .overview-deadline-identity { min-width: 0; }
-.overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(23px, 2.2vw, 28px); font-weight: 500; line-height: 1.4; letter-spacing: -.045em; overflow-wrap: anywhere; }
-.overview-deadline-identity p { margin: 5px 0 12px; color: var(--muted); font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
-.overview-deadline-date { display: grid; justify-items: start; gap: 7px; min-width: 0; padding-left: 28px; border-left: 1px solid var(--line); }
-.overview-deadline-date > strong { color: #805E24; font-size: 32px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-.overview-deadline-date time { color: var(--ink); font-size: 16px; font-weight: 500; line-height: 1.6; font-variant-numeric: tabular-nums; }
-.overview-deadline-date time span { display: inline-block; color: var(--muted); font-size: 14px; font-weight: 400; }
-.overview-deadline-date .MuiButton-root { margin-top: 7px; background: #FFFFFF; }
-.overview-deadline-empty { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 26px 26px; }
-.overview-deadline-empty > div { min-width: 0; }
-.overview-deadline-empty h3 { margin: 0; color: var(--ink); font-size: 22px; font-weight: 500; line-height: 1.5; }
-.overview-deadline-empty p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
-.overview-deadline-empty .MuiButton-root { flex-shrink: 0; }
-
-.overview-page .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px; margin-top: 24px; }
-.overview-page .overview-panel { display: flex; flex-direction: column; border-color: var(--line); box-shadow: 0 3px 12px #29374603; }
-.overview-page .overview-panel > header { padding: 14px 22px; background: #FFFFFF; border-bottom-color: #E9EDF0; }
-.overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 1.5; }
-.overview-page .overview-panel h2 > span { display: inline-block; margin-left: 6px; color: var(--muted); font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.overview-deadline-badge { display: inline-flex; align-items: center; min-height: 25px; padding: 2px 9px; margin-bottom: 8px; border-radius: 5px; color: #805E24; background: #F2E3BE; font-size: 14px; font-weight: 500; }
+.overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(22px, 2.1vw, 27px); font-weight: 500; line-height: 1.4; letter-spacing: -.035em; overflow-wrap: anywhere; }
+.overview-deadline-identity p { margin: 5px 0 18px; color: var(--muted); font-size: 15px; line-height: 24px; overflow-wrap: anywhere; }
+.overview-deadline-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+.overview-deadline-actions .MuiButton-root { font-size: 14px; }
+.overview-deadline-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 10px 24px 26px; }
+.overview-deadline-empty h3 { color: var(--ink); font-size: 22px; font-weight: 500; line-height: 1.5; }
+.overview-deadline-empty p { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+.overview-stages { min-width: 0; border: 1px solid var(--line); border-radius: 14px; background: #FFFFFF; padding-bottom: 16px; }
+.overview-stages dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 17px 20px 0; }
+.overview-stages dl > div { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; background: var(--stage-tint); border-radius: 0 8px 8px 8px; padding: 13px 10px 11px; color: var(--stage-ink); }
+.overview-stages dl > div::before { content: ''; position: absolute; left: 0; top: -8px; width: 66%; height: 9px; border-radius: 5px 8px 0 0; background: var(--stage-tint); }
+.overview-stages dt { font-size: 13px; line-height: 20px; white-space: nowrap; }
+.overview-stages dd { margin: 0; font-size: 30px; line-height: 38px; font-weight: 450; font-variant-numeric: tabular-nums; }
+.overview-stages dd > span { font-size: 12px; margin-left: 4px; }
+.overview-paused { display: inline-flex; align-items: center; min-height: 44px; margin: 7px 22px -6px; font-size: 13px; color: var(--muted); text-decoration: underline; text-underline-offset: 4px; }
+.overview-paused:hover { color: var(--ink-action); }
+.overview-paused:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.overview-page .overview-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; gap: 24px; margin-top: 24px; }
+.overview-page .overview-panel { display: flex; flex-direction: column; border-color: var(--line); box-shadow: none; border-radius: 12px; }
+.overview-page .overview-panel > header { padding: 12px 20px; background: #FFFFFF; border-bottom-color: #E6EBEF; border-top: 3px solid #6D9D8E; }
+.overview-page .overview-interview-panel > header { border-top-color: #9B89B3; }
+.overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 27px; }
+.overview-page .overview-panel h2 > span { display: inline-grid; place-items: center; margin-left: 8px; min-width: 28px; height: 25px; padding-inline: 6px; border-radius: 5px; background: #E6F2ED; color: #326D61; font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.overview-page .overview-interview-panel h2 > span { background: #F0ECF6; color: #6B5985; }
 .overview-page .overview-panel > header .MuiButton-root { flex-shrink: 0; }
-.overview-page .overview-tasks, .overview-page .overview-interviews { flex: 1; }
-.overview-page .overview-task { min-height: 96px; padding: 16px; gap: 8px; cursor: default; }
+.overview-page .overview-task { min-height: 88px; padding: 12px 16px; gap: 8px; cursor: default; }
 .overview-page .overview-task .MuiCheckbox-root { flex: 0 0 44px; width: 44px; height: 44px; }
-.overview-page .overview-task > .overview-task-copy { display: grid; min-width: 0; gap: 4px; font-size: 15px; font-weight: 400; line-height: 1.6; }
+.overview-page .overview-task > .overview-task-copy { display: grid; min-width: 0; gap: 4px; font-size: 16px; font-weight: 400; line-height: 25px; }
 .overview-task-copy > span { overflow-wrap: anywhere; }
-.overview-task-copy > a, .overview-task-copy > small { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.overview-task-copy > a, .overview-task-copy > small { color: var(--muted); font-size: 13px; line-height: 21px; overflow-wrap: anywhere; }
 .overview-task-copy > a { justify-self: start; text-decoration: underline; text-decoration-color: #BCC5CE; text-underline-offset: 3px; }
-.overview-task-copy > a:hover { color: var(--ink); text-decoration-color: currentColor; }
-.overview-task-copy > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 2px; }
-.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 96px; padding: 16px 22px; border-bottom: 1px solid #E9EDF0; }
+.overview-task-copy > a:hover { color: var(--ink-action); text-decoration-color: currentColor; }
+.overview-task-copy > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 96px; padding: 16px 20px; border-bottom: 1px solid #E9EDF0; }
 .overview-interview:last-child { border-bottom: 0; }
 .overview-interview .company-mark { width: 40px; height: 40px; font-size: 16px; }
 .overview-interview-copy { display: grid; min-width: 0; gap: 4px; }
-.overview-interview-copy > strong { font-size: 15px; font-weight: 500; line-height: 1.6; overflow-wrap: anywhere; }
-.overview-interview-copy > small { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
-.overview-interview .MuiButton-root { min-width: 80px; min-height: 40px; padding-inline: 12px; white-space: nowrap; }
-.overview-page .overview-panel .empty-state { min-height: 250px; height: 100%; padding: 28px 22px; }
+.overview-interview-copy > strong { font-size: 16px; font-weight: 500; line-height: 25px; overflow-wrap: anywhere; }
+.overview-interview-copy > small { color: var(--muted); font-size: 13px; line-height: 21px; overflow-wrap: anywhere; }
+.overview-interview .MuiButton-root { min-width: 80px; min-height: 44px; padding-inline: 12px; white-space: nowrap; }
+.overview-page .overview-panel .empty-state { min-height: 190px; padding: 26px 20px; }
 .overview-page .overview-panel .empty-state h2 { font-size: 17px; }
 .overview-page .overdue-note { gap: 12px; padding: 8px 18px; margin-top: 18px; line-height: 1.6; }
 .overview-page .overdue-note .MuiButton-root { flex-shrink: 0; }
-
+@media (max-width: 1099px) {
+  .overview-focus-grid { grid-template-columns: minmax(0, 1.3fr) minmax(300px, 1fr); gap: 20px; }
+  .overview-deadline-body { grid-template-columns: 104px minmax(0, 1fr); gap: 20px; }
+  .overview-stages dl { gap: 7px; margin-inline: 16px; }
+  .overview-stages dl > div { padding-inline: 8px; }
+}
 @media (max-width: 899px) {
-  .overview-page .overview-grid { grid-template-columns: 1fr; }
-  .overview-deadline-body { grid-template-columns: minmax(0, 1fr) 240px; gap: 20px; }
-  .overview-deadline-date { padding-left: 22px; }
+  .overview-focus-grid, .overview-page .overview-grid { grid-template-columns: minmax(0, 1fr); }
+  .overview-stages dl { margin-inline: 24px; }
+  .overview-stages dl > div { flex-direction: row; align-items: center; justify-content: space-between; gap: 4px; }
 }
-
 @media (max-width: 599px) {
-  .overview-page .page-heading { gap: 16px; margin-bottom: 20px; }
-  .overview-deadline-heading { padding: 10px 16px 5px; gap: 8px; }
-  .overview-deadline-heading h2 { font-size: 14px; }
-  .overview-deadline-heading .MuiButton-root { padding-inline: 4px; }
-  .overview-deadline-body { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 8px 18px 20px; }
-  .overview-deadline-company { gap: 12px; }
-  .overview-deadline-company .company-mark { flex-basis: 44px; width: 44px; height: 44px; font-size: 18px; border-radius: 10px; }
-  .overview-deadline-identity h3 { font-size: 24px; }
-  .overview-deadline-identity p { font-size: 14px; margin-bottom: 9px; }
-  .overview-deadline-date { grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 12px; border-left: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
-  .overview-deadline-date > strong { font-size: 28px; }
-  .overview-deadline-date time { grid-column: 1; font-size: 15px; }
-  .overview-deadline-date .MuiButton-root { grid-column: 2; grid-row: 1 / 3; margin: 0; padding-inline: 12px; }
-  .overview-deadline-empty { flex-direction: column; align-items: flex-start; gap: 18px; padding: 12px 18px 22px; }
-  .overview-deadline-empty h3 { font-size: 21px; }
-  .overview-page .overview-grid { gap: 18px; margin-top: 22px; }
-  .overview-page .overview-panel > header { padding: 12px 16px; }
-  .overview-interview { padding: 16px; gap: 11px; }
-  .overview-page .overview-task { padding: 16px 10px; }
-  .overview-page .overdue-note { padding: 8px 14px; }
-}
-
-@media (max-width: 399px) {
-  .overview-deadline-date { grid-template-columns: minmax(0, 1fr); }
-  .overview-deadline-date .MuiButton-root { grid-column: 1; grid-row: auto; margin-top: 8px; width: 100%; }
-  .overview-page .overview-panel > header { gap: 8px; }
+  .overview-focus-grid, .overview-page .overview-grid { gap: 18px; }
+  .overview-deadline-heading, .overview-stages > header { padding: 10px 18px 8px; gap: 8px; }
+  .overview-deadline-heading h2, .overview-stages h2 { font-size: 16px; }
+  .overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { padding-inline: 4px; }
+  .overview-deadline-body { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding: 8px 18px 22px; }
+  .overview-date-leaf { min-height: 138px; padding-inline: 4px; align-self: start; }
+  .overview-date-leaf > strong { font-size: 44px; }
+  .overview-date-leaf::before { left: 18px; }
+  .overview-date-leaf::after { right: 18px; }
+  .overview-date-leaf > span:last-child { font-size: 12px; }
+  .overview-deadline-identity h3 { font-size: 22px; }
+  .overview-deadline-identity p { margin-bottom: 12px; font-size: 14px; }
+  .overview-deadline-actions { gap: 8px; }
+  .overview-deadline-actions .MuiButton-root { width: 100%; padding-inline: 10px; }
+  .overview-stages dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; margin-inline: 18px; }
+  .overview-stages dl > div { padding: 8px 12px; }
+  .overview-stages dd { font-size: 26px; }
+  .overview-paused { margin-left: 20px; }
+  .overview-page .overview-panel > header { padding: 10px 16px; gap: 8px; }
   .overview-page .overview-panel h2 { font-size: 17px; }
-  .overview-page .overview-panel > header .MuiButton-root { padding-inline: 4px; }
+  .overview-interview { padding: 14px 16px; gap: 10px; }
+  .overview-page .overview-task { padding: 12px 10px; }
+}
+@media (max-width: 399px) {
+  .overview-deadline-body { grid-template-columns: 74px minmax(0, 1fr); gap: 12px; padding-inline: 14px; }
+  .overview-date-leaf > span:last-child { font-size: 11px; }
   .overview-interview { grid-template-columns: 36px minmax(0, 1fr); }
   .overview-interview .company-mark { width: 36px; height: 36px; }
   .overview-interview .MuiButton-root { grid-column: 2; justify-self: start; margin-top: 2px; }
