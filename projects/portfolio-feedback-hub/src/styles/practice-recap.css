@@ -1,0 +1,31 @@
+.practice-recap { padding-block: 46px 64px; }
+.practice-recap-heading { margin-bottom: 30px; }
+.practice-recap-heading h1 { font-size: 32px; font-weight: 400; line-height: 1.4; letter-spacing: -.035em; }
+.practice-recap .practice-recap-heading p { margin-top: 12px; color: var(--practice-muted); font-size: 15px; line-height: 1.7; }
+.practice-recap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.practice-recap-card { display: flex; flex-direction: column; min-width: 0; padding: 22px 24px 24px; border: 1px solid var(--practice-line); border-radius: 10px; color: var(--practice-ink); background: #fff; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+.practice-recap-card:hover { color: var(--practice-ink); border-color: #a597d8; box-shadow: 0 5px 16px #44328a0d; }
+.practice-recap-visual { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; min-height: 100px; padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #eeecf4; }
+.practice-recap-visual > span { padding-top: 3px; color: #777181; font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1.5; }
+.practice-recap-sketch { display: block; flex: 0 0 120px; width: 120px; height: 70px; }
+.practice-recap-card h2 { font-size: 19px; font-weight: 500; line-height: 1.5; letter-spacing: -.02em; }
+.practice-recap .practice-recap-card p { margin-top: 9px; margin-bottom: 24px; color: #62636e; font-size: 14px; line-height: 1.7; }
+.practice-recap-link { align-self: flex-start; margin-top: auto; color: #6250c7; font-size: 13px; line-height: 1.6; text-decoration: underline; text-underline-offset: 5px; }
+.practice-recap-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--practice-line); }
+@media (max-width: 900px) {
+  .practice-recap-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+}
+@media (max-width: 760px) {
+  .practice-recap { padding-block: 30px 48px; }
+  .practice-recap-heading { margin-bottom: 24px; }
+  .practice-recap-heading h1 { font-size: 29px; }
+  .practice-recap-card { padding: 20px; }
+  .practice-recap-card h2 { font-size: 18px; }
+}
+@media (max-width: 520px) {
+  .practice-recap-grid { grid-template-columns: 1fr; gap: 16px; }
+  .practice-recap-heading h1 { font-size: 27px; }
+  .practice-recap-visual { min-height: 88px; padding-bottom: 16px; margin-bottom: 18px; }
+  .practice-recap .practice-recap-card p { margin-bottom: 18px; }
+  .practice-recap-actions > a { flex: 1; }
+}

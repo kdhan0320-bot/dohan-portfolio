@@ -83,6 +83,9 @@
 .practice-result-symbol { display: grid; place-items: center; flex: 0 0 32px; height: 32px; border-radius: 5px; background: #dfd8f6; color: #5f4bb7; font-size: 16px; font-weight: 500; line-height: 1; }
 .practice-result .practice-result-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; color: #62606f; font-size: 12px; line-height: 1.6; }
 .practice-result :is(h2,h3) { font-size: 21px; font-weight: 400; line-height: 1.5; letter-spacing: -.025em; }
+.practice-goal-switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding: 14px 16px; border: 1px solid #d9d5e9; border-radius: 6px; background: #ffffffb3; }
+.practice-goal-switch p { color: #565866; font-size: 14px; line-height: 1.6; }
+.practice-goal-switch button { flex-shrink: 0; }
 .practice-result-details { margin-top: 20px; border-top: 1px solid #d6d2e4; }
 .practice-result-details details { border-bottom: 1px solid #d6d2e4; }
 .practice-result-details summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 16px 0; color: #4f5060; font-size: 15px; font-weight: 400; cursor: pointer; list-style: none; }
@@ -219,6 +222,7 @@
   .practice-result-heading { align-items: flex-start; gap: 12px; }
   .practice-result-symbol { flex-basis: 28px; height: 28px; }
   .practice-result :is(h2,h3) { font-size: 18px; }
+  .practice-goal-switch { align-items: stretch; flex-direction: column; gap: 12px; padding: 14px; }
   .practice-result-actions > * { flex: 1; padding-inline: 10px; }
   .practice-memo-meta { align-items: flex-start; }
   .practice-memo-meta > span { max-width: 200px; line-height: 1.7; }

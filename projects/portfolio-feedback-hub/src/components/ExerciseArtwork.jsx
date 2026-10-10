@@ -22,7 +22,7 @@ function Gallery() {
         <span className="ea-gallery-description">일상에서 만나는<br />조형의 아름다움</span>
         <span className="ea-mini-action">전시 둘러보기</span>
       </div>
-      <div className="ea-gallery-image" style={{ backgroundImage: `url(${sculpture})` }} />
+      <div className="ea-gallery-image ea-target" style={{ backgroundImage: `url(${sculpture})` }} />
     </div>
   </>;
 }
@@ -95,13 +95,13 @@ function Walk() {
   </>;
 }
 
-function Signup() {
+function Signup({ revised = false }) {
   return <>
     <div className="ea-topline"><span className="ea-wordmark">작은 작업실</span><span>01 / 02</span></div>
     <div className="ea-signup-heading">계정 만들기</div>
     <div className="ea-faux-form">
       <div className="ea-faux-field"><span className="ea-field-label">이메일</span><div className="ea-field-box">name@example.com</div></div>
-      <div className="ea-faux-field"><span className="ea-field-label">비밀번호</span><div className="ea-field-box"><span className="ea-password-placeholder ea-target">8자 이상 · 영문과 숫자</span></div><span className="ea-password-hint ea-target">8자 이상 · 영문과 숫자</span></div>
+      <div className="ea-faux-field"><span className="ea-field-label">비밀번호</span><div className={`ea-field-box ea-password-box${revised ? '' : ' ea-target'}`}><span className="ea-password-entry">••••••••</span></div><span className="ea-password-hint ea-target">8자 이상 · 영문과 숫자</span></div>
       <div className="ea-faux-submit">다음</div>
     </div>
   </>;
@@ -113,6 +113,6 @@ export default function ExerciseArtwork({ kind = 'gallery', variant = 'original'
   const resolvedKind = Object.hasOwn(artwork, kind) ? kind : 'gallery';
   const Drawing = artwork[resolvedKind];
   return <div aria-hidden="true" className={`exercise-artwork ea-${resolvedKind}${variant === 'revised' ? ' ea-revised' : ''}${highlight ? ' ea-highlight' : ''}${compact ? ' ea-compact' : ''}`}>
-    <Drawing compact={compact} />
+    <Drawing compact={compact} revised={variant === 'revised'} />
   </div>;
 }

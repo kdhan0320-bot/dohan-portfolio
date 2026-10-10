@@ -8,6 +8,7 @@ import HomePage from './pages/HomePage';
 import GuidePage from './pages/GuidePage';
 import ExercisesPage from './pages/ExercisesPage';
 import PracticePage from './pages/PracticePage';
+import PracticeRecapPage from './pages/PracticeRecapPage';
 import { EXERCISES, getExercise } from './constants/exercises';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
@@ -80,6 +81,7 @@ const AppRoutes = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/exercises" element={<ExercisesPage />} />
         <Route path="/practice/:id" element={<PracticePage />} />
+        <Route path="/recap" element={<PracticeRecapPage />} />
         <Route path="/works" element={<Navigate to="/exercises" replace />} />
         <Route path="/archive" element={<PostListPage />} />
         <Route path="/guide" element={<GuidePage />} />
