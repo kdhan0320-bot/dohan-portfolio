@@ -24,6 +24,7 @@
 .practice-surface .nav-cta { min-height: 42px; padding: 10px 18px; background: var(--practice-ink); color: #fff; border: 1px solid var(--practice-ink); border-radius: 7px; font-size: 14px; font-weight: 500; }
 .practice-surface .nav-cta:hover { background: #393944; }
 .practice-surface :is(button, a, summary, textarea):focus-visible { outline: 3px solid #6250c7; outline-offset: 4px; }
+.practice-surface summary:focus-visible { outline-width: 2px; outline-offset: 0; }
 .practice-surface button { font-family: inherit; cursor: pointer; }
 .practice-surface button:disabled { cursor: not-allowed; }
 .practice-surface :is(button, summary) { line-height: 1.4; }
