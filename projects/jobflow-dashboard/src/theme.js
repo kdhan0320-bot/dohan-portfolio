@@ -33,29 +33,29 @@ export default createTheme({
     }
   },
   typography: {
-    fontWeightBold: 550,
+    fontWeightBold: 500,
     fontWeightMedium: 500,
     fontFamily: '"Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif',
     h1: {
       fontSize: '2rem',
-      fontWeight: 550,
+      fontWeight: 500,
       letterSpacing: '-.035em'
     },
     h2: {
       fontSize: '1.25rem',
-      fontWeight: 550
+      fontWeight: 500
     },
     h3: {
       fontSize: '1.125rem',
-      fontWeight: 550
+      fontWeight: 500
     },
     h5: {
       fontSize: '1.6rem',
-      fontWeight: 550
+      fontWeight: 500
     },
     h6: {
       fontSize: '1.05rem',
-      fontWeight: 550
+      fontWeight: 500
     },
     body1: {
       fontSize: '1rem',
@@ -71,7 +71,8 @@ export default createTheme({
     },
     button: {
       textTransform: 'none',
-      fontWeight: 500
+      fontWeight: 500,
+      lineHeight: '20px'
     }
   },
   shape: {
@@ -87,6 +88,18 @@ export default createTheme({
           minHeight: 44,
           borderRadius: 9,
           paddingInline: 16
+        },
+        startIcon: {
+          marginLeft: 0,
+          marginRight: 6,
+          alignItems: 'center',
+          '& > *:nth-of-type(1)': { fontSize: 18 }
+        },
+        endIcon: {
+          marginLeft: 6,
+          marginRight: 0,
+          alignItems: 'center',
+          '& > *:nth-of-type(1)': { fontSize: 18 }
         }
       }
     },

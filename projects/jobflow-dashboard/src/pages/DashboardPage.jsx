@@ -36,7 +36,7 @@ export default function DashboardPage() {
     finally { setBusy(''); }
   }
   return <div className="overview-page">
-    <PageHeading title="오늘의 지원" description={dateText}><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>지원할 회사 등록</Button></PageHeading>
+    <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>지원할 회사 등록</Button></PageHeading>
     <LoadState loading={apps.loading || check.loading} error={apps.error || check.error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!apps.loading && !check.loading && !apps.error && !check.error && <>
       <section className="overview-deadline" aria-labelledby="next-title">

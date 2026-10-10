@@ -1,9 +1,11 @@
-/* A compact heading leaves the actual records in the first screen. */
-.workspace-main > .page-heading-illustrated { min-height: 80px; padding: 0 0 24px; gap: 16px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; margin-bottom: 24px; overflow: visible; }
-.workspace-main > .page-heading-illustrated::before { display: none; }
-.workspace-main > .page-heading-illustrated .heading-graphic { width: 48px; }
-.workspace-main > .page-heading-illustrated h1 { font-size: 30px; font-weight: 550; letter-spacing: -.035em; }
-.workspace-main > .page-heading-illustrated .muted { font-size: 14px; line-height: 1.7; }
+/* One heading layout applies equally to direct and nested workspace pages. */
+.workspace-main .page-heading { min-height: 0; padding: 0 0 24px; gap: 16px; align-items: flex-start; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; margin-bottom: 24px; overflow: visible; }
+.workspace-main .page-heading::before { display: none; }
+.workspace-main .page-heading .page-heading-copy { flex: 1; min-width: 0; }
+.workspace-main .page-heading h1 { font-size: 28px; line-height: 36px; font-weight: 500; letter-spacing: -.03em; }
+.workspace-main .page-heading .page-heading-copy > .muted { font-size: 14px; line-height: 22px; font-weight: 400; }
+.workspace-main .page-heading .heading-actions { padding: 0; align-self: flex-start; }
+.workspace-main .page-heading .heading-actions > .MuiButton-root { min-height: 44px; font-size: 14px; }
 
 .job-lane { box-shadow: none; }
 .job-lane-heading { min-height: 65px; }
@@ -15,11 +17,10 @@
 .preparation-tasks .tabs-row { gap: 12px; }
 .preparation-tasks .task-collection:focus { outline: none; }
 @media (max-width: 699px) {
-  .workspace-main > .page-heading-illustrated { padding-bottom: 20px; gap: 12px; }
-  .workspace-main > .page-heading-illustrated h1 { font-size: 26px; }
-  .workspace-main > .page-heading-illustrated .heading-graphic { width: 40px; }
-  .workspace-main > .page-heading-illustrated .page-heading-copy { flex-basis: calc(100% - 54px); }
-  .workspace-main > .page-heading-illustrated .heading-actions { justify-content: stretch; }
-  .workspace-main > .page-heading-illustrated .heading-actions > .MuiButton-root { width: 100%; }
+  .workspace-main .page-heading { padding-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+  .workspace-main .page-heading h1 { font-size: 26px; line-height: 34px; }
+  .workspace-main .page-heading .page-heading-copy { flex-basis: 100%; }
+  .workspace-main .page-heading .heading-actions { width: 100%; justify-content: stretch; }
+  .workspace-main .page-heading .heading-actions > .MuiButton-root { width: 100%; }
   .job-tile-bottom { flex-direction: row; align-items: center; flex-wrap: wrap; }
 }

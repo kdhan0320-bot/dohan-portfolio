@@ -1,19 +1,33 @@
 import { Alert, Button, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Link } from 'react-router-dom';
-import PaperGraphic from './PaperGraphic';
+import FolderOutlined from '@mui/icons-material/FolderOutlined';
+import CalendarMonthOutlined from '@mui/icons-material/CalendarMonthOutlined';
+import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
+import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import EditNoteOutlined from '@mui/icons-material/EditNoteOutlined';
+import SpaceDashboardOutlined from '@mui/icons-material/SpaceDashboardOutlined';
+
+const headingIcons = {
+  folder: FolderOutlined,
+  calendar: CalendarMonthOutlined,
+  check: ChecklistOutlined,
+  chat: ChatBubbleOutlineOutlined,
+  write: EditNoteOutlined,
+  overview: SpaceDashboardOutlined,
+};
 export function PageHeading({
   title,
   children,
   description,
   art
 }) {
+  const HeadingIcon = headingIcons[art];
   return <header className={`page-heading ${art ? 'page-heading-illustrated' : ''}`} data-art={art}>
-  {art && <PaperGraphic kind={art} className="heading-graphic" />}
   <div className="page-heading-copy">
-
-    <h1>
-      {title}
-    </h1>
+    <div className="page-heading-title-row">
+      {HeadingIcon && <span className="heading-icon" data-kind={art} aria-hidden="true"><HeadingIcon /></span>}
+      <h1>{title}</h1>
+    </div>
     {description && <p className="muted">
       {description}
     </p>}

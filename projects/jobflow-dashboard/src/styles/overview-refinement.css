@@ -20,7 +20,7 @@
   margin: 0;
   color: var(--muted);
   font-size: 15px;
-  font-weight: 550;
+  font-weight: 500;
   line-height: 1.5;
 }
 .overview-deadline-heading .MuiButton-root { flex-shrink: 0; font-size: 14px; }
@@ -29,16 +29,16 @@
   grid-template-columns: minmax(0, 1fr) minmax(250px, .52fr);
   align-items: center;
   gap: 28px;
-  padding: 2px 26px 24px;
+  padding: 8px 24px 24px;
 }
-.overview-deadline-company { display: flex; align-items: flex-start; gap: 16px; min-width: 0; }
+.overview-deadline-company { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .overview-deadline-company .company-mark { flex: 0 0 52px; width: 52px; height: 52px; font-size: 21px; border-radius: 12px; }
 .overview-deadline-identity { min-width: 0; }
 .overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(23px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -.045em; overflow-wrap: anywhere; }
 .overview-deadline-identity p { margin: 5px 0 12px; color: var(--muted); font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
 .overview-deadline-date { display: grid; justify-items: start; gap: 7px; min-width: 0; padding-left: 28px; border-left: 1px solid var(--line); }
-.overview-deadline-date > strong { color: #805E24; font-size: 32px; font-weight: 550; line-height: 1.2; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
-.overview-deadline-date time { color: var(--ink); font-size: 16px; font-weight: 550; line-height: 1.6; font-variant-numeric: tabular-nums; }
+.overview-deadline-date > strong { color: #805E24; font-size: 32px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
+.overview-deadline-date time { color: var(--ink); font-size: 16px; font-weight: 500; line-height: 1.6; font-variant-numeric: tabular-nums; }
 .overview-deadline-date time span { display: inline-block; color: var(--muted); font-size: 14px; font-weight: 400; }
 .overview-deadline-date .MuiButton-root { margin-top: 7px; background: #FFFFFF; }
 .overview-deadline-empty { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 26px 26px; }
@@ -51,7 +51,7 @@
 .overview-page .overview-panel { border-color: var(--line); box-shadow: 0 3px 12px #29374603; }
 .overview-page .overview-panel > header { padding: 14px 22px; background: #FFFFFF; border-bottom-color: #E9EDF0; }
 .overview-page .overview-panel h2 { font-size: 18px; line-height: 1.5; }
-.overview-page .overview-panel h2 > span { margin-left: 6px; color: var(--ink-action); font-weight: 550; font-variant-numeric: tabular-nums; }
+.overview-page .overview-panel h2 > span { margin-left: 6px; color: var(--ink-action); font-weight: 500; font-variant-numeric: tabular-nums; }
 .overview-page .active-company { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; min-height: 84px; padding: 17px 22px; }
 .overview-page .active-company-copy { min-width: 0; }
 .overview-page .active-company-copy strong { font-size: 16px; line-height: 1.55; }

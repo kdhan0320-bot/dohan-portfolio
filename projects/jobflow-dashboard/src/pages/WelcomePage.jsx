@@ -27,10 +27,10 @@ export default function WelcomePage() {
       <section className="galpi-intro" aria-labelledby="welcome-title">
         <div className="galpi-intro-heading">
           <span className="galpi-eyebrow">개인 입사지원 관리</span>
-          <h1 id="welcome-title">입사지원,<br /><em>한눈에 정리.</em></h1>
-          <p>회사별 전형과 마감일을 기록하세요.</p>
+          <h1 id="welcome-title">입사지원 현황과<br /><em>마감일을 한눈에.</em></h1>
+          <p>지원할 회사를 직접 등록하고 관리해요.</p>
           <div className="galpi-intro-action">
-          <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : isGuest ? '체험 이어하기' : '샘플로 둘러보기'}</Button>
+          <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : isGuest ? '체험 이어하기' : '샘플 체험하기'}</Button>
           <small>{user ? '로그인한 계정의 지원 기록으로 이동합니다.' : '가입 없이 체험 · 가상 데이터 · 새로고침 시 초기화'}</small>
           {error && <Alert severity="error">{error}</Alert>}
           </div>
