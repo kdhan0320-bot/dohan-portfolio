@@ -14,6 +14,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const resultRef = useRef(null);
   const questionRef = useRef(null);
   const QuestionHeading = standalone ? 'h1' : 'h2';
+  const ResultHeading = standalone ? 'h2' : 'h3';
   const variantFor = side => side === exercise.revisedSide ? 'revised' : 'original';
   const descriptionFor = side => side === exercise.revisedSide ? exercise.revisedDescription : exercise.originalDescription;
 
@@ -61,7 +62,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
       <p className="practice-result-status">내 선택 {selected}<span>·</span>이 목표의 제안 {exercise.revisedSide}</p>
-      <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{exercise.revisedSide}</span><h3>{exercise.takeaway}</h3></div>
+      <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{exercise.revisedSide}</span><ResultHeading>{exercise.takeaway}</ResultHeading></div>
       <div className="practice-result-details">
         <details><summary><span>설계 이유 더 보기</span><PracticeIcon name="plus" /></summary><p>{exercise.explanation}</p><p>{exercise.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
         <details><summary><span>내 생각 한 줄 <span className="practice-optional">선택</span></span><PracticeIcon name="plus" /></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value.slice(0, 160))} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>
