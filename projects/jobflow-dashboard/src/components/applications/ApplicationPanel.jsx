@@ -129,7 +129,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
         <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>
     </Drawer>
-    <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 삭제되지 않고 공통 준비로 남습니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
+    <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
       <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{destination ? '이동하면' : '닫으면'} 방금 입력한 내용이 사라집니다.</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={() => destination ? navigate(destination) : onClose()}>저장하지 않고 {destination ? '이동' : '닫기'}</Button></DialogActions>
     </Dialog>

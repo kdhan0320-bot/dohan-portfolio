@@ -188,7 +188,7 @@ export default function InterviewPage() {
       </div>
       {selectedCompany && <Button component={Link} to={companyDestination(selectedCompany.id)} size="small">회사 정보</Button>}
     </div>
-    <Field id="interview-company-scope" select label="회사 선택" value={companyScope} disabled={companiesLoading || Boolean(companiesError)} onChange={event => selectCompany(event.target.value)}>
+    <Field id="interview-company-scope" select size="small" label="회사 선택" value={companyScope} disabled={companiesLoading || Boolean(companiesError)} onChange={event => selectCompany(event.target.value)}>
       <MenuItem value="all">전체 회사 · 공통 질문</MenuItem>
       <MenuItem value="common">공통 질문</MenuItem>
       {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
@@ -254,7 +254,7 @@ export default function InterviewPage() {
           {formError && <Alert severity="error">
             {formError}
           </Alert>}
-          <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} onChange={event => setForm({ ...form, application_id: event.target.value || null })}>
+          <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} slotProps={{ select: { displayEmpty: true } }} onChange={event => setForm({ ...form, application_id: event.target.value || null })}>
             <MenuItem value="">공통 질문 · 회사 연결 안 함</MenuItem>
             {form.application_id && !companyMap.has(form.application_id) && <MenuItem value={form.application_id} disabled>연결한 회사 없음 · 다시 선택해주세요</MenuItem>}
             {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}

@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 20px 24px;
+  padding: 20px 22px;
   margin-bottom: 24px;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -11,7 +11,7 @@
 }
 
 .interview-company-filter > .form-field {
-  flex: 0 1 330px;
+  flex: 0 1 320px;
   min-width: 220px;
 }
 
@@ -56,7 +56,7 @@
 
 .interview-company-context > .MuiButton-root {
   flex-shrink: 0;
-  margin-left: auto;
+  margin-left: 8px;
   white-space: nowrap;
 }
 

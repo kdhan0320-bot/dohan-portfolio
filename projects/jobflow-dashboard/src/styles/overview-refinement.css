@@ -47,7 +47,7 @@
 .overview-deadline-empty p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
 .overview-deadline-empty .MuiButton-root { flex-shrink: 0; }
 
-.overview-page .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
+.overview-page .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 20px; margin-top: 24px; }
 .overview-page .overview-panel { display: flex; flex-direction: column; border-color: var(--line); box-shadow: 0 3px 12px #29374603; }
 .overview-page .overview-panel > header { padding: 14px 22px; background: #FFFFFF; border-bottom-color: #E9EDF0; }
 .overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 1.5; }
