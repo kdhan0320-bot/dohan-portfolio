@@ -13,6 +13,9 @@ html { scroll-padding-top: 140px; }
 .site-primary-nav a.is-current { color: var(--ink-action); font-weight: 500; }
 .site-primary-nav a.is-current::after { content: ''; position: absolute; bottom: 2px; height: 2px; left: 13px; right: 13px; border-radius: 3px; background: #426488; }
 .site-account-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.site-settings-button.MuiIconButton-root { width: 44px; height: 44px; color: var(--muted); }
+.site-settings-button.MuiIconButton-root:hover, .site-settings-button.MuiIconButton-root[aria-current='page'] { background: #EDF2F7; color: var(--ink-action); }
+.site-settings-button .MuiSvgIcon-root { font-size: 21px; }
 .site-account-button.MuiButton-root { min-height: 42px; min-width: 76px; font-size: 13px; border-color: #99A8B7; padding-inline: 15px; }
 .site-menu-toggle.MuiIconButton-root { display: none; }
 .site-header-meta { background: var(--surface); border-top: 1px solid #E9EDF0; }
@@ -37,12 +40,15 @@ html { scroll-padding-top: 140px; }
 .site-mobile-account { margin-top: auto; padding-top: 24px; }
 .site-mobile-account p { color: var(--muted); font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
 .site-mobile-account .MuiButton-root { width: 100%; }
+.site-mobile-account .MuiButton-root + .MuiButton-root { margin-top: 8px; }
 .workspace-with-topnav { display: flex; flex-direction: column; min-height: 100vh; }
 .workspace-with-topnav > .workspace-content { flex: 1; width: 100%; min-width: 0; }
 .workspace-with-topnav .workspace-content::before { display: none; }
 .workspace-main { width: min(1344px, 100%); margin-inline: auto; padding: 32px; scroll-margin-top: 144px; }
 .guide-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .guide-steps > li { min-width: 0; padding: 28px; border: 1px solid var(--line); border-radius: 6px 18px 18px; background: #FFFFFF; display: flex; flex-direction: column; align-items: flex-start; }
+.guide-step-kicker { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 22px; }
+.guide-example-caption { color: var(--muted); font-size: 12px; line-height: 20px; font-weight: 400; }
 .guide-step-art { display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 16px; margin-bottom: 24px; }
 .guide-step-art > span { color: #8E5B66; font-size: 32px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .guide-step-art .paper-graphic { width: 108px; }
@@ -68,6 +74,7 @@ html { scroll-padding-top: 140px; }
   .site-primary-nav, .site-secondary-nav { display: none; }
   .site-account-actions { margin-left: auto; }
   .site-menu-toggle.MuiIconButton-root { display: inline-flex; }
+  .site-settings-button.MuiIconButton-root { display: none; }
   .site-header-meta-inner { min-height: 34px; }
   .workspace-main { padding: 28px; scroll-margin-top: 132px; }
   .guide-steps { gap: 14px; }

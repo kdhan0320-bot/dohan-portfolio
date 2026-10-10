@@ -1,0 +1,47 @@
+/* A company is the context; completion and category counts follow that choice. */
+.checklist-company-scope { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 26px; padding: 20px 22px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; }
+.checklist-scope-identity { display: flex; align-items: center; flex: 1; gap: 13px; min-width: 0; }
+.checklist-scope-identity > .company-mark, .checklist-scope-icon { display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px; border-radius: 10px; font-size: 15px; }
+.checklist-scope-icon { color: #326D61; background: #E6F2ED; }
+.checklist-scope-icon svg { font-size: 22px; }
+.checklist-scope-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.checklist-scope-copy strong { color: var(--ink); font-size: 16px; line-height: 24px; font-weight: 500; overflow-wrap: anywhere; }
+.checklist-scope-copy > span { color: var(--muted); font-size: 13px; line-height: 21px; overflow-wrap: anywhere; }
+.checklist-scope-identity > .MuiButton-root { min-height: 40px; margin-left: 8px; flex-shrink: 0; }
+.checklist-scope-select { width: min(320px, 38%); flex-shrink: 0; }
+.checklist-company-option.MuiMenuItem-root { white-space: normal; overflow-wrap: anywhere; font-size: 14px; line-height: 22px; max-width: min(600px, calc(100vw - 40px)); }
+.company-checklist-workspace .preparation-tasks .company-task-form { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 16px; }
+.company-task-main { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 16px; }
+.company-task-main > .MuiButton-root { min-height: 46px; min-width: 92px; margin-top: calc(var(--task-label-size, 14px) * 1.6 + 8px); }
+.company-task-options { display: grid; grid-template-columns: minmax(0, 1fr) 148px; gap: 16px; }
+.company-checklist-workspace .checklist-task-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 7px; color: var(--muted); font-size: 12px; line-height: 19px; max-width: 100%; }
+.checklist-task-meta > span, .checklist-task-meta > a { min-width: 0; overflow-wrap: anywhere; }
+.checklist-task-meta > .task-category { flex-shrink: 0; }
+.checklist-task-meta > a { color: #426488; text-decoration: none; text-underline-offset: 3px; }
+.checklist-task-meta > a:hover { text-decoration: underline; }
+.checklist-task-meta > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+@media (max-width: 899px) {
+  .checklist-company-scope { align-items: flex-start; gap: 20px; }
+  .checklist-scope-identity { flex-wrap: wrap; }
+  .checklist-scope-copy { flex: 1; }
+  .checklist-scope-identity > .MuiButton-root { margin: 0 0 0 53px; }
+  .company-task-options { grid-template-columns: minmax(0, 1fr) 120px; }
+}
+@media (max-width: 699px) {
+  .checklist-company-scope { flex-direction: column; padding: 18px; gap: 18px; margin-bottom: 22px; }
+  .checklist-scope-identity { width: 100%; }
+  .checklist-scope-identity > .MuiButton-root { margin: 0; }
+  .checklist-scope-select { width: 100%; }
+  .company-checklist-workspace .preparation-tasks .company-task-form { gap: 14px; }
+  .company-task-main, .company-task-options { gap: 12px; }
+  .company-task-main > .MuiButton-root { min-width: 80px; }
+  .company-task-options { grid-template-columns: minmax(0, 1fr) 100px; }
+  .company-checklist-workspace .task-tools { flex-direction: column; }
+}
+@media (max-width: 399px) {
+  .company-task-main { grid-template-columns: minmax(0, 1fr); }
+  .company-task-main > .MuiButton-root { margin-top: 0; grid-row: 2; }
+  .company-task-options { grid-template-columns: minmax(0, 1fr); }
+  .checklist-scope-identity > .MuiButton-root { margin-left: 53px; }
+}

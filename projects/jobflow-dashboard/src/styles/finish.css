@@ -102,3 +102,19 @@
 @media (max-width: 399px) {
   .preparation-tasks .add-task > .MuiButton-root { margin-top: 0; }
 }
+.company-panel-head > div { min-width: 0; }
+.company-panel-head h2 { overflow-wrap: anywhere; }
+.company-preparation { border-top: 1px solid var(--line); padding-top: 20px; }
+.company-preparation h3 { margin: 0 0 12px; color: var(--ink); font-size: 15px; line-height: 24px; font-weight: 500; }
+.company-preparation-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.company-preparation-links .MuiButton-root { justify-content: flex-start; gap: 10px; padding: 14px 12px; border: 1px solid #DCE1E5; border-radius: 10px; background: #F8FAFC; text-align: left; }
+.company-preparation-links .MuiButton-root:hover { border-color: #8D9FAF; background: #EEF3F8; }
+.company-preparation-links .MuiButton-root > span:last-child { min-width: 0; }
+.company-preparation-links strong, .company-preparation-links small { display: block; overflow-wrap: anywhere; }
+.company-preparation-links strong { color: var(--ink); font-size: 15px; line-height: 24px; font-weight: 500; }
+.company-preparation-links small { margin-top: 2px; color: var(--muted); font-size: 13px; line-height: 20px; font-weight: 400; }
+.preparation-link-icon { width: 30px; height: 36px; flex-shrink: 0; display: grid; place-items: center; color: #426488; }
+.preparation-link-icon .MuiSvgIcon-root { font-size: 22px; }
+@media (max-width: 399px) {
+  .company-preparation-links { grid-template-columns: minmax(0, 1fr); }
+}

@@ -7,8 +7,8 @@ import { BOARD_COLUMNS } from '../utils/applicationBoard';
 
 const steps = [
   { title: '회사 등록', description: '회사·직무·마감일을 입력해요.', kind: 'fields', to: '/?new=1', label: '회사 등록하기' },
-  { title: '전형 기록', description: '서류와 면접 진행 상태를 기록해요.', kind: 'board', to: '/', label: '지원 현황 보기' },
-  { title: '다음 준비', description: '서류·면접 준비를 하나씩 체크해요.', kind: 'checks', to: '/checklist', label: '준비 체크 열기' }
+  { title: '전형 기록', description: '지원 전부터 결과까지 상태를 바꿔요.', kind: 'board', to: '/', label: '지원 현황 보기' },
+  { title: '회사별 준비', description: '회사에 할 일과 면접 메모를 연결해요.', kind: 'checks', to: '/checklist', label: '준비 체크 열기' }
 ];
 
 function GuideExample({ kind }) {
@@ -31,7 +31,7 @@ export default function GuidePage() {
     <PageHeading art="guide" title="이용 안내" description="내 입사지원을 관리하는 세 단계" />
     <ol className="guide-steps">
       {steps.map((step, index) => <li key={step.title} data-step={index + 1}>
-        <span className="guide-step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <div className="guide-step-kicker"><span className="guide-step-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span className="guide-example-caption">화면 예시</span></div>
         <GuideExample kind={step.kind} />
         <h2>{step.title}</h2>
         <p>{step.description}</p>

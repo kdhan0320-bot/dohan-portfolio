@@ -49,9 +49,10 @@ const useInterviewNotes = () => {
     fetch();
   }, [fetch]);
   const add = async payload => {
+    const values = { ...interviewUpdate(payload), is_reviewed: false };
     if (isGuest) {
       const row = {
-        ...payload,
+        ...values,
         id: crypto.randomUUID()
       };
       setDemoNotes(prev => [row, ...prev]);
@@ -61,7 +62,7 @@ const useInterviewNotes = () => {
     let response;
     try {
       response = await supabase.from('interview_notes').insert([{
-        ...payload,
+        ...values,
         user_id: user.id
       }]).select().single();
     } catch (requestError) {
@@ -112,7 +113,7 @@ const useInterviewNotes = () => {
     if (!user) throw new Error('로그인 후 면접 메모를 수정할 수 있습니다.');
     let response;
     try {
-      response = await supabase.from('interview_notes').update(values).eq('id', id).eq('user_id', user.id).select('id, question, answer, related_project, importance').maybeSingle();
+      response = await supabase.from('interview_notes').update(values).eq('id', id).eq('user_id', user.id).select('id, question, answer, related_project, importance, application_id').maybeSingle();
     } catch (requestError) { throw createSafeDataError(requestError); }
     if (response.error) throw createSafeDataError(response.error);
     if (!response.data) throw new Error('수정할 면접 메모를 찾지 못했거나 권한이 없습니다.');

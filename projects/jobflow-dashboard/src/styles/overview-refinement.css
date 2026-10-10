@@ -34,7 +34,7 @@
 .overview-deadline-company { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .overview-deadline-company .company-mark { flex: 0 0 52px; width: 52px; height: 52px; font-size: 21px; border-radius: 12px; }
 .overview-deadline-identity { min-width: 0; }
-.overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(23px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(23px, 2.2vw, 28px); font-weight: 500; line-height: 1.4; letter-spacing: -.045em; overflow-wrap: anywhere; }
 .overview-deadline-identity p { margin: 5px 0 12px; color: var(--muted); font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
 .overview-deadline-date { display: grid; justify-items: start; gap: 7px; min-width: 0; padding-left: 28px; border-left: 1px solid var(--line); }
 .overview-deadline-date > strong { color: #805E24; font-size: 32px; font-weight: 500; line-height: 1.2; letter-spacing: -.045em; font-variant-numeric: tabular-nums; }
@@ -43,22 +43,34 @@
 .overview-deadline-date .MuiButton-root { margin-top: 7px; background: #FFFFFF; }
 .overview-deadline-empty { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 12px 26px 26px; }
 .overview-deadline-empty > div { min-width: 0; }
-.overview-deadline-empty h3 { margin: 0; color: var(--ink); font-size: 22px; line-height: 1.5; }
+.overview-deadline-empty h3 { margin: 0; color: var(--ink); font-size: 22px; font-weight: 500; line-height: 1.5; }
 .overview-deadline-empty p { margin: 7px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
 .overview-deadline-empty .MuiButton-root { flex-shrink: 0; }
 
 .overview-page .overview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 24px; }
-.overview-page .overview-panel { border-color: var(--line); box-shadow: 0 3px 12px #29374603; }
+.overview-page .overview-panel { display: flex; flex-direction: column; border-color: var(--line); box-shadow: 0 3px 12px #29374603; }
 .overview-page .overview-panel > header { padding: 14px 22px; background: #FFFFFF; border-bottom-color: #E9EDF0; }
-.overview-page .overview-panel h2 { font-size: 18px; line-height: 1.5; }
-.overview-page .overview-panel h2 > span { margin-left: 6px; color: var(--ink-action); font-weight: 500; font-variant-numeric: tabular-nums; }
-.overview-page .active-company { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 12px; min-height: 84px; padding: 17px 22px; }
-.overview-page .active-company-copy { min-width: 0; }
-.overview-page .active-company-copy strong { font-size: 16px; line-height: 1.55; }
-.overview-page .active-company-copy small { font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
-.overview-page .active-company .MuiChip-root { max-width: 100%; }
-.overview-page .overview-task { min-height: 84px; padding: 17px 16px; gap: 8px; }
-.overview-page .overview-task > span:last-child { min-width: 0; font-size: 16px; line-height: 1.65; }
+.overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 1.5; }
+.overview-page .overview-panel h2 > span { display: inline-block; margin-left: 6px; color: var(--muted); font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.overview-page .overview-panel > header .MuiButton-root { flex-shrink: 0; }
+.overview-page .overview-tasks, .overview-page .overview-interviews { flex: 1; }
+.overview-page .overview-task { min-height: 96px; padding: 16px; gap: 8px; cursor: default; }
+.overview-page .overview-task .MuiCheckbox-root { flex: 0 0 44px; width: 44px; height: 44px; }
+.overview-page .overview-task > .overview-task-copy { display: grid; min-width: 0; gap: 4px; font-size: 15px; font-weight: 400; line-height: 1.6; }
+.overview-task-copy > span { overflow-wrap: anywhere; }
+.overview-task-copy > a, .overview-task-copy > small { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.overview-task-copy > a { justify-self: start; text-decoration: underline; text-decoration-color: #BCC5CE; text-underline-offset: 3px; }
+.overview-task-copy > a:hover { color: var(--ink); text-decoration-color: currentColor; }
+.overview-task-copy > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 2px; }
+.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 96px; padding: 16px 22px; border-bottom: 1px solid #E9EDF0; }
+.overview-interview:last-child { border-bottom: 0; }
+.overview-interview .company-mark { width: 40px; height: 40px; font-size: 16px; }
+.overview-interview-copy { display: grid; min-width: 0; gap: 4px; }
+.overview-interview-copy > strong { font-size: 15px; font-weight: 500; line-height: 1.6; overflow-wrap: anywhere; }
+.overview-interview-copy > small { color: var(--muted); font-size: 13px; line-height: 1.6; overflow-wrap: anywhere; }
+.overview-interview .MuiButton-root { min-width: 80px; min-height: 40px; padding-inline: 12px; white-space: nowrap; }
+.overview-page .overview-panel .empty-state { min-height: 250px; height: 100%; padding: 28px 22px; }
+.overview-page .overview-panel .empty-state h2 { font-size: 17px; }
 .overview-page .overdue-note { gap: 12px; padding: 8px 18px; margin-top: 18px; line-height: 1.6; }
 .overview-page .overdue-note .MuiButton-root { flex-shrink: 0; }
 
@@ -86,7 +98,7 @@
   .overview-deadline-empty h3 { font-size: 21px; }
   .overview-page .overview-grid { gap: 18px; margin-top: 22px; }
   .overview-page .overview-panel > header { padding: 12px 16px; }
-  .overview-page .active-company { padding: 16px; gap: 11px; }
+  .overview-interview { padding: 16px; gap: 11px; }
   .overview-page .overview-task { padding: 16px 10px; }
   .overview-page .overdue-note { padding: 8px 14px; }
 }
@@ -94,7 +106,10 @@
 @media (max-width: 399px) {
   .overview-deadline-date { grid-template-columns: minmax(0, 1fr); }
   .overview-deadline-date .MuiButton-root { grid-column: 1; grid-row: auto; margin-top: 8px; width: 100%; }
-  .overview-page .active-company { grid-template-columns: 36px minmax(0, 1fr); }
-  .overview-page .active-company .company-mark { width: 36px; height: 36px; }
-  .overview-page .active-company .MuiChip-root { grid-column: 2; justify-self: start; }
+  .overview-page .overview-panel > header { gap: 8px; }
+  .overview-page .overview-panel h2 { font-size: 17px; }
+  .overview-page .overview-panel > header .MuiButton-root { padding-inline: 4px; }
+  .overview-interview { grid-template-columns: 36px minmax(0, 1fr); }
+  .overview-interview .company-mark { width: 36px; height: 36px; }
+  .overview-interview .MuiButton-root { grid-column: 2; justify-self: start; margin-top: 2px; }
 }

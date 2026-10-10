@@ -1,29 +1,30 @@
 import { useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Drawer, IconButton } from '@mui/material';
+import { Button, Drawer, IconButton, Tooltip } from '@mui/material';
 import MenuOutlined from '@mui/icons-material/MenuOutlined';
 import Close from '@mui/icons-material/Close';
+import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import { Brand } from '../ui/Brand';
 import ActionFeedback from '../ui/ActionFeedback';
 import { useAuth } from '../../context/AuthContext';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 const mainLinks = [
+  { to: '/overview', label: '오늘의 지원' },
   { to: '/', label: '지원 현황' },
   { to: '/calendar', label: '마감 일정' },
   { to: '/checklist', label: '준비 체크' },
-  { to: '/interview', label: '면접 연습' },
-  { to: '/guide', label: '이용 안내' }
+  { to: '/interview', label: '면접 연습' }
 ];
 const secondaryLinks = [
-  { to: '/overview', label: '오늘의 지원' },
-  { to: '/document-helper', label: '작성 요청문' },
-  { to: '/settings', label: '설정' },
+  { to: '/guide', label: '이용 안내' },
   { to: '/welcome', label: '서비스 소개' }
 ];
-const activePath = (pathname, to) => to === '/'
-  ? pathname === '/' || pathname.startsWith('/applications') || pathname === '/kanban'
-  : pathname === to;
+const activePath = (pathname, to) => {
+  if (to === '/') return pathname === '/' || pathname.startsWith('/applications') || pathname === '/kanban';
+  if (to === '/checklist') return pathname === '/checklist' || pathname === '/document-helper';
+  return pathname === to;
+};
 
 export default function SiteHeader({ publicMode = false }) {
   const { user, isGuest, enterGuestMode, signOut, loading } = useAuth();
@@ -107,6 +108,7 @@ export default function SiteHeader({ publicMode = false }) {
         <Link className="site-brand-link" to={homePath} aria-label={homePath === '/overview' ? '갈피록 오늘의 지원' : '갈피록 서비스 소개'} onClick={event => visit(event, homePath)}><Brand /></Link>
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
         <div className="site-account-actions">
+          {isGuest && <Tooltip title="샘플 설정"><IconButton className="site-settings-button" component={Link} to="/settings" aria-label="샘플 설정" aria-current={pathname === '/settings' ? 'page' : undefined} disabled={busy || loading} onClick={event => visit(event, '/settings')}><SettingsOutlined /></IconButton></Tooltip>}
           <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>{user ? '내 계정' : '로그인'}</Button>
           <IconButton className="site-menu-toggle" ref={menuButtonRef} aria-label="메뉴 열기" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'site-mobile-menu' : undefined} onClick={() => setMobileOpen(true)}><MenuOutlined /></IconButton>
         </div>
@@ -127,6 +129,7 @@ export default function SiteHeader({ publicMode = false }) {
       {hasWorkspace && <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{secondaryLinks.map(item => menuLink(item, true))}</nav>}
       <div className="site-mobile-account">
         <p>{isGuest ? '샘플 변경은 새로고침하면 초기화돼요.' : !user ? '메뉴를 선택하면 가상 데이터로 체험해요.' : '내 계정에서 기록장 설정을 관리해요.'}</p>
+        {isGuest && <Button component={Link} to="/settings" variant="text" disabled={busy || loading} onClick={event => visit(event, '/settings', true)}>샘플 설정</Button>}
         <Button variant="outlined" onClick={() => openAccount(true)} disabled={busy || loading}>{user ? '내 계정' : '로그인 / 가입'}</Button>
       </div>
     </Drawer>

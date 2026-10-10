@@ -98,6 +98,7 @@ export function Empty({
 export function ConfirmDelete({
   open,
   title,
+  description,
   busy,
   onClose,
   onConfirm
@@ -106,6 +107,7 @@ export function ConfirmDelete({
   <DialogTitle id="delete-dialog-title">기록을 삭제할까요?</DialogTitle>
   <DialogContent>
     <p>‘{title}’ 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+    {description && <p>{description}</p>}
   </DialogContent>
   <DialogActions>
     <Button onClick={onClose} disabled={busy}>취소</Button>

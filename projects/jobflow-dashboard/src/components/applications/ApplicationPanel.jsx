@@ -1,21 +1,49 @@
 import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, FormControlLabel, IconButton, MenuItem } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
+import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
+import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
+import useChecklist from '../../hooks/useChecklist';
+import useInterviewNotes from '../../hooks/useInterviewNotes';
 import Field from '../ui/Field';
 import { CompanyMark, ConfirmDelete } from '../ui/PageUI';
 import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../../constants';
 import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
 
+function CompanyPreparation({ applicationId, onVisit, disabled }) {
+  const checklist = useChecklist();
+  const interview = useInterviewNotes();
+  const loading = checklist.loading || interview.loading;
+  const error = checklist.error || interview.error;
+  const tasks = checklist.items.filter(item => item.application_id === applicationId && !item.is_done).length;
+  const questions = interview.notes.filter(note => note.application_id === applicationId && !note.is_reviewed).length;
+  return <section className="company-preparation" aria-labelledby="company-preparation-title">
+    <h3 id="company-preparation-title">이 회사의 준비</h3>
+    {error && <Alert severity="error" action={<Button color="inherit" onClick={() => { checklist.refresh(); interview.refresh(); }}>재시도</Button>}>준비 기록을 불러오지 못했어요.</Alert>}
+    <div className="company-preparation-links">
+      <Button onClick={() => onVisit(`/checklist?company=${encodeURIComponent(applicationId)}`)} disabled={disabled}>
+        <span className="preparation-link-icon"><ChecklistOutlined /></span><span><strong>준비 체크</strong><small>{loading ? '불러오는 중…' : error ? '기록 열기' : `남은 할 일 ${tasks}개`}</small></span>
+      </Button>
+      <Button onClick={() => onVisit(`/interview?company=${encodeURIComponent(applicationId)}`)} disabled={disabled}>
+        <span className="preparation-link-icon"><ChatBubbleOutlineOutlined /></span><span><strong>면접 연습</strong><small>{loading ? '불러오는 중…' : error ? '기록 열기' : `연습할 질문 ${questions}개`}</small></span>
+      </Button>
+    </div>
+  </section>;
+}
+
 export default function ApplicationPanel({ application, creating, onClose, onSave, onDelete }) {
+  const navigate = useNavigate();
   const [form, setForm] = useState(() => applicationDraft(application));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
   const [deleting, setDeleting] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const [destination, setDestination] = useState(null);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
   const dirty = JSON.stringify(form) !== JSON.stringify(applicationDraft(application));
@@ -26,8 +54,14 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
   }
   function close() {
     if (busy) return;
+    setDestination(null);
     if (dirty) setConfirmLeave(true);
     else onClose();
+  }
+  function visit(to) {
+    if (busy) return;
+    if (dirty) { setDestination(to); setConfirmLeave(true); }
+    else navigate(to);
   }
   async function save(e) {
     e.preventDefault();
@@ -76,6 +110,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
             <FormControlLabel control={<Checkbox checked={Boolean(form.resume_submitted)} onChange={e => change('resume_submitted', e.target.checked)} disabled={busy} />} label="이력서 제출" />
             <FormControlLabel control={<Checkbox checked={Boolean(form.portfolio_submitted)} onChange={e => change('portfolio_submitted', e.target.checked)} disabled={busy} />} label="포트폴리오 제출" />
           </div>}
+          {!creating && <CompanyPreparation applicationId={application.id} onVisit={visit} disabled={busy} />}
           {!creating && field('memo', '준비 메모', { multiline: true, minRows: 3, placeholder: '다음에 할 일을 적어보세요.' })}
           <details className="panel-extra" open={Boolean(errors.job_url || (!creating && errors.company_name)) || undefined}>
             <summary>{creating ? '공고·마감일 추가' : '회사·공고 정보 수정'}</summary>
@@ -94,9 +129,9 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
         <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>
     </Drawer>
-    <ConfirmDelete open={deleting} title={application?.company_name} busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
+    <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 삭제되지 않고 공통 준비로 남습니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>닫으면 방금 입력한 내용이 사라집니다.</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={onClose}>저장하지 않고 닫기</Button></DialogActions>
+      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{destination ? '이동하면' : '닫으면'} 방금 입력한 내용이 사라집니다.</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={() => destination ? navigate(destination) : onClose()}>저장하지 않고 {destination ? '이동' : '닫기'}</Button></DialogActions>
     </Dialog>
   </>;
 }

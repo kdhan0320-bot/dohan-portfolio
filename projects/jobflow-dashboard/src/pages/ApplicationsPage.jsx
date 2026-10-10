@@ -87,7 +87,7 @@ export default function ApplicationsPage() {
             </section>;
           })}
         </div>
-        <p className="board-instruction">회사를 누르면 상태와 준비 메모를 수정할 수 있어요.</p>
+        <p className="board-instruction">회사를 선택해 전형 상태와 회사별 준비를 관리하세요.</p>
       </>}
       {(creating || selected) && <ApplicationPanel key={creating ? 'new' : selected.id} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onDelete={deleteCompany} />}
       {params.get('company') && !selected && !creating && <div className="missing-company" role="status">이 회사 정보를 찾을 수 없어요.<Button onClick={closePanel}>닫기</Button></div>}

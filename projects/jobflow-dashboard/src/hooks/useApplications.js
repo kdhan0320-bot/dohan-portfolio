@@ -11,7 +11,9 @@ const useApplications = () => {
     user,
     isGuest,
     demoApplications,
-    setDemoApplications
+    setDemoApplications,
+    setDemoItems,
+    setDemoNotes
   } = useAuth();
   const fetch = useCallback(async () => {
     setLoading(true);
@@ -108,6 +110,8 @@ const useApplications = () => {
   const remove = async id => {
     if (isGuest) {
       setDemoApplications(prev => prev.filter(a => a.id !== id));
+      setDemoItems(prev => prev.map(item => item.application_id === id ? { ...item, application_id: null } : item));
+      setDemoNotes(prev => prev.map(note => note.application_id === id ? { ...note, application_id: null } : note));
       return;
     }
     if (!user) throw new Error('로그인 후 지원 정보를 삭제할 수 있습니다.');

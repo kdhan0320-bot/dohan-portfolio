@@ -213,54 +213,63 @@ export const DEMO_APPLICATIONS = [{
 }];
 export const DEMO_CHECKLISTS = [{
   id: 'cl-1',
+  application_id: null,
   title: '포트폴리오 대표 프로젝트 순서 정리',
   category: '포트폴리오',
   is_done: true,
   sort_order: 1
 }, {
   id: 'cl-2',
+  application_id: null,
   title: '대표 프로젝트 설명 다듬기',
   category: '포트폴리오',
   is_done: true,
   sort_order: 2
 }, {
   id: 'cl-3',
+  application_id: null,
   title: '자기소개서 1차 수정',
   category: '서류',
   is_done: false,
   sort_order: 3
 }, {
   id: 'cl-4',
+  application_id: 'demo-1',
   title: '면접 질문 5개 답변 작성',
   category: '면접',
   is_done: false,
   sort_order: 4
 }, {
   id: 'cl-5',
+  application_id: 'demo-1',
   title: '블루핀랩 면접 복장 준비',
   category: '면접',
   is_done: false,
   sort_order: 5
 }, {
   id: 'cl-6',
+  application_id: 'demo-3',
   title: '모션브릿지 이력서 최종 확인',
   category: '서류',
   is_done: false,
   sort_order: 6
 }, {
   id: 'cl-7',
+  application_id: null,
   title: 'GitHub README 정리',
   category: '포트폴리오',
   is_done: true,
   sort_order: 7
 }, {
   id: 'cl-8',
+  application_id: null,
   title: '포트폴리오 모바일 반응형 확인',
   category: '포트폴리오',
   is_done: true,
   sort_order: 8
 }, {
   id: 'cl-9',
+  application_id: 'demo-3',
   title: '자기소개서 지원동기 단락 보완',
   category: '서류',
   is_done: false,
@@ -268,6 +277,7 @@ export const DEMO_CHECKLISTS = [{
 }];
 export const DEMO_INTERVIEW_NOTES = [{
   id: 'in-1',
+  application_id: 'demo-1',
   question: '자기소개를 해주세요.',
   answer: '안녕하세요. 저는 UX/UI 기반 웹디자이너로 사용자 흐름을 정리하고 실무형 웹서비스 화면을 구현하는 것을 목표로 학습하고 있습니다.',
   related_project: '자기소개',
@@ -275,6 +285,7 @@ export const DEMO_INTERVIEW_NOTES = [{
   is_reviewed: true
 }, {
   id: 'in-2',
+  application_id: null,
   question: '본인의 강점은 무엇인가요?',
   answer: '사용자 흐름을 정리하고 실무형 웹서비스 화면을 구현하는 능력이 강점입니다.',
   related_project: '프로젝트 경험',
@@ -282,6 +293,7 @@ export const DEMO_INTERVIEW_NOTES = [{
   is_reviewed: false
 }, {
   id: 'in-3',
+  application_id: 'demo-6',
   question: 'React를 선택한 이유는?',
   answer: '컴포넌트 기반 설계로 재사용성이 높고, MUI와 결합 시 빠르게 실무형 UI를 구현할 수 있기 때문입니다.',
   related_project: '기술 선택',

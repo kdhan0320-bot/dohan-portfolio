@@ -75,12 +75,12 @@ const useChecklist = () => {
       is_done: data.is_done
     } : item));
   };
-  const add = async (title, category) => {
+  const add = async (title, category, applicationId = null) => {
+    const values = checklistUpdate({ title, category, application_id: applicationId });
     if (isGuest) {
       const row = {
+        ...values,
         id: crypto.randomUUID(),
-        title: title.trim(),
-        category,
         is_done: false,
         sort_order: demoItems.length + 1
       };
@@ -92,8 +92,7 @@ const useChecklist = () => {
     let response;
     try {
       response = await supabase.from('portfolio_checklists').insert([{
-        title,
-        category,
+        ...values,
         is_done: false,
         sort_order: maxOrder,
         user_id: user.id
@@ -118,7 +117,7 @@ const useChecklist = () => {
     if (!user) throw new Error('로그인 후 체크리스트를 수정할 수 있습니다.');
     let response;
     try {
-      response = await supabase.from('portfolio_checklists').update({ ...values, updated_at: new Date().toISOString() }).eq('id', id).eq('user_id', user.id).select('id, title, category').maybeSingle();
+      response = await supabase.from('portfolio_checklists').update({ ...values, updated_at: new Date().toISOString() }).eq('id', id).eq('user_id', user.id).select('id, title, category, application_id').maybeSingle();
     } catch (requestError) { throw createSafeDataError(requestError); }
     if (response.error) throw createSafeDataError(response.error);
     if (!response.data) throw new Error('수정할 할 일을 찾지 못했거나 권한이 없습니다.');

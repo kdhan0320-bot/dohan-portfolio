@@ -1,0 +1,94 @@
+.interview-company-filter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.interview-company-filter > .form-field {
+  flex: 0 1 330px;
+  min-width: 220px;
+}
+
+.interview-company-context {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.interview-company-context > .company-mark {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+.interview-company-context > div {
+  min-width: 0;
+}
+
+.interview-company-context strong,
+.interview-company-context span:not(.company-mark) {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.interview-company-context strong {
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.interview-company-context div > span {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 21px;
+}
+
+.interview-company-context > .MuiButton-root {
+  flex-shrink: 0;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.interview-status-tabs .MuiTabs-root { min-width: 0; }
+.interview-company-option.MuiMenuItem-root {
+  max-width: min(560px, calc(100vw - 40px));
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.practice-card-meta .practice-company-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 500;
+}
+.practice-company-label > a { text-underline-offset: 3px; }
+.practice-company-label > a:hover { color: #3d6594; }
+.practice-company-label > a:focus-visible { outline: 3px solid #99a8b7; outline-offset: 3px; }
+.practice-company-label > span { color: var(--muted); font-size: 12px; font-weight: 400; }
+
+@media (max-width: 760px) {
+  .interview-company-filter { align-items: stretch; flex-direction: column; gap: 18px; padding: 18px; }
+  .interview-company-filter > .form-field { flex-basis: auto; min-width: 0; }
+}
+
+@media (max-width: 399px) {
+  .interview-company-context { flex-wrap: wrap; }
+  .interview-company-context > div { flex: 1; }
+  .interview-company-context > .MuiButton-root { margin-left: 0; }
+}
