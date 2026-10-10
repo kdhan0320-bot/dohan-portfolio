@@ -58,6 +58,8 @@
 .exercise-artwork .ea-project-description { color: #5c6676; font-size: 12px; white-space: nowrap; }
 .exercise-artwork.ea-flower { background: #f8f3f7; }
 .exercise-artwork .ea-flower-image { position: relative; height: 216px; overflow: hidden; background-color: #e6d9ec; background-size: cover; background-position: 50% 47%; }
+/* Both options share the same light photo treatment. Only the title panel changes. */
+.exercise-artwork .ea-flower-image::before { content: ''; position: absolute; inset: 0; background: rgb(255 255 255 / 56%); }
 .exercise-artwork .ea-flower-title { position: absolute; top: 22px; left: 18px; display: flex; flex-direction: column; padding: 12px 16px; color: #fff; font-size: 27px; line-height: 1.25; font-weight: 750; letter-spacing: -.035em; }
 .exercise-artwork.ea-revised .ea-flower-title { background: #3d2c49; }
 .exercise-artwork .ea-flower-edition { position: absolute; left: 20px; bottom: 14px; padding: 3px 7px; color: #51395d; background: #f6eff7; font-size: 11px; letter-spacing: .04em; }

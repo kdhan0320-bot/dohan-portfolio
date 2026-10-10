@@ -61,7 +61,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       <p className="practice-explanation">{exercise.explanation}</p>
       <div className="practice-result-details">
         <details><summary>다른 상황에서는?</summary><p>{exercise.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
-        <details><summary>내 생각 한 줄 <span>선택</span></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value)} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>
+        <details><summary>내 생각 한 줄 <span>선택</span></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value.slice(0, 160))} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>
       </div>
       <div className="practice-result-actions"><button className="practice-secondary" onClick={restart}>다시 비교하기</button>{nextExercise ? <Link className="practice-primary" to={`/practice/${nextExercise.id}`}>다음 연습</Link> : <Link className="practice-primary" to="/exercises">연습 모음으로</Link>}</div>
     </div>}

@@ -7,6 +7,7 @@
   background: #f7f5ee;
   color: var(--practice-ink);
 }
+.practice-surface, .practice-surface *, .practice-surface *::before, .practice-surface *::after { box-sizing: border-box; }
 .practice-surface .shell, .practice-surface .header-inner { width: min(1160px, calc(100% - 80px)); }
 .practice-surface .site-header { background: #fcfbf7; border-bottom: 1px solid var(--practice-line); }
 .practice-surface .header-inner { min-height: 80px; gap: 28px; }
