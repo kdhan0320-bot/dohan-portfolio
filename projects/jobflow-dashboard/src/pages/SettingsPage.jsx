@@ -142,7 +142,7 @@ const SettingsPage = () => {
               {(displayName || user?.email || '?')[0].toUpperCase()}
             </Avatar>
             <div>
-              <Typography component="h2" variant="h6" fontWeight={700}>{displayName || '이름 미설정'}</Typography>
+              <Typography component="h2" variant="h6" fontWeight={550}>{displayName || '이름 미설정'}</Typography>
               <Typography variant="body2" color="text.secondary">{user?.email}</Typography>
             </div>
           </div>

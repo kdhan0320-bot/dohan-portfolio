@@ -3,10 +3,10 @@ export function Brand({
 }) {
   return <span className="brand">
   <svg width="32" height="36" viewBox="0 0 32 36" fill="none" aria-hidden="true">
-    <path d="M5 3h15l7 7v23H5V3Z" fill="currentColor" />
-    <path d="M20 3v8h7" stroke="#FFFDFA" strokeWidth="1.5" />
-    <path d="M11 3v16l4-3 4 3V3" fill="#E9BBC3" />
-    <path d="M11 25h10M11 29h6" stroke="#FFFDFA" strokeWidth="1.5" />
+    <path d="M5 3h15l7 7v23H5V3Z" fill="#303943" />
+    <path d="M20 3v8h7" stroke="#FFFFFF" strokeWidth="1.5" />
+    <path d="M11 3v16l4-3 4 3V3" fill="#B47D91" />
+    <path d="M11 25h10M11 29h6" stroke="#FFFFFF" strokeWidth="1.5" />
   </svg>
   {!compact && <span>갈피록<span className="brand-sub">개인 입사지원 관리</span></span>}
 </span>;

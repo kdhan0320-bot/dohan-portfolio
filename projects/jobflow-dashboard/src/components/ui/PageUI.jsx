@@ -43,8 +43,10 @@ export function Panel({
 export function CompanyMark({
   name
 }) {
-  const tones = ['mauve', 'sage', 'sand'];
-  const index = [...(name || '가')].reduce((a, c) => a + c.charCodeAt(0), 0) % 3;
+  const tones = ['blue', 'lavender', 'sage', 'sand'];
+  // A stable visual identifier; company colors do not indicate an application state.
+  const hash = [...(name || '가')].reduce((value, character) => Math.imul(value ^ character.codePointAt(0), 16777619) >>> 0, 2166136261);
+  const index = (hash >>> 16) % tones.length;
   return <span className={`company-mark ${tones[index]}`} aria-hidden="true">
   {name?.slice(0, 1) || '회'}
 </span>;
@@ -68,7 +70,7 @@ export function Empty({
   children
 }) {
   return <div className="empty-state">
-  <svg className="empty-mark" width="54" height="62" viewBox="0 0 54 62" fill="none" aria-hidden="true"><path d="M10 4h23l11 11v43H10Z" fill="#EFEBE7" stroke="#BEA8AB" strokeWidth="1.5"/><path d="M33 4v12h11M18 29h18M18 37h18M18 45h11" stroke="#A2878B" strokeWidth="1.5" strokeLinecap="round"/></svg>
+  <svg className="empty-mark" width="54" height="62" viewBox="0 0 54 62" fill="none" aria-hidden="true"><path d="M10 4h23l11 11v43H10Z" fill="#EDF1F4" stroke="#B3BEC8" strokeWidth="1.5"/><path d="M33 4v12h11M18 29h18M18 37h18M18 45h11" stroke="#7A8B9C" strokeWidth="1.5" strokeLinecap="round"/></svg>
   <h2>
     {title}
   </h2>

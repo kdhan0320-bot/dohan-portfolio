@@ -18,7 +18,7 @@
   padding: 22px 28px 22px 20px;
   border: 1px solid #DDCEC8;
   border-radius: 16px;
-  background: linear-gradient(110deg, #F7EEEA, #FFFDFA 72%);
+  background: linear-gradient(110deg, var(--surface), #FFFFFF 72%);
 }
 .prep-banner-art {
   display: block;
@@ -29,16 +29,16 @@
 .prep-banner-copy { min-width: 0; }
 .prep-banner-copy h2 {
   margin: 0 0 8px;
-  color: #512E36;
+  color: var(--ink);
   font-size: clamp(20px, 1.8vw, 24px);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.4;
   letter-spacing: -.035em;
   word-break: keep-all;
 }
 .prep-banner-copy p {
   margin: 0;
-  color: #655D5B;
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
   word-break: keep-all;

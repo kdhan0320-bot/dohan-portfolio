@@ -13,7 +13,7 @@ const StatusChip = ({ status, size = 'small' }) => {
       sx={{
         color: found.color,
         bgcolor: found.bg,
-        fontWeight: 600,
+        fontWeight: 500,
         border: `1px solid ${found.color}30`,
         minHeight: 28,
       }}

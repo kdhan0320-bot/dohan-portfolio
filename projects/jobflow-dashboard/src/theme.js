@@ -2,58 +2,60 @@ import { createTheme } from '@mui/material/styles';
 export default createTheme({
   palette: {
     primary: {
-      main: '#94394B',
-      dark: '#512E36',
-      light: '#CE9AA4',
+      main: '#303943',
+      dark: '#1F2831',
+      light: '#DCE4EB',
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#5D776A'
+      main: '#3D6594'
     },
     background: {
-      default: '#F7F5F1',
+      default: '#F6F7F8',
       paper: '#FFFFFF'
     },
     text: {
-      primary: '#302B2C',
-      secondary: '#6A6161'
+      primary: '#292F35',
+      secondary: '#606973'
     },
-    divider: '#E3DDD7',
+    divider: '#DCE1E5',
     success: {
-      main: '#37644E'
+      main: '#326D61'
     },
     error: {
-      main: '#A73E2B'
+      main: '#A33F42'
     },
     warning: {
-      main: '#8A5C23'
+      main: '#805E24'
     },
     info: {
-      main: '#94394B'
+      main: '#3D6594'
     }
   },
   typography: {
+    fontWeightBold: 550,
+    fontWeightMedium: 500,
     fontFamily: '"Pretendard Variable", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif',
     h1: {
       fontSize: '2rem',
-      fontWeight: 700,
-      letterSpacing: '-.045em'
+      fontWeight: 550,
+      letterSpacing: '-.035em'
     },
     h2: {
       fontSize: '1.25rem',
-      fontWeight: 700
+      fontWeight: 550
     },
     h3: {
       fontSize: '1.125rem',
-      fontWeight: 700
+      fontWeight: 550
     },
     h5: {
       fontSize: '1.6rem',
-      fontWeight: 700
+      fontWeight: 550
     },
     h6: {
       fontSize: '1.05rem',
-      fontWeight: 700
+      fontWeight: 550
     },
     body1: {
       fontSize: '1rem',
@@ -69,7 +71,7 @@ export default createTheme({
     },
     button: {
       textTransform: 'none',
-      fontWeight: 600
+      fontWeight: 500
     }
   },
   shape: {
@@ -100,31 +102,34 @@ export default createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          border: '1px solid #E3DDD7'
+          border: '1px solid #DCE1E5'
         }
       }
     },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          backgroundColor: '#FFFFFF'
+          backgroundColor: '#FFFFFF',
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#3D6594'
+          }
         },
         notchedOutline: {
-          borderColor: '#A1858A'
+          borderColor: '#A6AFB8'
         }
       }
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderColor: '#E3DDD7',
+          borderColor: '#DCE1E5',
           padding: '18px 20px'
         },
         head: {
           fontSize: 13,
-          color: '#6A6161',
-          backgroundColor: '#F7F6F5',
-          fontWeight: 600
+          color: '#606973',
+          backgroundColor: '#F6F7F8',
+          fontWeight: 500
         }
       }
     },
@@ -133,14 +138,14 @@ export default createTheme({
         root: {
           textTransform: 'none',
           minHeight: 48,
-          fontWeight: 600
+          fontWeight: 500
         }
       }
     },
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          color: '#927177'
+          color: '#77838D'
         }
       }
     }

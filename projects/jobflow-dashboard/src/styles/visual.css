@@ -1,78 +1,78 @@
 /* Galpirok's own paper, bookmark and filing motifs. Artwork stays outside inputs. */
 .paper-graphic { display: block; width: 180px; height: auto; flex-shrink: 0; }
-.welcome-page { background: #FCFAF7 url('../assets/galpi-paper-landscape.svg') center bottom / 100% auto no-repeat; }
+.welcome-page { background: var(--surface) url('../assets/galpi-paper-landscape.svg') center bottom / 100% auto no-repeat; }
 .welcome-nav { min-height: 100px; }
-.welcome-stage { position: relative; isolation: isolate; background: #F8F5F0; border-block: 1px solid #E5DFD9; overflow: hidden; }
+.welcome-stage { position: relative; isolation: isolate; background: var(--surface); border-block: 1px solid var(--line); overflow: hidden; }
 .welcome-stage::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('../assets/galpi-paper-landscape.svg') right 42% / cover no-repeat; opacity: .8; pointer-events: none; }
 .welcome-hero { min-height: 540px; padding-block: 24px; gap: 12px; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
-.welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: #94394B; }
-.welcome-kicker::before { content: ''; width: 12px; height: 21px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
+.welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: var(--ink-action); }
+.welcome-kicker::before { content: ''; width: 12px; height: 21px; background: var(--ink-action); clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
 .welcome-copy { position: relative; z-index: 1; }
 .welcome-copy h1 { font-size: clamp(39px, 4.2vw, 62px); }
-.welcome-copy h1 em { color: #94394B; }
-.welcome-copy > p { color: #655D5B; font-size: 16px; margin: 24px 0 30px; }
-.welcome-actions small { color: #655D5B; }
+.welcome-copy h1 em { color: var(--ink-action); }
+.welcome-copy > p { color: var(--muted); font-size: 16px; margin: 24px 0 30px; }
+.welcome-actions small { color: var(--muted); }
 .welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .welcome-showcase { width: min(1200px, calc(100% - 96px)); margin-inline: auto; padding: 56px 0 50px; scroll-margin-top: 20px; }
 .welcome-showcase > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
-.welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: #512E36; }
-.welcome-showcase > header > span { color: #655D5B; font-size: 14px; padding-bottom: 7px; }
+.welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: var(--ink); }
+.welcome-showcase > header > span { color: var(--muted); font-size: 14px; padding-bottom: 7px; }
 .showcase-layout { display: grid; grid-template-columns: 280px minmax(0, 1fr); align-items: center; gap: 58px; }
-.showcase-controls { min-width: 0; background: #FCFAF7; border: 1px solid #E5D8D1; padding: 9px; border-radius: 4px 15px 15px 4px; box-shadow: -4px 0 #DBC2C6, 0 8px 20px #512E3606; }
+.showcase-controls { min-width: 0; background: var(--surface); border: 1px solid #E5D8D1; padding: 9px; border-radius: 4px 15px 15px 4px; box-shadow: -4px 0 #DBC2C6, 0 8px 20px #29374606; }
 .showcase-controls .MuiTabs-indicator { display: none; }
-.showcase-controls .MuiTab-root { display: flex; flex-direction: row; justify-content: flex-start; gap: 18px; width: 100%; max-width: none; min-height: 80px; padding: 20px; border-bottom: 1px solid #E0DBD5; border-radius: 0; text-align: left; font-size: 19px; color: #655D5B; transition: background .15s, color .15s; }
-.showcase-controls .MuiTab-root.Mui-selected { background: #F4E4E6; color: #94394B; border-radius: 3px 10px 10px 3px; border-color: transparent; box-shadow: inset 3px 0 #94394B; }
+.showcase-controls .MuiTab-root { display: flex; flex-direction: row; justify-content: flex-start; gap: 18px; width: 100%; max-width: none; min-height: 80px; padding: 20px; border-bottom: 1px solid var(--line); border-radius: 0; text-align: left; font-size: 19px; color: var(--muted); transition: background .15s, color .15s; }
+.showcase-controls .MuiTab-root.Mui-selected { background: #EDF2F7; color: var(--ink-action); border-radius: 3px 10px 10px 3px; border-color: transparent; box-shadow: inset 3px 0 var(--ink-action); }
 .showcase-controls .MuiTab-root:hover { background: #F1EEEB; }
 .showcase-controls .MuiTab-root:focus-visible { outline-offset: -4px; }
 .showcase-controls .MuiTab-root > svg { margin-left: auto; }
-.showcase-number { color: #94394B; font-size: 13px; font-variant-numeric: tabular-nums; }
+.showcase-number { color: var(--ink-action); font-size: 13px; font-variant-numeric: tabular-nums; }
 .showcase-preview { position: relative; min-width: 0; padding: 18px 18px 0; }
 .showcase-preview::before { content: ''; position: absolute; inset: 0 5px 38px; border-radius: 16px; background: #DFC4C8; transform: rotate(-2deg); pointer-events: none; }
 .showcase-preview::after { content: ''; position: absolute; top: 3px; right: 65px; width: 48px; height: 21px; background: #E4D1BFA8; border-inline: 1px solid #DCC7B2; transform: rotate(8deg); pointer-events: none; }
 .showcase-preview > div { position: relative; }
-.showcase-preview .product-window { border-color: #CFBDC0; box-shadow: 0 12px 24px #463C3E0D; }
-.showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: #664E52; background: #FCFAF7; font-size: 14px; line-height: 1.6; text-align: center; }
-.welcome-closing { width: min(1200px, calc(100% - 96px)); margin: 10px auto 64px; padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #D9C5C7; border-left: 4px solid #94394B; border-radius: 5px 18px 18px 5px; background: #FAF3EF; }
-.welcome-closing h2 { margin-top: 9px; color: #512E36; font-size: 25px; line-height: 1.5; letter-spacing: -.035em; }
-.welcome-closing .section-kicker { color: #79535B; font-size: 13px; }
+.showcase-preview .product-window { border-color: #D2DBE4; box-shadow: 0 12px 24px #463C3E0D; }
+.showcase-caption { width: fit-content; max-width: 100%; margin: 20px auto 0; padding: 6px 12px; color: var(--muted); background: var(--surface); font-size: 14px; line-height: 1.6; text-align: center; }
+.welcome-closing { width: min(1200px, calc(100% - 96px)); margin: 10px auto 64px; padding: 32px 36px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border: 1px solid #D2DBE4; border-left: 4px solid var(--ink-action); border-radius: 5px 18px 18px 5px; background: #EDF2F7; }
+.welcome-closing h2 { margin-top: 9px; color: var(--ink); font-size: 25px; line-height: 1.5; letter-spacing: -.035em; }
+.welcome-closing .section-kicker { color: var(--muted); font-size: 13px; }
 .welcome-closing-actions { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; }
-.welcome-closing-actions small { color: #655D5B; font-size: 13px; }
-.welcome-footer { border-color: #E0DBD5; position: relative; background: #FCFAF7; }
+.welcome-closing-actions small { color: var(--muted); font-size: 13px; }
+.welcome-footer { border-color: var(--line); position: relative; background: var(--surface); }
 
 .workspace-shell { position: relative; isolation: isolate; }
-.workspace-content { position: relative; isolation: isolate; background: #F5F0EA url('../assets/galpi-paper-landscape.svg') right 64px / 100% 100% no-repeat; }
-.workspace-content::before { content: ''; position: absolute; inset: 64px 0 0 17px; width: 5px; z-index: -1; border-inline: 1px solid #CDAAB0; opacity: .6; pointer-events: none; }
+.workspace-content { position: relative; isolation: isolate; background: radial-gradient(ellipse at 100% 0, #E9EFF6 0, transparent 48%), radial-gradient(ellipse at 0 100%, #F0EDF5 0, transparent 42%), var(--surface); }
+.workspace-content::before { display: none; }
 .workspace-content main { position: relative; }
-.workspace-content .MuiAppBar-root { background: #FAF8F4; }
+.workspace-content .MuiAppBar-root { background: var(--surface); }
 .page-heading { position: relative; }
-.page-heading-illustrated { isolation: isolate; overflow: hidden; min-height: 106px; gap: 18px; padding: 20px 24px 20px 18px; margin-bottom: 28px; border: 1px solid #DDCEC5; border-radius: 5px 16px 16px 5px; background: #FAF7F2; box-shadow: -3px 0 #B36C79, 0 4px 0 -2px #E5D9D0; }
-.page-heading-illustrated::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, #FAF7F2 35%, #F4E8E5); pointer-events: none; }
+.page-heading-illustrated { isolation: isolate; overflow: hidden; min-height: 106px; gap: 18px; padding: 20px 24px 20px 18px; margin-bottom: 28px; border: 1px solid var(--line); border-radius: 5px 16px 16px 5px; background: var(--surface); box-shadow: -3px 0 var(--rose), 0 4px 0 -2px #E5D9D0; }
+.page-heading-illustrated::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, var(--surface) 35%, #EDF2F7); pointer-events: none; }
 .page-heading-illustrated .page-heading-copy { flex: 1; min-width: 0; }
 .page-heading-illustrated h1 { font-size: clamp(26px, 2.2vw, 30px); line-height: 1.35; }
-.page-heading-illustrated .heading-graphic { width: 64px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #512E360A); }
+.page-heading-illustrated .heading-graphic { width: 64px; margin-right: 0; align-self: center; filter: drop-shadow(0 5px 4px #2937460A); }
 .page-heading-illustrated .heading-actions:empty { display: none; }
 .page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 0; }
-.page-heading .muted { color: #655D5B; }
-.next-application { background: #FAF8F3; border: 1px solid #DBD2C9; min-height: 288px; }
-.next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #F4E4E6; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
+.page-heading .muted { color: var(--muted); }
+.next-application { background: var(--surface); border: 1px solid var(--line); min-height: 288px; }
+.next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #EDF2F7; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
 .next-application-copy { max-width: 520px; padding-right: 8px; }
-.next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: #94394B; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
+.next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: var(--ink-action); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
 .ticket-orbit { display: none; }
-.overview-panel, .calendar-surface, .agenda-company, .panel { box-shadow: 0 5px 16px #512E3604; }
-.overview-panel > header { background: #FAF8F7; border-bottom: 1px solid #EEEAE6; padding-bottom: 12px; }
-.job-lane { background: #F4F2EF; box-shadow: 0 8px 20px #512E3604; }
+.overview-panel, .calendar-surface, .agenda-company, .panel { box-shadow: 0 5px 16px #29374604; }
+.overview-panel > header { background: var(--surface); border-bottom: 1px solid #E9EDF0; padding-bottom: 12px; }
+.job-lane { background: var(--surface); box-shadow: 0 8px 20px #29374604; }
 .job-lane-heading { position: relative; }
-.job-tile { box-shadow: 0 3px 5px #512E3608; }
-.sidebar-content { position: relative; isolation: isolate; background: #FCFAF7; }
+.job-tile { box-shadow: 0 3px 5px #29374608; }
+.sidebar-content { position: relative; isolation: isolate; background: var(--surface); }
 .sidebar-content::before { content: ''; position: absolute; inset: 0 auto 0 7px; width: 3px; border-inline: 1px solid #E3CBCD; pointer-events: none; z-index: -1; }
 .sidebar-bottom { position: relative; }
 
-.login-story { position: relative; isolation: isolate; overflow: hidden; background: #F8F5F0 url('../assets/galpi-paper-landscape.svg') center / cover no-repeat; }
+.login-story { position: relative; isolation: isolate; background: transparent; }
 .login-story-center { padding-block: 28px; }
-.login-brand-art { width: 100%; height: clamp(260px, 27vw, 370px); margin: 10px 0 4px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
-.login-shell { background: #F9F5EF url('../assets/galpi-paper-landscape.svg') right bottom / auto 100% no-repeat; }
-.login-form-section { position: relative; isolation: isolate; background: #FFFDFA; border: 1px solid #E4D8CF; border-radius: 8px 24px 24px 8px; width: calc(100% - 64px); padding-inline: clamp(28px, 3vw, 45px); box-shadow: 0 8px 0 -3px #EEE4DA, 0 9px 0 -3px #D9CAC1, 0 20px 38px #512E3608; }
-.login-form-section::before { content: ''; width: 15px; height: 26px; background: #B36C79; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
+.login-brand-art { width: 100%; height: clamp(250px, 27vw, 365px); margin: 16px 0 8px; background: url('../assets/galpi-filing-scene.svg') center / contain no-repeat; }
+.login-shell { background: radial-gradient(ellipse at 4% 60%, #E9EFF6 0, transparent 53%), radial-gradient(ellipse at 95% 5%, #F0EDF5 0, transparent 45%), #F8F9FA; }
+.login-form-section { position: relative; isolation: isolate; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; width: calc(100% - 64px); padding-inline: clamp(28px, 3vw, 45px); box-shadow: 0 12px 32px #29374608; }
+.login-form-section::before { content: ''; width: 15px; height: 26px; background: var(--rose); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
 
 @media (min-width: 1600px) {
   .welcome-hero { min-height: 590px; }
@@ -125,7 +125,7 @@
   .login-brand-art { height: 220px; }
   .login-form-section { width: calc(100% - 40px); margin-block: 24px 36px; padding: 26px 22px; }
   .login-form-section::before { margin-bottom: 14px; }
-  .workspace-content { background-size: auto 900px; background-position: 58% 56px; }
+
   .showcase-controls { padding: 5px; }
 }
 @media (prefers-reduced-motion: reduce) {

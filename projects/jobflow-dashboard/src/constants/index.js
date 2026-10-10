@@ -2,43 +2,43 @@ export const DEMO_TODAY = '2026-09-27';
 export const APPLICATION_STATUSES = [{
   value: '관심',
   label: '관심',
-  color: '#42627D',
-  bg: '#E5EFF7'
+  color: '#426488',
+  bg: '#E9F1FA'
 }, {
   value: '지원 예정',
   label: '지원 예정',
-  color: '#42627D',
-  bg: '#E5EFF7'
+  color: '#426488',
+  bg: '#E9F1FA'
 }, {
   value: '지원 완료',
   label: '지원 완료',
-  color: '#8E4758',
-  bg: '#F4E5E7'
+  color: '#6B5985',
+  bg: '#F0ECF6'
 }, {
   value: '서류 진행',
   label: '서류 진행',
-  color: '#8E4758',
-  bg: '#F4E5E7'
+  color: '#6B5985',
+  bg: '#F0ECF6'
 }, {
   value: '면접 예정',
   label: '면접 예정',
-  color: '#795322',
-  bg: '#F4ECD9'
+  color: '#805E24',
+  bg: '#FAF1DE'
 }, {
   value: '합격',
   label: '합격',
-  color: '#365D50',
-  bg: '#E6EFE9'
+  color: '#326D61',
+  bg: '#E6F2ED'
 }, {
   value: '불합격',
   label: '불합격',
-  color: '#963526',
-  bg: '#F5E6E6'
+  color: '#A33F42',
+  bg: '#F9ECEC'
 }, {
   value: '보류',
   label: '보류',
-  color: '#6F565A',
-  bg: '#F3F2F0'
+  color: '#606973',
+  bg: '#EDF0F2'
 }];
 export const PRIORITY_OPTIONS = [{
   value: '낮음',

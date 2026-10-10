@@ -24,7 +24,7 @@ const NotFoundPage = () => {
           fontSize: 56,
           mb: 2
         }} />
-      <Typography variant="h5" component="h1" fontWeight={700} gutterBottom>
+      <Typography variant="h5" component="h1" fontWeight={550} gutterBottom>
             페이지를 찾을 수 없습니다
           </Typography>
       <Typography variant="body2" color="text.secondary" sx={{
