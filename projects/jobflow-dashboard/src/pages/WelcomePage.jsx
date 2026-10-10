@@ -5,6 +5,10 @@ import SiteHeader from '../components/layout/SiteHeader';
 import ProductPreview from '../components/ui/ProductPreview';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
+import { DEMO_APPLICATIONS } from '../constants';
+import { deadlineLabel } from '../utils/dates';
+
+const sampleDeadline = DEMO_APPLICATIONS.find(row => row.id === 'demo-3');
 
 export default function WelcomePage() {
   const { user, isGuest, enterGuestMode, loading } = useAuth();
@@ -35,12 +39,17 @@ export default function WelcomePage() {
           {error && <Alert severity="error">{error}</Alert>}
           </div>
         </div>
-        <div className="galpi-intro-art" aria-hidden="true" />
+        <div className="galpi-intro-visual">
+          <div className="galpi-intro-art" aria-hidden="true" />
+          <div className="galpi-deadline-sample" aria-label="샘플 지원 마감 일정">
+            <time dateTime={sampleDeadline.deadline}><span>{Number(sampleDeadline.deadline.slice(5, 7))}월</span><strong>{Number(sampleDeadline.deadline.slice(8, 10))}</strong></time>
+            <div><span className="galpi-deadline-label">지원 마감 <b>{deadlineLabel(sampleDeadline.deadline, '2026-09-27')}</b></span><strong>{sampleDeadline.company_name}</strong><small>샘플 · 2026.09.27 기준</small></div>
+          </div>
+        </div>
       </section>
       <section className="galpi-product-stage" aria-label="갈피록 지원 관리 미리보기">
         <ProductPreview onOpen={start} busy={busy || loading} />
       </section>
-      <div className="galpi-entry-note">샘플 기준일 2026.09.27</div>
     </main>
     <footer className="welcome-footer"><span>갈피록 · 김도한의 포트폴리오 프로젝트</span><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a></footer>
   </div>;

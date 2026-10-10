@@ -1,29 +1,41 @@
-/* Show the application board first; open supporting records only on request. */
-.welcome-product-first { background: radial-gradient(ellipse at 95% 20%, #EAF0F7 0, transparent 44%), radial-gradient(ellipse at 2% 76%, #F0ECF5 0, transparent 42%), #F8F9FA; }
-.galpi-intro, .galpi-product-stage, .galpi-entry-note, .welcome-product-first .welcome-footer { width: min(1240px, calc(100% - 80px)); margin-inline: auto; }
-.galpi-intro { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; padding: 40px 0 32px; }
+/* A quiet introduction above a clearly weighted, colour-coded application board. */
+.welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 100% 0, #EEF2F8 0, transparent 45%), linear-gradient(180deg, #FAFBFC 20%, #F2F4F7 100%); }
+.welcome-product-first > main { flex: 1; padding-bottom: 48px; }
+.galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
+.galpi-intro { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; min-height: 428px; padding: 56px 0 48px; }
 .galpi-eyebrow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; line-height: 22px; font-weight: 400; margin-bottom: 14px; }
 .galpi-eyebrow::before { content: ''; flex: 0 0 8px; height: 14px; background: var(--rose); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
-.galpi-intro h1 { color: var(--ink); font-size: clamp(34px, 3.3vw, 46px); font-weight: 450; line-height: 1.32; letter-spacing: -.035em; word-break: keep-all; }
-.galpi-intro h1 em { color: var(--ink); font-style: normal; font-weight: inherit; }
+.galpi-intro h1 { color: var(--ink); font-size: clamp(34px, 3.3vw, 46px); font-weight: 450; line-height: 1.34; letter-spacing: -.035em; word-break: keep-all; }
+.galpi-intro h1 em { color: #426488; font-style: normal; font-weight: inherit; }
 .galpi-intro-heading > p { color: var(--muted); font-size: 16px; line-height: 26px; margin-top: 16px; }
 .galpi-intro-action { margin-top: 24px; }
 .galpi-intro-action > .MuiButton-root { font-size: 15px; font-weight: 500; min-height: 48px; min-width: 176px; border-radius: 8px; padding-inline: 24px; }
 .galpi-intro-action > small { display: block; font-size: 12px; line-height: 20px; color: var(--muted); margin-top: 10px; }
 .galpi-intro-action .MuiAlert-root { margin-top: 14px; }
-.galpi-intro-art { width: 100%; max-width: 500px; justify-self: end; aspect-ratio: 600 / 340; background: url('../assets/galpi-filing-scene.svg') center / contain no-repeat; }
+.galpi-intro-visual { position: relative; min-width: 0; width: 100%; height: 324px; isolation: isolate; }
+.galpi-intro-visual::before { content: ''; position: absolute; inset: 18px 4px 24px 22px; z-index: -1; border: 1px solid #DEE5ED; border-radius: 28px 88px 28px 28px; background: linear-gradient(125deg, #E0EBF5 5%, #EAE4F1 55%, #F6EBD5 100%); }
+.galpi-intro-art { position: absolute; inset: 0 0 auto; width: 100%; aspect-ratio: 600 / 340; background: url('../assets/galpi-filing-scene.svg') center / contain no-repeat; }
+.galpi-deadline-sample { position: absolute; right: 24px; bottom: 0; display: flex; align-items: center; gap: 18px; min-width: 278px; padding: 16px 22px 16px 16px; border: 1px solid #D4DDE5; border-radius: 14px; background: #FFF; box-shadow: 0 12px 28px #2937460C; }
+.galpi-deadline-sample time { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 0 0 62px; min-height: 74px; border-radius: 8px; background: #FAF1DE; color: #805E24; }
+.galpi-deadline-sample time span { font-size: 12px; line-height: 18px; }
+.galpi-deadline-sample time strong { font-size: 34px; line-height: 38px; font-weight: 450; font-variant-numeric: tabular-nums; }
+.galpi-deadline-sample > div { display: flex; flex-direction: column; gap: 5px; }
+.galpi-deadline-label { display: flex; align-items: center; gap: 12px; font-size: 13px; line-height: 20px; color: var(--muted); }
+.galpi-deadline-label b { color: #805E24; font-size: 12px; font-weight: 500; }
+.galpi-deadline-sample > div > strong { color: var(--ink); font-size: 16px; line-height: 24px; font-weight: 500; }
+.galpi-deadline-sample small { color: var(--muted); font-size: 11px; line-height: 18px; }
 .galpi-product-stage { position: relative; }
-.application-preview { border: 1px solid #CFD7DF; border-radius: 12px; background: #FFF; box-shadow: 0 12px 32px #29374608; overflow: hidden; }
-.preview-toolbar { display: flex; align-items: center; gap: 16px; min-height: 64px; padding: 16px 24px; border-bottom: 1px solid var(--line); }
+.application-preview { border: 1px solid #CFD7DF; border-radius: 16px; background: #FFF; box-shadow: 0 14px 36px #29374609; overflow: hidden; }
+.preview-toolbar { display: flex; align-items: center; gap: 16px; min-height: 72px; padding: 20px 28px; }
 .preview-toolbar h2 { font-size: 18px; font-weight: 500; line-height: 28px; letter-spacing: -.02em; }
 .preview-toolbar > span { color: var(--muted); font-size: 13px; line-height: 22px; }
 .preview-toolbar .preview-sample { margin-left: auto; padding: 2px 8px; background: var(--surface); border-radius: 4px; font-size: 12px; }
-.preview-lanes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; padding: 24px; background: #F7F8FA; }
-.preview-lane { min-width: 0; }
-.preview-lane h3 { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; font-size: 15px; line-height: 24px; font-weight: 500; color: var(--stage-ink); }
-.preview-lane h3 i { display: inline-grid; place-items: center; width: 28px; height: 28px; flex-shrink: 0; border-radius: 6px; background: var(--stage-tint); font-style: normal; font-size: 12px; font-weight: 400; font-variant-numeric: tabular-nums; }
-.galpi-preview-company { position: relative; display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 196px; padding: 20px 16px 16px; text-align: left; color: var(--ink); background: linear-gradient(var(--stage-tint) 0 4px, #FFF 4px); border: 1px solid #D6DDE4; border-radius: 8px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-.galpi-preview-company:hover { border-color: var(--stage-ink); box-shadow: 0 4px 12px #2937460B; }
+.preview-lanes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 0 24px 24px; }
+.preview-lane { min-width: 0; padding: 0 10px 10px; background: var(--stage-tint); border-radius: 10px; border-top: 3px solid var(--stage-ink); }
+.preview-lane h3 { display: flex; align-items: center; gap: 10px; margin: 0; min-height: 54px; padding-inline: 6px; font-size: 15px; line-height: 24px; font-weight: 500; color: var(--stage-ink); }
+.preview-lane h3 i { display: inline-grid; place-items: center; width: 26px; height: 26px; flex-shrink: 0; border: 1px solid currentColor; border-radius: 50%; font-style: normal; font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.galpi-preview-company { position: relative; display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 196px; padding: 16px 14px; text-align: left; color: var(--ink); background: #FFF; border: 1px solid #D6DDE4; border-radius: 7px; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s; }
+.galpi-preview-company:hover { border-color: var(--stage-ink); box-shadow: 0 5px 14px #29374612; transform: translateY(-2px); }
 .preview-company-heading { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 10px; width: 100%; }
 .preview-company-heading .company-mark { width: 34px; height: 34px; border-radius: 8px; font-size: 15px; font-weight: 400; }
 .preview-company-heading > strong { display: flex; align-items: center; min-height: 44px; font-size: 15px; line-height: 22px; font-weight: 500; word-break: keep-all; overflow-wrap: anywhere; }
@@ -53,33 +65,50 @@
 .preview-memo p { font-size: 14px; line-height: 24px; margin-top: 8px; word-break: keep-all; overflow-wrap: anywhere; }
 .preview-record-dialog .MuiDialogActions-root { padding: 8px 24px 24px; gap: 8px; }
 .application-preview button:focus-visible, .preview-memo summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-.galpi-entry-note { padding: 14px 0 20px; text-align: right; color: var(--muted); font-size: 12px; line-height: 20px; }
-.welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 60px; }
+.welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
 @media (max-width: 1100px) {
-  .galpi-intro, .galpi-product-stage, .galpi-entry-note, .welcome-product-first .welcome-footer { width: calc(100% - 56px); }
-  .galpi-intro { gap: 24px; }
-  .preview-lanes { gap: 14px; padding: 20px; }
+  .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }
+  .galpi-intro { gap: 32px; }
+  .galpi-intro-visual { height: 290px; }
+  .galpi-deadline-sample { right: 12px; }
+  .preview-lanes { gap: 12px; padding: 0 20px 20px; }
+  .preview-lane { padding-inline: 8px; }
   .preview-card-date { flex-wrap: wrap; }
 }
 @media (max-width: 900px) {
+  .galpi-intro { gap: 20px; padding-block: 44px; min-height: 390px; }
   .galpi-intro h1 { font-size: 36px; }
   .galpi-intro-heading > p { font-size: 15px; }
+  .galpi-intro-visual { height: 270px; }
+  .galpi-intro-visual::before { inset: 12px 0 16px; border-top-right-radius: 60px; }
+  .galpi-intro-art { top: 8px; }
+  .galpi-deadline-sample { min-width: 0; right: 8px; gap: 12px; padding: 12px; }
   .preview-lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 }
+@media (min-width: 601px) and (max-width: 720px) {
+  .galpi-intro { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .galpi-intro-visual { max-width: 410px; margin-inline: auto; }
+}
 @media (max-width: 600px) {
-  .galpi-intro, .galpi-product-stage, .galpi-entry-note, .welcome-product-first .welcome-footer { width: calc(100% - 40px); }
-  .galpi-intro { display: block; padding: 28px 0 24px; }
+  .welcome-product-first > main { padding-bottom: 32px; }
+  .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 40px); }
+  .galpi-intro { display: block; min-height: 0; padding: 40px 0 32px; }
   .galpi-intro h1 { font-size: clamp(29px, 7.6vw, 40px); }
-  .galpi-intro-art { width: 220px; margin: 20px auto 0; }
+  .galpi-intro-visual { width: min(370px, 100%); height: 254px; margin: 30px auto 0; }
+  .galpi-intro-art { width: 100%; top: 0; }
+  .galpi-deadline-sample { right: 12px; padding: 10px 16px 10px 10px; }
+  .galpi-deadline-sample time { flex-basis: 50px; min-height: 62px; }
+  .galpi-deadline-sample time strong { font-size: 28px; line-height: 32px; }
   .galpi-intro-action > .MuiButton-root { width: 100%; }
   .galpi-intro-action > small { text-align: center; }
   .preview-toolbar { padding: 16px; gap: 4px 12px; flex-wrap: wrap; }
   .preview-toolbar h2 { font-size: 17px; }
   .preview-toolbar > span:not(.preview-sample) { order: 3; flex-basis: 100%; }
-  .preview-lanes { padding: 16px; gap: 20px 12px; }
+  .preview-lanes { padding: 0 12px 12px; gap: 16px 10px; }
+  .preview-lane { padding: 0 6px 6px; }
   .preview-lane h3 { font-size: 14px; gap: 6px; }
-  .preview-lane h3 i { width: 24px; height: 24px; }
-  .galpi-preview-company { padding: 16px 12px 12px; }
+  .preview-lane h3 i { width: 22px; height: 22px; }
+  .galpi-preview-company { padding: 14px 10px 12px; }
   .preview-company-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .preview-company-heading > strong { align-items: flex-start; font-size: 14px; }
   .preview-position { margin-left: 0; min-height: 44px; font-size: 13px; }
@@ -89,5 +118,5 @@
   .preview-record-dialog .MuiDialogActions-root { padding: 8px 20px 20px; }
   .welcome-product-first .welcome-footer { align-items: flex-start; flex-direction: column; gap: 0; padding-block: 16px; }
 }
-@media (max-width: 359px) { .galpi-intro-art { width: 195px; } .preview-lanes { grid-template-columns: 1fr; } .preview-company-heading { display: grid; } .preview-position { margin-left: 44px; min-height: 22px; } }
+@media (max-width: 359px) { .galpi-intro-visual { height: 230px; } .preview-lanes { grid-template-columns: 1fr; } .preview-company-heading { display: grid; } .preview-position { margin-left: 44px; min-height: 22px; } }
 @media (prefers-reduced-motion: reduce) { .galpi-preview-company { transition: none; } }
