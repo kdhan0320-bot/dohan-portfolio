@@ -6,6 +6,8 @@ import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
 import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import EditNoteOutlined from '@mui/icons-material/EditNoteOutlined';
 import SpaceDashboardOutlined from '@mui/icons-material/SpaceDashboardOutlined';
+import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
+import MenuBookOutlined from '@mui/icons-material/MenuBookOutlined';
 
 const headingIcons = {
   folder: FolderOutlined,
@@ -14,6 +16,8 @@ const headingIcons = {
   chat: ChatBubbleOutlineOutlined,
   write: EditNoteOutlined,
   overview: SpaceDashboardOutlined,
+  settings: SettingsOutlined,
+  guide: MenuBookOutlined,
 };
 export function PageHeading({
   title,

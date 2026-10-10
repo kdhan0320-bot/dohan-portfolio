@@ -38,7 +38,7 @@
 .preview-dialog-heading h2 { font-size: 20px; line-height: 28px; font-weight: 500; word-break: keep-all; overflow-wrap: anywhere; }
 .preview-dialog-heading p { margin-top: 4px; font-size: 14px; line-height: 22px; font-weight: 400; color: var(--muted); }
 .preview-dialog-heading > .MuiIconButton-root { align-self: flex-start; margin: -8px -8px 0 0; }
-.preview-detail.MuiDialogContent-root { padding: 24px; color: var(--ink); }
+.preview-record-dialog .preview-detail.MuiDialogContent-root { padding: 24px; color: var(--ink); }
 .preview-detail-status { display: inline-block; border-radius: 4px; padding: 4px 10px; font-size: 13px; line-height: 20px; }
 .preview-record-date { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 0; margin: 16px 0 0; border-block: 1px solid var(--line); font-size: 14px; line-height: 22px; }
 .preview-record-date dt { color: var(--muted); }
@@ -84,7 +84,7 @@
   .preview-company-heading > strong { align-items: flex-start; font-size: 14px; }
   .preview-position { margin-left: 0; min-height: 44px; font-size: 13px; }
   .preview-dialog-heading.MuiDialogTitle-root { padding: 20px; }
-  .preview-detail.MuiDialogContent-root { padding: 20px; }
+  .preview-record-dialog .preview-detail.MuiDialogContent-root { padding: 20px; }
   .preview-dialog-heading h2 { font-size: 18px; }
   .preview-record-dialog .MuiDialogActions-root { padding: 8px 20px 20px; }
   .welcome-product-first .welcome-footer { align-items: flex-start; flex-direction: column; gap: 0; padding-block: 16px; }

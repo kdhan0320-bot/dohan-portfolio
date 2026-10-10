@@ -13,7 +13,7 @@ const steps = [
 export default function GuidePage() {
   const { isGuest } = useAuth();
   return <>
-    <PageHeading art="folder" title="이용 안내" description="내 입사지원을 관리하는 세 단계" />
+    <PageHeading art="guide" title="이용 안내" description="내 입사지원을 관리하는 세 단계" />
     <ol className="guide-steps">
       {steps.map((step, index) => <li key={step.title}>
         <div className="guide-step-art"><span>{String(index + 1).padStart(2, '0')}</span><PaperGraphic kind={step.art} /></div>

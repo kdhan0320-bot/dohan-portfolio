@@ -50,7 +50,7 @@ export default function ProductPreview({ onOpen, busy }) {
           <div className="preview-documents"><span className={selected.resume_submitted ? 'is-done' : ''}><CheckRounded aria-hidden="true" />이력서 {selected.resume_submitted ? '제출' : '준비'}</span><span className={selected.portfolio_submitted ? 'is-done' : ''}><CheckRounded aria-hidden="true" />포트폴리오 {selected.portfolio_submitted ? '제출' : '준비'}</span></div>
           <details className="preview-memo"><summary>준비 메모</summary><p>{selected.memo}</p></details>
       </DialogContent>
-      <DialogActions><Button onClick={() => setRecordOpen(false)}>닫기</Button><Button variant="contained" onClick={() => onOpen(selected.id)} disabled={busy}>지원 현황 열기</Button></DialogActions>
+      <DialogActions disableSpacing><Button onClick={() => setRecordOpen(false)}>닫기</Button><Button variant="contained" onClick={() => onOpen(selected.id)} disabled={busy}>지원 현황 열기</Button></DialogActions>
     </Dialog>
   </div>;
 }

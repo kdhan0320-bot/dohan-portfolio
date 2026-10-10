@@ -88,7 +88,7 @@ const SettingsPage = () => {
   };
   if (isGuest) {
     return <Box className="settings-page">
-      <PageHeading art="folder" title="설정" description="기록장과 계정을 관리해요." />
+      <PageHeading art="settings" title="설정" description="기록장과 계정을 관리해요." />
       <div className="settings-grid">
         <section className="panel settings-card" aria-labelledby="sample-settings-title">
           <div className="settings-summary">
@@ -124,7 +124,7 @@ const SettingsPage = () => {
     </Box>;
   }
   return <Box className="settings-page">
-    <PageHeading art="folder" title="설정" description="기록장과 계정을 관리해요." />
+    <PageHeading art="settings" title="설정" description="기록장과 계정을 관리해요." />
     {profileLoading ? <Card className="settings-card" aria-busy="true">
       <CardContent>
         <Typography component="h2" variant="h6" sx={{ mb: 2 }}>프로필 불러오는 중</Typography>
