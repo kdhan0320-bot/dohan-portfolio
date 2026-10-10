@@ -25,11 +25,11 @@
 .preview-lane h3 { display: flex; align-items: center; gap: 7px; margin-bottom: 17px; font-size: 14px; font-weight: 650; color: var(--stage-ink); }
 .preview-lane h3 i { width: 7px; height: 7px; flex-shrink: 0; border-radius: 50%; background: currentColor; }
 .preview-lane h3 > span { margin-left: auto; font-size: 12px; }
-.preview-company { display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 226px; padding: 16px 13px; text-align: left; color: #302B2C; background: #FFF; border: 1px solid #D9D6D2; border-radius: 8px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
-.preview-company:hover { border-color: #94394B; box-shadow: 0 4px 12px #512E3610; }
-.preview-company[aria-pressed='true'] { border: 2px solid #94394B; padding: 15px 12px; box-shadow: 0 3px 10px #512E3610; }
-.preview-company .company-mark { width: 34px; height: 34px; margin-bottom: 13px; border-radius: 8px; font-size: 15px; }
-.preview-company > strong { font-size: 16px; line-height: 1.5; font-weight: 650; word-break: keep-all; overflow-wrap: anywhere; }
+.galpi-preview-company { display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 226px; padding: 16px 13px; text-align: left; color: #302B2C; background: #FFF; border: 1px solid #D9D6D2; border-radius: 8px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+.galpi-preview-company:hover { border-color: #94394B; box-shadow: 0 4px 12px #512E3610; }
+.galpi-preview-company[aria-pressed='true'] { border: 2px solid #94394B; padding: 15px 12px; box-shadow: 0 3px 10px #512E3610; }
+.galpi-preview-company .company-mark { width: 34px; height: 34px; margin-bottom: 13px; border-radius: 8px; font-size: 15px; }
+.galpi-preview-company > strong { font-size: 16px; line-height: 1.5; font-weight: 650; word-break: keep-all; overflow-wrap: anywhere; }
 .preview-position { display: block; font-size: 13px; color: #6A6161; line-height: 1.5; margin: 5px 0 14px; }
 .preview-status { display: inline-block; color: var(--stage-ink); background: var(--stage-tint); padding: 4px 7px; border-radius: 4px; font-size: 12px; line-height: 1.5; margin-bottom: 18px; }
 .preview-card-date { display: flex; justify-content: space-between; gap: 6px; width: 100%; border-top: 1px solid #E9E5E1; margin-top: auto; padding-top: 11px; font-size: 12px; color: #6A6161; font-variant-numeric: tabular-nums; }
@@ -79,9 +79,9 @@
   .preview-workspace { grid-template-columns: minmax(0, 1fr) 270px; }
   .preview-lanes { gap: 9px; padding: 20px 16px; }
   .preview-detail { padding: 22px 19px; }
-  .preview-company { padding-inline: 10px; }
-  .preview-company[aria-pressed='true'] { padding-inline: 9px; }
-  .preview-company > strong { font-size: 15px; }
+  .galpi-preview-company { padding-inline: 10px; }
+  .galpi-preview-company[aria-pressed='true'] { padding-inline: 9px; }
+  .galpi-preview-company > strong { font-size: 15px; }
   .preview-card-date { flex-wrap: wrap; }
 }
 @media (max-width: 900px) {
@@ -92,7 +92,7 @@
   .galpi-intro-action > p { font-size: 16px; margin-bottom: 18px; }
   .preview-workspace { grid-template-columns: minmax(0, 1fr) 270px; }
   .preview-lanes { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px 12px; }
-  .preview-company { min-height: 210px; }
+  .galpi-preview-company { min-height: 210px; }
   .preview-detail { justify-content: flex-start; }
   .preview-lane h3 { margin-bottom: 12px; }
   .galpi-product-stage::after { display: none; }
@@ -110,7 +110,7 @@
   .preview-workspace { grid-template-columns: 1fr; }
   .preview-lanes { padding: 20px 14px; }
   .preview-lane h3 { font-size: 14px; }
-  .preview-company { min-height: 210px; }
+  .galpi-preview-company { min-height: 210px; }
   .preview-detail { padding: 24px; }
   .preview-progress { max-width: 320px; }
   .preview-detail h3 { font-size: 23px; }
@@ -120,4 +120,4 @@
   .galpi-entry-note > span { display: block; margin-bottom: 5px; }
   .welcome-product-first .welcome-footer { align-items: flex-start; flex-direction: column; gap: 0; padding-block: 18px; font-size: 12px; }
 }
-@media (prefers-reduced-motion: reduce) { .preview-company { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .galpi-preview-company { transition: none; } }

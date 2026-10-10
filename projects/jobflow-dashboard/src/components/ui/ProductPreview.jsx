@@ -21,7 +21,7 @@ export default function ProductPreview({ onOpen, busy }) {
           const row = rows.find(item => item.id === selectedId) || rows[0];
           return <section className="preview-lane" key={column.id} style={{ '--stage-ink': column.color, '--stage-tint': column.tint }} aria-labelledby={`preview-stage-${column.id}`}>
             <h3 id={`preview-stage-${column.id}`}><i aria-hidden="true" />{column.label}<span>{rows.length}</span></h3>
-            <button type="button" className="preview-company" aria-pressed={selectedId === row.id} aria-controls="preview-company-detail" onClick={() => setSelectedId(row.id)}>
+            <button type="button" className="galpi-preview-company" aria-pressed={selectedId === row.id} aria-controls="galpi-preview-company-detail" onClick={() => setSelectedId(row.id)}>
               <CompanyMark name={row.company_name} />
               <strong>{row.company_name}</strong><span className="preview-position">{row.position}</span>
               <span className="preview-status">{row.status}</span>
@@ -31,7 +31,7 @@ export default function ProductPreview({ onOpen, busy }) {
           </section>;
         })}
       </div>
-      <aside className="preview-detail" id="preview-company-detail" aria-label="선택한 회사의 지원 기록">
+      <aside className="preview-detail" id="galpi-preview-company-detail" aria-label="선택한 회사의 지원 기록">
         <div aria-live="polite" aria-atomic="true">
           <span className="preview-detail-label">선택한 지원 기록</span>
           <h3>{selected.company_name}</h3><p className="preview-detail-position">{selected.position}</p>
