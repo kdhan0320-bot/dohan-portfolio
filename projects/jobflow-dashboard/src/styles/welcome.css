@@ -1,6 +1,7 @@
 /* A quiet introduction above a clearly weighted, colour-coded application board. */
 .welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 100% 0, #EEF2F8 0, transparent 45%), linear-gradient(180deg, #FAFBFC 20%, #F2F4F7 100%); }
-.welcome-product-first > main { flex: 1; padding-bottom: 48px; }
+.welcome-product-first > main { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-bottom: 48px; }
+.welcome-product-first > main > section { flex-shrink: 0; }
 .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
 .galpi-intro { display: grid; grid-template-columns: 1fr 1.05fr; gap: 64px; align-items: center; min-height: 428px; padding: 56px 0 48px; }
 .galpi-eyebrow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; line-height: 22px; font-weight: 400; margin-bottom: 14px; }
@@ -70,6 +71,20 @@
 .preview-record-dialog .MuiDialogActions-root { padding: 8px 24px 24px; gap: 8px; }
 .application-preview button:focus-visible, .preview-memo summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
+/* Expand the composition on wide displays; distribute spare height around the content. */
+@media (min-width: 1600px) {
+  .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1440px, calc(50vw + 400px)); }
+  .galpi-intro { min-height: clamp(444px, 36svh, 520px); gap: 80px; }
+  .galpi-intro h1 { font-size: clamp(46px, 2.7vw, 56px); }
+  .galpi-intro-heading > p { font-size: 18px; line-height: 28px; }
+  .galpi-intro-action > .MuiButton-root { min-height: 52px; font-size: 16px; }
+  .galpi-intro-visual { max-width: 600px; height: auto; aspect-ratio: 600 / 340; justify-self: end; }
+  .preview-toolbar h2 { font-size: 20px; }
+  .preview-lanes { gap: 20px; }
+  .galpi-preview-company { min-height: 220px; padding: 20px 18px; }
+  .preview-company-heading > strong { font-size: 16px; line-height: 24px; min-height: 48px; }
+  .preview-position, .preview-card-date { font-size: 14px; }
+}
 @media (max-width: 1100px) {
   .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }
   .galpi-intro { gap: 32px; }
@@ -80,6 +95,7 @@
   .preview-card-date { flex-wrap: wrap; }
 }
 @media (max-width: 900px) {
+  .welcome-product-first > main { justify-content: flex-start; }
   .galpi-intro { gap: 20px; padding-block: 44px; min-height: 390px; }
   .galpi-intro h1 { font-size: 36px; }
   .galpi-intro-heading > p { font-size: 15px; }
