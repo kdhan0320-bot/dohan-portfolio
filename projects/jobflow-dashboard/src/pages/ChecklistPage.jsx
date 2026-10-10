@@ -38,6 +38,7 @@ export default function ChecklistPage() {
   const addOriginal = useRef(null);
   const editOriginal = useRef(null);
   const taskListRef = useRef(null);
+  const dialogTriggerRef = useRef(null);
   const companyItems = items.filter(item => companyScope === 'all' || (companyScope === 'common' ? !item.application_id : item.application_id === companyScope));
   const done = companyItems.filter(item => item.is_done).length;
   const scopedItems = companyItems.filter(item => filter === '전체' || item.category === filter);
@@ -79,7 +80,17 @@ export default function ChecklistPage() {
       ...companyOptions.map(company => <MenuItem className="checklist-company-option" key={company.id} value={company.id}>{companyLabel(company.id)}</MenuItem>)
     ];
   }
-  function openAdd() {
+  function restoreDialogFocus() {
+    // Run after both the editor and any discard confirmation have unmounted.
+    window.requestAnimationFrame(() => {
+      const trigger = dialogTriggerRef.current;
+      const fallback = document.getElementById('checklist-add-task');
+      const destination = trigger?.isConnected && !trigger.disabled ? trigger : fallback;
+      if (destination && !destination.disabled) destination.focus({ preventScroll: true });
+    });
+  }
+  function openAdd(event) {
+    dialogTriggerRef.current = event?.currentTarget || null;
     const initialCompany = companyScope === 'all' || companyScope === 'common' ? '' : companyScope;
     const initialCategory = filter === '전체' ? '서류' : filter;
     addOriginal.current = { title: '', category: initialCategory, applicationId: initialCompany };
@@ -176,7 +187,7 @@ export default function ChecklistPage() {
 
   return <div className="checklist-page">
     <PageHeading art="check" title="준비 체크">
-      <Button onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
+      <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
     <LoadState loading={loading || companiesLoading} error={error || companiesError} retry={() => { refresh(); refreshCompanies(); }} />
     {!loading && !companiesLoading && !error && !companiesError && <>
@@ -216,7 +227,7 @@ export default function ChecklistPage() {
                 <span className="checklist-task-meta"><span className="task-category">{item.category}</span>{companyScope === 'all' && <><span aria-hidden="true">·</span>{item.application_id && companyMap.has(item.application_id) ? <Link to={`/?company=${encodeURIComponent(item.application_id)}`} title={companyLabel(item.application_id)}>{companyMap.get(item.application_id).company_name}</Link> : <span>{companyLabel(item.application_id)}</span>}</>}</span>
               </span>
               <span className="task-tools">
-                <IconButton aria-label={`${item.title} 수정`} disabled={Boolean(busy)} onClick={() => { editOriginal.current = { title: item.title, category: item.category, application_id: item.application_id || null }; setEditing({ ...item, application_id: item.application_id || null }); setEditError(''); setConfirmDiscard(''); }}><EditOutlined fontSize="small" /></IconButton>
+                <IconButton aria-label={`${item.title} 수정`} disabled={Boolean(busy)} onClick={event => { dialogTriggerRef.current = event.currentTarget; editOriginal.current = { title: item.title, category: item.category, application_id: item.application_id || null }; setEditing({ ...item, application_id: item.application_id || null }); setEditError(''); setConfirmDiscard(''); }}><EditOutlined fontSize="small" /></IconButton>
                 <IconButton aria-label={`${item.title} 삭제`} onClick={() => setTarget(item)} disabled={Boolean(busy)}><DeleteOutline fontSize="small" /></IconButton>
               </span>
             </div>)}
@@ -228,7 +239,7 @@ export default function ChecklistPage() {
         <div className="checklist-secondary-tool"><Link to="/document-helper">작성 요청문 도구</Link></div>
       </>}
     </>}
-    <Dialog className="checklist-edit-dialog" open={adding} onClose={closeAdd} aria-labelledby="add-task-dialog-title" fullWidth maxWidth="sm">
+    <Dialog className="checklist-edit-dialog" open={adding} onClose={closeAdd} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="add-task-dialog-title" fullWidth maxWidth="sm">
       <form onSubmit={submit} noValidate>
         <DialogTitle id="add-task-dialog-title">할 일 추가</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
@@ -243,7 +254,7 @@ export default function ChecklistPage() {
         <DialogActions><Button disabled={Boolean(busy)} onClick={closeAdd}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>{busy === 'add' ? '저장 중…' : '추가 저장'}</Button></DialogActions>
       </form>
     </Dialog>
-    <Dialog className="checklist-edit-dialog" open={Boolean(editing)} onClose={closeEdit} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
+    <Dialog className="checklist-edit-dialog" open={Boolean(editing)} onClose={closeEdit} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
       <form onSubmit={saveEdit} noValidate>
         <DialogTitle id="edit-task-dialog-title">할 일 수정</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
