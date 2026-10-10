@@ -1,0 +1,176 @@
+/* Guide scenes share the gallery exercise's content, but are not interactive. */
+.practice-guide .practice-guide-steps {
+  gap: 20px;
+  margin: 30px 0 24px;
+}
+
+.practice-guide .practice-guide-steps > li {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #dadbe5;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.practice-guide .guide-scene {
+  display: flex;
+  flex-direction: column;
+  height: 252px;
+  padding: 16px 18px;
+  background: #ebe8f8;
+}
+
+.practice-guide .guide-scene-2 { background: #e2ede8; }
+.practice-guide .guide-scene-3 { color: #f4f2ff; background: #25252d; }
+
+.practice-guide .guide-scene-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #65616f;
+  font-size: 12px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+.practice-guide .guide-scene-3 .guide-scene-topline { color: #c1becf; }
+
+.practice-guide .guide-scene-question {
+  align-self: flex-start;
+  margin: 8px 0 10px;
+  padding: 3px 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -.025em;
+  word-break: keep-all;
+}
+
+.practice-guide .guide-scene-1 .guide-scene-question {
+  padding-inline: 7px;
+  color: #4f3daa;
+  background: #dcd4fa;
+  border-radius: 4px;
+}
+
+.practice-guide .guide-scene-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.practice-guide .guide-scene-option {
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid #d2cedd;
+  border-radius: 6px;
+  color: #413950;
+  background: #fff;
+}
+
+.practice-guide .guide-scene-option.is-picked { border-color: #6250c7; box-shadow: 0 0 0 1px #6250c7; }
+.practice-guide .guide-scene-3 .guide-scene-option.is-picked { border-color: #bcb0f4; box-shadow: 0 0 0 1px #bcb0f4; }
+
+.practice-guide .guide-scene-option-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 17px;
+  margin-bottom: 6px;
+  color: #625a70;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.practice-guide .guide-scene-check {
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  color: #fff;
+  background: #6250c7;
+}
+
+.practice-guide .guide-scene-check .practice-icon { width: 11px; height: 11px; flex-basis: 11px; }
+
+.practice-guide .guide-scene-gallery {
+  display: grid;
+  grid-template-columns: minmax(46px, .38fr) minmax(0, .62fr);
+  height: 80px;
+  background: #f3f0f8;
+}
+
+.practice-guide .guide-scene-option-b .guide-scene-gallery { grid-template-columns: minmax(64px, 1fr) minmax(0, 1fr); }
+.practice-guide .guide-scene-gallery img { display: block; width: 100%; height: 80px; min-width: 0; object-fit: cover; }
+
+.practice-guide .guide-scene-gallery-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 6px;
+}
+
+.practice-guide .guide-scene-gallery-title { font-size: 12px; font-weight: 400; line-height: 1.35; letter-spacing: -.04em; white-space: nowrap; }
+.practice-guide .guide-scene-option-b .guide-scene-gallery-title { font-size: 18px; line-height: 1.15; }
+.practice-guide .guide-scene-gallery-rule { width: 16px; height: 2px; background: #c8c0b7; }
+.practice-guide .guide-scene-3 .guide-scene-option-b .guide-scene-gallery-title { color: #4f3daa; outline: 1px solid #8977da; outline-offset: 3px; }
+
+.practice-guide .guide-scene-choice {
+  display: block;
+  margin-top: 7px;
+  padding: 4px 2px;
+  border: 1px solid #d2cedd;
+  border-radius: 3px;
+  color: #65616f;
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.practice-guide .is-picked .guide-scene-choice { color: #fff; border-color: #6250c7; background: #6250c7; }
+
+.practice-guide .guide-scene-result {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 12px;
+  color: #eee9ff;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.practice-guide .guide-scene-result > span:first-child {
+  display: grid;
+  place-items: center;
+  flex: 0 0 23px;
+  height: 23px;
+  border-radius: 4px;
+  color: #e4dbff;
+  background: #484057;
+}
+
+.practice-guide .guide-step-copy { display: block; padding: 22px 22px 23px; }
+.practice-guide .guide-step-title { display: flex; align-items: center; gap: 12px; margin-bottom: 9px; }
+.practice-guide .guide-step-title > span { color: #786b9c; font-size: 12px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.practice-guide .guide-step-copy h2 { margin: 0; font-size: 19px; font-weight: 400; line-height: 1.5; }
+.practice-guide .guide-step-copy p { margin: 0; color: #626471; font-size: 14px; font-weight: 400; line-height: 1.7; }
+
+@media (min-width: 761px) and (max-width: 1020px) {
+  .practice-guide .practice-guide-steps { grid-template-columns: 1fr; gap: 18px; }
+  .practice-guide .practice-guide-steps > li { display: grid; grid-template-columns: 1.15fr 1fr; }
+  .practice-guide .guide-scene { padding: 16px 24px; }
+  .practice-guide .guide-step-copy { display: flex; flex-direction: column; justify-content: center; padding: 26px; }
+}
+
+@media (max-width: 760px) {
+  .practice-guide .practice-guide-steps { grid-template-columns: 1fr; gap: 18px; }
+  .practice-guide .guide-scene { height: auto; min-height: 252px; padding: 20px max(18px, calc((100% - 340px) / 2)); }
+  .practice-guide .guide-scene-gallery { height: 80px; }
+  .practice-guide .guide-scene-gallery img { height: 80px; }
+  .practice-guide .guide-step-copy { padding: 20px; }
+}
