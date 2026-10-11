@@ -172,15 +172,13 @@
       keywords: "드라마 새벽 식당 식탁 음식 위로 대화 따뜻한 일상",
     },
   ];
-  // Portfolio sample order, not audience data or a live box-office ranking.
-  const conceptChart = ["bluehour", "signal", "atlas", "rooftop", "relay"];
   const themes = [
     {
       id: "quiet",
       name: "파란 숨 고르기",
       number: "01",
-      english: "TAKE A BLUE BREATH",
-      previewDescription: "파도와 숲, 색과 식탁 사이에서 잠시 쉬어가는 네 편",
+      article: "faces",
+      previewDescription: "고요한 풍경과 느린 대화에 머무는 네 편",
       previewImage: "assets/posters-v8/forest.webp",
       accent: "#9CBFDF",
       descriptionLines: ["풍경에서 마음으로,", "잠시 숨을 고르는 네 편."],
@@ -190,8 +188,8 @@
       id: "warmth",
       name: "다정한 반전",
       number: "02",
-      english: "A WARMER TURN",
-      previewDescription: "편지, 이웃, 음악과 계주가 이어주는 뜻밖의 마음",
+      article: "running-time",
+      previewDescription: "작은 용기가 관계를 바꾸는 네 편",
       previewImage: "assets/posters-v13/rooftop.webp",
       accent: "#EDBA88",
       descriptionLines: [
@@ -204,8 +202,8 @@
       id: "beyond",
       name: "상상 바깥으로",
       number: "03",
-      english: "BEYOND THE FRAME",
-      previewDescription: "온실과 궤도, 종이별과 신호가 여는 낯선 이야기",
+      article: "enclosed-spaces",
+      previewDescription: "낯선 규칙으로 일상을 벗어나는 네 편",
       previewImage: "assets/posters-v13/atlas.webp",
       accent: "#C3B6EC",
       descriptionLines: ["낯선 신호를 따라,", "상상의 경계를 넓히는 네 편."],
@@ -215,48 +213,32 @@
   const articles = [
     {
       id: "faces",
-      category: "장면 읽기",
-      title: "풍경보다 오래 남는, 사람의 얼굴",
-      description: "돌아온 사람과 남겨진 마음. 파도가 머문 자리를 읽는 방법.",
+      category: "큐레이션 노트",
+      title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "‘파도가 머문 자리’의 출발점은 바다가 아니라, 아버지가 남긴 소리를 듣는 서윤입니다. 익숙한 장소에 돌아왔어도 마음까지 같은 자리에 있는 것은 아닙니다. 이 작품을 고를 때는 풍경의 아름다움보다 인물이 무엇을 피하고 무엇을 마주하려 하는지 먼저 생각해 보세요.",
-        "한 편을 고르는 작은 기준을 만들어도 좋습니다. 오늘은 가족에 관한 이야기인지, 관계의 변화인지, 한 사람의 선택인지 살펴보는 겁니다. 줄거리에서 마음이 움직이는 지점을 찾았다면, 그 작품을 찜해 다음 선택으로 남겨두세요.",
+        "‘파도가 머문 자리’의 서윤은 아버지가 남긴 소리를 따라 돌아옵니다. ‘숲의 호흡’은 말 대신 자연의 소리에 머뭅니다. 같은 고요함도 한 사람의 기억과 숲의 풍경에서 서로 다르게 펼쳐집니다.",
+        "‘파란 오후’의 재회와 ‘새벽 두 시의 식탁’의 대화까지. 빠른 사건보다 인물과 공간에 천천히 가까워지는 네 편을 묶었습니다.",
       ],
     },
     {
       id: "running-time",
-      category: "고르는 기준",
-      title: "18분부터 42분까지, 오늘의 러닝타임",
-      description:
-        "짧은 편지 한 통부터 한밤의 미스터리까지. 내 시간에 맞는 한 편.",
+      category: "큐레이션 노트",
+      title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "짧은 여유에는 18분의 ‘여름의 편지’, 조금 더 머물고 싶은 날에는 42분의 ‘밤의 온실’을 골라보세요. 러닝타임은 작품의 깊이를 재는 점수가 아니라, 지금 내게 있는 시간에 맞춰 선택하는 실용적인 기준입니다.",
-        "한 편을 더 고르고 싶다면 네 작품씩 묶은 기획전을 살펴보세요. ‘파란 숨 고르기’는 총 96분, ‘다정한 반전’은 101분, ‘상상 바깥으로’는 150분입니다. 모두 담아야 할 필요는 없습니다. 먼저 분위기를 고르고 작품별 시간을 비교해 오늘의 여유에 맞춰보세요.",
+        "부치지 못한 편지, 멈춘 엘리베이터, 마지막 옥상 공연과 계주. ‘다정한 반전’의 네 편은 누군가를 향해 한 걸음 내딛는 순간에서 만납니다.",
+        "18분의 ‘여름의 편지’부터 31분의 ‘마지막 바통’까지, 관계가 달라지는 작은 선택에 초점을 맞췄습니다.",
       ],
     },
     {
       id: "enclosed-spaces",
-      category: "이야기의 공간",
-      title: "닫힌 공간에서 시작되는 이야기",
-      description: "밤의 온실과 먼 관측 기지. 인물에게 공간이 갖는 의미.",
+      category: "큐레이션 노트",
+      title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "‘밤의 온실’에는 자정마다 불이 켜지는 닫힌 문이, ‘느린 궤도’에는 지구에서 멀리 떨어진 관측 기지가 있습니다. 두 설정 모두 익숙한 일상에서 벗어난 장소에 인물을 놓고, 그곳에 머물거나 안으로 들어갈 이유를 묻게 합니다.",
-        "미스터리와 SF라는 장르는 다르지만 두 작품은 ‘상상 바깥으로’ 기획전에서 함께 만날 수 있습니다. 작품 상세의 짧은 소개를 읽으며, 더 알고 싶은 질문이 남는 쪽을 골라보세요. 정답을 찾기보다 호기심이 생긴 작품을 먼저 담는 것으로 충분합니다.",
-      ],
-    },
-    {
-      id: "anime-color",
-      category: "애니메이션의 색",
-      title: "한 가지 색으로 시작하는 이야기",
-      description:
-        "바다를 채우는 파랑과 그 위의 두 사람. 색에서 시작하는 영화 선택.",
-      film: "bluehour",
-      paragraphs: [
-        "‘파란 오후’는 바닷가에서 다시 만난 두 친구의 하루를 그린 가상 작품입니다. 포스터에서는 바다와 하늘의 파랑이 넓은 공간을 만들고, 인물의 주황색 가방이 시선을 모읍니다. 배경을 먼저 봤는지, 서로를 바라보는 표정을 먼저 봤는지 돌아보며 작품 소개와 연결해 보세요.",
-        "색으로 영화를 고를 때에도 줄거리를 함께 살피는 편이 좋습니다. 같은 파란색이라도 차분한 휴식과 낯선 긴장을 모두 표현할 수 있기 때문입니다. ‘파란 오후’와 ‘별을 접는 아이’의 소개를 비교하며 색, 인물의 목표, 공간 중 무엇에 먼저 마음이 갔는지 나의 영화 노트에 남겨보세요.",
+        "자정마다 불이 켜지는 온실, 지구에서 멀리 떨어진 기지, 종이별로 채우는 밤하늘과 미래에서 온 구조 신호. 평범한 일상에 낯선 규칙이 들어오는 네 편입니다.",
+        "미스터리의 긴장과 SF·애니메이션의 상상력을 함께 담았습니다. 공간보다 그 안에서 선택해야 하는 인물에 주목해 보세요.",
       ],
     },
   ];
@@ -267,6 +249,9 @@
   const state = {
     view: "home",
     mood: "all",
+    duration: "all",
+    homeMood: "all",
+    homeDuration: "all",
     query: "",
     libraryFilter: "all",
     sort: "recommended",
@@ -349,6 +334,8 @@
       const label = `${film.title} ${on ? "찜 해제" : "찜하기"}`;
       btn.setAttribute("aria-label", label);
       btn.setAttribute("title", label);
+      if (btn.id === "detailSave")
+        $("detailSaveLabel").textContent = on ? "찜한 영화" : "찜하기";
     });
     document.querySelectorAll("[data-note-for]").forEach((badge) => {
       badge.hidden = !state.notes[badge.dataset.noteFor];
@@ -360,8 +347,9 @@
       .setAttribute("aria-label", `내 보관함, 영화 ${count}편`);
     $("storageNote").textContent =
       state.storageAvailable && state.notesStorageAvailable
-        ? "찜한 영화와 나의 영화 노트가 이 브라우저에 저장됩니다."
+        ? "찜과 메모는 이 브라우저에 저장됩니다."
         : "브라우저 저장 공간을 사용할 수 없어 일부 변경은 이 페이지에서만 유지됩니다.";
+    renderHomeLibrary();
     requestRailUpdate();
   }
   // Keep long movie names in deliberate phrase groups at every card size.
@@ -403,17 +391,13 @@
     const displayTitle = (titleLines[film.id] || [film.title])
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
-    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p><small class="film-english">${film.english}</small></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>노트 있음</span>`;
+    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
     return article;
-  }
-  function makeChartItem(id, index) {
-    const film = films.find((item) => item.id === id);
-    const item = document.createElement("li");
-    item.innerHTML = `<button class="chart-film" type="button" data-detail="${film.id}" aria-label="콘셉트 차트 ${index + 1}위 · ${film.title} 작품 보기"><span class="chart-rank" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="chart-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span></span><span class="chart-tag">가상 작품</span></button>`;
-    return item;
   }
   function renderThemes(id) {
     const theme = themes.find((item) => item.id === id);
+    $("themesPageHeading").hidden = Boolean(theme);
+    $("themesView").setAttribute("aria-labelledby", theme ? "themeTitle" : "themesTitle");
     $("themeOverview").hidden = Boolean(theme);
     $("themeDetail").hidden = !theme;
     $("themeTabs").hidden = !theme;
@@ -430,8 +414,9 @@
     $("themeDetail").style.setProperty("--theme-accent", theme.accent);
     $("themeCollection").dataset.theme = theme.id;
     $("themeNumber").textContent = theme.number;
-    $("themeTagline").textContent = theme.english;
+    $("themeTagline").textContent = "큐레이션";
     $("themeTitle").textContent = theme.name;
+    $("themeArticle").dataset.article = theme.article;
     $("themeDescription").replaceChildren(
       ...theme.descriptionLines.flatMap((text, index) => {
         const line = document.createElement("span");
@@ -453,20 +438,17 @@
     updateSaveButtons();
     return true;
   }
-  function makeThemePreview(theme, overview = false) {
+  function makeThemePreview(theme) {
     const link = document.createElement("a");
-    link.className = `theme-preview${overview ? " theme-overview-card" : ""}`;
+    link.className = "theme-preview theme-overview-card";
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.style.setProperty("--theme-accent", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><span class="eyebrow">${theme.english}</span><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편</span></div>`;
     return link;
   }
-  $("themePreviews").replaceChildren(
-    ...themes.map((theme) => makeThemePreview(theme)),
-  );
   $("themeOverview").replaceChildren(
-    ...themes.map((theme) => makeThemePreview(theme, true)),
+    ...themes.map(makeThemePreview),
   );
   $("themeTabs").innerHTML = themes
     .map(
@@ -474,50 +456,90 @@
         `<a href="#themes/${theme.id}" data-theme="${theme.id}"><span aria-hidden="true">${theme.number}</span>${theme.name}</a>`,
     )
     .join("");
-  const articleTitleLines = {
-    faces: ["풍경보다 오래 남는,", "사람의 얼굴"],
-    "running-time": ["18분부터 42분까지,", "오늘의 러닝타임"],
-    "enclosed-spaces": ["닫힌 공간에서", "시작되는 이야기"],
-    "anime-color": ["한 가지 색으로", "시작하는 이야기"],
-  };
-  function makeArticleCard(article, index) {
-    const film = films.find((item) => item.id === article.film);
-    const card = document.createElement("article");
-    card.className = `journal-card${index === 0 ? " journal-feature" : ""}`;
-    card.dataset.articleId = article.id;
-    const displayTitle = (articleTitleLines[article.id] || [article.title])
-      .map((line) => `<span class="journal-title-line">${line}</span>`)
-      .join(" ");
-    card.innerHTML = `<button class="journal-card-button" data-article="${article.id}"><span class="journal-card-image"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"></span><span class="journal-card-copy"><span class="eyebrow">${article.category}</span><h3>${displayTitle}</h3><p>${article.description}</p><span class="journal-card-link">읽어보기</span></span></button>`;
-    return card;
-  }
   const homeSelection = [
-    "bluehour",
     "tide",
-    "atlas",
-    "greenhouse",
     "rooftop",
-    "letters",
+    "atlas",
     "signal",
-    "orbit",
-    "relay",
     "forest",
     "nocturne",
+    "letters",
+    "greenhouse",
+    "orbit",
+    "relay",
     "windows",
+    "bluehour",
   ];
   const orderedFilms = homeSelection.map((id) =>
     films.find((film) => film.id === id),
   );
-  $("homeFilms").replaceChildren(...orderedFilms.map(makeCard));
-  $("homeChart").replaceChildren(
-    ...conceptChart.slice(0, 3).map(makeChartItem),
-  );
-  $("conceptChart").replaceChildren(...conceptChart.map(makeChartItem));
-  const journalSelection = articles;
-  $("journalGrid").replaceChildren(...journalSelection.map(makeArticleCard));
-  $("homeJournal").replaceChildren(
-    ...journalSelection.slice(0, 2).map(makeArticleCard),
-  );
+  let homeLibrarySignature = "";
+  function renderHomeLibrary() {
+    const libraryFilms = orderedFilms
+      .filter((film) => inLibrary(film.id))
+      .slice(0, 3);
+    const signature = JSON.stringify(
+      libraryFilms.map((film) => [film.id, Boolean(state.notes[film.id])]),
+    );
+    if (signature === homeLibrarySignature) return;
+    homeLibrarySignature = signature;
+    const container = $("homeLibraryItems");
+    const focusedId = container.contains(document.activeElement)
+      ? document.activeElement.closest("[data-detail]")?.dataset.detail
+      : null;
+    $("homeLibraryEmpty").hidden = libraryFilms.length > 0;
+    container.hidden = libraryFilms.length === 0;
+    container.replaceChildren(
+      ...libraryFilms.map((film) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "library-mini-item";
+        button.dataset.detail = film.id;
+        button.setAttribute(
+          "aria-label",
+          `${film.title} 작품 보기${state.notes[film.id] ? ", 메모 있음" : ""}`,
+        );
+        button.innerHTML = `<img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="library-mini-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span>${state.notes[film.id] ? "<small>메모 있음</small>" : ""}</span>`;
+        return button;
+      }),
+    );
+    if (focusedId) {
+      const replacement =
+        container.querySelector(`[data-detail="${focusedId}"]`) ||
+        container.querySelector("[data-detail]") ||
+        $("homeLibraryEmpty").querySelector("a");
+      replacement?.focus({ preventScroll: true });
+    }
+  }
+  function renderHome() {
+    const visible = orderedFilms.filter(
+      (film) =>
+        (state.homeMood === "all" || film.mood === state.homeMood) &&
+        (state.homeDuration === "all" ||
+          film.minutes <= Number(state.homeDuration)),
+    );
+    filmRail.replaceChildren(...visible.map(makeCard));
+    filmRail.hidden = visible.length === 0;
+    filmRail.closest(".rail-shell").hidden = visible.length === 0;
+    $("homeEmpty").hidden = visible.length > 0;
+    $("homeResultCount").textContent = `${visible.length}편`;
+    $("homeDuration").value = state.homeDuration;
+    document.querySelectorAll("[data-home-mood]").forEach((button) =>
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.homeMood === state.homeMood),
+      ),
+    );
+    [railPrevious, railNext, railStatus].forEach((control) => {
+      if (control) control.hidden = visible.length === 0;
+    });
+    if (!visible.length) {
+      if (railPrevious) railPrevious.disabled = true;
+      if (railNext) railNext.disabled = true;
+    }
+    filmRail.scrollLeft = 0;
+    updateSaveButtons();
+  }
   const filmRail = $("homeFilms");
   const railPrevious = document.querySelector('[data-rail-prev="homeFilms"]');
   const railNext = document.querySelector('[data-rail-next="homeFilms"]');
@@ -612,6 +634,9 @@
     return (
       (state.view !== "saved" || inLibraryFilter(film.id)) &&
       (state.mood === "all" || state.mood === film.mood) &&
+      (state.view !== "browse" ||
+        state.duration === "all" ||
+        film.minutes <= Number(state.duration)) &&
       (!q ||
         `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords}`
           .toLocaleLowerCase("ko")
@@ -638,17 +663,20 @@
     const filtered =
       state.query.trim() ||
       state.mood !== "all" ||
+      (state.view === "browse" && state.duration !== "all") ||
       (state.view === "saved" && state.libraryFilter !== "all");
     const libraryLabels = {
       all: "보관함 전체",
       saved: "찜한 영화",
-      noted: "노트 있는 영화",
+      noted: "메모 있는 영화",
     };
     $("resultCount").textContent =
       `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
     $("libraryFilters").hidden = state.view !== "saved";
     $("moodFilters").hidden = state.view === "saved";
     $("sortField").hidden = state.view !== "browse";
+    $("durationField").hidden = state.view !== "browse";
+    $("durationFilter").value = state.duration;
     $("catalogSort").value = state.sort;
     $("catalogTools").classList.toggle("library-tools", state.view === "saved");
     document
@@ -679,18 +707,18 @@
       : emptyCategory
         ? state.libraryFilter === "saved"
           ? "아직 찜한 영화가 없어요."
-          : "아직 노트를 남긴 영화가 없어요."
+          : "아직 메모를 남긴 영화가 없어요."
         : "조건에 맞는 영화가 없어요.";
     $("emptyText").textContent = emptyLibrary
-      ? "영화를 찜하거나 나의 영화 노트를 남겨보세요."
+      ? "마음에 드는 영화를 찜해 모아보세요."
       : emptyCategory
-        ? "전체 보관함에서 영화를 골라 찜하거나 노트를 남겨보세요."
+        ? "다른 분류에서 영화를 찾아보세요."
         : state.view === "saved"
           ? "다른 검색어나 보관함 분류로 다시 찾아보세요."
-          : "다른 검색어나 분위기로 다시 찾아보세요.";
+          : "분위기나 러닝타임을 바꿔보세요.";
     $("emptyAction").dataset.action = emptyLibrary ? "browse" : "reset";
     $("emptyAction").textContent = emptyLibrary
-      ? "영화 둘러보기"
+      ? "영화 찾기"
       : emptyCategory
         ? "보관함 전체보기"
         : "조건 초기화";
@@ -706,14 +734,15 @@
   }
   function resetFilters() {
     state.mood = "all";
+    state.duration = "all";
     state.query = "";
     if (state.view === "saved") state.libraryFilter = "all";
     $("searchInput").value = "";
     render();
   }
   const catalogFilters = {
-    browse: { mood: "all", query: "" },
-    saved: { mood: "all", query: "" },
+    browse: { mood: "all", duration: "all", query: "" },
+    saved: { mood: "all", duration: "all", query: "" },
   };
   let searchRequested = false;
   let firstRoute = true;
@@ -726,20 +755,27 @@
     document
       .querySelectorAll("dialog[open]")
       .forEach((dialog) => closeDialog(dialog, { restoreFocus: false }));
-    const [path, themeId] = location.hash.slice(1).split("/");
-    const view = ["browse", "saved", "themes", "journal", "news"].includes(path)
+    let [path, themeId] = location.hash.slice(1).split("/");
+    if (["journal", "news"].includes(path)) {
+      history.replaceState(null, "", "#themes");
+      path = "themes";
+      themeId = undefined;
+    }
+    const view = ["browse", "saved", "themes"].includes(path)
       ? path
       : "home";
     const previousView = state.view;
     if (catalogFilters[previousView])
-      catalogFilters[previousView] = { mood: state.mood, query: state.query };
+      catalogFilters[previousView] = {
+        mood: state.mood,
+        duration: state.duration,
+        query: state.query,
+      };
     state.view = view;
     document.body.dataset.view = view;
     document.body.classList.toggle("saved-view", view === "saved");
     $("homeView").hidden = view !== "home";
     $("themesView").hidden = view !== "themes";
-    $("journalView").hidden = view !== "journal";
-    $("newsView").hidden = view !== "news";
     $("catalogView").hidden = !["browse", "saved"].includes(view);
     document.querySelectorAll(".nav [data-view]").forEach((a) => {
       if (a.dataset.view === view) a.setAttribute("aria-current", "page");
@@ -751,13 +787,13 @@
       if (view === "saved") state.mood = "all";
       $("searchInput").value = state.query;
       $("catalogTitle").textContent =
-        view === "saved" ? "내 보관함" : "영화 둘러보기";
+        view === "saved" ? "내 보관함" : "영화 찾기";
       $("catalogKicker").textContent =
-        view === "saved" ? "찜과 노트를 한곳에" : "CONCEPT FILM COLLECTION";
+        view === "saved" ? "나의 관심 작품" : "단편영화 큐레이션";
       $("catalogDescription").textContent =
         view === "saved"
-          ? "찜한 영화와 노트를 남긴 영화를 다시 만나보세요."
-          : "애니메이션부터 미스터리까지, 가상 단편 12편을 만나보세요.";
+          ? "다시 찾고 싶은 영화와 관심 메모."
+          : "분위기와 러닝타임으로 고르는 12편.";
       if (searchRequested) resetFilters();
       else render();
       heading = $("catalogTitle");
@@ -765,17 +801,13 @@
       const hasTheme = renderThemes(themeId);
       heading = hasTheme ? $("themeTitle") : $("themesTitle");
     } else {
-      if (view === "journal") heading = $("journalTitle");
-      if (view === "news") heading = $("newsTitle");
       updateSaveButtons();
     }
     const pageTitle = {
-      home: "이야기가 시작되는 곳",
-      themes: "기획전",
-      journal: "매거진",
-      browse: "작품 둘러보기",
+      home: "취향으로 고르는 단편영화",
+      themes: "큐레이션",
+      browse: "영화 찾기",
       saved: "내 보관함",
-      news: "차트·큐레이션",
     }[view];
     document.title = `${pageTitle} — 잔상관`;
     if (!firstRoute) {
@@ -803,11 +835,40 @@
     const hash = link.getAttribute("href");
     if (!/^#(home|browse|saved|themes|journal|news)(\/|$)/.test(hash)) return;
     event.preventDefault();
+    if (link.hasAttribute("data-home-browse")) {
+      catalogFilters.browse = {
+        mood: state.homeMood,
+        duration: state.homeDuration,
+        query: "",
+      };
+    }
     navigate(hash.slice(1));
   });
   $("searchShortcut").addEventListener("click", () => {
     searchRequested = true;
     navigate("browse");
+  });
+  $("durationFilter").addEventListener("change", (event) => {
+    if (!["all", "30", "45"].includes(event.target.value)) return;
+    state.duration = event.target.value;
+    render();
+  });
+  document.querySelectorAll("[data-home-mood]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.homeMood = button.dataset.homeMood;
+      renderHome();
+    });
+  });
+  $("homeDuration").addEventListener("change", (event) => {
+    if (!["all", "30", "45"].includes(event.target.value)) return;
+    state.homeDuration = event.target.value;
+    renderHome();
+  });
+  $("homeReset").addEventListener("click", () => {
+    state.homeMood = "all";
+    state.homeDuration = "all";
+    renderHome();
+    document.querySelector('[data-home-mood="all"]').focus();
   });
   $("catalogSort").addEventListener("change", (event) => {
     if (!["recommended", "title", "short"].includes(event.target.value)) return;
@@ -902,7 +963,7 @@
   }
   function noteSavedMessage() {
     return state.notesStorageAvailable
-      ? "노트를 저장했어요."
+      ? "메모를 저장했어요."
       : "이 페이지에서만 보관 중이에요. 새로고침하면 사라집니다.";
   }
   function updateNoteCount() {
@@ -910,6 +971,10 @@
     const hasSavedNote = Boolean(state.notes[activeDetailId]);
     $("noteDelete").hidden = !hasSavedNote;
     $("noteDelete").disabled = !hasSavedNote;
+    $("noteSummary").textContent =
+      hasSavedNote || noteDrafts.has(activeDetailId)
+        ? "관심 메모"
+        : "관심 메모 남기기";
   }
   function loadNote() {
     if (
@@ -924,17 +989,15 @@
     noteDirty = Boolean(draft);
     updateNoteCount();
     $("noteStatus").textContent = draft
-      ? noteDraftMessage(true)
+      ? noteDraftMessage()
       : state.notes[activeDetailId]
         ? noteSavedMessage()
-        : "영화에서 궁금한 점이나 남겨둘 생각을 노트로 남겨보세요.";
+        : "";
   }
-  function noteDraftMessage(restored = false) {
+  function noteDraftMessage() {
     if (noteDrafts.get(activeDetailId)?.conflicted)
       return "다른 탭의 저장본이 바뀌었어요. 이 초안을 저장하면 최신 저장본을 덮어씁니다.";
-    return restored
-      ? "저장 전 초안을 이어 쓸 수 있어요. 새로고침하거나 탭을 닫으면 사라집니다."
-      : "저장 전 초안이에요. 화면을 닫아도 유지되며, 새로고침하면 사라집니다.";
+    return "저장 전 메모 · 새로고침하면 사라져요.";
   }
   function refreshLibrary({ preserveFocus = false } = {}) {
     if (state.view === "saved") render({ preserveFocus });
@@ -958,8 +1021,7 @@
     $("detailTitle").textContent = film.title;
     $("detailDialog").dataset.filmId = film.id;
     $("detailMood").textContent = film.moodText;
-    $("detailMeta").textContent =
-      `${film.genre} · ${film.minutes}분 · 가상 단편`;
+    $("detailMeta").textContent = `${film.genre} · ${film.minutes}분`;
     $("detailDescription").textContent = film.description;
     $("detailImage").src = posterPath(film);
     $("detailImage").alt = `${film.title}의 가상 영화 포스터`;
@@ -968,6 +1030,7 @@
     $("detailImage").style.objectPosition = "center";
     $("detailSave").dataset.save = id;
     loadNote();
+    $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
     updateSaveButtons();
     openDialog($("detailDialog"), trigger, $("detailTitle"));
   }
@@ -1006,7 +1069,7 @@
     if (!activeDetailId) return;
     const value = $("noteText").value.trim();
     if (!value || value.length > 280) {
-      $("noteStatus").textContent = "1~280자로 노트를 입력한 뒤 저장해 주세요.";
+      $("noteStatus").textContent = "1~280자로 메모를 입력해 주세요.";
       $("noteText").focus();
       return;
     }
@@ -1024,8 +1087,8 @@
     loadNote();
     refreshLibrary();
     $("noteStatus").textContent = state.notesStorageAvailable
-      ? "이 영화의 노트를 삭제했어요."
-      : "이 페이지의 노트를 지웠어요. 브라우저 저장 공간은 사용할 수 없습니다.";
+      ? "이 영화의 메모를 삭제했어요."
+      : "이 페이지의 메모를 지웠어요. 브라우저 저장 공간은 사용할 수 없습니다.";
     $("noteText").focus();
   });
   document.addEventListener("click", (event) => {
@@ -1061,7 +1124,7 @@
         }
       } else updateSaveButtons();
       notify(
-        `${film.title} · ${wasSaved ? (state.notes[id] ? "찜을 해제했어요. 노트는 보관함에 남아 있어요." : "찜 목록에서 뺐어요.") : state.storageAvailable ? "이 브라우저에 저장했어요." : "잠시 담았어요. 새로고침하면 사라져요."}`,
+        `${film.title} · ${wasSaved ? (state.notes[id] ? "찜을 해제했어요. 메모는 남아 있어요." : "찜 목록에서 뺐어요.") : state.storageAvailable ? "이 브라우저에 저장했어요." : "잠시 담았어요. 새로고침하면 사라져요."}`,
       );
     }
     const close = event.target.closest("[data-close]");
@@ -1088,9 +1151,16 @@
       if (e.key !== "Tab") return;
       const focusable = [
         ...dialog.querySelectorAll(
-          'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex="0"]',
+          'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,[tabindex="0"]',
         ),
-      ].filter((el) => el.getClientRects().length);
+      ].filter((el) => {
+        if (!el.getClientRects().length) return false;
+        // Chromium can retain rectangles for content inside closed details.
+        const closedDetails = el.closest("details:not([open])");
+        if (!closedDetails) return true;
+        const summary = closedDetails.querySelector(":scope > summary");
+        return summary === el || Boolean(summary?.contains(el));
+      });
       if (!focusable.length) return;
       const first = focusable[0],
         last = focusable.at(-1);
@@ -1125,13 +1195,9 @@
       const heading =
         state.view === "themes"
           ? $("themesTitle")
-          : state.view === "journal"
-            ? $("journalTitle")
-            : state.view === "home"
-              ? $("heroTitle")
-              : state.view === "news"
-                ? $("newsTitle")
-                : $("catalogTitle");
+          : state.view === "home"
+            ? $("heroTitle")
+            : $("catalogTitle");
       const target =
         trigger?.isConnected && trigger.getClientRects().length
           ? trigger
@@ -1182,5 +1248,6 @@
     $("main-content").focus();
     $("main-content").scrollIntoView({ block: "start" });
   });
+  renderHome();
   route();
 })();
