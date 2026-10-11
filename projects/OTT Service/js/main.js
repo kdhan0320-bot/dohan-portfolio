@@ -179,7 +179,8 @@
       number: "01",
       article: "faces",
       previewDescription: "고요한 풍경과 느린 대화에 머무는 네 편",
-      previewImage: "assets/posters-v8/forest.webp",
+      previewImage: "assets/stills/forest.webp",
+      imageAlt: "안개와 햇빛이 내려앉은 숲의 개울",
       accent: "#9CBFDF",
       descriptionLines: ["고요한 풍경에 머무는 네 편."],
       films: ["tide", "forest", "bluehour", "nocturne"],
@@ -190,7 +191,8 @@
       number: "02",
       article: "running-time",
       previewDescription: "작은 용기가 관계를 바꾸는 네 편",
-      previewImage: "assets/posters-v13/rooftop.webp",
+      previewImage: "assets/stills/letters.webp",
+      imageAlt: "햇살이 드는 창가, 나무 책상 위에 놓인 편지",
       accent: "#EDBA88",
       descriptionLines: ["작은 용기가 바꾸는 관계."],
       films: ["letters", "windows", "rooftop", "relay"],
@@ -201,7 +203,8 @@
       number: "03",
       article: "enclosed-spaces",
       previewDescription: "낯선 규칙으로 일상을 벗어나는 네 편",
-      previewImage: "assets/posters-v13/atlas.webp",
+      previewImage: "assets/stills/orbit.webp",
+      imageAlt: "우주 관측 기지의 넓은 창 너머로 보이는 행성과 고리",
       accent: "#C3B6EC",
       descriptionLines: ["익숙한 세계 너머의 상상."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
@@ -381,7 +384,7 @@
   };
   const posterPath = (film) =>
     film.posterPath || `assets/posters-v8/${film.image}.webp`;
-  function makeCard(film) {
+  function makeCard(film, context = "catalog") {
     const article = document.createElement("article");
     article.className = "film-card";
     article.dataset.filmId = film.id;
@@ -389,7 +392,7 @@
     const displayTitle = (titleLines[film.id] || [film.title])
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
-    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption"><p class="film-card-title">${film.title}</p><p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
+    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
     return article;
   }
   function renderThemes(id) {
@@ -429,10 +432,10 @@
     $("themeDuration").textContent =
       `작품 ${selectedFilms.length}편 · 총 ${selectedFilms.reduce((sum, film) => sum + film.minutes, 0)}분`;
     $("themeCover").src = theme.previewImage;
-    $("themeCover").alt = "";
-    $("themeCover").width = 800;
-    $("themeCover").height = 1200;
-    $("themeFilms").replaceChildren(...selectedFilms.map(makeCard));
+    $("themeCover").alt = theme.imageAlt;
+    $("themeCover").width = 1672;
+    $("themeCover").height = 941;
+    $("themeFilms").replaceChildren(...selectedFilms.map((film) => makeCard(film)));
     updateSaveButtons();
     return true;
   }
@@ -442,7 +445,7 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.style.setProperty("--theme-accent", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="800" height="1200" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편${icon("arrow")}</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(
@@ -516,7 +519,7 @@
         (state.homeDuration === "all" ||
           film.minutes <= Number(state.homeDuration)),
     );
-    filmRail.replaceChildren(...visible.map(makeCard));
+    filmRail.replaceChildren(...visible.map((film) => makeCard(film, "home")));
     filmRail.hidden = visible.length === 0;
     filmRail.closest(".rail-shell").hidden = visible.length === 0;
     $("homeEmpty").hidden = visible.length > 0;
@@ -664,7 +667,7 @@
     if (state.view === "browse" && state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
-    grid.replaceChildren(...visible.map(makeCard));
+    grid.replaceChildren(...visible.map((film) => makeCard(film)));
     const filtered =
       state.query.trim() ||
       state.mood !== "all" ||
@@ -1045,10 +1048,10 @@
     const film = films.find((item) => item.id === article.film);
     $("articleTitle").textContent = article.title;
     $("articleCategory").textContent = article.category;
-    $("articleImage").src = posterPath(film);
-    $("articleImage").alt = `${film.title}의 가상 영화 포스터`;
-    $("articleImage").width = 800;
-    $("articleImage").height = 1200;
+    $("articleImage").src = `assets/stills/${film.image}.webp`;
+    $("articleImage").alt = `${film.title}의 가상 영화 장면`;
+    $("articleImage").width = 1672;
+    $("articleImage").height = 941;
     $("articleBody").replaceChildren(
       ...article.paragraphs.map((copy) => {
         const paragraph = document.createElement("p");
