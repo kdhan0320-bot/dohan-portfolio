@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="#08131f" name="theme-color" />
+    <meta content="#171819" name="theme-color" />
     <meta
       content="분위기와 러닝타임으로 단편영화를 찾고 관심 작품을 모으는 잔상관. 가상 작품으로 구성한 포트폴리오 프로토타입."
       name="description"
@@ -45,7 +45,7 @@
           <path d="M1 2h29v18H1z" fill="currentColor" opacity=".22"></path>
           <path d="M5 6h29v18H5z" fill="currentColor" opacity=".45"></path>
           <path d="M9 10h29v18H9z" fill="currentColor"></path>
-          <path d="M12 13h23v12H12z" fill="#08131f"></path>
+          <path d="M12 13h23v12H12z" fill="#171819"></path>
         </symbol>
         <symbol id="i-arrow" viewBox="0 0 24 24">
           <path d="M5 12h14m-6-6 6 6-6 6"></path>
@@ -103,9 +103,8 @@
       <div id="homeView">
         <section aria-labelledby="heroTitle" class="discovery-hero wrap">
           <div class="discovery-copy">
-            <p class="eyebrow">단편영화 큐레이션</p>
-            <h1 id="heroTitle" tabindex="-1">지금의 취향에,<br /><em>짧은 영화 한 편.</em></h1>
-            <p class="discovery-intro">분위기와 시간으로 고르고,<br class="mobile-break" /> 마음에 들면 찜하세요.</p>
+            <h1 id="heroTitle" tabindex="-1">짧은 영화,<br /><em>오래 남는 취향.</em></h1>
+            <p class="discovery-intro">분위기와 시간으로 고르는 단편영화.</p>
             <a class="button light" href="#browse">영화 찾기</a>
           </div>
           <div class="spotlight">
@@ -121,7 +120,7 @@
         </section>
         <section aria-labelledby="homeFilmsTitle" class="home-films wrap section">
           <div class="section-heading">
-            <h2 id="homeFilmsTitle">오늘은 어떤 분위기인가요?</h2>
+            <h2 id="homeFilmsTitle">분위기로 찾기</h2>
             <a class="text-link" href="#browse" data-home-browse>목록 보기</a>
           </div>
           <div class="discovery-tools">
@@ -146,16 +145,16 @@
           <div class="home-empty" id="homeEmpty" hidden><p>이 조건에 맞는 영화가 아직 없어요.</p><button class="text-link" id="homeReset" type="button">조건 초기화</button></div>
         </section>
         <section class="curation-feature wrap section" aria-labelledby="homeCurationTitle">
-          <div class="curation-heading"><p class="eyebrow">잔상관의 선택</p><a class="text-link" href="#themes">모든 큐레이션</a></div>
+          <div class="curation-heading"><p class="eyebrow">큐레이션</p><a class="text-link" href="#themes">모든 큐레이션</a></div>
           <div class="curation-feature-layout">
-            <div class="curation-feature-copy"><span class="collection-index">01 / 03</span><h2 id="homeCurationTitle">잠시,<br /> 숨 고르는 영화들.</h2><p>파도 소리부터 새벽의 식탁까지.<br />천천히 머물고 싶은 네 편을 모았습니다.</p><a class="button outline" href="#themes/quiet">큐레이션 보기</a><span class="curation-meta">4편 <span>21–28분</span></span></div>
+            <div class="curation-feature-copy"><span class="collection-index">01 / 03</span><h2 id="homeCurationTitle">숨 고르는<br /> 시간.</h2><p>파도부터 새벽의 식탁까지.</p><a class="button outline" href="#themes/quiet">큐레이션 보기</a><span class="curation-meta">4편 <span>21–28분</span></span></div>
             <a class="curation-feature-art" href="#themes/quiet" aria-label="파란 숨 고르기 큐레이션 보기"><img src="assets/posters-v8/forest.webp" alt="헤드폰을 쓰고 숲의 소리에 귀 기울이는 인물" width="800" height="1200" loading="lazy" /><span class="curation-art-label">숲의 호흡 <span>21분</span></span></a>
           </div>
         </section>
         <section class="home-library wrap section" aria-labelledby="homeLibraryTitle">
-          <div class="home-library-heading"><div><p class="eyebrow">내 보관함</p><h2 id="homeLibraryTitle">다음에 만날 영화.</h2></div><a class="text-link" href="#saved">보관함 열기 <span class="sr-only">내 보관함</span></a></div>
+          <div class="home-library-heading"><h2 id="homeLibraryTitle">내 보관함</h2><a class="text-link" href="#saved">보관함 열기 <span class="sr-only">내 보관함</span></a></div>
           <div class="home-library-items" id="homeLibraryItems"></div>
-          <div class="home-library-empty" id="homeLibraryEmpty"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"></use></svg><p>눈길이 가는 작품을 찜하면 여기에 모입니다.</p><a class="text-link" href="#browse">영화 고르기</a></div>
+          <div class="home-library-empty" id="homeLibraryEmpty"><svg class="icon" aria-hidden="true"><use href="#i-bookmark"></use></svg><p>찜한 영화를 여기서 다시 만나요.</p><a class="text-link" href="#browse">영화 고르기</a></div>
         </section>
       </div>
       <section
@@ -166,11 +165,7 @@
       >
         <div class="wrap">
           <div class="page-heading" id="themesPageHeading">
-            <p class="section-kicker">잔상관의 선택</p>
             <h1 id="themesTitle" tabindex="-1">큐레이션</h1>
-            <p class="page-description">
-              서로 다른 시선으로 묶은 세 가지 컬렉션.
-            </p>
           </div>
           <div class="theme-overview" id="themeOverview"></div>
           <div hidden="" id="themeDetail">
@@ -205,13 +200,10 @@
       <div class="catalog-shell interior-page" hidden="" id="catalogView">
         <section aria-labelledby="catalogTitle" class="catalog wrap">
           <div class="page-heading">
-            <p class="section-kicker" id="catalogKicker">
+            <p class="sr-only" id="catalogKicker">
               단편영화 큐레이션
             </p>
             <h1 id="catalogTitle" tabindex="-1">영화 찾기</h1>
-            <p class="page-description" id="catalogDescription">
-              애니메이션부터 미스터리까지, 취향으로 고르는 12편.
-            </p>
           </div>
           <div
             aria-label="보관함 분류"
@@ -319,7 +311,6 @@
                 <use href="#i-mark"></use></svg
               ><span>잔상관<small>단편영화 큐레이션</small></span></a
             >
-            <p>짧은 영화, 오래 남는 취향.</p>
           </div>
           <div class="footer-links">
             <button class="text-link" data-about="" id="aboutButton">

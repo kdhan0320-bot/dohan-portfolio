@@ -181,7 +181,7 @@
       previewDescription: "고요한 풍경과 느린 대화에 머무는 네 편",
       previewImage: "assets/posters-v8/forest.webp",
       accent: "#9CBFDF",
-      descriptionLines: ["풍경에서 마음으로,", "잠시 숨을 고르는 네 편."],
+      descriptionLines: ["고요한 풍경에 머무는 네 편."],
       films: ["tide", "forest", "bluehour", "nocturne"],
     },
     {
@@ -192,10 +192,7 @@
       previewDescription: "작은 용기가 관계를 바꾸는 네 편",
       previewImage: "assets/posters-v13/rooftop.webp",
       accent: "#EDBA88",
-      descriptionLines: [
-        "서로에게 건네는 마음,",
-        "뜻밖의 다정함을 만나는 네 편.",
-      ],
+      descriptionLines: ["작은 용기가 바꾸는 관계."],
       films: ["letters", "windows", "rooftop", "relay"],
     },
     {
@@ -206,7 +203,7 @@
       previewDescription: "낯선 규칙으로 일상을 벗어나는 네 편",
       previewImage: "assets/posters-v13/atlas.webp",
       accent: "#C3B6EC",
-      descriptionLines: ["낯선 신호를 따라,", "상상의 경계를 넓히는 네 편."],
+      descriptionLines: ["익숙한 세계 너머의 상상."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
     },
   ];
@@ -790,10 +787,6 @@
         view === "saved" ? "내 보관함" : "영화 찾기";
       $("catalogKicker").textContent =
         view === "saved" ? "나의 관심 작품" : "단편영화 큐레이션";
-      $("catalogDescription").textContent =
-        view === "saved"
-          ? "다시 찾고 싶은 영화와 관심 메모."
-          : "분위기와 러닝타임으로 고르는 12편.";
       if (searchRequested) resetFilters();
       else render();
       heading = $("catalogTitle");
