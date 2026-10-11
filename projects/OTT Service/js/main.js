@@ -547,6 +547,8 @@
     if (!filmRail.getClientRects().length) return;
     const max = Math.max(0, filmRail.scrollWidth - filmRail.clientWidth);
     const left = Math.max(0, Math.min(max, filmRail.scrollLeft));
+    filmRail.closest(".rail-shell").classList.toggle("rail-static", max <= 2);
+    if (railStatus) railStatus.hidden = max <= 2;
     const focused = document.activeElement;
     if (railPrevious) railPrevious.disabled = left <= 2;
     if (railNext) railNext.disabled = left >= max - 2;
