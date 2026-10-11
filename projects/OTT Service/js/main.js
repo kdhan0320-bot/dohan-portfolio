@@ -339,6 +339,7 @@
     });
     const count = films.filter((film) => inLibrary(film.id)).length;
     $("savedCount").textContent = count;
+    $("savedCount").hidden = count === 0;
     $("savedCount")
       .closest("a")
       .setAttribute("aria-label", `내 보관함, 영화 ${count}편`);
@@ -388,7 +389,7 @@
     const displayTitle = (titleLines[film.id] || [film.title])
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
-    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button><div class="film-foot"><p><span>${film.genre}</span><span>${film.minutes}분</span></p></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
+    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption"><p class="film-card-title">${film.title}</p><p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
     return article;
   }
   function renderThemes(id) {
@@ -481,11 +482,11 @@
     if (signature === homeLibrarySignature) return;
     homeLibrarySignature = signature;
     const container = $("homeLibraryItems");
+    const libraryHadFocus = $("homeLibrary").contains(document.activeElement);
     const focusedId = container.contains(document.activeElement)
       ? document.activeElement.closest("[data-detail]")?.dataset.detail
       : null;
-    $("homeLibraryEmpty").hidden = libraryFilms.length > 0;
-    container.hidden = libraryFilms.length === 0;
+    $("homeLibrary").hidden = libraryFilms.length === 0;
     container.replaceChildren(
       ...libraryFilms.map((film) => {
         const button = document.createElement("button");
@@ -500,11 +501,11 @@
         return button;
       }),
     );
-    if (focusedId) {
+    if (focusedId || (libraryHadFocus && !libraryFilms.length)) {
       const replacement =
-        container.querySelector(`[data-detail="${focusedId}"]`) ||
+        (focusedId && container.querySelector(`[data-detail="${focusedId}"]`)) ||
         container.querySelector("[data-detail]") ||
-        $("homeLibraryEmpty").querySelector("a");
+        document.querySelector('.nav [data-view="browse"]');
       replacement?.focus({ preventScroll: true });
     }
   }
@@ -644,6 +645,9 @@
     );
   }
   function render({ preserveFocus = false } = {}) {
+    const controlsHadFocus = preserveFocus && document.activeElement.closest(
+      "#libraryFilters, #catalogTools, #catalogOptions, #resultsBar",
+    );
     const focused =
       preserveFocus && $("filmGrid").contains(document.activeElement)
         ? document.activeElement.closest("[data-detail], [data-save]")
@@ -653,6 +657,8 @@
       : "data-save";
     const focusedId = focused?.getAttribute(focusedAttribute);
     const visible = orderedFilms.filter(matches);
+    const emptyLibrary =
+      state.view === "saved" && !films.some((film) => inLibrary(film.id));
     if (state.view === "browse" && state.sort === "title")
       visible.sort((a, b) => a.title.localeCompare(b.title, "ko"));
     if (state.view === "browse" && state.sort === "short")
@@ -671,7 +677,10 @@
     };
     $("resultCount").textContent =
       `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
-    $("libraryFilters").hidden = state.view !== "saved";
+    $("libraryFilters").hidden = state.view !== "saved" || emptyLibrary;
+    $("catalogTools").hidden = emptyLibrary;
+    $("catalogOptions").hidden = emptyLibrary;
+    $("resultsBar").hidden = emptyLibrary;
     $("moodFilters").hidden = state.view === "saved";
     $("sortField").hidden = state.view !== "browse";
     $("durationField").hidden = state.view !== "browse";
@@ -694,9 +703,8 @@
         b.setAttribute("aria-pressed", String(b.dataset.mood === state.mood)),
       );
     $("emptyState").hidden = visible.length > 0;
+    $("emptyState").classList.toggle("library-empty", emptyLibrary);
     grid.hidden = visible.length === 0;
-    const emptyLibrary =
-      state.view === "saved" && !films.some((film) => inLibrary(film.id));
     const emptyCategory =
       state.view === "saved" &&
       !emptyLibrary &&
@@ -729,6 +737,8 @@
         grid.querySelector("[data-detail]") ||
         $("emptyAction");
       replacement.focus({ preventScroll: true });
+    } else if (emptyLibrary && controlsHadFocus) {
+      $("emptyAction").focus({ preventScroll: true });
     }
   }
   function resetFilters() {
