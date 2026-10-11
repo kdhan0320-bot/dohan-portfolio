@@ -35,8 +35,8 @@
       href="assets/posters-v13/bluehour-hero.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=d9ba4719" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=58884552"></script>
+    <link href="css/style.css?v=b76a56cdf1e9" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=45c4be513e0a"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -131,9 +131,9 @@
               <button type="button" data-home-mood="mystery" aria-pressed="false">긴장감</button>
               <button type="button" data-home-mood="wonder" aria-pressed="false">상상력</button>
             </div>
+            <p class="home-result-count" id="homeResultCount" aria-live="polite" role="status"></p>
             <div class="duration-field"><label for="homeDuration">러닝타임</label><select id="homeDuration"><option value="all">전체 시간</option><option value="30">30분 이내</option><option value="45">45분 이내</option></select></div>
           </div>
-          <p class="home-result-count" id="homeResultCount" aria-live="polite" role="status"></p>
           <div class="rail-shell">
             <div aria-label="분위기와 시간으로 고르는 단편영화" class="film-rail" id="homeFilms" role="region" tabindex="0"></div>
             <div class="rail-controls">
@@ -370,12 +370,10 @@
           <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteSummary">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
           <form class="note-form" id="noteForm">
             <div class="note-heading">
-              <label for="noteText">관심 메모</label
-              ><span id="noteCount">0 / 280</span>
+              <label class="sr-only" for="noteText">관심 메모</label>
+              <p class="note-hint" id="noteHint">이 브라우저에만 저장</p>
+              <span id="noteCount">0 / 280</span>
             </div>
-            <p class="note-hint" id="noteHint">
-              저장한 메모는 이 브라우저에만 남아요.
-            </p>
             <textarea
               aria-describedby="noteHint noteStatus"
               id="noteText"
