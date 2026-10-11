@@ -513,6 +513,7 @@
     }
   }
   function renderHome() {
+    finishRailDrag();
     const visible = orderedFilms.filter(
       (film) =>
         (state.homeMood === "all" || film.mood === state.homeMood) &&
@@ -546,12 +547,21 @@
   const railNext = document.querySelector('[data-rail-next="homeFilms"]');
   const railStatus = document.querySelector('[data-rail-status="homeFilms"]');
   let railFrame = 0;
+  let railDrag = null;
+  let railSuppressClickUntil = 0;
   function updateRail() {
     railFrame = 0;
     if (!filmRail.getClientRects().length) return;
     const max = Math.max(0, filmRail.scrollWidth - filmRail.clientWidth);
     const left = Math.max(0, Math.min(max, filmRail.scrollLeft));
-    filmRail.closest(".rail-shell").classList.toggle("rail-static", max <= 2);
+    const shell = filmRail.closest(".rail-shell");
+    shell.classList.toggle("rail-static", max <= 2);
+    shell.style.setProperty("--rail-position", String(max > 0 ? left / max : 0));
+    shell.style.setProperty(
+      "--rail-visible",
+      `${Math.min(100, (filmRail.clientWidth / filmRail.scrollWidth) * 100)}%`,
+    );
+    filmRail.classList.toggle("rail-draggable", max > 2);
     if (railStatus) railStatus.hidden = max <= 2;
     const focused = document.activeElement;
     if (railPrevious) railPrevious.disabled = left <= 2;
@@ -572,10 +582,11 @@
       const bounds = filmRail.getBoundingClientRect();
       const visible = [...filmRail.children]
         .map((card, index) => ({ rect: card.getBoundingClientRect(), index }))
-        .filter(
-          ({ rect }) =>
-            rect.right > bounds.left + 2 && rect.left < bounds.right - 2,
-        );
+        .filter(({ rect }) => {
+          const visibleWidth =
+            Math.min(rect.right, bounds.right) - Math.max(rect.left, bounds.left);
+          return visibleWidth >= rect.width * 0.5;
+        });
       railStatus.textContent = visible.length
         ? `${visible[0].index + 1}–${visible.at(-1).index + 1} / ${filmRail.children.length}`
         : `0 / ${filmRail.children.length}`;
@@ -603,7 +614,77 @@
     });
     requestRailUpdate();
   }
+  function finishRailDrag() {
+    if (!railDrag) return;
+    const { pointerId, dragging } = railDrag;
+    railDrag = null;
+    if (dragging) railSuppressClickUntil = performance.now() + 400;
+    filmRail.classList.remove("rail-dragging");
+    if (filmRail.hasPointerCapture(pointerId))
+      filmRail.releasePointerCapture(pointerId);
+    requestRailUpdate();
+  }
   if (!filmRail.hasAttribute("tabindex")) filmRail.tabIndex = 0;
+  filmRail.addEventListener("pointerdown", (event) => {
+    if (
+      event.pointerType !== "mouse" ||
+      !event.isPrimary ||
+      event.button !== 0 ||
+      filmRail.scrollWidth - filmRail.clientWidth <= 2
+    )
+      return;
+    finishRailDrag();
+    railSuppressClickUntil = 0;
+    railDrag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      startLeft: filmRail.scrollLeft,
+      dragging: false,
+    };
+  });
+  window.addEventListener("pointermove", (event) => {
+    if (!railDrag || event.pointerId !== railDrag.pointerId) return;
+    if (!(event.buttons & 1)) {
+      finishRailDrag();
+      return;
+    }
+    const deltaX = event.clientX - railDrag.startX;
+    const deltaY = event.clientY - railDrag.startY;
+    if (!railDrag.dragging) {
+      if (Math.abs(deltaY) > 8 && Math.abs(deltaY) > Math.abs(deltaX)) {
+        finishRailDrag();
+        return;
+      }
+      if (Math.abs(deltaX) < 8) return;
+      railDrag.dragging = true;
+      filmRail.classList.add("rail-dragging");
+      filmRail.setPointerCapture(event.pointerId);
+    }
+    event.preventDefault();
+    filmRail.scrollLeft = railDrag.startLeft - deltaX;
+  });
+  for (const type of ["pointerup", "pointercancel"]) {
+    window.addEventListener(type, (event) => {
+      if (event.pointerId === railDrag?.pointerId) finishRailDrag();
+    });
+  }
+  filmRail.addEventListener("lostpointercapture", (event) => {
+    if (event.pointerId === railDrag?.pointerId) finishRailDrag();
+  });
+  window.addEventListener("blur", finishRailDrag);
+  filmRail.addEventListener("dragstart", (event) => event.preventDefault());
+  filmRail.addEventListener(
+    "click",
+    (event) => {
+      if (event.detail === 0 || performance.now() >= railSuppressClickUntil)
+        return;
+      railSuppressClickUntil = 0;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    },
+    true,
+  );
   railPrevious?.addEventListener("click", () => scrollRail(-1));
   railNext?.addEventListener("click", () => scrollRail(1));
   filmRail.addEventListener("scroll", requestRailUpdate, { passive: true });
