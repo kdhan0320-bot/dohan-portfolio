@@ -149,13 +149,13 @@
       english: "THE FINAL RELAY",
       genre: "스포츠",
       minutes: 31,
-      mood: "wonder",
-      moodText: "새로운 가능성",
+      mood: "warm",
+      moodText: "함께하는 용기",
       image: "relay",
       posterPath: "assets/posters-v13/relay.webp",
       description:
         "부상 후 트랙을 떠나려던 육상 선수에게 마지막 계주 출전 제안이 온다. 혼자 빠르게 달리는 법만 알던 그는 동료에게 바통을 건네는 법을 배운다.",
-      keywords: "스포츠 육상 달리기 계주 트랙 바통 동료 도전 가능성 경이로운",
+      keywords: "스포츠 육상 달리기 계주 트랙 바통 동료 도전 용기 따뜻함 따뜻한",
     },
     {
       id: "nocturne",
@@ -180,10 +180,17 @@
       article: "faces",
       previewDescription: "고요한 풍경과 느린 대화에 머무는 네 편",
       previewImage: "assets/stills/forest.webp",
+      glimpseImage: "assets/stills/tide.webp",
       imageAlt: "안개와 햇빛이 내려앉은 숲의 개울",
       accent: "#9CBFDF",
-      descriptionLines: ["고요한 풍경에 머무는 네 편."],
+      descriptionLines: ["풍경과 느린 대화로 마음을 돌아보는 네 편."],
       films: ["tide", "forest", "bluehour", "nocturne"],
+      filmNotes: {
+        tide: "아버지가 남긴 소리를 따라 돌아가는 마음.",
+        forest: "이야기 대신 풍경과 소리에 머무는 시간.",
+        bluehour: "오랜 친구와 다시 나란해지는 오후.",
+        nocturne: "늦은 식탁에서 천천히 시작되는 대화.",
+      },
     },
     {
       id: "warmth",
@@ -192,10 +199,17 @@
       article: "running-time",
       previewDescription: "작은 용기가 관계를 바꾸는 네 편",
       previewImage: "assets/stills/letters.webp",
+      glimpseImage: "assets/stills/windows.webp",
       imageAlt: "햇살이 드는 창가, 나무 책상 위에 놓인 편지",
       accent: "#EDBA88",
-      descriptionLines: ["작은 용기가 바꾸는 관계."],
+      descriptionLines: ["서로에게 내딛는 작은 용기가 관계를 바꾸는 네 편."],
       films: ["letters", "windows", "rooftop", "relay"],
+      filmNotes: {
+        letters: "부치지 못한 편지가 다시 잇는 우정.",
+        windows: "멈춘 엘리베이터에서 가까워지는 이웃.",
+        rooftop: "마지막 연주로 대신 전하는 마음.",
+        relay: "혼자 달리던 선수가 동료를 믿는 순간.",
+      },
     },
     {
       id: "beyond",
@@ -204,10 +218,17 @@
       article: "enclosed-spaces",
       previewDescription: "낯선 규칙으로 일상을 벗어나는 네 편",
       previewImage: "assets/stills/orbit.webp",
+      glimpseImage: "assets/stills/greenhouse.webp",
       imageAlt: "우주 관측 기지의 넓은 창 너머로 보이는 행성과 고리",
       accent: "#C3B6EC",
-      descriptionLines: ["익숙한 세계 너머의 상상."],
+      descriptionLines: ["낯선 신호와 규칙이 익숙한 일상을 흔드는 네 편."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
+      filmNotes: {
+        greenhouse: "자정의 불빛이 이끄는 닫힌 온실의 비밀.",
+        orbit: "마지막 메시지가 바꾸는 우주 기지의 하루.",
+        atlas: "종이 한 장에 누구의 소원을 담을지 묻는 상상.",
+        signal: "아직 일어나지 않은 사고에서 도착한 목소리.",
+      },
     },
   ];
   const articles = [
@@ -246,6 +267,17 @@
   const storageKey = "jansang-cinema:saved:v1";
   const notesKey = "jansang-cinema:notes:v1";
   const validIds = new Set(films.map((f) => f.id));
+  const durationOptions = new Set(["all", "20", "30", "over30"]);
+  function matchesDuration(film, duration) {
+    if (duration === "over30") return film.minutes > 30;
+    return duration === "all" || film.minutes <= Number(duration);
+  }
+  function noteExcerpt(note, limit = 72) {
+    const characters = Array.from(note.trim().replace(/\s+/g, " "));
+    return characters.length > limit
+      ? `${characters.slice(0, limit).join("")}…`
+      : characters.join("");
+  }
   const state = {
     view: "home",
     mood: "all",
@@ -340,6 +372,11 @@
     document.querySelectorAll("[data-note-for]").forEach((badge) => {
       badge.hidden = !state.notes[badge.dataset.noteFor];
     });
+    document.querySelectorAll("[data-note-preview-for]").forEach((preview) => {
+      const note = state.notes[preview.dataset.notePreviewFor];
+      preview.hidden = !note;
+      preview.textContent = note ? noteExcerpt(note) : "";
+    });
     const count = films.filter((film) => inLibrary(film.id)).length;
     $("savedCount").textContent = count;
     $("savedCount").hidden = count === 0;
@@ -388,11 +425,22 @@
     const article = document.createElement("article");
     article.className = "film-card";
     article.dataset.filmId = film.id;
+    article.dataset.cardContext = context;
     article.dataset.posterLayout = posterLayouts[film.id];
     const displayTitle = (titleLines[film.id] || [film.title])
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
-    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>메모 있음</span>`;
+    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>${context === "saved" ? "관심 메모" : "메모 있음"}</span>`;
+    if (context === "saved") {
+      const preview = document.createElement("p");
+      preview.className = "film-note-preview";
+      preview.dataset.notePreviewFor = film.id;
+      preview.hidden = !state.notes[film.id];
+      preview.textContent = state.notes[film.id]
+        ? noteExcerpt(state.notes[film.id])
+        : "";
+      article.append(preview);
+    }
     return article;
   }
   function renderThemes(id) {
@@ -435,7 +483,16 @@
     $("themeCover").alt = theme.imageAlt;
     $("themeCover").width = 1672;
     $("themeCover").height = 941;
-    $("themeFilms").replaceChildren(...selectedFilms.map((film) => makeCard(film)));
+    $("themeFilms").replaceChildren(
+      ...selectedFilms.map((film) => {
+        const card = makeCard(film, "theme");
+        const note = document.createElement("p");
+        note.className = "film-curator-note";
+        note.textContent = theme.filmNotes[film.id];
+        card.append(note);
+        return card;
+      }),
+    );
     updateSaveButtons();
     return true;
   }
@@ -446,6 +503,15 @@
     link.dataset.themePreview = theme.id;
     link.style.setProperty("--theme-accent", theme.accent);
     link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편${icon("arrow")}</span></div>`;
+    const glimpse = document.createElement("img");
+    glimpse.className = "theme-preview-glimpse";
+    glimpse.src = theme.glimpseImage;
+    glimpse.alt = "";
+    glimpse.setAttribute("aria-hidden", "true");
+    glimpse.width = 1672;
+    glimpse.height = 941;
+    glimpse.loading = "lazy";
+    link.querySelector(".theme-preview-image > img").after(glimpse);
     return link;
   }
   $("themeOverview").replaceChildren(
@@ -475,12 +541,13 @@
     films.find((film) => film.id === id),
   );
   let homeLibrarySignature = "";
+  let moodShiftTimer;
   function renderHomeLibrary() {
     const libraryFilms = orderedFilms
       .filter((film) => inLibrary(film.id))
       .slice(0, 3);
     const signature = JSON.stringify(
-      libraryFilms.map((film) => [film.id, Boolean(state.notes[film.id])]),
+      libraryFilms.map((film) => [film.id, state.notes[film.id] || ""]),
     );
     if (signature === homeLibrarySignature) return;
     homeLibrarySignature = signature;
@@ -500,7 +567,15 @@
           "aria-label",
           `${film.title} 작품 보기${state.notes[film.id] ? ", 메모 있음" : ""}`,
         );
-        button.innerHTML = `<img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="library-mini-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span>${state.notes[film.id] ? "<small>메모 있음</small>" : ""}</span>`;
+        button.innerHTML = `<img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="library-mini-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span></span>`;
+        if (state.notes[film.id]) {
+          const preview = document.createElement("span");
+          preview.className = "library-mini-note";
+          preview.id = `home-note-${film.id}`;
+          preview.textContent = noteExcerpt(state.notes[film.id]);
+          button.setAttribute("aria-describedby", preview.id);
+          button.querySelector(".library-mini-copy").append(preview);
+        }
         return button;
       }),
     );
@@ -514,11 +589,28 @@
   }
   function renderHome() {
     finishRailDrag();
+    const homeView = $("homeView");
+    const moodChanged =
+      homeView.dataset.atmosphere &&
+      homeView.dataset.atmosphere !== state.homeMood;
+    homeView.dataset.atmosphere = state.homeMood;
+    if (moodChanged) {
+      clearTimeout(moodShiftTimer);
+      homeView.classList.remove("mood-shift");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        // Restart the brief response even if the next mood is chosen quickly.
+        void homeView.offsetWidth;
+        homeView.classList.add("mood-shift");
+        moodShiftTimer = setTimeout(
+          () => homeView.classList.remove("mood-shift"),
+          1200,
+        );
+      }
+    }
     const visible = orderedFilms.filter(
       (film) =>
         (state.homeMood === "all" || film.mood === state.homeMood) &&
-        (state.homeDuration === "all" ||
-          film.minutes <= Number(state.homeDuration)),
+        matchesDuration(film, state.homeDuration),
     );
     filmRail.replaceChildren(...visible.map((film) => makeCard(film, "home")));
     filmRail.hidden = visible.length === 0;
@@ -718,9 +810,7 @@
     return (
       (state.view !== "saved" || inLibraryFilter(film.id)) &&
       (state.mood === "all" || state.mood === film.mood) &&
-      (state.view !== "browse" ||
-        state.duration === "all" ||
-        film.minutes <= Number(state.duration)) &&
+      (state.view !== "browse" || matchesDuration(film, state.duration)) &&
       (!q ||
         `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords}`
           .toLocaleLowerCase("ko")
@@ -748,7 +838,7 @@
     if (state.view === "browse" && state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
-    grid.replaceChildren(...visible.map((film) => makeCard(film)));
+    grid.replaceChildren(...visible.map((film) => makeCard(film, state.view)));
     const filtered =
       state.query.trim() ||
       state.mood !== "all" ||
@@ -938,7 +1028,7 @@
     navigate("browse");
   });
   $("durationFilter").addEventListener("change", (event) => {
-    if (!["all", "30", "45"].includes(event.target.value)) return;
+    if (!durationOptions.has(event.target.value)) return;
     state.duration = event.target.value;
     render();
   });
@@ -949,7 +1039,7 @@
     });
   });
   $("homeDuration").addEventListener("change", (event) => {
-    if (!["all", "30", "45"].includes(event.target.value)) return;
+    if (!durationOptions.has(event.target.value)) return;
     state.homeDuration = event.target.value;
     renderHome();
   });

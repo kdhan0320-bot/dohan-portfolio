@@ -35,8 +35,8 @@
       href="assets/posters-v13/bluehour-hero.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=7d9b18a490f6" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=d64c63ca0708"></script>
+    <link href="css/style.css?v=fd8aa0f24ad1" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=22f42e165bc0"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -106,6 +106,10 @@
           <div class="discovery-stage frame-stack">
             <div class="discovery-scene">
               <img alt="바닷가에서 자전거와 함께 마주 선 두 친구. 파란 오후의 장면" src="assets/posters-v13/bluehour-hero.webp" width="1920" height="800" fetchpriority="high" />
+              <div class="spotlight-caption">
+                <div class="spotlight-film"><span class="spotlight-label">오늘의 한 편</span><p class="spotlight-title">파란 오후</p><p class="spotlight-meta">애니메이션 <span>28분</span></p></div>
+                <button class="text-link" data-detail="bluehour">작품 보기<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
+              </div>
             </div>
             <div class="discovery-copy">
               <h1 id="heroTitle" tabindex="-1">짧은 영화,<br /><em>오래 남을 장면.</em></h1>
@@ -113,16 +117,11 @@
               <a class="button light" href="#browse">단편영화 찾기<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
             </div>
           </div>
-          <div class="spotlight-caption">
-            <span class="spotlight-label">오늘의 한 편</span>
-            <div class="spotlight-film"><h2>파란 오후</h2><p>애니메이션 <span>28분</span></p></div>
-            <button class="text-link" data-detail="bluehour">작품 보기<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></button>
-          </div>
         </section>
         <section aria-labelledby="homeFilmsTitle" class="home-films wrap section">
           <div class="section-heading">
             <h2 id="homeFilmsTitle">분위기로 찾기</h2>
-            <div class="duration-field"><label for="homeDuration">러닝타임</label><select id="homeDuration"><option value="all">전체 시간</option><option value="30">30분 이내</option><option value="45">45분 이내</option></select></div>
+            <div class="duration-field"><label for="homeDuration">러닝타임</label><select id="homeDuration"><option value="all">전체 시간</option><option value="20">20분 이내</option><option value="30">30분 이내</option><option value="over30">30분 초과</option></select></div>
           </div>
           <div class="discovery-tools">
             <div class="filters" role="group" aria-label="홈 영화 분위기">
@@ -157,7 +156,7 @@
               <span class="curation-scenes" aria-hidden="true"><img src="assets/stills/tide.webp" alt="" width="1672" height="941" loading="lazy" /><img src="assets/posters-v13/bluehour-hero.webp" alt="" width="1920" height="800" loading="lazy" /></span>
             </a>
             <div class="curation-feature-copy">
-              <h3 class="curation-feature-title">파란 숨 고르기</h3>
+              <div><h3 class="curation-feature-title">파란 숨 고르기</h3><p class="curation-feature-note">파도 소리에서 새벽의 대화까지.</p></div>
               <a class="text-link" href="#themes/quiet" aria-label="파란 숨 고르기 큐레이션 보기">둘러보기<svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></a>
             </div>
           </div>
@@ -272,8 +271,9 @@
               <label for="durationFilter">러닝타임</label>
               <select id="durationFilter">
                 <option value="all">전체 시간</option>
+                <option value="20">20분 이내</option>
                 <option value="30">30분 이내</option>
-                <option value="45">45분 이내</option>
+                <option value="over30">30분 초과</option>
               </select>
             </div>
             <div class="sort-field" id="sortField">
