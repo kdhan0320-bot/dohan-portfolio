@@ -59,7 +59,7 @@ function Portfolio({ compact = false }) {
       </div>
       <div className="ea-project-group ea-target">
         <span className="ea-project-title"><span className="ea-project-mark ea-project-mark-coral" />전시 예약 웹</span>
-        <span className="ea-project-description">{compact ? '관람 시간을 예약하는 웹' : '전시를 찾고 방문 시간을 고르는 웹사이트'}</span>
+        <span className="ea-project-description">{compact ? '관람 시간을 예약하는 웹' : '전시와 관람 시간을 예약하는 웹'}</span>
       </div>
     </div>
   </>;

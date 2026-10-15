@@ -17,6 +17,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const dialogRef = useRef(null);
   const zoomViewportRef = useRef(null);
   const artworkRefs = useRef({});
+  const comparisonRef = useRef(null);
   const resultRef = useRef(null);
   const questionRef = useRef(null);
   const goalChangePending = useRef(false);
@@ -48,6 +49,15 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   }, [revealed]);
 
   const choose = side => { setSelected(side); setRevealed(false); };
+  const revealReason = () => {
+    setVisibleSide(preferredSide);
+    setRevealed(true);
+  };
+  const returnToSuggested = () => {
+    setVisibleSide(preferredSide);
+    comparisonRef.current?.focus({ preventScroll: true });
+    comparisonRef.current?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  };
   const openZoom = side => {
     setZoomWidth(artworkRefs.current[side].clientWidth);
     setEnlarged(true);
@@ -69,19 +79,25 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
     questionRef.current?.focus({ preventScroll: true });
     questionRef.current?.scrollIntoView({ block: 'start', behavior: 'instant' });
   };
-  const switchGoal = () => {
+  const switchGoal = (nextGoal, moveToQuestion = false) => {
+    if (nextGoal === alternateGoal) return;
     resetComparison(false);
-    goalChangePending.current = true;
-    setAlternateGoal(value => !value);
+    goalChangePending.current = moveToQuestion;
+    setAlternateGoal(nextGoal);
   };
 
   return <section className="practice-player" aria-labelledby={`${id}-question`}>
-    <div className={`practice-toolbar${standalone ? ' practice-toolbar-standalone' : ''}`}>
+    <div className={`practice-toolbar${standalone ? ' practice-toolbar-standalone' : ''}${exercise.alternateGoal ? ' practice-toolbar-goals' : ''}`}>
       {standalone && <Link className="practice-back" to="/exercises">연습 모음</Link>}
       <div className="practice-meta"><span className="practice-step">{String(number).padStart(2, '0')}<span> / {String(total).padStart(2, '0')}</span></span><span className="practice-step-track" aria-hidden="true">{Array.from({ length: total }, (_, index) => <i key={index} className={index === number - 1 ? 'is-current' : undefined} />)}</span><span>{exercise.context}</span></div>
+      {exercise.alternateGoal && <div className="practice-goal-picker" role="group" aria-label="같은 두 화면의 비교 목표">
+        <span>비교 목표</span>
+        <button aria-pressed={!alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(false)}>제목 먼저</button>
+        <button aria-pressed={alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(true)}>작품 먼저</button>
+      </div>}
     </div>
     <div className="practice-question">
-      <QuestionHeading id={`${id}-question`} ref={questionRef} tabIndex={-1}>{goal.question}</QuestionHeading>
+      <QuestionHeading id={`${id}-question`} ref={questionRef} tabIndex={-1} aria-live={exercise.alternateGoal ? 'polite' : undefined}>{goal.question}</QuestionHeading>
       <button className="practice-hint-button" aria-expanded={hint} aria-controls={`${id}-hint`} onClick={() => setHint(!hint)}>힌트 {hint ? '닫기' : '보기'}</button>
     </div>
     {hint && <p className="practice-hint" id={`${id}-hint`}>{goal.cue}</p>}
@@ -93,8 +109,9 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
         </div>
         <button className="practice-zoom" aria-label={`${visibleSide} 화면 크게 보기`} onClick={() => openZoom(visibleSide)}><PracticeIcon name="expand" /><span>확대</span></button>
       </div>
+      {revealed && <p className="practice-current-view" aria-live="polite">현재 {visibleSide} 화면 · {visibleSide === preferredSide ? '이 목표의 제안' : '다른 안과 비교 중'}</p>}
     </div>
-    <div className="practice-options" role="group" aria-labelledby={`${id}-question`}>
+    <div className="practice-options" ref={comparisonRef} tabIndex={-1} role="group" aria-labelledby={`${id}-question`}>
       {['A', 'B'].map(side => <article id={`${id}-option-${side}`} className={`practice-option${visibleSide === side ? ' is-current-view' : ''}${selected === side ? ' is-selected' : ''}${revealed && side === preferredSide ? ' is-suggested' : ''}`} key={side}>
         <div className="practice-option-top"><span className="practice-letter">{side}</span><span className="practice-option-status">{revealed && side === preferredSide ? '이 목표의 제안' : selected === side ? '내 선택' : ''}</span><button className="practice-zoom" aria-label={`${side} 화면 크게 보기`} onClick={() => openZoom(side)}><PracticeIcon name="expand" /><span>확대</span></button></div>
         <div className="practice-art-frame" ref={element => { artworkRefs.current[side] = element; }}><ExerciseArtwork kind={exercise.kind} variant={variantFor(side)} highlight={revealed} /></div>
@@ -103,13 +120,14 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       </article>)}
     </div>
     <div className="practice-action-row">
-      {!revealed && <div className="practice-confirm"><span aria-live="polite">{selected ? `내 선택 ${selected}` : 'A 또는 B를 선택해 주세요.'}</span><button className="practice-primary" disabled={!selected} onClick={() => setRevealed(true)}>설계 이유 보기</button></div>}
+      {!revealed && <div className="practice-confirm"><span aria-live="polite">{selected ? `내 선택 ${selected}` : 'A 또는 B를 선택해 주세요.'}</span><button className="practice-primary" disabled={!selected} onClick={revealReason}>설계 이유 보기</button></div>}
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
       <p className="practice-result-status">내 선택 {selected}<span>·</span>이 목표의 제안 {preferredSide}</p>
       <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{preferredSide}</span><ResultHeading>{goal.takeaway}</ResultHeading></div>
       <p className="practice-result-explanation">{goal.explanation}</p>
-      {exercise.alternateGoal && <div className="practice-goal-switch"><p>목표를 바꾸면 선택도 달라질까요?</p><button className="practice-secondary" onClick={switchGoal}>{alternateGoal ? '제목 먼저 비교' : '작품 먼저 비교'}</button></div>}
+      <button className="practice-result-artwork-link" onClick={returnToSuggested}>{preferredSide} 화면{visibleSide === preferredSide ? ' 다시 보기' : '으로 돌아가기'}</button>
+      {exercise.alternateGoal && <div className="practice-goal-switch"><p>같은 화면을 다른 목표로 비교해 보세요.</p><button className="practice-secondary" onClick={() => switchGoal(!alternateGoal, true)}>{alternateGoal ? '제목 먼저 비교' : '작품 먼저 비교'}</button></div>}
       <div className="practice-result-details">
         <details><summary><span>다른 상황에서는?</span><PracticeIcon name="plus" /></summary><p>{goal.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
         <details><summary><span>내 생각 한 줄 <span className="practice-optional">선택</span></span><PracticeIcon name="plus" /></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value.slice(0, 160))} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>

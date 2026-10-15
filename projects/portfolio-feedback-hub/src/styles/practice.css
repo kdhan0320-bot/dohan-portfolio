@@ -41,6 +41,12 @@ body:has(.practice-surface) { min-width: 0; }
 .comparison-motif { display: block; width: 252px; height: 120px; flex-shrink: 0; }
 .practice-player { padding: 0; background: transparent; border: 0; }
 .practice-toolbar { margin-bottom: 8px; }
+.practice-toolbar-goals { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; }
+.practice-goal-picker { display: flex; align-items: center; gap: 6px; }
+.practice-goal-picker > span { margin-right: 4px; color: #62636e; font-size: 13px; }
+.practice-goal-picker button { min-height: 44px; padding: 9px 12px; border: 1px solid #cfccd9; border-radius: 6px; color: #62606f; background: #fff; font-size: 13px; }
+.practice-goal-picker button[aria-pressed=true] { border-color: #6250c7; color: #5140b0; background: #eeebfa; }
+.practice-goal-picker button:hover { border-color: #8576c3; }
 .practice-toolbar-standalone { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 16px; }
 .practice-question { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 8px; }
 .practice-meta { display: flex; align-items: center; gap: 12px; font-size: 12px; line-height: 1.5; color: #60616e; }
@@ -58,6 +64,9 @@ body:has(.practice-surface) { min-width: 0; }
 .practice-comparison-note { margin-bottom: 12px !important; color: #60616e; font-size: 13px; line-height: 1.6; }
 .practice-mobile-comparison { display: none; }
 .practice-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.practice-options[tabindex] { scroll-margin-top: 140px; }
+.practice-options:focus { outline: none; }
+.practice-options:focus-visible { outline: 2px solid #6250c7; outline-offset: 4px; }
 .practice-option { min-width: 0; padding: 14px; background: #fff; border: 2px solid #e0dfea; border-radius: 12px; box-shadow: 0 5px 16px #34304404; transition: border-color .15s, box-shadow .15s; }
 .practice-option.is-selected { border-color: #6250c7; box-shadow: 0 4px 16px #6250c710; }
 .practice-option.is-suggested { background: #f3f1fc; }
@@ -89,6 +98,7 @@ body:has(.practice-surface) { min-width: 0; }
 .practice-result .practice-result-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; color: #62606f; font-size: 12px; line-height: 1.6; }
 .practice-result :is(h2,h3) { font-size: 21px; font-weight: 400; line-height: 1.5; letter-spacing: -.025em; }
 .practice-result .practice-result-explanation { max-width: 72ch; margin-top: 14px; color: #565866; font-size: 15px; line-height: 1.8; }
+.practice-result-artwork-link { display: none; }
 .practice-goal-switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding: 14px 16px; border: 1px solid #d9d5e9; border-radius: 6px; background: #ffffffb3; }
 .practice-goal-switch p { color: #565866; font-size: 14px; line-height: 1.6; }
 .practice-goal-switch button { flex-shrink: 0; }
@@ -217,6 +227,10 @@ body:has(.practice-surface) { min-width: 0; }
   .practice-surface .site-footer { gap: 20px; }
 }
 @media (max-width: 700px) {
+  .practice-goal-picker { width: 100%; }
+  .practice-goal-picker button { flex: 1; }
+  .practice-current-view { margin-top: 8px !important; color: #5c48bb; font-size: 13px; line-height: 1.6; }
+  .practice-result-artwork-link { display: inline-flex; align-items: center; min-height: 44px; margin-top: 8px; padding: 8px 0; border: 0; background: transparent; color: #5140b0; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; }
   .practice-options { grid-template-columns: 1fr; }
   .practice-option:not(.is-current-view) { display: none; }
   .practice-option-top { display: none; }

@@ -95,6 +95,14 @@
 .exercise-artwork.ea-revised .ea-password-hint { visibility: visible; }
 .exercise-artwork .ea-faux-submit { display: flex; align-items: center; justify-content: center; height: 32px; border-radius: 4px; color: #fff; background: #595075; font-size: 12px; font-weight: 650; }
 
+/* Keep comparison-critical copy readable without changing the A/B hierarchy or compact covers. */
+.exercise-artwork:not(.ea-compact) .ea-project-description { font-size: 13px; line-height: 1.45; white-space: normal; }
+.exercise-artwork:not(.ea-compact) .ea-map-label { font-size: 12px; }
+.exercise-artwork:not(.ea-compact) .ea-map-legend,
+.exercise-artwork:not(.ea-compact) .ea-password-hint { font-size: 13px; }
+.exercise-artwork:not(.ea-compact) .ea-field-label { font-size: 12px; }
+.exercise-artwork:not(.ea-compact) .ea-faux-field { margin-bottom: 8px; }
+
 .exercise-artwork.ea-compact { height: 180px; padding: 14px; }
 .exercise-artwork.ea-compact .ea-topline { height: 21px; margin-bottom: 10px; }
 .exercise-artwork.ea-compact .ea-topline > span:last-child { display: none; }
