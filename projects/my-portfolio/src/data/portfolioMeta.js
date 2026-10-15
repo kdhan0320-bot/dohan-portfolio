@@ -129,22 +129,24 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-v31-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960'),
+    media('detail/current/jansang-v32-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960'),
     [
       {
         title: '홈에서는 발견하고, 영화 찾기에서는 비교하기.',
         layout: 'wide',
-        summary: '김도한은 “글씨를 더 얇게 하거나 줄이지 말고”라고 요청했습니다. AI는 설명 비중을 줄이고 홈의 이미지를 앞세우는 방향을 반영했습니다. 한 번에 비교할 작품이 적은 점은 영화 찾기 격자와 조건 이어받기로 보완했습니다.',
+        summary: '글과 설명이 영화를 가린다는 피드백에서, 김도한은 글자 크기·굵기를 유지하고 이미지 비중을 높이는 방향을 선택했습니다. AI가 홈의 가로 탐색과 영화 찾기 격자에 이를 반영했습니다. 홈에서 한 번에 비교할 작품이 적은 점은 격자와 조건 이어받기로 보완했습니다.',
         media: media('detail/current/jansang-v31-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v31-browse-mobile.jpg', original: 'detail/current/jansang-v31-browse-mobile-full.jpg', label: '영화 찾기 · 조건과 첫 작품 행' } }),
         mediaLabel: '영화 찾기 · 조건과 작품을 함께 비교',
         check: { result: '동작 확인 · 홈에서 고른 분위기·시간을 영화 찾기에 이어받고, 작품 상세로 이동하는 흐름을 확인했습니다.' },
       },
       {
-        title: '작품과 메모를 함께, 읽기 크기는 그대로.',
+        title: '작품은 짧게 훑고, 메모는 따로 읽기.',
         layout: 'wide',
-        summary: '관심을 가진 이유를 다시 읽도록 ‘메모 읽기’에서는 원문을 유지했습니다. 긴 메모로 카드가 높아지는 점을 고려해, 작품을 짧은 목록으로 훑는 보기도 함께 두었습니다.',
-        media: media('detail/current/jansang-v31-saved.jpg', '현재 보관함 — 메모 읽기에서 작품 정보와 관심 메모 원문을 함께 읽는 카드', '1440 / 727', { mobile: { src: 'detail/current/jansang-v31-saved-mobile.jpg', original: 'detail/current/jansang-v31-saved-mobile-full.jpg', label: '보관함 · 메모 읽기 일부(시연)' } }),
-        mediaLabel: '보관함 · 메모 읽기 · 시연 데이터 3편',
+        summary: '김도한은 메모 읽기와 수정을 나누고, 선택한 보관함 보기를 유지하도록 요청했습니다. AI가 읽기 화면과 수정 진입을 분리하고 보기 선택을 브라우저에 저장했습니다. 훑기에서는 원문을 한 번 더 열어야 하지만 목록을 짧게 유지할 수 있습니다.',
+        mediaChoices: [
+          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v32-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 484', { original: 'detail/current/jansang-v32-saved-full.jpg', mobile: { src: 'detail/current/jansang-v32-saved-mobile.jpg', original: 'detail/current/jansang-v32-saved-mobile-full.jpg', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
+          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v32-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 598', { original: 'detail/current/jansang-v32-note-full.jpg', mobile: { src: 'detail/current/jansang-v32-note-mobile.jpg', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
+        ],
         check: { result: '동작 확인 · 메모 작성·수정·삭제와 새로고침 유지, 찜·메모의 작품 수와 키보드 초점 복귀를 확인했습니다.' },
       },
     ],
@@ -161,8 +163,8 @@ export const PROJECT_DETAIL_READY = {
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v31-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960')],
-        mediaLabel: '홈 · 큰 영화 장면으로 발견하는 가로 목록',
+        media: [media('detail/current/jansang-v32-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960', { mobile: { src: 'detail/current/jansang-v32-home-mobile.jpg', label: '홈 · 실제 모바일 첫 화면' } })],
+        mediaLabel: '홈 · 가로 목록을 이동한 실제 화면',
       },
       context: {
         summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.',

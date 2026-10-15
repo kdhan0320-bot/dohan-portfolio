@@ -302,6 +302,7 @@
   const $ = (id) => document.getElementById(id);
   const storageKey = "jansang-cinema:saved:v1";
   const notesKey = "jansang-cinema:notes:v1";
+  const libraryViewKey = "jansang-cinema:library-view:v1";
   const validIds = new Set(films.map((f) => f.id));
   const durationOptions = new Set(["all", "20", "30", "over30"]);
   function matchesDuration(film, duration) {
@@ -366,6 +367,19 @@
   } catch {
     state.notesStorageAvailable = false;
   }
+  function readLibraryView(value) {
+    try {
+      const view = JSON.parse(value);
+      return view === "compact" || view === "reading" ? view : "reading";
+    } catch {
+      return "reading";
+    }
+  }
+  try {
+    state.libraryView = readLibraryView(localStorage.getItem(libraryViewKey));
+  } catch {
+    state.libraryView = "reading";
+  }
   const icon = (name) =>
     `<svg class="icon" aria-hidden="true"><use href="#i-${name}"/></svg>`;
   let toastTimer;
@@ -395,8 +409,7 @@
     return inLibrary(id);
   }
   function libraryNoteLabel(id) {
-    if (!state.notes[id]) return "메모 남기기";
-    return state.libraryView === "compact" ? "메모 보기" : "메모 수정하기";
+    return state.notes[id] ? "메모 보기" : "메모 남기기";
   }
   function updateSaveButtons() {
     document.querySelectorAll("[data-save]").forEach((btn) => {
@@ -982,6 +995,7 @@
       ? "data-detail"
       : "data-save";
     const focusedId = focused?.getAttribute(focusedAttribute);
+    const focusedNote = focused?.hasAttribute("data-open-note");
     const visible = orderedFilms.filter(matches);
     const emptyLibrary =
       state.view === "saved" && !films.some((film) => inLibrary(film.id));
@@ -1065,7 +1079,7 @@
     updateSaveButtons();
     if (focusedId) {
       const replacement =
-        grid.querySelector(`[${focusedAttribute}="${focusedId}"]`) ||
+        grid.querySelector(`[${focusedAttribute}="${focusedId}"]${focusedNote ? "[data-open-note]" : ""}`) ||
         grid.querySelector("[data-detail]") ||
         $("emptyAction");
       replacement.focus({ preventScroll: true });
@@ -1224,6 +1238,11 @@
     if (state.view !== "saved" || !button ||
       !["reading", "compact"].includes(button.dataset.libraryView)) return;
     state.libraryView = button.dataset.libraryView;
+    try {
+      localStorage.setItem(libraryViewKey, JSON.stringify(state.libraryView));
+    } catch {
+      notify("보기 선택은 이 페이지에서만 유지돼요. 브라우저 저장 공간을 사용할 수 없습니다.");
+    }
     render();
   });
   $("searchInput").addEventListener("input", (e) => {
@@ -1274,6 +1293,7 @@
   let activeDetailId = null;
   let detailImageRequest = 0;
   let noteDirty = false;
+  let noteMode = "edit";
   let noteSizeFrame = 0;
   function resizeNoteText() {
     noteSizeFrame = 0;
@@ -1304,7 +1324,7 @@
     if (!noteSizeFrame) noteSizeFrame = requestAnimationFrame(resizeNoteText);
   }
   function rememberNoteDraft() {
-    if (!activeDetailId) return;
+    if (!activeDetailId || noteMode !== "edit") return;
     const value = $("noteText").value;
     noteDirty = value !== (state.notes[activeDetailId] || "");
     if (noteDirty) {
@@ -1342,7 +1362,9 @@
     });
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
-    dialog.querySelector(".dialog-scroll")?.scrollTo({ top: scrollTop, behavior: "instant" });
+    const scroller = dialog.querySelector(".dialog-scroll");
+    scroller?.scrollTo({ top: scrollTop, behavior: "instant" });
+    dialog.dataset.scrolled = String((scroller?.scrollTop || 0) > 8);
     document.body.classList.add("dialog-open");
     focusTarget.focus({ preventScroll: true });
   }
@@ -1352,20 +1374,31 @@
       : "이 페이지에서만 보관 중이에요. 새로고침하면 사라집니다.";
   }
   function updateNoteDisclosureLabel() {
-    $("noteDisclosureLabel").textContent = noteDrafts.has(activeDetailId)
-      ? "관심 메모 이어쓰기"
-      : state.notes[activeDetailId]
-        ? "관심 메모 수정하기"
+    $("noteDisclosureLabel").textContent = state.notes[activeDetailId]
+      ? noteMode === "read" ? "관심 메모 보기" : "관심 메모 수정"
+      : noteDrafts.has(activeDetailId)
+        ? "관심 메모 이어쓰기"
         : "관심 메모 남기기";
   }
   function updateNoteCount() {
     $("noteCount").textContent = `${$("noteText").value.length}/280`;
-    const hasSavedNote = Boolean(state.notes[activeDetailId]);
-    $("noteDelete").hidden = !hasSavedNote;
-    $("noteDelete").disabled = !hasSavedNote;
     updateNoteDisclosureLabel();
   }
-  function loadNote() {
+  function updateNotePresentation(message = "") {
+    const savedNote = state.notes[activeDetailId];
+    if (!savedNote) noteMode = "edit";
+    const reading = noteMode === "read";
+    $("noteReader").hidden = !reading;
+    $("noteForm").hidden = reading;
+    $("noteReadText").textContent = savedNote || "";
+    $("noteReaderStatus").textContent = message || (noteDrafts.has(activeDetailId)
+      ? "저장 전 초안이 있어요. ‘메모 수정’에서 이어 쓸 수 있어요."
+      : state.notesStorageAvailable ? "이 브라우저에 저장된 메모" : "브라우저 저장 공간을 사용할 수 없습니다.");
+    $("noteCancel").textContent = savedNote ? "수정 취소" : "작성 취소";
+    $("noteDelete").disabled = !savedNote;
+    updateNoteCount();
+  }
+  function loadNote(message = "") {
     if (
       noteDrafts.get(activeDetailId)?.value ===
       (state.notes[activeDetailId] || "")
@@ -1376,12 +1409,12 @@
       ? draft.value
       : state.notes[activeDetailId] || "";
     noteDirty = Boolean(draft);
-    updateNoteCount();
+    updateNotePresentation(message);
     resizeNoteText();
     $("noteStatus").textContent = draft
       ? noteDraftMessage()
       : state.notes[activeDetailId]
-        ? noteSavedMessage()
+        ? "저장된 메모입니다. 수정 후 저장해 주세요."
         : "";
   }
   function noteDraftMessage() {
@@ -1444,6 +1477,7 @@
       if (detailImage.complete) revealImage();
     }
     $("detailSave").dataset.save = id;
+    noteMode = state.notes[id] ? "read" : "edit";
     loadNote();
     $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
     updateNoteDisclosureLabel();
@@ -1489,8 +1523,25 @@
     $("noteDisclosure").open = true;
     updateNoteDisclosureLabel();
     resizeNoteText();
-    $("noteText").focus();
+    (noteMode === "read" ? $("noteReadText") : $("noteText")).focus();
   }
+  $("noteEdit").addEventListener("click", () => {
+    if (!activeDetailId) return;
+    noteMode = "edit";
+    loadNote();
+    focusNote();
+  });
+  $("noteCancel").addEventListener("click", () => {
+    if (!activeDetailId) return;
+    noteDrafts.delete(activeDetailId);
+    noteMode = state.notes[activeDetailId] ? "read" : "edit";
+    loadNote(noteMode === "read" ? "수정을 취소했어요. 저장한 메모는 그대로예요." : "");
+    if (noteMode === "read") $("noteEdit").focus();
+    else {
+      $("noteDisclosure").open = false;
+      $("noteDisclosure").querySelector("summary").focus();
+    }
+  });
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
     updateNoteCount();
@@ -1498,7 +1549,7 @@
     $("noteStatus").textContent = noteDirty
       ? noteDraftMessage()
       : state.notes[activeDetailId]
-        ? noteSavedMessage()
+        ? "저장된 메모입니다. 수정 후 저장해 주세요."
         : "";
   });
   $("noteDisclosure").addEventListener("toggle", requestNoteResize);
@@ -1522,11 +1573,24 @@
       $("noteText").focus();
       return;
     }
+    const previousNote = state.notes[activeDetailId];
     state.notes[activeDetailId] = value;
-    noteDrafts.delete(activeDetailId);
     persistNotes();
-    loadNote();
+    if (!state.notesStorageAvailable) {
+      if (previousNote) state.notes[activeDetailId] = previousNote;
+      else delete state.notes[activeDetailId];
+      rememberNoteDraft();
+      updateNotePresentation();
+      $("noteStatus").textContent = "메모를 저장하지 못했어요. 입력은 이 페이지에서 유지되며 새로고침하면 사라집니다.";
+      refreshLibrary();
+      $("noteText").focus();
+      return;
+    }
+    noteDrafts.delete(activeDetailId);
+    noteMode = "read";
+    loadNote(noteSavedMessage());
     refreshLibrary();
+    $("noteReadText").focus();
   });
   $("noteDelete").addEventListener("click", () => {
     if (!activeDetailId || !state.notes[activeDetailId]) return;
@@ -1583,6 +1647,10 @@
     if (close) closeDialog($(close.dataset.close));
   });
   document.querySelectorAll("dialog").forEach((dialog) => {
+    const scroller = dialog.querySelector(".dialog-scroll");
+    scroller?.addEventListener("scroll", () => {
+      dialog.dataset.scrolled = String(scroller.scrollTop > 8);
+    }, { passive: true });
     dialog.addEventListener("cancel", (event) => {
       event.preventDefault();
       closeDialog(dialog);
@@ -1601,6 +1669,11 @@
     });
     dialog.addEventListener("keydown", (e) => {
       if (e.key !== "Tab") return;
+      if (document.activeElement === $("noteReadText")) {
+        e.preventDefault();
+        (e.shiftKey ? $("noteDisclosure").querySelector("summary") : $("noteEdit")).focus();
+        return;
+      }
       const focusable = [
         ...dialog.querySelectorAll(
           'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,[tabindex="0"]',
@@ -1677,7 +1750,9 @@
     }
     const savedChanged = event.key === storageKey || event.key === null;
     const notesChanged = event.key === notesKey || event.key === null;
-    if (!savedChanged && !notesChanged) return;
+    const viewChanged = event.key === libraryViewKey || event.key === null;
+    if (!savedChanged && !notesChanged && !viewChanged) return;
+    if (viewChanged) state.libraryView = readLibraryView(event.key === null ? null : event.newValue);
     if (savedChanged) {
       state.saved = readSaved(event.key === null ? null : event.newValue);
       state.storageAvailable = true;
@@ -1696,10 +1771,16 @@
         previousNotes[activeDetailId] !== state.notes[activeDetailId]
       ) {
         noteDirty = noteDrafts.has(activeDetailId);
-        if (noteDirty) {
+        if (noteMode === "edit" && noteDirty) {
+          updateNotePresentation();
           updateNoteCount();
           $("noteStatus").textContent = noteDraftMessage();
-        } else loadNote();
+        } else {
+          const readerHadFocus = $("noteReader").contains(document.activeElement);
+          loadNote();
+          if (readerHadFocus && $("noteReader").hidden)
+            $("noteDisclosure").querySelector("summary").focus({ preventScroll: true });
+        }
       }
     }
     refreshLibrary({ preserveFocus: true });

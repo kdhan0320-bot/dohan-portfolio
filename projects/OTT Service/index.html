@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=cc9ec744c4b6" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=178ffe820864"></script>
+    <link href="css/style.css?v=825155cc3f21" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=ceca567f0ad8"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -375,6 +375,14 @@
           <p class="detail-meta" id="detailMeta"></p>
           <p class="detail-description" id="detailDescription"></p>
           <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteDisclosureLabel">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
+          <section aria-label="저장한 관심 메모" class="note-reader" hidden="" id="noteReader">
+            <p class="note-reader-text" id="noteReadText" tabindex="-1"></p>
+            <p aria-live="polite" class="note-reader-status" id="noteReaderStatus" role="status"></p>
+            <div class="note-reader-controls">
+              <button class="text-link" id="noteDelete" type="button">메모 삭제</button>
+              <button class="button small" id="noteEdit" type="button">메모 수정</button>
+            </div>
+          </section>
           <form class="note-form" id="noteForm">
             <div class="note-heading">
               <label class="sr-only" for="noteText">관심 메모</label>
@@ -390,8 +398,8 @@
             ></textarea>
             <div class="note-controls">
               <p aria-live="polite" id="noteStatus" role="status"></p>
-              <button class="text-link" hidden="" id="noteDelete" type="button">
-                삭제</button
+              <button class="text-link" id="noteCancel" type="button">
+                작성 취소</button
               ><button class="button small" id="noteSave" type="submit">
                 메모 저장
               </button>
@@ -444,8 +452,8 @@
         <h2 id="aboutTitle" tabindex="-1">고르고, 찜하고,<br />다시 찾아보세요.</h2>
         <div class="about-facts">
           <p>분위기와 러닝타임으로 단편영화를 찾고, 관심 작품과 메모를 보관하는 포트폴리오 프로토타입입니다. 작품 12편은 가상 설정이며 이미지는 AI로 생성했습니다. 실제 영상 재생·예매·결제는 제공하지 않습니다.</p>
-          <p>찜과 저장한 메모는 이 브라우저에만 남습니다. 브라우저 데이터를 지우면 사라지며, 다른 기기와 동기화되지 않습니다.</p>
-          <p>저장 전 메모는 화면을 이동해도 이어 쓸 수 있습니다. 새로고침하거나 탭을 닫으면 사라지므로, 남겨둘 내용은 ‘메모 저장’을 눌러주세요.</p>
+          <p>찜·저장한 메모·보관함 보기 선택은 이 브라우저에 남습니다. 브라우저 데이터를 지우면 초기화되며, 다른 기기와 동기화되지 않습니다.</p>
+          <p>저장한 메모는 먼저 읽고 ‘메모 수정’으로 고칩니다. 저장 전 초안은 팝업을 닫거나 화면을 이동해도 이어 쓸 수 있지만, ‘수정 취소’·‘작성 취소’를 누르거나 새로고침·탭 닫기를 하면 사라집니다. 남겨둘 내용은 ‘메모 저장’을 눌러주세요.</p>
         </div>
         <div class="about-actions">
           <button class="button light" data-close="aboutDialog">확인</button>

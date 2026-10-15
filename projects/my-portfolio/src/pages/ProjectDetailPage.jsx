@@ -1,3 +1,4 @@
+import { useId, useState } from 'react';
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -31,6 +32,20 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
     </figcaption>
   </figure>
 );
+
+const ScreenChoices = ({ choices }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const panelId = useId();
+  const selected = choices[selectedIndex];
+  return <div className="case-screen-choices">
+    <div className="case-screen-choices__controls" role="group" aria-label="보관함 시연 화면 선택">
+      {choices.map((choice, index) => <button key={choice.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>{choice.label}</button>)}
+    </div>
+    <div id={panelId} aria-live="polite">
+      <ScreenFigure media={selected.media} label={selected.caption} />
+    </div>
+  </div>;
+};
 
 const ExternalAction = ({ href, children, primary = false }) => href ? (
   <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>
@@ -66,9 +81,10 @@ const ProjectDetailPage = () => {
   const heroMedia = (ready.hero?.media || []).filter((media) => media?.src);
   const usedImages = new Set(heroMedia.map((media) => media.src));
   const decisions = (ready.decisions || []).map((decision) => {
-    const showMedia = decision.media?.src && !usedImages.has(decision.media.src);
-    if (showMedia) usedImages.add(decision.media.src);
-    return { ...decision, showMedia };
+    const media = decision.mediaChoices?.[0]?.media || decision.media;
+    const showMedia = media?.src && !usedImages.has(media.src);
+    if (showMedia) usedImages.add(media.src);
+    return { ...decision, media, showMedia };
   });
   const additionalScreens = (ready.mainScreens || []).filter((screen) => {
     if (!screen.media?.src || usedImages.has(screen.media.src)) return false;
@@ -176,7 +192,7 @@ const ProjectDetailPage = () => {
                       {decision.comparison.reference.label}
                     </a>}
                   </p>
-                </div> : decision.showMedia && (decision.reference ? <div>
+                </div> : decision.showMedia && (decision.mediaChoices ? <ScreenChoices choices={decision.mediaChoices} /> : decision.reference ? <div>
                   <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
                   <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
                 </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}

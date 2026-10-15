@@ -372,6 +372,7 @@ select:hover { border-color: #bdb9b2; }
 body.dialog-open { overflow: hidden; }
 dialog { color: var(--text); background: var(--surface); border: 1px solid #6e6b64; border-radius: 6px; padding: 0; width: min(960px, calc(100% - 64px)); max-height: calc(100dvh - 64px); overflow: hidden; box-shadow: 0 30px 100px #0007; }
 dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
+dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index: 3; inset: 0 0 auto; height: 80px; pointer-events: none; background: inherit; border-bottom: 1px solid var(--line); }
 .dialog-scroll { max-height: calc(100dvh - 66px); overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: 76px 24px; }
 .close-button { position: absolute; top: 16px; right: 16px; z-index: 4; border-radius: 50%; background: #202020ed; border-color: #918a80; }
 .detail-dialog { border-color: #b2a18b80; background: #222322; }
@@ -396,6 +397,11 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
 .disclosure-plus::before { height: 1.5px; width: 14px; top: 6.25px; left: 0; }
 .disclosure-plus::after { height: 14px; width: 1.5px; top: 0; left: 6.25px; }
 .note-disclosure[open] .disclosure-plus::after { display: none; }
+.note-reader { padding-top: 8px; }
+.note-reader-text { max-width: 640px; padding: 4px 0 4px 16px; border-left: 2px solid #e2ab9580; color: #ddd5cc; font-size: 16px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; }
+.note-reader-status { margin-top: 12px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.note-reader-status:empty { display: none; }
+.note-reader-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 16px; padding-top: 16px; }
 .note-form { padding-top: 4px; }
 .note-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .note-heading .note-hint { margin: 0; }
@@ -798,6 +804,7 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .dialog-scroll { max-height: calc(100dvh - 26px); scroll-padding-top: 68px; }
   .close-button { top: 12px; right: 12px; width: 44px; height: 44px; }
   .detail-layout { grid-template-columns: 1fr; }
+  dialog[data-scrolled="true"]::before { height: 68px; }
   .detail-visual { min-height: 0; aspect-ratio: var(--detail-image-ratio, 1.4); }
   .detail-content { padding: 26px 22px; }
   .detail-content h2 { font-size: 28px; margin-top: 12px; }
