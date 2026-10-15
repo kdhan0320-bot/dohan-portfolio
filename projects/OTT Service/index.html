@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=a023a0e63854" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=5f7985ff66f8"></script>
+    <link href="css/style.css?v=cc9ec744c4b6" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=178ffe820864"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -157,12 +157,12 @@
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
             <a class="home-collection" href="#themes/warmth" data-theme-preview="warmth">
-              <img src="assets/stills/letters.webp" alt="" width="1672" height="941" loading="lazy" />
+              <img src="assets/frames-v31/letters.webp" alt="" width="1536" height="1024" loading="lazy" />
               <div><p class="home-collection-meta">02 · 작품 4편</p><h3 class="curation-feature-title">다정한 반전</h3><p class="curation-feature-note">서로에게 건네는 작은 용기.</p></div>
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
             <a class="home-collection" href="#themes/beyond" data-theme-preview="beyond">
-              <img src="assets/stills/orbit.webp" alt="" width="1672" height="941" loading="lazy" />
+              <img src="assets/frames-v31/orbit.webp" alt="" width="1086" height="1448" loading="lazy" />
               <div><p class="home-collection-meta">03 · 작품 4편</p><h3 class="curation-feature-title">상상 바깥으로</h3><p class="curation-feature-note">익숙한 세계 바깥의 신호.</p></div>
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
@@ -293,6 +293,10 @@
           </div>
           <div class="results-bar" id="resultsBar">
             <p aria-live="polite" id="resultCount" role="status"></p>
+            <div aria-label="보관함 보기" class="library-view" hidden="" id="libraryView" role="group">
+              <button aria-controls="filmGrid" aria-pressed="true" data-library-view="reading" type="button">메모 읽기</button>
+              <button aria-controls="filmGrid" aria-pressed="false" data-library-view="compact" type="button">작품 훑기</button>
+            </div>
             <button class="text-link" hidden="" id="resetFilters">조건 초기화</button>
           </div>
           <div class="film-grid" id="filmGrid"></div>
@@ -423,9 +427,7 @@
           <p class="eyebrow" id="articleCategory"></p>
           <h2 id="articleTitle" tabindex="-1"></h2>
           <div id="articleBody"></div>
-          <button class="button light" id="articleFilmLink" type="button">
-            관련 영화 보기
-          </button>
+          <div aria-label="노트에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
         </div>
       </div>
     </dialog>

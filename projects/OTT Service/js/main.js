@@ -29,9 +29,12 @@
       mood: "warm",
       moodText: "다정한 온기",
       image: "letters",
+      posterPath: "assets/frames-v31/letters.webp",
+      stillPath: "assets/frames-v31/letters.webp",
+      posterPosition: "55% center",
       position: "58% center",
-      detailPosition: "center 36%",
-      detailRatio: "1.15",
+      detailPosition: "55% center",
+      detailRatio: "1.35",
       description:
         "하숙집을 정리하던 두 친구에게 나타난 부치지 않은 편지. 잊고 지냈던 여름의 오후가 다시 펼쳐진다.",
       keywords: "여름 편지 친구 따뜻한 다정한 짧은 단편",
@@ -63,9 +66,11 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "orbit",
+      posterPath: "assets/frames-v31/orbit.webp",
+      posterPosition: "60% center",
       position: "63% center",
-      detailPosition: "center 6%",
-      detailRatio: "1.35",
+      detailPosition: "center top",
+      detailRatio: "1.05",
       description:
         "지구로 돌아갈 날을 기다리는 우주 기록원. 마지막 메시지 한 통이 고요한 관측 기지의 일상을 바꾼다.",
       keywords: "우주 행성 미래 SF 새로운 세계 경이",
@@ -194,8 +199,9 @@
       mood: "warm",
       moodText: "다정한 온기",
       image: "nocturne",
-      posterPath: "assets/posters-v13/nocturne.webp",
-      detailPosition: "center 60%",
+      posterPath: "assets/frames-v31/nocturne.webp",
+      posterPosition: "60% center",
+      detailPosition: "center top",
       detailRatio: "1.2",
       description:
         "새벽 두 시에만 문을 여는 작은 식당. 긴 하루를 마친 손님과 말수가 적은 주인은 식어가는 국 한 그릇을 사이에 두고 천천히 이야기를 시작한다.",
@@ -228,9 +234,9 @@
       number: "02",
       article: "running-time",
       previewDescription: "편지·연주·계주로 다시 잇는 관계",
-      previewImage: "assets/stills/letters.webp",
+      previewImage: "assets/frames-v31/letters.webp",
       glimpseImage: "assets/stills/windows.webp",
-      imageAlt: "햇살이 드는 창가, 나무 책상 위에 놓인 편지",
+      imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
       accent: "#EDBA88",
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
@@ -248,8 +254,8 @@
       article: "enclosed-spaces",
       previewDescription: "온실의 비밀, 종이별과 미래의 신호",
       previewImage: "assets/stills/greenhouse.webp",
-      glimpseImage: "assets/stills/orbit.webp",
-      imageAlt: "우주 관측 기지의 넓은 창 너머로 보이는 행성과 고리",
+      glimpseImage: "assets/frames-v31/orbit.webp",
+      imageAlt: "지구가 보이는 관측 기지에서 메시지를 듣는 기록원",
       accent: "#C3B6EC",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
@@ -316,6 +322,7 @@
     homeDuration: "all",
     query: "",
     libraryFilter: "all",
+    libraryView: "reading",
     sort: "recommended",
     saved: new Set(),
     storageAvailable: true,
@@ -387,6 +394,10 @@
     if (state.libraryFilter === "noted") return Boolean(state.notes[id]);
     return inLibrary(id);
   }
+  function libraryNoteLabel(id) {
+    if (!state.notes[id]) return "메모 남기기";
+    return state.libraryView === "compact" ? "메모 보기" : "메모 수정하기";
+  }
   function updateSaveButtons() {
     document.querySelectorAll("[data-save]").forEach((btn) => {
       const film = films.find((f) => f.id === btn.dataset.save);
@@ -408,8 +419,11 @@
         : "";
     });
     document.querySelectorAll("[data-open-note]").forEach((button) => {
-      button.textContent = state.notes[button.dataset.detail]
-        ? "메모 수정하기" : "메모 남기기";
+      const film = films.find((item) => item.id === button.dataset.detail);
+      if (!film) return;
+      const label = libraryNoteLabel(film.id);
+      button.textContent = label;
+      button.setAttribute("aria-label", `${film.title} ${label}`);
     });
     const count = films.filter((film) => inLibrary(film.id)).length;
     $("savedCount").textContent = count;
@@ -488,8 +502,8 @@
       noteButton.className = "text-link";
       noteButton.dataset.detail = film.id;
       noteButton.dataset.openNote = "";
-      noteButton.setAttribute("aria-label", `${film.title} 관심 메모 열기`);
-      noteButton.textContent = state.notes[film.id] ? "메모 수정하기" : "메모 남기기";
+      noteButton.textContent = libraryNoteLabel(film.id);
+      noteButton.setAttribute("aria-label", `${film.title} ${noteButton.textContent}`);
       actions.append(noteButton);
       copy.append(actions);
       article.append(copy);
@@ -976,7 +990,8 @@
     if (state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
-    grid.classList.toggle("library-reading", state.view === "saved");
+    grid.classList.toggle("library-reading", state.view === "saved" && state.libraryView === "reading");
+    grid.classList.toggle("library-compact", state.view === "saved" && state.libraryView === "compact");
     grid.replaceChildren(...visible.map((film) => makeCard(film, state.view)));
     const filtered =
       state.query.trim() ||
@@ -994,6 +1009,10 @@
     $("catalogTools").hidden = emptyLibrary;
     $("catalogOptions").hidden = emptyLibrary;
     $("resultsBar").hidden = emptyLibrary;
+    $("libraryView").hidden = state.view !== "saved" || emptyLibrary;
+    $("libraryView").querySelectorAll("[data-library-view]").forEach((button) =>
+      button.setAttribute("aria-pressed", String(button.dataset.libraryView === state.libraryView)),
+    );
     $("moodFilters").hidden = state.view === "saved";
     $("sortField").hidden = emptyLibrary;
     $("durationField").hidden = state.view !== "browse";
@@ -1198,6 +1217,13 @@
   $("catalogSort").addEventListener("change", (event) => {
     if (!["recommended", "title", "short"].includes(event.target.value)) return;
     state.sort = event.target.value;
+    render();
+  });
+  $("libraryView").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-library-view]");
+    if (state.view !== "saved" || !button ||
+      !["reading", "compact"].includes(button.dataset.libraryView)) return;
+    state.libraryView = button.dataset.libraryView;
     render();
   });
   $("searchInput").addEventListener("input", (e) => {
@@ -1431,7 +1457,7 @@
     const film = films.find((item) => item.id === article.film);
     $("articleTitle").textContent = article.title;
     $("articleCategory").textContent = article.category;
-    $("articleImage").src = `assets/stills/${film.image}.webp`;
+    $("articleImage").src = film.stillPath || `assets/stills/${film.image}.webp`;
     $("articleImage").alt = `${film.title}의 가상 영화 장면`;
     $("articleImage").width = 1672;
     $("articleImage").height = 941;
@@ -1442,8 +1468,20 @@
         return paragraph;
       }),
     );
-    $("articleFilmLink").dataset.detail = film.id;
-    $("articleFilmLink").textContent = `${film.title} 작품 보기`;
+    const theme = themes.find((item) => item.article === article.id);
+    const relatedFilms = (theme?.films || [film.id]).map((id) =>
+      films.find((item) => item.id === id),
+    );
+    $("articleFilmLinks").replaceChildren(...relatedFilms.map((relatedFilm, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "article-film-link";
+      button.dataset.detail = relatedFilm.id;
+      if (index === 0) button.id = "articleFilmLink";
+      button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
+      button.innerHTML = `<span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span>${icon("arrow")}`;
+      return button;
+    }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
   function focusNote() {

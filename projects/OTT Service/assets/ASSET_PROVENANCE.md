@@ -1,5 +1,73 @@
 # 잔상관 Asset Provenance
 
+## v31 이미지 — 2026-10-15
+
+내장 OpenAI image_gen.imagegen으로 가상 영화 세 편의 새 장면을 생성했습니다. 모델 세부 버전은 도구가 제공하지 않아 추정하지 않습니다. 외부 영화·배우 이미지를 참고하지 않았습니다. 여름의 편지는 하숙집 정리와 부치지 않은 편지, 새벽 두 시의 식탁은 국그릇을 사이에 둔 대화, 느린 궤도는 기록 장비·메시지·귀환을 기다리는 공간을 중심으로 구성했습니다.
+
+배포 파일은 아래에 기록한 최종 생성·편집본의 크기를 유지한 WebP quality 88 인코딩입니다. 도구 편집 이후 별도 픽셀 합성·자르기는 하지 않았으며 화면 크롭은 CSS로 처리합니다. 기존 자산은 보존했습니다. AI 생성 고지를 유지하며 AI 인상 감소에 대한 제3자 사용성·채용 효과를 검증했다고 주장하지 않습니다.
+
+### frames-v31/letters.webp
+
+- 최종 편집 원본: exec-33d39008-4fdf-4804-8e92-cffb95e3b489.png
+- 치수: 1536×1024
+- 배포 용량: 105110 B
+- 원본 SHA-256: a70448d42c20eb9421abe056641b450eef4fbc75872fa98831b0334f43397227
+- 배포 SHA-256: f1bb3faa5f24aa6da57f59bafdc89316a5a100c239ab2b01a5e36a31dd4311ae
+- 참조 이미지: 이번에 자체 생성한 exec-b91f25bd-78e4-45b1-9d3a-9630e101147d.png
+
+부치지 않은 편지 설정에 맞게 손에 든 봉투의 우표·원형 소인만 내장 이미지 도구로 제거했습니다. 구도와 인물·장소를 유지한 편집본을 배포합니다.
+
+초기 생성 프롬프트:
+
+```text
+Use case: photorealistic-natural. Create a new original still for the fictional Korean short film 'Letters from Summer' (여름의 편지), no lettering. Story: two old friends clearing out an ordinary boarding house discover unsent letters. A quiet observational 35mm film frame, 3:2 landscape. Foreground in central third: a shallow opened wooden drawer on an old desk, a few aged cream envelopes and one unfolded letter, plausible faint ink marks but no readable text. One friend's relaxed hand has just lifted an envelope; the second friend is half-visible behind the desk holding a modest cardboard box, both ordinary adults in everyday faded summer shirts, seen from the shoulder or oblique back rather than attractive portrait posing. Show their activity together, not romantic eye contact. Small lived-in Korean boarding room, worn pale mint wall, scuffed wood, open window, packed books. Soft overcast summer daylight, neutral muted greens, faded paper and brown wood; no golden-hour beams, no glowing particles, no beauty retouching. The envelopes and hand form the clear main subject in the central half, readable within both a central 2:3 portrait crop and a full 3:2 image. Keep lower center sufficiently quiet for a future HTML film title. Deliberately ordinary material textures, restrained film grain, slight natural imperfections, modest depth of field. No glamour, no symmetrical decorative set, no promotional couple portrait, no lens flare, no HDR, no giant foliage, no watermarks, no logo, no typography, no collage, no borders.
+```
+
+최종 편집 프롬프트:
+
+```text
+Use case: precise-object-edit. Edit this exact fictional-film still. The held cream envelope is an UNSENT letter. Remove the blue postage stamp and the circular postal cancellation mark from that one held envelope, replacing those tiny areas with naturally aged blank cream paper matching its surrounding texture. Preserve the rest of the image exactly: the two friends, their ordinary hands, the drawer, loose letter sheets, boarding-house room, all positions, the soft neutral light, colors, grain and 3:2 landscape framing. Do not change the composition, faces, furniture, handwriting on the loose sheets, or add objects. No new text, logo, watermark or decorative effects.
+```
+
+### frames-v31/nocturne.webp
+
+- 생성 원본: exec-61737b43-3dbe-45c0-9579-19314569f43b.png
+- 치수: 1086×1448
+- 배포 용량: 114304 B
+- 원본 SHA-256: 61dc71104ed847a40f945653f52b6db400bfb83372748bb0ab9b89caf1f12b5c
+- 배포 SHA-256: a5825c06659040bd8f3c2edba84abfbe24c259e155c7ee93edbd4a6a596b91c5
+- 참조 이미지: 이번에 자체 생성한 exec-21f4787b-c831-49db-936f-5f285aaf1d9d.png (동일 식당·인물의 구도 참고)
+
+가로 장면 생성 후 같은 식당과 인물을 유지한 세로 구도로 재생성했습니다. 가로 시안은 배포에 사용하지 않습니다.
+
+초기 장면 프롬프트:
+
+```text
+Use case: photorealistic-natural. A new original film still for the fictional Korean short 'Table at Two' (새벽 두 시의 식탁). Story: a tired customer and a quiet owner begin a slow conversation across a bowl of cooling soup in a tiny diner open at two in the morning. Landscape 3:2 observational independent-film photograph, camera slightly above table height. The central foreground is a small worn stainless-steel table with ONE ordinary bowl of soup, a spoon and chopsticks neatly beside it; an adult customer's relaxed hands are still on the near side of the table, an older owner's hands rest on the opposite side. Include the two people in three-quarter profile at the edges and middle ground so a natural pause in conversation is apparent, no smiling-at-camera posing, no serving gesture. Plain everyday clothes, tired posture, understated expressions, ordinary faces with natural texture, not beautiful-model casting. Small empty Korean late-night diner with pale green tiles, a plain clock showing roughly two in the background and a dark window; no readable signage. Low soft overhead fluorescent light, quiet grey-green shadows with a restrained warm light from the kitchen, not golden hour or orange restaurant advertising. The soup and distance between hands must be visible in the central vertical 2:3 crop, as a story about the space shared across a meal; lower central table edge calm enough for HTML movie title. Fine restrained film grain, uneven worn surfaces, modest depth of field, naturally imperfect composition. No staged smiles, glamour lighting, steam clouds, lens flare, glossy skin, HDR, dramatic color grading, branded packaging, text, captions, logo, watermark or collage.
+```
+
+최종 프롬프트:
+
+```text
+Use case: precise-object-edit / composition. Input image is the target scene for fictional short film Table at Two. Make a companion portrait 3:4 film still of the SAME tiny diner, SAME ordinary customer and older owner, SAME single bowl of soup and restrained lighting. Reframe the scene with a slightly diagonal view along the narrow table so the customer in partial back/profile is near left and the owner sits opposite in the central upper half. Both figures should be visible in a 2:3 central poster crop. The single bowl and their resting hands are prominent near the middle, not at the bottom. Retain the silent pause in conversation, not a food-serving moment. Preserve natural unretouched faces, everyday grey clothes, pale green tiles, plain dark window, worn steel tabletop, subdued fluorescent light, no exaggerated smiles, no glossy warmth. Keep the bottom quarter as quiet tabletop for a future HTML film title, no printed text anywhere. Camera framing is the main change; do not add extra people, food, decorative lights, signage, celebrities or a new story. Final image is portrait 3:4, no border, no typography, no logo.
+```
+
+### frames-v31/orbit.webp
+
+- 생성 원본: exec-5455e8f7-61c3-4f80-a3ad-b6525ea2c875.png
+- 치수: 1086×1448
+- 배포 용량: 103126 B
+- 원본 SHA-256: 2fddc70cdcdb44a98179281da2cec59cd78fca39b894127928e07bbbc312ea6c
+- 배포 SHA-256: 9f5e1eb1c8ef5b35be11e64da9635b646aad597b0408e3978159dda18bd82e86
+- 참조 이미지: 없음
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural. Create original narrative key art for a fictional independent science fiction short 'A Slow Orbit' (느린 궤도), portrait 3:4 composition, image only. Story: a space archivist waiting to return to Earth receives one last message that changes the routine of a quiet observation station. View from slightly behind an ordinary middle-aged archivist seated at a worn modest communications desk, leaning forward to listen, one hand paused above a physical playback button. Show a small recording spool and paper log on the central desk, a single restrained amber indicator lit, no readable words on screen. Their head and upper torso appear in middle upper part, face mostly turned away and not the primary subject; grey practical clothing, no spacesuit helmet. Behind the desk a modest circular porthole with one distant small Earth on black space, clearly establishing orbit without giant planet spectacle. Utilitarian cream painted metal, small scratches, cable clips, fabric seat, functional hardware; sparse and believable, not a dense wall of decorative science-fiction gadgets. Quiet cool ambient window light and neutral task light, one small amber detail, desaturated blue-grey and warm off-white, lived-in material texture and subtle film grain. Main narrative triangle: the waiting person, the paused hand/message device, the small Earth. Place these within central two thirds and around upper-middle so both a 2:3 poster crop and a moderately wide popup crop preserve the hand and porthole. Lower portion is quiet desk shadow for HTML title. Photorealistic low-budget practical film-set feeling; no glossy astronaut close-up, no celebrity likeness, no holographic HUD, no neon, no lens flare, no glowing nebula, no spacecraft battle, no polished 3D-render look, no text, no logo, no credits, no watermark or collage.
+```
+
+
 최신 수정일: 2026-10-15 (한국 시간)
 
 ## v30 현재 편집 범위 — 2026-10-15

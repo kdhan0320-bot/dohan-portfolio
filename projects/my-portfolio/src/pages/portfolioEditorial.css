@@ -372,7 +372,7 @@
   text-underline-offset: 4px;
 }
 .case-page[data-project-slug="ott-service"] .case-screen-reference,
-.case-page[data-project-slug="ott-service"] .case-decisions__aside a {
+.case-page[data-project-slug="ott-service"] .case-decisions__aside > a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -398,11 +398,18 @@
   font-size: 16px;
   line-height: 1.75;
 }
+.case-page[data-project-slug="ott-service"] .case-decisions__aside--illustrated .case-decisions__aside-copy {
+  display: grid;
+  grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
+  gap: 24px 48px;
+  margin-bottom: 24px;
+}
 @media (max-width: 760px) {
   .case-page[data-project-slug="ott-service"] .case-intro__grid { gap: 16px; }
   .case-page[data-project-slug="ott-service"] .case-project-facts { padding: 12px 0 36px; }
   .case-page[data-project-slug="ott-service"] .case-verification__tasks { grid-template-columns: 1fr; gap: 24px; }
   .case-page[data-project-slug="ott-service"] .case-decisions__aside h3 { font-size: 24px; }
+  .case-page[data-project-slug="ott-service"] .case-decisions__aside--illustrated .case-decisions__aside-copy { display: block; }
 }
 
 /* Jansang keeps the premise, choices, and observed checks together. */
@@ -454,6 +461,13 @@
   border-top: 1px solid var(--line, #d7e0e7);
 }
 .case-page[data-project-slug="ott-service"] .case-decision-check--inline { display: block; margin-top: 8px; padding-top: 0; border-top: 0; }
+@media (max-width: 1100px) {
+  .case-page[data-project-slug="ott-service"] .case-figure--curation .case-responsive-image { max-width: 390px; }
+  .case-page[data-project-slug="ott-service"] .case-figure--curation .case-original-desktop { display: none; }
+  .case-page[data-project-slug="ott-service"] .case-figure--curation .case-original-mobile { display: inline-flex; }
+  .case-page[data-project-slug="ott-service"] .case-figure--curation .case-caption-desktop { display: none; }
+  .case-page[data-project-slug="ott-service"] .case-figure--curation .case-caption-mobile { display: block; }
+}
 @media (max-width: 760px) {
   .case-page[data-project-slug="ott-service"] .case-responsive-image { max-width: 390px; }
   .case-page[data-project-slug="ott-service"] .case-original-desktop { display: none; }

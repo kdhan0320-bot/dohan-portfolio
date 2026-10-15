@@ -17,7 +17,7 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
   <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${className}`}>
     <div className="case-figure__surface">
       {media.mobile ? <picture className="case-responsive-image">
-        <source media="(max-width: 760px)" srcSet={mediaUrl(media.mobile.src)} />
+        <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} />
         <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />
       </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
     </div>
@@ -187,10 +187,12 @@ const ProjectDetailPage = () => {
               </section>;
             })}
           </div>
-          {ready.decisionsNote && <div className="case-decisions__aside">
-            <h3>{ready.decisionsNote.title}</h3>
-            <p>{ready.decisionsNote.text}</p>
-            <a href={mediaUrl(ready.decisionsNote.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${ready.decisionsNote.reference.label} (새 탭)`}>{ready.decisionsNote.reference.label}</a>
+          {ready.decisionsNote && <div className={`case-decisions__aside${ready.decisionsNote.media ? ' case-decisions__aside--illustrated' : ''}`}>
+            <div className="case-decisions__aside-copy">
+              <h3>{ready.decisionsNote.title}</h3>
+              <p>{ready.decisionsNote.text}</p>
+            </div>
+            {ready.decisionsNote.media ? <ScreenFigure media={ready.decisionsNote.media} label={ready.decisionsNote.mediaLabel} className="case-figure--curation" /> : <a href={mediaUrl(ready.decisionsNote.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${ready.decisionsNote.reference.label} (새 탭)`}>{ready.decisionsNote.reference.label}</a>}
           </div>}
         </section>}
 
