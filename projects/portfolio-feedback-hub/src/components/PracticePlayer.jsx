@@ -88,14 +88,15 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       </article>)}
     </div>
     <div className="practice-action-row">
-      {!revealed && <div className="practice-confirm"><span className="sr-only" aria-live="polite">{selected ? `${selected} 화면을 골랐어요.` : 'A 또는 B를 골라보세요.'}</span><button className="practice-primary" disabled={!selected} onClick={() => setRevealed(true)}>설계 이유 보기</button></div>}
+      {!revealed && <div className="practice-confirm"><span aria-live="polite">{selected ? `내 선택 ${selected}` : 'A 또는 B를 선택해 주세요.'}</span><button className="practice-primary" disabled={!selected} onClick={() => setRevealed(true)}>설계 이유 보기</button></div>}
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
       <p className="practice-result-status">내 선택 {selected}<span>·</span>이 목표의 제안 {preferredSide}</p>
       <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{preferredSide}</span><ResultHeading>{goal.takeaway}</ResultHeading></div>
+      <p className="practice-result-explanation">{goal.explanation}</p>
       {exercise.alternateGoal && <div className="practice-goal-switch"><p>목표를 바꾸면 선택도 달라질까요?</p><button className="practice-secondary" onClick={switchGoal}>{alternateGoal ? '제목 먼저 비교' : '작품 먼저 비교'}</button></div>}
       <div className="practice-result-details">
-        <details><summary><span>설계 이유 더 보기</span><PracticeIcon name="plus" /></summary><p>{goal.explanation}</p><p>{goal.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
+        <details><summary><span>다른 상황에서는?</span><PracticeIcon name="plus" /></summary><p>{goal.tradeoff}</p><p className="practice-limits">예제의 설계 판단이며, 실제 사용자 검증 결과는 아닙니다.</p></details>
         <details><summary><span>내 생각 한 줄 <span className="practice-optional">선택</span></span><PracticeIcon name="plus" /></summary><label htmlFor={`${id}-memo`} className="sr-only">이 예제에 대한 내 생각</label><textarea id={`${id}-memo`} value={memo} onChange={event => setMemo(event.target.value.slice(0, 160))} maxLength={160} placeholder="내가 이 화면을 고른 이유는…" /><div className="practice-memo-meta"><span>이동·새로고침하면 사라져요. {memo.length}/160</span><button disabled={!memo} onClick={() => setMemo('')}>지우기</button></div></details>
       </div>
       <div className="practice-result-actions"><button className="practice-secondary" onClick={restart}>다시 비교하기</button>{nextExercise ? <Link className="practice-primary" to={`/practice/${nextExercise.id}`}>다음 연습</Link> : <Link className="practice-primary" to="/recap">6가지 기준 정리</Link>}</div>

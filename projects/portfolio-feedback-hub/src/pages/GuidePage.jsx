@@ -7,9 +7,9 @@ import sculpture from '../assets/perspective-sculpture.webp';
 import '../styles/practice-guide.css';
 
 const steps = [
-  ['목표 읽기', '어떤 점을 비교할지 확인해요.'],
-  ['A·B 선택', '목표에 더 적합한 화면을 골라요.'],
-  ['이유 확인', '강조된 차이와 설계 이유를 살펴봐요.'],
+  ['목표 읽기', '먼저 질문을 읽고 비교할 기준을 확인해요.'],
+  ['비교하고 선택', '두 화면을 비교한 뒤, 목표에 더 적합한 쪽을 골라요.', 'A·B 보기는 화면만 바꿔요. 비교 후 아래 선택 버튼을 눌러요.'],
+  ['이유 확인', '설계 이유 보기를 눌러, 판단의 근거와 다른 상황을 살펴봐요.'],
 ];
 
 const questions = [
@@ -20,19 +20,25 @@ const questions = [
 ];
 
 function GuideScene({ stage }) {
+  const visibleSide = stage === 1 ? 'A' : 'B';
   return <div className={`guide-scene guide-scene-${stage}`} aria-hidden="true">
     <div className="guide-scene-topline"><span>글자 위계</span><span>01 / 06</span></div>
     <div className="guide-scene-question">전시 제목이 먼저 읽히는 쪽은?</div>
+    <div className="guide-scene-mobile-toolbar">
+      <div className="guide-scene-view-switch">{['A', 'B'].map(side => <span key={side} className={side === visibleSide ? 'is-viewing' : undefined}>{side} 보기{stage > 1 && side === 'B' && <PracticeIcon name="check" />}</span>)}</div>
+      <span className="guide-scene-expand"><PracticeIcon name="expand" />확대</span>
+    </div>
     <div className="guide-scene-options">
-      {['A', 'B'].map((side) => <div key={side} className={`guide-scene-option guide-scene-option-${side.toLowerCase()}${stage > 1 && side === 'B' ? ' is-picked' : ''}`}>
+      {['A', 'B'].map((side) => <div key={side} className={`guide-scene-option guide-scene-option-${side.toLowerCase()}${side === visibleSide ? ' is-current-view' : ''}${stage > 1 && side === 'B' ? ' is-picked' : ''}`}>
         <div className="guide-scene-option-label"><span>{side}</span>{stage > 1 && side === 'B' && <span className="guide-scene-check"><PracticeIcon name="check" /></span>}</div>
         <div className="guide-scene-gallery">
           <div className="guide-scene-gallery-copy"><span className="guide-scene-gallery-title">시선의<br />모양</span><span className="guide-scene-gallery-rule" /></div>
           <img src={sculpture} alt="" />
         </div>
-        {stage < 3 && <span className="guide-scene-choice">{stage === 2 && side === 'B' ? 'B 선택함' : `${side} 선택하기`}</span>}
+        {stage < 3 && <span className="guide-scene-choice">{stage === 2 && side === 'B' ? 'B 선택됨' : `${side} 선택하기`}</span>}
       </div>)}
     </div>
+    {stage === 2 && <span className="guide-scene-reason-action">설계 이유 보기</span>}
     {stage === 3 && <div className="guide-scene-result"><span>B</span><span>제목을 크게, 먼저 읽히도록.</span></div>}
   </div>;
 }
@@ -42,9 +48,9 @@ export default function GuidePage() {
   return <div className="app-surface practice-surface"><Header /><div className="shell practice-guide">
     <header><h1>이용 안내</h1><p>두 화면을 비교하고, 선택의 이유를 알아보세요.</p></header>
     <ol className="practice-guide-steps" aria-label="디자인 비교 연습 순서">
-      {steps.map(([title, description], index) => <li key={title}>
+      {steps.map(([title, description, mobileDescription], index) => <li key={title}>
         <GuideScene stage={index + 1} />
-        <div className="guide-step-copy"><div className="guide-step-title"><span aria-hidden="true">0{index + 1}</span><h2>{title}</h2></div><p>{description}</p></div>
+        <div className="guide-step-copy"><div className="guide-step-title"><span aria-hidden="true">0{index + 1}</span><h2>{title}</h2></div><p className={mobileDescription ? 'guide-step-desktop-copy' : undefined}>{description}</p>{mobileDescription && <p className="guide-step-mobile-copy">{mobileDescription}</p>}</div>
       </li>)}
     </ol>
     <Link className="practice-primary" to="/practice/sample-1">바로 연습하기</Link>

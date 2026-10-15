@@ -25,7 +25,8 @@
 .exercise-artwork .ea-eyebrow { font-size: 11px; color: #796988; letter-spacing: .08em; }
 .exercise-artwork .ea-target { outline: 2px solid transparent; outline-offset: 5px; }
 .exercise-artwork.ea-highlight .ea-target { outline-color: #c66043; }
-.exercise-artwork .ea-gallery-layout { display: grid; grid-template-columns: minmax(90px, .38fr) minmax(0, .62fr); gap: 20px; height: 216px; }
+/* Whole-number weights keep the image filling the remaining space when copy reaches its minimum width. */
+.exercise-artwork .ea-gallery-layout { display: grid; grid-template-columns: minmax(90px, 38fr) minmax(0, 62fr); gap: 20px; height: 216px; }
 .exercise-artwork.ea-revised .ea-gallery-layout { grid-template-columns: minmax(90px, 1fr) minmax(0, 1fr); }
 .exercise-artwork .ea-gallery-copy { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; }
 .exercise-artwork .ea-gallery-title { display: flex; flex-direction: column; justify-content: center; min-height: 79px; color: #44384f; font-size: 18px; font-weight: 700; line-height: 1.18; letter-spacing: -.025em; }
