@@ -236,13 +236,15 @@ const ProjectDetailPage = () => {
 
         <section className="case-section case-scope" aria-labelledby="case-scope-heading">
           <div className="case-section__heading case-section__heading--inline">
-            <div><p className="case-eyebrow">{focusedCase ? '제작 범위' : `${ready.verification?.tasks?.length ? '04' : '03'} / 제작 범위`}</p><h2 id="case-scope-heading">{ready.scopeTitle || '완성한 것과 남은 것'}</h2></div>
+            <div>{!ready.scopeSummary && <p className="case-eyebrow">{focusedCase ? '제작 범위' : `${ready.verification?.tasks?.length ? '04' : '03'} / 제작 범위`}</p>}<h2 id="case-scope-heading">{ready.scopeTitle || '완성한 것과 남은 것'}</h2></div>
           </div>
-          <div className="case-scope__grid">
+          {ready.scopeSummary ? <div className="case-scope__grid case-scope__grid--summary">
+            {ready.scopeSummary.map((item) => <div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}
+          </div> : <div className="case-scope__grid">
             <ScopeList title="제작한 범위" items={ready.scope?.actual} />
             <ScopeList title="데모·샘플의 범위" items={ready.scope?.demoStatic} />
             <ScopeList title="포함하지 않은 기능" items={ready.scope?.notIncluded} />
-          </div>
+          </div>}
           {focusedCase && ready.verification && <div className="case-validation-summary">
             <p>{ready.verification.method}</p>
             <p>{ready.verification.limit}</p>

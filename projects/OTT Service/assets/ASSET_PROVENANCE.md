@@ -1,5 +1,64 @@
 # 잔상관 Asset Provenance
 
+## v33 이미지와 권리 확인 — 2026-10-15
+
+내장 OpenAI image_gen.imagegen으로 자체 생성한 기존 posters-v13의 rooftop·relay·signal을 참조해 새 장면 3개를 만들었습니다. 외부 영화·배우·브랜드·작가의 이미지는 입력하지 않았습니다. 정확한 모델 버전은 도구가 제공하지 않아 기재하지 않습니다. 옥상 밴드는 한 관객과 정리한 악기·상자, 마지막 바통은 부상 후 동료와 연습하는 전달 동작, 수신 불가는 무전기와 기록을 대조하는 손을 중심으로 편집했습니다.
+
+최종 원본을 추가 합성·필터·자르기 없이 원래 해상도의 WebP quality 88로 인코딩했습니다. 화면 크롭은 작품별 CSS 위치와 상세 비율로 처리합니다. 포스터 제목 크기·굵기는 유지하고 세 작품의 제목과 대비 그라데이션을 하단으로 옮겨 얼굴·행동을 가리지 않게 했습니다. 기존 자산은 보존했습니다.
+
+### 권리 확인의 범위
+
+- 확인한 사실: 이번 세 파일의 생성 도구·참조 파일·최종 프롬프트·해시를 아래에 기록했습니다. 서비스의 현재 영화 이미지는 기존 버전 생성 기록을 이어 사용합니다. 직접 촬영 또는 수작업 원화로 주장하지 않습니다.
+- 글꼴: 현재 사용하는 로컬 Pretendard와 Noto Serif KR 서브셋 Jansang Display의 SIL OFL 1.1 고지 파일을 확인하고 유지했습니다. 자체 SVG 프레임 심벌과 선형 아이콘을 유지했습니다.
+- OpenAI 약관은 법이 허용하는 범위에서 사용자와 OpenAI 사이의 출력물 권리를 사용자에게 귀속시키지만, 출력의 독창성·유일성이나 제3자 권리 비침해를 보증하는 조항은 아닙니다. 사용자는 입력 권리와 출력 이용을 확인해야 합니다. 출처: [OpenAI Terms of Use](https://openai.com/policies/row-terms-of-use/) (2026-10-15 열람).
+- 생성했다는 사실만으로 저작권 침해 가능성이 없어지거나 이미지 전체에 독점적 저작권이 생기는 것은 아닙니다. 한국저작권위원회 안내서는 기존 저작물에 대한 의거성·실질적 유사성과 인간의 창작적 기여를 구분합니다. 출처: [생성형 인공지능 결과물에 의한 저작권 분쟁 예방 안내서](https://www.copyright.or.kr/gov/nuri/view.do?brdctsno=54252), 2025년 6월, 24·44–45·58쪽 (2026-10-15 열람).
+- 제한: 전 세계 이미지와의 역검색·전수 유사성 비교, 상표권 조사 또는 법률 감정을 수행하지 않았습니다. AI 생성 고지와 제작 기록은 출처 투명성을 위한 것이며 법적 무위험·등록 가능성·독점권을 인증하지 않습니다.
+
+### frames-v33/rooftop.webp
+
+- 원본: exec-88e9c0ef-8202-419d-a276-18a01b57de7b.png
+- 치수: 1086×1448
+- 배포 용량: 177632 B
+- 원본 SHA-256: 1d6dee6d0d5b968de3f9fd7b6caa097b4647baae17617f192f957d12bc3fb591
+- 배포 SHA-256: 416780078bd2ec5a6f245c7d9315d6f44b2f6dfb627274ef34d7ad4f83e4d518
+- 참조: assets/posters-v13/rooftop.webp (기존 자체 생성 이미지)
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural / narrative image edit. Redesign the supplied self-generated still for our fictional independent short 'Rooftop Encore'. Preserve the identity of a small three-person Korean band with singer, bass guitar and compact drums, but replace the glossy smiling sunset publicity composition with an intimate final-night performance. Story: their old rehearsal room will be demolished; a disbanded band reunites on the roof to play for a single listener, saying what they could not say. Portrait 3:4 observational film frame, ordinary faces, muted workaday clothes, unposed concentration rather than smiling toward camera. Camera behind the ONE seated listener in lower foreground, head below center and slightly to one side, facing three modest musicians grouped across the upper-middle. A scuffed amplifier, taped cable, open instrument case and two packed moving boxes beside an old rooftop access door quietly suggest departure. One warm bare practical bulb by the door, early blue-grey night ambient light, worn concrete, dull cream and charcoal and a very restrained ochre accent. No dramatic pink/orange sunset, no skyline spectacle, no glossy skin, no glamorous concert lights, no confetti, no photographic beauty campaign. Keep singer, bass guitar, drums and listener inside central 75% so a 2:3 portrait crop reads clearly. Bottom quarter mostly quiet rooftop concrete for an HTML title overlay. Believable equipment and anatomy, subtle natural grain, imperfect unembellished location. No readable text, logos, celebrity likeness, watermark, borders or collage.
+```
+
+### frames-v33/relay.webp
+
+- 원본: exec-ecb611af-e1b4-4ba5-a2ea-e99f051f22fa.png
+- 치수: 1086×1448
+- 배포 용량: 176696 B
+- 원본 SHA-256: 467131d4d22c86a24d30e3b3dc2cd95a9ed1b606638bda5420c2ac7820786d19
+- 배포 SHA-256: 0164b6428a12e7407489d3a56007c279112145c92cc3bdbae7854fb5b46c7440
+- 참조: assets/posters-v13/relay.webp (기존 자체 생성 이미지)
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural / narrative image edit. Redesign this self-generated fictional short-film key art for 'The Final Relay'. Keep its Korean woman runner and relay baton theme, but replace the glossy heroic stadium publicity image with an ordinary quiet practice moment about learning to trust a teammate after injury. Portrait 3:4 candid independent-film still on a worn community running track under soft overcast late-afternoon daylight. TWO adult women athletes in plain muted navy and grey training T-shirts and running shorts, no brands, no numbers. The recovering runner on the left has a small simple athletic knee support and holds one worn dull-red baton while her teammate on the right practices receiving it; they stand close at walking pace, focused on their shared hands, a plausible uncomplicated handoff at waist height near center. Show both upper bodies and enough legs to establish the track; ordinary faces and natural unretouched skin, relaxed shoulders, practical training clothing. Camera slightly oblique, not glamour low-angle, not explosive action, no sweat sheen. Empty modest bleachers softly out of focus, faded lane lines. Neutral cloudy light, terracotta track, subdued blue clothes, no orange/teal grading, no golden flare, no spectacular sky. Place two people and baton within central 75% width and upper two thirds for central 2:3 poster crop; lower quarter quiet track for HTML title. Believable hands with five fingers each, one single baton gripped simply, unforced body positions. No text, logos, celebrities, watermarks or collage.
+```
+
+### frames-v33/signal.webp
+
+- 원본: exec-e9989287-3db3-43f7-8a0f-7c9d83eacbf8.png
+- 치수: 1024×1536
+- 배포 용량: 127824 B
+- 원본 SHA-256: 8a9ffdba3b4dfaa01557c6a09681d41667f90c70968bf9dfe105e247afb567c0
+- 배포 SHA-256: 9790b7fa841d5636025b31639888f5ca770534ca694292eaeae674ba23f83a77
+- 참조: assets/posters-v13/signal.webp (기존 자체 생성 이미지)
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural / narrative image edit. Rework the supplied self-generated still for fictional mystery short 'No Signal'. Preserve a female Korean communications technician in a closed relay station and the analog radio theme, but replace the polished red/blue beauty portrait with a purposeful observational scene: she has received a distress call in her own voice and is tracing its source. Portrait 3:4 film still, slightly above desk-height view from side/back, technician in plain faded charcoal work jacket and basic on-ear headphones, one hand resting on a physical radio tuning knob, other hand near a pencil and a small paper service log with faint illegible marks. Her face in natural partial profile looks toward the radio, not camera. A modest analog receiver, short coiled handset cable, folded blank schematic sheet, a single small amber indicator; sparse credible equipment, not decorative gadget clutter. Dusty pale grey-green room, boarded or dark windows, one neutral desk lamp providing soft readable light and faint cool ambient from high window. Slightly worn materials, ordinary unretouched skin, restrained fine grain, muted grey-green/brown palette. No theatrical red lamp, cyan rim lighting, glowing dial spectacle, glamorous makeup, glossy skin, dramatic lens flare or gothic fantasy. Keep hand/receiver and head inside center 75%, upper-middle, so a 2:3 poster crop preserves the action. Bottom quarter quiet desk edge/shadow for HTML title. No readable lettering, branded logos, celebrity likeness, watermark or collage.
+```
+
 ## v31 이미지 — 2026-10-15
 
 내장 OpenAI image_gen.imagegen으로 가상 영화 세 편의 새 장면을 생성했습니다. 모델 세부 버전은 도구가 제공하지 않아 추정하지 않습니다. 외부 영화·배우 이미지를 참고하지 않았습니다. 여름의 편지는 하숙집 정리와 부치지 않은 편지, 새벽 두 시의 식탁은 국그릇을 사이에 둔 대화, 느린 궤도는 기록 장비·메시지·귀환을 기다리는 공간을 중심으로 구성했습니다.

@@ -151,9 +151,11 @@
       mood: "warm",
       moodText: "다정한 온기",
       image: "rooftop",
-      posterPath: "assets/posters-v13/rooftop.webp",
-      detailPosition: "center 47%",
-      detailRatio: "1.18",
+      posterPath: "assets/frames-v33/rooftop.webp",
+      position: "center center",
+      posterPosition: "center center",
+      detailPosition: "center 25%",
+      detailRatio: "1.05",
       description:
         "철거를 앞둔 연습실의 마지막 밤, 해체한 밴드가 옥상에 모인다. 관객 한 명을 위한 연주가 서로에게 하지 못한 말을 대신한다.",
       keywords: "음악 밴드 공연 옥상 청춘 친구 연주 기타 따뜻한",
@@ -167,9 +169,11 @@
       mood: "mystery",
       moodText: "고요한 긴장",
       image: "signal",
-      posterPath: "assets/posters-v13/signal.webp",
-      detailPosition: "center 60%",
-      detailRatio: "1.2",
+      posterPath: "assets/frames-v33/signal.webp",
+      position: "center center",
+      posterPosition: "center center",
+      detailPosition: "center 32%",
+      detailRatio: "1.05",
       description:
         "폐쇄된 중계소에서 자신의 목소리가 담긴 구조 요청을 받은 통신 기사. 아직 일어나지 않은 사고를 막기 위해 신호의 발신지를 추적한다.",
       keywords: "미스터리 추리 통신 신호 라디오 중계소 긴장되는 구조",
@@ -183,9 +187,11 @@
       mood: "warm",
       moodText: "함께하는 용기",
       image: "relay",
-      posterPath: "assets/posters-v13/relay.webp",
-      detailPosition: "center 28%",
-      detailRatio: "1.1",
+      posterPath: "assets/frames-v33/relay.webp",
+      position: "center center",
+      posterPosition: "center center",
+      detailPosition: "center 15%",
+      detailRatio: "1.05",
       description:
         "부상 후 트랙을 떠나려던 육상 선수에게 마지막 계주 출전 제안이 온다. 혼자 빠르게 달리는 법만 알던 그는 동료에게 바통을 건네는 법을 배운다.",
       keywords: "스포츠 육상 달리기 계주 트랙 바통 동료 도전 용기 따뜻함 따뜻한",
@@ -977,7 +983,7 @@
       (state.mood === "all" || state.mood === film.mood) &&
       (state.view !== "browse" || matchesDuration(film, state.duration)) &&
       (!q ||
-        `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords}`
+        `${film.title} ${film.english} ${film.genre} ${film.moodText} ${film.keywords} ${state.view === "saved" ? state.notes[film.id] || "" : ""}`
           .toLocaleLowerCase("ko")
           .replace(/\s+/g, "")
           .includes(q))
@@ -1017,8 +1023,14 @@
       saved: "찜한 영화",
       noted: "메모 있는 영화",
     };
-    $("resultCount").textContent =
-      `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
+    const libraryCount = films.filter((film) => inLibrary(film.id)).length;
+    $("resultCount").textContent = state.view === "saved" && state.query.trim()
+      ? `검색 결과 ${visible.length}편 · 보관함 ${libraryCount}편`
+      : `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
+    $("searchInput").placeholder = state.view === "saved" ? "작품 정보·내 메모 검색" : "제목·장르·분위기·키워드";
+    $("searchLabel").textContent = state.view === "saved"
+      ? "보관함 영화 제목, 장르, 분위기, 키워드와 저장한 메모 검색"
+      : "영화 제목, 장르, 분위기, 키워드 검색";
     $("libraryFilters").hidden = state.view !== "saved" || emptyLibrary;
     $("catalogTools").hidden = emptyLibrary;
     $("catalogOptions").hidden = emptyLibrary;
@@ -1067,7 +1079,7 @@
       : emptyCategory
         ? "다른 분류에서 영화를 찾아보세요."
         : state.view === "saved"
-          ? "다른 검색어나 보관함 분류로 다시 찾아보세요."
+          ? `보관함에는 ${libraryCount}편이 있어요. 다른 검색어나 분류로 다시 찾아보세요.`
           : "분위기나 러닝타임을 바꿔보세요.";
     $("emptyAction").dataset.action = emptyLibrary ? "browse" : "reset";
     $("emptyAction").textContent = emptyLibrary
@@ -1290,6 +1302,8 @@
   // Drafts survive internal navigation, but never count as saved library notes.
   // They are intentionally memory-only and disappear on refresh or tab close.
   const noteDrafts = new Map();
+  // Deleted notes can be restored across routes, but never survive a reload.
+  const deletedNotes = new Map();
   let activeDetailId = null;
   let detailImageRequest = 0;
   let noteDirty = false;
@@ -1391,9 +1405,9 @@
     $("noteReader").hidden = !reading;
     $("noteForm").hidden = reading;
     $("noteReadText").textContent = savedNote || "";
-    $("noteReaderStatus").textContent = message || (noteDrafts.has(activeDetailId)
-      ? "저장 전 초안이 있어요. ‘메모 수정’에서 이어 쓸 수 있어요."
-      : state.notesStorageAvailable ? "이 브라우저에 저장된 메모" : "브라우저 저장 공간을 사용할 수 없습니다.");
+    $("noteDraftNotice").hidden = !reading || !noteDrafts.has(activeDetailId);
+    $("noteReaderStatus").textContent = message || (state.notesStorageAvailable
+      ? "이 브라우저에 저장된 메모" : "브라우저 저장 공간을 사용할 수 없습니다.");
     $("noteCancel").textContent = savedNote ? "수정 취소" : "작성 취소";
     $("noteDelete").disabled = !savedNote;
     updateNoteCount();
@@ -1433,6 +1447,115 @@
     } catch {
       state.notesStorageAvailable = false;
     }
+  }
+  function renderNoteUndo() {
+    const focused = document.activeElement.closest("[data-restore-note], [data-dismiss-note]");
+    const focusedHost = focused?.closest(".note-undo-list");
+    const focusedAction = focused?.hasAttribute("data-restore-note") ? "data-restore-note" : "data-dismiss-note";
+    const focusedId = focused?.getAttribute(focusedAction);
+    [$("noteUndoList"), $("detailUndoList")].forEach((host) => {
+      const entries = [...deletedNotes].filter(([id]) => host.id === "noteUndoList" || id === activeDetailId);
+      host.replaceChildren(...entries.map(([id, deleted]) => {
+        const film = films.find((item) => item.id === id);
+        const item = document.createElement("div");
+        item.className = "note-undo-item";
+        const copy = document.createElement("p");
+        const title = document.createElement("strong");
+        title.textContent = film.title;
+        copy.append(title, document.createTextNode(` · ${state.notes[id]
+          ? "새 메모가 있어 이전 메모를 덮어쓰지 않습니다."
+          : deleted.message || "메모를 삭제했어요. 새로고침 전까지 복원할 수 있어요."}`));
+        const actions = document.createElement("div");
+        actions.className = "note-undo-actions";
+        const restore = document.createElement("button");
+        restore.type = "button";
+        restore.className = "button small";
+        restore.dataset.restoreNote = id;
+        restore.textContent = "메모 복원";
+        restore.setAttribute("aria-label", `${film.title} 메모 복원`);
+        restore.disabled = Boolean(state.notes[id]);
+        const dismiss = document.createElement("button");
+        dismiss.type = "button";
+        dismiss.className = "text-link";
+        dismiss.dataset.dismissNote = id;
+        dismiss.textContent = "복원 안 함";
+        dismiss.setAttribute("aria-label", `${film.title} 메모 복원 안 함`);
+        actions.append(restore, dismiss);
+        item.append(copy, actions);
+        return item;
+      }));
+      host.hidden = entries.length === 0;
+    });
+    $("noteUndoTray").hidden = deletedNotes.size === 0;
+    if (focusedId) {
+      const replacement = focusedHost?.querySelector(`[${focusedAction}="${focusedId}"]:not([disabled])`)
+        || focusedHost?.querySelector("button:not([disabled])");
+      replacement?.focus({ preventScroll: true });
+    }
+  }
+  function focusAfterNoteUndo(id) {
+    if ($("detailDialog").open && activeDetailId === id) {
+      (noteMode === "read" && state.notes[id] ? $("noteDraftNotice").hidden ? $("noteReadText") : $("noteDraftNotice")
+        : $("noteDisclosure").querySelector("summary")).focus();
+      return;
+    }
+    const cardButton = $("filmGrid").querySelector(`[data-open-note][data-detail="${id}"]`);
+    const target = cardButton?.getClientRects().length ? cardButton
+      : !$("noteUndoTray").hidden ? $("noteUndoTitle") : $("main-content");
+    target.focus({ preventScroll: true });
+    target.scrollIntoView({ block: "nearest", behavior: "instant" });
+  }
+  function writeNoteChange(notes) {
+    try {
+      localStorage.setItem(notesKey, JSON.stringify(notes));
+      state.notes = notes;
+      state.notesStorageAvailable = true;
+      return true;
+    } catch {
+      state.notesStorageAvailable = false;
+      return false;
+    }
+  }
+  function restoreDeletedNote(id) {
+    const deleted = deletedNotes.get(id);
+    if (!deleted) return;
+    let latest;
+    try {
+      latest = readNotes(localStorage.getItem(notesKey));
+    } catch {
+      deleted.message = "저장 공간을 읽지 못해 복원하지 못했어요. 다시 시도해 주세요.";
+      renderNoteUndo();
+      return;
+    }
+    if (latest[id]) {
+      state.notes = latest;
+      deleted.message = "다른 탭의 새 메모가 있어 복원하지 않았어요.";
+      if ($("detailDialog").open && activeDetailId === id) {
+        noteMode = "read";
+        $("noteDisclosure").open = true;
+        loadNote();
+      }
+      refreshLibrary({ preserveFocus: true });
+      renderNoteUndo();
+      return;
+    }
+    if (!writeNoteChange({ ...latest, [id]: deleted.note })) {
+      deleted.message = "메모를 복원하지 못했어요. 저장 공간을 확인한 뒤 다시 시도해 주세요.";
+      renderNoteUndo();
+      return;
+    }
+    // Preserve a newer local draft if one was started after deleting the note.
+    if (!noteDrafts.has(id) && deleted.draft) noteDrafts.set(id, deleted.draft);
+    deletedNotes.delete(id);
+    if ($("detailDialog").open && activeDetailId === id) {
+      noteMode = "read";
+      $("noteDisclosure").open = true;
+      loadNote("삭제한 메모를 복원했어요.");
+    }
+    refreshLibrary();
+    renderNoteUndo();
+    focusAfterNoteUndo(id);
+    notify("삭제한 메모를 복원했어요.");
   }
   function showDetail(id, trigger) {
     const film = films.find((f) => f.id === id);
@@ -1479,6 +1602,7 @@
     $("detailSave").dataset.save = id;
     noteMode = state.notes[id] ? "read" : "edit";
     loadNote();
+    renderNoteUndo();
     $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
     updateNoteDisclosureLabel();
     updateSaveButtons();
@@ -1523,14 +1647,18 @@
     $("noteDisclosure").open = true;
     updateNoteDisclosureLabel();
     resizeNoteText();
-    (noteMode === "read" ? $("noteReadText") : $("noteText")).focus();
+    (noteMode === "read"
+      ? $("noteDraftNotice").hidden ? $("noteReadText") : $("noteDraftNotice")
+      : $("noteText")).focus();
   }
-  $("noteEdit").addEventListener("click", () => {
+  function editNote() {
     if (!activeDetailId) return;
     noteMode = "edit";
     loadNote();
     focusNote();
-  });
+  }
+  $("noteEdit").addEventListener("click", editNote);
+  $("noteResumeDraft").addEventListener("click", editNote);
   $("noteCancel").addEventListener("click", () => {
     if (!activeDetailId) return;
     noteDrafts.delete(activeDetailId);
@@ -1590,21 +1718,52 @@
     noteMode = "read";
     loadNote(noteSavedMessage());
     refreshLibrary();
+    renderNoteUndo();
     $("noteReadText").focus();
   });
   $("noteDelete").addEventListener("click", () => {
     if (!activeDetailId || !state.notes[activeDetailId]) return;
-    delete state.notes[activeDetailId];
-    noteDrafts.delete(activeDetailId);
-    persistNotes();
+    const id = activeDetailId;
+    const deleted = { note: state.notes[id], draft: noteDrafts.get(id) };
+    let latest;
+    try {
+      latest = readNotes(localStorage.getItem(notesKey));
+    } catch {
+      state.notesStorageAvailable = false;
+      updateNotePresentation("메모를 삭제하지 못했어요. 저장한 메모는 그대로 남아 있습니다.");
+      return;
+    }
+    if (latest[id] !== deleted.note) {
+      state.notes = latest;
+      if (noteDrafts.has(id)) noteDrafts.get(id).conflicted = true;
+      noteMode = latest[id] ? "read" : "edit";
+      loadNote("다른 탭에서 메모가 바뀌어 삭제하지 않았어요. 현재 메모를 확인해 주세요.");
+      refreshLibrary();
+      focusAfterNoteUndo(id);
+      return;
+    }
+    delete latest[id];
+    if (!writeNoteChange(latest)) {
+      updateNotePresentation("메모를 삭제하지 못했어요. 저장한 메모는 그대로 남아 있습니다.");
+      return;
+    }
+    deletedNotes.set(id, deleted);
+    noteDrafts.delete(id);
     loadNote();
     refreshLibrary();
-    $("noteStatus").textContent = state.notesStorageAvailable
-      ? "이 영화의 메모를 삭제했어요."
-      : "이 페이지의 메모를 지웠어요. 브라우저 저장 공간은 사용할 수 없습니다.";
-    $("noteText").focus();
+    renderNoteUndo();
+    $("detailUndoList").querySelector("[data-restore-note]").focus();
   });
   document.addEventListener("click", (event) => {
+    const restore = event.target.closest("[data-restore-note]");
+    if (restore) restoreDeletedNote(restore.dataset.restoreNote);
+    const dismiss = event.target.closest("[data-dismiss-note]");
+    if (dismiss) {
+      const id = dismiss.dataset.dismissNote;
+      deletedNotes.delete(id);
+      renderNoteUndo();
+      focusAfterNoteUndo(id);
+    }
     const detail = event.target.closest("[data-detail]");
     if (detail) {
       showDetail(detail.dataset.detail, detail);
@@ -1674,6 +1833,11 @@
         (e.shiftKey ? $("noteDisclosure").querySelector("summary") : $("noteEdit")).focus();
         return;
       }
+      if (document.activeElement === $("noteDraftNotice")) {
+        e.preventDefault();
+        (e.shiftKey ? $("noteDisclosure").querySelector("summary") : $("noteResumeDraft")).focus();
+        return;
+      }
       const focusable = [
         ...dialog.querySelectorAll(
           'button:not([disabled]),a[href],input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,[tabindex="0"]',
@@ -1720,6 +1884,15 @@
       document.body.classList.remove("dialog-open");
       // A queued close event must not steal focus from the new route heading.
       if (!context?.restoreFocus || context.routeVersion !== dialogRouteVersion) return;
+      if (detailId && deletedNotes.has(detailId)) {
+        const undoButton = $("noteUndoList").querySelector(`[data-restore-note="${detailId}"]:not([disabled])`)
+          || $("noteUndoList").querySelector(`[data-dismiss-note="${detailId}"]`);
+        if (undoButton) {
+          undoButton.focus({ preventScroll: true });
+          undoButton.closest(".note-undo-item").scrollIntoView({ block: "center", behavior: "instant" });
+          return;
+        }
+      }
       const currentReplacement =
         detailId &&
         [...document.querySelectorAll(`[data-detail="${detailId}"]`)].find(
@@ -1759,8 +1932,18 @@
     }
     if (notesChanged) {
       const previousNotes = state.notes;
-      state.notes = readNotes(event.key === null ? null : event.newValue);
+      // A queued storage event may predate a restore in this tab.
+      // Read the current value so that event cannot roll back the local view.
+      try {
+        state.notes = readNotes(localStorage.getItem(notesKey));
+      } catch {
+        state.notesStorageAvailable = false;
+        return;
+      }
       state.notesStorageAvailable = true;
+      deletedNotes.forEach((deleted, id) => {
+        if (previousNotes[id] !== state.notes[id]) deleted.message = "";
+      });
       noteDrafts.forEach((draft, id) => {
         if (draft.value === (state.notes[id] || "")) noteDrafts.delete(id);
         else if (previousNotes[id] !== state.notes[id]) draft.conflicted = true;
@@ -1784,6 +1967,7 @@
       }
     }
     refreshLibrary({ preserveFocus: true });
+    renderNoteUndo();
   });
   document.querySelector(".skip").addEventListener("click", (e) => {
     e.preventDefault();

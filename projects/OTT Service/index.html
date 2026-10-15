@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=825155cc3f21" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=ceca567f0ad8"></script>
+    <link href="css/style.css?v=737b0c288cee" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=ae2733f45615"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -99,6 +99,11 @@
         </div>
       </div>
     </header>
+    <section aria-labelledby="noteUndoTitle" class="note-undo-tray wrap" hidden="" id="noteUndoTray">
+      <h2 id="noteUndoTitle" tabindex="-1">삭제한 메모</h2>
+      <p class="note-undo-help">화면을 이동해도 복원할 수 있어요. 새로고침하거나 탭을 닫으면 복원 목록이 사라집니다.</p>
+      <div class="note-undo-list" id="noteUndoList"></div>
+    </section>
     <main id="main-content" tabindex="-1">
       <div id="homeView">
         <div class="projection-light" aria-hidden="true"></div>
@@ -253,7 +258,7 @@
             <div class="search-field">
               <svg aria-hidden="true" class="icon">
                 <use href="#i-search"></use></svg
-              ><label class="sr-only" for="searchInput"
+              ><label class="sr-only" for="searchInput" id="searchLabel"
                 >영화 제목, 장르, 분위기, 키워드 검색</label
               ><input
                 autocomplete="off"
@@ -374,8 +379,13 @@
           <h2 id="detailTitle" tabindex="-1"></h2>
           <p class="detail-meta" id="detailMeta"></p>
           <p class="detail-description" id="detailDescription"></p>
+          <div aria-label="삭제한 메모 복원" class="note-undo-list" hidden="" id="detailUndoList"></div>
           <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteDisclosureLabel">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
           <section aria-label="저장한 관심 메모" class="note-reader" hidden="" id="noteReader">
+            <div aria-label="저장 전 초안" class="note-draft-notice" hidden="" id="noteDraftNotice" tabindex="-1">
+              <p>저장 전 초안이 있어요. 아래는 마지막으로 저장한 메모입니다.</p>
+              <button class="text-link" id="noteResumeDraft" type="button">초안 이어쓰기</button>
+            </div>
             <p class="note-reader-text" id="noteReadText" tabindex="-1"></p>
             <p aria-live="polite" class="note-reader-status" id="noteReaderStatus" role="status"></p>
             <div class="note-reader-controls">
@@ -454,6 +464,7 @@
           <p>분위기와 러닝타임으로 단편영화를 찾고, 관심 작품과 메모를 보관하는 포트폴리오 프로토타입입니다. 작품 12편은 가상 설정이며 이미지는 AI로 생성했습니다. 실제 영상 재생·예매·결제는 제공하지 않습니다.</p>
           <p>찜·저장한 메모·보관함 보기 선택은 이 브라우저에 남습니다. 브라우저 데이터를 지우면 초기화되며, 다른 기기와 동기화되지 않습니다.</p>
           <p>저장한 메모는 먼저 읽고 ‘메모 수정’으로 고칩니다. 저장 전 초안은 팝업을 닫거나 화면을 이동해도 이어 쓸 수 있지만, ‘수정 취소’·‘작성 취소’를 누르거나 새로고침·탭 닫기를 하면 사라집니다. 남겨둘 내용은 ‘메모 저장’을 눌러주세요.</p>
+          <p>보관함에서는 작품 정보와 저장한 메모를 함께 검색합니다. 삭제한 메모는 복원 목록에서 되돌릴 수 있습니다. 이 목록도 새로고침하거나 탭을 닫으면 사라지며, 다른 탭에서 새 메모를 저장한 작품에는 이전 메모를 덮어쓰지 않습니다.</p>
         </div>
         <div class="about-actions">
           <button class="button light" data-close="aboutDialog">확인</button>

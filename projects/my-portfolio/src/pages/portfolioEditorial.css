@@ -476,6 +476,8 @@
   padding-top: 24px;
   border-top: 1px solid var(--line, #d7e0e7);
 }
+.case-page[data-project-slug="ott-service"] .case-scope__grid--summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.case-page[data-project-slug="ott-service"] .case-scope__grid--summary p { margin-top: 16px; color: var(--muted, #536371); font-size: 16px; line-height: 1.75; }
 .case-page[data-project-slug="ott-service"] .case-decision-check--inline { display: block; margin-top: 8px; padding-top: 0; border-top: 0; }
 @media (max-width: 1100px) {
   .case-page[data-project-slug="ott-service"] .case-figure--curation .case-responsive-image { max-width: 390px; }
@@ -490,6 +492,7 @@
   .case-page[data-project-slug="ott-service"] .case-screen-choices .case-caption-mobile { display: block; }
 }
 @media (max-width: 760px) {
+  .case-page[data-project-slug="ott-service"] .case-scope__grid--summary { grid-template-columns: 1fr; }
   .case-page[data-project-slug="ott-service"] .case-responsive-image { max-width: 390px; }
   .case-page[data-project-slug="ott-service"] .case-original-desktop { display: none; }
   .case-page[data-project-slug="ott-service"] .case-original-mobile { display: inline-flex; }

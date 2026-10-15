@@ -129,25 +129,25 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-v32-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960'),
+    media('detail/current/jansang-v33-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960'),
     [
       {
         title: '홈에서는 발견하고, 영화 찾기에서는 비교하기.',
         layout: 'wide',
-        summary: '글과 설명이 영화를 가린다는 피드백에서, 김도한은 글자 크기·굵기를 유지하고 이미지 비중을 높이는 방향을 선택했습니다. AI가 홈의 가로 탐색과 영화 찾기 격자에 이를 반영했습니다. 홈에서 한 번에 비교할 작품이 적은 점은 격자와 조건 이어받기로 보완했습니다.',
-        media: media('detail/current/jansang-v31-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v31-browse-mobile.jpg', original: 'detail/current/jansang-v31-browse-mobile-full.jpg', label: '영화 찾기 · 조건과 첫 작품 행' } }),
+        summary: '글과 설명이 영화를 가리는 문제에, 글자 크기·굵기를 유지하고 이미지 비중을 높이는 방향을 택했습니다. 홈은 장면을 넘겨 보되, 한 번에 더 많이 비교할 때는 분위기·시간 조건을 이어받는 격자로 이동합니다.',
+        media: media('detail/current/jansang-v33-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v33-browse-mobile.jpg', original: 'detail/current/jansang-v33-browse-mobile-full.jpg', label: '영화 찾기 · 조건과 첫 작품 행' } }),
         mediaLabel: '영화 찾기 · 조건과 작품을 함께 비교',
         check: { result: '동작 확인 · 홈에서 고른 분위기·시간을 영화 찾기에 이어받고, 작품 상세로 이동하는 흐름을 확인했습니다.' },
       },
       {
         title: '작품은 짧게 훑고, 메모는 따로 읽기.',
         layout: 'wide',
-        summary: '김도한은 메모 읽기와 수정을 나누고, 선택한 보관함 보기를 유지하도록 요청했습니다. AI가 읽기 화면과 수정 진입을 분리하고 보기 선택을 브라우저에 저장했습니다. 훑기에서는 원문을 한 번 더 열어야 하지만 목록을 짧게 유지할 수 있습니다.',
+        summary: '메모를 읽으려다 편집부터 시작하는 흐름을 읽기 우선으로 바꿨습니다. ‘메모 수정’에서만 편집하고, 선택한 보관함 보기는 유지합니다. 훑기에서는 원문을 한 번 더 열지만 목록을 짧게 볼 수 있습니다.',
         mediaChoices: [
-          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v32-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 484', { original: 'detail/current/jansang-v32-saved-full.jpg', mobile: { src: 'detail/current/jansang-v32-saved-mobile.jpg', original: 'detail/current/jansang-v32-saved-mobile-full.jpg', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
-          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v32-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 598', { original: 'detail/current/jansang-v32-note-full.jpg', mobile: { src: 'detail/current/jansang-v32-note-mobile.jpg', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
+          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v33-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 484', { original: 'detail/current/jansang-v33-saved-full.jpg', mobile: { src: 'detail/current/jansang-v33-saved-mobile.jpg', original: 'detail/current/jansang-v33-saved-mobile-full.jpg', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
+          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v33-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 598', { original: 'detail/current/jansang-v33-note-full.jpg', mobile: { src: 'detail/current/jansang-v33-note-mobile.jpg', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
         ],
-        check: { result: '동작 확인 · 메모 작성·수정·삭제와 새로고침 유지, 찜·메모의 작품 수와 키보드 초점 복귀를 확인했습니다.' },
+        check: { result: '동작 확인 · 저장한 메모 검색, 읽기·수정, 삭제 후 복원과 보관함 보기 선택 유지를 확인했습니다.' },
       },
     ],
     {
@@ -160,10 +160,14 @@ export const PROJECT_DETAIL_READY = {
       presentation: 'focused-decisions',
       decisionsTitle: '영화를 먼저 보고, 고른 이유를 남기기.',
       scopeTitle: '제작 범위와 한계',
+      scopeSummary: [
+        { title: '구현과 데이터', text: '가상 영화 12편과 AI 생성 이미지로 구성했습니다. 소개의 메모는 시연 예시이며, 찜·메모·보기 설정은 해당 브라우저의 localStorage에 저장됩니다.' },
+        { title: '제공하지 않는 기능', text: '영상 재생·예매·결제·회원가입·외부 API·서버 저장은 제공하지 않습니다.' },
+      ],
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v32-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960', { mobile: { src: 'detail/current/jansang-v32-home-mobile.jpg', label: '홈 · 실제 모바일 첫 화면' } })],
+        media: [media('detail/current/jansang-v33-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960', { mobile: { src: 'detail/current/jansang-v33-home-mobile.jpg', label: '홈 · 실제 모바일 첫 화면' } })],
         mediaLabel: '홈 · 가로 목록을 이동한 실제 화면',
       },
       context: {
@@ -171,17 +175,17 @@ export const PROJECT_DETAIL_READY = {
       },
       decisionsNote: {
         title: '큐레이션 · 함께 보는 이유',
-        text: '김도한이 요청한 이야기와 개성의 방향을 바탕으로, AI가 소리와 대화, 관계를 잇는 사물·행동, 단서와 선택의 세 관점을 제안했습니다. ‘다정한 반전’은 두 친구의 기억을 불러오는 편지와, 이웃을 모으는 멈춘 엘리베이터를 관계의 계기로 묶습니다.',
-        media: media('detail/current/jansang-v31-curation.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 570', { original: 'detail/current/jansang-v31-curation-full.jpg', mobile: { src: 'detail/current/jansang-v31-curation-mobile.jpg', original: 'detail/current/jansang-v31-curation-mobile-full.jpg', label: '다정한 반전 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
+        text: '소리와 대화, 관계를 잇는 사물·행동, 단서와 선택으로 작품을 묶었습니다. ‘다정한 반전’은 기억을 불러오는 편지와 이웃을 모으는 멈춘 엘리베이터를 관계의 계기로 연결합니다.',
+        media: media('detail/current/jansang-v33-curation.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 570', { original: 'detail/current/jansang-v33-curation-full.jpg', mobile: { src: 'detail/current/jansang-v33-curation-mobile.jpg', original: 'detail/current/jansang-v33-curation-mobile-full.jpg', label: '다정한 반전 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
         mediaLabel: '다정한 반전 · 선정한 네 작품과 이유',
       },
       verification: {
-        method: '2026-10-15 Chromium 예시 데이터로 AI가 동작과 큐레이션·팝업의 반응형 경계를 검사했습니다.',
+        method: 'Chromium에서 예시 데이터로 탐색·저장과 화면 크기별 배치를 검사했습니다.',
         limit: '사용자 조사, 실제 iOS/Safari·스크린리더, 제3자 사용성·채용 효과는 검증하지 않았습니다.',
       },
       aiCollaboration: [
         { label: '김도한', value: '이미지 우선·가독성 유지 방향 제시, 화면 피드백, 개선 우선순위 선택, 수정·공개 판단' },
-        { label: 'AI 협업', value: '디자인 제안·편집, OpenAI 도구로 가상 영화 이미지 생성, HTML·CSS·JavaScript 작성·브라우저 검사' },
+        { label: 'AI 협업', value: '디자인·큐레이션 제안·편집, OpenAI 도구로 가상 영화 이미지 생성, HTML·CSS·JavaScript 작성·브라우저 검사' },
       ],
     },
   ),
