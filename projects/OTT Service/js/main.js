@@ -11,9 +11,11 @@
       mood: "calm",
       moodText: "잔잔한 여운",
       image: "tide",
+      posterPath: "assets/stills/tide.webp",
+      posterPosition: "83% center",
       position: "82% center",
-      detailPosition: "center 12%",
-      detailRatio: "1.4",
+      detailPosition: "75% center",
+      detailRatio: "1.55",
       description:
         "바닷가 집으로 돌아온 서윤은 아버지가 남긴 파도 소리를 발견한다. 오래 미뤄둔 마음을 마주하는 24분.",
       keywords: "바다 해변 힐링 가족 잔잔한 단편",
@@ -43,9 +45,11 @@
       mood: "mystery",
       moodText: "고요한 긴장",
       image: "greenhouse",
+      posterPath: "assets/stills/greenhouse.webp",
+      posterPosition: "50% center",
       position: "50% center",
-      detailPosition: "center 28%",
-      detailRatio: "1.2",
+      detailPosition: "50% center",
+      detailRatio: "1.4",
       description:
         "버려진 온실에 매일 자정, 불이 켜진다. 사라진 관리자의 일지를 따라 연구원은 닫힌 문 너머로 향한다.",
       keywords: "밤 온실 숲 미스터리 추리 긴장 식물",
@@ -212,10 +216,10 @@
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
-        tide: "아버지가 남긴 소리로 마주하는 오래 미룬 마음",
-        forest: "물길과 잎사귀, 빛과 소리에 머무는 산책",
-        bluehour: "다른 도시에서 돌아와 나란히 보내는 오후",
-        nocturne: "식탁을 사이에 두고 시작하는 낯선 이의 대화",
+        tide: "첫 선택 · 남겨진 소리에서 기억으로",
+        forest: "인물의 기억보다 풍경의 소리가 궁금할 때",
+        bluehour: "옛 친구와 나란히 시간을 보내는 재회",
+        nocturne: "재회의 오후와 대비되는 새벽 식탁의 대화",
       },
     },
     {
@@ -231,10 +235,10 @@
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
-        letters: "부치지 않은 편지가 불러오는 두 친구의 여름",
-        windows: "멈춘 엘리베이터에 모인 이름 모를 이웃",
-        rooftop: "하지 못한 말을 대신하는 마지막 연주",
-        relay: "혼자 달리던 선수가 동료에게 건네는 바통",
+        letters: "18분의 입구 · 편지가 불러오는 지난여름",
+        windows: "오랜 친구 대신, 이름 모를 이웃과 한자리",
+        rooftop: "편지와 다른 방식으로, 말 못 한 마음을 연주로",
+        relay: "함께 모이는 데서 한발 더, 동료에게 건네는 바통",
       },
     },
     {
@@ -250,10 +254,10 @@
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
-        greenhouse: "자정의 불빛을 따라 읽는 사라진 관리자의 일지",
-        orbit: "귀환을 기다리던 일상을 바꾸는 마지막 메시지",
-        atlas: "마지막 종이 한 장에 담을 소원을 고르는 선택",
-        signal: "자신의 목소리가 담긴 구조 요청의 발신지",
+        greenhouse: "일지의 흔적을 좇는 미스터리부터",
+        orbit: "사건 추적에서 귀환을 기다리는 일상으로",
+        atlas: "기다리는 사람과 소원을 고르는 아이",
+        signal: "일지와 다른 단서, 자기 목소리로 온 구조 요청",
       },
     },
   ];
@@ -264,8 +268,8 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "작품 소개의 장소와 그곳에서 보내는 시간을 기준으로 묶었습니다. 기억을 마주하는 바닷가 집, 소리에 귀 기울이는 숲, 재회의 해변, 대화를 시작하는 식탁입니다.",
-        "‘어디서, 누구와 시간을 보내는가’를 살펴보세요. 혼자 소리를 듣는 시간과 누군가와 마주 앉는 시간 중 지금 끌리는 쪽은 무엇인가요?",
+        "소리로 기억을 만나는 〈파도가 머문 자리〉에서 시작해보세요. 아버지가 남긴 소리라는 단서와, 설명 대신 풍경의 소리에 귀 기울이는 〈숲의 호흡〉을 대비해 골랐습니다.",
+        "함께 보내는 시간이 궁금하면 〈파란 오후〉와 〈새벽 두 시의 식탁〉으로 옮겨가세요. 옛 친구와 다시 보내는 오후, 손님과 주인이 이야기를 시작하는 새벽을 나란히 두었습니다.",
       ],
     },
     {
@@ -274,8 +278,8 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "줄거리에서 관계를 잇는 계기를 골랐습니다. 발견한 편지, 함께 멈춘 엘리베이터, 마지막 연주와 바통은 서로에게 다가갈 이유를 만듭니다.",
-        "두 친구·이웃·밴드·계주팀이 무엇을 함께하게 되는지 살펴보세요. 말로 전하기 어려운 마음을 사물이나 행동으로 건넨다면 어떤 이야기가 궁금한가요?",
+        "짧은 이야기부터 찾는다면 18분의 〈여름의 편지〉가 입구입니다. 부치지 않은 편지를 찾는 두 친구와, 마지막 연주로 못다 한 말을 건네는 〈옥상의 작은 밴드〉를 ‘남겨둔 마음’으로 묶었습니다.",
+        "〈불이 켜지는 시간〉은 멈춘 엘리베이터가 이웃을 모으고, 〈마지막 바통〉은 계주가 선수에게 동료를 돌아보게 합니다. 지난 기억을 따라갈지, 함께할 계기에서 출발할지 골라보세요.",
       ],
     },
     {
@@ -284,8 +288,8 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "온실의 일지와 자신의 목소리로 온 구조 요청은 단서의 출처를 묻게 합니다. 마지막 우주 메시지와 별을 만드는 종이 한 장은 다른 세계의 규칙을 상상하게 합니다.",
-        "단서를 추적하는 미스터리와 낯선 설정의 SF·애니메이션을 함께 묶었습니다. ‘왜 이런 일이 생겼을까’와 ‘이런 세계라면 어떨까’ 중 어떤 질문이 더 궁금한가요?",
+        "단서를 좇고 싶다면 〈밤의 온실〉부터 살펴보세요. 사라진 관리자의 일지를 읽는 이야기 옆에, 아직 일어나지 않은 사고를 막으려 신호의 발신지를 추적하는 〈수신 불가〉를 놓았습니다.",
+        "다른 입구는 〈느린 궤도〉와 〈별을 접는 아이〉입니다. 귀환을 기다리는 일상과 마지막 종이에 담을 소원을 나란히 두었습니다. 사건의 답보다 인물의 기다림과 고민에 관심이 갈 때 골라보세요.",
       ],
     },
   ];
@@ -461,6 +465,12 @@
       .map((line) => `<span class="film-title-line">${line}</span>`)
       .join(" ");
     article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>${context === "saved" ? "관심 메모" : "메모 있음"}</span>`;
+    if (film.posterPosition)
+      article.querySelector(".film-art img").style.objectPosition = film.posterPosition;
+    if (context === "home")
+      article.querySelector(".film-art").setAttribute(
+        "aria-label", `${film.title} 작품 보기 · ${film.genre} · ${film.minutes}분`,
+      );
     if (context === "saved") {
       const preview = document.createElement("p");
       preview.className = "film-note-preview";
@@ -607,6 +617,8 @@
           `${film.title} 작품 보기${state.notes[film.id] ? ", 메모 있음" : ""}`,
         );
         button.innerHTML = `<img src="${posterPath(film)}" alt="" width="80" height="120" loading="lazy"><span class="library-mini-copy"><strong>${film.title}</strong><span>${film.genre} · ${film.minutes}분</span></span>`;
+        if (film.posterPosition)
+          button.querySelector("img").style.objectPosition = film.posterPosition;
         if (state.notes[film.id]) {
           const preview = document.createElement("span");
           preview.className = "library-mini-note";
@@ -756,18 +768,25 @@
             : filmRail;
       target.focus({ preventScroll: true });
     }
-    if (railStatus) {
-      const cards = shown ? [...filmRail.children].map((card, index) => {
-        const rect = card.getBoundingClientRect();
-        return {
-          rect,
-          index,
-          visibleWidth: Math.max(0, Math.min(rect.right, metrics.end) - Math.max(rect.left, metrics.start)),
-        };
-      }) : [];
-      let visible = cards.filter(({ rect }) =>
-        rect.left >= metrics.start - 1 && rect.right <= metrics.end + 1,
+    const cards = [...filmRail.children].map((card, index) => {
+      const rect = card.getBoundingClientRect();
+      const fullyVisible = shown && (
+        max <= 2 || (rect.left >= metrics.start - 1 && rect.right <= metrics.end + 1)
       );
+      card.classList.toggle("rail-card-partial", shown && !fullyVisible);
+      // Keep the visible poster as the entry point when its metadata is clipped.
+      // Move keyboard focus off controls that are about to become hidden.
+      if (!fullyVisible && card.querySelector(".film-foot")?.contains(focused))
+        filmRail.focus({ preventScroll: true });
+      return {
+        rect,
+        index,
+        fullyVisible,
+        visibleWidth: Math.max(0, Math.min(rect.right, metrics.end) - Math.max(rect.left, metrics.start)),
+      };
+    });
+    if (railStatus) {
+      let visible = shown ? cards.filter(({ fullyVisible }) => fullyVisible) : [];
       // During a drag, keep a meaningful range even between snap positions.
       if (!visible.length && cards.length) {
         const mostVisible = cards.reduce((best, card) =>
@@ -885,6 +904,19 @@
   filmRail.addEventListener("wheel", armRailMotion, { passive: true });
   filmRail.addEventListener("touchmove", armRailMotion, { passive: true });
   filmRail.addEventListener("scroll", onRailScroll, { passive: true });
+  filmRail.addEventListener("focusin", (event) => {
+    const card = event.target.closest(".film-card");
+    if (!card || !event.target.matches(":focus-visible")) return;
+    const metrics = railMetrics();
+    const rect = card.getBoundingClientRect();
+    if (rect.left >= metrics.start - 1 && rect.right <= metrics.end + 1) return;
+    // Only scroll this rail; keyboard browsing must not move the page vertically.
+    filmRail.scrollTo({
+      left: Math.max(0, Math.min(metrics.max, metrics.left + rect.left - metrics.start)),
+      behavior: "instant",
+    });
+    requestRailUpdate();
+  });
   filmRail.addEventListener("keydown", (event) => {
     if (
       event.target !== filmRail ||
@@ -1216,6 +1248,35 @@
   let activeDetailId = null;
   let detailImageRequest = 0;
   let noteDirty = false;
+  let noteSizeFrame = 0;
+  function resizeNoteText() {
+    noteSizeFrame = 0;
+    const textarea = $("noteText");
+    if (!$("detailDialog").open || !$("noteDisclosure").open || !textarea.getClientRects().length)
+      return;
+    const scroller = textarea.closest(".dialog-scroll");
+    const scrollTop = scroller.scrollTop;
+    const style = getComputedStyle(textarea);
+    const border = (parseFloat(style.borderTopWidth) || 0) +
+      (parseFloat(style.borderBottomWidth) || 0);
+    const padding = (parseFloat(style.paddingTop) || 0) +
+      (parseFloat(style.paddingBottom) || 0);
+    const inlineWidth = textarea.style.width;
+    // Keep line wrapping stable while the temporary short height changes the
+    // popup scrollbar. Its final width is rechecked by the observer below.
+    textarea.style.width = style.width;
+    textarea.style.height = "auto";
+    const contentHeight = textarea.scrollHeight +
+      (style.boxSizing === "border-box" ? border : -padding);
+    textarea.style.height = `${Math.max(parseFloat(style.minHeight) || 0, contentHeight)}px`;
+    textarea.style.width = inlineWidth;
+    textarea.scrollTop = 0;
+    // Measuring a shorter temporary box must not pull a long popup back to its top.
+    scroller.scrollTop = scrollTop;
+  }
+  function requestNoteResize() {
+    if (!noteSizeFrame) noteSizeFrame = requestAnimationFrame(resizeNoteText);
+  }
   function rememberNoteDraft() {
     if (!activeDetailId) return;
     const value = $("noteText").value;
@@ -1290,6 +1351,7 @@
       : state.notes[activeDetailId] || "";
     noteDirty = Boolean(draft);
     updateNoteCount();
+    resizeNoteText();
     $("noteStatus").textContent = draft
       ? noteDraftMessage()
       : state.notes[activeDetailId]
@@ -1361,6 +1423,7 @@
     updateNoteDisclosureLabel();
     updateSaveButtons();
     openDialog($("detailDialog"), trigger, $("detailTitle"), { returnToArticle });
+    resizeNoteText();
   }
   function showArticle(id, trigger) {
     const article = articles.find((item) => item.id === id);
@@ -1387,17 +1450,31 @@
     if (!activeDetailId || !$("detailDialog").open) return;
     $("noteDisclosure").open = true;
     updateNoteDisclosureLabel();
+    resizeNoteText();
     $("noteText").focus();
   }
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
     updateNoteCount();
+    resizeNoteText();
     $("noteStatus").textContent = noteDirty
       ? noteDraftMessage()
       : state.notes[activeDetailId]
         ? noteSavedMessage()
         : "";
   });
+  $("noteDisclosure").addEventListener("toggle", requestNoteResize);
+  if (typeof ResizeObserver !== "undefined") {
+    let noteObservedWidth = 0;
+    new ResizeObserver(([entry]) => {
+      if (Math.abs(entry.contentRect.width - noteObservedWidth) < 0.5) return;
+      noteObservedWidth = entry.contentRect.width;
+      requestNoteResize();
+    }).observe($("noteText"));
+  }
+  window.addEventListener("resize", requestNoteResize);
+  document.fonts?.ready.then(requestNoteResize);
+  document.fonts?.addEventListener("loadingdone", requestNoteResize);
   $("noteForm").addEventListener("submit", (event) => {
     event.preventDefault();
     if (!activeDetailId) return;

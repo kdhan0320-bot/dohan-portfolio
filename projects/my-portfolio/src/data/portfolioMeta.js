@@ -129,29 +129,23 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-v29-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960'),
+    media('detail/current/jansang-v30-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960'),
     [
       {
         title: '홈에서는 발견하고, 영화 찾기에서는 비교하기.',
         layout: 'wide',
-        evidence: [
-          { label: '선택과 이유', text: '이미지 우선·가독성 유지라는 김도한의 기준에 맞춰, 위 홈 화면에는 큰 포스터의 가로 목록을 두었습니다. 아래 영화 찾기에서는 제목·분위기·시간을 함께 비교합니다.' },
-          { label: '함께 고려한 점', text: '큰 포스터는 한 번에 보여주는 작품 수가 적습니다. 조건을 좁혀 고를 때는 격자로 이동하되, 홈에서 선택한 분위기와 시간을 이어받도록 했습니다.' },
-        ],
-        media: media('detail/current/jansang-v29-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v29-browse-mobile.jpg' } }),
+        summary: '김도한은 “글씨를 더 얇게 하거나 줄이지 말고”라고 요청했습니다. AI는 설명 비중을 줄이고 홈의 이미지를 앞세우는 방향을 반영했습니다. 한 번에 비교할 작품이 적은 점은 영화 찾기 격자와 조건 이어받기로 보완했습니다.',
+        media: media('detail/current/jansang-v30-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v30-browse-mobile.jpg', original: 'detail/current/jansang-v30-browse-mobile-full.jpg', label: '영화 찾기 · 조건과 첫 작품 행' } }),
         mediaLabel: '영화 찾기 · 조건과 작품을 함께 비교',
-        check: { title: '탐색 조건이 이어지는지 확인', result: '분위기·시간 40조합의 작품 목록, 홈에서 영화 찾기로 조건 전달, 작품 상세 진입을 확인했습니다.' },
+        check: { result: '동작 확인 · 홈에서 고른 분위기·시간을 영화 찾기에 이어받고, 작품 상세로 이동하는 흐름을 확인했습니다.' },
       },
       {
         title: '작품과 메모를 함께, 읽기 크기는 그대로.',
         layout: 'wide',
-        evidence: [
-          { label: '선택과 이유', text: '관심을 가진 이유를 다시 읽을 수 있도록 메모 원문을 남겼습니다. 찜과 메모를 함께 저장한 작품, 메모만 남긴 작품, 찜만 한 작품을 한 보관함에서 구분합니다.' },
-          { label: '함께 고려한 점', text: '메모가 길수록 카드가 높아집니다. PC에서는 여러 작품을 나란히 놓고, 모바일에서는 한 작품씩 읽도록 구성했습니다.' },
-        ],
-        media: media('detail/current/jansang-v29-saved.jpg', '현재 보관함의 세 작품 — 찜과 메모, 메모만 저장, 찜만 저장한 서로 다른 상태', '1440 / 699', { mobile: { src: 'detail/current/jansang-v29-saved-mobile.jpg' } }),
+        summary: '관심을 가진 이유를 다시 읽도록 메모 원문을 남겼습니다. 긴 메모만큼 카드가 높아지는 점을 고려해, PC에서는 여러 작품을 나란히 놓고 모바일에서는 한 편씩 읽도록 구성했습니다.',
+        media: media('detail/current/jansang-v30-saved.jpg', '현재 보관함 — 저장한 작품 정보와 관심 메모 원문을 함께 읽는 카드', '1440 / 699', { mobile: { src: 'detail/current/jansang-v30-saved-mobile.jpg', original: 'detail/current/jansang-v30-saved-mobile-full.jpg', label: '보관함 · 메모 카드 일부(시연)' } }),
         mediaLabel: '현재 보관함 · 시연 데이터 3편의 저장 상태',
-        check: { title: '메모가 남고, 조작이 이어지는지 확인', result: '메모 작성·수정·삭제와 새로고침 유지, 찜·메모의 중복 없는 작품 수, 보관함 분류·빈 결과·키보드 초점 복귀를 확인했습니다.' },
+        check: { result: '동작 확인 · 메모 작성·수정·삭제와 새로고침 유지, 찜·메모의 작품 수와 키보드 초점 복귀를 확인했습니다.' },
       },
     ],
     {
@@ -167,16 +161,16 @@ export const PROJECT_DETAIL_READY = {
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v29-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960')],
+        media: [media('detail/current/jansang-v30-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960')],
         mediaLabel: '홈 · 큰 영화 장면으로 발견하는 가로 목록',
       },
       context: {
-        summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르고, 관심을 가진 이유를 남기는 상황을 가정했습니다.',
+        summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.',
       },
       decisionsNote: {
         title: '큐레이션도 작품으로 바로 이어지게.',
         text: '장소에서 보내는 시간, 관계를 잇는 계기, 단서와 낯선 세계라는 세 관점으로 작품을 묶었습니다.',
-        reference: { src: 'detail/current/jansang-v29-curation.jpg', label: '큐레이션 상세 원본 보기' },
+        reference: { src: 'detail/current/jansang-v30-curation.jpg', label: '큐레이션 상세 원본 보기' },
       },
       verification: {
         method: '2026-10-15 Chromium 예시 데이터로 AI가 동작과 큐레이션·팝업의 반응형 경계를 검사했습니다.',

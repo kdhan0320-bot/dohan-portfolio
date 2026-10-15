@@ -22,11 +22,12 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
       </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
     </div>
     <figcaption>
-      <span>{label || '화면 상세'}</span>
-      <a className={media.mobile ? 'case-original-desktop' : undefined} href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
-        원본 보기
+      <span className={media.mobile?.label ? 'case-caption-desktop' : undefined}>{label || '화면 상세'}</span>
+      {media.mobile?.label && <span className="case-caption-mobile">{media.mobile.label}</span>}
+      <a className={media.mobile ? 'case-original-desktop' : undefined} href={mediaUrl(media.original || media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
+        {media.original ? '전체 화면 보기' : '원본 보기'}
       </a>
-      {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 모바일 원본 새 탭에서 보기`}>원본 보기</a>}
+      {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.original || media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 모바일 원본 새 탭에서 보기`}>{media.mobile.original ? '전체 화면 보기' : '원본 보기'}</a>}
     </figcaption>
   </figure>
 );
@@ -152,9 +153,9 @@ const ProjectDetailPage = () => {
                 <div className="case-decision__copy">
                   <span className="case-decision__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                   <h3>{decision.title}</h3>
-                  <dl>{evidence.filter((item) => item.text).map((item) => <div key={item.label}>
+                  {decision.summary ? <p className="case-decision__summary">{decision.summary}</p> : <dl>{evidence.filter((item) => item.text).map((item) => <div key={item.label}>
                     <dt>{item.label}</dt><dd>{item.text}</dd>
-                  </div>)}</dl>
+                  </div>)}</dl>}
                 </div>
                 {decision.comparison ? <div className="case-comparison">
                   <div className="case-comparison__grid">
@@ -179,8 +180,8 @@ const ProjectDetailPage = () => {
                   <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
                   <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
                 </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}
-                {decision.check && <div className="case-decision-check">
-                  <h4>{decision.check.title}</h4>
+                {decision.check && <div className={`case-decision-check${decision.check.title ? '' : ' case-decision-check--inline'}`}>
+                  {decision.check.title && <h4>{decision.check.title}</h4>}
                   <p>{decision.check.result}</p>
                 </div>}
               </section>;
