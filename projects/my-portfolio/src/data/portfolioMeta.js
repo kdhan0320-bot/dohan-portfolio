@@ -129,21 +129,21 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-v25-home.jpg', '잔상관 — 대표 영화 장면과 분위기별 탐색을 연결한 현재 홈', '1440 / 960'),
+    media('detail/current/jansang-v27-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960'),
     [
       {
-        title: '글자는 유지하고, 영화 목록을 더 위로.',
+        title: '영화와 탐색 조작을 가까이.',
         evidence: [
-          { label: '판단 기준', text: '김도한은 이미지가 먼저 보이면서 글자 크기·굵기는 유지하도록 요청했습니다. 이 기준에 맞춰 설명 영역의 비중을 조정했습니다.' },
-          { label: '반영', text: '대표 장면 아래 소개 영역을 정리하고 분위기·시간 선택과 영화 목록을 가까이 배치했습니다.' },
+          { label: '판단 기준', text: '김도한은 글자 크기·굵기를 유지하며 영화 이미지와 탐색을 강조하도록 요청했습니다. 설명 비중과 조작 위치를 조정했습니다.' },
+          { label: '반영', text: '포스터 옆에서 이동하며, 고른 조건은 상단 영화 찾기로 이어집니다.' },
         ],
-        media: media('detail/current/jansang-v25-mobile.jpg', '잔상관 현재 모바일 홈 — 대표 장면에서 분위기별 영화 목록으로 이어지는 첫 화면', '390 / 844', { frameWidth: 390 }),
+        media: media('detail/current/jansang-v27-mobile.jpg', '잔상관 현재 모바일 홈 — 대표 장면과 분위기별 영화 탐색', '390 / 844', { frameWidth: 390 }),
         comparison: {
           before: media('detail/current/jansang-v24-mobile-before.png', '이전 잔상관 모바일 홈 — 대표 장면과 별도 소개 영역 아래에 시작되는 포스터 목록', '390 / 844', { frameWidth: 390 }),
           beforeLabel: '이전 · 모바일 홈',
           afterLabel: '현재 · 모바일 홈',
           beforeSummary: '대표 이미지 아래의 별도 소개 영역을 지나 작품 목록이 시작됐습니다.',
-          afterSummary: '글자 크기와 굵기를 유지하며 영화 목록을 더 위에 배치했습니다.',
+          afterSummary: '글자는 유지하고 영화 목록을 앞당겼으며, 포스터 옆에서 이동합니다.',
           note: '같은 390×844 브라우저의 실제 화면 비교입니다. 탐색 시간이나 만족도 개선을 측정한 결과는 아닙니다.',
         },
       },
@@ -151,11 +151,11 @@ export const PROJECT_DETAIL_READY = {
         title: '저장한 수가 달라도, 메모를 읽는 방식은 같게.',
         evidence: [
           { label: '판단 기준', text: '저장한 작품 수에 따라 카드와 메모의 읽기 방식이 바뀌지 않도록 했습니다. 포스터의 동시 비교보다 작품을 고른 이유를 다시 읽는 데 비중을 뒀습니다.' },
-          { label: '반영', text: '모든 저장 작품을 같은 카드로 보여주고 메모 원문을 유지합니다. 찜 또는 메모가 있으면 포함하며, 둘 다 있어도 한 편으로 셉니다.' },
+          { label: '반영', text: '상세의 찜은 상단 아이콘, 메모는 한곳으로 모았습니다. 보관함은 수량과 관계없이 같은 카드와 메모 원문을 유지합니다.' },
         ],
-        media: media('detail/current/jansang-v26-notes.jpg', '현재 잔상관 보관함 — 저장한 세 작품의 시연용 예시 메모', '390 / 844', { frameWidth: 390 }),
+        media: media('detail/current/jansang-v27-notes.jpg', '현재 잔상관 보관함 — 저장한 세 작품의 시연용 예시 메모', '390 / 844', { frameWidth: 390 }),
         mediaLabel: '현재 보관함 · 3편을 저장한 시연용 예시',
-        reference: { src: 'detail/current/jansang-v26-notes-desktop.jpg', label: '데스크톱 보관함 원본 보기' },
+        reference: { src: 'detail/current/jansang-v27-notes-desktop.jpg', label: '데스크톱 보관함 원본 보기' },
       },
     ],
     {
@@ -169,7 +169,7 @@ export const PROJECT_DETAIL_READY = {
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v25-home.jpg', '잔상관 현재 홈 — 영화 장면과 분위기별 탐색', '1440 / 960')],
+        media: [media('detail/current/jansang-v27-home.jpg', '잔상관 현재 홈 — 큰 영화 포스터와 양옆 탐색 조작', '1440 / 960')],
         mediaLabel: '현재 웹 화면 · 가상 단편영화 서비스',
       },
       context: {
@@ -179,8 +179,8 @@ export const PROJECT_DETAIL_READY = {
       },
       decisionsNote: {
         title: '큐레이션도 작품으로 바로 이어지게.',
-        text: '목록은 두 작품의 장면을 나란히 보여주고, 상세에서는 큰 반복 이미지를 덜었습니다. 선정한 네 작품과 짧은 이유가 바로 이어집니다.',
-        reference: { src: 'detail/current/jansang-v25-curation.jpg', label: '큐레이션 상세 원본 보기' },
+        text: '홈에서는 큰 장면 위에 주제를 겹치고, 목록에서는 두 장면을 나란히 보여줍니다. 상세는 선정한 네 작품과 짧은 이유로 이어집니다.',
+        reference: { src: 'detail/current/jansang-v27-curation.jpg', label: '큐레이션 상세 원본 보기' },
       },
       verification: {
         method: '2026-10-15 Chromium에서 실제로 실행한 기능 과제입니다.',

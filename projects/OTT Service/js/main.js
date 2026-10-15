@@ -368,8 +368,6 @@
       const label = `${film.title} ${on ? "찜 해제" : "찜하기"}`;
       btn.setAttribute("aria-label", label);
       btn.setAttribute("title", label);
-      if (btn.id === "detailSave")
-        $("detailSaveLabel").textContent = on ? "찜한 영화" : "찜하기";
     });
     document.querySelectorAll("[data-note-for]").forEach((badge) => {
       badge.hidden = !state.notes[badge.dataset.noteFor];
@@ -606,6 +604,7 @@
   }
   function renderHome() {
     finishRailDrag();
+    stopRailMotion();
     const homeView = $("homeView");
     const moodChanged =
       homeView.dataset.atmosphere &&
@@ -658,17 +657,63 @@
   let railFrame = 0;
   let railDrag = null;
   let railSuppressClickUntil = 0;
+  let railMotionTimer;
+  let railInteractionUntil = 0;
+  function railMetrics() {
+    const style = getComputedStyle(filmRail);
+    const bounds = filmRail.getBoundingClientRect();
+    const insetStart = Math.max(
+      parseFloat(style.paddingLeft) || 0,
+      parseFloat(style.scrollPaddingLeft) || 0,
+    );
+    const insetEnd = Math.max(
+      parseFloat(style.paddingRight) || 0,
+      parseFloat(style.scrollPaddingRight) || 0,
+    );
+    const max = Math.max(0, filmRail.scrollWidth - filmRail.clientWidth);
+    return {
+      max,
+      left: Math.max(0, Math.min(max, filmRail.scrollLeft)),
+      start: bounds.left + insetStart,
+      end: bounds.right - insetEnd,
+      width: Math.max(1, filmRail.clientWidth - insetStart - insetEnd),
+      gap: parseFloat(style.columnGap) || 0,
+    };
+  }
+  function stopRailMotion() {
+    clearTimeout(railMotionTimer);
+    railInteractionUntil = 0;
+    filmRail.closest(".rail-shell").classList.remove("rail-moving");
+  }
+  function armRailMotion() {
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+      railInteractionUntil = performance.now() + 1200;
+  }
+  function onRailScroll() {
+    requestRailUpdate();
+    if (
+      performance.now() > railInteractionUntil ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) return;
+    const shell = filmRail.closest(".rail-shell");
+    shell.classList.add("rail-moving");
+    clearTimeout(railMotionTimer);
+    railMotionTimer = setTimeout(() => shell.classList.remove("rail-moving"), 500);
+  }
   function updateRail() {
     railFrame = 0;
-    if (!filmRail.getClientRects().length) return;
-    const max = Math.max(0, filmRail.scrollWidth - filmRail.clientWidth);
-    const left = Math.max(0, Math.min(max, filmRail.scrollLeft));
     const shell = filmRail.closest(".rail-shell");
+    const shown = Boolean(filmRail.getClientRects().length);
+    const metrics = railMetrics();
+    const max = shown ? metrics.max : 0;
+    const left = shown ? metrics.left : 0;
     shell.classList.toggle("rail-static", max <= 2);
+    shell.classList.toggle("can-scroll-prev", left > 2);
+    shell.classList.toggle("can-scroll-next", left < max - 2);
     shell.style.setProperty("--rail-position", String(max > 0 ? left / max : 0));
     shell.style.setProperty(
       "--rail-visible",
-      `${Math.min(100, (filmRail.clientWidth / filmRail.scrollWidth) * 100)}%`,
+      `${max > 0 ? Math.min(100, (metrics.width / (max + metrics.width)) * 100) : 100}%`,
     );
     filmRail.classList.toggle("rail-draggable", max > 2);
     if (railStatus) railStatus.hidden = max <= 2;
@@ -688,16 +733,26 @@
       target.focus({ preventScroll: true });
     }
     if (railStatus) {
-      const bounds = filmRail.getBoundingClientRect();
-      const visible = [...filmRail.children]
-        .map((card, index) => ({ rect: card.getBoundingClientRect(), index }))
-        .filter(({ rect }) => {
-          const visibleWidth =
-            Math.min(rect.right, bounds.right) - Math.max(rect.left, bounds.left);
-          return visibleWidth >= rect.width * 0.5;
-        });
+      const cards = shown ? [...filmRail.children].map((card, index) => {
+        const rect = card.getBoundingClientRect();
+        return {
+          rect,
+          index,
+          visibleWidth: Math.max(0, Math.min(rect.right, metrics.end) - Math.max(rect.left, metrics.start)),
+        };
+      }) : [];
+      let visible = cards.filter(({ rect }) =>
+        rect.left >= metrics.start - 1 && rect.right <= metrics.end + 1,
+      );
+      // During a drag, keep a meaningful range even between snap positions.
+      if (!visible.length && cards.length) {
+        const mostVisible = cards.reduce((best, card) =>
+          card.visibleWidth > best.visibleWidth ? card : best,
+        );
+        if (mostVisible.visibleWidth > 0) visible = [mostVisible];
+      }
       railStatus.textContent = visible.length
-        ? `${visible[0].index + 1}–${visible.at(-1).index + 1} / ${filmRail.children.length}`
+        ? `${visible[0].index + 1}${visible.length > 1 ? `–${visible.at(-1).index + 1}` : ""} / ${filmRail.children.length}`
         : `0 / ${filmRail.children.length}`;
     }
   }
@@ -709,14 +764,16 @@
     if (!first) return;
     const second = filmRail.children[1];
     const stride = second
-      ? second.offsetLeft - first.offsetLeft
+      ? second.getBoundingClientRect().left - first.getBoundingClientRect().left
       : first.getBoundingClientRect().width;
+    const metrics = railMetrics();
     const count = Math.max(
       1,
-      Math.floor((filmRail.clientWidth + 1) / Math.max(stride, 1)),
+      Math.floor((metrics.width + metrics.gap + 1) / Math.max(stride, 1)),
     );
-    filmRail.scrollBy({
-      left: direction * Math.max(stride, 1) * count,
+    armRailMotion();
+    filmRail.scrollTo({
+      left: Math.max(0, Math.min(metrics.max, metrics.left + direction * Math.max(stride, 1) * count)),
       behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
         ? "instant"
         : "smooth",
@@ -735,6 +792,7 @@
   }
   if (!filmRail.hasAttribute("tabindex")) filmRail.tabIndex = 0;
   filmRail.addEventListener("pointerdown", (event) => {
+    armRailMotion();
     if (
       event.pointerType !== "mouse" ||
       !event.isPrimary ||
@@ -771,6 +829,7 @@
       filmRail.setPointerCapture(event.pointerId);
     }
     event.preventDefault();
+    armRailMotion();
     filmRail.scrollLeft = railDrag.startLeft - deltaX;
   });
   for (const type of ["pointerup", "pointercancel"]) {
@@ -781,7 +840,10 @@
   filmRail.addEventListener("lostpointercapture", (event) => {
     if (event.pointerId === railDrag?.pointerId) finishRailDrag();
   });
-  window.addEventListener("blur", finishRailDrag);
+  window.addEventListener("blur", () => {
+    finishRailDrag();
+    stopRailMotion();
+  });
   filmRail.addEventListener("dragstart", (event) => event.preventDefault());
   filmRail.addEventListener(
     "click",
@@ -796,7 +858,9 @@
   );
   railPrevious?.addEventListener("click", () => scrollRail(-1));
   railNext?.addEventListener("click", () => scrollRail(1));
-  filmRail.addEventListener("scroll", requestRailUpdate, { passive: true });
+  filmRail.addEventListener("wheel", armRailMotion, { passive: true });
+  filmRail.addEventListener("touchmove", armRailMotion, { passive: true });
+  filmRail.addEventListener("scroll", onRailScroll, { passive: true });
   filmRail.addEventListener("keydown", (event) => {
     if (
       event.target !== filmRail ||
@@ -811,6 +875,7 @@
       scrollRail(event.key === "ArrowLeft" ? -1 : 1);
     } else if (event.key === "Home" || event.key === "End") {
       event.preventDefault();
+      armRailMotion();
       filmRail.scrollTo({
         left: event.key === "Home" ? 0 : filmRail.scrollWidth,
         behavior: "instant",
@@ -953,6 +1018,7 @@
     else location.hash = hash;
   }
   function route() {
+    stopRailMotion();
     document
       .querySelectorAll("dialog[open]")
       .forEach((dialog) => closeDialog(dialog, { restoreFocus: false }));
@@ -1032,7 +1098,10 @@
     const hash = link.getAttribute("href");
     if (!/^#(home|browse|saved|themes|journal|news)(\/|$)/.test(hash)) return;
     event.preventDefault();
-    if (link.hasAttribute("data-home-browse")) {
+    if (
+      state.view === "home" &&
+      link.matches('.nav [data-view="browse"]')
+    ) {
       catalogFilters.browse = {
         mood: state.homeMood,
         duration: state.homeDuration,
@@ -1117,6 +1186,7 @@
   // They are intentionally memory-only and disappear on refresh or tab close.
   const noteDrafts = new Map();
   let activeDetailId = null;
+  let detailImageRequest = 0;
   let noteDirty = false;
   function rememberNoteDraft() {
     if (!activeDetailId) return;
@@ -1163,27 +1233,19 @@
       ? "메모를 저장했어요."
       : "이 페이지에서만 보관 중이에요. 새로고침하면 사라집니다.";
   }
-  function updateNoteShortcut() {
-    $("detailNote").textContent = noteDrafts.has(activeDetailId)
-      ? "메모 이어쓰기"
+  function updateNoteDisclosureLabel() {
+    $("noteDisclosureLabel").textContent = noteDrafts.has(activeDetailId)
+      ? "관심 메모 이어쓰기"
       : state.notes[activeDetailId]
-        ? "메모 수정하기"
-        : "메모 남기기";
-    $("detailNote").setAttribute(
-      "aria-expanded",
-      String($("noteDisclosure").open),
-    );
+        ? "관심 메모 수정하기"
+        : "관심 메모 남기기";
   }
   function updateNoteCount() {
     $("noteCount").textContent = `${$("noteText").value.length}/280`;
     const hasSavedNote = Boolean(state.notes[activeDetailId]);
     $("noteDelete").hidden = !hasSavedNote;
     $("noteDelete").disabled = !hasSavedNote;
-    $("noteSummary").textContent =
-      hasSavedNote || noteDrafts.has(activeDetailId)
-        ? "관심 메모"
-        : "관심 메모 남기기";
-    updateNoteShortcut();
+    updateNoteDisclosureLabel();
   }
   function loadNote() {
     if (
@@ -1232,16 +1294,32 @@
     $("detailMood").textContent = film.moodText;
     $("detailMeta").textContent = `${film.genre} · ${film.minutes}분`;
     $("detailDescription").textContent = film.description;
-    $("detailImage").src = posterPath(film);
-    $("detailImage").alt = `${film.title}의 가상 영화 포스터`;
-    $("detailImage").width = 800;
-    $("detailImage").height = 1200;
-    $("detailImage").style.objectPosition = film.posterPosition || "center";
-    $("detailImage").style.setProperty("--detail-poster-position", film.posterPosition || "center 20%");
+    const detailImage = $("detailImage");
+    const imageRequest = ++detailImageRequest;
+    const revealImage = () => {
+      if (imageRequest === detailImageRequest)
+        detailImage.style.visibility = "visible";
+    };
+    detailImage.style.visibility = "hidden";
+    detailImage.alt = `${film.title}의 가상 영화 포스터`;
+    detailImage.width = 800;
+    detailImage.height = 1200;
+    detailImage.style.objectPosition = film.posterPosition || "center";
+    detailImage.style.setProperty("--detail-poster-position", film.posterPosition || "center 20%");
+    detailImage.src = posterPath(film);
+    // Keep the previous film's poster hidden until the new source is ready.
+    // A failed image still reveals its alternative text instead of staying blank.
+    if (typeof detailImage.decode === "function")
+      detailImage.decode().then(revealImage, revealImage);
+    else {
+      detailImage.onload = revealImage;
+      detailImage.onerror = revealImage;
+      if (detailImage.complete) revealImage();
+    }
     $("detailSave").dataset.save = id;
     loadNote();
     $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
-    updateNoteShortcut();
+    updateNoteDisclosureLabel();
     updateSaveButtons();
     openDialog($("detailDialog"), trigger, $("detailTitle"));
   }
@@ -1269,11 +1347,9 @@
   function focusNote() {
     if (!activeDetailId || !$("detailDialog").open) return;
     $("noteDisclosure").open = true;
-    updateNoteShortcut();
+    updateNoteDisclosureLabel();
     $("noteText").focus();
   }
-  $("detailNote").addEventListener("click", focusNote);
-  $("noteDisclosure").addEventListener("toggle", updateNoteShortcut);
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
     updateNoteCount();

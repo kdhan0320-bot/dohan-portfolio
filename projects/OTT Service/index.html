@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=9f76c5d7d87b" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=8de2199b06e2"></script>
+    <link href="css/style.css?v=13274372e4d4" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=5c483cfca725"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -134,15 +134,16 @@
             <p class="home-result-count sr-only" id="homeResultCount" aria-live="polite" role="status"></p>
           </div>
           <div class="rail-shell">
-            <div aria-label="분위기와 시간으로 고르는 단편영화" class="film-rail" id="homeFilms" role="region" tabindex="0"></div>
-            <div class="rail-footer">
-              <a class="text-link" href="#browse" data-home-browse>목록 보기</a>
-              <div class="rail-controls">
-                <div class="rail-track" aria-hidden="true"><span></span></div>
-                <button aria-label="이전 영화" aria-controls="homeFilms" class="icon-button rail-prev" data-rail-prev="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-back"></use></svg></button>
-                <span class="rail-status" data-rail-status="homeFilms"></span>
-                <button aria-label="다음 영화" aria-controls="homeFilms" class="icon-button rail-next" data-rail-next="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-arrow"></use></svg></button>
-              </div>
+            <div class="rail-viewport">
+              <div aria-label="분위기와 시간으로 고르는 단편영화" class="film-rail" id="homeFilms" role="region" tabindex="0"></div>
+              <div class="rail-edge rail-edge-start" aria-hidden="true"></div>
+              <div class="rail-edge rail-edge-end" aria-hidden="true"></div>
+              <button aria-label="이전 영화" aria-controls="homeFilms" class="icon-button rail-arrow rail-prev" data-rail-prev="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-back"></use></svg></button>
+              <button aria-label="다음 영화" aria-controls="homeFilms" class="icon-button rail-arrow rail-next" data-rail-next="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-arrow"></use></svg></button>
+            </div>
+            <div class="rail-pagination">
+              <div class="rail-track" aria-hidden="true"><span></span></div>
+              <span class="rail-status" data-rail-status="homeFilms"></span>
             </div>
           </div>
           <div class="home-empty" id="homeEmpty" hidden><p>이 조건에 맞는 영화가 아직 없어요.</p><button class="text-link" id="homeReset" type="button">조건 초기화</button></div>
@@ -339,6 +340,15 @@
       id="detailDialog"
     >
       <button
+        aria-label="영화 찜하기"
+        aria-pressed="false"
+        class="icon-button save-button detail-bookmark"
+        id="detailSave"
+        type="button"
+      >
+        <svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg>
+      </button>
+      <button
         aria-label="영화 정보 닫기"
         class="icon-button close-button"
         data-close="detailDialog"
@@ -360,21 +370,7 @@
           <h2 id="detailTitle" tabindex="-1"></h2>
           <p class="detail-meta" id="detailMeta"></p>
           <p class="detail-description" id="detailDescription"></p>
-          <div class="detail-actions">
-            <button
-              aria-label="영화 찜하기"
-              aria-pressed="false"
-              class="button light save-button detail-bookmark"
-              id="detailSave"
-            >
-              <svg aria-hidden="true" class="icon">
-                <use href="#i-bookmark"></use>
-              </svg><span id="detailSaveLabel">찜하기</span></button
-            ><button class="text-link detail-note-shortcut" id="detailNote" type="button" aria-controls="noteDisclosure" aria-expanded="false">
-              메모 남기기
-            </button>
-          </div>
-          <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteSummary">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
+          <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteDisclosureLabel">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
           <form class="note-form" id="noteForm">
             <div class="note-heading">
               <label class="sr-only" for="noteText">관심 메모</label>
