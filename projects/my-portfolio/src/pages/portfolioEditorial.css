@@ -308,3 +308,71 @@
 @media (prefers-reduced-motion: reduce) {
   .case-page *, .works-page * { transition: none !important; }
 }
+
+/* Jansang presents the working result before its production details. */
+.case-page[data-project-slug="ott-service"] .case-project-facts {
+  padding: 12px 0 44px;
+}
+.case-page[data-project-slug="ott-service"] .case-project-facts .case-facts {
+  margin-top: 0 !important;
+}
+.case-page[data-project-slug="ott-service"] .case-verification__tasks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: verification;
+}
+.case-page[data-project-slug="ott-service"] .case-verification__tasks li {
+  counter-increment: verification;
+  padding-top: 20px;
+  border-top: 2px solid var(--line, #d7e0e7);
+}
+.case-page[data-project-slug="ott-service"] .case-verification__tasks li::before {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--accent, #36566e);
+  font-size: 14px;
+  content: "0" counter(verification);
+}
+.case-page[data-project-slug="ott-service"] .case-verification__tasks h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  line-height: 1.45;
+  font-weight: 650;
+}
+.case-page[data-project-slug="ott-service"] .case-verification__tasks p,
+.case-page[data-project-slug="ott-service"] .case-verification__limit {
+  color: var(--muted, #536371);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.case-page[data-project-slug="ott-service"] .case-verification__limit {
+  margin-top: 28px;
+}
+.case-page[data-project-slug="ott-service"] .case-verification .case-section__note {
+  margin-top: 18px;
+}
+.case-page[data-project-slug="ott-service"] .case-comparison .case-figure--portrait .case-figure__surface {
+  aspect-ratio: auto;
+}
+.case-page[data-project-slug="ott-service"] .case-comparison .case-figure--portrait img {
+  height: auto;
+}
+.case-page[data-project-slug="ott-service"] .case-comparison__note a {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-top: 8px;
+  color: var(--accent, #36566e);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .case-page[data-project-slug="ott-service"] .case-intro__grid { gap: 16px; }
+  .case-page[data-project-slug="ott-service"] .case-project-facts { padding: 12px 0 36px; }
+  .case-page[data-project-slug="ott-service"] .case-verification__tasks { grid-template-columns: 1fr; gap: 24px; }
+}

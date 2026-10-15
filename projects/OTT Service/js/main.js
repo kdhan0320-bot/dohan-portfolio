@@ -181,8 +181,8 @@
       number: "01",
       article: "faces",
       previewDescription: "파도·숲의 소리, 재회와 새벽 대화",
-      previewImage: "assets/frames-v24/forest.webp",
-      glimpseImage: "assets/stills/tide.webp",
+      previewImage: "assets/stills/tide.webp",
+      glimpseImage: "assets/frames-v24/forest.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
       accent: "#9CBFDF",
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
@@ -219,8 +219,8 @@
       number: "03",
       article: "enclosed-spaces",
       previewDescription: "온실의 비밀, 종이별과 미래의 신호",
-      previewImage: "assets/stills/orbit.webp",
-      glimpseImage: "assets/stills/greenhouse.webp",
+      previewImage: "assets/stills/greenhouse.webp",
+      glimpseImage: "assets/stills/orbit.webp",
       imageAlt: "우주 관측 기지의 넓은 창 너머로 보이는 행성과 고리",
       accent: "#C3B6EC",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
@@ -377,7 +377,13 @@
     document.querySelectorAll("[data-note-preview-for]").forEach((preview) => {
       const note = state.notes[preview.dataset.notePreviewFor];
       preview.hidden = !note;
-      preview.textContent = note ? noteExcerpt(note) : "";
+      preview.textContent = note
+        ? preview.closest(".library-reading") ? note : noteExcerpt(note)
+        : "";
+    });
+    document.querySelectorAll("[data-open-note]").forEach((button) => {
+      button.textContent = state.notes[button.dataset.detail]
+        ? "메모 수정하기" : "메모 남기기";
     });
     const count = films.filter((film) => inLibrary(film.id)).length;
     $("savedCount").textContent = count;
@@ -442,6 +448,21 @@
         ? noteExcerpt(state.notes[film.id])
         : "";
       article.append(preview);
+      const copy = document.createElement("div");
+      copy.className = "saved-copy";
+      copy.append(...[...article.children].slice(1));
+      const actions = document.createElement("div");
+      actions.className = "saved-actions";
+      const noteButton = document.createElement("button");
+      noteButton.type = "button";
+      noteButton.className = "text-link";
+      noteButton.dataset.detail = film.id;
+      noteButton.dataset.openNote = "";
+      noteButton.setAttribute("aria-label", `${film.title} 관심 메모 열기`);
+      noteButton.textContent = state.notes[film.id] ? "메모 수정하기" : "메모 남기기";
+      actions.append(noteButton);
+      copy.append(actions);
+      article.append(copy);
     }
     return article;
   }
@@ -481,10 +502,6 @@
     );
     $("themeDuration").textContent =
       `작품 ${selectedFilms.length}편 · 총 ${selectedFilms.reduce((sum, film) => sum + film.minutes, 0)}분`;
-    $("themeCover").src = theme.previewImage;
-    $("themeCover").alt = theme.imageAlt;
-    $("themeCover").width = 1672;
-    $("themeCover").height = 941;
     $("themeFilms").replaceChildren(
       ...selectedFilms.map((film) => {
         const card = makeCard(film, "theme");
@@ -840,6 +857,7 @@
     if (state.view === "browse" && state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
+    grid.classList.toggle("library-reading", state.view === "saved" && visible.length <= 2);
     grid.replaceChildren(...visible.map((film) => makeCard(film, state.view)));
     const filtered =
       state.query.trim() ||
@@ -1250,12 +1268,13 @@
     $("articleFilmLink").textContent = `${film.title} 작품 보기`;
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
-  $("detailNote").addEventListener("click", () => {
+  function focusNote() {
     if (!activeDetailId || !$("detailDialog").open) return;
     $("noteDisclosure").open = true;
     updateNoteShortcut();
     $("noteText").focus();
-  });
+  }
+  $("detailNote").addEventListener("click", focusNote);
   $("noteDisclosure").addEventListener("toggle", updateNoteShortcut);
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
@@ -1295,7 +1314,10 @@
   });
   document.addEventListener("click", (event) => {
     const detail = event.target.closest("[data-detail]");
-    if (detail) showDetail(detail.dataset.detail, detail);
+    if (detail) {
+      showDetail(detail.dataset.detail, detail);
+      if (detail.hasAttribute("data-open-note")) focusNote();
+    }
     const article = event.target.closest("[data-article]");
     if (article) showArticle(article.dataset.article, article);
     const about = event.target.closest("[data-about], #aboutButton");
@@ -1392,7 +1414,8 @@
       const currentReplacement =
         detailId &&
         [...document.querySelectorAll(`[data-detail="${detailId}"]`)].find(
-          (el) => !el.closest("dialog") && el.getClientRects().length,
+          (el) => !el.closest("dialog") && el.getClientRects().length &&
+            (!trigger?.hasAttribute("data-open-note") || el.hasAttribute("data-open-note")),
         );
       const heading =
         state.view === "themes"
