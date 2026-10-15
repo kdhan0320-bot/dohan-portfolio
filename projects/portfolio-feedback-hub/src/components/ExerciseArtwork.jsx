@@ -79,12 +79,11 @@ function Walk() {
   return <>
     <div className="ea-topline"><span className="ea-wordmark">가벼운 산책</span><span>추천 경로</span></div>
     <div className="ea-walk-heading"><span>나무 그늘길</span><span>35분 · 2.1km</span></div>
-    <div className="ea-map">
+    <div className="ea-map ea-target">
       <svg viewBox="0 0 480 184" preserveAspectRatio="none" focusable="false">
         <rect width="480" height="184" fill="#e1e9d9" />
         <path d="M332-10q-28 50 7 93t-4 112" fill="none" stroke="#c4dce0" strokeWidth="34" />
         <path d="m-15 45 105 21 68-46 76 27 55-20m-303 109 88-32 88 9 91-50 136 46 93-36M107-20l-10 90 43 127M235-10l-23 196M413-13l-12 89 45 127" fill="none" stroke="#b5c6ac" strokeWidth="3" />
-        <path className="ea-route-highlight" d="M65 144 123 126 164 81 244 90 277 48 386 49 416 31" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         <path className="ea-route" d="M65 144 123 126 164 81 244 90 277 48 386 49 416 31" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         <circle cx="65" cy="144" r="6" fill="#2b493c" stroke="#fff" strokeWidth="3" />
         <circle cx="416" cy="31" r="6" fill="#2b493c" stroke="#fff" strokeWidth="3" />
