@@ -10,6 +10,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const [memo, setMemo] = useState('');
   const [zoom, setZoom] = useState(null);
   const [alternateGoal, setAlternateGoal] = useState(false);
+  const [visibleSide, setVisibleSide] = useState('A');
   const id = useId();
   const dialogRef = useRef(null);
   const resultRef = useRef(null);
@@ -45,6 +46,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const choose = side => { setSelected(side); setRevealed(false); };
   const resetComparison = (clearMemo = true) => {
     setSelected(null); setRevealed(false); setHint(false);
+    setVisibleSide('A');
     if (clearMemo) setMemo('');
   };
   const restart = () => {
@@ -68,8 +70,17 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       <button className="practice-hint-button" aria-expanded={hint} aria-controls={`${id}-hint`} onClick={() => setHint(!hint)}>힌트 {hint ? '닫기' : '보기'}</button>
     </div>
     {hint && <p className="practice-hint" id={`${id}-hint`}>{goal.cue}</p>}
+    <p className="practice-comparison-note">그림 속 버튼은 비교용입니다. 아래의 선택 버튼을 눌러주세요.</p>
+    <div className="practice-mobile-comparison">
+      <div className="practice-view-toolbar">
+        <div className="practice-view-switch" role="group" aria-label="비교할 화면">
+          {['A', 'B'].map(side => <button key={side} aria-label={`${side} 화면 보기${selected === side ? ', 내 선택' : ''}`} aria-pressed={visibleSide === side} aria-controls={`${id}-option-${side}`} onClick={() => setVisibleSide(side)}>{side} 보기{selected === side && <span className="practice-view-selection" aria-hidden="true"><PracticeIcon name="check" /></span>}</button>)}
+        </div>
+        <button className="practice-zoom" aria-label={`${visibleSide} 화면 크게 보기`} onClick={() => setZoom(visibleSide)}><PracticeIcon name="expand" /><span>확대</span></button>
+      </div>
+    </div>
     <div className="practice-options" role="group" aria-labelledby={`${id}-question`}>
-      {['A', 'B'].map(side => <article className={`practice-option${selected === side ? ' is-selected' : ''}${revealed && side === preferredSide ? ' is-suggested' : ''}`} key={side}>
+      {['A', 'B'].map(side => <article id={`${id}-option-${side}`} className={`practice-option${visibleSide === side ? ' is-current-view' : ''}${selected === side ? ' is-selected' : ''}${revealed && side === preferredSide ? ' is-suggested' : ''}`} key={side}>
         <div className="practice-option-top"><span className="practice-letter">{side}</span><span className="practice-option-status">{revealed && side === preferredSide ? '이 목표의 제안' : selected === side ? '내 선택' : ''}</span><button className="practice-zoom" aria-label={`${side} 화면 크게 보기`} onClick={() => setZoom(side)}><PracticeIcon name="expand" /><span>확대</span></button></div>
         <div className="practice-art-frame"><ExerciseArtwork kind={exercise.kind} variant={variantFor(side)} highlight={revealed} /></div>
         <p className="sr-only" id={`${id}-description-${side}`}>{descriptionFor(side)}</p>
@@ -77,7 +88,6 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       </article>)}
     </div>
     <div className="practice-action-row">
-      <p className="practice-image-note">그림 속 버튼은 비교용입니다.</p>
       {!revealed && <div className="practice-confirm"><span className="sr-only" aria-live="polite">{selected ? `${selected} 화면을 골랐어요.` : 'A 또는 B를 골라보세요.'}</span><button className="practice-primary" disabled={!selected} onClick={() => setRevealed(true)}>설계 이유 보기</button></div>}
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
