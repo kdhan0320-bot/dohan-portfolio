@@ -29,6 +29,7 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
         {media.original ? '전체 화면 보기' : '원본 보기'}
       </a>
       {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.original || media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 모바일 원본 새 탭에서 보기`}>{media.mobile.original ? '전체 화면 보기' : '원본 보기'}</a>}
+      {media.relatedOriginal && <a className="case-original-related" href={mediaUrl(media.relatedOriginal.src)} target="_blank" rel="noopener noreferrer" aria-label={`${media.relatedOriginal.label} · PC 원본 새 탭에서 보기`}>{media.relatedOriginal.label}</a>}
     </figcaption>
   </figure>
 );

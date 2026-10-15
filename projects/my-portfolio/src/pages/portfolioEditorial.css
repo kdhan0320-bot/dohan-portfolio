@@ -490,6 +490,7 @@
   .case-page[data-project-slug="ott-service"] .case-screen-choices .case-original-mobile { display: inline-flex; }
   .case-page[data-project-slug="ott-service"] .case-screen-choices .case-caption-desktop { display: none; }
   .case-page[data-project-slug="ott-service"] .case-screen-choices .case-caption-mobile { display: block; }
+  .case-page[data-project-slug="ott-service"] .case-original-related { display: none; }
 }
 @media (max-width: 760px) {
   .case-page[data-project-slug="ott-service"] .case-scope__grid--summary { grid-template-columns: 1fr; }

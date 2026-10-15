@@ -190,8 +190,8 @@
       posterPath: "assets/frames-v33/relay.webp",
       position: "center center",
       posterPosition: "center center",
-      detailPosition: "center 15%",
-      detailRatio: "1.05",
+      detailPosition: "center 20%",
+      detailRatio: "0.82",
       description:
         "부상 후 트랙을 떠나려던 육상 선수에게 마지막 계주 출전 제안이 온다. 혼자 빠르게 달리는 법만 알던 그는 동료에게 바통을 건네는 법을 배운다.",
       keywords: "스포츠 육상 달리기 계주 트랙 바통 동료 도전 용기 따뜻함 따뜻한",
@@ -417,6 +417,24 @@
   function libraryNoteLabel(id) {
     return state.notes[id] ? "메모 보기" : "메모 남기기";
   }
+  function makeDraftLink(film) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "text-link film-draft-link";
+    button.dataset.detail = film.id;
+    button.dataset.openDraft = "";
+    button.textContent = "저장 전 초안 · 이어쓰기";
+    button.setAttribute("aria-label", `${film.title} 저장 전 초안 이어쓰기`);
+    button.hidden = !noteDrafts.has(film.id);
+    return button;
+  }
+  function updateDraftLinks() {
+    document.querySelectorAll("[data-open-draft]").forEach((button) => {
+      button.hidden = !noteDrafts.has(button.dataset.detail);
+    });
+    renderHomeLibrary();
+    requestRailUpdate();
+  }
   function updateSaveButtons() {
     document.querySelectorAll("[data-save]").forEach((btn) => {
       const film = films.find((f) => f.id === btn.dataset.save);
@@ -454,7 +472,7 @@
       state.storageAvailable && state.notesStorageAvailable
         ? "찜과 메모는 이 브라우저에 저장됩니다."
         : "브라우저 저장 공간을 사용할 수 없어 일부 변경은 이 페이지에서만 유지됩니다.";
-    renderHomeLibrary();
+    updateDraftLinks();
     requestRailUpdate();
   }
   // Keep long movie names in deliberate phrase groups at every card size.
@@ -523,10 +541,10 @@
       noteButton.dataset.openNote = "";
       noteButton.textContent = libraryNoteLabel(film.id);
       noteButton.setAttribute("aria-label", `${film.title} ${noteButton.textContent}`);
-      actions.append(noteButton);
+      actions.append(noteButton, makeDraftLink(film));
       copy.append(actions);
       article.append(copy);
-    }
+    } else if (context !== "theme") article.append(makeDraftLink(film));
     return article;
   }
   function renderThemes(id) {
@@ -629,7 +647,7 @@
       .filter((film) => inLibrary(film.id))
       .slice(0, 3);
     const signature = JSON.stringify(
-      libraryFilms.map((film) => [film.id, state.notes[film.id] || ""]),
+      libraryFilms.map((film) => [film.id, state.notes[film.id] || "", noteDrafts.has(film.id)]),
     );
     if (signature === homeLibrarySignature) return;
     homeLibrarySignature = signature;
@@ -641,6 +659,8 @@
     $("homeLibrary").hidden = libraryFilms.length === 0;
     container.replaceChildren(
       ...libraryFilms.map((film) => {
+        const entry = document.createElement("div");
+        entry.className = "library-mini-entry";
         const button = document.createElement("button");
         button.type = "button";
         button.className = "library-mini-item";
@@ -660,7 +680,8 @@
           button.setAttribute("aria-describedby", preview.id);
           button.querySelector(".library-mini-copy").append(preview);
         }
-        return button;
+        entry.append(button, makeDraftLink(film));
+        return entry;
       }),
     );
     if (focusedId || (libraryHadFocus && !libraryFilms.length)) {
@@ -809,7 +830,10 @@
       card.classList.toggle("rail-card-partial", shown && !fullyVisible);
       // Keep the visible poster as the entry point when its metadata is clipped.
       // Move keyboard focus off controls that are about to become hidden.
-      if (!fullyVisible && card.querySelector(".film-foot")?.contains(focused))
+      if (!fullyVisible && (
+        card.querySelector(".film-foot")?.contains(focused) ||
+        card.querySelector(".film-draft-link")?.contains(focused)
+      ))
         filmRail.focus({ preventScroll: true });
       return {
         rect,
@@ -1002,6 +1026,7 @@
       : "data-save";
     const focusedId = focused?.getAttribute(focusedAttribute);
     const focusedNote = focused?.hasAttribute("data-open-note");
+    const focusedDraft = focused?.hasAttribute("data-open-draft");
     const visible = orderedFilms.filter(matches);
     const emptyLibrary =
       state.view === "saved" && !films.some((film) => inLibrary(film.id));
@@ -1027,7 +1052,7 @@
     $("resultCount").textContent = state.view === "saved" && state.query.trim()
       ? `검색 결과 ${visible.length}편 · 보관함 ${libraryCount}편`
       : `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
-    $("searchInput").placeholder = state.view === "saved" ? "작품 정보·내 메모 검색" : "제목·장르·분위기·키워드";
+    $("searchInput").placeholder = state.view === "saved" ? "작품 정보·저장 메모 검색" : "제목·장르·분위기·키워드";
     $("searchLabel").textContent = state.view === "saved"
       ? "보관함 영화 제목, 장르, 분위기, 키워드와 저장한 메모 검색"
       : "영화 제목, 장르, 분위기, 키워드 검색";
@@ -1091,7 +1116,7 @@
     updateSaveButtons();
     if (focusedId) {
       const replacement =
-        grid.querySelector(`[${focusedAttribute}="${focusedId}"]${focusedNote ? "[data-open-note]" : ""}`) ||
+        grid.querySelector(`[${focusedAttribute}="${focusedId}"]${focusedDraft ? "[data-open-draft]:not([hidden])" : focusedNote ? "[data-open-note]" : ""}`) ||
         grid.querySelector("[data-detail]") ||
         $("emptyAction");
       replacement.focus({ preventScroll: true });
@@ -1304,6 +1329,7 @@
   const noteDrafts = new Map();
   // Deleted notes can be restored across routes, but never survive a reload.
   const deletedNotes = new Map();
+  let noteUndoExpanded = false;
   let activeDetailId = null;
   let detailImageRequest = 0;
   let noteDirty = false;
@@ -1347,6 +1373,7 @@
         conflicted: noteDrafts.get(activeDetailId)?.conflicted || false,
       });
     } else noteDrafts.delete(activeDetailId);
+    updateDraftLinks();
   }
   function closeDialog(dialog, { restoreFocus = true } = {}) {
     if (!dialog?.open) return;
@@ -1411,6 +1438,7 @@
     $("noteCancel").textContent = savedNote ? "수정 취소" : "작성 취소";
     $("noteDelete").disabled = !savedNote;
     updateNoteCount();
+    updateDraftLinks();
   }
   function loadNote(message = "") {
     if (
@@ -1453,6 +1481,8 @@
     const focusedHost = focused?.closest(".note-undo-list");
     const focusedAction = focused?.hasAttribute("data-restore-note") ? "data-restore-note" : "data-dismiss-note";
     const focusedId = focused?.getAttribute(focusedAction);
+    const focusedGlobal = focused && $("noteUndoTray").contains(focused);
+    if (!deletedNotes.size) noteUndoExpanded = false;
     [$("noteUndoList"), $("detailUndoList")].forEach((host) => {
       const entries = [...deletedNotes].filter(([id]) => host.id === "noteUndoList" || id === activeDetailId);
       host.replaceChildren(...entries.map(([id, deleted]) => {
@@ -1484,15 +1514,37 @@
         item.append(copy, actions);
         return item;
       }));
-      host.hidden = entries.length === 0;
+      host.hidden = entries.length === 0 || (host.id === "noteUndoList" && !noteUndoExpanded);
     });
     $("noteUndoTray").hidden = deletedNotes.size === 0;
+    $("noteUndoTitle").textContent = `삭제한 메모 ${deletedNotes.size}개`;
+    $("noteUndoToggle").setAttribute("aria-expanded", String(noteUndoExpanded));
+    $("noteUndoToggle").textContent = noteUndoExpanded ? "목록 접기" : "복원 목록";
+    const singleId = deletedNotes.size === 1 ? deletedNotes.keys().next().value : null;
+    const quickRestore = $("noteUndoQuickRestore");
+    quickRestore.hidden = !singleId || Boolean(state.notes[singleId]);
+    if (!quickRestore.hidden) {
+      quickRestore.dataset.restoreNote = singleId;
+      quickRestore.setAttribute("aria-label", `${films.find((film) => film.id === singleId).title} 메모 복원`);
+    } else quickRestore.removeAttribute("data-restore-note");
+    const hasConflict = [...deletedNotes.keys()].some((id) => state.notes[id]);
+    const hasError = [...deletedNotes.values()].some((deleted) => deleted.message);
+    $("noteUndoStatus").hidden = !hasConflict && !hasError;
+    $("noteUndoStatus").textContent = hasConflict
+      ? "새 메모가 있는 작품은 덮어쓰지 않아요. 복원 목록에서 확인해 주세요."
+      : hasError ? "복원하지 못했어요. 복원 목록에서 확인하고 다시 시도해 주세요." : "";
     if (focusedId) {
-      const replacement = focusedHost?.querySelector(`[${focusedAction}="${focusedId}"]:not([disabled])`)
-        || focusedHost?.querySelector("button:not([disabled])");
+      const replacement = focusedGlobal && !noteUndoExpanded
+        ? !quickRestore.hidden ? quickRestore : $("noteUndoToggle")
+        : focusedHost?.querySelector(`[${focusedAction}="${focusedId}"]:not([disabled])`)
+          || focusedHost?.querySelector("button:not([disabled])");
       replacement?.focus({ preventScroll: true });
     }
   }
+  $("noteUndoToggle").addEventListener("click", () => {
+    noteUndoExpanded = !noteUndoExpanded;
+    renderNoteUndo();
+  });
   function focusAfterNoteUndo(id) {
     if ($("detailDialog").open && activeDetailId === id) {
       (noteMode === "read" && state.notes[id] ? $("noteDraftNotice").hidden ? $("noteReadText") : $("noteDraftNotice")
@@ -1767,7 +1819,8 @@
     const detail = event.target.closest("[data-detail]");
     if (detail) {
       showDetail(detail.dataset.detail, detail);
-      if (detail.hasAttribute("data-open-note")) focusNote();
+      if (detail.hasAttribute("data-open-draft") && noteDrafts.has(detail.dataset.detail)) editNote();
+      else if (detail.hasAttribute("data-open-note")) focusNote();
     }
     const article = event.target.closest("[data-article]");
     if (article) showArticle(article.dataset.article, article);
@@ -1885,20 +1938,27 @@
       // A queued close event must not steal focus from the new route heading.
       if (!context?.restoreFocus || context.routeVersion !== dialogRouteVersion) return;
       if (detailId && deletedNotes.has(detailId)) {
-        const undoButton = $("noteUndoList").querySelector(`[data-restore-note="${detailId}"]:not([disabled])`)
-          || $("noteUndoList").querySelector(`[data-dismiss-note="${detailId}"]`);
+        const undoButton = !noteUndoExpanded
+          ? !$("noteUndoQuickRestore").hidden ? $("noteUndoQuickRestore") : $("noteUndoToggle")
+          : $("noteUndoList").querySelector(`[data-restore-note="${detailId}"]:not([disabled])`)
+            || $("noteUndoList").querySelector(`[data-dismiss-note="${detailId}"]`);
         if (undoButton) {
           undoButton.focus({ preventScroll: true });
-          undoButton.closest(".note-undo-item").scrollIntoView({ block: "center", behavior: "instant" });
+          undoButton.closest(noteUndoExpanded ? ".note-undo-item" : ".note-undo-summary")
+            .scrollIntoView({ block: "center", behavior: "instant" });
           return;
         }
       }
-      const currentReplacement =
-        detailId &&
-        [...document.querySelectorAll(`[data-detail="${detailId}"]`)].find(
-          (el) => !el.closest("dialog") && el.getClientRects().length &&
-            (!trigger?.hasAttribute("data-open-note") || el.hasAttribute("data-open-note")),
-        );
+      const replacements = detailId
+        ? [...document.querySelectorAll(`[data-detail="${detailId}"]`)].filter(
+          (el) => !el.closest("dialog") && el.getClientRects().length,
+        ) : [];
+      const sameArea = trigger?.closest(".library-mini-entry")
+        ? replacements.filter((el) => el.closest(".library-mini-entry")) : replacements;
+      const currentReplacement = trigger?.hasAttribute("data-open-draft")
+        ? sameArea.find((el) => el.hasAttribute("data-open-draft"))
+          || sameArea.find((el) => el.hasAttribute("data-open-note")) || sameArea[0] || replacements[0]
+        : replacements.find((el) => !trigger?.hasAttribute("data-open-note") || el.hasAttribute("data-open-note"));
       const heading =
         state.view === "themes"
           ? $("themesTitle")

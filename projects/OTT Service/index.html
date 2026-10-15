@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=737b0c288cee" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=ae2733f45615"></script>
+    <link href="css/style.css?v=828fb0710aa5" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=fb7925ddbb43"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -100,9 +100,16 @@
       </div>
     </header>
     <section aria-labelledby="noteUndoTitle" class="note-undo-tray wrap" hidden="" id="noteUndoTray">
-      <h2 id="noteUndoTitle" tabindex="-1">삭제한 메모</h2>
-      <p class="note-undo-help">화면을 이동해도 복원할 수 있어요. 새로고침하거나 탭을 닫으면 복원 목록이 사라집니다.</p>
-      <div class="note-undo-list" id="noteUndoList"></div>
+      <div class="note-undo-summary">
+        <h2 id="noteUndoTitle" tabindex="-1">삭제한 메모 0개</h2>
+        <div class="note-undo-summary-actions">
+          <button class="text-link" hidden="" id="noteUndoQuickRestore" type="button">메모 복원</button>
+          <button aria-controls="noteUndoList" aria-expanded="false" class="text-link" id="noteUndoToggle" type="button">복원 목록</button>
+        </div>
+      </div>
+      <p class="note-undo-help">새로고침·탭 종료 시 복원 목록이 사라져요.</p>
+      <p class="note-undo-status" hidden="" id="noteUndoStatus" role="status"></p>
+      <div class="note-undo-list" hidden="" id="noteUndoList"></div>
     </section>
     <main id="main-content" tabindex="-1">
       <div id="homeView">
