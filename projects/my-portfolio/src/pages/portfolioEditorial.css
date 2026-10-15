@@ -311,7 +311,7 @@
 
 /* Jansang presents the working result before its production details. */
 .case-page[data-project-slug="ott-service"] .case-project-facts {
-  padding: 12px 0 44px;
+  padding: 12px 0 28px;
 }
 .case-page[data-project-slug="ott-service"] .case-project-facts .case-facts {
   margin-top: 0 !important;
@@ -406,7 +406,7 @@
 }
 @media (max-width: 760px) {
   .case-page[data-project-slug="ott-service"] .case-intro__grid { gap: 16px; }
-  .case-page[data-project-slug="ott-service"] .case-project-facts { padding: 12px 0 36px; }
+  .case-page[data-project-slug="ott-service"] .case-project-facts { padding: 12px 0 24px; }
   .case-page[data-project-slug="ott-service"] .case-verification__tasks { grid-template-columns: 1fr; gap: 24px; }
   .case-page[data-project-slug="ott-service"] .case-decisions__aside h3 { font-size: 24px; }
   .case-page[data-project-slug="ott-service"] .case-decisions__aside--illustrated .case-decisions__aside-copy { display: block; }
@@ -438,7 +438,11 @@
 }
 .case-page[data-project-slug="ott-service"] .case-screen-choices__controls button[aria-pressed="true"] { color: #fff; background: var(--accent, #345f86); border-color: var(--accent, #345f86); }
 .case-page[data-project-slug="ott-service"] .case-screen-choices__controls button:focus-visible { outline: 2px solid var(--accent, #345f86); outline-offset: 3px; }
-.case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 48px; }
+.case-page[data-project-slug="ott-service"] .case-section { padding: 52px 0; }
+.case-page[data-project-slug="ott-service"] .case-section__heading { margin-bottom: 24px; }
+.case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 32px; }
+.case-page[data-project-slug="ott-service"] .case-decisions__list { gap: 32px; }
+.case-page[data-project-slug="ott-service"] .case-decision + .case-decision { padding-top: 32px; }
 .case-page[data-project-slug="ott-service"] .case-assumption {
   max-width: 850px;
   margin: -8px 0 40px;
@@ -504,7 +508,10 @@
   .case-page[data-project-slug="ott-service"] .case-decision__summary { margin-top: 20px; }
   .case-page[data-project-slug="ott-service"] .case-decision--wide > .case-figure { margin-top: 24px; }
   .case-page[data-project-slug="ott-service"] .case-screen-choices { margin-top: 24px; }
-  .case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 36px; }
+  .case-page[data-project-slug="ott-service"] .case-section { padding: 36px 0; }
+  .case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 28px; }
+  .case-page[data-project-slug="ott-service"] .case-decisions__list { gap: 24px; }
+  .case-page[data-project-slug="ott-service"] .case-decision + .case-decision { padding-top: 24px; }
   .case-page[data-project-slug="ott-service"] .case-comparison .case-figure--portrait .case-figure__surface { padding: 8px; }
   .case-page[data-project-slug="ott-service"] .case-assumption { margin-bottom: 32px; font-size: 17px; }
   .case-page[data-project-slug="ott-service"] .case-decision-check { grid-template-columns: 1fr; gap: 8px; margin-top: 0; }

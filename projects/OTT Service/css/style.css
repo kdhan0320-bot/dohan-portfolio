@@ -212,7 +212,8 @@ select:hover { border-color: #bdb9b2; }
 .library-reading .film-note-preview { display: block; -webkit-line-clamp: unset; max-width: 640px; white-space: pre-wrap; font-size: 16px; line-height: 1.8; }
 .library-reading .saved-actions { margin-top: 18px; }
 @media (min-width: 1101px) {
-  .library-reading .saved-copy { display: grid; grid-template-columns: minmax(180px,240px) minmax(0,1fr); column-gap: 32px; align-items: start; min-width: 0; }
+  .library-reading .film-card { grid-template-columns: 120px minmax(0,1fr); }
+  .library-reading .saved-copy { display: grid; grid-template-columns: minmax(180px,240px) minmax(0,1fr); column-gap: 32px; align-items: start; align-self: center; min-width: 0; }
   .library-reading .film-foot { grid-column: 1; grid-row: 1/4; }
   .library-reading .film-note-badge { grid-column: 2; grid-row: 1; margin-top: 0; }
   .library-reading .film-note-preview { grid-column: 2; grid-row: 2; margin-top: 8px; }
@@ -341,6 +342,8 @@ select:hover { border-color: #bdb9b2; }
 .theme-preview[data-theme-preview="quiet"] .theme-preview-image { grid-template-columns: 1.7fr 1fr; }
 .theme-preview[data-theme-preview="quiet"] .theme-preview-image > img:first-child { object-position: 75% center; }
 .theme-preview[data-theme-preview="warmth"] .theme-preview-image > img:first-child { object-position: center 65%; }
+.theme-preview[data-theme-preview="warmth"] .theme-preview-glimpse { object-position: left 18%; }
+.theme-preview[data-theme-preview="beyond"] .theme-preview-image > img:first-child { object-position: 44% center; }
 .theme-preview[data-theme-preview="beyond"] .theme-preview-glimpse { object-position: center top; }
 .theme-preview[data-theme-preview="beyond"] .theme-preview-image { grid-template-columns: 1fr 1.7fr; }
 .theme-preview:hover .theme-preview-image > img { filter: brightness(1.08); }
@@ -509,6 +512,10 @@ dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index:
 [data-film-id="greenhouse"] {
   --film-color: #cdeab9;
 }
+[data-film-id="greenhouse"] .film-art::after {
+  inset: 72% 0 0;
+  background: linear-gradient(transparent, #101711ed 85%);
+}
 [data-film-id="greenhouse"] .film-label {
   left: auto;
   width: 72%;
@@ -530,6 +537,10 @@ dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index:
 }
 [data-film-id="windows"] {
   --film-color: #ffccab;
+}
+[data-film-id="windows"] .film-art::after {
+  inset: 62% 0 0;
+  background: linear-gradient(transparent, #171411ed 85%);
 }
 [data-film-id="windows"] .film-label {
   text-align: center;

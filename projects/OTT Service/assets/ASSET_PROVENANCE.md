@@ -1,5 +1,52 @@
 # 잔상관 Asset Provenance
 
+## v35 이야기 단서 중심 이미지 마감 — 2026-10-15
+
+내장 OpenAI image_gen.imagegen 도구로 기존 자체 생성 이미지 두 장을 참조해 편집했습니다. 외부 배우·영화·브랜드 이미지는 입력하지 않았습니다. 불이 켜지는 시간은 두 이웃이 비상통화 패널을 함께 살피는 행동, 밤의 온실은 닫힌 유리문과 관리자의 일지로 가상 줄거리의 단서를 보여줍니다. 정확한 모델 버전은 도구가 제공하지 않아 기재하지 않습니다.
+
+출력을 원래 해상도 그대로 WebP quality 88로 인코딩했습니다. 별도 픽셀 합성·필터·자르기는 하지 않았으며, 카드·팝업의 크롭과 제목 대비 음영만 CSS로 조정했습니다. 이전 원본과 생성 기록은 보존합니다. 생성 사실을 직접 촬영·수작업 원화·법적 무위험의 근거로 설명하지 않습니다. 권리 확인의 범위는 아래 기존 기록과 같습니다.
+
+### frames-v35/windows.webp
+
+- 원본: exec-1aa67c24-c2eb-4682-9d7b-6f4ad96094d1.png
+- 참조: assets/posters-v8/windows.webp
+- 치수: 1086×1448
+- 배포 용량: 143506 B
+- 원본 SHA-256: cbdb12742ce3bf59c0af9db3ecc664f211ccdfcfbed103e40919bab9cdcf9378
+- 배포 SHA-256: 22d5c2822ac9256a21c9642ce1a4679a89a9695c3b4fd54d7e002e53ca391174
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural, narrative image edit.
+Asset type: portrait still for the fictional Korean short film "When the Lights Come On".
+Input image 1 is the edit target, a self-generated fictional image. Preserve the two fictional adult Korean neighbors, the man's dark wool coat and woman's plain brown coat and cream scarf, and the cramped apartment elevator setting. Change the staged romantic publicity pose into a small believable shared incident: the elevator has stopped. The man stands on the left in a slight three-quarter side view, pressing one ordinary emergency-intercom button on the left side wall with a single relaxed index finger; the woman stands next to him, turns toward that panel and quietly listens. Neither looks at the camera or up toward dramatic lighting. Restrained concerned expressions rather than terror or glamour. Their hands and the small panel must be clearly readable near the middle of the composition.
+Camera: candid independent-film still at eye level, 3:4 portrait composition showing both people from head to upper thighs, no extreme wide-angle distortion. Keep the two faces and the shared action inside the central 75% of the width, between 18% and 62% of image height, so central 2:3 card crops and taller mobile details preserve them. Bottom 25% quiet coats/elevator floor reserved for an HTML title, no baked-in text.
+Lighting and materials: ordinary dim neutral-white overhead utility lamp with only slight warmth, scuffed dull steel wall, a few everyday finger marks, softly worn clothing and natural skin texture. Muted grey, brown, cream; reduce the gold ceiling glow, orange/teal grading, glossy beauty lighting, overly perfect reflections and skin retouching. A real modest apartment lift, not a luxury hotel.
+Do not add other people, celebrity likenesses, readable words, logos, titles, typography, watermark, graphic gradients or collage. Anatomically plausible hands, one button press, coherent wrists and reflected surfaces. Preserve an accessible midtone exposure so the action remains readable on a small poster.
+```
+
+### frames-v35/greenhouse.webp
+
+- 원본: exec-cdd238d6-d8b9-4840-b1d2-2d98a8db5ea8.png
+- 참조: assets/stills/greenhouse.webp
+- 치수: 1536×1024
+- 배포 용량: 316168 B
+- 원본 SHA-256: 92d615e5242f0743f09e33b7f5f3e7427eebd7ba0a1d353ac6f21f057a6376b0
+- 배포 SHA-256: 9a2c5f16af21c0e7fa45cabad773df2bf4d06ebd31812460ded2935000aff723
+
+최종 프롬프트:
+
+```text
+Use case: photorealistic-natural, narrative image edit.
+Asset type: landscape film still for the fictional mystery short "The Glasshouse at Night".
+Input image 1 is the edit target, our own self-generated greenhouse scene. Preserve a neglected glass-and-metal greenhouse with a pitched roof among trees at night, and one unexplained light inside. Rework the ornamental fantasy-estate appearance into an ordinary credible location encountered during an investigation.
+Story: a researcher follows the missing caretaker's journal to the greenhouse whose light turns on at midnight. Use a slightly off-axis view close to the CLOSED glass entrance. In the central foreground is a worn open journal, supported simply from underneath by ONE ordinary hand with a plain charcoal coat sleeve entering from the lower left. Only a little of the supporting hand is visible, no spread fingers or second hand. The journal contains faint irregular non-legible notes and simple botanical sketches, no readable writing. No face or new full character is needed.
+Directly behind the journal is the closed glass door with a simple latch. Through dirty glass one small practical work light reveals an empty potting bench, neglected plant trays and a plain chair. Sparse everyday objects, worn metal, uneven grime, restrained foliage. Remove the large visible moon, theatrical fog, sparkling leaf highlights, exact frontal symmetry, decorative finials and ornate Gothic metalwork.
+Landscape 3:2 composition. Crucial story clues -- journal, closed door and small light -- must sit together inside the CENTRAL 35% of the frame width and middle 50% height, so they remain readable after a central 2:3 portrait crop or a 2.4:1 horizontal crop. The notebook is large enough to recognize at small size and near the middle of the image, not at the bottom edge. Leave the lower-right ground and shadows quiet for an HTML title overlay.
+Natural subdued night exposure, grey-green vegetation and a modest warm lamp, believable weathered materials, faint photographic grain. Keep enough midtone detail to see the notebook and door on a small screen. No glowing fantasy forest, ghosts, figures inside, glossy CGI, dramatic beams, dramatic moon, logos, title text, watermark or collage. One anatomically coherent supporting hand; if the hand is occluded, the notebook must still be physically plausible.
+```
+
 ## v33 이미지와 권리 확인 — 2026-10-15
 
 내장 OpenAI image_gen.imagegen으로 자체 생성한 기존 posters-v13의 rooftop·relay·signal을 참조해 새 장면 3개를 만들었습니다. 외부 영화·배우·브랜드·작가의 이미지는 입력하지 않았습니다. 정확한 모델 버전은 도구가 제공하지 않아 기재하지 않습니다. 옥상 밴드는 한 관객과 정리한 악기·상자, 마지막 바통은 부상 후 동료와 연습하는 전달 동작, 수신 불가는 무전기와 기록을 대조하는 손을 중심으로 편집했습니다.
