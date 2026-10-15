@@ -9,10 +9,14 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const [hint, setHint] = useState(false);
   const [memo, setMemo] = useState('');
   const [zoom, setZoom] = useState(null);
+  const [zoomWidth, setZoomWidth] = useState(0);
+  const [enlarged, setEnlarged] = useState(true);
   const [alternateGoal, setAlternateGoal] = useState(false);
   const [visibleSide, setVisibleSide] = useState('A');
   const id = useId();
   const dialogRef = useRef(null);
+  const zoomViewportRef = useRef(null);
+  const artworkRefs = useRef({});
   const resultRef = useRef(null);
   const questionRef = useRef(null);
   const goalChangePending = useRef(false);
@@ -44,6 +48,17 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   }, [revealed]);
 
   const choose = side => { setSelected(side); setRevealed(false); };
+  const openZoom = side => {
+    setZoomWidth(artworkRefs.current[side].clientWidth);
+    setEnlarged(true);
+    setZoom(side);
+  };
+  const panZoom = event => {
+    if (!enlarged || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    if (event.target !== event.currentTarget && event.target !== zoomViewportRef.current) return;
+    event.preventDefault();
+    zoomViewportRef.current?.scrollBy({ left: event.key === 'ArrowRight' ? 80 : -80 });
+  };
   const resetComparison = (clearMemo = true) => {
     setSelected(null); setRevealed(false); setHint(false);
     setVisibleSide('A');
@@ -76,13 +91,13 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
         <div className="practice-view-switch" role="group" aria-label="비교할 화면">
           {['A', 'B'].map(side => <button key={side} aria-label={`${side} 화면 보기${selected === side ? ', 내 선택' : ''}`} aria-pressed={visibleSide === side} aria-controls={`${id}-option-${side}`} onClick={() => setVisibleSide(side)}>{side} 보기{selected === side && <span className="practice-view-selection" aria-hidden="true"><PracticeIcon name="check" /></span>}</button>)}
         </div>
-        <button className="practice-zoom" aria-label={`${visibleSide} 화면 크게 보기`} onClick={() => setZoom(visibleSide)}><PracticeIcon name="expand" /><span>확대</span></button>
+        <button className="practice-zoom" aria-label={`${visibleSide} 화면 크게 보기`} onClick={() => openZoom(visibleSide)}><PracticeIcon name="expand" /><span>확대</span></button>
       </div>
     </div>
     <div className="practice-options" role="group" aria-labelledby={`${id}-question`}>
       {['A', 'B'].map(side => <article id={`${id}-option-${side}`} className={`practice-option${visibleSide === side ? ' is-current-view' : ''}${selected === side ? ' is-selected' : ''}${revealed && side === preferredSide ? ' is-suggested' : ''}`} key={side}>
-        <div className="practice-option-top"><span className="practice-letter">{side}</span><span className="practice-option-status">{revealed && side === preferredSide ? '이 목표의 제안' : selected === side ? '내 선택' : ''}</span><button className="practice-zoom" aria-label={`${side} 화면 크게 보기`} onClick={() => setZoom(side)}><PracticeIcon name="expand" /><span>확대</span></button></div>
-        <div className="practice-art-frame"><ExerciseArtwork kind={exercise.kind} variant={variantFor(side)} highlight={revealed} /></div>
+        <div className="practice-option-top"><span className="practice-letter">{side}</span><span className="practice-option-status">{revealed && side === preferredSide ? '이 목표의 제안' : selected === side ? '내 선택' : ''}</span><button className="practice-zoom" aria-label={`${side} 화면 크게 보기`} onClick={() => openZoom(side)}><PracticeIcon name="expand" /><span>확대</span></button></div>
+        <div className="practice-art-frame" ref={element => { artworkRefs.current[side] = element; }}><ExerciseArtwork kind={exercise.kind} variant={variantFor(side)} highlight={revealed} /></div>
         <p className="sr-only" id={`${id}-description-${side}`}>{descriptionFor(side)}</p>
         <button className="practice-choice" aria-pressed={selected === side} aria-describedby={`${id}-description-${side}`} onClick={() => choose(side)}><span className="practice-choice-dot" aria-hidden="true">{selected === side && <PracticeIcon name="check" />}</span><span>{side} {selected === side ? '선택됨' : '선택하기'}</span></button>
       </article>)}
@@ -101,8 +116,19 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       </div>
       <div className="practice-result-actions"><button className="practice-secondary" onClick={restart}>다시 비교하기</button>{nextExercise ? <Link className="practice-primary" to={`/practice/${nextExercise.id}`}>다음 연습</Link> : <Link className="practice-primary" to="/recap">6가지 기준 정리</Link>}</div>
     </div>}
-    <dialog ref={dialogRef} className="practice-zoom-dialog" aria-labelledby={`${id}-zoom-title`} onClose={() => setZoom(null)} onClick={event => { if (event.target === event.currentTarget) dialogRef.current.close(); }}>
-      {zoom && <><div className="practice-zoom-heading"><h2 id={`${id}-zoom-title`}>{zoom} 화면 · {exercise.context}</h2><button className="practice-secondary" onClick={() => dialogRef.current.close()} autoFocus>닫기</button></div><ExerciseArtwork kind={exercise.kind} variant={variantFor(zoom)} highlight={revealed} /><p>{descriptionFor(zoom)}</p><span className="practice-image-note">비교용 그림 · Esc로 닫기</span></>}
+    <dialog ref={dialogRef} className="practice-zoom-dialog" aria-labelledby={`${id}-zoom-title`} onClose={() => setZoom(null)} onKeyDown={panZoom} onClick={event => { if (event.target === event.currentTarget) dialogRef.current.close(); }}>
+      {zoom && <>
+        <div className="practice-zoom-heading"><h2 id={`${id}-zoom-title`}>{zoom} 화면 · {exercise.context}</h2><button className="practice-secondary" onClick={() => dialogRef.current.close()} autoFocus>닫기</button></div>
+        <div className="practice-zoom-tools" role="group" aria-label="그림 크기">
+          <button aria-pressed={!enlarged} onClick={() => setEnlarged(false)}>전체 보기</button>
+          <button aria-pressed={enlarged} onClick={() => setEnlarged(true)}>150% 확대</button>
+        </div>
+        <p className="practice-zoom-help" id={`${id}-zoom-help`}>{enlarged ? '그림을 좌우로 밀어 살펴보세요. 키보드는 방향키를 사용해요.' : '전체 배치입니다. 작은 글자는 150% 확대로 확인하세요.'}</p>
+        <div className="practice-zoom-viewport" ref={zoomViewportRef} tabIndex={0} role="region" aria-label={`${zoom} 비교 그림`} aria-describedby={`${id}-zoom-help`} onPointerDown={event => event.currentTarget.focus({ preventScroll: true })}>
+          <div className={`practice-zoom-canvas${enlarged ? ' is-enlarged' : ''}`} style={{ '--art-width': `${zoomWidth}px` }}><ExerciseArtwork kind={exercise.kind} variant={variantFor(zoom)} highlight={revealed} /></div>
+        </div>
+        <p>{descriptionFor(zoom)}</p><span className="practice-image-note">비교용 그림 · Esc로 닫기</span>
+      </>}
     </dialog>
   </section>;
 }

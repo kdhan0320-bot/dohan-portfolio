@@ -136,6 +136,10 @@
 .exercise-artwork.ea-compact .ea-field-box { height: 32px; }
 .exercise-artwork.ea-compact .ea-faux-submit { display: none; }
 
+@container (max-width: 280px) {
+  .exercise-artwork.ea-gallery:not(.ea-compact) { padding-inline: 12px; }
+}
+
 @container (max-width: 340px) {
   .exercise-artwork .ea-gallery-layout { gap: 14px; }
   .exercise-artwork .ea-gallery-copy > .ea-mini-action { padding-inline: 8px; }
