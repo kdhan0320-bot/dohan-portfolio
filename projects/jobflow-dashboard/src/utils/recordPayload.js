@@ -1,4 +1,4 @@
-import { CHECKLIST_CATEGORIES } from '../constants';
+import { CHECKLIST_CATEGORIES } from '../constants/index.js';
 
 function applicationId(value) {
   if (value == null) return null;
@@ -16,7 +16,7 @@ export function checklistUpdate(payload) {
 export function interviewUpdate(payload) {
   const question = String(payload.question ?? '').trim();
   const answer = String(payload.answer ?? '').trim();
-  if (!question || !answer) throw new Error('질문과 답변을 모두 입력해주세요.');
+  if (!question) throw new Error('질문을 입력해주세요.');
   if (!['높음', '보통', '낮음'].includes(payload.importance)) throw new Error('중요도를 다시 선택해주세요.');
-  return { question, answer, related_project: String(payload.related_project ?? '').trim(), importance: payload.importance, application_id: applicationId(payload.application_id) };
+  return { question, answer, related_project: String(payload.related_project ?? '').trim(), importance: payload.importance, application_id: applicationId(payload.application_id), is_reviewed: Boolean(answer && payload.is_reviewed) };
 }

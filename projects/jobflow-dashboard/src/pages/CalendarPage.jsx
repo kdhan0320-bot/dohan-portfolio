@@ -25,7 +25,7 @@ export default function CalendarPage() {
   function selectMonth(value) { setParams({ month: value }); }
   function selectDate(value) { setParams({ month: value.slice(0, 7), date: value }); }
   return <>
-    <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>지원할 회사 등록</Button></PageHeading>
+    <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
       <div className="calendar-layout">

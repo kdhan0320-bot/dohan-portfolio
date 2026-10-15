@@ -17,10 +17,10 @@
 .workspace-main .page-heading {
   position: relative;
   isolation: isolate;
-  min-height: 96px;
-  padding-bottom: 22px;
+  min-height: 84px;
+  padding-bottom: 18px;
   border-bottom: 0;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 .workspace-main .page-heading::after {
   content: '';
@@ -79,6 +79,17 @@
 .workspace-main .job-lane-heading h2 { font-weight: 500; }
 .workspace-main .job-tile { border-color: #D3DCE5; box-shadow: 0 3px 8px #2C405808; }
 .workspace-main .job-tile:hover { border-color: var(--lane-color); box-shadow: 0 5px 12px #2C405812; }
+.workspace-main .job-lane-heading { min-height: 56px; padding-block: 12px; }
+.workspace-main .job-tile { padding: 14px; }
+.workspace-main .job-tile-bottom { margin-top: 12px; padding-top: 10px; gap: 8px; }
+.workspace-main .job-lane-cards { gap: 10px; }
+.compact-action-label { display: none; }
+.route-load-state { min-height: 60svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; }
+.route-load-state h1 { font-size: 24px; font-weight: 500; }
+.settings-export { padding-top: 22px; margin-top: 24px; border-top: 1px solid var(--line); }
+.settings-export h3 { font-size: 17px; font-weight: 500; margin: 0 0 8px; }
+.settings-export p { color: var(--muted); font-size: 14px; line-height: 1.7; margin: 0 0 16px; }
+.settings-export .MuiAlert-root { margin-top: 14px; }
 .workspace-main .calendar-day.has-deadline { background: #FCF2D9; }
 .workspace-main .calendar-day.has-deadline .calendar-event-name { color: #73521B; background: #EDDAA9; border-left-color: #987029; }
 .workspace-main .calendar-day.is-selected { background: #E7EFF8; }
@@ -100,7 +111,17 @@
   .welcome-product-first > main::before { background-size: 350px auto, 230px auto; }
 }
 @media (max-width: 699px) {
-  .workspace-main .page-heading { min-height: 0; margin-bottom: 24px; padding-bottom: 20px; }
+  .workspace-main .page-heading { min-height: 0; margin-bottom: 18px; padding-bottom: 14px; }
+  .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 12px; }
+  .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .page-heading-copy { display: contents; }
+  .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .page-heading-title-row { grid-column: 1 / -1; }
+  .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .muted { margin: 0; align-self: center; }
+  .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .heading-actions { grid-column: 2; grid-row: 2; width: auto; align-self: center; }
+  .workspace-main .page-heading .company-add-action.MuiButton-root { width: auto; padding-inline: 12px; white-space: nowrap; }
+  .company-add-action .full-action-label { display: none; }
+  .company-add-action .compact-action-label { display: inline; }
+  .workspace-main .board-toolbar { margin-bottom: 24px; }
+  .workspace-main .mobile-board-tabs { margin-bottom: 30px; }
   .workspace-with-topnav .workspace-content::before { background-size: 180px auto; background-position: left 8px bottom 8px; opacity: .32; }
   .welcome-product-first > main::before { background-size: 250px auto, 190px auto; background-position: right 6px top 230px, left 8px bottom 8px; opacity: .45; }
   .galpi-intro-visual::before { inset: 8px 4px 20px; border-top-right-radius: 44px; }

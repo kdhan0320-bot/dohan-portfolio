@@ -1,0 +1,41 @@
+.login-task-first .login-form-section { grid-column: 2; grid-row: 1; }
+.login-task-first .login-story { grid-column: 1; grid-row: 1; }
+.login-task-first .login-form-section h1,
+.auth-recovery-card h1 { margin: 0 0 12px; font-size: 27px; font-weight: 500; line-height: 1.45; letter-spacing: -.04em; color: var(--ink); }
+.login-task-first .login-story h2 { margin: 0; font-size: clamp(35px, 3.5vw, 52px); font-weight: 500; line-height: 1.35; letter-spacing: -.035em; color: var(--ink); }
+.login-task-first .login-form-brand,
+.login-task-first .login-mobile-demo { display: none; }
+.auth-help-description { margin: 0; font-size: 14px; line-height: 1.65; color: var(--muted); }
+.auth-help-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 8px; margin-top: 12px; }
+.auth-help-actions .MuiButton-root { min-height: 44px; padding-inline: 0; font-size: 13px; font-weight: 400; }
+.auth-return.MuiButton-root { align-self: center; margin-top: 12px; min-height: 44px; }
+.auth-recovery-shell { display: grid; place-items: center; min-height: 100svh; padding: 32px 20px; background: var(--paper, #f8f9fa); }
+.auth-recovery-card { width: 100%; max-width: 460px; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 32px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.auth-recovery-card h1 { margin-bottom: 0; }
+.auth-recovery-card form { display: flex; flex-direction: column; gap: 20px; }
+.auth-recovery-card .MuiButton-contained { min-height: 48px; }
+.auth-recovery-loading { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.auth-shared-account-note { margin: -8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+@media (max-width: 999px) {
+  .login-task-first.login-shell { display: block; padding: 24px 0; }
+  .login-task-first .login-form-section { width: calc(100% - 40px); max-width: 480px; margin: 0 auto; padding: 28px; }
+  .login-task-first .login-form-section::before { display: none; }
+  .login-task-first .login-form-brand { display: flex; align-items: center; min-height: 44px; margin: -8px 0 24px; padding-right: 90px; }
+  .login-task-first .login-back.MuiButton-root { position: absolute; right: 20px; top: 20px; margin: 0; min-height: 44px; font-size: 13px; }
+  .login-task-first .login-story { display: none; }
+  .login-task-first .login-mobile-demo { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .login-mobile-demo small { color: var(--muted); font-size: 12px; line-height: 1.6; text-align: center; }
+}
+
+@media (max-width: 599px) {
+  .login-task-first.login-shell { padding-block: 16px; }
+  .login-task-first .login-form-section { width: calc(100% - 32px); padding: 22px; }
+  .login-task-first .login-form-section h1,
+  .auth-recovery-card h1 { font-size: 25px; }
+  .login-task-first .login-back.MuiButton-root { top: 14px; right: 14px; }
+  .login-task-first .login-form-section form { gap: 18px; margin-top: 20px; }
+  .login-task-first .login-form-brand { margin-bottom: 20px; }
+  .auth-recovery-shell { padding: 16px; }
+  .auth-recovery-card { padding: 24px 22px; }
+}

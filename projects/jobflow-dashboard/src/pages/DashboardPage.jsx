@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Checkbox } from '@mui/material';
 import Add from '@mui/icons-material/Add';
@@ -24,6 +24,15 @@ export default function DashboardPage() {
   const today = useToday();
   const [busy, setBusy] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const taskInputs = useRef(new Map());
+  const pendingFocus = useRef(null);
+  const preparationLink = useRef(null);
+  useEffect(() => {
+    if (busy || pendingFocus.current === null) return;
+    const target = taskInputs.current.get(pendingFocus.current) || preparationLink.current;
+    pendingFocus.current = null;
+    target?.focus();
+  }, [busy, check.items]);
   const upcoming = pendingDeadlines(apps.applications).filter(a => a.deadline >= today);
   const overdue = pendingDeadlines(apps.applications).filter(a => a.deadline < today);
   const focus = upcoming[0];
@@ -38,13 +47,27 @@ export default function DashboardPage() {
   const pausedCount = apps.applications.filter(application => application.status === '보류').length;
   async function complete(item) {
     if (busy) return;
+    const originalInput = taskInputs.current.get(item.id);
+    const keepFocus = document.activeElement === originalInput;
+    const shouldRestoreFocus = () => keepFocus && (
+      document.activeElement === document.body || document.activeElement === originalInput
+    );
+    const index = todo.findIndex(task => task.id === item.id);
+    const remaining = todo.filter(task => task.id !== item.id).slice(0, 3);
     setBusy(item.id);
-    try { await check.toggle(item.id, true); setFeedback({ message: '준비할 일을 완료했어요.' }); }
-    catch (e) { setFeedback({ severity: 'error', message: e.message }); }
+    try {
+      await check.toggle(item.id, true);
+      if (shouldRestoreFocus()) pendingFocus.current = remaining[Math.min(index, remaining.length - 1)]?.id || '';
+      setFeedback({ message: '준비할 일을 완료했어요.' });
+    }
+    catch (e) {
+      if (shouldRestoreFocus()) pendingFocus.current = item.id;
+      setFeedback({ severity: 'error', message: e.message });
+    }
     finally { setBusy(''); }
   }
   return <div className="overview-page">
-    <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button component={Link} to="/?new=1" variant="contained" startIcon={<Add />}>지원할 회사 등록</Button></PageHeading>
+    <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <LoadState loading={apps.loading || check.loading || interview.loading} error={apps.error || check.error || interview.error} retry={() => { apps.refresh(); check.refresh(); interview.refresh(); }} />
     {!apps.loading && !check.loading && !interview.loading && !apps.error && !check.error && !interview.error && <>
       <div className="overview-focus-grid">
@@ -84,12 +107,12 @@ export default function DashboardPage() {
       {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
       <div className="overview-grid overview-preparation-surface">
         <section className="overview-panel overview-preparation-panel" aria-labelledby="todo-title">
-          <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button component={Link} to="/checklist">준비 전체</Button></header>
+          <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button ref={preparationLink} component={Link} to="/checklist">준비 전체</Button></header>
           <div className="overview-tasks">
             {todo.slice(0, 3).map(item => {
               const company = companyById.get(item.application_id);
               return <div className="overview-task" key={item.id}>
-                <Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료` } }} />
+                <Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료`, ref: node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); } } }} />
                 <span className="overview-task-copy">
                   <span>{item.title}</span>
                   {company ? <Link to={companyPath('/checklist', company.id)} aria-label={`${company.company_name} 준비 체크 열기`}>{company.company_name}</Link> : <small>공통 준비</small>}

@@ -79,6 +79,13 @@
   .overview-stages dl > div { flex-direction: row; align-items: center; justify-content: space-between; gap: 4px; }
 }
 @media (max-width: 599px) {
+  .overview-page { display: flex; flex-direction: column; gap: 16px; }
+  .overview-page > .page-heading { margin-bottom: 0; }
+  .overview-focus-grid { display: contents; }
+  .overview-deadline { order: 1; }
+  .overview-page .overdue-note { order: 1; margin-top: 0; }
+  .overview-page .overview-preparation-surface { order: 2; margin-top: 0; }
+  .overview-stages { order: 3; }
   .overview-focus-grid { gap: 18px; }
   .overview-deadline-heading, .overview-stages > header { padding: 10px 18px 8px; gap: 8px; }
   .overview-deadline-heading h2, .overview-stages h2 { font-size: 16px; }

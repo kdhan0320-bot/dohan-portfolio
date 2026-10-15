@@ -219,6 +219,9 @@ export default function ChecklistPage() {
             <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
               {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}
             </div>
+            <Field className="checklist-category-select" id="checklist-category-filter" label="분류" select size="small" value={filter} onChange={event => setFilter(event.target.value)}>
+              {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
+            </Field>
           </div>
           <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
             {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>

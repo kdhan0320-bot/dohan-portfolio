@@ -1,5 +1,17 @@
 const AUTH_ERROR_RULES = [
   {
+    match: ['same_password', 'new password should be different'],
+    message: '이전에 사용한 비밀번호와 다른 비밀번호를 입력해주세요.',
+  },
+  {
+    match: ['recovery_session_missing', 'otp_expired', 'otp expired'],
+    message: '비밀번호 변경 링크가 만료되었거나 유효하지 않습니다. 새 링크를 요청해주세요.',
+  },
+  {
+    match: ['reauthentication_needed', 'reauthentication_not_valid', 'reauthentication'],
+    message: '본인 확인이 필요합니다. 새 비밀번호 변경 링크를 요청해주세요.',
+  },
+  {
     match: ['invalid login credentials', 'invalid credentials'],
     message: '이메일 또는 비밀번호가 올바르지 않습니다.',
   },
@@ -12,11 +24,15 @@ const AUTH_ERROR_RULES = [
     message: '이미 가입된 이메일입니다. 로그인하거나 다른 이메일을 사용해주세요.',
   },
   {
-    match: ['password should be at least', 'password is too short', 'weak password'],
+    match: ['password should be at least', 'password is too short'],
     message: '비밀번호는 8자 이상 입력해주세요.',
   },
   {
-    match: ['rate limit', 'too many requests', 'over_email_send_rate_limit'],
+    match: ['weak_password', 'weak password'],
+    message: '안전한 비밀번호를 사용해주세요. 다른 곳에서 쓰지 않는 긴 비밀번호를 권장합니다.',
+  },
+  {
+    match: ['rate limit', 'rate_limit', 'too many requests'],
     message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
   },
   {
@@ -43,5 +59,6 @@ export const getAuthErrorMessage = (
 export const createAuthError = (error, fallback) => {
   const safeError = new Error(getAuthErrorMessage(error, fallback));
   safeError.name = 'JobFlowAuthError';
+  if (typeof error?.code === 'string') safeError.code = error.code;
   return safeError;
 };

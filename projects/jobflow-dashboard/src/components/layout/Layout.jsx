@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 import Header from './Header';
 
 export default function Layout() {
@@ -17,7 +18,9 @@ export default function Layout() {
     <Header />
     <div className="workspace-content">
       <main className="workspace-main" id="main-content" ref={mainRef} tabIndex={-1}>
-        <Outlet />
+        <Suspense fallback={<div className="route-load-state" role="status"><CircularProgress size={28} /><p>화면을 불러오고 있어요.</p></div>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   </div>;

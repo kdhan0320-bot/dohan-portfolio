@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
+import { inspectAuthCallback } from '../utils/authRecovery';
+export const initialAuthCallback = inspectAuthCallback(window.location.href);
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 if (!supabaseUrl || !supabaseAnonKey) {

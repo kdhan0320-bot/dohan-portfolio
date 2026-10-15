@@ -1,28 +1,30 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/layout/Layout';
-import LoginPage from './pages/LoginPage';
-import WelcomePage from './pages/WelcomePage';
-import DashboardPage from './pages/DashboardPage';
-import CalendarPage from './pages/CalendarPage';
-import ApplicationsPage from './pages/ApplicationsPage';
-import ChecklistPage from './pages/ChecklistPage';
-import InterviewPage from './pages/InterviewPage';
-import DocumentHelperPage from './pages/DocumentHelperPage';
-import SettingsPage from './pages/SettingsPage';
-import GuidePage from './pages/GuidePage';
-import NotFoundPage from './pages/NotFoundPage';
+import RouteBoundary from './components/ui/RouteBoundary';
 import { CircularProgress, Box } from '@mui/material';
 import { getRouteTitle } from './constants';
 import { legacyBoardDestination } from './utils/applicationBoard';
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
+const WelcomePage = lazy(() => import('./pages/WelcomePage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const CalendarPage = lazy(() => import('./pages/CalendarPage'));
+const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage'));
+const ChecklistPage = lazy(() => import('./pages/ChecklistPage'));
+const InterviewPage = lazy(() => import('./pages/InterviewPage'));
+const DocumentHelperPage = lazy(() => import('./pages/DocumentHelperPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
+const GuidePage = lazy(() => import('./pages/GuidePage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const RouteTitleManager = () => {
   const {
     pathname
   } = useLocation();
   useEffect(() => {
     const titlePathname = pathname === '/ai-prompt' ? '/document-helper' : pathname;
-    document.title = `${titlePathname === '/guide' ? '이용 안내' : getRouteTitle(titlePathname)} | 갈피록`;
+    document.title = `${titlePathname === '/reset-password' ? '비밀번호 재설정' : titlePathname === '/guide' ? '이용 안내' : getRouteTitle(titlePathname)} | 갈피록`;
   }, [pathname]);
   return null;
 };
@@ -35,7 +37,8 @@ const AppRoutes = () => {
   const {
     user,
     loading,
-    isGuest
+    isGuest,
+    recoveryReady
   } = useAuth();
   if (loading) {
     return <Box sx={{
@@ -47,6 +50,7 @@ const AppRoutes = () => {
   <CircularProgress />
 </Box>;
   }
+  if (recoveryReady) return <Navigate to="/reset-password" replace />;
   if (!user && !isGuest) return <Navigate to="/welcome" replace />;
   return <Routes>
   <Route element={<Layout />}>
@@ -68,14 +72,23 @@ const AppRoutes = () => {
   </Route>
 </Routes>;
 };
+function PageRoutes() {
+  const { pathname } = useLocation();
+  return <RouteBoundary resetKey={pathname}>
+    <Suspense fallback={<div className="route-load-state" role="status"><CircularProgress size={28} /><p>화면을 불러오고 있어요.</p></div>}>
+      <Routes>
+        <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route path="/*" element={<AppRoutes />} />
+      </Routes>
+    </Suspense>
+  </RouteBoundary>;
+}
 const App = () => <HashRouter>
   <RouteTitleManager />
   <AuthProvider>
-    <Routes>
-      <Route path="/welcome" element={<WelcomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/*" element={<AppRoutes />} />
-    </Routes>
+    <PageRoutes />
   </AuthProvider>
 </HashRouter>;
 export default App;

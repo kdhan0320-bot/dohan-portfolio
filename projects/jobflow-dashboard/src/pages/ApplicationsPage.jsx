@@ -64,7 +64,7 @@ export default function ApplicationsPage() {
   }
   return <>
     <PageHeading art="folder" title="내 입사지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
-      <Button id="board-add-company" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>지원할 회사 등록</Button>
+      <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
     <div className="board-toolbar">
       <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />

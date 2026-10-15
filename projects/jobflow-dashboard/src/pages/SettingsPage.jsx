@@ -2,18 +2,24 @@ import Field from '../components/ui/Field';
 import { useState, useEffect } from 'react';
 import { Box, Card, CardContent, Typography, Button, Alert, Avatar, Stack, Skeleton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { PageHeading } from '../components/ui/PageUI';
 import PaperGraphic from '../components/ui/PaperGraphic';
 import { getAuthErrorMessage } from '../utils/authErrors';
+import { createRecordExport, loadRecordExport, downloadRecordExport } from '../utils/recordExport';
+import { getSafeDataErrorMessage } from '../utils/dataErrors';
 const SettingsPage = () => {
   const {
     user,
     isGuest,
     signOut,
-    resetDemo
+    resetDemo,
+    demoApplications,
+    demoItems,
+    demoNotes
   } = useAuth();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState('');
@@ -22,6 +28,29 @@ const SettingsPage = () => {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState('');
+  const [exported, setExported] = useState(false);
+  const handleExport = async () => {
+    if (exporting) return;
+    setExporting(true); setExportError(''); setExported(false);
+    try {
+      const records = isGuest
+        ? createRecordExport({ applications: demoApplications, checklist: demoItems, interviews: demoNotes, sample: true })
+        : await loadRecordExport(supabase, user?.id);
+      downloadRecordExport(records);
+      setExported(true);
+    } catch (exportFailure) {
+      setExportError(getSafeDataErrorMessage(exportFailure));
+    } finally { setExporting(false); }
+  };
+  const exportControl = <div className="settings-export">
+    <h3>{isGuest ? '샘플 기록 내려받기' : '내 기록 내려받기'}</h3>
+    <p>회사·준비 체크·면접 질문을 JSON 파일로 보관해요.{isGuest ? ' 가상 샘플임을 파일에 표시합니다.' : ' 저장된 프로필도 함께 포함됩니다.'}</p>
+    <Button variant="outlined" startIcon={<DownloadOutlined />} onClick={handleExport} disabled={exporting}>{exporting ? '기록 불러오는 중…' : 'JSON 파일 내려받기'}</Button>
+    {exportError && <Alert severity="error">{exportError} 파일은 생성하지 않았어요.</Alert>}
+    {exported && <Alert severity="success">파일 다운로드를 요청했어요. 브라우저의 다운로드 목록을 확인해주세요.</Alert>}
+  </div>;
   useEffect(() => {
     if (!user || isGuest) return undefined;
     let cancelled = false;
@@ -107,6 +136,7 @@ const SettingsPage = () => {
               setSaved(true);
             }}>샘플 초기화</Button>
           </div>
+          {exportControl}
         </section>
         <section className="panel settings-card settings-account" aria-labelledby="start-record-title">
           <div className="settings-control-copy">
@@ -161,6 +191,7 @@ const SettingsPage = () => {
           <p>저장한 기록은 다시 로그인하면 볼 수 있어요.</p>
         </div>
         <Button variant="outlined" color="error" startIcon={<LogoutIcon />} onClick={handleLogout}>로그아웃</Button>
+        {exportControl}
       </section>
     </div>}
   </Box>;

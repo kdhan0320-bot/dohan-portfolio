@@ -58,6 +58,7 @@ export default function InterviewPage() {
   const done = scopedNotes.filter(n => n.is_reviewed).length;
   const filtered = scopedNotes.filter(n => tab === 'all' || n.is_reviewed === (tab === 'done'));
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
+  const activeHasAnswer = Boolean(activeNote?.answer?.trim());
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
   const activeCompany = activeNote?.application_id ? companyMap.get(activeNote.application_id) : null;
   function companyLabel(note) {
@@ -95,10 +96,15 @@ export default function InterviewPage() {
     if (Object.keys(INITIAL).some(key => form[key] !== originalForm[key])) setConfirmDiscard(true);
     else setOpen(false);
   }
+  function focusEditorField() {
+    const fieldId = editingId && !originalForm.answer.trim() ? 'note-answer' : 'note-question';
+    document.getElementById(fieldId)?.focus();
+  }
   function discardDraft() {
     setConfirmDiscard(false); setOpen(false); setEditingId(null); setForm(INITIAL); setFormError('');
   }
   async function review(n) {
+    if (busy || (!n.is_reviewed && !n.answer?.trim())) return;
     setBusy(n.id);
     try {
       await toggleReview(n.id, !n.is_reviewed);
@@ -122,9 +128,9 @@ export default function InterviewPage() {
       document.getElementById('note-company')?.focus();
       return;
     }
-    if (!form.question.trim() || !form.answer.trim()) {
-      setFormError('질문과 답변을 모두 입력해주세요.');
-      document.getElementById(!form.question.trim() ? 'note-question' : 'note-answer')?.focus();
+    if (!form.question.trim()) {
+      setFormError('질문을 입력해주세요.');
+      document.getElementById('note-question')?.focus();
       return;
     }
     setBusy(editingId ? 'edit' : 'add');
@@ -136,7 +142,7 @@ export default function InterviewPage() {
         answer: form.answer.trim(),
         related_project: String(form.related_project ?? '').trim(),
         importance: form.importance,
-        is_reviewed: form.is_reviewed
+        is_reviewed: Boolean(form.answer.trim() && form.is_reviewed)
       };
       if (editingId) await update(editingId, payload);
       else await add(payload);
@@ -147,6 +153,7 @@ export default function InterviewPage() {
       if (editingId) {
         setRevealed(prev => ({ ...prev, [editingId]: true }));
         setActiveId(editingId);
+        if (!payload.is_reviewed && tab === 'done') setTab('todo');
       } else { setTab('todo'); setActiveId(null); }
       setFeedback({
         message: editingId ? '면접 노트를 수정했어요.' : '면접 노트를 추가했어요.'
@@ -205,13 +212,16 @@ export default function InterviewPage() {
         {filtered.map((n, i) => <li key={n.id}>
           <button type="button" className="question-index" aria-current={n.id === activeNote.id ? 'true' : undefined} onClick={() => setActiveId(n.id)}>
             <span className="question-index-number" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-            <span>{companyScope === 'all' && <small>{companyLabel(n)}</small>}<strong>{n.question}</strong></span>
+            <span>{companyScope === 'all' && <small>{companyLabel(n)}</small>}<strong>{n.question}</strong>{!n.answer?.trim() && <span className="question-draft-label">답변 준비 전</span>}</span>
             {n.is_reviewed && <Check fontSize="small" aria-label="복습 완료" />}
           </button>
         </li>)}
       </ol>
     </nav>
     <section className="practice-desk" aria-label="면접 질문 연습">
+      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} onChange={event => setActiveId(event.target.value)}>
+        {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {companyScope === 'all' ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
+      </Field>
       <div className="practice-pagination">
         <span aria-live="polite">질문 <strong>{activeIndex + 1}</strong> / {filtered.length}</span>
         <div><IconButton aria-label="이전 질문" disabled={activeIndex === 0} onClick={() => setActiveId(filtered[activeIndex - 1].id)}><ChevronLeft /></IconButton><IconButton aria-label="다음 질문" disabled={activeIndex === filtered.length - 1} onClick={() => setActiveId(filtered[activeIndex + 1].id)}><ChevronRight /></IconButton></div>
@@ -225,16 +235,19 @@ export default function InterviewPage() {
           <span className={`practice-importance${activeNote.importance === '높음' ? ' is-important' : ''}`}>중요도 {activeNote.importance}</span>
         </div>
         <div className="practice-question"><span className="practice-question-mark" aria-hidden="true">Q.</span><h2>{activeNote.question}</h2></div>
-        {revealed[activeNote.id] && <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div>}
-        <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
+        {activeHasAnswer && revealed[activeNote.id] && <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div>}
+        {activeHasAnswer ? <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
           {revealed[activeNote.id] ? '답변 접기' : '답변 펼치기'}
-        </Button>
+        </Button> : <div className="practice-answer-draft">
+          <p id="answer-draft-status">답변 준비 전 · 답변을 작성하면 복습할 수 있어요.</p>
+          <Button variant="outlined" startIcon={<EditOutlined />} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}>답변 작성하기</Button>
+        </div>}
       <div className="practice-toolbar">
         <div>
           <IconButton aria-label={`${activeNote.question} 수정`} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}><EditOutlined fontSize="small" /></IconButton>
           <IconButton aria-label={`${activeNote.question} 삭제`} disabled={Boolean(busy)} onClick={() => setTarget(activeNote)}><DeleteOutline fontSize="small" /></IconButton>
         </div>
-        <Button className={activeNote.is_reviewed ? 'practice-review is-reviewed' : 'practice-review'} variant={activeNote.is_reviewed ? 'outlined' : 'contained'} startIcon={<Check />} disabled={Boolean(busy)} onClick={() => review(activeNote)}>{activeNote.is_reviewed ? '복습 취소' : '복습 완료'}</Button>
+        <Button className={activeNote.is_reviewed ? 'practice-review is-reviewed' : 'practice-review'} variant={activeNote.is_reviewed ? 'outlined' : 'contained'} startIcon={<Check />} disabled={Boolean(busy) || (!activeHasAnswer && !activeNote.is_reviewed)} aria-describedby={!activeHasAnswer ? 'answer-draft-status' : undefined} onClick={() => review(activeNote)}>{activeNote.is_reviewed ? '복습 취소' : '복습 완료'}</Button>
       </div>
       </article>
     </section>
@@ -245,7 +258,7 @@ export default function InterviewPage() {
     </Empty>
   </div>)}
   </div>
-  <Dialog aria-labelledby="note-dialog-title" open={open} onClose={requestClose} fullWidth maxWidth="sm">
+  <Dialog aria-labelledby="note-dialog-title" open={open} onClose={requestClose} slotProps={{ transition: { onEntered: focusEditorField } }} fullWidth maxWidth="sm">
     <form onSubmit={submit} noValidate>
       <DialogTitle id="note-dialog-title">{editingId ? '면접 질문 수정' : '면접 질문 기록'}</DialogTitle>
       <DialogContent>
@@ -260,11 +273,11 @@ export default function InterviewPage() {
             {form.application_id && !companyMap.has(form.application_id) && <MenuItem value={form.application_id} disabled>연결한 회사 없음 · 다시 선택해주세요</MenuItem>}
             {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
           </Field>
-          <Field id="note-question" disabled={Boolean(busy)} autoFocus label="질문" required value={form.question} onChange={e => setForm({
+          <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={e => setForm({
               ...form,
               question: e.target.value
             })} />
-          <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변" required multiline minRows={5} value={form.answer} onChange={e => setForm({
+          <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" helperText="질문만 먼저 저장하고 답변은 나중에 작성해도 돼요." multiline minRows={4} value={form.answer} onChange={e => setForm({
               ...form,
               answer: e.target.value
             })} />
