@@ -186,8 +186,8 @@ select:hover { border-color: #bdb9b2; }
 .film-note-preview { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; margin-top: 10px; padding-left: 12px; border-left: 2px solid #e2ab9580; color: #ddd5cc; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; word-break: normal; }
 .saved-actions { display: flex; margin-top: 12px; }
 .saved-actions .text-link { color: var(--accent); }
-/* One or two saved films become readable records; larger collections keep the grid. */
-.film-grid.library-reading { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+/* Saved films keep their full notes and reading layout as the collection grows. */
+.film-grid.library-reading { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; align-items: start; }
 .library-reading .film-card { display: grid; grid-template-columns: minmax(150px,34%) minmax(0,1fr); gap: 24px; align-items: start; padding: 24px; background: linear-gradient(115deg,#2a2926,#202120); border: 1px solid #b9a58c38; border-radius: 4px; }
 .library-reading .film-card:only-child { grid-column: 1/-1; grid-template-columns: minmax(180px,240px) minmax(0,1fr); }
 .library-reading .film-art { container-type: inline-size; }

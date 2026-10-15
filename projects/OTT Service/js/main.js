@@ -378,7 +378,7 @@
       const note = state.notes[preview.dataset.notePreviewFor];
       preview.hidden = !note;
       preview.textContent = note
-        ? preview.closest(".library-reading") ? note : noteExcerpt(note)
+        ? preview.closest('[data-card-context="saved"]') ? note : noteExcerpt(note)
         : "";
     });
     document.querySelectorAll("[data-open-note]").forEach((button) => {
@@ -444,9 +444,7 @@
       preview.className = "film-note-preview";
       preview.dataset.notePreviewFor = film.id;
       preview.hidden = !state.notes[film.id];
-      preview.textContent = state.notes[film.id]
-        ? noteExcerpt(state.notes[film.id])
-        : "";
+      preview.textContent = state.notes[film.id] || "";
       article.append(preview);
       const copy = document.createElement("div");
       copy.className = "saved-copy";
@@ -857,7 +855,7 @@
     if (state.view === "browse" && state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
-    grid.classList.toggle("library-reading", state.view === "saved" && visible.length <= 2);
+    grid.classList.toggle("library-reading", state.view === "saved");
     grid.replaceChildren(...visible.map((film) => makeCard(film, state.view)));
     const filtered =
       state.query.trim() ||

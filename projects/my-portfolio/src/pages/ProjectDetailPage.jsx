@@ -174,10 +174,18 @@ const ProjectDetailPage = () => {
                       {decision.comparison.reference.label}
                     </a>}
                   </p>
-                </div> : decision.showMedia && <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />}
+                </div> : decision.showMedia && (decision.reference ? <div>
+                  <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
+                  <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
+                </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}
               </section>;
             })}
           </div>
+          {ready.decisionsNote && <div className="case-decisions__aside">
+            <h3>{ready.decisionsNote.title}</h3>
+            <p>{ready.decisionsNote.text}</p>
+            <a href={mediaUrl(ready.decisionsNote.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${ready.decisionsNote.reference.label} (새 탭)`}>{ready.decisionsNote.reference.label}</a>
+          </div>}
         </section>}
 
         {additionalScreens.length > 0 && <section className="case-section" aria-labelledby="case-screens-heading">
