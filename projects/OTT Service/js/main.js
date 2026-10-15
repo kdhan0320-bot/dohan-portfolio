@@ -212,10 +212,10 @@
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
-        tide: "아버지가 남긴 소리를 따라 돌아가는 마음.",
-        forest: "이야기 대신 풍경과 소리에 머무는 시간.",
-        bluehour: "오랜 친구와 다시 나란해지는 오후.",
-        nocturne: "늦은 식탁에서 천천히 시작되는 대화.",
+        tide: "아버지가 남긴 소리로 마주하는 오래 미룬 마음",
+        forest: "물길과 잎사귀, 빛과 소리에 머무는 산책",
+        bluehour: "다른 도시에서 돌아와 나란히 보내는 오후",
+        nocturne: "식탁을 사이에 두고 시작하는 낯선 이의 대화",
       },
     },
     {
@@ -231,10 +231,10 @@
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
-        letters: "부치지 못한 편지가 다시 잇는 우정.",
-        windows: "멈춘 엘리베이터에서 가까워지는 이웃.",
-        rooftop: "마지막 연주로 대신 전하는 마음.",
-        relay: "혼자 달리던 선수가 동료를 믿는 순간.",
+        letters: "부치지 않은 편지가 불러오는 두 친구의 여름",
+        windows: "멈춘 엘리베이터에 모인 이름 모를 이웃",
+        rooftop: "하지 못한 말을 대신하는 마지막 연주",
+        relay: "혼자 달리던 선수가 동료에게 건네는 바통",
       },
     },
     {
@@ -250,10 +250,10 @@
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
-        greenhouse: "자정의 불빛이 이끄는 닫힌 온실의 비밀.",
-        orbit: "마지막 메시지가 바꾸는 우주 기지의 하루.",
-        atlas: "종이 한 장에 누구의 소원을 담을지 묻는 상상.",
-        signal: "아직 일어나지 않은 사고에서 도착한 목소리.",
+        greenhouse: "자정의 불빛을 따라 읽는 사라진 관리자의 일지",
+        orbit: "귀환을 기다리던 일상을 바꾸는 마지막 메시지",
+        atlas: "마지막 종이 한 장에 담을 소원을 고르는 선택",
+        signal: "자신의 목소리가 담긴 구조 요청의 발신지",
       },
     },
   ];
@@ -264,8 +264,8 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "‘파도가 머문 자리’의 서윤은 아버지가 남긴 소리를 따라 돌아옵니다. ‘숲의 호흡’은 말 대신 자연의 소리에 머뭅니다. 같은 고요함도 한 사람의 기억과 숲의 풍경에서 서로 다르게 펼쳐집니다.",
-        "‘파란 오후’의 재회와 ‘새벽 두 시의 식탁’의 대화까지. 빠른 사건보다 인물과 공간에 천천히 가까워지는 네 편을 묶었습니다.",
+        "작품 소개의 장소와 그곳에서 보내는 시간을 기준으로 묶었습니다. 기억을 마주하는 바닷가 집, 소리에 귀 기울이는 숲, 재회의 해변, 대화를 시작하는 식탁입니다.",
+        "‘어디서, 누구와 시간을 보내는가’를 살펴보세요. 혼자 소리를 듣는 시간과 누군가와 마주 앉는 시간 중 지금 끌리는 쪽은 무엇인가요?",
       ],
     },
     {
@@ -274,8 +274,8 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "부치지 못한 편지, 멈춘 엘리베이터, 마지막 옥상 공연과 계주. ‘다정한 반전’의 네 편은 누군가를 향해 한 걸음 내딛는 순간에서 만납니다.",
-        "18분의 ‘여름의 편지’부터 31분의 ‘마지막 바통’까지, 관계가 달라지는 작은 선택에 초점을 맞췄습니다.",
+        "줄거리에서 관계를 잇는 계기를 골랐습니다. 발견한 편지, 함께 멈춘 엘리베이터, 마지막 연주와 바통은 서로에게 다가갈 이유를 만듭니다.",
+        "두 친구·이웃·밴드·계주팀이 무엇을 함께하게 되는지 살펴보세요. 말로 전하기 어려운 마음을 사물이나 행동으로 건넨다면 어떤 이야기가 궁금한가요?",
       ],
     },
     {
@@ -284,8 +284,8 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "자정마다 불이 켜지는 온실, 지구에서 멀리 떨어진 기지, 종이별로 채우는 밤하늘과 미래에서 온 구조 신호. 평범한 일상에 낯선 규칙이 들어오는 네 편입니다.",
-        "미스터리의 긴장과 SF·애니메이션의 상상력을 함께 담았습니다. 공간보다 그 안에서 선택해야 하는 인물에 주목해 보세요.",
+        "온실의 일지와 자신의 목소리로 온 구조 요청은 단서의 출처를 묻게 합니다. 마지막 우주 메시지와 별을 만드는 종이 한 장은 다른 세계의 규칙을 상상하게 합니다.",
+        "단서를 추적하는 미스터리와 낯선 설정의 SF·애니메이션을 함께 묶었습니다. ‘왜 이런 일이 생겼을까’와 ‘이런 세계라면 어떨까’ 중 어떤 질문이 더 궁금한가요?",
       ],
     },
   ];
@@ -939,9 +939,9 @@
     const visible = orderedFilms.filter(matches);
     const emptyLibrary =
       state.view === "saved" && !films.some((film) => inLibrary(film.id));
-    if (state.view === "browse" && state.sort === "title")
+    if (state.sort === "title")
       visible.sort((a, b) => a.title.localeCompare(b.title, "ko"));
-    if (state.view === "browse" && state.sort === "short")
+    if (state.sort === "short")
       visible.sort((a, b) => a.minutes - b.minutes);
     const grid = $("filmGrid");
     grid.classList.toggle("library-reading", state.view === "saved");
@@ -963,7 +963,7 @@
     $("catalogOptions").hidden = emptyLibrary;
     $("resultsBar").hidden = emptyLibrary;
     $("moodFilters").hidden = state.view === "saved";
-    $("sortField").hidden = state.view !== "browse";
+    $("sortField").hidden = emptyLibrary;
     $("durationField").hidden = state.view !== "browse";
     $("durationFilter").value = state.duration;
     $("catalogSort").value = state.sort;
@@ -1031,8 +1031,8 @@
     render();
   }
   const catalogFilters = {
-    browse: { mood: "all", duration: "all", query: "" },
-    saved: { mood: "all", duration: "all", query: "" },
+    browse: { mood: "all", duration: "all", query: "", sort: "recommended" },
+    saved: { mood: "all", duration: "all", query: "", sort: "recommended" },
   };
   let searchRequested = false;
   let firstRoute = true;
@@ -1043,6 +1043,7 @@
   }
   function route() {
     stopRailMotion();
+    dialogRouteVersion += 1;
     document
       .querySelectorAll("dialog[open]")
       .forEach((dialog) => closeDialog(dialog, { restoreFocus: false }));
@@ -1061,6 +1062,7 @@
         mood: state.mood,
         duration: state.duration,
         query: state.query,
+        sort: state.sort,
       };
     state.view = view;
     document.body.dataset.view = view;
@@ -1127,6 +1129,7 @@
       link.matches('.nav [data-view="browse"]')
     ) {
       catalogFilters.browse = {
+        ...catalogFilters.browse,
         mood: state.homeMood,
         duration: state.homeDuration,
         query: "",
@@ -1206,6 +1209,7 @@
   });
   const dialogContexts = new Map();
   const pendingDialogClosures = new WeakMap();
+  let dialogRouteVersion = 0;
   // Drafts survive internal navigation, but never count as saved library notes.
   // They are intentionally memory-only and disappear on refresh or tab close.
   const noteDrafts = new Map();
@@ -1238,7 +1242,7 @@
     pendingDialogClosures.set(dialog, pending);
     dialog.close();
   }
-  function openDialog(dialog, trigger, heading) {
+  function openDialog(dialog, trigger, heading, { returnToArticle = null, scrollTop = 0, focusTarget = heading } = {}) {
     document.querySelectorAll("dialog[open]").forEach((open) => {
       if (open !== dialog) closeDialog(open, { restoreFocus: false });
     });
@@ -1246,12 +1250,14 @@
       trigger,
       detailId: dialog.id === "detailDialog" ? activeDetailId : null,
       restoreFocus: true,
+      routeVersion: dialogRouteVersion,
+      returnToArticle,
     });
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
-    dialog.querySelector(".dialog-scroll")?.scrollTo({ top: 0, behavior: "instant" });
+    dialog.querySelector(".dialog-scroll")?.scrollTo({ top: scrollTop, behavior: "instant" });
     document.body.classList.add("dialog-open");
-    heading.focus({ preventScroll: true });
+    focusTarget.focus({ preventScroll: true });
   }
   function noteSavedMessage() {
     return state.notesStorageAvailable
@@ -1310,8 +1316,16 @@
   function showDetail(id, trigger) {
     const film = films.find((f) => f.id === id);
     if (!film) return;
-    if (trigger?.closest("#articleDialog"))
-      trigger = dialogContexts.get($("articleDialog"))?.trigger || trigger;
+    const articleDialog = $("articleDialog");
+    const articleContext = dialogContexts.get(articleDialog);
+    const returnToArticle = articleDialog.open && trigger?.closest("#articleDialog")
+      ? {
+          trigger: articleContext?.trigger,
+          scrollTop: articleDialog.querySelector(".dialog-scroll").scrollTop,
+          focusTarget: trigger,
+        }
+      : null;
+    if (returnToArticle) trigger = articleContext?.trigger || trigger;
     if ($("detailDialog").open) rememberNoteDraft();
     activeDetailId = id;
     $("detailTitle").textContent = film.title;
@@ -1346,7 +1360,7 @@
     $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
     updateNoteDisclosureLabel();
     updateSaveButtons();
-    openDialog($("detailDialog"), trigger, $("detailTitle"));
+    openDialog($("detailDialog"), trigger, $("detailTitle"), { returnToArticle });
   }
   function showArticle(id, trigger) {
     const article = articles.find((item) => item.id === id);
@@ -1504,12 +1518,20 @@
       if (!pending?.length) pendingDialogClosures.delete(dialog);
       const { trigger, detailId } = context || {};
       if (document.querySelector("dialog[open]")) return;
-      document.body.classList.remove("dialog-open");
       clearTimeout(toastTimer);
       $("toast").classList.remove("visible");
       document.body.append($("toast"));
+      if (context?.restoreFocus && context.routeVersion === dialogRouteVersion && context.returnToArticle) {
+        const article = context.returnToArticle;
+        openDialog($("articleDialog"), article.trigger, $("articleTitle"), {
+          scrollTop: article.scrollTop,
+          focusTarget: article.focusTarget,
+        });
+        return;
+      }
+      document.body.classList.remove("dialog-open");
       // A queued close event must not steal focus from the new route heading.
-      if (!context?.restoreFocus) return;
+      if (!context?.restoreFocus || context.routeVersion !== dialogRouteVersion) return;
       const currentReplacement =
         detailId &&
         [...document.querySelectorAll(`[data-detail="${detailId}"]`)].find(

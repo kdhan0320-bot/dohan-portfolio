@@ -16,18 +16,17 @@ const isPortrait = (media) => Boolean(media.frameWidth);
 const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
   <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${className}`}>
     <div className="case-figure__surface">
-      <img
-        src={mediaUrl(media.src)}
-        alt={media.alt || label || '프로젝트 화면'}
-        loading={priority ? 'eager' : 'lazy'}
-        decoding="async"
-      />
+      {media.mobile ? <picture className="case-responsive-image">
+        <source media="(max-width: 760px)" srcSet={mediaUrl(media.mobile.src)} />
+        <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />
+      </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
     </div>
     <figcaption>
       <span>{label || '화면 상세'}</span>
-      <a href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
+      <a className={media.mobile ? 'case-original-desktop' : undefined} href={mediaUrl(media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
         원본 보기
       </a>
+      {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 모바일 원본 새 탭에서 보기`}>원본 보기</a>}
     </figcaption>
   </figure>
 );
@@ -149,7 +148,7 @@ const ProjectDetailPage = () => {
                 { label: '이유', text: decision.reason },
                 { label: '확인', text: decision.verification },
               ];
-              return <section key={decision.title} className={`case-decision${decision.comparison ? ' case-decision--comparison' : decision.showMedia ? '' : ' case-decision--text'}`}>
+              return <section key={decision.title} className={`case-decision${decision.comparison ? ' case-decision--comparison' : decision.layout === 'wide' ? ' case-decision--wide' : decision.showMedia ? '' : ' case-decision--text'}`}>
                 <div className="case-decision__copy">
                   <span className="case-decision__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
                   <h3>{decision.title}</h3>

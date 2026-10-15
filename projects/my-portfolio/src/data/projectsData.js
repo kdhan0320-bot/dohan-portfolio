@@ -12,7 +12,7 @@ const THUMB_MAP = {
   jobflow:      `${BASE}detail/galpirok-board-pc.jpg`,
   seolbiit:     `${BASE}detail/current/seolbigyeol-home.png`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-v28-home.jpg`,
+  'ott-service': `${BASE}detail/current/jansang-v29-home.jpg`,
   'bus-arrival-app': `${BASE}detail/current/onjeongryu-home.png`,
   brewstep: `${BASE}detail/current/soyobit-home.png`,
   'feedback-hub': `${BASE}detail/current/goreunsiseon-home.jpg`,
