@@ -190,7 +190,7 @@ select:hover { border-color: #bdb9b2; }
 .film-card-title { font-size: 16px; font-weight: 450; line-height: 1.5; color: var(--text); }
 .film-card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; font-size: 13px; line-height: 1.5; color: var(--muted); }
 .film-english { display: none; }
-.poster-save { flex: 0 0 44px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; border: 1px solid #ffffff26; background: #ffffff04; color: #d3cec5; transition: color .18s, background .18s, border-color .18s; }
+.poster-save { flex: 0 0 44px; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; padding: 0; border-radius: 50%; border: 1px solid transparent; background: transparent; color: #d3cec5; transition: color .18s, background .18s, border-color .18s; }
 .poster-save > .icon { width: 20px; height: 20px; }
 .poster-save:hover { background: #e2ab9514; border-color: #e2ab9570; color: var(--text); }
 .save-button[aria-pressed="true"] .icon { fill: currentColor; }
@@ -210,14 +210,15 @@ select:hover { border-color: #bdb9b2; }
 .library-reading .film-note-preview { display: block; -webkit-line-clamp: unset; max-width: 640px; white-space: pre-wrap; font-size: 16px; line-height: 1.8; }
 .library-reading .saved-actions { margin-top: 18px; }
 .home-collections { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; padding: 8px 0 24px; }
-.home-collection { position: relative; display: grid; align-items: end; min-width: 0; min-height: 340px; aspect-ratio: 1.18; border: 1px solid #ffffff38; border-radius: 3px; background: var(--surface); box-shadow: 0 20px 40px -28px #000; }
+/* An explicit width prevents the minimum height from widening a ratio-sized grid item. */
+.home-collection { position: relative; display: grid; align-items: end; width: 100%; max-width: 100%; min-width: 0; min-height: 340px; aspect-ratio: 1.18; border: 1px solid #ffffff38; border-radius: 3px; background: var(--surface); box-shadow: 0 20px 40px -28px #000; }
 .home-collection:nth-child(2) { transform: translateY(24px); }
 .home-collection::before { content: ""; position: absolute; z-index: 2; pointer-events: none; inset: -7px 7px 7px -7px; border-top: 1px solid var(--collection-surface); border-left: 1px solid var(--collection-surface); opacity: .25; transition: opacity .25s; }
 .home-collection::after { content: ""; position: absolute; pointer-events: none; inset: 0; border-radius: inherit; background: linear-gradient(180deg,#11171612 20%,#1117163d 42%,#111716e8 77%,#111716fa); }
 .home-collection > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; transition: filter .25s; }
 .home-collection[data-theme-preview="quiet"] > img { object-position: 75% center; }
 .home-collection[data-theme-preview="warmth"] > img { object-position: center 65%; }
-.home-collection > div { z-index: 1; padding: 24px 46px 24px 24px; }
+.home-collection > div { z-index: 1; min-width: 0; padding: 24px 50px 24px 24px; }
 .home-collection-meta { position: absolute; top: 16px; left: 16px; color: var(--collection-surface); background: #171c1be8; border: 1px solid #ffffff38; border-radius: 2px; padding: 4px 9px; font-size: 13px; margin-bottom: 10px; }
 .home-collection .curation-feature-title { color: var(--collection-surface); }
 .home-collection > .icon { position: absolute; z-index: 1; width: 20px; height: 20px; right: 18px; bottom: 30px; color: var(--collection-surface); }
@@ -345,13 +346,14 @@ select:hover { border-color: #bdb9b2; }
 .footer-bottom p:last-child { text-align: right; }
 /* A framed film image, quiet top controls, and one entrance to personal notes. */
 body.dialog-open { overflow: hidden; }
-dialog { color: var(--text); background: var(--surface); border: 1px solid #6e6b64; border-radius: 6px; padding: 0; width: min(960px, calc(100% - 64px)); max-height: calc(100dvh - 64px); overflow: auto; box-shadow: 0 30px 100px #0007; }
+dialog { color: var(--text); background: var(--surface); border: 1px solid #6e6b64; border-radius: 6px; padding: 0; width: min(960px, calc(100% - 64px)); max-height: calc(100dvh - 64px); overflow: hidden; box-shadow: 0 30px 100px #0007; }
 dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
+.dialog-scroll { max-height: calc(100dvh - 66px); overflow-y: auto; overscroll-behavior: contain; scroll-padding-block: 76px 24px; }
 .close-button { position: absolute; top: 16px; right: 16px; z-index: 4; border-radius: 50%; background: #202020ed; border-color: #918a80; }
 .detail-dialog { border-color: #b2a18b80; background: #222322; }
 .detail-layout { display: grid; grid-template-columns: .86fr 1.14fr; }
 .detail-visual { position: relative; overflow: hidden; background: var(--bg); min-height: 440px; }
-.detail-visual img { width: 100%; height: 100%; object-fit: cover; }
+.detail-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .detail-visual::after { content: ""; position: absolute; pointer-events: none; inset: 12px; border-top: 1px solid #f2e1cd55; border-left: 1px solid #f2e1cd55; }
 .detail-content { padding: 86px 36px 30px; background: linear-gradient(145deg,#302b25aa,#222322 62%); }
 .detail-content > .eyebrow { font-size: 14px; color: #d0bba6; }
@@ -393,7 +395,8 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
 #articleBody { font-size: 16px; line-height: 1.9; color: #ddd9d1; margin-top: 24px; }
 #articleBody p + p { margin-top: 18px; }
 .article-content .button { margin-top: 28px; }
-.about-dialog { width: min(660px, calc(100% - 64px)); padding: 40px; }
+.about-dialog { width: min(660px, calc(100% - 64px)); }
+.about-scroll { padding: 40px; }
 .about-dialog h2 { font-size: 30px; line-height: 1.3; letter-spacing: -.035em; margin-top: 20px; }
 .about-facts { margin-top: 26px; }
 .about-facts p { font-size: 15px; line-height: 1.85; color: #ddd9d1; }
@@ -721,10 +724,11 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .page-heading h1 { font-size: 32px; margin-top: 0; }
   .page-heading .section-kicker { font-size: 13px; }
   .page-description { font-size: 15px; margin-top: 13px; }
-  .catalog-tools { display: flex; flex-direction: column; align-items: stretch; gap: 18px; padding-block: 18px; }
+  body:not(.saved-view) .catalog .page-heading { margin-bottom: 18px; }
+  .catalog-tools { display: flex; flex-direction: column; align-items: stretch; gap: 10px; padding-block: 12px; }
   .search-field { width: 100%; }
   .search-field input { font-size: 16px; }
-  .catalog-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+  .catalog-options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
   .catalog-duration { display: block; }
   .catalog-duration label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
   .catalog-options select { width: 100%; padding-left: 10px; padding-right: 36px; }
@@ -761,10 +765,10 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .footer-bottom { flex-direction: column; gap: 12px; margin-top: 22px; padding-top: 20px; }
   .footer-bottom p:last-child { text-align: left; }
   dialog { width: calc(100% - 24px); max-height: calc(100dvh - 24px); border-radius: 5px; }
+  .dialog-scroll { max-height: calc(100dvh - 26px); scroll-padding-top: 68px; }
   .close-button { top: 12px; right: 12px; width: 44px; height: 44px; }
   .detail-layout { grid-template-columns: 1fr; }
-  .detail-visual { min-height: 0; height: 240px; }
-  .detail-visual img { object-position: var(--detail-poster-position, center 20%) !important; }
+  .detail-visual { min-height: 0; aspect-ratio: var(--detail-image-ratio, 1.4); }
   .detail-content { padding: 26px 22px; }
   .detail-content h2 { font-size: 28px; margin-top: 12px; }
   .detail-meta { margin-top: 13px; font-size: 14px; }
@@ -776,7 +780,7 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .article-dialog, .about-dialog { width: calc(100% - 24px); }
   .article-content { padding: 26px 22px; }
   .article-content h2 { font-size: 28px; }
-  .about-dialog { padding: 56px 24px 28px; }
+  .about-scroll { padding: 56px 24px 28px; }
   .about-dialog h2 { font-size: 30px; }
   .toast { bottom: 18px; font-size: 13px; padding-inline: 16px; }
 }

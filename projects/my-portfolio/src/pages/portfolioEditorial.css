@@ -404,3 +404,49 @@
   .case-page[data-project-slug="ott-service"] .case-verification__tasks { grid-template-columns: 1fr; gap: 24px; }
   .case-page[data-project-slug="ott-service"] .case-decisions__aside h3 { font-size: 24px; }
 }
+
+/* Jansang keeps the premise, choices, and observed checks together. */
+.case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 48px; }
+.case-page[data-project-slug="ott-service"] .case-assumption {
+  max-width: 850px;
+  margin: -8px 0 40px;
+  color: var(--muted, #536371);
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: -.02em;
+}
+.case-page[data-project-slug="ott-service"] .case-decision-check {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr);
+  gap: 16px 48px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line, #d7e0e7);
+}
+.case-page[data-project-slug="ott-service"] .case-decision-check h4 {
+  margin: 0;
+  color: var(--ink, #202b36);
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+.case-page[data-project-slug="ott-service"] .case-decision-check p,
+.case-page[data-project-slug="ott-service"] .case-validation-summary p {
+  color: var(--muted, #536371);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.case-page[data-project-slug="ott-service"] .case-validation-summary {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line, #d7e0e7);
+}
+@media (max-width: 760px) {
+  .case-page[data-project-slug="ott-service"] .case-decisions--focused { padding-top: 36px; }
+  .case-page[data-project-slug="ott-service"] .case-comparison .case-figure--portrait .case-figure__surface { padding: 8px; }
+  .case-page[data-project-slug="ott-service"] .case-assumption { margin-bottom: 32px; font-size: 17px; }
+  .case-page[data-project-slug="ott-service"] .case-decision-check { grid-template-columns: 1fr; gap: 8px; margin-top: 0; }
+}

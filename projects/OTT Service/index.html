@@ -11,7 +11,7 @@
     />
     <title>단편영화 큐레이션 — 잔상관</title>
     <link
-      href="assets/favicon.svg?v=ec2dbbb4"
+      href="assets/favicon.svg?v=e9fd0d7f"
       rel="icon"
       type="image/svg+xml"
     />
@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=13274372e4d4" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=5c483cfca725"></script>
+    <link href="css/style.css?v=2ddd7d08cf61" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=19d7c442f95a"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -254,11 +254,11 @@
               <svg aria-hidden="true" class="icon">
                 <use href="#i-search"></use></svg
               ><label class="sr-only" for="searchInput"
-                >영화 제목, 장르 검색</label
+                >영화 제목, 장르, 분위기, 키워드 검색</label
               ><input
                 autocomplete="off"
                 id="searchInput"
-                placeholder="영화 제목, 장르 검색"
+                placeholder="제목·장르·분위기·키워드"
                 type="search"
               /><button
                 aria-label="검색어 지우기"
@@ -355,7 +355,7 @@
       >
         <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
       </button>
-      <div class="detail-layout">
+      <div class="detail-layout dialog-scroll">
         <div class="detail-visual">
           <img
             alt=""
@@ -409,21 +409,24 @@
       >
         <svg aria-hidden="true" class="icon">
           <use href="#i-close"></use>
-        </svg></button
-      ><img
-        alt=""
-        class="article-image"
-        height="1200"
-        id="articleImage"
-        width="800"
-      />
-      <div class="article-content">
-        <p class="eyebrow" id="articleCategory"></p>
-        <h2 id="articleTitle" tabindex="-1"></h2>
-        <div id="articleBody"></div>
-        <button class="button light" id="articleFilmLink" type="button">
-          관련 영화 보기
-        </button>
+        </svg>
+      </button>
+      <div class="dialog-scroll">
+        <img
+          alt=""
+          class="article-image"
+          height="1200"
+          id="articleImage"
+          width="800"
+        />
+        <div class="article-content">
+          <p class="eyebrow" id="articleCategory"></p>
+          <h2 id="articleTitle" tabindex="-1"></h2>
+          <div id="articleBody"></div>
+          <button class="button light" id="articleFilmLink" type="button">
+            관련 영화 보기
+          </button>
+        </div>
       </div>
     </dialog>
     <dialog aria-labelledby="aboutTitle" class="about-dialog" id="aboutDialog">
@@ -434,15 +437,17 @@
       >
         <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
       </button>
-      <p class="eyebrow">잔상관 이용안내</p>
-      <h2 id="aboutTitle" tabindex="-1">고르고, 찜하고,<br />다시 찾아보세요.</h2>
-      <div class="about-facts">
-        <p>분위기와 러닝타임으로 단편영화를 찾고, 관심 작품과 메모를 보관하는 포트폴리오 프로토타입입니다. 작품 12편은 가상 설정이며 이미지는 AI로 생성했습니다. 실제 영상 재생·예매·결제는 제공하지 않습니다.</p>
-        <p>찜과 저장한 메모는 이 브라우저에만 남습니다. 브라우저 데이터를 지우면 사라지며, 다른 기기와 동기화되지 않습니다.</p>
-        <p>저장 전 메모는 화면을 이동해도 이어 쓸 수 있습니다. 새로고침하거나 탭을 닫으면 사라지므로, 남겨둘 내용은 ‘메모 저장’을 눌러주세요.</p>
-      </div>
-      <div class="about-actions">
-        <button class="button light" data-close="aboutDialog">확인</button>
+      <div class="dialog-scroll about-scroll">
+        <p class="eyebrow">잔상관 이용안내</p>
+        <h2 id="aboutTitle" tabindex="-1">고르고, 찜하고,<br />다시 찾아보세요.</h2>
+        <div class="about-facts">
+          <p>분위기와 러닝타임으로 단편영화를 찾고, 관심 작품과 메모를 보관하는 포트폴리오 프로토타입입니다. 작품 12편은 가상 설정이며 이미지는 AI로 생성했습니다. 실제 영상 재생·예매·결제는 제공하지 않습니다.</p>
+          <p>찜과 저장한 메모는 이 브라우저에만 남습니다. 브라우저 데이터를 지우면 사라지며, 다른 기기와 동기화되지 않습니다.</p>
+          <p>저장 전 메모는 화면을 이동해도 이어 쓸 수 있습니다. 새로고침하거나 탭을 닫으면 사라지므로, 남겨둘 내용은 ‘메모 저장’을 눌러주세요.</p>
+        </div>
+        <div class="about-actions">
+          <button class="button light" data-close="aboutDialog">확인</button>
+        </div>
       </div>
     </dialog>
     <div

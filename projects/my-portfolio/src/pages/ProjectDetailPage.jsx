@@ -61,6 +61,7 @@ const ProjectDetailPage = () => {
   };
   const currentIndex = publicProjects.findIndex((item) => item.id === project.id);
   const nextProject = publicProjects[(currentIndex + 1) % publicProjects.length];
+  const focusedCase = ready.presentation === 'focused-decisions';
   const figmaUrl = project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
   const heroMedia = (ready.hero?.media || []).filter((media) => media?.src);
   const usedImages = new Set(heroMedia.map((media) => media.src));
@@ -124,7 +125,7 @@ const ProjectDetailPage = () => {
           </dl>
         </section>}
 
-        <section className="case-section case-context" aria-labelledby="case-context-heading">
+        {!focusedCase && <section className="case-section case-context" aria-labelledby="case-context-heading">
           <div className="case-section__heading">
             <p className="case-eyebrow">01 / 프로젝트 배경</p>
             <h2 id="case-context-heading">어떤 문제에서<br />시작했나요?</h2>
@@ -133,13 +134,14 @@ const ProjectDetailPage = () => {
             <div><h3>{ready.context?.problemLabel || '출발점'}</h3><p>{ready.context?.problem || project.problem}</p></div>
             <div><h3>목표</h3><p>{ready.context?.goal || project.goal}</p></div>
           </div>
-        </section>
+        </section>}
 
-        {decisions.length > 0 && <section className="case-section case-decisions" aria-labelledby="case-decisions-heading">
+        {decisions.length > 0 && <section className={`case-section case-decisions${focusedCase ? ' case-decisions--focused' : ''}`} aria-labelledby="case-decisions-heading">
           <div className="case-section__heading case-section__heading--inline">
-            <div><p className="case-eyebrow">02 / 화면과 판단</p><h2 id="case-decisions-heading">이렇게 구성했습니다.</h2></div>
-            <p className="case-section__note">화면에 반영한 선택과 그 이유입니다.</p>
+            <div><p className="case-eyebrow">{focusedCase ? '선택과 근거' : '02 / 화면과 판단'}</p><h2 id="case-decisions-heading">{ready.decisionsTitle || '이렇게 구성했습니다.'}</h2></div>
+            {!focusedCase && <p className="case-section__note">화면에 반영한 선택과 그 이유입니다.</p>}
           </div>
+          {focusedCase && <p className="case-assumption">{ready.context.summary}</p>}
           <div className="case-decisions__list">
             {decisions.map((decision, index) => {
               const evidence = decision.evidence || [
@@ -158,12 +160,12 @@ const ProjectDetailPage = () => {
                 {decision.comparison ? <div className="case-comparison">
                   <div className="case-comparison__grid">
                     <div>
-                      <p className="case-comparison__label">이전 화면</p>
+                      <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>
                       <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
                       <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
                     </div>
                     <div>
-                      <p className="case-comparison__label case-comparison__label--current">현재 화면</p>
+                      <p className="case-comparison__label case-comparison__label--current">{decision.comparison.afterHeading || '현재 화면'}</p>
                       <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
                       <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
                     </div>
@@ -178,6 +180,10 @@ const ProjectDetailPage = () => {
                   <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
                   <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
                 </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}
+                {decision.check && <div className="case-decision-check">
+                  <h4>{decision.check.title}</h4>
+                  <p>{decision.check.result}</p>
+                </div>}
               </section>;
             })}
           </div>
@@ -195,7 +201,7 @@ const ProjectDetailPage = () => {
           </div>
         </section>}
 
-        {ready.verification?.tasks?.length > 0 && <section className="case-section case-verification" aria-labelledby="case-verification-heading">
+        {!focusedCase && ready.verification?.tasks?.length > 0 && <section className="case-section case-verification" aria-labelledby="case-verification-heading">
           <div className="case-section__heading">
             <p className="case-eyebrow">03 / 동작 확인</p>
             <h2 id="case-verification-heading">만든 흐름을 직접 확인했습니다.</h2>
@@ -212,13 +218,17 @@ const ProjectDetailPage = () => {
 
         <section className="case-section case-scope" aria-labelledby="case-scope-heading">
           <div className="case-section__heading case-section__heading--inline">
-            <div><p className="case-eyebrow">{ready.verification?.tasks?.length ? '04' : '03'} / 제작 범위</p><h2 id="case-scope-heading">{ready.scopeTitle || '완성한 것과 남은 것'}</h2></div>
+            <div><p className="case-eyebrow">{focusedCase ? '제작 범위' : `${ready.verification?.tasks?.length ? '04' : '03'} / 제작 범위`}</p><h2 id="case-scope-heading">{ready.scopeTitle || '완성한 것과 남은 것'}</h2></div>
           </div>
           <div className="case-scope__grid">
             <ScopeList title="제작한 범위" items={ready.scope?.actual} />
             <ScopeList title="데모·샘플의 범위" items={ready.scope?.demoStatic} />
             <ScopeList title="포함하지 않은 기능" items={ready.scope?.notIncluded} />
           </div>
+          {focusedCase && ready.verification && <div className="case-validation-summary">
+            <p>{ready.verification.method}</p>
+            <p>{ready.verification.limit}</p>
+          </div>}
           {(ready.resultLimit?.done || ready.resultLimit?.limit) && <div className="case-outcome">
             {ready.resultLimit.done && <div><h3>작업 결과</h3><p>{ready.resultLimit.done}</p></div>}
             {ready.resultLimit.limit && <div><h3>한계</h3><p>{ready.resultLimit.limit}</p></div>}

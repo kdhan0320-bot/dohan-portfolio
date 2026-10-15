@@ -12,6 +12,8 @@
       moodText: "잔잔한 여운",
       image: "tide",
       position: "82% center",
+      detailPosition: "center 12%",
+      detailRatio: "1.4",
       description:
         "바닷가 집으로 돌아온 서윤은 아버지가 남긴 파도 소리를 발견한다. 오래 미뤄둔 마음을 마주하는 24분.",
       keywords: "바다 해변 힐링 가족 잔잔한 단편",
@@ -26,6 +28,8 @@
       moodText: "다정한 온기",
       image: "letters",
       position: "58% center",
+      detailPosition: "center 36%",
+      detailRatio: "1.15",
       description:
         "하숙집을 정리하던 두 친구에게 나타난 부치지 않은 편지. 잊고 지냈던 여름의 오후가 다시 펼쳐진다.",
       keywords: "여름 편지 친구 따뜻한 다정한 짧은 단편",
@@ -40,6 +44,8 @@
       moodText: "고요한 긴장",
       image: "greenhouse",
       position: "50% center",
+      detailPosition: "center 28%",
+      detailRatio: "1.2",
       description:
         "버려진 온실에 매일 자정, 불이 켜진다. 사라진 관리자의 일지를 따라 연구원은 닫힌 문 너머로 향한다.",
       keywords: "밤 온실 숲 미스터리 추리 긴장 식물",
@@ -54,6 +60,8 @@
       moodText: "낯선 경이",
       image: "orbit",
       position: "63% center",
+      detailPosition: "center 6%",
+      detailRatio: "1.35",
       description:
         "지구로 돌아갈 날을 기다리는 우주 기록원. 마지막 메시지 한 통이 고요한 관측 기지의 일상을 바꾼다.",
       keywords: "우주 행성 미래 SF 새로운 세계 경이",
@@ -68,6 +76,8 @@
       moodText: "다정한 온기",
       image: "windows",
       position: "48% center",
+      detailPosition: "center 14%",
+      detailRatio: "1.45",
       description:
         "서로의 이름도 모르던 아파트 이웃들. 멈춰버린 엘리베이터가 스쳐 지나가던 사람들을 한자리에 모은다.",
       keywords: "도시 이웃 아파트 저녁 따뜻한 일상 단편",
@@ -83,6 +93,8 @@
       image: "forest",
       posterPath: "assets/frames-v24/forest.webp",
       position: "48% center",
+      detailPosition: "center 54%",
+      detailRatio: "1.55",
       description:
         "물길과 잎사귀, 빛이 머무는 자리를 따라 걷는 숲. 설명 대신 풍경의 소리에 귀 기울이는 21분의 산책.",
       keywords: "자연 숲 다큐 산책 힐링 잔잔한 편안한 짧은",
@@ -98,6 +110,8 @@
       image: "bluehour",
       posterPath: "assets/frames-v24/bluehour.webp",
       posterPosition: "90% center",
+      detailPosition: "82% center",
+      detailRatio: "1.55",
       description:
         "서로 다른 도시에서 지내던 두 친구가 고향의 바닷가에서 다시 만난다. 자전거를 타고 함께 보내는 오후, 각자의 속도로 흘러가던 하루가 나란히 이어진다.",
       keywords:
@@ -113,6 +127,8 @@
       moodText: "낯선 경이",
       image: "atlas",
       posterPath: "assets/frames-v24/atlas.webp",
+      detailPosition: "center 4%",
+      detailRatio: "1.25",
       description:
         "종이별을 접으면 밤하늘에 별이 하나 생긴다. 더는 별을 만들 수 없게 된 아이는 마지막 한 장에 누구의 소원을 담을지 고민한다.",
       keywords: "애니 애니메이션 종이 별 밤하늘 판타지 상상 소원 아이 경이로운",
@@ -127,6 +143,8 @@
       moodText: "다정한 온기",
       image: "rooftop",
       posterPath: "assets/posters-v13/rooftop.webp",
+      detailPosition: "center 47%",
+      detailRatio: "1.18",
       description:
         "철거를 앞둔 연습실의 마지막 밤, 해체한 밴드가 옥상에 모인다. 관객 한 명을 위한 연주가 서로에게 하지 못한 말을 대신한다.",
       keywords: "음악 밴드 공연 옥상 청춘 친구 연주 기타 따뜻한",
@@ -141,6 +159,8 @@
       moodText: "고요한 긴장",
       image: "signal",
       posterPath: "assets/posters-v13/signal.webp",
+      detailPosition: "center 60%",
+      detailRatio: "1.2",
       description:
         "폐쇄된 중계소에서 자신의 목소리가 담긴 구조 요청을 받은 통신 기사. 아직 일어나지 않은 사고를 막기 위해 신호의 발신지를 추적한다.",
       keywords: "미스터리 추리 통신 신호 라디오 중계소 긴장되는 구조",
@@ -155,6 +175,8 @@
       moodText: "함께하는 용기",
       image: "relay",
       posterPath: "assets/posters-v13/relay.webp",
+      detailPosition: "center 28%",
+      detailRatio: "1.1",
       description:
         "부상 후 트랙을 떠나려던 육상 선수에게 마지막 계주 출전 제안이 온다. 혼자 빠르게 달리는 법만 알던 그는 동료에게 바통을 건네는 법을 배운다.",
       keywords: "스포츠 육상 달리기 계주 트랙 바통 동료 도전 용기 따뜻함 따뜻한",
@@ -169,6 +191,8 @@
       moodText: "다정한 온기",
       image: "nocturne",
       posterPath: "assets/posters-v13/nocturne.webp",
+      detailPosition: "center 60%",
+      detailRatio: "1.2",
       description:
         "새벽 두 시에만 문을 여는 작은 식당. 긴 하루를 마친 손님과 말수가 적은 주인은 식어가는 국 한 그릇을 사이에 두고 천천히 이야기를 시작한다.",
       keywords: "드라마 새벽 식당 식탁 음식 위로 대화 따뜻한 일상",
@@ -1225,6 +1249,7 @@
     });
     if (!dialog.open) dialog.showModal();
     dialog.scrollTop = 0;
+    dialog.querySelector(".dialog-scroll")?.scrollTo({ top: 0, behavior: "instant" });
     document.body.classList.add("dialog-open");
     heading.focus({ preventScroll: true });
   }
@@ -1304,8 +1329,8 @@
     detailImage.alt = `${film.title}의 가상 영화 포스터`;
     detailImage.width = 800;
     detailImage.height = 1200;
-    detailImage.style.objectPosition = film.posterPosition || "center";
-    detailImage.style.setProperty("--detail-poster-position", film.posterPosition || "center 20%");
+    detailImage.style.objectPosition = film.detailPosition || film.posterPosition || "center";
+    $("detailDialog").style.setProperty("--detail-image-ratio", film.detailRatio || "1.4");
     detailImage.src = posterPath(film);
     // Keep the previous film's poster hidden until the new source is ready.
     // A failed image still reveals its alternative text instead of staying blank.
