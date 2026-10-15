@@ -81,6 +81,7 @@
       mood: "calm",
       moodText: "잔잔한 여운",
       image: "forest",
+      posterPath: "assets/frames-v24/forest.webp",
       position: "48% center",
       description:
         "물길과 잎사귀, 빛이 머무는 자리를 따라 걷는 숲. 설명 대신 풍경의 소리에 귀 기울이는 21분의 산책.",
@@ -95,7 +96,8 @@
       mood: "warm",
       moodText: "다정한 모험",
       image: "bluehour",
-      posterPath: "assets/posters-v13/bluehour.webp",
+      posterPath: "assets/frames-v24/bluehour.webp",
+      posterPosition: "90% center",
       description:
         "서로 다른 도시에서 지내던 두 친구가 고향의 바닷가에서 다시 만난다. 자전거를 타고 함께 보내는 오후, 각자의 속도로 흘러가던 하루가 나란히 이어진다.",
       keywords:
@@ -110,7 +112,7 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "atlas",
-      posterPath: "assets/posters-v13/atlas.webp",
+      posterPath: "assets/frames-v24/atlas.webp",
       description:
         "종이별을 접으면 밤하늘에 별이 하나 생긴다. 더는 별을 만들 수 없게 된 아이는 마지막 한 장에 누구의 소원을 담을지 고민한다.",
       keywords: "애니 애니메이션 종이 별 밤하늘 판타지 상상 소원 아이 경이로운",
@@ -178,12 +180,12 @@
       name: "파란 숨 고르기",
       number: "01",
       article: "faces",
-      previewDescription: "고요한 풍경과 느린 대화에 머무는 네 편",
-      previewImage: "assets/stills/forest.webp",
+      previewDescription: "파도·숲의 소리, 재회와 새벽 대화",
+      previewImage: "assets/frames-v24/forest.webp",
       glimpseImage: "assets/stills/tide.webp",
-      imageAlt: "안개와 햇빛이 내려앉은 숲의 개울",
+      imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
       accent: "#9CBFDF",
-      descriptionLines: ["풍경과 느린 대화로 마음을 돌아보는 네 편."],
+      descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
         tide: "아버지가 남긴 소리를 따라 돌아가는 마음.",
@@ -197,12 +199,12 @@
       name: "다정한 반전",
       number: "02",
       article: "running-time",
-      previewDescription: "작은 용기가 관계를 바꾸는 네 편",
+      previewDescription: "편지·연주·계주로 다시 잇는 관계",
       previewImage: "assets/stills/letters.webp",
       glimpseImage: "assets/stills/windows.webp",
       imageAlt: "햇살이 드는 창가, 나무 책상 위에 놓인 편지",
       accent: "#EDBA88",
-      descriptionLines: ["서로에게 내딛는 작은 용기가 관계를 바꾸는 네 편."],
+      descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
         letters: "부치지 못한 편지가 다시 잇는 우정.",
@@ -216,12 +218,12 @@
       name: "상상 바깥으로",
       number: "03",
       article: "enclosed-spaces",
-      previewDescription: "낯선 규칙으로 일상을 벗어나는 네 편",
+      previewDescription: "온실의 비밀, 종이별과 미래의 신호",
       previewImage: "assets/stills/orbit.webp",
       glimpseImage: "assets/stills/greenhouse.webp",
       imageAlt: "우주 관측 기지의 넓은 창 너머로 보이는 행성과 고리",
       accent: "#C3B6EC",
-      descriptionLines: ["낯선 신호와 규칙이 익숙한 일상을 흔드는 네 편."],
+      descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
         greenhouse: "자정의 불빛이 이끄는 닫힌 온실의 비밀.",
@@ -891,7 +893,7 @@
           : "아직 메모를 남긴 영화가 없어요."
         : "조건에 맞는 영화가 없어요.";
     $("emptyText").textContent = emptyLibrary
-      ? "마음에 드는 영화를 찜해 모아보세요."
+      ? "찜하거나 관심 메모를 남긴 작품을 모아보세요."
       : emptyCategory
         ? "다른 분류에서 영화를 찾아보세요."
         : state.view === "saved"
@@ -1145,6 +1147,17 @@
       ? "메모를 저장했어요."
       : "이 페이지에서만 보관 중이에요. 새로고침하면 사라집니다.";
   }
+  function updateNoteShortcut() {
+    $("detailNote").textContent = noteDrafts.has(activeDetailId)
+      ? "메모 이어쓰기"
+      : state.notes[activeDetailId]
+        ? "메모 수정하기"
+        : "메모 남기기";
+    $("detailNote").setAttribute(
+      "aria-expanded",
+      String($("noteDisclosure").open),
+    );
+  }
   function updateNoteCount() {
     $("noteCount").textContent = `${$("noteText").value.length}/280`;
     const hasSavedNote = Boolean(state.notes[activeDetailId]);
@@ -1154,6 +1167,7 @@
       hasSavedNote || noteDrafts.has(activeDetailId)
         ? "관심 메모"
         : "관심 메모 남기기";
+    updateNoteShortcut();
   }
   function loadNote() {
     if (
@@ -1206,10 +1220,12 @@
     $("detailImage").alt = `${film.title}의 가상 영화 포스터`;
     $("detailImage").width = 800;
     $("detailImage").height = 1200;
-    $("detailImage").style.objectPosition = "center";
+    $("detailImage").style.objectPosition = film.posterPosition || "center";
+    $("detailImage").style.setProperty("--detail-poster-position", film.posterPosition || "center 20%");
     $("detailSave").dataset.save = id;
     loadNote();
     $("noteDisclosure").open = Boolean(state.notes[id] || noteDrafts.has(id));
+    updateNoteShortcut();
     updateSaveButtons();
     openDialog($("detailDialog"), trigger, $("detailTitle"));
   }
@@ -1234,6 +1250,13 @@
     $("articleFilmLink").textContent = `${film.title} 작품 보기`;
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
+  $("detailNote").addEventListener("click", () => {
+    if (!activeDetailId || !$("detailDialog").open) return;
+    $("noteDisclosure").open = true;
+    updateNoteShortcut();
+    $("noteText").focus();
+  });
+  $("noteDisclosure").addEventListener("toggle", updateNoteShortcut);
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
     updateNoteCount();

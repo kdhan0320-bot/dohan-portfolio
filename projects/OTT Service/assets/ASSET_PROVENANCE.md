@@ -1,8 +1,43 @@
 # 잔상관 Asset Provenance
 
-최신 수정일: 2026-10-11 (한국 시간)
+최신 수정일: 2026-10-15 (한국 시간)
 
-## v22 현재 사용 범위 — 2026-10-11
+## v24 현재 사용 범위 — 2026-10-15
+
+- 내장 OpenAI `image_gen.imagegen`로 가상 영화 이미지 3장을 생성했습니다. 모델 세부 버전은 도구가 제공하지 않아 추정하지 않습니다. '파란 오후'는 기존 자체 생성 장면을 인물·배경의 연속성 참고로 입력했고, 나머지 두 장은 외부 참조 이미지 없이 생성했습니다.
+- '파란 오후'는 두 친구가 자전거를 세우고 쉬는 장면, '별을 접는 아이'는 마지막 종이와 별을 생각하는 아이, '숲의 호흡'은 잎과 돌 사이 물길을 중심으로 표현했습니다. 작품의 가상 줄거리와 시각 소재를 맞추려는 아트디렉션이며 실제 촬영물·수작업 원화로 주장하지 않습니다.
+- 배포 파일은 생성 원본의 픽셀 크기를 유지하고 WebP quality 88로 인코딩했습니다. 그림 내용의 추가 합성·수정·크롭은 하지 않았습니다. 화면의 가로 장면·세로 포스터에 맞는 크롭은 CSS object-fit/object-position으로 처리합니다. 원본 및 이전 프로젝트 자산은 삭제하지 않았습니다.
+- 홈 대표 장면과 '파란 오후' 포스터는 `frames-v24/bluehour.webp`, '별을 접는 아이' 포스터는 `frames-v24/atlas.webp`, '숲의 호흡' 포스터와 큐레이션 대표 장면은 `frames-v24/forest.webp`를 사용합니다. 나머지 기존 포스터·스틸과 HTML/CSS 작품 타이포그래피를 유지합니다.
+- 가상 작품·AI 생성 이미지 고지를 유지합니다. AI 느낌에 관한 실제 사용자 조사나 채용 효과 검증을 수행하지 않았습니다.
+
+| 파일 | 치수 | 용량 | SHA-256 |
+| --- | --- | ---: | --- |
+| `frames-v24/bluehour.webp` | 1774×887 | 306,744 B | `913f845e627d7bc7525c3234f0ab3bda2a72dfd5d879ec042d21b84e7bef8b47` |
+| `frames-v24/atlas.webp` | 1024×1536 | 218,006 B | `3a5ba278fbda1fc6f7ae116e1a97940874ce11be0d30f7df7f598aec09f374f1` |
+| `frames-v24/forest.webp` | 1672×941 | 495,082 B | `1745de8353262c62118a6a863979a423257065deec601c5532ed66fceb425378` |
+
+### v24 생성 프롬프트
+
+**bluehour**
+
+```text
+Use case: illustration-story. Create a new wide animation still for the fictional short film '파란 오후' (Blue Afternoon), using the supplied image only as continuity reference for the two friends, bicycles and seaside setting. Art direction: intimate Korean independent 2D short animation, restrained hand-painted gouache backgrounds, simple matte cel shapes, visible pencil edges, ordinary quiet seaside road on a hazy afternoon. Two old friends stand with their bicycles after meeting again, looking toward the water in an unposed pause. Keep one young woman with short dark hair, pale blue shirt and rust shoulder bag, one young man with dark hair and muted sage jacket. Medium-distant shot, figures and bicycles grouped in the right half, both faces well within right two thirds for mobile crop. Left third is quiet shaded wall/path for website heading overlay. Horizon calm, very few simple low buildings, soft grey blue water with a few broad brush marks. Palette muted sky blue, warm grey, dull sage, small rust accent. Wide panoramic 2:1 composition. Avoid glossy anime faces, golden hour flare, giant clouds, hyper-detailed architecture, sparkles, saturated gradients, epic fantasy, photorealism and ornamental abundance. No text, logos, borders or credits.
+```
+
+**atlas**
+
+```text
+Use case: illustration-story. Create a portrait 2:3 poster image for a fictional independent animated short called The Paper Constellation. Story: every folded paper star makes one star appear in the night sky; a child has only one sheet left and wonders whose wish to put in it. Focus the image on that specific small decision. Matte cut-paper and coloured-pencil animation still: a small child seen in three-quarter back view sits at a simple wooden table by an open window, gently holding one partly folded warm ivory paper star, a single remaining rectangular sheet on the table. Outside the window is an uneven deep ink blue sky with only a handful of small paper-like stars. Intimate room, modest objects, deliberate negative space. Child/table around upper middle and central area, lower quarter dark quiet room kept clear for an HTML film title. Flat tactile shapes, imperfect cut edges, subtle paper fibres, warm ochre lamplight without glow effects, dark indigo and muted dusty lilac. Distinctive quiet graphic composition, no polished 3D render, no dragons or magical animals, no castles, no giant moon, no galaxies, no glitter, no floating books, no cinematic ray effects. No lettering, no typography, no watermarks or awards.
+```
+
+**forest**
+
+```text
+Use case: photorealistic-natural. Wide 16:9 observational nature documentary frame for a fictional short film about water, leaves, and the sound of a forest. A modest shallow woodland stream in a temperate Korean deciduous forest after light rain, viewed close to ground level. Wet brown leaves, small irregular rocks, tiny ripples, soft green foliage, slim tree trunks. Midground water and a naturally bent branch form the centre of the composition, with enough vertical detail in the central third to also work as a portrait crop. Diffuse overcast daylight, realistic subdued greens and earthy browns, no people. A patient ordinary location observed attentively, lightly imperfect documentary camera framing, fine natural film grain. No panoramic mountain peaks, waterfalls, bridges, dreamy mist, beams of sunlight, lens flare, fantasy forest, symmetrical composition, hyperreal HDR, oversaturated emerald colour or advertising polish. No typography, no logo, no borders. Image should feel like one quiet moment of a short film, not a travel destination advert.
+```
+
+
+## 이전 이력: v22 사용 범위 — 2026-10-11
 
 - 영화 12편의 포스터는 기존 `posters-v8/` 6장과 `posters-v13/` 6장을 유지합니다. 홈 대표 장면은 `posters-v13/bluehour-hero.webp`입니다.
 - 큐레이션 대표 이미지는 기존 가로 스틸 `stills/forest.webp`, `stills/letters.webp`, `stills/orbit.webp`를 재사용합니다. 홈 큐레이션은 숲·`stills/tide.webp`·파란 오후의 가로 장면을 조합합니다.

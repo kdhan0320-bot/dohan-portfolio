@@ -121,6 +121,7 @@ em { font-style: normal; }
 .spotlight-title { color: var(--text); font-size: 18px; font-weight: 450; letter-spacing: -.025em; line-height: 1.6; white-space: nowrap; }
 .spotlight-meta { color: var(--muted); font-size: 13px; white-space: nowrap; }
 .spotlight-meta span { margin-left: 10px; }
+.spotlight-meta .spotlight-genre { margin-left: 0; }
 .spotlight-caption .text-link { margin-left: auto; flex: none; white-space: nowrap; }
 .discovery-tools { display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 26px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .home-films .duration-field label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
@@ -431,6 +432,8 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
 [data-film-id="bluehour"] {
   --film-color: #f2fbff;
 }
+[data-film-id="bluehour"] .film-art img,
+.library-mini-item[data-detail="bluehour"] img { object-position: 90% center; }
 [data-film-id="bluehour"] .film-art::after,
 [data-film-id="atlas"] .film-art::after {
   inset: 42% 0 0;
@@ -687,12 +690,12 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .empty-state p { font-size: 15px; }
   .storage-note { font-size: 12px; }
   .theme-overview { gap: 34px; }
-  .theme-preview, .theme-preview:first-child { display: block; }
+  .theme-preview, .theme-preview:first-child { display: block; position: relative; }
   .theme-preview-image, .theme-preview:first-child .theme-preview-image { aspect-ratio: 1.55; }
-  .theme-preview-copy, .theme-preview:first-child .theme-preview-copy { padding: 20px 12px 16px; }
+  .theme-preview-copy, .theme-preview:first-child .theme-preview-copy { padding: 16px 12px 14px; }
   .theme-preview h3 { font-size: 26px; }
   .theme-preview-description { margin-top: 9px; font-size: 15px; }
-  .theme-preview-meta { margin-top: 10px; }
+  .theme-preview-meta { position: absolute; top: 24px; right: 24px; width: auto; gap: 12px; margin: 0; padding: 6px 9px; border: 1px solid #ffffff33; border-radius: 3px; background: #181c1be8; color: #f0ece5; }
   .theme-tabs { gap: 7px; margin-bottom: 24px; }
   .theme-tabs a { font-size: 14px; padding-inline: 10px; gap: 5px; }
   .theme-tabs a > span { display: none; }
@@ -710,7 +713,7 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .close-button { top: 12px; right: 12px; width: 44px; height: 44px; }
   .detail-layout { grid-template-columns: 1fr; }
   .detail-visual { min-height: 0; height: 240px; }
-  .detail-visual img { object-position: center 20% !important; }
+  .detail-visual img { object-position: var(--detail-poster-position, center 20%) !important; }
   .detail-content { padding: 26px 22px; }
   .detail-content h2 { font-size: 28px; margin-top: 12px; }
   .detail-meta { margin-top: 13px; font-size: 14px; }
@@ -774,12 +777,16 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
   .discovery-copy { width: 100%; padding: 18px 24px 22px; }
   .discovery-copy h1 { font-size: clamp(29px,8.3vw,36px); line-height: 1.35; }
   .discovery-intro { max-width: 280px; margin-top: 10px; font-size: 15px; line-height: 1.75; }
-  .discovery-copy .button { margin-top: 16px; min-height: 46px; padding: 11px 18px; font-size: 14px; }
-  .spotlight-caption { left: 10px; right: 10px; bottom: 10px; gap: 8px; padding: 8px 12px; background: #161d22ed; }
+  /* The visible mood filters directly below are the mobile discovery action. */
+  .discovery-copy .button { display: none; margin-top: 16px; min-height: 46px; padding: 11px 18px; font-size: 14px; }
+  .spotlight-caption { left: auto; right: 10px; bottom: 10px; gap: 12px; padding: 6px 10px; background: #161d22ed; }
   .spotlight-label { font-size: 12px; }
-  .spotlight-film { gap: 0 10px; }
+  .spotlight-label { display: none; }
+  .spotlight-film { display: flex; align-items: center; gap: 10px; }
   .spotlight-title { font-size: 17px; }
   .spotlight-meta { font-size: 12px; }
+  .spotlight-meta .spotlight-genre { display: none; }
+  .spotlight-meta span { margin-left: 0; }
   .spotlight-caption .text-link { padding-left: 4px; }
   .spotlight-caption .icon { margin-left: 8px; }
   .home-films { margin-top: 32px; }
@@ -812,7 +819,7 @@ dialog::backdrop { background: #090909d9; backdrop-filter: blur(6px); }
 @media (max-width: 359px) {
   .discovery-copy { padding-inline: 20px; }
   .discovery-copy h1 { font-size: 29px; }
-  .spotlight-caption { left: 8px; right: 8px; padding-inline: 8px; }
+  .spotlight-caption { left: auto; right: 8px; padding-inline: 8px; }
   .spotlight-film { column-gap: 8px; }
   .spotlight-meta span { margin-left: 5px; }
   .curation-feature-copy { padding-inline: 16px; }
