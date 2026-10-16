@@ -9,10 +9,8 @@
 }
 .login-task-first .login-story { grid-column: 1; grid-row: 1; min-height: 0; padding: 44px 0; background: transparent; }
 .login-task-first .login-story-center { margin: 48px 0 32px; padding: 0; }
-.login-task-first .login-story-center .login-demo { margin-top: 28px; }
 .login-task-first .login-purpose { margin: 0 0 16px; color: var(--ink-action); font-size: 14px; line-height: 1.5; font-weight: 500; }
 .login-task-first .login-story-description { margin: 20px 0 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
-.login-task-first .login-demo small { color: var(--muted); font-size: 13px; }
 .login-task-first .login-foot { min-height: 44px; display: flex; align-items: center; font-size: 13px; }
 .login-task-first .login-form-section { grid-column: 2; grid-row: 1; width: 100%; max-width: 500px; margin: 0; padding: 36px; justify-content: flex-start; box-shadow: 0 16px 48px #263A5410; }
 .login-task-first .login-form-section::before { position: absolute; top: -1px; left: 36px; width: 13px; height: 25px; margin: 0; }
@@ -20,8 +18,11 @@
 .login-task-first .login-form-section h1,
 .auth-recovery-card h1 { margin: 0 0 12px; font-size: 27px; font-weight: 500; line-height: 1.45; letter-spacing: -.04em; color: var(--ink); }
 .login-task-first .login-story h2 { margin: 0; font-size: clamp(35px, 3.5vw, 46px); font-weight: 500; line-height: 1.35; letter-spacing: -.035em; color: var(--ink); }
-.login-task-first .login-form-brand,
-.login-task-first .login-mobile-demo { display: none; }
+.login-task-first .login-form-brand { display: none; }
+.login-sample-entry { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.login-sample-entry .MuiButton-root { min-height: 48px; border-radius: 8px; font-size: 15px; font-weight: 500; }
+.login-sample-entry p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; text-align: center; }
+.auth-sample-note { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
 .auth-help-description { margin: 0; font-size: 14px; line-height: 1.65; color: var(--muted); }
 .auth-help-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 8px; margin-top: 12px; }
 .auth-help-actions .MuiButton-root { min-height: 44px; padding-inline: 0; font-size: 13px; font-weight: 400; }
@@ -41,8 +42,6 @@
   .login-task-first .login-form-brand { display: flex; align-items: center; min-height: 44px; margin: -8px 0 24px; padding-right: 90px; }
   .login-task-first .login-back.MuiButton-root { position: absolute; right: 20px; top: 20px; margin: 0; min-height: 44px; font-size: 13px; }
   .login-task-first .login-story { display: none; }
-  .login-task-first .login-mobile-demo { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 16px; padding-top: 20px; border-top: 1px solid var(--line); }
-  .login-mobile-demo small { color: var(--muted); font-size: 12px; line-height: 1.6; text-align: center; }
 }
 
 @media (max-width: 599px) {

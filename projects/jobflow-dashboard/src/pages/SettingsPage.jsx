@@ -146,7 +146,7 @@ const SettingsPage = () => {
             <p>로그인하고 내 지원 기록을 저장하세요.</p>
             <p className="settings-note">체험 중 수정한 샘플은 옮겨지지 않아요.</p>
           </div>
-          <Button variant="contained" onClick={handleLogout}>내 기록 시작하기</Button>
+          <Button variant="contained" onClick={() => navigate('/login')}>내 기록 시작하기</Button>
         </section>
       </div>
       {saved && <Alert severity="success" sx={{ mt: 2 }}>샘플 기록을 초기화했어요.</Alert>}

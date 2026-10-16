@@ -30,7 +30,7 @@ export default function LoginPage() {
   const [fields, setFields] = useState({});
   const [busy, setBusy] = useState(false);
   const [cooldown, setCooldown] = useState(readEmailCooldown);
-  const { authError, signIn, signUp, enterGuestMode, requestPasswordReset, resendConfirmation } = useAuth();
+  const { authError, isGuest, signIn, signUp, enterGuestMode, requestPasswordReset, resendConfirmation } = useAuth();
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -124,12 +124,16 @@ export default function LoginPage() {
     }
   }
 
-  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : tab === 0 ? '다시 만나 반가워요' : '내 지원 현황 만들기';
+  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : tab === 0 ? '내 지원 기록 열기' : '내 지원 기록 만들기';
   return <main className="login-shell login-task-first">
     <section className="login-form-section" aria-labelledby="login-title">
       <div className="login-form-brand"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
       <Button component={Link} to="/welcome" className="login-back">서비스 소개</Button>
       <h1 id="login-title">{heading}</h1>
+      <div className="login-sample-entry">
+        <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>샘플 체험하기</Button>
+        <p>{isGuest ? '작성하던 샘플을 이어서 볼 수 있어요.' : '가입 없이 이용 · 새로고침하면 초기화'}</p>
+      </div>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);
         setPassword('');
@@ -143,6 +147,7 @@ export default function LoginPage() {
       </Tabs>}
       <form onSubmit={submit} noValidate>
         {!isAuthConfigured && <p className="auth-preview-note">미리보기에서는 샘플 체험만 가능합니다.</p>}
+        {isGuest && !helpMode && <p className="auth-sample-note">로그인하면 샘플의 작성 내용은 계정에 옮겨지지 않아요.</p>}
         {(error || (!helpMode && authError)) && <Alert severity="error">{error || authError}</Alert>}
         {success && <Alert severity="success" role="status">{success}</Alert>}
         {!helpMode && tab === 1 && <Field label="이름 (선택)" placeholder="이름을 입력해주세요" autoComplete="name" value={displayName} onChange={event => setDisplayName(event.target.value)} disabled={busy} />}
@@ -166,7 +171,6 @@ export default function LoginPage() {
         <Button disabled={busy} onClick={() => changeMode('recovery')}>비밀번호를 잊었나요?</Button>
         <Button disabled={busy} onClick={() => changeMode('confirmation')}>인증 이메일 다시 받기</Button>
       </div>}
-      <div className="login-mobile-demo"><Button variant="outlined" fullWidth onClick={demo} disabled={busy}>샘플 체험하기</Button><small>가입 없이 체험 · 새로고침하면 초기화</small></div>
     </section>
     <section className="login-story" aria-label="갈피록 소개">
       <div className="login-brand-row"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
@@ -174,7 +178,6 @@ export default function LoginPage() {
         <p className="login-purpose">개인 입사지원 관리</p>
         <h2>어디에 지원했는지,<br />한눈에.</h2>
         <p className="login-story-description">지원할 회사를 기록하고,<br />마감과 준비할 일을 이어서 관리해요.</p>
-        <div className="login-demo"><Button variant="outlined" onClick={demo} disabled={busy}>가입 없이 둘러보기</Button><small>가상 회사로 체험 · 새로고침하면 초기화</small></div>
       </div>
       <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a>
     </section>

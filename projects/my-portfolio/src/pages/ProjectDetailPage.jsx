@@ -21,18 +21,21 @@ const imageDimensions = (aspectRatio) => {
 };
 const cropVariables = (media) => {
   if (!media.crop) return undefined;
-  const { x, y, width, height } = media.crop;
   const original = imageDimensions(media.aspectRatio);
+  const variables = ({ x, y, width, height }, prefix) => ({
+    [`--${prefix}-ratio`]: `${width} / ${height}`,
+    [`--${prefix}-image-width`]: `${original.width / width * 100}%`,
+    [`--${prefix}-left`]: `${-x / width * 100}%`,
+    [`--${prefix}-top`]: `${-y / height * 100}%`,
+  });
   return {
-    '--crop-ratio': `${width} / ${height}`,
-    '--crop-image-width': `${original.width / width * 100}%`,
-    '--crop-left': `${-x / width * 100}%`,
-    '--crop-top': `${-y / height * 100}%`,
+    ...variables(media.crop, 'crop'),
+    ...(media.mobileCrop ? variables(media.mobileCrop, 'mobile-crop') : {}),
   };
 };
 
 const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
-  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${media.crop ? `case-figure--cropped ${media.mobile ? 'case-figure--crop-responsive' : ''}` : ''} ${className}`} style={media.frameWidth ? { '--frame-width': `${media.frameWidth}px` } : undefined}>
+  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${media.crop ? `case-figure--cropped ${media.mobile ? 'case-figure--crop-responsive' : ''} ${media.mobileCrop ? 'case-figure--mobile-crop' : ''}` : ''} ${className}`} style={media.frameWidth ? { '--frame-width': `${media.frameWidth}px` } : undefined}>
     <div className="case-figure__surface" style={cropVariables(media)}>
       {media.mobile ? <picture className="case-responsive-image">
         <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} {...imageDimensions(media.mobile.aspectRatio)} />
@@ -40,8 +43,8 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
       </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} {...imageDimensions(media.aspectRatio)} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
     </div>
     <figcaption>
-      <span className={media.mobile?.label ? 'case-caption-desktop' : undefined}>{label || '화면 상세'}</span>
-      {media.mobile?.label && <span className="case-caption-mobile">{media.mobile.label}</span>}
+      <span className={media.mobile?.label || media.mobileCrop?.label ? 'case-caption-desktop' : undefined}>{label || '화면 상세'}</span>
+      {(media.mobile?.label || media.mobileCrop?.label) && <span className="case-caption-mobile">{media.mobile?.label || media.mobileCrop.label}</span>}
       <a className={media.mobile ? 'case-original-desktop' : undefined} href={mediaUrl(media.original || media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
         {media.original ? '전체 화면 보기' : '원본 보기'}
       </a>
@@ -113,6 +116,27 @@ const ScreenComparison = ({ decision }) => <div className={`case-comparison${dec
     </a>}
   </p>
 </div>;
+
+const WorkspaceComparison = ({ decision }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const panelId = useId();
+  const { comparison } = decision;
+  const states = [
+    { label: comparison.beforeHeading, caption: comparison.beforeLabel, summary: comparison.beforeSummary, media: comparison.before },
+    { label: comparison.afterHeading, caption: comparison.afterLabel, summary: comparison.afterSummary, media: decision.media },
+  ];
+  const selected = states[selectedIndex];
+  return <div className="case-workspace-comparison">
+    <div className="case-workspace-comparison__controls" role="group" aria-label="같은 위치의 필터 결과 비교">
+      {states.map((state, index) => <button key={state.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>{state.label}</button>)}
+    </div>
+    <div id={panelId}>
+      <ScreenFigure key={selected.media.src} media={selected.media} label={selected.caption} />
+      <p className="case-comparison__summary" aria-live="polite" aria-atomic="true">{selected.summary}</p>
+    </div>
+    <p className="case-comparison__note">{comparison.note}</p>
+  </div>;
+};
 
 const ExternalAction = ({ href, children, primary = false }) => href ? (
   <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>
@@ -257,7 +281,7 @@ const ProjectDetailPage = () => {
                     <dt>{item.label}</dt><dd>{item.text}</dd>
                   </div>)}</dl>}
                 </div>
-                {decision.comparison ? decision.comparison.disclosure ? <details className="case-comparison-details">
+                {decision.comparison?.layout === 'workspace' ? <WorkspaceComparison decision={decision} /> : decision.comparison ? decision.comparison.disclosure ? <details className="case-comparison-details">
                   <summary>{decision.comparison.disclosure}</summary>
                   <ScreenComparison decision={decision} />
                 </details> : <ScreenComparison decision={decision} /> : decision.showMedia && (decision.mediaChoices ? <ScreenChoices choices={decision.mediaChoices} /> : decision.reference ? <div>

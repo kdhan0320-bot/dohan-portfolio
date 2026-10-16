@@ -170,8 +170,11 @@ export const AuthProvider = ({
     if (error) throw createAuthError(error);
     forgetRecovery(recoveryStorage());
     setRecoveryUserId(null);
-    persistGuestMode(false);
-    setIsGuest(false);
+    // Waiting for an email confirmation has not opened an account workspace yet.
+    if (data.session?.user) {
+      persistGuestMode(false);
+      setIsGuest(false);
+    }
     return {
       data,
       requiresEmailConfirmation: Boolean(data.user && !data.session)

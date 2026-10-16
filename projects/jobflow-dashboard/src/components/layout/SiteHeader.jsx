@@ -27,7 +27,7 @@ const activePath = (pathname, to) => {
 };
 
 export default function SiteHeader({ publicMode = false }) {
-  const { user, isGuest, enterGuestMode, signOut, loading } = useAuth();
+  const { user, isGuest, enterGuestMode, loading } = useAuth();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,12 +76,12 @@ export default function SiteHeader({ publicMode = false }) {
       setBusy(false);
     }
   }
-  async function openAccount(fromDrawer = false) {
+  function openAccount(fromDrawer = false) {
     if (loading || navigationLock.current) return;
     navigationLock.current = true;
     setBusy(true);
     try {
-      if (isGuest) await signOut();
+      // Opening the login screen is navigation, not leaving the sample workspace.
       if (fromDrawer) {
         closeFocusRef.current = 'content';
         setMobileOpen(false);

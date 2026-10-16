@@ -302,7 +302,7 @@ export default function InterviewPage() {
     </Empty>
   </div>)}
   </div>
-  <Dialog aria-labelledby="note-dialog-title" open={open} onClose={requestClose} slotProps={{ transition: { onEntered: focusEditorField } }} fullWidth maxWidth="sm">
+  <Dialog className="record-editor-dialog" aria-labelledby="note-dialog-title" open={open} onClose={requestClose} slotProps={{ transition: { onEntered: focusEditorField } }} fullWidth maxWidth="sm">
     <form onSubmit={submit} noValidate>
       <DialogTitle id="note-dialog-title">{editingId ? '면접 질문 수정' : '면접 질문 기록'}</DialogTitle>
       <DialogContent>
@@ -312,7 +312,7 @@ export default function InterviewPage() {
           {formError && <Alert severity="error">
             {formError}
           </Alert>}
-          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
           <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} slotProps={{ select: { displayEmpty: true } }} onChange={event => changeForm({ ...form, application_id: event.target.value || null })}>
             <MenuItem value="">공통 질문 · 회사 연결 안 함</MenuItem>
             {form.application_id && !companyMap.has(form.application_id) && <MenuItem value={form.application_id} disabled>연결한 회사 없음 · 다시 선택해주세요</MenuItem>}

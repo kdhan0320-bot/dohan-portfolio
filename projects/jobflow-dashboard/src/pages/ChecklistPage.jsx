@@ -312,11 +312,11 @@ export default function ChecklistPage() {
       <MenuItem onClick={() => chooseTaskAction('edit')}><EditOutlined fontSize="small" />할 일 수정</MenuItem>
       <MenuItem onClick={() => chooseTaskAction('delete')}><DeleteOutline fontSize="small" />할 일 삭제</MenuItem>
     </Menu>
-    <Dialog className="checklist-edit-dialog" open={adding} onClose={closeAdd} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="add-task-dialog-title" fullWidth maxWidth="sm">
+    <Dialog className="checklist-edit-dialog record-editor-dialog" open={adding} onClose={closeAdd} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="add-task-dialog-title" fullWidth maxWidth="sm">
       <form onSubmit={submit} noValidate>
         <DialogTitle id="add-task-dialog-title">할 일 추가</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
-          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
           <Field id="task-title" label="할 일" required autoFocus value={title} onChange={e => changeNew('title', e.target.value)} error={Boolean(inputError)} helperText={inputError} slotProps={{ formHelperText: { role: 'alert' } }} placeholder="예: 자기소개서 마지막 문단 다듬기" disabled={Boolean(busy)} />
           <div className="checklist-dialog-options">
             <Field id="task-company" label="연결할 회사" select value={applicationId} onChange={e => changeNew('application_id', e.target.value || null)} disabled={Boolean(busy)} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(applicationId)}</Field>
@@ -328,12 +328,12 @@ export default function ChecklistPage() {
         <DialogActions><Button disabled={Boolean(busy)} onClick={closeAdd}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>{busy === 'add' ? '저장 중…' : '추가 저장'}</Button></DialogActions>
       </form>
     </Dialog>
-    <Dialog className="checklist-edit-dialog" open={Boolean(editing)} onClose={closeEdit} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
+    <Dialog className="checklist-edit-dialog record-editor-dialog" open={Boolean(editing)} onClose={closeEdit} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">
       <form onSubmit={saveEdit} noValidate>
         <DialogTitle id="edit-task-dialog-title">할 일 수정</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
           {editError && <Alert severity="error">{editError}</Alert>}
-          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
           <Field id="edit-task-title" label="할 일" required autoFocus value={editing?.title ?? ''} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, title: e.target.value })} />
           <Field label="연결할 회사" select value={editing?.application_id || ''} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, application_id: e.target.value || null })} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(editing?.application_id)}</Field>
           <Field label="분류" select value={editing?.category ?? '서류'} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, category: e.target.value })}>
