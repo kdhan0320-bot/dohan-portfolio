@@ -157,7 +157,25 @@
 /* Short account tasks use a reading width instead of a full board width. */
 @media (min-width: 1000px) {
   .workspace-main:has(.settings-page), .workspace-main:has(.interview-page) { max-width: 1180px; }
-  .settings-grid { grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); }
+  .workspace-main:has(.helper-grid) { max-width: 1320px; }
+  .settings-grid { grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); gap: 40px; }
+}
+/* One working surface, with a distinct place for the result or account action. */
+.workspace-main .helper-grid > form.panel { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; gap: 20px; }
+.workspace-main .helper-grid { gap: 32px; }
+.workspace-main .helper-grid > .helper-output { border: 0; border-top: 3px solid #9CB0C5; border-radius: 3px 12px 12px; background: #F0F4F8; box-shadow: none; }
+.workspace-main .settings-grid > .settings-card:not(.settings-account) { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.workspace-main .settings-grid > .MuiCard-root.settings-card > .MuiCardContent-root { padding: 0; }
+.workspace-main .settings-account { border: 0; border-top: 3px solid #AD8C9C; border-radius: 3px 12px 12px; background: #F6F3F5; box-shadow: none; padding: 24px; }
+@media (min-width: 900px) {
+  .workspace-main .helper-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
+  .workspace-main .helper-grid > form.panel { padding-top: 27px; }
+}
+@media (max-width: 699px) {
+  .workspace-main .helper-grid { gap: 28px; }
+  .workspace-main .helper-grid > .helper-output { padding: 20px; }
+  .workspace-main .helper-output .empty-state { min-height: 180px; }
+  .workspace-main .settings-account { padding: 22px; }
 }
 /* Keep the save action outside the scrolling editor, including short mobile viewports. */
 .record-editor-dialog .MuiDialog-paper { overflow: hidden; }

@@ -14,10 +14,23 @@ const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'a
 const element = (type, props) => ({ type, props });
 
 function helperPage(store, scope = 'sample') {
+  const state = [];
+  let cursor = 0;
   const dependencies = {
-    react: { useState: initial => [initial, () => {}] },
+    react: {
+      useState(initial) {
+        const index = cursor++;
+        if (!(index in state)) state[index] = initial;
+        return [state[index], value => { state[index] = value; }];
+      },
+      useRef(initial) {
+        const index = cursor++;
+        if (!(index in state)) state[index] = { current: initial };
+        return state[index];
+      },
+    },
     'react/jsx-runtime': { jsx: element, jsxs: element, Fragment: 'fragment' },
-    '@mui/material': { Button: 'button', MenuItem: 'option' },
+    '@mui/material': { Button: 'button', MenuItem: 'option', Dialog: 'dialog', DialogTitle: 'dialog-title', DialogContent: 'dialog-content', DialogActions: 'dialog-actions' },
     '@mui/icons-material/ContentCopy': { default: 'copy-icon' },
     '../components/ui/Field': { default: 'field' },
     '../components/ui/PageUI': { PageHeading: 'heading', Empty: 'empty' },
@@ -32,12 +45,13 @@ function helperPage(store, scope = 'sample') {
   const module = { exports: {} };
   vm.runInNewContext(code, {
     module, exports: module.exports,
+    window: { requestAnimationFrame: callback => callback() },
     require: name => {
       if (!(name in dependencies)) throw new Error(`Unexpected dependency: ${name}`);
       return dependencies[name];
     },
   });
-  const render = () => module.exports.default();
+  const render = () => { cursor = 0; return module.exports.default(); };
   function find(predicate, node = render()) {
     if (!node || typeof node !== 'object') return null;
     if (Array.isArray(node)) return node.map(child => find(predicate, child)).find(Boolean) || null;
@@ -49,6 +63,8 @@ function helperPage(store, scope = 'sample') {
     change: (label, value) => find(node => node.props?.label === label).props.onChange({ target: { value } }),
     generate: () => find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }),
     result: () => find(node => node.props?.id === 'prompt-result'),
+    button: label => find(node => node.type === 'button' && node.props.children === label),
+    confirmation: () => find(node => node.type === 'dialog'),
     scope: next => { scope = next; },
   };
 }
@@ -73,6 +89,99 @@ test('leaving and reopening the helper keeps every input and the manually edited
   const reopened = helperPage(store);
   for (const [label, value] of Object.entries(inputs)) assert.equal(reopened.field(label).props.value, value);
   assert.equal(reopened.result().props.value, edited);
+});
+
+test('unchanged generated text can be rebuilt from changed inputs without an unnecessary confirmation', () => {
+  const store = createRecordDraftStore();
+  const page = helperPage(store);
+  assert.ok(page.button('요청문 구성하기'));
+  page.change('지원 회사', '첫 회사');
+  page.generate();
+  assert.ok(page.button('입력 내용으로 다시 구성'));
+  page.change('지원 회사', '다음 회사');
+  page.generate();
+  assert.equal(page.confirmation().props.open, false);
+  assert.match(page.result().props.value, /지원 회사: 다음 회사/);
+  assert.equal(store.read('sample', 'documentHelper', 'current').values.generatedResult, page.result().props.value);
+});
+
+test('rebuilding a restored manual edit requires explicit confirmation and cancellation keeps the draft', () => {
+  const store = createRecordDraftStore();
+  const page = helperPage(store);
+  page.generate();
+  const edited = `${page.result().props.value}\n직접 다듬은 문장`;
+  page.result().props.onChange({ target: { value: edited } });
+  const reopened = helperPage(store);
+  reopened.change('지원 직무', '수정한 직무');
+  reopened.generate();
+  assert.equal(reopened.confirmation().props.open, true);
+  assert.equal(reopened.result().props.value, edited, 'opening confirmation must not change the text');
+  assert.equal(reopened.button('계속 편집').props.autoFocus, true);
+  reopened.button('계속 편집').props.onClick();
+  assert.equal(reopened.confirmation().props.open, false);
+  assert.equal(helperPage(store).result().props.value, edited);
+
+  reopened.generate();
+  reopened.confirmation().props.onClose({}, 'escapeKeyDown');
+  assert.equal(reopened.result().props.value, edited, 'Escape must also preserve the edit');
+  reopened.generate();
+  reopened.button('바꾸고 다시 구성').props.onClick();
+  assert.equal(reopened.confirmation().props.open, false);
+  assert.match(reopened.result().props.value, /지원 직무: 수정한 직무/);
+  assert.doesNotMatch(reopened.result().props.value, /직접 다듬은 문장/);
+  assert.equal(helperPage(store).result().props.value, reopened.result().props.value);
+
+  reopened.change('지원 회사', '새 회사');
+  reopened.generate();
+  assert.equal(reopened.confirmation().props.open, false, 'confirmed generation becomes the new unedited baseline');
+  assert.match(reopened.result().props.value, /지원 회사: 새 회사/);
+});
+
+test('an intentionally emptied result is protected after reopening and cancellation returns focus to its editor', () => {
+  const store = createRecordDraftStore();
+  const page = helperPage(store);
+  page.generate();
+  page.result().props.onChange({ target: { value: '' } });
+  const reopened = helperPage(store);
+  reopened.generate();
+  assert.equal(reopened.confirmation().props.open, true);
+  assert.equal(reopened.result().props.value, '');
+  let focused = false;
+  reopened.result().props.ref.current = { focus() { focused = true; } };
+  reopened.button('계속 편집').props.onClick();
+  reopened.confirmation().props.slotProps.transition.onExited();
+  assert.equal(focused, true);
+  assert.equal(helperPage(store).result().props.value, '');
+});
+
+test('confirmed rebuilding starts the new result at the top while cancelling preserves its editing position', () => {
+  const page = helperPage(createRecordDraftStore());
+  page.generate();
+  page.result().props.onChange({ target: { value: '직접 수정한 요청문' } });
+  const editor = {
+    scrollTop: 180,
+    selectionStart: 5,
+    selectionEnd: 9,
+    focus() {},
+    setSelectionRange(start, end) { this.selectionStart = start; this.selectionEnd = end; },
+  };
+  page.result().props.ref.current = editor;
+  page.generate();
+  page.button('바꾸고 다시 구성').props.onClick();
+  page.confirmation().props.slotProps.transition.onExited();
+  assert.equal(editor.scrollTop, 0);
+  assert.equal(editor.selectionStart, 0);
+  assert.equal(editor.selectionEnd, 0);
+
+  page.result().props.onChange({ target: { value: '다시 편집하고 있는 요청문' } });
+  editor.scrollTop = 90;
+  editor.setSelectionRange(3, 7);
+  page.generate();
+  page.button('계속 편집').props.onClick();
+  page.confirmation().props.slotProps.transition.onExited();
+  assert.equal(editor.scrollTop, 90);
+  assert.equal(editor.selectionStart, 3);
+  assert.equal(editor.selectionEnd, 7);
 });
 
 test('unfinished input survives re-entry without requiring prompt generation', () => {
