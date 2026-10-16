@@ -1,3 +1,7 @@
+.login-task-first.login-shell { background: #F6F8FA; }
+.login-task-first .login-story-center { padding-block: 72px; }
+.login-task-first .login-story-center .login-demo { margin-top: 24px; }
+.login-task-first .login-form-section { box-shadow: none; }
 .login-task-first .login-form-section { grid-column: 2; grid-row: 1; }
 .login-task-first .login-story { grid-column: 1; grid-row: 1; }
 .login-task-first .login-form-section h1,

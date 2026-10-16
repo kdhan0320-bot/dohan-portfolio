@@ -219,12 +219,14 @@ export default function InterviewPage() {
       </ol>
     </nav>
     <section className="practice-desk" aria-label="면접 질문 연습">
-      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} onChange={event => setActiveId(event.target.value)}>
+      <div className="practice-navigation">
+      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} onChange={event => setActiveId(event.target.value)} slotProps={{ select: { renderValue: () => `질문 ${activeIndex + 1} / ${filtered.length} · ${activeNote.question}` } }}>
         {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {companyScope === 'all' ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
       </Field>
       <div className="practice-pagination">
         <span aria-live="polite">질문 <strong>{activeIndex + 1}</strong> / {filtered.length}</span>
         <div><IconButton aria-label="이전 질문" disabled={activeIndex === 0} onClick={() => setActiveId(filtered[activeIndex - 1].id)}><ChevronLeft /></IconButton><IconButton aria-label="다음 질문" disabled={activeIndex === filtered.length - 1} onClick={() => setActiveId(filtered[activeIndex + 1].id)}><ChevronRight /></IconButton></div>
+      </div>
       </div>
       <article className={`practice-card${activeNote.is_reviewed ? ' is-reviewed' : ''}`}>
         <div className="practice-card-meta">
@@ -234,7 +236,7 @@ export default function InterviewPage() {
           </span>
           <span className={`practice-importance${activeNote.importance === '높음' ? ' is-important' : ''}`}>중요도 {activeNote.importance}</span>
         </div>
-        <div className="practice-question"><span className="practice-question-mark" aria-hidden="true">Q.</span><h2>{activeNote.question}</h2></div>
+        <div className="practice-question"><h2>{activeNote.question}</h2></div>
         {activeHasAnswer && revealed[activeNote.id] && <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div>}
         {activeHasAnswer ? <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
           {revealed[activeNote.id] ? '답변 접기' : '답변 펼치기'}

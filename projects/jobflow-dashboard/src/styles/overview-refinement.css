@@ -1,29 +1,26 @@
 /* The date is the focal point; the adjacent folders summarize current records. */
 .overview-focus-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(320px, 1fr); gap: 24px; align-items: stretch; }
-.overview-deadline { min-width: 0; border: 1px solid #D8C7A3; border-radius: 14px; background: linear-gradient(120deg, #FFFCF5, #F7EAD0); box-shadow: 0 4px 0 #AE8D4A0A; }
+.overview-deadline { min-width: 0; border: 1px solid #D8C7A3; border-radius: 14px; background: #FFFCF5; box-shadow: none; }
 .overview-deadline-heading, .overview-stages > header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 24px 8px; }
 .overview-deadline-heading h2, .overview-stages h2 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 500; line-height: 26px; }
 .overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { flex-shrink: 0; font-size: 14px; }
-.overview-deadline-body { display: grid; grid-template-columns: 124px minmax(0, 1fr); align-items: center; gap: 26px; padding: 8px 24px 24px; }
-.overview-date-leaf { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; align-self: stretch; gap: 3px; min-height: 148px; padding: 20px 10px 15px; border: 1px solid #D4C8AB; border-top: 6px solid #AD8541; border-radius: 7px 7px 12px 12px; background: #FFFFFF; color: #805E24; box-shadow: 0 4px 0 -1px #FFFDF7, 0 5px 0 #D4C8AB; font-variant-numeric: tabular-nums; }
-.overview-date-leaf::before, .overview-date-leaf::after { content: ''; position: absolute; width: 5px; height: 15px; top: -12px; background: #6E5935; border-radius: 3px; }
-.overview-date-leaf::before { left: 24px; }
-.overview-date-leaf::after { right: 24px; }
-.overview-date-leaf > strong { font-size: 56px; line-height: 1.1; letter-spacing: -.04em; font-weight: 450; }
+.overview-deadline-body { display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 20px; padding: 8px 24px 20px; }
+.overview-date-leaf { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 104px; padding: 12px 8px; border: 1px solid #E5D6B8; border-radius: 6px; background: #FBF2DE; color: #805E24; font-variant-numeric: tabular-nums; }
+.overview-date-leaf > strong { font-size: 42px; line-height: 1.1; letter-spacing: -.04em; font-weight: 450; }
 .overview-date-leaf > span { font-size: 14px; line-height: 22px; }
 .overview-date-leaf > span:last-child { color: var(--muted); font-size: 13px; }
 .overview-deadline-identity { min-width: 0; }
 .overview-deadline-badge { display: inline-flex; align-items: center; min-height: 25px; padding: 2px 9px; margin-bottom: 8px; border-radius: 5px; color: #805E24; background: #F2E3BE; font-size: 14px; font-weight: 500; }
 .overview-deadline-identity h3 { margin: 0; color: var(--ink); font-size: clamp(22px, 2.1vw, 27px); font-weight: 500; line-height: 1.4; letter-spacing: -.035em; overflow-wrap: anywhere; }
-.overview-deadline-identity p { margin: 5px 0 18px; color: var(--muted); font-size: 15px; line-height: 24px; overflow-wrap: anywhere; }
+.overview-deadline-identity p { margin: 5px 0 12px; color: var(--muted); font-size: 15px; line-height: 24px; overflow-wrap: anywhere; }
 .overview-deadline-actions { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 .overview-deadline-actions .MuiButton-root { font-size: 14px; }
 .overview-deadline-empty { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; padding: 10px 24px 26px; }
 .overview-deadline-empty h3 { color: var(--ink); font-size: 22px; font-weight: 500; line-height: 1.5; }
 .overview-deadline-empty p { margin-top: 8px; color: var(--muted); font-size: 14px; line-height: 1.65; }
-.overview-stages { min-width: 0; border: 1px solid #CFDAE4; border-radius: 14px; background: linear-gradient(140deg, #FFFFFF 55%, #F0F4F8); padding-bottom: 16px; }
+.overview-stages { min-width: 0; border: 1px solid #CFDAE4; border-radius: 14px; background: #FFFFFF; padding-bottom: 16px; }
 .overview-stages dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 17px 20px 0; }
-.overview-stages dl > div { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; background: var(--stage-tint); border-radius: 0 8px 8px 8px; padding: 13px 10px 11px; color: var(--stage-ink); box-shadow: inset 0 -2px 0 #40587218, 0 3px 5px #40587206; }
+.overview-stages dl > div { position: relative; min-width: 0; display: flex; flex-direction: column; gap: 8px; background: var(--stage-tint); border-radius: 0 8px 8px 8px; padding: 13px 10px 11px; color: var(--stage-ink); box-shadow: none; }
 .overview-stages dl > div::before { content: ''; position: absolute; left: 0; top: -8px; width: 66%; height: 9px; border-radius: 5px 8px 0 0; background: var(--stage-tint); }
 .overview-stages dt { font-size: 14px; line-height: 20px; white-space: nowrap; }
 .overview-stages dd { margin: 0; font-size: 30px; line-height: 38px; font-weight: 450; font-variant-numeric: tabular-nums; }
@@ -35,15 +32,14 @@
 .overview-preparation-surface { border: 1px solid #D4DEE4; border-radius: 14px; background: #FFFFFF; overflow: hidden; }
 .overview-page .overview-panel { position: relative; display: flex; flex-direction: column; border: 0; background: transparent; box-shadow: none; border-radius: 0; }
 .overview-page .overview-panel > header { position: relative; padding: 16px 24px 12px; background: transparent; border-bottom: 1px solid #E6EBEF; border-top: 0; }
-.overview-page .overview-panel > header::before { content: ''; position: absolute; top: 0; left: 24px; width: 20px; height: 7px; background: #6D9D8E; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 60%, 0 100%); }
-.overview-page .overview-interview-panel { border-left: 1px solid #DDE3E8; background: linear-gradient(140deg, #FCFBFE, #F6F3FA); }
+.overview-page .overview-interview-panel { border-left: 1px solid #DDE3E8; background: #FFFFFF; }
 .overview-page .overview-interview-panel > header::before { background: #9B89B3; }
 .overview-page .overview-panel h2 { margin: 0; min-width: 0; font-size: 18px; font-weight: 500; line-height: 27px; }
 .overview-page .overview-panel h2 > span { display: inline-grid; place-items: center; margin-left: 8px; min-width: 28px; height: 25px; padding-inline: 6px; border-radius: 5px; background: #E6F2ED; color: #326D61; font-size: 13px; font-weight: 400; font-variant-numeric: tabular-nums; }
 .overview-page .overview-interview-panel h2 > span { background: #F0ECF6; color: #6B5985; }
 .overview-page .overview-panel > header .MuiButton-root { flex-shrink: 0; }
 .overview-page .overview-tasks { padding: 0 16px; }
-.overview-page .overview-task { min-height: 80px; padding: 10px 0; gap: 8px; cursor: default; }
+.overview-page .overview-task { min-height: 70px; padding: 8px 0; gap: 8px; cursor: default; }
 .overview-page .overview-task:hover { background: #F6FAF8; }
 .overview-page .overview-task .MuiCheckbox-root { flex: 0 0 44px; width: 44px; height: 44px; }
 .overview-page .overview-task > .overview-task-copy { display: grid; min-width: 0; gap: 4px; font-size: 16px; font-weight: 400; line-height: 25px; }
@@ -52,15 +48,13 @@
 .overview-task-copy > a { justify-self: start; text-decoration: underline; text-decoration-color: #BCC5CE; text-underline-offset: 3px; }
 .overview-task-copy > a:hover { color: var(--ink-action); text-decoration-color: currentColor; }
 .overview-task-copy > a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
-.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 92px; padding: 18px 24px; border-bottom: 1px solid #E5E1EA; }
+.overview-interview { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; gap: 12px; min-height: 80px; padding: 14px 24px; border-bottom: 1px solid #E5E1EA; }
 .overview-interview:last-child { border-bottom: 0; }
 .overview-interview .company-mark { width: 40px; height: 40px; font-size: 16px; }
 .overview-interview-copy { display: grid; min-width: 0; gap: 4px; }
 .overview-interview-copy > strong { font-size: 16px; font-weight: 500; line-height: 25px; overflow-wrap: anywhere; }
 .overview-interview-copy > small { color: var(--muted); font-size: 14px; line-height: 22px; overflow-wrap: anywhere; }
 .overview-interview .MuiButton-root { min-width: 80px; min-height: 44px; padding-inline: 12px; white-space: nowrap; }
-.overview-interview-art { display: flex; justify-content: flex-end; flex: 1; align-items: flex-end; padding: 0 30px 18px; pointer-events: none; }
-.overview-interview-art .paper-graphic { width: 138px; }
 .overview-page .overview-panel .empty-state { min-height: 220px; padding: 24px 20px; }
 .overview-page .overview-panel .empty-state h2 { font-size: 17px; }
 .overview-page .overdue-note { gap: 12px; padding: 8px 18px; margin-top: 18px; line-height: 1.6; }
@@ -74,7 +68,6 @@
 @media (max-width: 899px) {
   .overview-focus-grid, .overview-page .overview-grid { grid-template-columns: minmax(0, 1fr); }
   .overview-page .overview-interview-panel { border-left: 0; border-top: 1px solid #DDE3E8; }
-  .overview-interview-art { display: none; }
   .overview-stages dl { margin-inline: 24px; }
   .overview-stages dl > div { flex-direction: row; align-items: center; justify-content: space-between; gap: 4px; }
 }
@@ -91,11 +84,9 @@
   .overview-deadline-heading h2, .overview-stages h2 { font-size: 16px; }
   .overview-deadline-heading .MuiButton-root, .overview-stages > header .MuiButton-root { padding-inline: 4px; }
   .overview-deadline-body { grid-template-columns: 88px minmax(0, 1fr); gap: 16px; padding: 8px 18px 22px; }
-  .overview-date-leaf { min-height: 138px; padding-inline: 4px; align-self: start; }
+  .overview-date-leaf { min-height: 104px; padding-inline: 4px; align-self: start; }
   .overview-date-leaf > strong { font-size: 44px; }
-  .overview-date-leaf::before { left: 18px; }
-  .overview-date-leaf::after { right: 18px; }
-  .overview-date-leaf > span:last-child { font-size: 12px; }
+  .overview-date-leaf > span:last-child { font-size: 13px; }
   .overview-deadline-identity h3 { font-size: 22px; }
   .overview-deadline-identity p { margin-bottom: 12px; font-size: 14px; }
   .overview-deadline-actions { gap: 8px; }
@@ -105,7 +96,6 @@
   .overview-stages dd { font-size: 26px; }
   .overview-paused { margin-left: 20px; }
   .overview-page .overview-panel > header { padding: 16px 16px 10px; gap: 8px; }
-  .overview-page .overview-panel > header::before { left: 16px; }
   .overview-page .overview-panel h2 { font-size: 17px; }
   .overview-interview { padding: 14px 16px; gap: 10px; }
   .overview-page .overview-tasks { padding-inline: 10px; }
@@ -113,7 +103,7 @@
 }
 @media (max-width: 399px) {
   .overview-deadline-body { grid-template-columns: 74px minmax(0, 1fr); gap: 12px; padding-inline: 14px; }
-  .overview-date-leaf > span:last-child { font-size: 11px; }
+  .overview-date-leaf > span:last-child { font-size: 13px; }
   .overview-interview { grid-template-columns: 36px minmax(0, 1fr); }
   .overview-interview .company-mark { width: 36px; height: 36px; }
   .overview-interview .MuiButton-root { grid-column: 2; justify-self: start; margin-top: 2px; }

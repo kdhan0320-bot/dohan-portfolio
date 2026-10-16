@@ -13,7 +13,6 @@ import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
 import StatusChip from '../components/ui/StatusChip';
 import ActionFeedback from '../components/ui/ActionFeedback';
-import PaperGraphic from '../components/ui/PaperGraphic';
 import '../styles/overview-refinement.css';
 
 export default function DashboardPage() {
@@ -139,7 +138,6 @@ export default function DashboardPage() {
             })}
             {!interviewCompanies.length && <Empty title="면접 예정인 회사가 없어요"><Button component={Link} to="/interview">{remainingQuestions.length ? `남은 질문 ${remainingQuestions.length}개 연습` : '면접 질문 준비하기'}</Button></Empty>}
           </div>
-          {interviewCompanies.length === 1 && <div className="overview-interview-art" aria-hidden="true"><PaperGraphic kind="chat" /></div>}
         </section>
       </div>
     </>}

@@ -16,6 +16,30 @@ export function monthCells(month) {
   const start = first.getTime() - ((first.getUTCDay() + 6) % 7) * DAY;
   return Array.from({ length: 42 }, (_, index) => new Date(start + index * DAY).toISOString().slice(0, 10));
 }
+export function calendarFocusDate(month, selected, focused, today) {
+  return [focused, selected, today].find(day => validDate(day) && day.startsWith(month)) || `${month}-01`;
+}
+export function keyboardDate(day, key) {
+  if (!validDate(day)) return null;
+  const next = new Date(`${day}T12:00:00Z`);
+  const weekday = (next.getUTCDay() + 6) % 7;
+  const offsets = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7, Home: -weekday, End: 6 - weekday };
+  if (Object.hasOwn(offsets, key)) {
+    next.setUTCDate(next.getUTCDate() + offsets[key]);
+  } else if (key === 'PageUp' || key === 'PageDown') {
+    const originalDay = next.getUTCDate();
+    next.setUTCDate(1);
+    next.setUTCMonth(next.getUTCMonth() + (key === 'PageUp' ? -1 : 1));
+    const end = new Date(next);
+    end.setUTCMonth(end.getUTCMonth() + 1);
+    end.setUTCDate(0);
+    next.setUTCDate(Math.min(originalDay, end.getUTCDate()));
+  } else {
+    return null;
+  }
+  const value = next.toISOString().slice(0, 10);
+  return validDate(value) ? value : null;
+}
 export function pendingDeadlines(applications) {
   return applications.filter(a => ['관심', '지원 예정'].includes(a.status) && validDate(a.deadline))
     .sort((a, b) => a.deadline.localeCompare(b.deadline) || a.company_name.localeCompare(b.company_name, 'ko'));

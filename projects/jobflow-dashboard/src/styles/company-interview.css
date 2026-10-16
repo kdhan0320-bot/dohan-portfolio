@@ -5,8 +5,8 @@
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px 24px;
-  margin-bottom: 28px;
+  gap: 10px 20px;
+  margin-bottom: 16px;
 }
 .interview-page .interview-company-filter {
   display: flex;
@@ -46,16 +46,16 @@
 .interview-page .interview-status-tabs .Mui-selected { color: #3d6594; font-weight: 500; }
 .interview-page .interview-status-tabs .MuiTabs-indicator { background: #3d6594; }
 
-.interview-page .interview-workspace { grid-template-columns: minmax(210px, 0.85fr) minmax(0, 2fr); gap: 32px; }
-.interview-page .question-queue-heading { min-height: 44px; padding: 0 12px 12px; font-size: 13px; }
+.interview-page .interview-workspace { grid-template-columns: minmax(210px, 0.85fr) minmax(0, 2fr); gap: 24px; }
+.interview-page .question-queue-heading { min-height: 44px; padding: 0 10px 8px; font-size: 14px; }
 .interview-page .question-queue-heading > span:first-child { color: var(--ink); font-size: 15px; font-weight: 500; }
-.interview-page .question-queue ol { gap: 8px; }
-.interview-page .question-index { min-height: 78px; padding: 17px 14px; border-radius: 4px 10px 10px 4px; gap: 12px; }
+.interview-page .question-queue ol { gap: 4px; }
+.interview-page .question-index { min-height: 68px; padding: 12px 10px; border-radius: 0 6px 6px 0; gap: 10px; }
 .interview-page .question-index:hover { background: #edf3f8; }
-.interview-page .question-index[aria-current='true'] { border-color: #bacddd; background: #eaf1f8; box-shadow: none; }
+.interview-page .question-index[aria-current='true'] { border-color: transparent; background: #edf3f8; box-shadow: none; }
 .interview-page .question-index[aria-current='true']::before { background: #3d6594; inset-block: 14px; }
-.interview-page .question-index-number { color: #566b82; font-size: 13px; line-height: 24px; padding-top: 0; }
-.interview-page .question-index small { margin-bottom: 5px; font-size: 14px; line-height: 22px; }
+.interview-page .question-index-number { color: #566b82; font-size: 14px; line-height: 24px; padding-top: 0; }
+.interview-page .question-index small { margin-bottom: 3px; font-size: 14px; line-height: 22px; }
 .interview-page .question-index strong { font-size: 15px; line-height: 24px; font-weight: 400; }
 .interview-page .question-index[aria-current='true'] strong { color: #294e78; font-weight: 500; }
 .interview-page .question-index > svg { margin-top: 2px; color: #326d61; }
@@ -63,24 +63,25 @@
 .interview-page .mobile-question-select { display: none; }
 .interview-question-option.MuiMenuItem-root { max-width: min(600px, calc(100vw - 32px)); white-space: normal; overflow-wrap: anywhere; font-size: 14px; line-height: 22px; }
 
-/* 바깥의 큰 박스를 없애고, 책갈피를 꽂은 한 장의 카드만 남긴다. */
+/* 한 질문과 답변을 읽는 평평한 기록면. 작은 갈피만 위치를 표시한다. */
 .interview-page .practice-desk { padding: 0; border: 0; border-radius: 0; background: transparent; }
-.interview-page .practice-pagination { min-height: 44px; padding: 0 0 12px; font-size: 14px; }
-.interview-page .practice-pagination > div { display: flex; gap: 4px; margin-top: -8px; margin-bottom: -4px; }
+.interview-page .practice-navigation { margin-bottom: 8px; }
+.interview-page .practice-pagination { min-height: 44px; padding: 0; font-size: 14px; }
+.interview-page .practice-pagination > div { display: flex; gap: 0; margin: 0; }
 .interview-page .practice-pagination .MuiIconButton-root { width: 44px; height: 44px; }
 .interview-page .practice-card {
   display: flex;
   flex-direction: column;
-  min-height: 344px;
-  padding: 30px 34px 20px;
+  min-height: 0;
+  padding: 22px 26px 16px;
   border: 1px solid #cdd8e2;
-  border-radius: 8px 8px 18px 8px;
-  background: linear-gradient(150deg, #f3f6fb 0, #fff 48%);
-  box-shadow: 0 5px 0 -1px #fff, 0 6px 0 #dce2e9, 0 16px 28px -22px #334b6a40;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: none;
 }
-.interview-page .practice-card::after { right: 27px; top: -1px; width: 26px; height: 54px; background: #3d6594; }
+.interview-page .practice-card::after { right: 16px; top: -1px; width: 8px; height: 18px; background: #3d6594; box-shadow: none; }
 .interview-page .practice-card.is-reviewed::after { background: #326d61; }
-.interview-page .practice-card-meta { align-items: flex-start; min-height: 28px; padding-right: 44px; font-size: 14px; gap: 10px 16px; }
+.interview-page .practice-card-meta { align-items: flex-start; min-height: 22px; padding-right: 0; font-size: 14px; gap: 8px 12px; }
 .interview-page .practice-card-meta .practice-company-label {
   display: flex;
   flex-direction: column;
@@ -98,18 +99,17 @@
 .interview-page .practice-company-label > span { color: var(--muted); font-size: 14px; font-weight: 400; overflow-wrap: anywhere; }
 .interview-page .practice-importance { flex-shrink: 0; color: var(--muted); font-size: 14px; line-height: 22px; }
 .interview-page .practice-importance.is-important { color: #86521b; }
-.interview-page .practice-question { gap: 16px; margin: 28px 0 0; }
-.interview-page .practice-question-mark { color: #3d6594; margin: 0; font-size: 28px; line-height: 1.45; }
-.interview-page .practice-question h2 { font-size: clamp(23px, 2.1vw, 29px); line-height: 1.55; font-weight: 500; letter-spacing: -.025em; margin: 0; }
-.interview-page .practice-answer { margin: 24px 0 0; border-color: #dce4ed; padding-top: 20px; }
+.interview-page .practice-question { margin: 14px 0 0; }
+.interview-page .practice-question h2 { font-size: clamp(21px, 1.9vw, 26px); line-height: 1.55; font-weight: 500; letter-spacing: -.025em; margin: 0; }
+.interview-page .practice-answer { margin: 18px 0 0; border-color: #dce4ed; padding-top: 16px; }
 .interview-page .practice-answer > span { color: #3d6594; font-size: 14px; font-weight: 500; }
-.interview-page .practice-answer p { font-size: 16px; line-height: 1.85; font-weight: 400; margin-top: 9px; }
-.interview-page .practice-reveal.MuiButton-root { align-self: flex-start; min-height: 44px; margin: 26px 0 24px; color: #3d6594; border-color: #a4b9ce; background: #fff; }
+.interview-page .practice-answer p { font-size: 16px; line-height: 1.8; font-weight: 400; margin-top: 8px; }
+.interview-page .practice-reveal.MuiButton-root { align-self: flex-start; min-height: 44px; margin: 18px 0 16px; color: #3d6594; border-color: #a4b9ce; background: #fff; }
 .interview-page .practice-reveal.MuiButton-root:hover { background: #edf3f8; border-color: #3d6594; }
-.interview-page .practice-answer-draft { margin: 20px 0 24px; }
+.interview-page .practice-answer-draft { margin: 16px 0; }
 .interview-page .practice-answer-draft p { margin: 0 0 12px; color: #67717c; font-size: 14px; line-height: 22px; }
 .interview-page .practice-answer-draft .MuiButton-root { min-height: 44px; color: #3d6594; border-color: #a4b9ce; }
-.interview-page .practice-toolbar { margin-top: auto; padding: 16px 0 0; border-top: 1px solid #e3e8ee; gap: 12px; }
+.interview-page .practice-toolbar { margin-top: auto; padding: 12px 0 0; border-top: 1px solid #e3e8ee; gap: 12px; }
 .interview-page .practice-toolbar > div { display: flex; gap: 4px; margin-left: -8px; }
 .interview-page .practice-toolbar .MuiIconButton-root { width: 44px; height: 44px; }
 .interview-page .practice-toolbar .practice-review.MuiButton-root { min-height: 44px; }
@@ -121,11 +121,11 @@
 .interview-page .practice-empty { border-color: #bacddd; background: #f6f8fb; }
 
 @media (max-width: 900px) {
-  .interview-page .interview-controls { gap: 14px; }
+  .interview-page .interview-controls { gap: 10px; }
   .interview-page .interview-company-filter { flex-basis: 100%; }
   .interview-page .interview-status-tabs { width: 100%; }
   .interview-page .interview-workspace { grid-template-columns: 220px minmax(0, 1fr); gap: 22px; }
-  .interview-page .practice-card { padding: 26px 24px 18px; }
+  .interview-page .practice-card { padding: 22px 22px 16px; }
 }
 @media (max-width: 699px) {
   .workspace-main .interview-page .page-heading { flex-wrap: nowrap; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 14px; }
@@ -134,29 +134,28 @@
   .workspace-main .interview-page .page-heading .heading-actions > .MuiButton-root { width: auto; padding-inline: 12px; white-space: nowrap; }
   .interview-page .page-heading-title-row { gap: 10px; }
   .workspace-main .interview-page .page-heading .page-heading-copy > .muted { display: none; }
-  .interview-page .interview-controls { gap: 8px; margin-bottom: 12px; }
+  .interview-page .interview-controls { gap: 6px; margin-bottom: 10px; }
   .interview-page .interview-company-filter { flex-wrap: wrap; gap: 4px 10px; }
   .interview-page .interview-company-filter > .form-field { flex: 1 1 250px; max-width: none; gap: 10px; }
   .interview-page .interview-status-tabs .MuiTabs-list { justify-content: space-between; }
   .interview-page .interview-status-tabs .MuiTab-root { padding-inline: 10px; }
   .interview-page .interview-workspace { grid-template-columns: minmax(0, 1fr); gap: 0; }
   .interview-page .question-queue { display: none; }
-  .interview-page .mobile-question-select { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 10px; margin-bottom: 10px; }
-  .interview-page .mobile-question-select .field-label { margin: 0; font-size: 14px; line-height: 22px; font-weight: 400; color: var(--muted); }
+  .interview-page .practice-navigation { display: grid; grid-template-columns: minmax(0, 1fr) 88px; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .interview-page .mobile-question-select { display: grid; margin: 0; }
+  .interview-page .mobile-question-select .field-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   .interview-page .mobile-question-select .MuiInputBase-root { min-height: 44px; background: #fff; }
   .interview-page .mobile-question-select .MuiSelect-select { padding-block: 10px; font-size: 14px; line-height: 22px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .interview-page .practice-pagination { padding-bottom: 8px; }
-  .interview-page .practice-card { min-height: 280px; padding: 22px 22px 18px; }
-  .interview-page .practice-card::after { right: 23px; width: 23px; height: 47px; }
-  .interview-page .practice-question { margin-top: 18px; gap: 12px; }
-  .interview-page .practice-question h2 { font-size: 23px; }
-  .interview-page .practice-question-mark { font-size: 25px; }
+  .interview-page .practice-pagination { justify-content: flex-end; }
+  .interview-page .practice-pagination > span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  .interview-page .practice-card { min-height: 0; padding: 20px 18px 14px; }
+  .interview-page .practice-question { margin-top: 12px; }
+  .interview-page .practice-question h2 { font-size: 21px; }
   .interview-page .practice-answer p { font-size: 15px; }
 }
 @media (max-width: 399px) {
   .interview-page .interview-status-tabs .MuiTab-root { font-size: 14px; padding-inline: 6px; }
-  .interview-page .practice-card { padding-inline: 18px; }
+  .interview-page .practice-card { padding-inline: 16px; }
   .interview-page .practice-card-meta { gap: 6px; }
-  .interview-page .practice-question { gap: 9px; }
-  .interview-page .practice-question h2 { font-size: 22px; }
+  .interview-page .practice-question h2 { font-size: 20px; }
 }

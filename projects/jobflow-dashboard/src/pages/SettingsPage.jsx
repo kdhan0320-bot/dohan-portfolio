@@ -11,6 +11,7 @@ import PaperGraphic from '../components/ui/PaperGraphic';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { createRecordExport, loadRecordExport, downloadRecordExport } from '../utils/recordExport';
 import { getSafeDataErrorMessage } from '../utils/dataErrors';
+import { applicationDraftStore } from '../utils/applicationDraftStore';
 const SettingsPage = () => {
   const {
     user,
@@ -132,6 +133,7 @@ const SettingsPage = () => {
               <p>수정한 샘플은 초기화하거나 새로고침하면 사라져요.</p>
             </div>
             <Button className="settings-control-action" variant="outlined" onClick={() => {
+              applicationDraftStore.clearSample();
               resetDemo();
               setSaved(true);
             }}>샘플 초기화</Button>

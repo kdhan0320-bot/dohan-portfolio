@@ -14,8 +14,11 @@ import Field from '../components/ui/Field';
 import StatusChip from '../components/ui/StatusChip';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import ApplicationPanel from '../components/applications/ApplicationPanel';
+import { useAuth } from '../context/AuthContext';
 
 export default function ApplicationsPage() {
+  const { user, isGuest } = useAuth();
+  const draftScope = isGuest ? 'sample' : user?.id ? `user:${user.id}` : null;
   const { applications, loading, error, refresh, add, update, remove } = useApplications();
   const [params, setParams] = useSearchParams();
   const [feedback, setFeedback] = useState(null);
@@ -89,7 +92,7 @@ export default function ApplicationsPage() {
         </div>
         <p className="board-instruction">회사를 선택해 전형 상태와 회사별 준비를 관리하세요.</p>
       </>}
-      {(creating || selected) && <ApplicationPanel key={creating ? 'new' : selected.id} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onDelete={deleteCompany} />}
+      {(creating || selected) && <ApplicationPanel key={`${draftScope}:${creating ? 'new' : selected.id}`} draftScope={draftScope} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onDelete={deleteCompany} />}
       {params.get('company') && !selected && !creating && <div className="missing-company" role="status">이 회사 정보를 찾을 수 없어요.<Button onClick={closePanel}>닫기</Button></div>}
     </>}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

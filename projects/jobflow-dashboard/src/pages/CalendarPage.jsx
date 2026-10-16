@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, IconButton } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
@@ -6,7 +7,7 @@ import Add from '@mui/icons-material/Add';
 import useApplications from '../hooks/useApplications';
 import { useToday } from '../hooks/useToday';
 import { useAuth } from '../context/AuthContext';
-import { calendarState, companyDestination, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
+import { calendarFocusDate, calendarState, companyDestination, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
 import { deadlineLabel } from '../utils/dates';
 import { CompanyMark, Empty, LoadState, PageHeading } from '../components/ui/PageUI';
 
@@ -17,13 +18,39 @@ export default function CalendarPage() {
   const referenceLabel = isGuest ? '샘플 기준일' : '오늘';
   const [params, setParams] = useSearchParams();
   const { month, date } = calendarState(params, today);
+  const [focusedDate, setFocusedDate] = useState(null);
+  const dayButtons = useRef(new Map());
+  const pendingFocus = useRef(null);
+  const tabDate = calendarFocusDate(month, date, focusedDate, today);
   const deadlines = pendingDeadlines(applications);
   const inMonth = deadlines.filter(a => a.deadline.startsWith(month));
   const visible = date ? inMonth.filter(a => a.deadline === date) : inMonth;
   const undated = applications.filter(a => ['관심', '지원 예정'].includes(a.status) && !validDate(a.deadline)).length;
   const overdue = deadlines.filter(a => a.deadline < today).length;
-  function selectMonth(value) { setParams({ month: value }); }
-  function selectDate(value) { setParams({ month: value.slice(0, 7), date: value }); }
+  useEffect(() => {
+    const pending = pendingFocus.current;
+    if (!pending) return;
+    pendingFocus.current = null;
+    if (document.activeElement === pending.origin || document.activeElement === document.body) {
+      dayButtons.current.get(pending.day)?.focus();
+    }
+  }, [month, focusedDate]);
+  function selectMonth(value) { pendingFocus.current = null; setParams({ month: value }); }
+  function selectDate(value) { setFocusedDate(value); setParams({ month: value.slice(0, 7), date: value }); }
+  function moveDate(event, day) {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const next = keyboardDate(day, event.key);
+    if (!next) return;
+    event.preventDefault();
+    if (next === day) return;
+    pendingFocus.current = { day: next, origin: event.currentTarget };
+    setFocusedDate(next);
+    if (!next.startsWith(month)) setParams(current => {
+      const updated = new URLSearchParams(current);
+      updated.set('month', next.slice(0, 7));
+      return updated;
+    }, { replace: true });
+  }
   return <>
     <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <LoadState loading={loading} error={error} retry={refresh} />
@@ -33,10 +60,10 @@ export default function CalendarPage() {
           <header className="calendar-toolbar"><h2 id="calendar-month" aria-live="polite">{monthLabel(month)}</h2><div><Button onClick={() => selectDate(today)}>{referenceLabel}</Button><IconButton aria-label="이전 달" onClick={() => selectMonth(shiftMonth(month, -1))}><ChevronLeft /></IconButton><IconButton aria-label="다음 달" onClick={() => selectMonth(shiftMonth(month, 1))}><ChevronRight /></IconButton></div></header>
           {isGuest && <p className="calendar-reference-note">샘플은 {today.replaceAll('-', '.')} 기준으로 표시해요.</p>}
           <div className="calendar-week" aria-hidden="true">{WEEKDAYS.map(day => <span key={day}>{day}</span>)}</div>
-          <div className="calendar-days" role="group" aria-label={`${monthLabel(month)} 날짜 선택`}>
+          <div className="calendar-days" role="group" aria-label={`${monthLabel(month)} 날짜 선택`} aria-description="방향키로 날짜 이동, Home과 End로 주의 처음과 끝 이동, PageUp과 PageDown으로 월 이동, Enter 또는 Space로 날짜 선택">
             {monthCells(month).map(day => {
               const events = deadlines.filter(a => a.deadline === day);
-              return <button type="button" key={day} className={`calendar-day ${day.startsWith(month) ? '' : 'other-month'} ${day === today ? 'is-today' : ''} ${day === date ? 'is-selected' : ''} ${events.length ? 'has-deadline' : ''}`} onClick={() => selectDate(day)} aria-pressed={day === date} aria-label={`${day.replaceAll('-', ' ')}${day === today ? `, ${referenceLabel}` : ''}, 지원 마감 ${events.length}곳`}>
+              return <button type="button" key={day} ref={node => { if (node) dayButtons.current.set(day, node); else dayButtons.current.delete(day); }} tabIndex={day === tabDate ? 0 : -1} className={`calendar-day ${day.startsWith(month) ? '' : 'other-month'} ${day === today ? 'is-today' : ''} ${day === date ? 'is-selected' : ''} ${events.length ? 'has-deadline' : ''}`} onFocus={() => setFocusedDate(day)} onKeyDown={event => moveDate(event, day)} onClick={() => selectDate(day)} aria-pressed={day === date} aria-current={day === today ? 'date' : undefined} aria-label={`${Number(day.slice(0, 4))}년 ${Number(day.slice(5, 7))}월 ${Number(day.slice(8))}일${day === today ? `, ${referenceLabel}` : ''}, 지원 마감 ${events.length}곳`}>
                 <span className="calendar-day-number">{Number(day.slice(8))}</span>{events.length > 0 && <><span className="calendar-event-name">{events[0].company_name}</span><span className="calendar-event-count">마감 {events.length}곳</span><span className="calendar-event-dot" aria-hidden="true" /></>}
               </button>;
             })}

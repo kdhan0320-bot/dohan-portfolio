@@ -167,7 +167,6 @@ export default function LoginPage() {
       <div className="login-brand-row"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
       <div className="login-story-center">
         <h2>어디에 지원했는지,<br />한눈에.</h2>
-        <div className="login-brand-art" aria-hidden="true" />
         <div className="login-demo"><Button variant="contained" onClick={demo} disabled={busy}>가입 없이 둘러보기</Button><small>가상 회사로 체험 · 새로고침하면 초기화</small></div>
       </div>
       <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a>

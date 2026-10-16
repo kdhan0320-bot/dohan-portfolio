@@ -1,87 +1,23 @@
-/* Original folded bookmarks form a shared visual language, outside reading surfaces. */
-.workspace-with-topnav > .workspace-content {
-  background: linear-gradient(120deg, #F6F8FB 0%, #F5F6F8 54%, #F1F3F7 100%);
-}
-.workspace-with-topnav .workspace-content::before {
-  content: '';
-  display: block;
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  /* Keep the working controls clear; the full motif rests at the lower edge. */
-  background: url('../assets/galpi-fold-field.svg') left 14px bottom 18px / 260px auto no-repeat;
-  opacity: .42;
-}
-.workspace-main { padding-bottom: 48px; }
-.workspace-main .page-heading {
-  position: relative;
-  isolation: isolate;
-  min-height: 84px;
-  padding-bottom: 18px;
-  border-bottom: 0;
-  margin-bottom: 20px;
-}
-.workspace-main .page-heading::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 76px;
-  height: 3px;
-  background: linear-gradient(90deg, #3D6594 0 48%, #9E8AB5 48% 74%, #D7B676 74% 100%);
-  border-radius: 2px;
-}
-.workspace-main .heading-icon {
-  border-radius: 4px 12px 4px 4px;
-  box-shadow: inset 0 -2px 0 #292F3508;
-}
+/* Keep the workspace quiet: folder tabs identify stages; records carry the colour. */
+.workspace-with-topnav > .workspace-content { background: #F6F8FA; }
+.workspace-with-topnav .workspace-content::before { display: none; }
+.workspace-main { padding-bottom: 40px; }
+.workspace-main .page-heading { min-height: 0; padding-bottom: 0; border-bottom: 0; margin-bottom: 20px; }
+.workspace-main .page-heading::after { display: none; }
+.workspace-main .heading-icon { border-radius: 6px; box-shadow: none; }
 .site-header { background: #FAFBFC; }
 .site-header-meta { background: #F1F4F7; border-top-color: #E2E8EE; }
 .site-header-meta-inner { min-height: 34px; }
 .site-secondary-nav a { min-height: 36px; }
-
-/* The home illustration and product preview share the same folded edge. */
-.welcome-product-first {
-  background: linear-gradient(130deg, #FAFBFD 10%, #F3F5F9 65%, #F0ECF5);
-}
-.welcome-product-first > main { position: relative; isolation: isolate; }
-.welcome-product-first > main::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: url('../assets/galpi-fold-field.svg') right 26px top 10px / 440px auto no-repeat,
-    url('../assets/galpi-fold-field.svg') left 16px bottom 6px / 310px auto no-repeat;
-  opacity: .65;
-}
-.galpi-intro-visual::before {
-  inset: 12px 0 22px 8px;
-  border-radius: 8px 68px 8px 48px;
-  border-color: #CCD8E5;
-  background: linear-gradient(140deg, #D5E4F2 0 48%, #E0D7EA 48% 77%, #EDE1C5 77%);
-  box-shadow: 9px 9px 0 -1px #F8FAFD, 10px 10px 0 #D7DFE8;
-}
-.galpi-intro-art { filter: drop-shadow(0 9px 9px #42597510); }
-.galpi-intro h1 em { color: #345C87; }
-.galpi-eyebrow::before { background: #3D6594; height: 17px; flex-basis: 10px; }
-.galpi-deadline-sample { border-radius: 6px 14px 14px; border-color: #BBCBDA; }
-.welcome-product-first .application-preview {
-  border-radius: 8px 20px 8px 8px;
-  border-color: #CAD5E0;
-  box-shadow: 0 10px 28px #344D6610;
-}
-.welcome-product-first .preview-toolbar { min-height: 64px; padding-block: 16px; }
-.welcome-product-first .preview-lane { border-radius: 4px 10px 10px; }
-.welcome-product-first .preview-lane h3 i { border-radius: 3px 8px 3px 3px; }
-.workspace-main .job-lane { border-color: color-mix(in srgb, var(--lane-color) 24%, white); }
+.workspace-main .job-board { gap: 16px; padding-top: 12px; }
+.workspace-main .job-lane { border-color: #D6DDE4; background: #F3F5F8; border-radius: 0 8px 8px 8px; padding: 0 10px 12px; min-height: 300px; }
+.workspace-main .job-lane::before { top: -12px; height: 13px; width: 56%; border-color: #D6DDE4; border-radius: 6px 10px 0 0; }
+.workspace-main .job-lane::after { display: none; }
+.workspace-main .job-lane-heading { min-height: 50px; padding-block: 10px; }
 .workspace-main .job-lane-heading h2 { font-weight: 500; }
-.workspace-main .job-tile { border-color: #D3DCE5; box-shadow: 0 3px 8px #2C405808; }
-.workspace-main .job-tile:hover { border-color: var(--lane-color); box-shadow: 0 5px 12px #2C405812; }
-.workspace-main .job-lane-heading { min-height: 56px; padding-block: 12px; }
-.workspace-main .job-tile { padding: 14px; }
-.workspace-main .job-tile-bottom { margin-top: 12px; padding-top: 10px; gap: 8px; }
+.workspace-main .job-tile { padding: 14px; border-color: #D3DCE5; border-radius: 7px; box-shadow: none; }
+.workspace-main .job-tile:hover { border-color: var(--lane-color); box-shadow: none; }
+.workspace-main .job-tile-bottom { margin-top: 10px; padding-top: 8px; gap: 8px; }
 .workspace-main .job-lane-cards { gap: 10px; }
 .compact-action-label { display: none; }
 .route-load-state { min-height: 60svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; }
@@ -96,22 +32,9 @@
 .workspace-main .calendar-day.is-selected .calendar-event-name { color: #2D507B; background: #D6E4F4; border-left-color: #3D6594; }
 .workspace-main .calendar-day:not(.is-selected):hover { background: #EDF3F9; }
 .workspace-main .calendar-day.has-deadline:not(.is-selected):hover { background: #F6E8C4; }
-.workspace-main .interview-page .practice-card {
-  border-color: #BFCFDE;
-  background: linear-gradient(135deg, #EDF2F9, #FFFFFF 42%);
-}
-.workspace-main .interview-page .practice-card::after { box-shadow: inset 3px 0 0 #FFFFFF24; }
 
-@media (min-width: 1600px) {
-  .workspace-with-topnav .workspace-content::before { background-size: 320px auto; background-position: left 4% bottom 18px; }
-  .welcome-product-first > main::before { background-size: 530px auto, 380px auto; background-position: right 5% top 6px, left 3% bottom 12px; }
-}
-@media (max-width: 999px) {
-  .workspace-with-topnav .workspace-content::before { background-size: 220px auto; opacity: .38; }
-  .welcome-product-first > main::before { background-size: 350px auto, 230px auto; }
-}
 @media (max-width: 699px) {
-  .workspace-main .page-heading { min-height: 0; margin-bottom: 18px; padding-bottom: 14px; }
+  .workspace-main .page-heading { margin-bottom: 16px; padding-bottom: 0; }
   .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 12px; }
   .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .page-heading-copy { display: contents; }
   .workspace-main .page-heading:is([data-art='folder'], [data-art='calendar'], [data-art='overview']) .page-heading-title-row { grid-column: 1 / -1; }
@@ -120,9 +43,6 @@
   .workspace-main .page-heading .company-add-action.MuiButton-root { width: auto; padding-inline: 12px; white-space: nowrap; }
   .company-add-action .full-action-label { display: none; }
   .company-add-action .compact-action-label { display: inline; }
-  .workspace-main .board-toolbar { margin-bottom: 24px; }
-  .workspace-main .mobile-board-tabs { margin-bottom: 30px; }
-  .workspace-with-topnav .workspace-content::before { background-size: 180px auto; background-position: left 8px bottom 8px; opacity: .32; }
-  .welcome-product-first > main::before { background-size: 250px auto, 190px auto; background-position: right 6px top 230px, left 8px bottom 8px; opacity: .45; }
-  .galpi-intro-visual::before { inset: 8px 4px 20px; border-top-right-radius: 44px; }
+  .workspace-main .board-toolbar { margin-bottom: 16px; }
+  .workspace-main .mobile-board-tabs { margin-bottom: 14px; }
 }

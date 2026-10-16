@@ -20,7 +20,7 @@ export default function ProductPreview({ onOpen, busy }) {
   const currentStage = boardColumn(selected.status);
   const stage = BOARD_COLUMNS.find(column => column.id === currentStage);
   return <div className="application-preview">
-    <div className="preview-toolbar"><h2>회사별 지원 현황</h2><span>회사를 누르면 기록이 열려요</span><span className="preview-sample">샘플</span></div>
+    <div className="preview-toolbar"><h2>회사별 지원 현황</h2><span>회사를 누르면 기록이 열려요</span><span className="preview-sample">샘플 · 2026.09.27 기준</span></div>
     <div className="preview-workspace">
       <div className="preview-lanes" aria-label="전형별 지원 회사 예시">
         {BOARD_COLUMNS.map((column, index) => {

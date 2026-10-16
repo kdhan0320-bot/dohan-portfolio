@@ -8,6 +8,7 @@ import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
 import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import useChecklist from '../../hooks/useChecklist';
 import useInterviewNotes from '../../hooks/useInterviewNotes';
+import useApplicationDraft from '../../hooks/useApplicationDraft';
 import Field from '../ui/Field';
 import { CompanyMark, ConfirmDelete } from '../ui/PageUI';
 import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../../constants';
@@ -35,9 +36,9 @@ function CompanyPreparation({ applicationId, onVisit, disabled }) {
   </section>;
 }
 
-export default function ApplicationPanel({ application, creating, onClose, onSave, onDelete }) {
+export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onDelete }) {
   const navigate = useNavigate();
-  const [form, setForm] = useState(() => applicationDraft(application));
+  const { form, change: changeDraft, clear: clearDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
@@ -46,10 +47,9 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
   const [destination, setDestination] = useState(null);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
-  const dirty = JSON.stringify(form) !== JSON.stringify(applicationDraft(application));
   const lane = boardColumn(form.status);
   function change(key, value) {
-    setForm(prev => ({ ...prev, [key]: value }));
+    changeDraft(key, value);
     setErrors(prev => ({ ...prev, [key]: '' }));
   }
   function close() {
@@ -63,6 +63,11 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
     if (dirty) { setDestination(to); setConfirmLeave(true); }
     else navigate(to);
   }
+  function discardAndLeave() {
+    clearDraft();
+    if (destination) navigate(destination);
+    else onClose();
+  }
   async function save(e) {
     e.preventDefault();
     if (busy) return;
@@ -75,13 +80,13 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
       return;
     }
     setBusy(true); setError('');
-    try { await onSave(form); }
+    try { await onSave(form); clearDraft(); }
     catch (e) { setError(e.message); setBusy(false); }
   }
   async function remove() {
     if (busy) return;
     setBusy(true); setError('');
-    try { await onDelete(application.id); }
+    try { await onDelete(application.id); clearDraft(); }
     catch (e) { setError(e.message); setDeleting(false); setBusy(false); }
   }
   const field = (key, label, extra = {}) => <Field id={`company-${key}`} label={label} value={form[key] ?? ''} disabled={busy} onChange={e => change(key, e.target.value)} error={Boolean(errors[key])} helperText={errors[key]} {...extra} />;
@@ -94,6 +99,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
       <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
+          {restored && <Alert severity="info">저장하지 않은 입력을 복원했어요.</Alert>}
           {!creating && <div className="company-panel-identity"><CompanyMark name={application.company_name} /><span>{application.position || '직무 미입력'}</span>{application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" size="small" endIcon={<OpenInNew fontSize="small" />}>채용 공고</Button>}</div>}
           {creating ? <>
             {field('company_name', '회사 이름', { required: true, inputRef: companyInput, autoFocus: true, placeholder: '회사 이름' })}
@@ -106,6 +112,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
               {lane === 'paused' && <small>보류함에 표시됩니다</small>}
             </div>}
           </div>
+          {field('deadline', '공고 마감일 (선택)', { type: 'date' })}
           {!creating && <div className="panel-documents">
             <FormControlLabel control={<Checkbox checked={Boolean(form.resume_submitted)} onChange={e => change('resume_submitted', e.target.checked)} disabled={busy} />} label="이력서 제출" />
             <FormControlLabel control={<Checkbox checked={Boolean(form.portfolio_submitted)} onChange={e => change('portfolio_submitted', e.target.checked)} disabled={busy} />} label="포트폴리오 제출" />
@@ -113,11 +120,11 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
           {!creating && <CompanyPreparation applicationId={application.id} onVisit={visit} disabled={busy} />}
           {!creating && field('memo', '준비 메모', { multiline: true, minRows: 3, placeholder: '다음에 할 일을 적어보세요.' })}
           <details className="panel-extra" open={Boolean(errors.job_url || (!creating && errors.company_name)) || undefined}>
-            <summary>{creating ? '공고·마감일 추가' : '회사·공고 정보 수정'}</summary>
+            <summary>{creating ? '공고·지원일 추가' : '회사·공고 정보 수정'}</summary>
             <div className="panel-extra-fields">
               {!creating && <>{field('company_name', '회사 이름', { required: true, inputRef: companyInput })}{field('position', '지원 직무')}</>}
               {field('job_url', '채용 공고 주소', { type: 'url', inputRef: urlInput, placeholder: 'https://' })}
-              <div className="panel-field-pair">{field('deadline', '공고 마감일', { type: 'date' })}{field('applied_date', '지원한 날짜', { type: 'date' })}</div>
+              {field('applied_date', '지원한 날짜', { type: 'date' })}
               {!creating && <>
                 {field('location', '근무 지역')}
                 <div className="panel-field-pair">{field('company_size', '기업 규모', { select: true, children: [<MenuItem value="" key="none">선택 안 함</MenuItem>, ...COMPANY_SIZE_OPTIONS.map(s => <MenuItem value={s} key={s}>{s}</MenuItem>)] })}{field('priority', '우선순위', { select: true, children: PRIORITY_OPTIONS.map(s => <MenuItem value={s.value} key={s.value}>{s.label}</MenuItem>) })}</div>
@@ -131,7 +138,7 @@ export default function ApplicationPanel({ application, creating, onClose, onSav
     </Drawer>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{destination ? '이동하면' : '닫으면'} 방금 입력한 내용이 사라집니다.</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={() => destination ? navigate(destination) : onClose()}>저장하지 않고 {destination ? '이동' : '닫기'}</Button></DialogActions>
+      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>입력을 버리고 {destination ? '이동할까요?' : '닫을까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>입력 버리고 {destination ? '이동' : '닫기'}</Button></DialogActions>
     </Dialog>
   </>;
 }

@@ -5,7 +5,6 @@ import { Button, Checkbox, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle,
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
-import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
 import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
 import { CHECKLIST_CATEGORIES } from '../constants';
@@ -194,7 +193,7 @@ export default function ChecklistPage() {
       {missingCompany ? <Alert severity="warning" action={<Button color="inherit" onClick={() => setScope('all')}>전체 준비 보기</Button>}>선택한 회사를 찾을 수 없어요. 삭제되었거나 접근할 수 없는 회사입니다.</Alert> : <>
         <section className="checklist-company-scope" aria-label="회사별 준비 선택과 완료 현황">
           <div className="checklist-scope-controls">
-            {selectedCompany ? <CompanyMark name={selectedCompany.company_name} /> : <span className="checklist-scope-icon" aria-hidden="true"><ChecklistOutlined /></span>}
+            {selectedCompany && <CompanyMark name={selectedCompany.company_name} />}
             <Field className="checklist-scope-select" label="회사 선택" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)} slotProps={{ select: { renderValue: value => value === 'all' ? '전체 회사 + 공통 준비' : value === 'common' ? '공통 준비' : companyLabel(value) } }}>
               <MenuItem value="all">전체 회사 + 공통 준비</MenuItem>
               <MenuItem value="common">공통 준비</MenuItem>
