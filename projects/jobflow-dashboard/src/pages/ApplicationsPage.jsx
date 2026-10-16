@@ -66,7 +66,7 @@ export default function ApplicationsPage() {
     </button>;
   }
   return <>
-    <PageHeading art="folder" title="내 입사지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
+    <PageHeading art="folder" title="지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
       <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
     <div className="board-toolbar">

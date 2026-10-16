@@ -17,7 +17,13 @@ const ProjectCover = ({ project, eager = false, image, imageAlt }) => {
   return (
     <div className={`project-cover project-cover--${cover.theme}${cover.mobile ? ' project-cover--mobile' : ''}`}>
       <div className="project-cover__screens">
-        <img className="project-cover__main" src={image ? `${BASE}${image}` : project.thumbnailUrl} alt={imageAlt || `${project.title} 실제 ${project.is_figma_project ? '디자인' : '웹'} 화면`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+        {cover.theme === 'record' ? (
+          <div className={`project-cover__record-window${image?.includes('overview') ? ' project-cover__record-window--overview' : ''}`}>
+            <img src={image ? `${BASE}${image}` : project.thumbnailUrl} alt={imageAlt || `${project.title} 실제 웹 화면의 작업 영역`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="2560" height="1440" />
+          </div>
+        ) : (
+          <img className="project-cover__main" src={image ? `${BASE}${image}` : project.thumbnailUrl} alt={imageAlt || `${project.title} 실제 ${project.is_figma_project ? '디자인' : '웹'} 화면`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+        )}
         {cover.secondary && <img className="project-cover__secondary" src={`${BASE}${cover.secondary}`} alt={`${project.title} 상세 화면`} loading={eager ? 'eager' : 'lazy'} decoding="async" />}
       </div>
     </div>

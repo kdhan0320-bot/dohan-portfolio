@@ -33,6 +33,26 @@
 .project-cover .project-cover__main { left: 7%; }
 .project-cover--equipment { background: #dbe8f0; }
 .project-cover--record { background: #e7eef5; }
+.project-cover__record-window {
+  position: absolute;
+  inset: 7%;
+  overflow: hidden;
+  border: 1px solid rgba(32, 43, 54, .13);
+  border-radius: 6px;
+  background: #f8faf9;
+  box-shadow: 0 12px 24px rgba(26, 44, 62, .14);
+}
+.project-cover__record-window img {
+  display: block;
+  position: absolute;
+  width: 164.103%;
+  max-width: none;
+  height: auto;
+  left: -31.538%;
+  top: 0;
+  margin-top: -21.154%;
+}
+.project-cover__record-window--overview img { margin-top: -16.41%; }
 .project-cover--cinema { background: #0f2234; }
 .project-cover--cinema .project-cover__main { border-color: #526579; }
 .project-cover--industry { background: #dfe6e1; }

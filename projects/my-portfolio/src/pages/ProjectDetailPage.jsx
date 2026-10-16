@@ -19,10 +19,21 @@ const imageDimensions = (aspectRatio) => {
   const [width, height] = String(aspectRatio || '').split('/').map(Number);
   return width > 0 && height > 0 ? { width, height } : {};
 };
+const cropVariables = (media) => {
+  if (!media.crop) return undefined;
+  const { x, y, width, height } = media.crop;
+  const original = imageDimensions(media.aspectRatio);
+  return {
+    '--crop-ratio': `${width} / ${height}`,
+    '--crop-image-width': `${original.width / width * 100}%`,
+    '--crop-left': `${-x / width * 100}%`,
+    '--crop-top': `${-y / height * 100}%`,
+  };
+};
 
 const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
-  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${className}`}>
-    <div className="case-figure__surface">
+  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${media.crop ? `case-figure--cropped ${media.mobile ? 'case-figure--crop-responsive' : ''}` : ''} ${className}`}>
+    <div className="case-figure__surface" style={cropVariables(media)}>
       {media.mobile ? <picture className="case-responsive-image">
         <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} {...imageDimensions(media.mobile.aspectRatio)} />
         <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} {...imageDimensions(media.aspectRatio)} loading={priority ? 'eager' : 'lazy'} decoding="async" />
@@ -53,6 +64,55 @@ const ScreenChoices = ({ choices }) => {
     </div>
   </div>;
 };
+
+const ServiceWalkthrough = ({ flow }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const panelId = useId();
+  const step = flow.steps[selectedIndex];
+  return <section className="case-section case-service-flow" aria-labelledby="case-flow-heading">
+    <div className="case-section__heading">
+      <p className="case-eyebrow">서비스의 사용 흐름</p>
+      <h2 id="case-flow-heading">{flow.title}</h2>
+      <p className="case-service-flow__intro">{flow.summary}</p>
+    </div>
+    <div className="case-service-flow__controls" role="group" aria-label="사용 단계별 실제 화면 선택">
+      {flow.steps.map((item, index) => <button key={item.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>
+        <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.label}
+      </button>)}
+    </div>
+    <div className="case-service-flow__panel" id={panelId}>
+      <div className="case-service-flow__copy" aria-live="polite" aria-atomic="true">
+        <p className="case-eyebrow">{step.screen}</p>
+        <h3>{step.title}</h3>
+        <p>{step.action}</p>
+      </div>
+      <ScreenFigure media={step.media} label={step.caption} />
+      <div className="case-service-flow__reason"><h4>구성의 이유</h4><p>{step.reason}</p></div>
+    </div>
+    <p className="case-service-flow__note">{flow.note}</p>
+  </section>;
+};
+
+const ScreenComparison = ({ decision }) => <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
+  <div className="case-comparison__grid">
+    <div>
+      <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>
+      <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
+      <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
+    </div>
+    <div>
+      <p className="case-comparison__label case-comparison__label--current">{decision.comparison.afterHeading || '현재 화면'}</p>
+      <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
+      <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
+    </div>
+  </div>
+  <p className="case-comparison__note">
+    {decision.comparison.note}
+    {decision.comparison.reference && <a href={mediaUrl(decision.comparison.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.comparison.reference.label} (새 탭)`}>
+      {decision.comparison.reference.label}
+    </a>}
+  </p>
+</div>;
 
 const ExternalAction = ({ href, children, primary = false }) => href ? (
   <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>
@@ -153,6 +213,8 @@ const ProjectDetailPage = () => {
           </dl>
         </section>}
 
+        {ready.serviceFlow && <ServiceWalkthrough key={slug} flow={ready.serviceFlow} />}
+
         {!focusedCase && <section className="case-section case-context" aria-labelledby="case-context-heading">
           <div className="case-section__heading">
             <p className="case-eyebrow">01 / 프로젝트 배경</p>
@@ -185,26 +247,10 @@ const ProjectDetailPage = () => {
                     <dt>{item.label}</dt><dd>{item.text}</dd>
                   </div>)}</dl>}
                 </div>
-                {decision.comparison ? <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
-                  <div className="case-comparison__grid">
-                    <div>
-                      <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>
-                      <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
-                      <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
-                    </div>
-                    <div>
-                      <p className="case-comparison__label case-comparison__label--current">{decision.comparison.afterHeading || '현재 화면'}</p>
-                      <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
-                      <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
-                    </div>
-                  </div>
-                  <p className="case-comparison__note">
-                    {decision.comparison.note}
-                    {decision.comparison.reference && <a href={mediaUrl(decision.comparison.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.comparison.reference.label} (새 탭)`}>
-                      {decision.comparison.reference.label}
-                    </a>}
-                  </p>
-                </div> : decision.showMedia && (decision.mediaChoices ? <ScreenChoices choices={decision.mediaChoices} /> : decision.reference ? <div>
+                {decision.comparison ? decision.comparison.disclosure ? <details className="case-comparison-details">
+                  <summary>{decision.comparison.disclosure}</summary>
+                  <ScreenComparison decision={decision} />
+                </details> : <ScreenComparison decision={decision} /> : decision.showMedia && (decision.mediaChoices ? <ScreenChoices choices={decision.mediaChoices} /> : decision.reference ? <div>
                   <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
                   <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
                 </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}

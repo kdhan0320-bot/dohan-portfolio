@@ -1,5 +1,5 @@
 import Field from '../components/ui/Field';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Tabs, Tab, IconButton, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
@@ -54,6 +54,18 @@ export default function InterviewPage() {
   const [target, setTarget] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [activeId, setActiveId] = useState(null);
+  const practiceHeading = useRef(null);
+  const emptyResult = useRef(null);
+  const pendingResultFocus = useRef(false);
+  useEffect(() => {
+    if (busy || !pendingResultFocus.current) return;
+    pendingResultFocus.current = false;
+    // Wait until the record and any delete dialog have released their focus.
+    const frame = window.requestAnimationFrame(() => {
+      (practiceHeading.current || emptyResult.current)?.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [busy, notes]);
   const scopedNotes = notes.filter(note => companyScope === 'all' || (companyScope === 'common' ? !note.application_id : note.application_id === companyScope));
   const done = scopedNotes.filter(n => n.is_reviewed).length;
   const filtered = scopedNotes.filter(n => tab === 'all' || n.is_reviewed === (tab === 'done'));
@@ -105,9 +117,11 @@ export default function InterviewPage() {
   }
   async function review(n) {
     if (busy || (!n.is_reviewed && !n.answer?.trim())) return;
+    const origin = document.activeElement;
     setBusy(n.id);
     try {
       await toggleReview(n.id, !n.is_reviewed);
+      pendingResultFocus.current = document.activeElement === origin || document.activeElement === document.body;
       setFeedback({
         message: n.is_reviewed ? '복습할 목록으로 옮겼어요.' : '복습을 완료했어요.'
       });
@@ -170,6 +184,7 @@ export default function InterviewPage() {
     try {
       await remove(target.id);
       setTarget(null);
+      pendingResultFocus.current = true;
       setFeedback({
         message: '면접 노트를 삭제했어요.'
       });
@@ -236,7 +251,7 @@ export default function InterviewPage() {
           </span>
           <span className={`practice-importance${activeNote.importance === '높음' ? ' is-important' : ''}`}>중요도 {activeNote.importance}</span>
         </div>
-        <div className="practice-question"><h2>{activeNote.question}</h2></div>
+        <div className="practice-question"><h2 ref={practiceHeading} tabIndex={-1}>{activeNote.question}</h2></div>
         {activeHasAnswer && revealed[activeNote.id] && <div className="practice-answer" id={`answer-${activeNote.id}`}><span>나의 답변</span><p>{activeNote.answer}</p></div>}
         {activeHasAnswer ? <Button className="practice-reveal" variant="outlined" aria-expanded={Boolean(revealed[activeNote.id])} aria-controls={revealed[activeNote.id] ? `answer-${activeNote.id}` : undefined} onClick={() => setRevealed(prev => ({ ...prev, [activeNote.id]: !prev[activeNote.id] }))}>
           {revealed[activeNote.id] ? '답변 접기' : '답변 펼치기'}
@@ -253,7 +268,7 @@ export default function InterviewPage() {
       </div>
       </article>
     </section>
-  </div> : <div className="panel practice-empty">
+  </div> : <div className="panel practice-empty" ref={emptyResult} tabIndex={-1} role="region" aria-label="면접 질문 목록 결과">
     <Empty title={tab === 'todo' && scopedNotes.length ? '이 범위의 질문을 모두 복습했어요' : tab === 'done' ? '아직 복습을 완료한 질문이 없어요' : selectedCompany ? '이 회사의 첫 면접 질문을 기록해보세요' : companyScope === 'common' ? '아직 공통 질문이 없어요' : '아직 질문이 없어요'}>
       {scopedNotes.length > 0 && <Button onClick={() => setTab('all')}>전체 질문 보기</Button>}
       <Button onClick={startNew}>새 질문 기록하기</Button>

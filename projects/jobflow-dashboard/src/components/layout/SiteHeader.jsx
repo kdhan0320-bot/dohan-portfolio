@@ -10,7 +10,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 const mainLinks = [
-  { to: '/overview', label: '오늘의 지원' },
+  { to: '/overview', label: '오늘의 지원', mobileLabel: '오늘' },
   { to: '/', label: '지원 현황' },
   { to: '/calendar', label: '마감 일정' },
   { to: '/checklist', label: '준비 체크' },
@@ -95,12 +95,13 @@ export default function SiteHeader({ publicMode = false }) {
       setBusy(false);
     }
   }
-  const menuLink = (item, fromDrawer = false) => <Link key={item.to}
+  const menuLink = (item, fromDrawer = false, compact = false) => <Link key={item.to}
     to={item.to}
     className={activePath(pathname, item.to) ? 'is-current' : undefined}
+    aria-label={compact ? item.label : undefined}
     aria-current={activePath(pathname, item.to) ? 'page' : undefined}
     aria-disabled={busy || loading || undefined}
-    onClick={event => visit(event, item.to, fromDrawer)}>{item.label}</Link>;
+    onClick={event => visit(event, item.to, fromDrawer)}>{compact ? (item.mobileLabel || item.label) : item.label}</Link>;
 
   return <>
     <header className={`site-header ${publicMode ? 'site-header-public' : ''}`}>
@@ -120,12 +121,15 @@ export default function SiteHeader({ publicMode = false }) {
         </div>
       </div>}
     </header>
+    {!publicMode && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
+      {mainLinks.map(item => menuLink(item, false, true))}
+    </nav>}
     <Drawer anchor="right" open={mobileOpen} onClose={closeMenu} ModalProps={{ disableRestoreFocus: true }} slotProps={{
-      paper: { className: 'site-mobile-drawer', id: 'site-mobile-menu', role: 'dialog', 'aria-modal': true, 'aria-label': '전체 메뉴' },
+      paper: { className: 'site-mobile-drawer', id: 'site-mobile-menu', role: 'dialog', 'aria-modal': true, 'aria-label': publicMode ? '전체 메뉴' : '보조 메뉴' },
       transition: { onEntered: () => menuCloseRef.current?.focus(), onExited: finishDrawerClose }
     }}>
-      <div className="site-mobile-heading"><span>메뉴</span><IconButton ref={menuCloseRef} onClick={closeMenu} aria-label="메뉴 닫기"><Close /></IconButton></div>
-      <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>
+      <div className="site-mobile-heading"><span>{publicMode ? '메뉴' : '더 보기'}</span><IconButton ref={menuCloseRef} onClick={closeMenu} aria-label="메뉴 닫기"><Close /></IconButton></div>
+      {publicMode && <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>}
       {hasWorkspace && <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{secondaryLinks.map(item => menuLink(item, true))}</nav>}
       <div className="site-mobile-account">
         <p>{isGuest ? '샘플 변경은 새로고침하면 초기화돼요.' : !user ? '메뉴를 선택하면 가상 데이터로 체험해요.' : '내 계정에서 기록장 설정을 관리해요.'}</p>
