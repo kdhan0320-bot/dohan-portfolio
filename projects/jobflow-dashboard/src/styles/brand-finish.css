@@ -1,7 +1,6 @@
 /* Keep the atmosphere behind the records; folder tabs identify actual stages. */
-.brand.brand-wordmark-lockup { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0; color: var(--ink); }
+.brand.brand-wordmark-lockup { display: inline-flex; align-items: center; min-height: 44px; gap: 0; color: var(--ink); }
 .brand .brand-wordmark { display: block; width: 104px; height: auto; }
-.brand.brand-wordmark-lockup .brand-sub { margin-top: 1px; font-size: 11px; line-height: 1.5; font-weight: 400; letter-spacing: .015em; color: var(--muted); }
 .brand.brand-compact .brand-wordmark { width: 92px; }
 /* Records share one edge treatment; the folder silhouette belongs to stage groups. */
 .workspace-main .job-tile, .workspace-main .agenda-company { border-radius: 10px; }

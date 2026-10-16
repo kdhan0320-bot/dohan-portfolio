@@ -1,0 +1,137 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import vm from 'node:vm';
+import { transform } from 'esbuild';
+import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../src/constants/index.js';
+import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
+import { isValidApplicationUrl } from '../src/utils/applicationPayload.js';
+
+// Run the actual panel's validation, input and disclosure handlers. Native
+// details focus/geometry are checked separately in the browser.
+const source = await readFile(new URL('../src/components/applications/ApplicationPanel.jsx', import.meta.url), 'utf8');
+const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
+
+function panelWith(application = null) {
+  const state = [];
+  let cursor = 0;
+  let values = applicationDraft(application);
+  const saves = [];
+  const noOp = () => {};
+  const react = {
+    useState(initial) {
+      const index = cursor++;
+      if (!(index in state)) state[index] = typeof initial === 'function' ? initial() : initial;
+      return [state[index], value => { state[index] = typeof value === 'function' ? value(state[index]) : value; }];
+    },
+    useRef(initial) {
+      const index = cursor++;
+      if (!(index in state)) state[index] = { current: initial };
+      return state[index];
+    },
+  };
+  const jsx = (type, props) => ({ type, props });
+  const dependencies = {
+    react,
+    'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'fragment' },
+    'react-router-dom': { useNavigate: () => noOp },
+    '@mui/material': {
+      ...Object.fromEntries(['Alert', 'Button', 'Checkbox', 'Dialog', 'DialogActions', 'DialogContent', 'DialogTitle', 'FormControlLabel', 'IconButton', 'MenuItem'].map(name => [name, name])),
+      useMediaQuery: () => false,
+    },
+    '../../hooks/useChecklist': 'unused-checklist-hook',
+    '../../hooks/useInterviewNotes': 'unused-interview-hook',
+    '../../hooks/useApplicationDraft': { __esModule: true, default: () => ({
+      form: values,
+      change: (key, value) => { values = { ...values, [key]: value }; },
+      clear: noOp,
+      dirty: true,
+      restored: false,
+    }) },
+    '../ui/Field': 'Field',
+    '../ui/PageUI': { CompanyMark: 'CompanyMark', ConfirmDelete: 'ConfirmDelete' },
+    '../../constants': { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS },
+    '../../utils/applicationBoard': { applicationDraft, BOARD_COLUMNS, boardColumn },
+    '../../utils/applicationPayload': { isValidApplicationUrl },
+  };
+  const module = { exports: {} };
+  vm.runInNewContext(code, {
+    module, exports: module.exports,
+    window: { requestAnimationFrame: callback => callback() },
+    require(name) {
+      if (name.startsWith('@mui/icons-material/')) return name;
+      if (!(name in dependencies)) throw new Error(`Unexpected dependency: ${name}`);
+      return dependencies[name];
+    },
+  });
+  function render() {
+    cursor = 0;
+    return module.exports.default({ application, creating: !application, draftScope: 'sample', onClose: noOp, onSave: async value => saves.push(value), onDelete: noOp });
+  }
+  function find(predicate, node) {
+    if (arguments.length < 2) node = render();
+    if (!node || typeof node !== 'object') return null;
+    if (Array.isArray(node)) return node.map(child => find(predicate, child)).find(Boolean) || null;
+    if (predicate(node)) return node;
+    return find(predicate, node.props?.children ?? null);
+  }
+  return {
+    saves,
+    details: () => find(node => node.type === 'details'),
+    field: label => find(node => node.type === 'Field' && node.props.label === label),
+    change: (label, value) => find(node => node.type === 'Field' && node.props.label === label).props.onChange({ target: { value } }),
+    submit: () => find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }),
+    toggle: open => find(node => node.type === 'details').props.onToggle({ currentTarget: { open } }),
+  };
+}
+
+test('correcting an invalid posting address keeps the extra fields open through successful saving', async () => {
+  const panel = panelWith();
+  panel.change('회사 이름', '검증용 회사');
+  panel.change('채용 공고 주소', 'abc');
+  await panel.submit();
+  assert.equal(panel.details().props.open, true);
+  assert.equal(panel.field('채용 공고 주소').props.error, true);
+  assert.equal(panel.saves.length, 0);
+
+  panel.change('채용 공고 주소', 'a');
+  assert.equal(panel.field('채용 공고 주소').props.error, false);
+  assert.equal(panel.details().props.open, true, 'editing must not hide the focused address field');
+  panel.change('채용 공고 주소', 'https://example.com/jobs');
+  assert.equal(panel.details().props.open, true);
+  await panel.submit();
+  assert.equal(panel.saves.length, 1);
+  assert.equal(panel.saves[0].job_url, 'https://example.com/jobs');
+});
+
+test('manual disclosure choices persist across other edits, while a fresh company starts collapsed', async () => {
+  const panel = panelWith({ id: 'company-a', company_name: '첫 회사' });
+  assert.equal(panel.details().props.open, false);
+  panel.toggle(true);
+  panel.change('지원 직무', '웹 퍼블리셔');
+  assert.equal(panel.details().props.open, true);
+  panel.change('채용 공고 주소', 'invalid');
+  await panel.submit();
+  panel.toggle(false);
+  panel.change('준비 메모', '다음에 수정할 메모');
+  assert.equal(panel.details().props.open, false, 'unrelated edits must respect a manual collapse');
+  await panel.submit();
+  assert.equal(panel.details().props.open, true, 'validation must reveal the invalid field again');
+
+  // ApplicationsPage keys each panel by scope and record ID, so switching
+  // companies mounts a new panel rather than carrying its disclosure state.
+  const next = panelWith({ id: 'company-b', company_name: '두 번째 회사' });
+  assert.equal(next.details().props.open, false);
+});
+
+test('a missing edited company name is revealed and remains visible while it is corrected', async () => {
+  const panel = panelWith({ id: 'company-a', company_name: '검증용 회사' });
+  panel.change('회사 이름', '');
+  await panel.submit();
+  assert.equal(panel.details().props.open, true);
+  assert.equal(panel.field('회사 이름').props.error, true);
+  panel.change('회사 이름', '수');
+  assert.equal(panel.field('회사 이름').props.error, false);
+  assert.equal(panel.details().props.open, true);
+  assert.equal(panel.saves.length, 0);
+});

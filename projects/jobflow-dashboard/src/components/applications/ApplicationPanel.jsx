@@ -43,6 +43,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
+  const [extraOpen, setExtraOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [destination, setDestination] = useState(null);
@@ -77,6 +78,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     if (!isValidApplicationUrl(form.job_url)) invalid.job_url = 'https://로 시작하는 공고 주소를 입력해주세요.';
     setErrors(invalid);
     if (Object.keys(invalid).length) {
+      if (invalid.job_url || (!creating && invalid.company_name)) setExtraOpen(true);
       window.requestAnimationFrame(() => (invalid.company_name ? companyInput : urlInput).current?.focus());
       return;
     }
@@ -142,7 +144,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
           </div>}
           {!creating && <CompanyPreparation applicationId={application.id} onVisit={visit} disabled={busy} />}
           {!creating && field('memo', '준비 메모', { multiline: true, minRows: 3, placeholder: '다음에 할 일을 적어보세요.' })}
-          <details className="panel-extra" open={Boolean(errors.job_url || (!creating && errors.company_name)) || undefined}>
+          <details className="panel-extra" open={extraOpen} onToggle={event => setExtraOpen(event.currentTarget.open)}>
             <summary>{creating ? '공고·지원일 추가' : '회사·공고 정보 수정'}</summary>
             <div className="panel-extra-fields">
               {!creating && <>{field('company_name', '회사 이름', { required: true, inputRef: companyInput })}{field('position', '지원 직무')}</>}
