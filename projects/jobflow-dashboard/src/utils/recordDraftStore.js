@@ -1,7 +1,7 @@
 const FIELDS = {
   interview: { application_id: null, question: '', answer: '', related_project: '', importance: '보통', is_reviewed: false },
   checklist: { application_id: null, title: '', category: '서류' },
-  documentHelper: { type: '', role: '', company: '', project: '', experience: '', result: '' },
+  documentHelper: { type: '', role: '', company: '', project: '', experience: '', result: '', resultCreated: false },
 };
 
 export function recordDraftValues(kind, input = {}) {

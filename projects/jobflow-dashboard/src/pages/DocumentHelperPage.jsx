@@ -7,11 +7,11 @@ import { generatePrompt } from '../utils/documentTemplateHelpers';
 import { PageHeading, Empty } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import useRecordDraft from '../hooks/useRecordDraft';
-const INITIAL = { type: PROMPT_TYPES[0], role: '', company: '', project: '', experience: '', result: '' };
+const INITIAL = { type: PROMPT_TYPES[0], role: '', company: '', project: '', experience: '', result: '', resultCreated: false };
 export default function DocumentHelperPage() {
   const drafts = useRecordDraft('documentHelper');
   const form = drafts.read('current')?.values || INITIAL;
-  const { type, role, company, project, experience, result } = form;
+  const { type, role, company, project, experience, result, resultCreated } = form;
   const [feedback, setFeedback] = useState(null);
   function changeForm(patch) {
     // Write before navigation can unmount this page. Reading from the scoped
@@ -37,7 +37,7 @@ export default function DocumentHelperPage() {
   <div className="helper-grid">
     <form className="panel panel-body field-stack" onSubmit={e => {
         e.preventDefault();
-        changeForm({ result: generatePrompt(type, role, company, project, experience) });
+        changeForm({ result: generatePrompt(type, role, company, project, experience), resultCreated: true });
       }}>
       <div className="helper-input-heading"><h2>1. 경험 입력</h2></div>
       <Field select label="준비할 글" value={type} onChange={e => changeForm({ type: e.target.value })}>
@@ -61,7 +61,7 @@ export default function DocumentHelperPage() {
         <h2>2. 요청문 확인·복사</h2>
         {result && <Button startIcon={<ContentCopy />} onClick={copy}>복사</Button>}
       </div>
-      {result ? <>
+      {resultCreated ? <>
         <label htmlFor="prompt-result" className="muted" style={{
             display: 'block',
             marginTop: 15

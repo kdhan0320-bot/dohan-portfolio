@@ -84,6 +84,21 @@ test('unfinished input survives re-entry without requiring prompt generation', (
   assert.equal(store.hasDrafts(), true);
 });
 
+test('clearing a generated result keeps the editor available across re-entry for replacement text', () => {
+  const store = createRecordDraftStore();
+  const page = helperPage(store);
+  page.generate();
+  page.result().props.onChange({ target: { value: '' } });
+  assert.equal(page.result().props.value, '');
+
+  const reopened = helperPage(store);
+  assert.equal(reopened.result().props.value, '');
+  reopened.result().props.onChange({ target: { value: '다시 작성한 요청문' } });
+  assert.equal(helperPage(store).result().props.value, '다시 작성한 요청문');
+  store.clearSample();
+  assert.equal(reopened.result(), null);
+});
+
 test('sample reset clears an open helper while leaving account drafts separate', () => {
   const store = createRecordDraftStore();
   const sample = helperPage(store);

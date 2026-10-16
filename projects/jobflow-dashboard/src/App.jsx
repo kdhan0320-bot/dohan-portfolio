@@ -24,7 +24,9 @@ const RouteTitleManager = () => {
   } = useLocation();
   useEffect(() => {
     const titlePathname = pathname === '/ai-prompt' ? '/document-helper' : pathname;
-    document.title = `${titlePathname === '/reset-password' ? '비밀번호 재설정' : titlePathname === '/guide' ? '이용 안내' : getRouteTitle(titlePathname)} | 갈피록`;
+    document.title = titlePathname === '/welcome'
+      ? '갈피록 · 개인 입사지원 관리'
+      : `${titlePathname === '/reset-password' ? '비밀번호 재설정' : titlePathname === '/guide' ? '이용 안내' : getRouteTitle(titlePathname)} · 갈피록`;
   }, [pathname]);
   return null;
 };
