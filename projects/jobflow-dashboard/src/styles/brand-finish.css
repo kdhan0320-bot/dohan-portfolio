@@ -136,7 +136,7 @@
   .workspace-main .checklist-page .task-collection .list-task { min-height: 72px; }
 }
 @media (max-width: 699px) {
-  .workspace-main .job-lane { padding-top: 12px; }
+  .workspace-main .job-lane { padding-top: 12px; min-height: 220px; }
   .workspace-main .board-toolbar .field-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .workspace-main .mobile-board-tabs.MuiTabs-root, .workspace-main .mobile-board-tabs .MuiTab-root { min-height: 48px; }
 }
@@ -212,4 +212,8 @@
   .workspace-main .page-heading[data-art='folder'] .heading-actions { grid-row: 1; }
   .workspace-main .page-heading[data-art='folder'] .muted { grid-column: 1 / -1; }
   .workspace-main .job-board { padding-top: 4px; }
+}
+/* Balance short settings content without moving it when feedback appears. */
+@media (min-width: 1800px) and (min-height: 1000px) {
+  .workspace-with-topnav > .workspace-content:has(.settings-page) { padding-top: clamp(112px, 16vh, 224px); }
 }

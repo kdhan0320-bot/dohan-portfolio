@@ -25,6 +25,11 @@ function pageWith(readResults) {
       if (!(index in state)) state[index] = typeof initial === 'function' ? initial() : initial;
       return [state[index], value => { state[index] = typeof value === 'function' ? value(state[index]) : value; }];
     },
+    useRef(initial) {
+      const index = cursor++;
+      if (!(index in state)) state[index] = { current: initial };
+      return state[index];
+    },
     useEffect(callback, dependencies) {
       const index = cursor++;
       const previous = effects.get(index);
@@ -154,6 +159,32 @@ test('an account change immediately blocks saving the previous account values', 
   await button(tree, '프로필 저장').props.onClick();
   assert.equal(page.writes[0].id, 'account-b');
   assert.equal(page.writes[0].display_name, '새 계정 이름');
+});
+
+test('same-account session and metadata updates preserve unsaved profile edits without reloading', async () => {
+  const page = pageWith([profile()]);
+  page.render(); await page.flush();
+  field(page.render(), '이름').props.onChange({ target: { value: '저장 전 수정 이름' } });
+  field(page.render(), '목표 직무').props.onChange({ target: { value: '수정한 목표 직무' } });
+
+  for (const account of [
+    { id: 'account-a', email: 'a@example.com', user_metadata: { display_name: '가입 이름' } },
+    { id: 'account-a', email: 'changed@example.com', user_metadata: { display_name: '다른 표시 이름' } },
+  ]) {
+    page.setAccount(account);
+    page.render(); await page.flush();
+    const tree = page.render();
+    assert.equal(field(tree, '이름').props.value, '저장 전 수정 이름');
+    assert.equal(field(tree, '목표 직무').props.value, '수정한 목표 직무');
+    assert.equal(button(tree, '프로필 저장').props.disabled, false);
+    assert.deepEqual(page.reads, ['account-a']);
+  }
+
+  await button(page.render(), '프로필 저장').props.onClick();
+  assert.equal(page.writes[0].id, 'account-a');
+  assert.equal(page.writes[0].email, 'changed@example.com');
+  assert.equal(page.writes[0].display_name, '저장 전 수정 이름');
+  assert.equal(page.writes[0].target_role, '수정한 목표 직무');
 });
 
 test('a successful empty profile lookup allows first-time profile setup', async () => {

@@ -75,7 +75,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     if (busy) return;
     const invalid = {};
     if (!form.company_name.trim()) invalid.company_name = '회사 이름을 입력해주세요.';
-    if (!isValidApplicationUrl(form.job_url)) invalid.job_url = 'https://로 시작하는 공고 주소를 입력해주세요.';
+    if (!isValidApplicationUrl(form.job_url)) invalid.job_url = 'http:// 또는 https://로 시작하는 공고 주소를 입력해주세요.';
     setErrors(invalid);
     if (Object.keys(invalid).length) {
       if (invalid.job_url || (!creating && invalid.company_name)) setExtraOpen(true);

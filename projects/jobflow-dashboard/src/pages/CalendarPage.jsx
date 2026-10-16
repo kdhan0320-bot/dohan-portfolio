@@ -30,7 +30,8 @@ export default function CalendarPage() {
     ? `지원 전 회사${isGuest ? ` · 샘플 기준 ${today.replaceAll('-', '.')}` : '의 마감일을 확인해요.'}`
     : '아직 지원하지 않은 회사의 마감일을 확인해요.';
   const agendaTitle = useRef(null);
-  const pendingAgendaFocus = useRef(false);
+  const pendingAgendaFocus = useRef(null);
+  const [agendaFocusRequest, setAgendaFocusRequest] = useState(0);
   const dayButtons = useRef(new Map());
   const pendingFocus = useRef(null);
   const tabDate = calendarFocusDate(month, date, focusedDate, today);
@@ -47,14 +48,27 @@ export default function CalendarPage() {
     }
   }, [month, focusedDate]);
   useEffect(() => {
-    if (!pendingAgendaFocus.current) return;
-    pendingAgendaFocus.current = false;
-    agendaTitle.current?.focus();
-  }, [month, date, scope]);
+    const pending = pendingAgendaFocus.current;
+    if (!pending) return;
+    pendingAgendaFocus.current = null;
+    agendaTitle.current?.focus({ preventScroll: true });
+    if (pending.scroll) agendaTitle.current?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+  }, [agendaFocusRequest]);
+  function revealAgenda() {
+    pendingAgendaFocus.current = { scroll: compactCalendar };
+    if (compactCalendar) setCalendarExpanded(false);
+    // A fresh request also handles confirming the already selected date.
+    setAgendaFocusRequest(value => value + 1);
+  }
   function selectMonth(value) { pendingFocus.current = null; setParams({ month: value }); }
-  function selectDate(value) { setFocusedDate(value); setParams({ month: value.slice(0, 7), date: value }); }
-  function selectUpcoming() { pendingFocus.current = null; pendingAgendaFocus.current = true; setFocusedDate(null); setParams({}); }
-  function selectMonthAgenda() { pendingAgendaFocus.current = true; selectMonth(month); }
+  function selectDate(value) {
+    pendingFocus.current = null;
+    setFocusedDate(value);
+    setParams({ month: value.slice(0, 7), date: value });
+    if (compactCalendar) revealAgenda();
+  }
+  function selectUpcoming() { pendingFocus.current = null; setFocusedDate(null); setParams({}); revealAgenda(); }
+  function selectMonthAgenda() { selectMonth(month); revealAgenda(); }
   function moveDate(event, day) {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     const next = keyboardDate(day, event.key);

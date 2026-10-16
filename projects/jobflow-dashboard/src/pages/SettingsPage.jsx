@@ -1,5 +1,5 @@
 import Field from '../components/ui/Field';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, Card, CardContent, Typography, Button, Alert, Avatar, Stack, Skeleton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
@@ -23,6 +23,9 @@ const SettingsPage = () => {
     demoNotes
   } = useAuth();
   const navigate = useNavigate();
+  const userId = user?.id;
+  const profileAccountRef = useRef(user);
+  useEffect(() => { profileAccountRef.current = user; }, [user]);
   const [displayName, setDisplayName] = useState('');
   const [targetRole, setTargetRole] = useState('');
   const [saved, setSaved] = useState(false);
@@ -57,8 +60,11 @@ const SettingsPage = () => {
     {exported && <Alert severity="success">파일 다운로드를 요청했어요. 브라우저의 다운로드 목록을 확인해주세요.</Alert>}
   </div>;
   useEffect(() => {
-    if (!user || isGuest) return undefined;
+    if (!userId || isGuest) return undefined;
     let cancelled = false;
+    // Session refreshes can replace the user object without changing accounts.
+    // Capture its fallback name only for this load, never over an in-progress edit.
+    const fallbackName = profileAccountRef.current?.user_metadata?.display_name ?? '';
     const loadProfile = async () => {
       setProfileLoading(true);
       setLoadedProfileId(null);
@@ -71,15 +77,15 @@ const SettingsPage = () => {
         const {
           data,
           error: loadError
-        } = await supabase.from('jobflow_profiles').select('display_name, target_role').eq('id', user.id).maybeSingle();
+        } = await supabase.from('jobflow_profiles').select('display_name, target_role').eq('id', userId).maybeSingle();
         if (cancelled) return;
         if (loadError) {
           setProfileLoadError('프로필 정보를 불러오지 못했어요. 기존 정보를 보호하기 위해 편집을 잠시 멈췄어요.');
           return;
         }
-        setDisplayName(data ? data.display_name ?? '' : user.user_metadata?.display_name ?? '');
+        setDisplayName(data ? data.display_name ?? '' : fallbackName);
         setTargetRole(data?.target_role ?? '');
-        setLoadedProfileId(user.id);
+        setLoadedProfileId(userId);
       } catch {
         if (!cancelled) {
           setProfileLoadError('프로필 정보를 불러오지 못했어요. 기존 정보를 보호하기 위해 편집을 잠시 멈췄어요.');
@@ -92,7 +98,7 @@ const SettingsPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [user, isGuest, profileAttempt]);
+  }, [userId, isGuest, profileAttempt]);
   const handleSave = async () => {
     if (!profileReady || saving) return;
     setError('');

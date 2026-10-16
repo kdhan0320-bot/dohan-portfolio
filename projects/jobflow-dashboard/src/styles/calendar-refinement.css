@@ -12,7 +12,7 @@
 .calendar-layout .calendar-event-count { flex: 0 0 auto; padding: 0; font-size: 14px; line-height: 22px; }
 .calendar-layout .calendar-legend { padding: 10px 18px; font-size: 14px; }
 .calendar-layout .agenda-heading { padding: 4px 0 14px; }
-.calendar-layout .agenda-heading h2 { font-size: 21px; }
+.calendar-layout .agenda-heading h2 { font-size: 21px; scroll-margin-block: 140px 96px; }
 .agenda-scope-actions { display: flex; flex-wrap: wrap; column-gap: 16px; }
 .calendar-layout .agenda-scope-actions .MuiButton-root { min-height: 44px; margin-top: 0; }
 .calendar-layout .agenda-list { gap: 10px; }
