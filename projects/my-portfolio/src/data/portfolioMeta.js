@@ -64,26 +64,28 @@ export const PROJECT_DETAIL_READY = {
     [
       {
         title: '빈 공간보다 조작 위치의 안정성을 우선했습니다.',
-        summary: '김도한은 큰 화면의 상단 쏠림과 빈 공간을 지적했습니다. 중앙 배치 후 AI 검토에서 필터를 바꾸면 패널이 약 87px 움직이는 문제가 확인됐고, 김도한은 이를 우선 수정하도록 요청했습니다. AI가 목록 길이와 무관하게 작업 영역의 시작 위치를 유지하도록 수정했습니다.',
-        media: media('detail/current/galpirok-checklist-wide.jpg', '개선한 갈피록 준비 체크 — 2560×1440에서 일정한 위치에 놓인 제목·필터와 준비 목록', '2560 / 1440', { original: 'detail/current/galpirok-checklist-wide.jpg' }),
+        summary: '상단 쏠림과 빈 공간에 대한 김도한의 수정 요청 뒤, AI 검토에서 필터에 따라 화면이 움직이는 문제가 발견됐습니다. 김도한은 이를 우선 수정하도록 요청했고, AI가 목록 길이와 관계없이 제목과 필터의 시작 위치를 고정했습니다.',
+        media: media('detail/current/galpirok-checklist-filter-empty-v2.png', '갈피록 준비 체크의 기타 분류 — 빈 결과에서도 같은 위치에 유지되는 제목과 필터', '2560 / 1440', { original: 'detail/current/galpirok-checklist-filter-empty-v2.png' }),
         comparison: {
-          before: media('detail/galpirok-checklist-before-wide.jpg', '개선 전 갈피록 준비 체크 — 2560×1440에서 위쪽의 좁은 목록과 넓은 빈 공간', '2560 / 1440', { original: 'detail/galpirok-checklist-before-wide.jpg' }),
-          beforeLabel: '준비 체크 · 개선 전',
-          afterLabel: '준비 체크 · 개선 후',
-          beforeSummary: '좁은 목록 아래로 넓은 단색 공간이 남아 있었습니다.',
-          afterSummary: '작업 영역은 일정한 위치에서 시작합니다. 필터 결과가 짧아져도 제목과 조작부가 함께 내려가지 않도록 했습니다.',
-          note: '2560×1440의 초기 배치와 현재 배치입니다. 중간의 중앙 배치 버전에서 발견한 필터 이동 문제는 본문에 따로 설명했습니다. 준비 항목은 위 사용 흐름의 ‘준비’에서 더 크게 볼 수 있습니다.',
+          before: media('detail/current/galpirok-checklist-filter-all-v2.png', '갈피록 준비 체크의 전체 분류 — 진행 중인 준비 항목이 있는 상태', '2560 / 1440', { original: 'detail/current/galpirok-checklist-filter-all-v2.png' }),
+          beforeHeading: '현재 · 전체 분류',
+          afterHeading: '현재 · 기타 분류',
+          beforeLabel: '준비 항목이 있는 상태',
+          afterLabel: '준비 항목이 없는 상태',
+          beforeSummary: '진행 중인 준비 항목을 전체 분류에서 확인합니다.',
+          afterSummary: '기타 분류로 바꿔 목록이 비어도 제목과 필터는 같은 위치에 남습니다.',
+          note: '동일한 2560×1440 표시 영역과 스크롤 위치에서 캡처한 현재의 두 필터 상태입니다. 수정 전후의 비교가 아니라, 목록 길이가 달라질 때의 배치를 확인하는 근거입니다.',
           layout: 'workspace',
-          disclosure: '2560×1440 전체 배치 비교 보기',
+          disclosure: '2560×1440 두 필터 상태 비교 보기',
         },
       },
       {
         title: '큰 폴더 그림 대신, 기록의 구분에 갈피를 남겼습니다.',
-        summary: '김도한은 배경 그림이 유치하게 느껴진다고 지적하고 은은한 그라데이션을 제안했습니다. 갈피 정체성은 유지하되 실제 기록과 조작을 먼저 보이게 하는 방향을 선택했습니다. AI가 큰 폴더 배경을 은은한 그라데이션으로 바꾸고, 로고·단계 탭·선택 상태에 정체성을 남기는 표현을 구현했습니다.',
+        summary: '김도한은 큰 배경 그림 대신 은은한 그라데이션을 제안하고, 갈피 정체성과 기록의 가독성을 함께 유지하도록 요청했습니다. AI가 배경을 바꾸고 로고·단계 탭·선택 상태에 갈피 표현을 남겼습니다.',
       },
       {
         title: '모바일에서는 달력보다 가까운 마감을 먼저.',
-        summary: 'AI 검토에서 월 경계의 마감 누락과 첫 기록 앞에 쌓인 조작 영역을 확인했습니다. 김도한은 모바일 마감 일정의 개선을 요청했습니다. AI가 다음 달의 가까운 마감도 기본 목록에 포함하고, 날짜 탐색은 필요할 때 펼치도록 정리했습니다.',
+        summary: '김도한은 모바일 마감 일정의 개선을 요청했습니다. AI가 검토에서 확인한 월 경계의 누락을 수정해 다음 달의 가까운 마감도 포함하고, 날짜 탐색 도구는 필요할 때 펼치도록 정리했습니다.',
         media: media('detail/current/galpirok-calendar-mobile.jpg', '개선한 모바일 마감 일정 — 다가오는 마감 목록을 먼저 확인하고 날짜 탐색을 펼치는 화면', '390 / 844', { frameWidth: 390 }),
         comparison: {
           before: media('detail/galpirok-calendar-before-mobile.jpg', '개선 전 모바일 마감 일정 — 9월의 마감만 보이는 기본 목록', '390 / 844', { frameWidth: 390 }),
@@ -104,6 +106,7 @@ export const PROJECT_DETAIL_READY = {
     },
     {
       imageFirst: true,
+      openingFacts: true,
       presentation: 'focused-decisions',
       decisionsTitle: '김도한의 판단과 AI의 구현.',
       context: {},
@@ -112,13 +115,13 @@ export const PROJECT_DETAIL_READY = {
         text: '여러 회사에 지원하는 취업 준비생을 위한 개인 관리 도구입니다. 김도한은 직접 등록하는 회사 기록을 중심으로 목적과 우선순위를 정했습니다. 회사별 상태·마감·준비할 일을 연결하고, 오늘 할 일부터 확인합니다.',
       },
       aiCollaboration: [
-        { label: '김도한', value: '서비스 목적·우선순위 설정. 상단 쏠림·문서 같은 인상·배경 그림에 대한 문제 제기, 갈피 정체성과 그라데이션 방향 선택, 수정 요구·공개 판단.' },
-        { label: 'AI 협업', value: '구체적인 화면·스타일 제안과 구현, 코드 작성·수정, 샘플·코드 검사와 브라우저 캡처. 사용 흐름과 개선 사례의 화면도 AI가 조작·캡처했습니다.' },
+        { label: '김도한', value: '서비스 목적·우선순위 설정, 화면의 문제 제기와 수정 요청, 갈피·그라데이션 방향 선택, 공개 판단.' },
+        { label: 'AI 협업', value: '화면·스타일 제안, 코드 작성·수정, 샘플·코드 검사와 브라우저 조작·캡처.' },
       ],
       serviceFlow: {
         title: '한 회사의 지원 과정.',
         summary: '모션브릿지 · 웹 퍼블리셔 · 9월 29일 마감',
-        note: '같은 가상 회사의 기록을 순서대로 조작한 실제 화면입니다. 2026.09.27 기준 샘플이며 새로고침하면 원래 상태로 돌아갑니다. 위 선택은 캡처를 바꾸며 실제 지원 기록을 수정하지 않습니다.',
+        note: '2026.09.27 기준 가상 회사의 실제 조작 화면입니다. 단계 선택은 캡처를 바꾸며, 서비스의 지원 기록을 수정하지 않습니다.',
         steps: [
           {
             label: '기록', screen: '01 / 지원 현황', title: '지원할 회사의 기록을 확인합니다.',

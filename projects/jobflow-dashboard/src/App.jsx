@@ -52,7 +52,7 @@ const AppRoutes = () => {
   }
   if (recoveryReady) return <Navigate to="/reset-password" replace />;
   if (!user && !isGuest) return <Navigate to="/welcome" replace />;
-  return <Routes>
+  return <Routes key={isGuest ? 'sample' : `user:${user.id}`}>
   <Route element={<Layout />}>
     <Route index element={<ApplicationsPage />} />
     <Route path="overview" element={<DashboardPage />} />

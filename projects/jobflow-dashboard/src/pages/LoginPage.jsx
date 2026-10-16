@@ -17,9 +17,10 @@ const readEmailCooldown = () => {
 };
 
 export default function LoginPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [tab, setTab] = useState(0);
-  const [helpMode, setHelpMode] = useState(searchParams.get('mode') === 'recovery' ? 'recovery' : null);
+  const requestedMode = searchParams.get('mode');
+  const helpMode = ['recovery', 'confirmation'].includes(requestedMode) ? requestedMode : null;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
@@ -48,7 +49,11 @@ export default function LoginPage() {
   }
 
   function changeMode(mode) {
-    setHelpMode(mode);
+    const nextParams = new URLSearchParams(searchParams);
+    if (mode) nextParams.set('mode', mode);
+    else nextParams.delete('mode');
+    setSearchParams(nextParams, { replace: true });
+    setTab(0);
     setPassword('');
     setReveal(false);
     setFields({});
@@ -166,8 +171,10 @@ export default function LoginPage() {
     <section className="login-story" aria-label="갈피록 소개">
       <div className="login-brand-row"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
       <div className="login-story-center">
+        <p className="login-purpose">개인 입사지원 관리</p>
         <h2>어디에 지원했는지,<br />한눈에.</h2>
-        <div className="login-demo"><Button variant="contained" onClick={demo} disabled={busy}>가입 없이 둘러보기</Button><small>가상 회사로 체험 · 새로고침하면 초기화</small></div>
+        <p className="login-story-description">지원할 회사를 기록하고,<br />마감과 준비할 일을 이어서 관리해요.</p>
+        <div className="login-demo"><Button variant="outlined" onClick={demo} disabled={busy}>가입 없이 둘러보기</Button><small>가상 회사로 체험 · 새로고침하면 초기화</small></div>
       </div>
       <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a>
     </section>

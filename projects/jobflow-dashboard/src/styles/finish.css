@@ -80,7 +80,8 @@
 .helper-output .panel-heading h2 { font-size: 21px; line-height: 30px; }
 .helper-output .empty-state { display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 330px; }
 .helper-output textarea { min-height: 420px; font-size: 15px; }
-.settings-grid:has(.settings-summary) { align-items: stretch; }
+.settings-grid:has(.settings-summary) { align-items: start; }
+.settings-account .settings-control-copy { flex: none; }
 .settings-control-copy > p:first-child { margin-top: 0; }
 
 @media (max-width: 1199px) {

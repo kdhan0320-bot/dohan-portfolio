@@ -4,6 +4,7 @@ import { supabase, isAuthConfigured, initialAuthCallback } from '../lib/supabase
 import { createAuthError, getAuthErrorMessage } from '../utils/authErrors';
 import { authRedirectUrl, cleanAuthCallbackUrl, forgetRecovery, readRecovery, rememberRecovery, sendAccountEmail, updateRecoveryPassword } from '../utils/authRecovery';
 import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES } from '../constants';
+import { recordDraftStore } from '../utils/recordDraftStore';
 const AuthContext = createContext(null);
 const GUEST_MODE_KEY = 'jobflow-guest-mode';
 const recoveryStorage = () => {
@@ -35,6 +36,18 @@ export const AuthProvider = ({
   const [isGuest, setIsGuest] = useState(false);
   const [authError, setAuthError] = useState('');
   const [recoveryUserId, setRecoveryUserId] = useState(null);
+  const draftScope = isGuest ? 'sample' : user?.id ? `user:${user.id}` : null;
+  useEffect(() => () => recordDraftStore.clearScope(draftScope), [draftScope]);
+  useEffect(() => {
+    const protectUnload = event => { event.preventDefault(); event.returnValue = ''; };
+    const synchronize = () => {
+      window.removeEventListener('beforeunload', protectUnload);
+      if (recordDraftStore.hasDrafts()) window.addEventListener('beforeunload', protectUnload);
+    };
+    synchronize();
+    const unsubscribe = recordDraftStore.subscribe(synchronize);
+    return () => { unsubscribe(); window.removeEventListener('beforeunload', protectUnload); };
+  }, []);
   const navigate = useNavigate();
   const navigateRef = useRef(navigate);
   useEffect(() => { navigateRef.current = navigate; }, [navigate]);
@@ -42,6 +55,7 @@ export const AuthProvider = ({
   const [demoItems, setDemoItems] = useState(() => structuredClone(DEMO_CHECKLISTS));
   const [demoNotes, setDemoNotes] = useState(() => structuredClone(DEMO_INTERVIEW_NOTES));
   const resetDemo = () => {
+    recordDraftStore.clearSample();
     setDemoApplications(structuredClone(DEMO_APPLICATIONS));
     setDemoItems(structuredClone(DEMO_CHECKLISTS));
     setDemoNotes(structuredClone(DEMO_INTERVIEW_NOTES));

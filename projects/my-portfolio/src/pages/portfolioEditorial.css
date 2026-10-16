@@ -312,7 +312,12 @@
 /* Galpirok leads with the working result, then shows the reasoning beside it. */
 .case-page[data-project-slug="jobflow"] .case-intro { padding-bottom: 28px; }
 .case-page[data-project-slug="jobflow"] .case-intro__grid { margin-top: 24px; }
-.case-page[data-project-slug="jobflow"] .case-cover { margin-bottom: 0; }
+.case-page[data-project-slug="jobflow"] .case-opening-facts { padding: 24px 0 28px; border-top: 1px solid var(--line); }
+.case-page[data-project-slug="jobflow"] .case-opening-facts dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+.case-page[data-project-slug="jobflow"] .case-opening-facts dt { margin-bottom: 8px; color: var(--accent); font-size: 14px; font-weight: 650; }
+.case-page[data-project-slug="jobflow"] .case-opening-facts dd { max-width: 550px; font-size: 16px; line-height: 1.7; }
+.case-page[data-project-slug="jobflow"] .case-opening-facts__tools { margin-top: 18px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.case-page[data-project-slug="jobflow"] .case-cover { max-width: 1000px; margin: 0 auto 32px; }
 .case-page[data-project-slug="jobflow"] .case-cover .case-figure__surface {
   border-radius: 18px 18px 8px 8px;
   border-color: #cdd9e6;
@@ -387,6 +392,9 @@
 .case-page[data-project-slug="jobflow"] .case-service-flow__controls button[aria-pressed="true"] { border-color: #345f86; box-shadow: inset 0 -3px #345f86; background: #e7eef5; font-weight: 650; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__controls button:hover { background: #edf1f5; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__panel { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); align-items: start; gap: 32px; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { max-width: 390px; justify-self: end; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-service-flow__copy { align-self: center; max-width: 420px; padding-top: 0; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy { padding-top: 12px; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy h3 { max-width: 430px; margin-top: 12px; font-size: 24px; font-weight: 650; line-height: 1.4; letter-spacing: -.035em; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy p:not(.case-eyebrow) { margin-top: 16px; color: var(--muted); font-size: 16px; line-height: 1.75; }
@@ -399,6 +407,8 @@
 .case-page[data-project-slug="jobflow"] .case-comparison-details > .case-comparison { margin-top: 16px; }
 @media (min-width: 761px) and (max-width: 1100px) {
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-template-columns: 1fr; gap: 20px; }
+  .case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { justify-self: center; }
+  .case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-service-flow__copy { max-width: none; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy > .case-eyebrow,
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy h3 { grid-column: 1; }
@@ -408,6 +418,12 @@
 @media (max-width: 760px) {
   .case-page[data-project-slug="jobflow"] .case-intro { padding-bottom: 22px; }
   .case-page[data-project-slug="jobflow"] .case-intro__grid { gap: 16px; margin-top: 18px; }
+  .case-page[data-project-slug="jobflow"] .case-opening-facts { padding: 20px 0 24px; }
+  .case-page[data-project-slug="jobflow"] .case-opening-facts dl { grid-template-columns: 1fr; gap: 16px; }
+  .case-page[data-project-slug="jobflow"] .case-opening-facts dt { margin-bottom: 4px; }
+  .case-page[data-project-slug="jobflow"] .case-opening-facts dd { font-size: 16px; line-height: 1.65; }
+  .case-page[data-project-slug="jobflow"] .case-opening-facts__tools { margin-top: 16px; }
+  .case-page[data-project-slug="jobflow"] .case-cover { max-width: 280px; margin-bottom: 28px; }
   .case-page[data-project-slug="jobflow"] .case-hero-note { grid-template-columns: 1fr; gap: 14px; padding: 22px 20px; margin-top: 20px; }
   .case-page[data-project-slug="jobflow"] .case-hero-note h2 { font-size: 24px; }
   .case-page[data-project-slug="jobflow"] .case-project-facts { padding: 24px 0 28px; }

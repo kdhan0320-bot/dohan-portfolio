@@ -8,12 +8,14 @@ import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
+import useRecordDraft from '../hooks/useRecordDraft';
 import { CHECKLIST_CATEGORIES } from '../constants';
 import { PageHeading, LoadState, Empty, ConfirmDelete, CompanyMark } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import '../styles/company-checklist.css';
 
 export default function ChecklistPage() {
+  const drafts = useRecordDraft('checklist');
   const { items, loading, error, refresh, toggle, add, update, remove } = useChecklist();
   const { applications, loading: companiesLoading, error: companiesError, refresh: refreshCompanies } = useApplications();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,7 +33,9 @@ export default function ChecklistPage() {
   const [busy, setBusy] = useState('');
   const [target, setTarget] = useState(null);
   const [adding, setAdding] = useState(false);
+  const [addDraftId, setAddDraftId] = useState('new');
   const [editing, setEditing] = useState(null);
+  const [restored, setRestored] = useState(false);
   const [confirmDiscard, setConfirmDiscard] = useState('');
   const [editError, setEditError] = useState('');
   const [feedback, setFeedback] = useState(null);
@@ -50,7 +54,7 @@ export default function ChecklistPage() {
   const progress = companyItems.length ? Math.round(done / companyItems.length * 100) : 0;
   const addDirty = Boolean(adding && addOriginal.current && (
     title !== addOriginal.current.title || category !== addOriginal.current.category ||
-    applicationId !== addOriginal.current.applicationId
+    (applicationId || null) !== addOriginal.current.application_id
   ));
   const editDirty = Boolean(editing && editOriginal.current && (
     editing.title !== editOriginal.current.title || editing.category !== editOriginal.current.category ||
@@ -58,7 +62,6 @@ export default function ChecklistPage() {
   ));
 
   useEffect(() => {
-    setApplicationId(companyScope === 'all' || companyScope === 'common' ? '' : companyScope);
     setInputError('');
     setFilter('전체');
   }, [companyScope]);
@@ -91,17 +94,57 @@ export default function ChecklistPage() {
       if (destination && !destination.disabled) destination.focus({ preventScroll: true });
     });
   }
-  function openAdd(event) {
+  function openAdd(event, recoveredDraft) {
     dialogTriggerRef.current = event?.currentTarget || null;
     const initialCompany = companyScope === 'all' || companyScope === 'common' ? '' : companyScope;
     const initialCategory = filter === '전체' ? '서류' : filter;
-    addOriginal.current = { title: '', category: initialCategory, applicationId: initialCompany };
-    setTitle('');
-    setCategory(initialCategory);
-    setApplicationId(initialCompany);
+    const recovered = recoveredDraft || drafts.read('new');
+    const initial = { title: '', category: initialCategory, application_id: initialCompany || null };
+    const values = recovered?.values || initial;
+    setAddDraftId(recovered?.recordId || 'new');
+    addOriginal.current = recovered?.baseline || initial;
+    setTitle(values.title);
+    setCategory(values.category);
+    setApplicationId(values.application_id || '');
+    setRestored(Boolean(recovered));
     setInputError('');
     setConfirmDiscard('');
     setAdding(true);
+  }
+  function changeNew(field, value) {
+    const next = { title, category, application_id: applicationId || null, [field]: value };
+    drafts.write(addDraftId, next, addOriginal.current);
+    setTitle(next.title); setCategory(next.category); setApplicationId(next.application_id || '');
+    setInputError('');
+  }
+  function openEdit(item, recovered = drafts.read(item.id)) {
+    editOriginal.current = recovered?.baseline || { title: item.title, category: item.category, application_id: item.application_id || null };
+    setEditing({ ...item, application_id: item.application_id || null, ...recovered?.values });
+    setRestored(Boolean(recovered)); setEditError(''); setConfirmDiscard('');
+  }
+  function changeEdit(next) {
+    drafts.write(editing.id, next, editOriginal.current);
+    setEditing(next);
+  }
+  function resumeDraft(event) {
+    const pending = drafts.pending;
+    if (!pending) return;
+    dialogTriggerRef.current = event.currentTarget;
+    if (pending.recordId === 'new') openAdd(event, pending);
+    else {
+      const item = items.find(record => record.id === pending.recordId);
+      if (item) openEdit(item, pending);
+      else {
+        const recovered = { ...pending, baseline: { title: '', category: '서류', application_id: null } };
+        openAdd(event, recovered);
+        setInputError('원래 항목을 찾을 수 없어 새 할 일로 열었어요. 내용을 확인해주세요.');
+      }
+    }
+  }
+  function discardDraft() {
+    if (confirmDiscard === 'add') { drafts.clear(addDraftId); setAdding(false); }
+    else { drafts.clear(editing.id); setEditing(null); }
+    setConfirmDiscard('');
   }
   function closeAdd() {
     if (busy) return;
@@ -129,10 +172,7 @@ export default function ChecklistPage() {
       setTarget(item);
       return;
     }
-    editOriginal.current = { title: item.title, category: item.category, application_id: item.application_id || null };
-    setEditing({ ...item, application_id: item.application_id || null });
-    setEditError('');
-    setConfirmDiscard('');
+    openEdit(item);
   }
   async function action(key, fn, message) {
     setBusy(key);
@@ -173,7 +213,7 @@ export default function ChecklistPage() {
     setBusy('add');
     setInputError('');
     try {
-      await add(title.trim(), category, applicationId || null);
+      await drafts.save(addDraftId, { title, category, application_id: applicationId || null }, () => add(title.trim(), category, applicationId || null));
       setAdding(false);
       setTitle('');
       setTab('todo');
@@ -200,7 +240,7 @@ export default function ChecklistPage() {
     }
     setBusy('edit'); setEditError('');
     try {
-      await update(editing.id, { ...editing, application_id: editing.application_id || null });
+      await drafts.save(editing.id, editing, () => update(editing.id, { ...editing, application_id: editing.application_id || null }));
       if (companyScope !== 'all') setScope(editing.application_id || 'common');
       setEditing(null); setFilter('전체');
       setFeedback({ message: '할 일을 수정했어요.' });
@@ -212,6 +252,7 @@ export default function ChecklistPage() {
     <PageHeading art="check" title="준비 체크">
       <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
+    {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
     <LoadState loading={loading || companiesLoading} error={error || companiesError} retry={() => { refresh(); refreshCompanies(); }} />
     {!loading && !companiesLoading && !error && !companiesError && <>
       {missingCompany ? <Alert severity="warning" action={<Button color="inherit" onClick={() => setScope('all')}>전체 준비 보기</Button>}>선택한 회사를 찾을 수 없어요. 삭제되었거나 접근할 수 없는 회사입니다.</Alert> : <>
@@ -275,10 +316,11 @@ export default function ChecklistPage() {
       <form onSubmit={submit} noValidate>
         <DialogTitle id="add-task-dialog-title">할 일 추가</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
-          <Field id="task-title" label="할 일" required autoFocus value={title} onChange={e => { setTitle(e.target.value); setInputError(''); }} error={Boolean(inputError)} helperText={inputError} slotProps={{ formHelperText: { role: 'alert' } }} placeholder="예: 자기소개서 마지막 문단 다듬기" disabled={Boolean(busy)} />
+          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          <Field id="task-title" label="할 일" required autoFocus value={title} onChange={e => changeNew('title', e.target.value)} error={Boolean(inputError)} helperText={inputError} slotProps={{ formHelperText: { role: 'alert' } }} placeholder="예: 자기소개서 마지막 문단 다듬기" disabled={Boolean(busy)} />
           <div className="checklist-dialog-options">
-            <Field id="task-company" label="연결할 회사" select value={applicationId} onChange={e => { setApplicationId(e.target.value); setInputError(''); }} disabled={Boolean(busy)} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(applicationId)}</Field>
-            <Field label="분류" select value={category} onChange={e => setCategory(e.target.value)} disabled={Boolean(busy)}>
+            <Field id="task-company" label="연결할 회사" select value={applicationId} onChange={e => changeNew('application_id', e.target.value || null)} disabled={Boolean(busy)} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(applicationId)}</Field>
+            <Field label="분류" select value={category} onChange={e => changeNew('category', e.target.value)} disabled={Boolean(busy)}>
               {CHECKLIST_CATEGORIES.map(c => <MenuItem key={c} value={c}>{c}</MenuItem>)}
             </Field>
           </div>
@@ -291,9 +333,10 @@ export default function ChecklistPage() {
         <DialogTitle id="edit-task-dialog-title">할 일 수정</DialogTitle>
         <DialogContent><div className="field-stack checklist-dialog-fields">
           {editError && <Alert severity="error">{editError}</Alert>}
-          <Field id="edit-task-title" label="할 일" required autoFocus value={editing?.title ?? ''} disabled={Boolean(busy)} onChange={e => setEditing({ ...editing, title: e.target.value })} />
-          <Field label="연결할 회사" select value={editing?.application_id || ''} disabled={Boolean(busy)} onChange={e => setEditing({ ...editing, application_id: e.target.value || null })} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(editing?.application_id)}</Field>
-          <Field label="분류" select value={editing?.category ?? '서류'} disabled={Boolean(busy)} onChange={e => setEditing({ ...editing, category: e.target.value })}>
+          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          <Field id="edit-task-title" label="할 일" required autoFocus value={editing?.title ?? ''} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, title: e.target.value })} />
+          <Field label="연결할 회사" select value={editing?.application_id || ''} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, application_id: e.target.value || null })} slotProps={{ select: { displayEmpty: true, renderValue: companyLabel } }}>{companyChoices(editing?.application_id)}</Field>
+          <Field label="분류" select value={editing?.category ?? '서류'} disabled={Boolean(busy)} onChange={e => changeEdit({ ...editing, category: e.target.value })}>
             {CHECKLIST_CATEGORIES.map(c => <MenuItem value={c} key={c}>{c}</MenuItem>)}
           </Field>
         </div></DialogContent>
@@ -303,9 +346,9 @@ export default function ChecklistPage() {
     <Dialog open={Boolean(confirmDiscard)} onClose={() => setConfirmDiscard('')} aria-labelledby="discard-task-title" aria-describedby="discard-task-description" fullWidth maxWidth="xs">
       <DialogTitle id="discard-task-title">내용을 저장하지 않았어요</DialogTitle>
       <DialogContent><p id="discard-task-description">닫으면 작성한 내용이 사라집니다.</p></DialogContent>
-      <DialogActions><Button autoFocus onClick={() => setConfirmDiscard('')}>계속 작성</Button><Button onClick={() => { if (confirmDiscard === 'add') setAdding(false); else setEditing(null); setConfirmDiscard(''); }}>저장하지 않고 닫기</Button></DialogActions>
+      <DialogActions><Button autoFocus onClick={() => setConfirmDiscard('')}>계속 작성</Button><Button onClick={discardDraft}>저장하지 않고 닫기</Button></DialogActions>
     </Dialog>
-    <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => { await remove(target.id); setTarget(null); window.requestAnimationFrame(() => taskListRef.current?.focus({ preventScroll: true })); }, '할 일을 삭제했어요.')} />
+    <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => { await remove(target.id); drafts.clear(target.id); setTarget(null); window.requestAnimationFrame(() => taskListRef.current?.focus({ preventScroll: true })); }, '할 일을 삭제했어요.')} />
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </div>;
 }

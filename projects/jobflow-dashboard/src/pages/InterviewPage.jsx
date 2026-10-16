@@ -10,6 +10,7 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import useApplications from '../hooks/useApplications';
+import useRecordDraft from '../hooks/useRecordDraft';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import { companyDestination } from '../utils/calendar';
@@ -23,6 +24,7 @@ const INITIAL = {
   is_reviewed: false
 };
 export default function InterviewPage() {
+  const drafts = useRecordDraft('interview');
   const {
     notes,
     loading,
@@ -45,8 +47,10 @@ export default function InterviewPage() {
   const [tab, setTab] = useState('todo');
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [draftId, setDraftId] = useState('new');
   const [form, setForm] = useState(INITIAL);
   const [originalForm, setOriginalForm] = useState(INITIAL);
+  const [restored, setRestored] = useState(false);
   const [confirmDiscard, setConfirmDiscard] = useState(false);
   const [formError, setFormError] = useState('');
   const [revealed, setRevealed] = useState({});
@@ -88,8 +92,9 @@ export default function InterviewPage() {
     refreshCompanies();
   }
   function startNew() {
-    const draft = { ...INITIAL, application_id: selectedCompany?.id || null };
-    setEditingId(null); setForm(draft); setOriginalForm(draft); setConfirmDiscard(false); setFormError(''); setOpen(true);
+    const recovered = drafts.read('new');
+    const initial = { ...INITIAL, application_id: selectedCompany?.id || null };
+    openEditor(null, recovered?.values || initial, recovered?.baseline || initial, Boolean(recovered));
   }
   function startEdit(note) {
     const draft = {
@@ -101,7 +106,27 @@ export default function InterviewPage() {
       related_project: String(note.related_project ?? ''),
       importance: note.importance || '보통'
     };
-    setEditingId(note.id); setForm(draft); setOriginalForm(draft); setConfirmDiscard(false); setFormError(''); setOpen(true);
+    const recovered = drafts.read(note.id);
+    openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered));
+  }
+  function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
+    setDraftId(draftKey);
+    setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
+    setConfirmDiscard(false); setFormError(''); setOpen(true);
+  }
+  function resumeDraft() {
+    const pending = drafts.pending;
+    if (!pending) return;
+    if (pending.recordId !== 'new' && !notes.some(note => note.id === pending.recordId)) {
+      // Preserve the user's text even if its saved record was removed elsewhere.
+      openEditor(null, pending.values, INITIAL, true, pending.recordId);
+      setFormError('원래 질문을 찾을 수 없어 새 질문으로 열었어요. 내용을 확인한 뒤 저장해주세요.');
+    } else openEditor(pending.recordId === 'new' ? null : pending.recordId, pending.values, pending.baseline, true);
+  }
+  function changeForm(next) {
+    // Persist synchronously before a browser Back action can unmount this page.
+    drafts.write(draftId, next, originalForm);
+    setForm(next);
   }
   function requestClose() {
     if (busy) return;
@@ -113,6 +138,7 @@ export default function InterviewPage() {
     document.getElementById(fieldId)?.focus();
   }
   function discardDraft() {
+    drafts.clear(draftId, form);
     setConfirmDiscard(false); setOpen(false); setEditingId(null); setForm(INITIAL); setFormError('');
   }
   async function review(n) {
@@ -158,8 +184,7 @@ export default function InterviewPage() {
         importance: form.importance,
         is_reviewed: Boolean(form.answer.trim() && form.is_reviewed)
       };
-      if (editingId) await update(editingId, payload);
-      else await add(payload);
+      await drafts.save(draftId, form, () => editingId ? update(editingId, payload) : add(payload));
       setOpen(false);
       setForm(INITIAL);
       // Keep the saved question in view when its company changes while filtered.
@@ -183,6 +208,7 @@ export default function InterviewPage() {
     setBusy('delete');
     try {
       await remove(target.id);
+      drafts.clear(target.id);
       setTarget(null);
       pendingResultFocus.current = true;
       setFeedback({
@@ -202,6 +228,7 @@ export default function InterviewPage() {
   <PageHeading art="chat" title="면접 연습" description="답변을 가리고, 내 말로 연습해요.">
     <Button variant="contained" startIcon={<Add />} onClick={startNew} disabled={pageLoading || Boolean(pageError) || missingCompany}>질문 추가</Button>
   </PageHeading>
+  {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
   <div className="interview-controls">
     <div className="interview-company-filter">
       <Field id="interview-company-scope" select size="small" label="질문 범위" value={companyScope} disabled={companiesLoading || Boolean(companiesError)} onChange={event => selectCompany(event.target.value)}>
@@ -285,24 +312,25 @@ export default function InterviewPage() {
           {formError && <Alert severity="error">
             {formError}
           </Alert>}
-          <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} slotProps={{ select: { displayEmpty: true } }} onChange={event => setForm({ ...form, application_id: event.target.value || null })}>
+          {restored && <Alert severity="info">이전에 작성하던 내용을 복원했어요. 저장해야 기록에 반영됩니다.</Alert>}
+          <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} slotProps={{ select: { displayEmpty: true } }} onChange={event => changeForm({ ...form, application_id: event.target.value || null })}>
             <MenuItem value="">공통 질문 · 회사 연결 안 함</MenuItem>
             {form.application_id && !companyMap.has(form.application_id) && <MenuItem value={form.application_id} disabled>연결한 회사 없음 · 다시 선택해주세요</MenuItem>}
             {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
           </Field>
-          <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={e => setForm({
+          <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={e => changeForm({
               ...form,
               question: e.target.value
             })} />
-          <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" helperText="질문만 먼저 저장하고 답변은 나중에 작성해도 돼요." multiline minRows={4} value={form.answer} onChange={e => setForm({
+          <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" helperText="질문만 먼저 저장하고 답변은 나중에 작성해도 돼요." multiline minRows={4} value={form.answer} onChange={e => changeForm({
               ...form,
               answer: e.target.value
             })} />
-          <Field disabled={Boolean(busy)} label="관련 프로젝트 또는 주제 (선택)" value={form.related_project} onChange={e => setForm({
+          <Field disabled={Boolean(busy)} label="관련 프로젝트 또는 주제 (선택)" value={form.related_project} onChange={e => changeForm({
               ...form,
               related_project: e.target.value
             })} />
-          <Field disabled={Boolean(busy)} select label="중요도" value={form.importance} onChange={e => setForm({
+          <Field disabled={Boolean(busy)} select label="중요도" value={form.importance} onChange={e => changeForm({
               ...form,
               importance: e.target.value
             })}>

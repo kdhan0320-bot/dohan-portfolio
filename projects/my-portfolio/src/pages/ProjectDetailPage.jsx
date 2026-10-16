@@ -80,7 +80,7 @@ const ServiceWalkthrough = ({ flow }) => {
         <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.label}
       </button>)}
     </div>
-    <div className="case-service-flow__panel" id={panelId}>
+    <div className={`case-service-flow__panel${isPortrait(step.media) ? ' case-service-flow__panel--portrait' : ''}`} id={panelId}>
       <ScreenFigure key={step.media.src} media={step.media} label={step.caption} priority />
       <div className="case-service-flow__copy" aria-live="polite" aria-atomic="true">
         <p className="case-eyebrow">{step.screen}</p>
@@ -195,6 +195,16 @@ const ProjectDetailPage = () => {
           </dl>}
         </header>
 
+        {ready.openingFacts && <section className="case-opening-facts" aria-label="제작 역할과 도구">
+          <dl>
+            {(ready.aiCollaboration || []).map((item) => <div key={item.label}>
+              <dt>{item.label === '김도한' ? '김도한의 기여' : item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>)}
+          </dl>
+          <p className="case-opening-facts__tools">{(project.tools || []).join(' · ')}</p>
+        </section>}
+
         {heroMedia.length > 0 && <div className={`case-cover ${heroMedia.length > 1 ? 'case-cover--pair' : ''}`}>
           {heroMedia.map((media, index) => <ScreenFigure
             key={media.src} media={media} priority={index === 0}
@@ -204,12 +214,12 @@ const ProjectDetailPage = () => {
 
         {ready.serviceFlow && <ServiceWalkthrough key={slug} flow={ready.serviceFlow} />}
 
-        {ready.heroNote && <section className="case-hero-note" aria-label="첫 화면의 구성 판단">
+        {ready.heroNote && !ready.openingFacts && <section className="case-hero-note" aria-label="첫 화면의 구성 판단">
           <h2>{ready.heroNote.title}</h2>
           <p>{ready.heroNote.text}</p>
         </section>}
 
-        {ready.imageFirst && <section className="case-project-facts" aria-label="제작 역할과 도구">
+        {ready.imageFirst && !ready.openingFacts && <section className="case-project-facts" aria-label="제작 역할과 도구">
           <dl className="case-facts">
             {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
           </dl>

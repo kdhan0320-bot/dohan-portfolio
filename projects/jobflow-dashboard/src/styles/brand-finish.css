@@ -129,6 +129,18 @@
 .settings-export h3 { font-size: 17px; font-weight: 500; margin: 0 0 8px; }
 .settings-export p { color: var(--muted); font-size: 14px; line-height: 1.7; margin: 0 0 16px; }
 .settings-export .MuiAlert-root { margin-top: 14px; }
+.record-draft-notice { margin-bottom: 16px; }
+.record-draft-notice .MuiAlert-action { align-items: center; }
+@media (max-width: 599px) {
+  .record-draft-notice { flex-wrap: wrap; }
+  .record-draft-notice .MuiAlert-message { flex: 1; min-width: 180px; }
+  .record-draft-notice .MuiAlert-action { flex-basis: 100%; padding: 0 0 0 34px; margin-right: 0; }
+}
+/* Short account tasks use a reading width instead of a full board width. */
+@media (min-width: 1000px) {
+  .workspace-main:has(.settings-page) { max-width: 1180px; }
+  .settings-grid { grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); }
+}
 .workspace-main .calendar-day.has-deadline { background: #FCF2D9; }
 .workspace-main .calendar-day.has-deadline .calendar-event-name { color: #73521B; background: #EDDAA9; border-left-color: #987029; }
 .workspace-main .calendar-day.is-selected { background: #E7EFF8; }
