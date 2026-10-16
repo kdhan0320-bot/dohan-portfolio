@@ -147,7 +147,7 @@ export default function LoginPage() {
       </Tabs>}
       <form onSubmit={submit} noValidate>
         {!isAuthConfigured && <p className="auth-preview-note">미리보기에서는 샘플 체험만 가능합니다.</p>}
-        {isGuest && !helpMode && <p className="auth-sample-note">계정에 로그인하면 미저장 할 일·면접 초안은 지워져요. 샘플 기록은 계정으로 옮겨지지 않아요.</p>}
+        {isGuest && !helpMode && <p className="auth-sample-note">할 일·면접·요청문 초안은 로그인 시 지워져요. 샘플 기록은 계정으로 옮겨지지 않아요.</p>}
         {(error || (!helpMode && authError)) && <Alert severity="error">{error || authError}</Alert>}
         {success && <Alert severity="success" role="status">{success}</Alert>}
         {!helpMode && tab === 1 && <Field label="이름 (선택)" placeholder="이름을 입력해주세요" autoComplete="name" value={displayName} onChange={event => setDisplayName(event.target.value)} disabled={busy} />}

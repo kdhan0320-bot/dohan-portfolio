@@ -16,7 +16,7 @@ html { scroll-padding-top: 140px; }
 .site-settings-button.MuiIconButton-root { width: 44px; height: 44px; color: var(--muted); }
 .site-settings-button.MuiIconButton-root:hover, .site-settings-button.MuiIconButton-root[aria-current='page'] { background: #EDF2F7; color: var(--ink-action); }
 .site-settings-button .MuiSvgIcon-root { font-size: 21px; }
-.site-account-button.MuiButton-root { min-height: 42px; min-width: 76px; font-size: 13px; border-color: #99A8B7; padding-inline: 15px; }
+.site-account-button.MuiButton-root { min-height: 44px; min-width: 76px; font-size: 14px; padding-inline: 16px; }
 .site-menu-toggle.MuiIconButton-root { display: none; }
 .site-mobile-tabbar { display: none; }
 .site-header-meta { background: var(--surface); border-top: 1px solid #E9EDF0; }
@@ -125,7 +125,7 @@ html { scroll-padding-top: 140px; }
   .site-brand-link .brand svg { width: 27px; height: 31px; }
   .site-brand-link .brand-sub { font-size: 10px; }
   .site-account-actions { gap: 3px; }
-  .site-account-button.MuiButton-root { min-width: 60px; font-size: 12px; padding-inline: 10px; }
+  .site-account-button.MuiButton-root { min-width: 64px; font-size: 14px; padding-inline: 12px; }
   .site-header-meta p { gap: 7px; font-size: 12px; }
   .workspace-main { padding: 24px 20px 36px; scroll-margin-top: 128px; }
   .guide-steps { grid-template-columns: minmax(0, 1fr); gap: 16px; }

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, FormControlLabel, IconButton, MenuItem } from '@mui/material';
+import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, MenuItem, useMediaQuery } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
@@ -38,6 +38,7 @@ function CompanyPreparation({ applicationId, onVisit, disabled }) {
 
 export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onDelete }) {
   const navigate = useNavigate();
+  const fullScreen = useMediaQuery('(max-width: 599px)');
   const { form, change: changeDraft, clear: clearDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -91,7 +92,29 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   }
   const field = (key, label, extra = {}) => <Field id={`company-${key}`} label={label} value={form[key] ?? ''} disabled={busy} onChange={e => change(key, e.target.value)} error={Boolean(errors[key])} helperText={errors[key]} {...extra} />;
   return <>
-    <Drawer anchor="right" open onClose={close} slotProps={{ paper: { className: 'company-panel', role: 'dialog', 'aria-modal': true, 'aria-labelledby': 'company-panel-title' } }}>
+    <Dialog
+      open
+      onClose={close}
+      aria-labelledby="company-panel-title"
+      fullScreen={fullScreen}
+      maxWidth="sm"
+      fullWidth
+      scroll="paper"
+      slotProps={{
+        paper: {
+          className: 'company-panel',
+          sx: {
+            height: { xs: '100dvh', sm: 'auto' },
+            maxHeight: { xs: '100dvh', sm: 'calc(100dvh - 64px)' },
+            borderRadius: { xs: 0, sm: '16px' },
+            overflow: 'hidden',
+            '& .company-panel-form, & .company-panel-body': {
+              flex: { xs: '1 1 auto', sm: '0 1 auto' },
+            },
+          },
+        },
+      }}
+    >
       <div className="company-panel-head">
         <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
         <IconButton onClick={close} disabled={busy} aria-label="회사 정보 닫기"><Close /></IconButton>
@@ -135,7 +158,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
         </div>
         <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>
-    </Drawer>
+    </Dialog>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
       <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>입력을 버리고 {destination ? '이동할까요?' : '닫을까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>입력 버리고 {destination ? '이동' : '닫기'}</Button></DialogActions>

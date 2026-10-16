@@ -29,9 +29,13 @@ const SettingsPage = () => {
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
+  const [loadedProfileId, setLoadedProfileId] = useState(null);
+  const [profileLoadError, setProfileLoadError] = useState('');
+  const [profileAttempt, setProfileAttempt] = useState(0);
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState('');
   const [exported, setExported] = useState(false);
+  const profileReady = Boolean(user?.id && !isGuest && !profileLoading && loadedProfileId === user.id);
   const handleExport = async () => {
     if (exporting) return;
     setExporting(true); setExportError(''); setExported(false);
@@ -57,6 +61,12 @@ const SettingsPage = () => {
     let cancelled = false;
     const loadProfile = async () => {
       setProfileLoading(true);
+      setLoadedProfileId(null);
+      setProfileLoadError('');
+      setError('');
+      setSaved(false);
+      setDisplayName('');
+      setTargetRole('');
       try {
         const {
           data,
@@ -64,14 +74,15 @@ const SettingsPage = () => {
         } = await supabase.from('jobflow_profiles').select('display_name, target_role').eq('id', user.id).maybeSingle();
         if (cancelled) return;
         if (loadError) {
-          setError('프로필 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+          setProfileLoadError('프로필 정보를 불러오지 못했어요. 기존 정보를 보호하기 위해 편집을 잠시 멈췄어요.');
           return;
         }
         setDisplayName(data ? data.display_name ?? '' : user.user_metadata?.display_name ?? '');
         setTargetRole(data?.target_role ?? '');
+        setLoadedProfileId(user.id);
       } catch {
         if (!cancelled) {
-          setError('프로필 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+          setProfileLoadError('프로필 정보를 불러오지 못했어요. 기존 정보를 보호하기 위해 편집을 잠시 멈췄어요.');
         }
       } finally {
         if (!cancelled) setProfileLoading(false);
@@ -81,9 +92,9 @@ const SettingsPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [user, isGuest]);
+  }, [user, isGuest, profileAttempt]);
   const handleSave = async () => {
-    if (!user || isGuest || saving) return;
+    if (!profileReady || saving) return;
     setError('');
     setSaved(false);
     setSaving(true);
@@ -177,11 +188,12 @@ const SettingsPage = () => {
           </div>
           {saved && <Alert severity="success" sx={{ mb: 2 }}>프로필을 저장했어요.</Alert>}
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+          {profileLoadError && <Alert severity="error" sx={{ mb: 2 }} action={<Button color="inherit" onClick={() => { setProfileLoading(true); setProfileAttempt(attempt => attempt + 1); }}>다시 불러오기</Button>}>{profileLoadError}</Alert>}
           <Stack spacing={2}>
-            <Field label="이름" fullWidth value={displayName} onChange={e => setDisplayName(e.target.value)} disabled={saving} placeholder="홍길동" />
-            <Field label="목표 직무" fullWidth value={targetRole} onChange={e => setTargetRole(e.target.value)} disabled={saving} placeholder="예: UX/UI 디자이너" />
+            <Field label="이름" fullWidth value={displayName} onChange={e => setDisplayName(e.target.value)} disabled={!profileReady || saving} placeholder="홍길동" />
+            <Field label="목표 직무" fullWidth value={targetRole} onChange={e => setTargetRole(e.target.value)} disabled={!profileReady || saving} placeholder="예: UX/UI 디자이너" />
             <Field label="이메일" fullWidth value={user?.email ?? ''} disabled helperText="이메일은 변경할 수 없습니다" />
-            <Button variant="contained" onClick={handleSave} disabled={saving} sx={{ alignSelf: 'flex-start' }}>
+            <Button variant="contained" onClick={handleSave} disabled={!profileReady || saving} sx={{ alignSelf: 'flex-start' }}>
               {saving ? '저장 중…' : '프로필 저장'}
             </Button>
           </Stack>

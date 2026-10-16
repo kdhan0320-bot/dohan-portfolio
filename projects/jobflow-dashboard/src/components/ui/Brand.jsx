@@ -1,14 +1,9 @@
 export function Brand({
   compact = false
 }) {
-  return <span className="brand">
-  <svg width="32" height="36" viewBox="0 0 32 36" fill="none" aria-hidden="true">
-    <path d="M5 3h15l7 7v23H5V3Z" fill="#303943" />
-    <path d="M20 3v8h7" stroke="#FFFFFF" strokeWidth="1.5" />
-    <path d="M11 3v16l4-3 4 3V3" fill="#B47D91" />
-    <path d="M11 25h10M11 29h6" stroke="#FFFFFF" strokeWidth="1.5" />
-  </svg>
-  {!compact && <span>갈피록<span className="brand-sub">개인 입사지원 관리</span></span>}
+  return <span className={`brand brand-wordmark-lockup${compact ? ' brand-compact' : ''}`}>
+  <span className="brand-wordmark">갈피록</span>
+  {!compact && <span className="brand-sub">개인 입사지원 관리</span>}
 </span>;
 }
 export function PaperScene({

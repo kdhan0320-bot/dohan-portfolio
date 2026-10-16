@@ -1,4 +1,17 @@
 /* Keep the atmosphere behind the records; folder tabs identify actual stages. */
+.brand.brand-wordmark-lockup { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0; color: var(--ink); }
+.brand .brand-wordmark { font-size: 28px; line-height: 1.15; font-weight: 650; letter-spacing: -.055em; }
+.brand.brand-wordmark-lockup .brand-sub { margin-top: 4px; font-size: 11px; line-height: 1.5; font-weight: 400; letter-spacing: .015em; color: var(--muted); }
+.brand.brand-compact .brand-wordmark { font-size: 24px; }
+/* Records share one edge treatment; the folder silhouette belongs to stage groups. */
+.workspace-main .job-tile, .workspace-main .agenda-company { border-radius: 10px; }
+.workspace-main .overview-panel, .workspace-main .calendar-surface,
+.workspace-main .interview-page .practice-card, .workspace-main .checklist-page .checklist-sheet,
+.workspace-main .helper-grid > .panel { border-radius: 12px; }
+.workspace-main .lane-add.MuiButton-root { color: var(--ink-action); font-size: 14px; }
+@media (max-width: 699px) {
+  .brand .brand-wordmark { font-size: 26px; }
+}
 .workspace-with-topnav > .workspace-content { background: radial-gradient(ellipse at 12% 0, #E7EEF6 0, transparent 55%), linear-gradient(145deg, #F3F6F9, #F6F8F7 72%); }
 .workspace-with-topnav .workspace-content::before { display: none; }
 .workspace-main { position: relative; padding-bottom: 40px; }
@@ -15,7 +28,7 @@
 .workspace-main .job-lane::after { display: none; }
 .workspace-main .job-lane-heading { min-height: 50px; padding-block: 10px; }
 .workspace-main .job-lane-heading h2 { font-weight: 500; }
-.workspace-main .job-tile { padding: 14px; border-color: #D3DCE5; border-radius: 7px; box-shadow: none; }
+.workspace-main .job-tile { padding: 14px; border-color: #D3DCE5; border-radius: 10px; box-shadow: none; }
 .workspace-main .job-tile:hover { border-color: var(--lane-color); box-shadow: none; }
 .workspace-main .job-tile-bottom { margin-top: 10px; padding-top: 8px; gap: 8px; }
 .workspace-main .job-lane-cards { gap: 10px; }
@@ -34,7 +47,7 @@
   .workspace-main .overview-page .overview-deadline-body { grid-template-columns: 112px minmax(0,1fr); padding: 16px 24px 24px; gap: 24px; }
   .workspace-main .overview-page .overview-date-leaf { min-height: 144px; background: #F0DFB7; border-color: #DBC58E; border-radius: 4px 4px 16px 4px; }
   .workspace-main .overview-page .overview-date-leaf > strong { font-size: 64px; }
-  .workspace-main .overview-page .overview-stages { background: #F6F8FA; border-color: #D8E0E7; }
+  .workspace-main .overview-page .overview-stages { background: transparent; border-color: transparent; }
   .workspace-main .overview-page .overview-stages dl { margin-top: 28px; gap: 12px; }
   .workspace-main .overview-page .overview-stages dl > div { min-height: 110px; padding: 16px 10px; border: 1px solid #FFFFFF; }
   .workspace-main .overview-page .overview-stages dd { font-size: 38px; line-height: 46px; }
@@ -55,16 +68,16 @@
   .workspace-main .job-lane::before { height: 21px; top: -20px; border-radius: 10px 16px 0 0; }
   .workspace-main .job-lane-heading { min-height: 64px; }
   .workspace-main .job-lane-heading h2 { font-size: 18px; }
-  .workspace-main .job-tile { padding: 18px; border-radius: 8px 8px 14px 8px; }
+  .workspace-main .job-tile { padding: 18px; border-radius: 10px; }
   .workspace-main .job-lane-cards { gap: 14px; }
   .workspace-main .calendar-layout { grid-template-columns: minmax(0,1fr) 340px; gap: 28px; }
   .workspace-main .calendar-layout .calendar-toolbar { background: #E4EDF4; padding: 16px 22px; }
   .workspace-main .calendar-layout .calendar-day { min-height: 64px; padding: 8px; }
-  .workspace-main .calendar-layout .calendar-agenda { padding: 22px; background: #F2ECDC; border: 1px solid #DED3B9; border-radius: 4px 16px 16px 16px; }
+  .workspace-main .calendar-layout .calendar-agenda { padding: 22px; background: #F6F4ED; border: 1px solid #DED8C8; border-radius: 12px; }
   .workspace-main .calendar-layout .agenda-company { background: #FFFFFF; }
   .workspace-main .interview-page .interview-workspace { grid-template-columns: 292px minmax(0,1fr); gap: 30px; }
   .workspace-main .interview-page .question-queue { padding: 16px; border: 1px solid #D8D0E1; border-radius: 0 14px 14px 14px; background: #F0EBF5; }
-  .workspace-main .interview-page .practice-card { min-height: 340px; padding: 32px 40px 24px; border-radius: 8px 18px 18px 8px; border-color: #CCC6D6; box-shadow: none; }
+  .workspace-main .interview-page .practice-card { min-height: 340px; padding: 32px 40px 24px; border-radius: 12px; border-color: #CCC6D6; box-shadow: none; }
   .workspace-main .interview-page .practice-card::after { width: 14px; height: 30px; right: 28px; background: #7A6593; }
   .workspace-main .interview-page .practice-card-meta { padding-right: 34px; }
   .workspace-main .interview-page .practice-question { margin-top: 30px; }
@@ -87,7 +100,7 @@
   .workspace-main .checklist-page .checklist-progress-copy strong { font-size: 64px; line-height: 1.1; letter-spacing: -.045em; color: #2E6550; }
   .workspace-main .checklist-page .checklist-progress-copy > span:last-child { font-size: 22px; }
   .workspace-main .checklist-page .checklist-progress-track { height: 10px; background: #C4DCCF; }
-  .workspace-main .checklist-page .checklist-sheet { padding: 20px 24px 24px; border: 1px solid #D4DED7; border-radius: 14px; background: #FFFFFF; }
+  .workspace-main .checklist-page .checklist-sheet { padding: 20px 24px 24px; border: 1px solid #D4DED7; border-radius: 12px; background: #FFFFFF; }
   .workspace-main .checklist-page .checklist-filterbar { gap: 8px 16px; }
   .workspace-main .checklist-page .checklist-sheet-toolbar { flex-basis: 280px; }
   .workspace-main .checklist-page .checklist-category-chips { gap: 4px; }

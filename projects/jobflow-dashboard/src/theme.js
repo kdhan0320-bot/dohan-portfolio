@@ -86,8 +86,13 @@ export default createTheme({
       styleOverrides: {
         root: {
           minHeight: 44,
-          borderRadius: 9,
+          borderRadius: 8,
           paddingInline: 16
+        },
+        outlined: {
+          '&.MuiButton-colorPrimary': {
+            borderColor: '#A6B5C4'
+          }
         },
         startIcon: {
           marginLeft: 0,
