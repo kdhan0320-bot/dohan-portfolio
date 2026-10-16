@@ -91,13 +91,13 @@ const ServiceWalkthrough = ({ flow }) => {
         aria-hidden={selectedIndex !== index}
         inert={selectedIndex !== index ? '' : undefined}
       >
-        <ScreenFigure media={step.media} label={step.caption} priority={selectedIndex === index} />
         <div className="case-service-flow__copy">
           <p className="case-eyebrow">{step.screen}</p>
           <h3>{step.title}</h3>
           <p>{step.action}</p>
           {step.result && <p className="case-service-flow__result">{step.result}</p>}
         </div>
+        <ScreenFigure media={step.media} label={step.caption} priority={selectedIndex === index} />
       </div>)}
     </div>
     <p className="case-service-flow__announcement" aria-live="polite" aria-atomic="true">{flow.steps[selectedIndex].screen}: {flow.steps[selectedIndex].title}</p>

@@ -64,7 +64,7 @@ export const PROJECT_DETAIL_READY = {
     [
       {
         title: '필터를 바꿔도 같은 자리에서.',
-        summary: '김도한이 지적한 큰 화면의 여백을 정리하면서, AI 검토에서 발견한 필터 이동도 수정했습니다. 목록 길이가 달라져도 제목과 조작부는 같은 위치에 둡니다.',
+        summary: '김도한은 큰 PC 화면의 상단 쏠림과 여백을 지적했습니다. AI가 작업 폭을 정리하고 검토 중 발견한 필터 이동을 수정해, 목록 길이가 달라도 조작부 위치를 유지했습니다.',
         media: media('detail/current/galpirok-checklist-filter-empty-v2.png', '현재 준비 체크의 기타 분류 — 진행 중 0개로 바뀌어도 같은 위치에 남는 상태 탭', '2560 / 1440', { crop: { x: 630, y: 270, width: 1265, height: 610 }, mobileCrop: { x: 918, y: 383, width: 360, height: 315, label: 'PC 부분 보기 · 상태 탭과 빈 결과' }, original: 'detail/current/galpirok-checklist-filter-empty-v2.png' }),
         comparison: {
           before: media('detail/current/galpirok-checklist-filter-all-v2.png', '현재 준비 체크의 전체 분류 — 진행 중 5개와 첫 준비 항목이 있는 상태', '2560 / 1440', { crop: { x: 630, y: 270, width: 1265, height: 610 }, mobileCrop: { x: 918, y: 383, width: 360, height: 315, label: 'PC 부분 보기 · 상태 탭과 첫 준비 항목' }, original: 'detail/current/galpirok-checklist-filter-all-v2.png' }),
@@ -79,8 +79,8 @@ export const PROJECT_DETAIL_READY = {
         },
       },
       {
-        title: '갈피로 기록을 구분하기.',
-        summary: '김도한은 큰 배경 그림의 유치한 인상을 지적하고 그라데이션을 제안했습니다. AI가 화면으로 구체화했으며, 갈피는 로고·단계 탭·선택 표시에 남겼습니다.',
+        title: '기록을 가리지 않는 갈피.',
+        summary: '김도한은 설명·장식보다 회사 기록과 조작을 먼저 보여 달라고 요청하고, 큰 폴더 대신 그라데이션을 선택했습니다. AI가 배경을 구현하고 갈피는 로고·단계 탭·선택 표시에 남겼습니다.',
       },
       {
         title: '가까운 마감부터 확인하기.',
@@ -107,13 +107,13 @@ export const PROJECT_DETAIL_READY = {
       openingFacts: true,
       presentation: 'focused-decisions',
       decisionsTitle: '기록을 먼저 읽게 만든 선택.',
-      context: { summary: '김도한의 화면 피드백과 AI의 동작 검토를 반영한 세 사례입니다. 시각적 방향의 선택과 구현·검사 역할을 구분했습니다.' },
+      context: { summary: '기록·조작 우선과 큰 화면 배치에 대한 김도한의 요구, AI가 발견한 동작 문제를 반영한 세 사례입니다. 방향 선택과 구현·검사 역할을 구분했습니다.' },
       heroNote: {
         title: '한 회사의 기록에서 다음 준비까지.',
         text: '지원할 회사를 직접 등록하고 상태·마감·준비할 일을 연결합니다. 같은 회사의 기록을 다시 만들지 않고 준비부터 지원 완료까지 관리합니다.',
       },
       aiCollaboration: [
-        { label: '김도한', value: '개인 입사지원 관리 목적·우선순위 설정, 화면 문제 제기, 갈피·그라데이션 방향 선택과 공개 판단.' },
+        { label: '김도한', value: '개인 입사지원 관리 목적 설정, 기록·조작 우선 요청, 큰 화면 배치 피드백, 갈피 유지·그라데이션 선택과 공개 판단.' },
         { label: 'AI 협업', value: '구체적인 화면·스타일 제안, 코드 작성·수정, 샘플·코드 검사와 캡처.' },
       ],
       serviceFlow: {

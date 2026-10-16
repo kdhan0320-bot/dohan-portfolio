@@ -403,11 +403,12 @@
 .case-page[data-project-slug="jobflow"] .case-service-flow__stage { display: grid; overflow-anchor: none; }
 /* Every step contributes its intrinsic size to the same grid cell. Switching
    changes visibility, not the section height or a browser scroll anchor. */
-.case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-area: 1 / 1; display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); align-items: start; align-content: start; gap: 32px; visibility: hidden; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-area: 1 / 1; display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); grid-template-areas: "screen copy"; align-items: start; align-content: start; gap: 32px; visibility: hidden; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__panel[data-active="true"] { visibility: visible; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel > .case-figure { grid-area: screen; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { max-width: 390px; justify-self: center; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.case-page[data-project-slug="jobflow"] .case-service-flow__copy { padding-top: 12px; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__copy { grid-area: copy; padding-top: 12px; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy h3 { max-width: 430px; margin-top: 12px; font-size: 24px; font-weight: 650; line-height: 1.4; letter-spacing: -.035em; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy p:not(.case-eyebrow) { margin-top: 16px; color: var(--muted); font-size: 16px; line-height: 1.75; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy .case-service-flow__result { padding-top: 16px; border-top: 1px solid var(--line); }
@@ -418,7 +419,7 @@
 .case-page[data-project-slug="jobflow"] .case-comparison-details summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; border-radius: 2px; }
 .case-page[data-project-slug="jobflow"] .case-comparison-details > .case-comparison { margin-top: 16px; }
 @media (min-width: 761px) and (max-width: 1100px) {
-  .case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-template-columns: 1fr; gap: 20px; }
+  .case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-template-columns: 1fr; grid-template-areas: "copy" "screen"; gap: 20px; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { justify-self: center; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-service-flow__copy { max-width: none; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 32px; }
@@ -481,7 +482,7 @@
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy { padding-top: 0; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy h3 { margin-top: 8px; font-size: 24px; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__copy > p:not(.case-eyebrow) { margin-top: 14px; }
-  .case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-template-columns: 1fr; gap: 20px; }
+  .case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-template-columns: 1fr; grid-template-areas: "copy" "screen"; gap: 20px; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel .case-figure { width: 100%; max-width: 390px; justify-self: center; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel figcaption { flex-wrap: wrap; gap: 8px 20px; }
   .case-page[data-project-slug="jobflow"] .case-service-flow__panel figcaption > span { flex-basis: 100%; }
