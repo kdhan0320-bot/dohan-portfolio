@@ -1,5 +1,5 @@
 /* The folder is an interactive record, not an illustration of the product. */
-.welcome-product-first { display: flex; flex-direction: column; background: #EFF3EF url('../assets/galpi-index-pattern.svg') center center / max(1440px, 100%) auto no-repeat; }
+.welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 80% 36%, #DCE7F2 0, transparent 54%), linear-gradient(130deg, #F9FAFC 12%, #F0F4F8 60%, #F4F7F5); }
 .welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 96px); width: min(1560px, calc(100% - 128px)); margin-inline: auto; padding-block: 64px; }
 .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1560px, calc(100% - 128px)); margin-inline: auto; }
 .galpi-intro { min-width: 0; padding-bottom: 12px; }
@@ -48,9 +48,6 @@
 .preview-caption { margin: 14px 0 0; color: #536574; font-size: 13px; line-height: 22px; }
 .application-preview button:focus-visible, .preview-record:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; z-index: 2; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
-@media (max-width: 1799px) {
-  .welcome-product-first { background-image: radial-gradient(circle, #9DB4A633 .8px, transparent .9px); background-size: 28px 28px; background-repeat: repeat; }
-}
 @media (min-width: 1800px) {
   .application-preview { padding: 0 32px 24px; }
   .preview-toolbar { padding-block: 30px 26px; }

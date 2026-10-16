@@ -19,8 +19,8 @@
 .calendar-layout .agenda-company { padding: 15px 16px; border-radius: 10px; box-shadow: none; }
 .calendar-layout .agenda-company-top { margin-bottom: 12px; }
 .calendar-layout .agenda-company-bottom { padding-top: 10px; font-size: 14px; }
-.calendar-toggle-row { padding: 0 12px 6px; }
-.calendar-toggle-row .MuiButton-root { width: 100%; min-height: 44px; justify-content: space-between; font-size: 14px; padding-inline: 4px; }
+.calendar-reference-action { display: flex; justify-content: flex-end; padding: 0 12px; }
+.calendar-reference-action .MuiButton-root { min-height: 44px; font-size: 14px; }
 
 @media (min-width: 1100px) {
   .calendar-event-label[data-count='1'] .calendar-event-count { display: none; }
@@ -35,19 +35,27 @@
 }
 
 @media (max-width: 699px) {
-  .calendar-layout { grid-template-columns: 1fr; gap: 16px; }
-  .calendar-layout .calendar-toolbar { padding: 8px 12px; gap: 6px; flex-wrap: nowrap; }
+  .workspace-main .calendar-page .page-heading[data-art='calendar'] { gap: 6px 12px; margin-bottom: 14px; }
+  .workspace-main .calendar-page .page-heading[data-art='calendar'] .page-heading-title-row { grid-column: 1; }
+  .workspace-main .calendar-page .page-heading[data-art='calendar'] .heading-actions { grid-row: 1; }
+  .workspace-main .calendar-page .page-heading[data-art='calendar'] .muted { grid-column: 1 / -1; }
+  .calendar-layout { grid-template-columns: 1fr; gap: 12px; }
+  .calendar-layout .calendar-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; padding: 6px 10px; gap: 4px; }
   .calendar-layout .calendar-toolbar h2 { font-size: 18px; white-space: nowrap; }
   .calendar-layout .calendar-toolbar .MuiButton-root { font-size: 14px; padding-inline: 6px; }
+  .calendar-layout .calendar-toolbar .calendar-month-actions { gap: 0; }
+  .calendar-layout .calendar-toolbar .calendar-toggle { min-height: 44px; white-space: nowrap; }
+  .calendar-layout .calendar-toggle .MuiButton-endIcon { margin-left: 2px; margin-right: 0; }
   .calendar-layout .calendar-reference-note { margin: 0; padding: 8px 16px 2px; }
   .calendar-layout .calendar-day { min-height: 48px; padding: 4px 2px; align-items: center; }
   .calendar-layout .calendar-day-number { width: 28px; height: 28px; font-size: 14px; }
   .calendar-layout .calendar-event-label { display: none; }
   .calendar-layout .calendar-event-dot { display: block; margin-top: 3px; }
   .calendar-layout .calendar-legend { padding: 10px 14px; }
-  .calendar-layout .agenda-heading { padding: 0 0 12px; }
+  .calendar-layout .agenda-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; padding: 0 0 8px; }
   .calendar-layout .agenda-heading .section-kicker { display: none; }
-  .calendar-layout .agenda-heading h2 { margin-top: 0; }
+  .calendar-layout .agenda-heading h2 { margin: 0; font-size: 19px; }
   .calendar-layout .agenda-heading .MuiButton-root { min-height: 44px; }
+  .calendar-layout .agenda-scope-actions { column-gap: 12px; }
   .calendar-layout .agenda-company { padding: 14px 16px; }
 }

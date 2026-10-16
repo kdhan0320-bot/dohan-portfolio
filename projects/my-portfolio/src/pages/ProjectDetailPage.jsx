@@ -32,7 +32,7 @@ const cropVariables = (media) => {
 };
 
 const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
-  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${media.crop ? `case-figure--cropped ${media.mobile ? 'case-figure--crop-responsive' : ''}` : ''} ${className}`}>
+  <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${media.crop ? `case-figure--cropped ${media.mobile ? 'case-figure--crop-responsive' : ''}` : ''} ${className}`} style={media.frameWidth ? { '--frame-width': `${media.frameWidth}px` } : undefined}>
     <div className="case-figure__surface" style={cropVariables(media)}>
       {media.mobile ? <picture className="case-responsive-image">
         <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} {...imageDimensions(media.mobile.aspectRatio)} />
@@ -71,9 +71,9 @@ const ServiceWalkthrough = ({ flow }) => {
   const step = flow.steps[selectedIndex];
   return <section className="case-section case-service-flow" aria-labelledby="case-flow-heading">
     <div className="case-section__heading">
-      <p className="case-eyebrow">서비스의 사용 흐름</p>
+      <p className="case-eyebrow">같은 회사로 이어지는 실제 샘플</p>
       <h2 id="case-flow-heading">{flow.title}</h2>
-      <p className="case-service-flow__intro">{flow.summary}</p>
+      <p className="case-service-flow__record">{flow.summary}</p>
     </div>
     <div className="case-service-flow__controls" role="group" aria-label="사용 단계별 실제 화면 선택">
       {flow.steps.map((item, index) => <button key={item.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>
@@ -81,13 +81,13 @@ const ServiceWalkthrough = ({ flow }) => {
       </button>)}
     </div>
     <div className="case-service-flow__panel" id={panelId}>
+      <ScreenFigure key={step.media.src} media={step.media} label={step.caption} priority />
       <div className="case-service-flow__copy" aria-live="polite" aria-atomic="true">
         <p className="case-eyebrow">{step.screen}</p>
         <h3>{step.title}</h3>
         <p>{step.action}</p>
+        {step.result && <p className="case-service-flow__result">{step.result}</p>}
       </div>
-      <ScreenFigure media={step.media} label={step.caption} />
-      <div className="case-service-flow__reason"><h4>구성의 이유</h4><p>{step.reason}</p></div>
     </div>
     <p className="case-service-flow__note">{flow.note}</p>
   </section>;
@@ -202,6 +202,8 @@ const ProjectDetailPage = () => {
           />)}
         </div>}
 
+        {ready.serviceFlow && <ServiceWalkthrough key={slug} flow={ready.serviceFlow} />}
+
         {ready.heroNote && <section className="case-hero-note" aria-label="첫 화면의 구성 판단">
           <h2>{ready.heroNote.title}</h2>
           <p>{ready.heroNote.text}</p>
@@ -212,8 +214,6 @@ const ProjectDetailPage = () => {
             {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
           </dl>
         </section>}
-
-        {ready.serviceFlow && <ServiceWalkthrough key={slug} flow={ready.serviceFlow} />}
 
         {!focusedCase && <section className="case-section case-context" aria-labelledby="case-context-heading">
           <div className="case-section__heading">

@@ -26,6 +26,9 @@ export default function CalendarPage() {
   const [calendarExpanded, setCalendarExpanded] = useState(false);
   const compactCalendar = useMediaQuery('(max-width: 699px)');
   const calendarVisible = !compactCalendar || calendarExpanded;
+  const pageDescription = compactCalendar
+    ? `지원 전 회사${isGuest ? ` · 샘플 기준 ${today.replaceAll('-', '.')}` : '의 마감일을 확인해요.'}`
+    : '아직 지원하지 않은 회사의 마감일을 확인해요.';
   const agendaTitle = useRef(null);
   const pendingAgendaFocus = useRef(false);
   const dayButtons = useRef(new Map());
@@ -67,15 +70,15 @@ export default function CalendarPage() {
     }, { replace: true });
   }
   return <div className="calendar-page">
-    <PageHeading art="calendar" title="마감 일정" description="아직 지원하지 않은 회사의 마감일을 확인해요."><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
+    <PageHeading art="calendar" title="마감 일정" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
       <div className="calendar-layout">
         <section className="calendar-surface" aria-labelledby="calendar-month">
-          <header className="calendar-toolbar"><h2 id="calendar-month" aria-live="polite">{monthLabel(month)}</h2><div><Button onClick={() => selectDate(today)}>{referenceLabel}</Button><IconButton aria-label="이전 달" onClick={() => selectMonth(shiftMonth(month, -1))}><ChevronLeft /></IconButton><IconButton aria-label="다음 달" onClick={() => selectMonth(shiftMonth(month, 1))}><ChevronRight /></IconButton></div></header>
-          {isGuest && <p className="calendar-reference-note">샘플은 {today.replaceAll('-', '.')} 기준으로 표시해요.</p>}
-          {compactCalendar && <div className="calendar-toggle-row"><Button aria-expanded={calendarVisible} aria-controls="calendar-date-picker" endIcon={calendarVisible ? <ExpandLess /> : <ExpandMore />} onClick={() => setCalendarExpanded(value => !value)}>{calendarVisible ? '달력 접기' : '날짜 선택'}</Button></div>}
+          <header className="calendar-toolbar"><h2 id="calendar-month" aria-label={monthLabel(month)} aria-live="polite">{compactCalendar ? `${Number(month.slice(0, 4))}. ${Number(month.slice(5))}` : monthLabel(month)}</h2><div className="calendar-month-actions">{!compactCalendar && <Button onClick={() => selectDate(today)}>{referenceLabel}</Button>}<IconButton aria-label="이전 달" onClick={() => selectMonth(shiftMonth(month, -1))}><ChevronLeft /></IconButton><IconButton aria-label="다음 달" onClick={() => selectMonth(shiftMonth(month, 1))}><ChevronRight /></IconButton></div>{compactCalendar && <Button className="calendar-toggle" aria-expanded={calendarVisible} aria-controls="calendar-date-picker" endIcon={calendarVisible ? <ExpandLess /> : <ExpandMore />} onClick={() => setCalendarExpanded(value => !value)}>{calendarVisible ? '달력 접기' : '날짜 선택'}</Button>}</header>
+          {isGuest && !compactCalendar && <p className="calendar-reference-note">샘플은 {today.replaceAll('-', '.')} 기준으로 표시해요.</p>}
           <div id="calendar-date-picker" hidden={!calendarVisible}>
+          {compactCalendar && <div className="calendar-reference-action"><Button onClick={() => selectDate(today)}>{referenceLabel} 보기</Button></div>}
           <div className="calendar-week" aria-hidden="true">{WEEKDAYS.map(day => <span key={day}>{day}</span>)}</div>
           <div className="calendar-days" role="group" aria-label={`${monthLabel(month)} 날짜 선택`} aria-description="방향키로 날짜 이동, Home과 End로 주의 처음과 끝 이동, PageUp과 PageDown으로 월 이동, Enter 또는 Space로 날짜 선택">
             {monthCells(month).map(day => {

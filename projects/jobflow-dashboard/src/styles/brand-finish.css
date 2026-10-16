@@ -1,5 +1,5 @@
-/* The outer index pattern frames an opaque, readable work surface. */
-.workspace-with-topnav > .workspace-content { background: #EFF3EF url('../assets/galpi-index-pattern.svg') center top / max(1440px, 100%) auto repeat-y; }
+/* Keep the atmosphere behind the records; folder tabs identify actual stages. */
+.workspace-with-topnav > .workspace-content { background: radial-gradient(ellipse at 12% 0, #E7EEF6 0, transparent 55%), linear-gradient(145deg, #F3F6F9, #F6F8F7 72%); }
 .workspace-with-topnav .workspace-content::before { display: none; }
 .workspace-main { position: relative; padding-bottom: 40px; }
 .workspace-main .page-heading { min-height: 0; padding-bottom: 0; border-bottom: 0; margin-bottom: 20px; }
@@ -23,7 +23,7 @@
 @media (min-width: 1000px) {
   .site-header-inner, .site-header-meta-inner { width: min(1560px, calc(100% - 128px)); }
   .workspace-with-topnav > .workspace-content { padding: 44px 0 64px; }
-  .workspace-main { width: min(1560px, calc(100% - 64px)); padding: 38px 40px 40px; border: 1px solid #D2DBD7; border-radius: 18px; background: #F9FBF9; box-shadow: 0 14px 40px -30px #34544A55; }
+  .workspace-main { width: min(1560px, calc(100% - 64px)); padding: 38px 40px 40px; border: 1px solid #D7DFE7; border-radius: 16px; background: #FCFDFE; box-shadow: 0 14px 40px -30px #344B6655; }
   .workspace-main::before { display: none; }
   .workspace-main .overview-page, .workspace-main .calendar-page, .workspace-main .checklist-page, .workspace-main .interview-page { max-width: none; }
   .workspace-main .page-heading { margin-bottom: 28px; }
@@ -33,7 +33,7 @@
   .workspace-main .overview-page .overview-deadline-body { grid-template-columns: 132px minmax(0,1fr); padding: 16px 28px 28px; gap: 28px; }
   .workspace-main .overview-page .overview-date-leaf { min-height: 160px; background: #F0DFB7; border-color: #DBC58E; border-radius: 4px 4px 16px 4px; }
   .workspace-main .overview-page .overview-date-leaf > strong { font-size: 64px; }
-  .workspace-main .overview-page .overview-stages { background: #EDF3F2; border-color: #CFDDDA; }
+  .workspace-main .overview-page .overview-stages { background: #F6F8FA; border-color: #D8E0E7; }
   .workspace-main .overview-page .overview-stages dl { margin-top: 28px; gap: 12px; }
   .workspace-main .overview-page .overview-stages dl > div { min-height: 118px; padding: 18px 14px; border: 1px solid #FFFFFF; }
   .workspace-main .overview-page .overview-stages dd { font-size: 38px; line-height: 46px; }
@@ -72,7 +72,7 @@
   .workspace-main .job-tile-bottom { flex-direction: row; align-items: center; }
   .workspace-main .checklist-page { display: grid; grid-template-columns: 248px minmax(0,1fr); column-gap: 28px; align-items: start; }
   .workspace-main .checklist-page > .page-heading, .workspace-main .checklist-page > .MuiAlert-root { grid-column: 1 / -1; }
-  .workspace-main .checklist-page .checklist-company-scope { display: flex; flex-direction: column; align-items: stretch; gap: 28px; min-height: 320px; padding: 26px 24px; margin: 16px 0 0; background: #E3EEE7; border: 1px solid #C8DBCF; border-radius: 0 14px 14px 14px; position: relative; }
+  .workspace-main .checklist-page .checklist-company-scope { display: flex; flex-direction: column; align-items: stretch; gap: 28px; min-height: 320px; padding: 26px 24px; margin: 16px 0 0; background: #F0F5F3; border: 1px solid #CFDDD6; border-radius: 0 14px 14px 14px; position: relative; }
   .workspace-main .checklist-page .checklist-company-scope::before { content: ''; position: absolute; height: 17px; width: 58%; left: -1px; top: -17px; border: 1px solid #C8DBCF; border-bottom: 0; border-radius: 8px 12px 0 0; background: #E3EEE7; pointer-events: none; }
   .workspace-main .checklist-page .checklist-scope-controls { flex: none; flex-wrap: wrap; align-items: start; }
   .workspace-main .checklist-page .checklist-scope-select { flex-basis: 100%; }
@@ -93,8 +93,9 @@
 }
 
 @media (min-width: 1800px) and (min-height: 1000px) {
-  .workspace-with-topnav > .workspace-content { display: flex; flex-direction: column; justify-content: center; padding-block: 72px; }
-  .workspace-main { padding: 44px 40px 48px; margin-block: auto; flex-shrink: 0; }
+  /* A fixed starting position keeps filters still when result height changes. */
+  .workspace-with-topnav > .workspace-content { padding-block: clamp(64px, 8vh, 112px) 80px; }
+  .workspace-main { padding: 44px 40px 48px; margin-block: 0; }
   .workspace-main .page-heading { margin-bottom: 36px; }
   .workspace-main .page-heading h1 { font-size: 36px; line-height: 46px; }
   .workspace-main .overview-page .overview-deadline-body { padding-block: 28px 36px; }
@@ -107,9 +108,6 @@
   .workspace-main .interview-page .practice-question h2 { font-size: 30px; }
 }
 
-@media (max-width: 999px) {
-  .workspace-with-topnav > .workspace-content { background-size: 1900px auto; }
-}
 @media (min-width: 1000px) and (max-height: 820px) {
   .workspace-with-topnav > .workspace-content { padding-top: 32px; }
   .workspace-main { padding: 28px 28px 32px; }
