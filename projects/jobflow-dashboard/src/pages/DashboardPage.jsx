@@ -52,7 +52,7 @@ export default function DashboardPage() {
       document.activeElement === document.body || document.activeElement === originalInput
     );
     const index = todo.findIndex(task => task.id === item.id);
-    const remaining = todo.filter(task => task.id !== item.id).slice(0, 3);
+    const remaining = todo.filter(task => task.id !== item.id).slice(0, 5);
     setBusy(item.id);
     try {
       await check.toggle(item.id, true);
@@ -108,7 +108,7 @@ export default function DashboardPage() {
         <section className="overview-panel overview-preparation-panel" aria-labelledby="todo-title">
           <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button ref={preparationLink} component={Link} to="/checklist">준비 전체</Button></header>
           <div className="overview-tasks">
-            {todo.slice(0, 3).map(item => {
+            {todo.slice(0, 5).map(item => {
               const company = companyById.get(item.application_id);
               return <div className="overview-task" key={item.id}>
                 <Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료`, ref: node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); } } }} />

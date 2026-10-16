@@ -63,17 +63,32 @@ export const PROJECT_DETAIL_READY = {
     media('detail/current/galpirok-welcome.jpg', '갈피록 홈 — 시작 행동과 지원 단계별 샘플 회사 기록. 모바일에서는 지원 기록 영역을 부분 보기로 표시', '1440 / 900', { mobile: { src: 'detail/current/galpirok-welcome-mobile.jpg', original: 'detail/current/galpirok-welcome-mobile.jpg', aspectRatio: '375 / 1029', label: '모바일 홈 · 지원 기록 영역(부분 보기)' } }),
     [
       {
-        title: '모바일에서는 마감 회사를 먼저.',
-        summary: '김도한은 화면 검토에서 지적된 모바일 마감 일정의 정보 순서를 고치도록 요청했습니다. AI가 가까운 마감 회사와 남은 기간을 먼저 배치하고, 달력은 필요할 때 펼치도록 구현했습니다. 월 전체를 항상 펼쳐 두는 대신 당장 확인할 회사 기록을 우선한 구성입니다.',
-        media: media('detail/current/galpirok-calendar-mobile.jpg', '모바일 마감 일정의 상단 부분 보기 — 접힌 달력 아래 가까운 마감 회사와 남은 기간', '390 / 844', { frameWidth: 390, original: 'detail/current/galpirok-calendar-mobile.jpg', relatedOriginal: { src: 'detail/current/galpirok-calendar.jpg', label: 'PC 화면 보기' } }),
-        mediaLabel: '모바일 마감 일정 · 가까운 마감 목록(부분 보기)',
+        title: '큰 화면에서도 하나의 작업 공간으로.',
+        summary: '2560×1440에서 목록이 위쪽에 작게 모이고 아래가 비어 보인다는 점을 직접 지적했습니다. 갈피·폴더 정체성을 살리되 실제 기록이 먼저 읽혀야 한다는 기준을 정하고, 작업 영역과 배경을 함께 다듬는 방향을 선택했습니다.',
+        media: media('detail/current/galpirok-checklist-wide.jpg', '개선한 갈피록 준비 체크 — 2560×1440에서 작업 영역과 갈피·폴더 배경의 배치', '2560 / 1440', { original: 'detail/current/galpirok-checklist-wide.jpg' }),
+        comparison: {
+          before: media('detail/galpirok-checklist-before-wide.jpg', '개선 전 갈피록 준비 체크 — 2560×1440에서 위쪽의 좁은 목록과 넓은 빈 공간', '2560 / 1440', { original: 'detail/galpirok-checklist-before-wide.jpg' }),
+          beforeLabel: '준비 체크 · 개선 전',
+          afterLabel: '준비 체크 · 개선 후',
+          beforeSummary: '좁은 목록 아래로 넓은 단색 공간이 남아 있었습니다.',
+          afterSummary: '읽는 폭을 유지하면서 작업 영역의 비중과 갈피·폴더 배경을 함께 조정했습니다.',
+          note: '같은 2560×1440 브라우저 화면과 가상 샘플의 배치 비교입니다. 조작 속도나 사용자 만족도를 측정한 결과는 아닙니다.',
+          layout: 'workspace',
+        },
       },
       {
-        title: '준비 체크는 읽기와 완료에 집중.',
-        layout: 'wide',
-        summary: '김도한은 PC의 넓은 빈 공간과 모바일에서 길어지는 목록을 다시 다듬도록 요청했습니다. AI가 상태 탭·필터와 항목의 간격, 수정·삭제 조작의 배치를 조정했습니다. 글자를 줄이기보다 자주 확인하는 할 일과 완료 상태에 먼저 시선이 가도록 했습니다.',
-        media: media('detail/current/galpirok-checklist.jpg', '갈피록 준비 체크 — 할 일과 완료 상태, 항목별 관리 조작', '1440 / 900', { mobile: { src: 'detail/current/galpirok-checklist-mobile.jpg', aspectRatio: '390 / 844', label: '모바일 준비 체크 · 할 일과 완료 상태' } }),
-        mediaLabel: 'PC 실제 화면 · 준비 항목과 조작',
+        title: '달이 바뀌어도, 가까운 마감부터.',
+        summary: '9월 말에는 며칠 뒤인 10월 초의 마감도 함께 확인해야 합니다. 검토에서 발견한 월 경계 문제를 수정 우선순위에 포함하고, 달력보다 다가오는 회사 기록을 먼저 보여주는 방향을 유지했습니다.',
+        media: media('detail/current/galpirok-calendar-mobile.jpg', '개선한 모바일 마감 일정 — 월 경계를 넘어 다가오는 회사의 마감 목록', '390 / 844', { frameWidth: 390 }),
+        comparison: {
+          before: media('detail/galpirok-calendar-before-mobile.jpg', '개선 전 모바일 마감 일정 — 9월의 마감만 보이는 기본 목록', '390 / 844', { frameWidth: 390 }),
+          beforeLabel: '모바일 마감 · 개선 전',
+          afterLabel: '모바일 마감 · 개선 후',
+          beforeSummary: '9월 목록에서 10월 2일 마감을 보려면 다음 달로 이동해야 했습니다.',
+          afterSummary: '기본 목록에서 다음 달의 가까운 마감도 확인하고, 월별 달력은 필요할 때 펼칩니다.',
+          note: '2026.09.27 기준의 가상 샘플입니다. 390×844 브라우저 화면을 비교하며 실제 모바일 기기 검증은 아닙니다.',
+          layout: 'mobile',
+        },
       },
     ],
     {
@@ -84,15 +99,15 @@ export const PROJECT_DETAIL_READY = {
     {
       imageFirst: true,
       presentation: 'focused-decisions',
-      decisionsTitle: '화면 크기에 맞춰 바꾼 우선순위.',
+      decisionsTitle: '직접 짚은 문제와 화면의 변화.',
       context: {},
       heroNote: {
-        title: '그림 대신, 지원 기록을 대표 장면으로.',
-        text: '김도한은 AI 그림을 줄인 뒤 생긴 상단 쏠림과 문서 같은 인상을 지적했습니다. 갈피·폴더 정체성을 유지하면서 시각적 구성을 보완하도록 요청했고, AI가 시작 버튼과 실제 회사 기록이 연결되도록 홈의 배치를 다시 구성했습니다.',
+        title: '지원 기록을 넘기며, 서비스의 쓰임을 알 수 있도록.',
+        text: '취업 준비생이 회사별 현황과 다음 준비를 한곳에서 확인하는 서비스로 목적을 정했습니다. AI 그림 없이 갈피·폴더를 시각적 언어로 사용하고, 첫 화면에서 샘플 회사 기록과 시작 행동이 함께 보이도록 방향을 잡았습니다.',
       },
       aiCollaboration: [
-        { label: '김도한', value: '서비스 목적·우선순위 · 가독성·모바일 개선 요청 · 방향 선택 · 샘플·코드 검증 범위와 공개 결정' },
-        { label: 'AI 협업', value: '디자인 제안 · 코드 작성·수정 · 샘플·코드 검사 실행 · 브라우저 화면 확인·캡처' },
+        { label: '김도한', value: '서비스 목적과 우선순위 설정. 큰 화면의 상단 쏠림·문서 같은 인상 지적, 갈피·폴더 방향 선택, 개선 요구와 공개 판단.' },
+        { label: 'AI 협업', value: '구체적인 화면·배경 디자인 제안, 코드 작성·수정, 샘플·코드 검사와 브라우저 화면 캡처. 독립 구현이나 사용자 조사 성과로 소개하지 않습니다.' },
       ],
       scopeTitle: '구현 범위와 확인하지 않은 것.',
       scopeSummary: [
@@ -139,7 +154,7 @@ export const PROJECT_DETAIL_READY = {
         title: '홈에서는 발견하고, 영화 찾기에서는 비교하기.',
         layout: 'wide',
         summary: '글보다 영화가 먼저 보이도록 글자 크기·굵기는 유지하고 이미지 비중을 높였습니다. 홈에서는 장면을 넘기고, 비교할 때는 고른 조건을 유지한 영화 찾기로 이동합니다.',
-        media: media('detail/current/jansang-v35-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v33-browse-mobile.jpg', original: 'detail/current/jansang-v35-browse-mobile-full.jpg', label: '영화 찾기 · 조건과 첫 작품 행' } }),
+        media: media('detail/current/jansang-v35-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 1080', { mobile: { src: 'detail/current/jansang-v33-browse-mobile.jpg', original: 'detail/current/jansang-v35-browse-mobile-full.jpg', aspectRatio: '390 / 587', label: '영화 찾기 · 조건과 첫 작품 행' } }),
         mediaLabel: '영화 찾기 · 조건과 작품을 함께 비교',
         check: { result: '동작 확인 · 분위기·시간 조건 전달과 작품 상세 진입.' },
       },
@@ -148,8 +163,8 @@ export const PROJECT_DETAIL_READY = {
         layout: 'wide',
         summary: '메모를 열면 편집부터 시작하던 흐름을 읽기 우선으로 바꿨습니다. ‘메모 수정’에서만 편집합니다. 훑기는 원문을 한 번 더 열지만 목록이 짧고, 선택한 보기도 유지됩니다.',
         mediaChoices: [
-          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v34-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 484', { original: 'detail/current/jansang-v34-saved-full.jpg', relatedOriginal: { src: 'detail/current/jansang-v35-reading-full.jpg', label: '메모 읽기 목록 보기' }, mobile: { src: 'detail/current/jansang-v34-saved-mobile.jpg', original: 'detail/current/jansang-v34-saved-mobile-full.jpg', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
-          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v34-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 598', { original: 'detail/current/jansang-v34-note-full.jpg', mobile: { src: 'detail/current/jansang-v34-note-mobile.jpg', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
+          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v34-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 484', { original: 'detail/current/jansang-v34-saved-full.jpg', relatedOriginal: { src: 'detail/current/jansang-v35-reading-full.jpg', label: '메모 읽기 목록 보기' }, mobile: { src: 'detail/current/jansang-v34-saved-mobile.jpg', original: 'detail/current/jansang-v34-saved-mobile-full.jpg', aspectRatio: '390 / 631', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
+          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v34-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 598', { original: 'detail/current/jansang-v34-note-full.jpg', mobile: { src: 'detail/current/jansang-v34-note-mobile.jpg', aspectRatio: '390 / 844', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
         ],
         check: { result: '동작 확인 · 메모 검색·읽기·수정·삭제 복원과 보기 선택 유지.' },
       },
@@ -171,7 +186,7 @@ export const PROJECT_DETAIL_READY = {
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v35-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960', { mobile: { src: 'detail/current/jansang-v33-home-mobile.jpg', label: '홈 · 실제 모바일 첫 화면' } })],
+        media: [media('detail/current/jansang-v35-home.jpg', '잔상관 현재 홈 — 영화 장면과 양옆 탐색 조작', '1440 / 960', { mobile: { src: 'detail/current/jansang-v33-home-mobile.jpg', aspectRatio: '390 / 844', label: '홈 · 실제 모바일 첫 화면' } })],
         mediaLabel: '홈 · 가로 목록을 이동한 실제 화면',
       },
       context: {
@@ -180,7 +195,7 @@ export const PROJECT_DETAIL_READY = {
       decisionsNote: {
         title: '큐레이션 · 함께 보는 이유',
         text: '소리와 대화, 관계를 잇는 사물·행동, 단서와 선택으로 묶었습니다. ‘다정한 반전’은 편지와 멈춘 엘리베이터를 관계의 계기로 연결합니다.',
-        media: media('detail/current/jansang-v35-curation.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 570', { original: 'detail/current/jansang-v35-curation-full.jpg', mobile: { src: 'detail/current/jansang-v35-curation-mobile.jpg', original: 'detail/current/jansang-v35-curation-mobile-full.jpg', label: '다정한 반전 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
+        media: media('detail/current/jansang-v35-curation.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 570', { original: 'detail/current/jansang-v35-curation-full.jpg', mobile: { src: 'detail/current/jansang-v35-curation-mobile.jpg', original: 'detail/current/jansang-v35-curation-mobile-full.jpg', aspectRatio: '390 / 424', label: '다정한 반전 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
         mediaLabel: '다정한 반전 · 선정한 네 작품과 이유',
       },
       verification: {

@@ -13,14 +13,20 @@ const projectSlug = (project) => project.slug || (project.id === 'bus-arrival-ap
 // A long desktop page is not a mobile frame. Only explicit device-width metadata
 // constrains the image; source aspect ratio alone cannot identify a phone screen.
 const isPortrait = (media) => Boolean(media.frameWidth);
+// Dimensions reserve the correct space before a lazy image arrives. The source
+// needs its own dimensions because a mobile capture has a different ratio.
+const imageDimensions = (aspectRatio) => {
+  const [width, height] = String(aspectRatio || '').split('/').map(Number);
+  return width > 0 && height > 0 ? { width, height } : {};
+};
 
 const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
   <figure className={`case-figure ${isPortrait(media) ? 'case-figure--portrait' : ''} ${className}`}>
     <div className="case-figure__surface">
       {media.mobile ? <picture className="case-responsive-image">
-        <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} />
-        <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />
-      </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
+        <source media={`(max-width: ${media.mobile.breakpoint || 760}px)`} srcSet={mediaUrl(media.mobile.src)} {...imageDimensions(media.mobile.aspectRatio)} />
+        <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} {...imageDimensions(media.aspectRatio)} loading={priority ? 'eager' : 'lazy'} decoding="async" />
+      </picture> : <img src={mediaUrl(media.src)} alt={media.alt || label || '프로젝트 화면'} {...imageDimensions(media.aspectRatio)} loading={priority ? 'eager' : 'lazy'} decoding="async" />}
     </div>
     <figcaption>
       <span className={media.mobile?.label ? 'case-caption-desktop' : undefined}>{label || '화면 상세'}</span>
@@ -179,7 +185,7 @@ const ProjectDetailPage = () => {
                     <dt>{item.label}</dt><dd>{item.text}</dd>
                   </div>)}</dl>}
                 </div>
-                {decision.comparison ? <div className="case-comparison">
+                {decision.comparison ? <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
                   <div className="case-comparison__grid">
                     <div>
                       <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>

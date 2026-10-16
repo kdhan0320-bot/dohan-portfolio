@@ -9,7 +9,7 @@ import Add from '@mui/icons-material/Add';
 import useApplications from '../hooks/useApplications';
 import { useToday } from '../hooks/useToday';
 import { useAuth } from '../context/AuthContext';
-import { calendarFocusDate, calendarState, companyDestination, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
+import { agendaDeadlines, calendarFocusDate, calendarState, companyDestination, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
 import { deadlineLabel } from '../utils/dates';
 import { CompanyMark, Empty, LoadState, PageHeading } from '../components/ui/PageUI';
 import '../styles/calendar-refinement.css';
@@ -20,17 +20,19 @@ export default function CalendarPage() {
   const { isGuest } = useAuth();
   const referenceLabel = isGuest ? '샘플 기준일' : '오늘';
   const [params, setParams] = useSearchParams();
-  const { month, date } = calendarState(params, today);
+  const selection = calendarState(params, today);
+  const { month, date, scope } = selection;
   const [focusedDate, setFocusedDate] = useState(null);
   const [calendarExpanded, setCalendarExpanded] = useState(false);
   const compactCalendar = useMediaQuery('(max-width: 699px)');
   const calendarVisible = !compactCalendar || calendarExpanded;
+  const agendaTitle = useRef(null);
+  const pendingAgendaFocus = useRef(false);
   const dayButtons = useRef(new Map());
   const pendingFocus = useRef(null);
   const tabDate = calendarFocusDate(month, date, focusedDate, today);
   const deadlines = pendingDeadlines(applications);
-  const inMonth = deadlines.filter(a => a.deadline.startsWith(month));
-  const visible = date ? inMonth.filter(a => a.deadline === date) : inMonth;
+  const visible = agendaDeadlines(deadlines, selection, today);
   const undated = applications.filter(a => ['관심', '지원 예정'].includes(a.status) && !validDate(a.deadline)).length;
   const overdue = deadlines.filter(a => a.deadline < today).length;
   useEffect(() => {
@@ -41,8 +43,15 @@ export default function CalendarPage() {
       dayButtons.current.get(pending.day)?.focus();
     }
   }, [month, focusedDate]);
+  useEffect(() => {
+    if (!pendingAgendaFocus.current) return;
+    pendingAgendaFocus.current = false;
+    agendaTitle.current?.focus();
+  }, [month, date, scope]);
   function selectMonth(value) { pendingFocus.current = null; setParams({ month: value }); }
   function selectDate(value) { setFocusedDate(value); setParams({ month: value.slice(0, 7), date: value }); }
+  function selectUpcoming() { pendingFocus.current = null; pendingAgendaFocus.current = true; setFocusedDate(null); setParams({}); }
+  function selectMonthAgenda() { pendingAgendaFocus.current = true; selectMonth(month); }
   function moveDate(event, day) {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
     const next = keyboardDate(day, event.key);
@@ -79,9 +88,9 @@ export default function CalendarPage() {
           <div className="calendar-legend"><span><i className="legend-today" />{referenceLabel}</span><span><i className="legend-deadline" />지원 마감</span></div>
           </div>
         </section>
-        <section className="calendar-agenda" aria-labelledby="agenda-title"><div className="agenda-heading"><span className="section-kicker">지원 전 확인</span><h2 id="agenda-title">{date ? `${Number(date.slice(5, 7))}월 ${Number(date.slice(8))}일` : `${Number(month.slice(5))}월의 마감`}<span>{visible.length}곳</span></h2>{date && <Button size="small" onClick={() => selectMonth(month)}>이번 달 전체 보기</Button>}</div>
+        <section className="calendar-agenda" aria-labelledby="agenda-title"><div className="agenda-heading"><span className="section-kicker">지원 전 확인</span><h2 id="agenda-title" ref={agendaTitle} tabIndex={-1}>{scope === 'upcoming' ? '다가오는 마감' : date ? `${Number(date.slice(5, 7))}월 ${Number(date.slice(8))}일` : `${Number(month.slice(5))}월의 마감`}<span>{visible.length}곳</span></h2><div className="agenda-scope-actions">{scope !== 'month' && <Button size="small" onClick={selectMonthAgenda}>{Number(month.slice(5))}월 전체 보기</Button>}{scope !== 'upcoming' && <Button size="small" onClick={selectUpcoming}>다가오는 마감</Button>}</div></div>
           <div className="agenda-list" aria-live="polite">{visible.map(a => <Link className="agenda-company" key={a.id} to={companyDestination(a.id)}><div className="agenda-company-top"><CompanyMark name={a.company_name} /><span className="agenda-company-identity"><strong>{a.company_name}</strong><span>{a.position || '직무 미입력'}</span></span></div><div className="agenda-company-bottom"><span>{Number(a.deadline.slice(5, 7))}.{Number(a.deadline.slice(8))} 마감</span><span className={a.deadline < today ? 'deadline-pill overdue' : 'deadline-pill'}>{deadlineLabel(a.deadline, today)}</span></div></Link>)}
-            {!visible.length && <Empty title={date ? '이 날은 마감이 없어요' : '이 달은 마감이 없어요'}><p>다른 날짜나 달을 선택해보세요.</p></Empty>}
+            {!visible.length && <Empty title={scope === 'upcoming' ? '다가오는 마감이 없어요' : date ? '이 날은 마감이 없어요' : '이 달은 마감이 없어요'}><p>{scope === 'upcoming' ? '지원할 회사의 마감일을 등록해보세요.' : '다른 날짜나 달을 선택해보세요.'}</p></Empty>}
           </div>
         </section>
       </div>

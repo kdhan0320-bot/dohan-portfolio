@@ -1,11 +1,11 @@
 /* The folder is an interactive record, not an illustration of the product. */
-.welcome-product-first { display: flex; flex-direction: column; background: #F5F6F4; }
-.welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 84px); width: min(1280px, calc(100% - 96px)); margin-inline: auto; padding-block: 64px; }
-.welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1280px, calc(100% - 96px)); margin-inline: auto; }
+.welcome-product-first { display: flex; flex-direction: column; background: #EFF3EF url('../assets/galpi-index-pattern.svg') center center / max(1440px, 100%) auto no-repeat; }
+.welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 96px); width: min(1560px, calc(100% - 128px)); margin-inline: auto; padding-block: 64px; }
+.welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1560px, calc(100% - 128px)); margin-inline: auto; }
 .galpi-intro { min-width: 0; padding-bottom: 12px; }
 .galpi-eyebrow { display: flex; align-items: center; gap: 9px; color: #53616D; font-size: 14px; line-height: 22px; margin-bottom: 22px; }
 .galpi-eyebrow::before { content: ''; width: 10px; height: 18px; background: #3D6594; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
-.galpi-intro h1 { color: var(--ink); font-size: clamp(36px, 3.2vw, 52px); font-weight: 450; line-height: 1.32; letter-spacing: -.045em; word-break: keep-all; }
+.galpi-intro h1 { color: var(--ink); font-size: clamp(36px, 3.2vw, 64px); font-weight: 450; line-height: 1.32; letter-spacing: -.045em; word-break: keep-all; }
 .galpi-intro h1 em { color: #345C87; font-style: normal; font-weight: inherit; }
 .galpi-intro-heading > p { color: #53616D; font-size: 17px; line-height: 28px; margin-top: 22px; word-break: keep-all; }
 .galpi-intro-action { margin-top: 34px; }
@@ -48,6 +48,18 @@
 .preview-caption { margin: 14px 0 0; color: #536574; font-size: 13px; line-height: 22px; }
 .application-preview button:focus-visible, .preview-record:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; z-index: 2; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
+@media (max-width: 1799px) {
+  .welcome-product-first { background-image: radial-gradient(circle, #9DB4A633 .8px, transparent .9px); background-size: 28px 28px; background-repeat: repeat; }
+}
+@media (min-width: 1800px) {
+  .application-preview { padding: 0 32px 24px; }
+  .preview-toolbar { padding-block: 30px 26px; }
+  .preview-record { min-height: 430px; padding: 36px; }
+  .preview-record-heading h3 { font-size: 24px; }
+  .preview-record-body { padding-block: 32px; }
+  .preview-date-block > strong { font-size: 52px; }
+  .galpi-intro-heading > p { font-size: 19px; line-height: 30px; }
+}
 @media (max-width: 1100px) {
   .welcome-product-first > main { width: calc(100% - 56px); grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 28px; }
   .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }

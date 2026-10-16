@@ -220,7 +220,7 @@ export default function InterviewPage() {
     </nav>
     <section className="practice-desk" aria-label="면접 질문 연습">
       <div className="practice-navigation">
-      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} onChange={event => setActiveId(event.target.value)} slotProps={{ select: { renderValue: () => `질문 ${activeIndex + 1} / ${filtered.length} · ${activeNote.question}` } }}>
+      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} onChange={event => setActiveId(event.target.value)} slotProps={{ select: { renderValue: () => `질문 ${activeIndex + 1} / ${filtered.length} 선택` } }}>
         {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {companyScope === 'all' ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
       </Field>
       <div className="practice-pagination">

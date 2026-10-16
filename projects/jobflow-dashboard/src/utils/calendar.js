@@ -45,9 +45,16 @@ export function pendingDeadlines(applications) {
     .sort((a, b) => a.deadline.localeCompare(b.deadline) || a.company_name.localeCompare(b.company_name, 'ko'));
 }
 export function calendarState(params, today) {
-  const month = validMonth(params.get('month')) ? params.get('month') : today.slice(0, 7);
+  const explicitMonth = validMonth(params.get('month'));
+  const month = explicitMonth ? params.get('month') : today.slice(0, 7);
   const candidate = params.get('date');
-  return { month, date: validDate(candidate) && candidate.startsWith(month) ? candidate : null };
+  const date = validDate(candidate) && candidate.startsWith(month) ? candidate : null;
+  return { month, date, scope: date ? 'date' : explicitMonth ? 'month' : 'upcoming' };
+}
+export function agendaDeadlines(deadlines, { month, date, scope }, today) {
+  if (scope === 'date') return deadlines.filter(application => application.deadline === date);
+  if (scope === 'month') return deadlines.filter(application => application.deadline.startsWith(month));
+  return deadlines.filter(application => application.deadline >= today);
 }
 export function monthLabel(month) { return `${Number(month.slice(0, 4))}년 ${Number(month.slice(5, 7))}월`; }
 export function companyDestination(id) { return `/?company=${encodeURIComponent(id)}`; }
