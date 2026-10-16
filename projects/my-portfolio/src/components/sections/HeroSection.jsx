@@ -29,8 +29,8 @@ const HeroSection = () => (
           <span className="hero-stage__caption"><strong>설비결</strong><span>설비 점검 운영 UI</span></span>
         </Link>
         <Link className="hero-stage__panel hero-stage__panel--record" to="/projects/jobflow" aria-label="갈피록 프로젝트 보기">
-          <div className="hero-stage__image"><img src={`${BASE}detail/galpirok-board-pc.jpg`} alt="갈피록의 지원 단계별 기록 화면" decoding="async" /></div>
-          <span className="hero-stage__caption"><strong>갈피록</strong><span>취업 지원 기록 웹앱</span></span>
+          <div className="hero-stage__image"><img src={`${BASE}detail/current/galpirok-board.jpg`} alt="갈피록의 지원 단계별 기록 화면" decoding="async" /></div>
+          <span className="hero-stage__caption"><strong>갈피록</strong><span>개인 입사지원 관리</span></span>
         </Link>
         <Link className="hero-stage__panel hero-stage__panel--cinema" to="/projects/ott-service" aria-label="잔상관 프로젝트 보기">
           <div className="hero-stage__image"><img src={`${BASE}detail/current/jansang-v34-home.jpg`} alt="잔상관의 분위기별 단편영화 탐색 화면" decoding="async" /></div>

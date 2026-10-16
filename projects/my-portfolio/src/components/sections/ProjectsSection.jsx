@@ -4,7 +4,7 @@ import ProjectCover from '../projects/ProjectCover';
 
 const FEATURED = [
   { id: 'seolbiit', category: '업무·관리', title: '요청 확인에서 담당자 배정까지.', summary: '생산·구매 경험과 맞닿은 설비 점검을 주제로 삼았습니다. 요청을 읽는 영역과 담당자·기한을 확인하고 배정하는 영역을 구분한 개인 UI 디자인입니다.', point: '상세에서 보기 · 배정 화면의 이전·현재 비교', image: 'detail/current/seolbigyeol-requests.png', imageAlt: '설비결 정비 요청 — 접수 목록과 요청 상세, 담당자 배정 영역' },
-  { id: 'jobflow', category: '업무·관리', title: '오늘 확인할 마감과 준비를 먼저.', summary: '가까운 마감과 남은 준비를 모아 보여줍니다. 지원 현황은 네 단계로 묶고, 회사별 세부 상태는 카드에서 확인하도록 구성했습니다.', point: '상세에서 보기 · 지원 단계의 이전·현재 비교', image: 'detail/galpirok-overview-pc.jpg', imageAlt: '갈피록 오늘의 지원 — 가까운 마감과 남은 준비' },
+  { id: 'jobflow', category: '업무·관리', title: '오늘 확인할 마감과 준비를 먼저.', summary: '지원할 회사를 직접 등록하고 현황·마감·준비할 일을 관리합니다. 갈피·폴더의 특징을 남기면서 장식보다 실제 기록과 조작이 먼저 보이도록 다듬었습니다.', point: '상세에서 보기 · 실제 기여와 화면 개선 사례', image: 'detail/current/galpirok-overview.jpg', imageAlt: '갈피록 오늘의 지원 — 가까운 마감과 남은 준비' },
   { id: 'ott-service', category: '콘텐츠', title: '분위기로 발견하고, 선택한 이유를 남기다.', summary: '분위기와 시간으로 가상 단편영화를 찾고 찜과 관심 메모로 모으는 반응형 웹입니다.', point: '상세에서 보기 · 모바일 탐색과 저장 흐름' },
 ];
 const ProjectsSection = () => (

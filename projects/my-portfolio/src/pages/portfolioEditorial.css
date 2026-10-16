@@ -309,6 +309,18 @@
   .case-page *, .works-page * { transition: none !important; }
 }
 
+/* Galpirok pairs each device capture with its own caption and original. */
+.case-page[data-project-slug="jobflow"] .case-responsive-image { display: block; width: 100%; }
+.case-page[data-project-slug="jobflow"] .case-original-mobile,
+.case-page[data-project-slug="jobflow"] .case-caption-mobile { display: none; }
+@media (max-width: 760px) {
+  .case-page[data-project-slug="jobflow"] .case-responsive-image { max-width: 390px; }
+  .case-page[data-project-slug="jobflow"] .case-original-desktop,
+  .case-page[data-project-slug="jobflow"] .case-caption-desktop { display: none; }
+  .case-page[data-project-slug="jobflow"] .case-original-mobile { display: inline-flex; }
+  .case-page[data-project-slug="jobflow"] .case-caption-mobile { display: block; }
+}
+
 /* Jansang presents the working result before its production details. */
 .case-page[data-project-slug="ott-service"] .case-project-facts {
   padding: 12px 0 28px;

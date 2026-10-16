@@ -1,5 +1,5 @@
 /* 면접은 회사 설정이 아니라, 선택한 한 질문을 읽고 연습하는 화면이다. */
-.interview-page { min-width: 0; }
+.interview-page { min-width: 0; width: 100%; max-width: 1080px; margin-inline: auto; }
 .interview-page .interview-controls {
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@
 .interview-page .interview-status-tabs .Mui-selected { color: #3d6594; font-weight: 500; }
 .interview-page .interview-status-tabs .MuiTabs-indicator { background: #3d6594; }
 
-.interview-page .interview-workspace { grid-template-columns: minmax(210px, 0.85fr) minmax(0, 2fr); gap: 24px; }
+.interview-page .interview-workspace { grid-template-columns: 260px minmax(0, 1fr); gap: 24px; align-items: start; }
 .interview-page .question-queue-heading { min-height: 44px; padding: 0 10px 8px; font-size: 14px; }
 .interview-page .question-queue-heading > span:first-child { color: var(--ink); font-size: 15px; font-weight: 500; }
 .interview-page .question-queue ol { gap: 4px; }

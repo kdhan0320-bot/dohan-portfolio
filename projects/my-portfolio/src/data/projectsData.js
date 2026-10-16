@@ -9,7 +9,7 @@ const BASE = import.meta.env.BASE_URL;
 
 const THUMB_MAP = {
   gongjeongbom: `${BASE}detail/current/gijunseon-home.png`,
-  jobflow:      `${BASE}detail/galpirok-board-pc.jpg`,
+  jobflow:      `${BASE}detail/current/galpirok-board.jpg`,
   seolbiit:     `${BASE}detail/current/seolbigyeol-home.png`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
   'ott-service': `${BASE}detail/current/jansang-v34-home.jpg`,

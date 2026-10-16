@@ -209,10 +209,12 @@ export default function ChecklistPage() {
         <section className="checklist-sheet" aria-label={`${scopeLabel}의 할 일 목록`}>
           <div className="checklist-filterbar">
             <div className="checklist-sheet-toolbar">
-              <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
-                <Tab value="todo" label={`진행 중 ${scopedItems.length - scopedDone}`} />
-                <Tab value="done" label={`완료 ${scopedDone}`} />
-                <Tab value="all" label={`전체 ${scopedItems.length}`} />
+              <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="fullWidth" scrollButtons={false} aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
+                {[
+                  { value: 'todo', label: '진행 중', count: scopedItems.length - scopedDone },
+                  { value: 'done', label: '완료', count: scopedDone },
+                  { value: 'all', label: '전체', count: scopedItems.length }
+                ].map(status => <Tab key={status.value} value={status.value} aria-label={`${status.label} ${status.count}`} label={<span className="checklist-status-label"><span>{status.label}</span><span className="checklist-status-count">{status.count}</span></span>} />)}
               </Tabs>
             </div>
             <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
