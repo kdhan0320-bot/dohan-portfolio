@@ -30,15 +30,15 @@ export default function WelcomePage() {
           <span className="galpi-eyebrow">개인 입사지원 관리</span>
           <h1 id="welcome-title">입사지원 현황과<br /><em>마감일을 한눈에.</em></h1>
           <p>지원할 회사를 직접 등록하고 관리해요.</p>
-        </div>
-        <div className="galpi-intro-action">
-          <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : isGuest ? '체험 이어하기' : '샘플 체험하기'}</Button>
-          <small>{user ? '로그인한 계정의 지원 기록으로 이동합니다.' : '가입 없이 체험 · 가상 데이터 · 새로고침 시 초기화'}</small>
-          {error && <Alert severity="error">{error}</Alert>}
+          <div className="galpi-intro-action">
+            <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : isGuest ? '체험 이어하기' : '샘플 체험하기'}</Button>
+            <small>{user ? '로그인한 계정의 지원 기록으로 이동합니다.' : '가입 없이 체험 · 가상 데이터 · 새로고침 시 초기화'}</small>
+            {error && <Alert severity="error">{error}</Alert>}
+          </div>
         </div>
       </section>
       <section className="galpi-product-stage" aria-label="갈피록 지원 관리 미리보기">
-        <ProductPreview onOpen={start} busy={busy || loading} />
+        <ProductPreview onOpen={start} busy={busy || loading} signedIn={Boolean(user)} />
       </section>
     </main>
     <footer className="welcome-footer"><span>갈피록 · 김도한의 포트폴리오 프로젝트</span><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a></footer>

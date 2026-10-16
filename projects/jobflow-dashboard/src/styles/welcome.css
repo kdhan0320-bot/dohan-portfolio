@@ -1,100 +1,102 @@
-/* The working records are the home visual; a small bookmark and stage colours carry the identity. */
-.welcome-product-first { display: flex; flex-direction: column; background: #F6F8FA; }
-.welcome-product-first > main { flex: 1; display: flex; flex-direction: column; padding-bottom: 48px; }
-.welcome-product-first > main > section { flex-shrink: 0; }
-.galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1200px, calc(100% - 96px)); margin-inline: auto; }
-.galpi-intro { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 48px; align-items: end; padding: 48px 0 36px; }
-.galpi-eyebrow { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; line-height: 22px; font-weight: 400; margin-bottom: 14px; }
-.galpi-eyebrow::before { content: ''; flex: 0 0 9px; height: 16px; background: #3D6594; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
-.galpi-intro h1 { color: var(--ink); font-size: clamp(34px, 3.3vw, 46px); font-weight: 450; line-height: 1.34; letter-spacing: -.035em; word-break: keep-all; }
+/* The folder is an interactive record, not an illustration of the product. */
+.welcome-product-first { display: flex; flex-direction: column; background: #F5F6F4; }
+.welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 84px); width: min(1280px, calc(100% - 96px)); margin-inline: auto; padding-block: 64px; }
+.welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1280px, calc(100% - 96px)); margin-inline: auto; }
+.galpi-intro { min-width: 0; padding-bottom: 12px; }
+.galpi-eyebrow { display: flex; align-items: center; gap: 9px; color: #53616D; font-size: 14px; line-height: 22px; margin-bottom: 22px; }
+.galpi-eyebrow::before { content: ''; width: 10px; height: 18px; background: #3D6594; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
+.galpi-intro h1 { color: var(--ink); font-size: clamp(36px, 3.2vw, 52px); font-weight: 450; line-height: 1.32; letter-spacing: -.045em; word-break: keep-all; }
 .galpi-intro h1 em { color: #345C87; font-style: normal; font-weight: inherit; }
-.galpi-intro-heading > p { color: var(--muted); font-size: 16px; line-height: 26px; margin-top: 16px; }
-.galpi-intro-action { max-width: 310px; padding-bottom: 2px; }
-.galpi-intro-action > .MuiButton-root { font-size: 15px; font-weight: 500; min-height: 48px; width: 100%; border-radius: 8px; padding-inline: 24px; }
-.galpi-intro-action > small { display: block; font-size: 14px; line-height: 22px; color: var(--muted); margin-top: 10px; }
+.galpi-intro-heading > p { color: #53616D; font-size: 17px; line-height: 28px; margin-top: 22px; word-break: keep-all; }
+.galpi-intro-action { margin-top: 34px; }
+.galpi-intro-action > .MuiButton-root { min-width: 200px; font-size: 16px; font-weight: 500; min-height: 52px; border-radius: 8px; padding-inline: 26px; }
+.galpi-intro-action > small { display: block; max-width: 320px; font-size: 14px; line-height: 22px; color: #65717D; margin-top: 14px; }
 .galpi-intro-action .MuiAlert-root { margin-top: 14px; }
-.galpi-product-stage { position: relative; }
-.application-preview { border: 1px solid #CFD7DF; border-radius: 10px; background: #FFF; overflow: hidden; }
-.preview-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; min-height: 68px; padding: 16px 24px; }
-.preview-toolbar h2 { font-size: 18px; font-weight: 500; line-height: 28px; letter-spacing: -.02em; }
-.preview-toolbar > span { color: var(--muted); font-size: 14px; line-height: 22px; }
-.preview-toolbar .preview-sample { margin-left: auto; font-size: 14px; }
-.preview-lanes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 8px 24px 24px; }
-.preview-lane { min-width: 0; padding: 0; border: 1px solid #D6DDE4; border-radius: 0 8px 8px 8px; background: #FFF; position: relative; }
-.preview-lane::before { content: ''; position: absolute; left: -1px; top: -9px; height: 9px; width: 56%; border: 1px solid #D6DDE4; border-bottom: 0; border-radius: 5px 8px 0 0; background: var(--stage-tint); }
-.preview-lane h3 { display: flex; align-items: center; gap: 8px; margin: 0; min-height: 44px; padding-inline: 14px; border-radius: 0 7px 0 0; background: var(--stage-tint); font-size: 15px; line-height: 24px; font-weight: 500; color: var(--stage-ink); }
-.preview-lane h3 i { font-style: normal; font-size: 14px; font-weight: 400; font-variant-numeric: tabular-nums; }
-.galpi-preview-company { position: relative; display: flex; flex-direction: column; align-items: flex-start; width: 100%; min-height: 182px; padding: 16px 14px; text-align: left; color: var(--ink); background: #FFF; border: 0; border-radius: 0 0 8px 8px; cursor: pointer; transition: background .15s; }
-.galpi-preview-company:hover { background: #F5F8FB; }
-.preview-company-heading { display: grid; grid-template-columns: 30px minmax(0, 1fr); align-items: center; gap: 8px; width: 100%; }
-.preview-company-heading .company-mark { width: 30px; height: 30px; border-radius: 6px; font-size: 14px; font-weight: 400; }
-.preview-company-heading > strong { font-size: 15px; line-height: 22px; font-weight: 500; word-break: keep-all; overflow-wrap: anywhere; }
-.preview-position { display: block; font-size: 14px; color: var(--muted); line-height: 22px; margin: 6px 0 12px; }
-.preview-status { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 14px; line-height: 20px; font-weight: 400; margin-bottom: 14px; }
-.preview-card-date { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; width: 100%; border-top: 1px solid var(--line); margin-top: auto; padding-top: 10px; font-size: 14px; line-height: 20px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.preview-card-date b { color: var(--stage-ink); font-weight: 500; }
-.preview-record-dialog .MuiDialog-paper { border-radius: 12px; }
-/* The root reserves scrollbar space; MUI's extra body padding would reserve it twice. */
-@supports (scrollbar-gutter: stable) {
-  body:has(.preview-record-dialog) { padding-right: 0 !important; }
-}
-.preview-dialog-heading.MuiDialogTitle-root { display: flex; align-items: center; gap: 12px; padding: 24px; border-bottom: 1px solid var(--line); }
-.preview-dialog-heading .company-mark { width: 40px; height: 40px; flex-shrink: 0; font-weight: 400; }
-.preview-dialog-heading > div { min-width: 0; flex: 1; }
-.preview-dialog-heading h2 { font-size: 20px; line-height: 28px; font-weight: 500; word-break: keep-all; overflow-wrap: anywhere; }
-.preview-dialog-heading p { margin-top: 4px; font-size: 14px; line-height: 22px; font-weight: 400; color: var(--muted); }
-.preview-dialog-heading > .MuiIconButton-root { align-self: flex-start; margin: -8px -8px 0 0; }
-.preview-record-dialog .preview-detail.MuiDialogContent-root { padding: 24px; color: var(--ink); }
-.preview-detail-status { display: inline-block; border-radius: 4px; padding: 4px 10px; font-size: 13px; line-height: 20px; }
-.preview-record-date { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 0; margin: 16px 0 0; border-block: 1px solid var(--line); font-size: 14px; line-height: 22px; }
-.preview-record-date dt { color: var(--muted); }
-.preview-record-date dd { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 28px; line-height: 36px; font-weight: 450; font-variant-numeric: tabular-nums; }
-.preview-record-date b { border-radius: 4px; color: #805E24; background: #FAF1DE; padding: 4px 6px; font-size: 12px; line-height: 18px; font-weight: 400; }
-.preview-documents { display: flex; flex-wrap: wrap; gap: 12px 20px; padding-top: 20px; }
-.preview-documents > span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 14px; line-height: 22px; }
-.preview-documents svg { flex-shrink: 0; display: block; border: 1px solid #7E8A97; border-radius: 3px; width: 16px; height: 16px; color: transparent; }
+.galpi-product-stage { min-width: 0; padding-top: 14px; }
+.application-preview { position: relative; padding: 0 24px 20px; background: #E4EBF1; border: 1px solid #C4CFD9; border-radius: 0 18px 18px 18px; box-shadow: 0 14px 28px -22px #243B5266; }
+.application-preview::before { content: ''; position: absolute; height: 15px; width: 42%; left: -1px; top: -15px; border: 1px solid #C4CFD9; border-bottom: 0; background: #E4EBF1; border-radius: 9px 14px 0 0; }
+.preview-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; padding-block: 24px 22px; }
+.preview-toolbar h2 { color: #344E69; font-size: 16px; font-weight: 500; line-height: 24px; }
+.preview-toolbar > span { color: #536574; font-size: 13px; line-height: 20px; }
+.preview-stage-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; align-items: end; }
+.preview-stage-tabs > button { position: relative; min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 4px; border: 1px solid #C8D2DC; border-bottom: 0; border-radius: 8px 8px 0 0; color: var(--tab-ink); background: var(--tab-tint); cursor: pointer; font: inherit; font-size: 14px; line-height: 22px; }
+.preview-stage-tabs > button[aria-selected='true'] { min-height: 64px; background: #FFF; border-top: 3px solid var(--tab-ink); z-index: 1; }
+.preview-stage-tabs > button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.preview-tab-index { font-size: 12px; opacity: .85; font-variant-numeric: tabular-nums; }
+.preview-record { position: relative; padding: 28px; border: 1px solid #C8D2DC; border-radius: 0 0 8px 8px; background: #FFF; min-height: 376px; }
+.preview-record[hidden] { display: none; }
+.preview-record-heading { display: flex; align-items: center; gap: 12px; }
+.preview-record-heading .company-mark { flex-shrink: 0; width: 42px; height: 46px; border-radius: 5px; font-size: 18px; font-weight: 400; }
+.preview-record-heading > div { min-width: 0; flex: 1; }
+.preview-record-heading h3 { color: var(--ink); font-size: 21px; line-height: 30px; font-weight: 500; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.preview-record-heading p { margin: 3px 0 0; font-size: 14px; line-height: 22px; color: var(--muted); }
+.preview-status { flex-shrink: 0; padding: 4px 8px; border-radius: 4px; font-size: 13px; line-height: 20px; }
+.preview-record-body { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; padding-block: 26px; margin-top: 10px; }
+.preview-date-block { position: relative; border-left: 3px solid var(--stage-ink); padding-left: 16px; }
+.preview-date-block > span { display: block; color: #65717D; font-size: 14px; line-height: 22px; }
+.preview-date-block > strong { display: inline-block; margin-top: 4px; color: #334E68; font-size: 42px; font-weight: 450; line-height: 1.1; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.preview-date-block > b { display: inline-block; vertical-align: top; margin: 4px 0 0 10px; color: #78571B; background: #FAF1DE; border-radius: 4px; font-size: 13px; line-height: 24px; padding-inline: 6px; font-weight: 500; }
+.preview-documents { display: grid; gap: 14px; }
+.preview-documents > span { display: flex; align-items: center; gap: 8px; color: #475766; font-size: 14px; line-height: 22px; white-space: nowrap; }
+.preview-documents svg { flex-shrink: 0; border: 1px solid #98A4B0; border-radius: 3px; width: 17px; height: 17px; color: transparent; }
 .preview-documents .is-done svg { color: #326D61; border-color: #7FA99C; background: #E6F2ED; }
-.preview-memo { margin-top: 16px; }
-.preview-memo summary { width: fit-content; color: var(--muted); font-size: 14px; line-height: 22px; cursor: pointer; padding-block: 8px; }
-.preview-memo p { font-size: 14px; line-height: 24px; margin-top: 8px; word-break: keep-all; overflow-wrap: anywhere; }
-.preview-record-dialog .MuiDialogActions-root { padding: 8px 24px 24px; gap: 8px; }
-.application-preview button:focus-visible, .preview-memo summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.preview-documents em { font-style: normal; margin-left: auto; color: #697581; font-size: 13px; }
+.preview-record-memo { display: grid; gap: 6px; margin: 0; padding-top: 18px; border-top: 1px solid #E1E6EB; font-size: 14px; line-height: 23px; color: #475766; min-height: 72px; word-break: keep-all; overflow-wrap: anywhere; }
+.preview-record-memo > span { font-size: 13px; line-height: 20px; color: #6C7782; }
+.preview-open-record.MuiButton-root { display: flex; width: fit-content; margin-top: 14px; margin-left: auto; padding: 9px 0 9px 10px; min-height: 44px; font-size: 14px; font-weight: 500; }
+.preview-open-record .MuiSvgIcon-root { font-size: 18px; }
+.preview-caption { margin: 14px 0 0; color: #536574; font-size: 13px; line-height: 22px; }
+.application-preview button:focus-visible, .preview-record:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; z-index: 2; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
-
 @media (max-width: 1100px) {
-  .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }
-  .galpi-intro { gap: 32px; }
-  .preview-lanes { gap: 12px; padding-inline: 20px; }
-}
-@media (max-width: 900px) {
-  .galpi-intro { grid-template-columns: minmax(0, 1fr) 240px; gap: 24px; }
+  .welcome-product-first > main { width: calc(100% - 56px); grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 28px; }
+  .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }
   .galpi-intro h1 { font-size: 36px; }
-  .preview-lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 16px; }
+  .application-preview { padding-inline: 18px; }
+  .preview-record { padding: 22px; }
+  .preview-record-heading h3 { font-size: 19px; }
+  .preview-tab-index { display: none; }
+  .preview-record-body { gap: 16px; }
+  .preview-date-block > strong { font-size: 36px; }
+  .preview-date-block > b { display: block; width: fit-content; margin: 6px 0 0; }
 }
-@media (max-width: 600px) {
-  .welcome-product-first > main { padding-bottom: 28px; }
-  .galpi-intro, .galpi-product-stage, .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 40px); }
-  .galpi-intro { display: block; padding: 28px 0 28px; }
-  .galpi-eyebrow { margin-bottom: 10px; }
-  .galpi-intro h1 { font-size: clamp(29px, 7.6vw, 40px); }
-  .galpi-intro-heading > p { font-size: 15px; margin-top: 12px; }
-  .galpi-intro-action { max-width: none; margin-top: 22px; }
-  .galpi-intro-action > small { text-align: center; font-size: 13px; line-height: 20px; }
-  .preview-toolbar { padding: 14px; gap: 4px 12px; }
-  .preview-toolbar h2 { font-size: 17px; }
-  .preview-toolbar > span { flex-basis: 100%; }
-  .preview-toolbar .preview-sample { margin-left: 0; }
-  .preview-lanes { grid-template-columns: minmax(0, 1fr); padding: 8px 12px 12px; gap: 20px; }
-  .preview-lane h3 { min-height: 38px; padding-inline: 12px; font-size: 14px; }
-  .galpi-preview-company { min-height: 0; padding: 12px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; }
-  .preview-company-heading { grid-column: 1; }
-  .preview-position { grid-column: 1; margin: 0 0 0 38px; }
-  .preview-status { grid-column: 2; grid-row: 1; align-self: center; margin: 0; }
-  .preview-card-date { grid-column: 1 / -1; margin-top: 8px; padding-top: 8px; }
-  .preview-dialog-heading.MuiDialogTitle-root { padding: 20px; }
-  .preview-record-dialog .preview-detail.MuiDialogContent-root { padding: 20px; }
-  .preview-dialog-heading h2 { font-size: 18px; }
-  .preview-record-dialog .MuiDialogActions-root { padding: 8px 20px 20px; }
+@media (max-width: 800px) {
+  .welcome-product-first > main { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 36px 40px; width: min(620px, calc(100% - 40px)); }
+  .galpi-intro { padding: 0; }
+  .galpi-intro h1 { font-size: clamp(30px, 6vw, 42px); }
+  .galpi-eyebrow { margin-bottom: 12px; }
+  .galpi-intro-heading > p { margin-top: 14px; font-size: 16px; }
+  .galpi-intro-action { margin-top: 24px; }
+  .galpi-intro-action > .MuiButton-root { min-height: 48px; }
+  .galpi-intro-action > small { max-width: none; margin-top: 10px; }
+  .preview-record { min-height: 0; }
+  .preview-date-block > b { display: inline-block; margin: 4px 0 0 8px; }
+}
+@media (max-width: 480px) {
+  .welcome-product-first > main { gap: 28px; padding-top: 26px; }
+  .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 40px); }
+  .galpi-intro-action > .MuiButton-root { width: 100%; }
+  .galpi-intro-action > small { font-size: 13px; line-height: 20px; }
+  .application-preview { padding: 0 12px 14px; border-radius: 0 12px 12px 12px; }
+  .preview-toolbar { padding-block: 18px 16px; gap: 2px 8px; }
+  .preview-toolbar h2 { font-size: 15px; }
+  .preview-toolbar > span { font-size: 12px; }
+  .preview-stage-tabs { gap: 3px; }
+  .preview-stage-tabs > button { min-height: 44px; font-size: 13px; }
+  .preview-stage-tabs > button[aria-selected='true'] { min-height: 50px; }
+  .preview-record { padding: 20px 16px 10px; }
+  .preview-record-heading { gap: 9px; flex-wrap: wrap; }
+  .preview-record-heading .company-mark { width: 32px; height: 36px; font-size: 15px; }
+  .preview-record-heading h3 { font-size: 18px; line-height: 25px; }
+  .preview-status { font-size: 12px; padding-inline: 6px; }
+  .preview-record-body { gap: 12px; padding-block: 20px; margin-top: 6px; }
+  .preview-date-block { padding-left: 10px; }
+  .preview-date-block > strong { font-size: 32px; }
+  .preview-date-block > b { display: block; margin: 5px 0 0; font-size: 12px; line-height: 21px; }
+  .preview-documents { gap: 10px; }
+  .preview-documents > span { gap: 6px; font-size: 13px; }
+  .preview-documents em { font-size: 12px; }
+  .preview-record-memo { font-size: 14px; padding-top: 14px; min-height: 0; }
+  .preview-caption { font-size: 12px; margin-top: 10px; }
   .welcome-product-first .welcome-footer { align-items: flex-start; flex-direction: column; gap: 0; padding-block: 16px; }
 }
-@media (prefers-reduced-motion: reduce) { .galpi-preview-company { transition: none; } }

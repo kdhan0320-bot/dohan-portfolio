@@ -11,9 +11,9 @@ const ActionFeedback = ({ feedback, onClose }) => {
       open={Boolean(feedback)}
       autoHideDuration={4000}
       onClose={handleClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       sx={{
-        top: { xs: 64, sm: 72 },
+        bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', sm: 24 },
         pointerEvents: 'none',
         '& .MuiAlert-action': { pointerEvents: 'auto' }
       }}

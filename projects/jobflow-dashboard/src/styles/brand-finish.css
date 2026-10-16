@@ -19,6 +19,9 @@
 .workspace-main .job-tile:hover { border-color: var(--lane-color); box-shadow: none; }
 .workspace-main .job-tile-bottom { margin-top: 10px; padding-top: 8px; gap: 8px; }
 .workspace-main .job-lane-cards { gap: 10px; }
+@media (max-width: 699px) {
+  .workspace-main .job-lane { padding-top: 12px; }
+}
 .compact-action-label { display: none; }
 .route-load-state { min-height: 60svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px; text-align: center; }
 .route-load-state h1 { font-size: 24px; font-weight: 500; }

@@ -1,10 +1,11 @@
 import Field from '../components/ui/Field';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Button, Checkbox, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
+import { Button, Checkbox, Menu, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
 import { CHECKLIST_CATEGORIES } from '../constants';
@@ -34,6 +35,8 @@ export default function ChecklistPage() {
   const [confirmDiscard, setConfirmDiscard] = useState('');
   const [editError, setEditError] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const [taskMenu, setTaskMenu] = useState(null);
+  const pendingTaskAction = useRef(null);
   const addOriginal = useRef(null);
   const editOriginal = useRef(null);
   const taskListRef = useRef(null);
@@ -109,6 +112,27 @@ export default function ChecklistPage() {
     if (busy) return;
     if (editDirty) setConfirmDiscard('edit');
     else setEditing(null);
+  }
+  function chooseTaskAction(type) {
+    if (!taskMenu || busy) return;
+    dialogTriggerRef.current = taskMenu.anchor;
+    pendingTaskAction.current = { type, item: taskMenu.item };
+    setTaskMenu(null);
+  }
+  function finishTaskMenuClose() {
+    // Open the dialog after the menu has restored focus to its persistent trigger.
+    const nextAction = pendingTaskAction.current;
+    pendingTaskAction.current = null;
+    if (!nextAction) return;
+    const { item, type } = nextAction;
+    if (type === 'delete') {
+      setTarget(item);
+      return;
+    }
+    editOriginal.current = { title: item.title, category: item.category, application_id: item.application_id || null };
+    setEditing({ ...item, application_id: item.application_id || null });
+    setEditError('');
+    setConfirmDiscard('');
   }
   async function action(key, fn, message) {
     setBusy(key);
@@ -232,8 +256,7 @@ export default function ChecklistPage() {
                 <span className="checklist-task-meta"><span className="task-category">{item.category}</span>{companyScope === 'all' && <><span aria-hidden="true">·</span>{item.application_id && companyMap.has(item.application_id) ? <Link to={`/?company=${encodeURIComponent(item.application_id)}`} title={companyLabel(item.application_id)}>{companyMap.get(item.application_id).company_name}</Link> : <span>{companyLabel(item.application_id)}</span>}</>}</span>
               </span>
               <span className="task-tools">
-                <IconButton aria-label={`${item.title} 수정`} disabled={Boolean(busy)} onClick={event => { dialogTriggerRef.current = event.currentTarget; editOriginal.current = { title: item.title, category: item.category, application_id: item.application_id || null }; setEditing({ ...item, application_id: item.application_id || null }); setEditError(''); setConfirmDiscard(''); }}><EditOutlined fontSize="small" /></IconButton>
-                <IconButton aria-label={`${item.title} 삭제`} onClick={() => setTarget(item)} disabled={Boolean(busy)}><DeleteOutline fontSize="small" /></IconButton>
+                <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>
               </span>
             </div>)}
             {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : tab === 'todo' && scopedItems.length > 0 ? '이 목록의 준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}>
@@ -244,6 +267,10 @@ export default function ChecklistPage() {
         <div className="checklist-secondary-tool"><Link to="/document-helper">작성 요청문 도구</Link></div>
       </>}
     </>}
+    <Menu id="checklist-task-menu" className="checklist-task-menu" anchorEl={taskMenu?.anchor} open={Boolean(taskMenu)} onClose={() => setTaskMenu(null)} slotProps={{ list: { 'aria-labelledby': taskMenu ? `task-actions-${taskMenu.item.id}` : undefined }, transition: { onExited: finishTaskMenuClose } }}>
+      <MenuItem onClick={() => chooseTaskAction('edit')}><EditOutlined fontSize="small" />할 일 수정</MenuItem>
+      <MenuItem onClick={() => chooseTaskAction('delete')}><DeleteOutline fontSize="small" />할 일 삭제</MenuItem>
+    </Menu>
     <Dialog className="checklist-edit-dialog" open={adding} onClose={closeAdd} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="add-task-dialog-title" fullWidth maxWidth="sm">
       <form onSubmit={submit} noValidate>
         <DialogTitle id="add-task-dialog-title">할 일 추가</DialogTitle>
@@ -278,7 +305,7 @@ export default function ChecklistPage() {
       <DialogContent><p id="discard-task-description">닫으면 작성한 내용이 사라집니다.</p></DialogContent>
       <DialogActions><Button autoFocus onClick={() => setConfirmDiscard('')}>계속 작성</Button><Button onClick={() => { if (confirmDiscard === 'add') setAdding(false); else setEditing(null); setConfirmDiscard(''); }}>저장하지 않고 닫기</Button></DialogActions>
     </Dialog>
-    <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => { await remove(target.id); setTarget(null); }, '할 일을 삭제했어요.')} />
+    <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => { await remove(target.id); setTarget(null); window.requestAnimationFrame(() => taskListRef.current?.focus({ preventScroll: true })); }, '할 일을 삭제했어요.')} />
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </div>;
 }

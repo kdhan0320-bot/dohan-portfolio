@@ -1,5 +1,5 @@
 /* Company scope, filters and record rows share one compact reading flow. */
-.checklist-page { width: 100%; max-width: 1080px; min-width: 0; margin-inline: auto; }
+.checklist-page { width: 100%; max-width: 880px; min-width: 0; margin-inline: auto; }
 .checklist-page .checklist-company-scope { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 12px; padding: 0 0 12px; border: 0; border-bottom: 1px solid #DCE3E9; border-radius: 0; background: transparent; }
 .checklist-scope-controls { display: flex; flex: 1; align-items: center; gap: 12px; min-width: 0; }
 .checklist-scope-controls > .company-mark { display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; border-radius: 6px; font-size: 15px; }
@@ -35,8 +35,8 @@
 .checklist-category-chips > button[aria-pressed='true'] { background: #3D6594; border-color: #3D6594; color: #FFFFFF; }
 .checklist-category-chips > button:focus-visible { outline: 3px solid #3D6594; outline-offset: 3px; }
 .checklist-page .task-collection { display: grid; grid-template-columns: minmax(0, 1fr); min-height: 180px; gap: 0; padding: 0; align-content: start; border-top: 1px solid #D8E0E7; }
-.checklist-page .task-collection:focus { outline: none; }
-.checklist-page .task-collection .list-task { --task-accent: #626C77; position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr) 90px; grid-template-rows: auto; align-items: center; min-width: 0; min-height: 80px; padding: 12px 10px 12px 8px; gap: 0 8px; border: 0; border-bottom: 1px solid #D8E0E7; border-radius: 0; background: #FFFFFF; box-shadow: none; }
+.checklist-page .task-collection:focus-visible { outline: 2px solid #3D6594; outline-offset: 3px; }
+.checklist-page .task-collection .list-task { --task-accent: #626C77; position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; grid-template-rows: auto; align-items: center; min-width: 0; min-height: 76px; padding: 10px 10px 10px 8px; gap: 0 8px; border: 0; border-bottom: 1px solid #D8E0E7; border-radius: 0; background: #FFFFFF; box-shadow: none; }
 .checklist-page .task-collection .list-task[data-category='서류'] { --task-accent: #476B94; }
 .checklist-page .task-collection .list-task[data-category='포트폴리오'] { --task-accent: #725D98; }
 .checklist-page .task-collection .list-task[data-category='면접'] { --task-accent: #876222; }
@@ -60,6 +60,8 @@
 .checklist-page .task-tools { grid-column: 3; grid-row: 1; display: flex; flex-direction: row; justify-self: end; align-self: center; margin: 0; gap: 2px; }
 .checklist-page .task-tools .MuiIconButton-root { width: 44px; height: 44px; color: #657687; }
 .checklist-page .task-tools .MuiIconButton-root:hover { background: #E9F0F7; color: #3D6594; }
+.checklist-task-menu .MuiMenuItem-root { min-height: 44px; gap: 10px; padding-inline: 16px; font-size: 14px; }
+.checklist-task-menu .MuiMenuItem-root svg { color: #657687; }
 .checklist-page .task-collection .empty-state { grid-column: 1 / -1; min-height: 220px; padding: 30px 20px; border: 1px dashed #CFDAE3; border-radius: 12px; background: #FFFFFF; }
 .checklist-secondary-tool { padding: 22px 0 0; text-align: right; }
 .checklist-secondary-tool > a { display: inline-block; padding-block: 7px; font-size: 14px; line-height: 22px; color: #596977; text-decoration: underline; text-decoration-color: #B7C2CD; text-underline-offset: 4px; }
@@ -82,7 +84,7 @@
   .checklist-page .checklist-company-link.MuiButton-root { padding-inline: 7px; }
 }
 @media (max-width: 699px) {
-  .workspace-main .checklist-page .page-heading { flex-wrap: nowrap; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 14px; }
+  .workspace-main .checklist-page .page-heading { flex-wrap: nowrap; align-items: center; gap: 12px; margin-bottom: 12px; padding-bottom: 0; }
   .workspace-main .checklist-page .page-heading .page-heading-copy { flex: 1 1 auto; }
   .workspace-main .checklist-page .page-heading .heading-actions { flex: 0 0 auto; width: auto; align-self: center; }
   .workspace-main .checklist-page .page-heading .heading-actions > .MuiButton-root { width: auto; padding-inline: 12px; white-space: nowrap; }
@@ -94,16 +96,16 @@
   .checklist-scope-controls > .company-mark { flex-basis: 34px; width: 34px; height: 34px; border-radius: 6px; }
   .checklist-progress { grid-template-columns: auto minmax(72px, 1fr); align-items: center; gap: 18px; }
   .checklist-progress-copy { gap: 10px; }
-  .checklist-filterbar { grid-template-columns: minmax(0, 1fr) 120px; gap: 8px; margin-bottom: 10px; }
+  .checklist-filterbar { grid-template-columns: minmax(0, 1fr) 112px; gap: 8px; margin-bottom: 8px; }
   .checklist-sheet-toolbar { max-width: none; }
-  .checklist-page .checklist-sheet-toolbar .MuiTabs-root { min-height: 60px; }
-  .checklist-page .checklist-sheet-toolbar .MuiTab-root { min-height: 60px; padding: 8px 4px; }
-  .checklist-status-label { flex-direction: column; gap: 0; }
+  .checklist-page .checklist-sheet-toolbar .MuiTabs-root { min-height: 44px; }
+  .checklist-page .checklist-sheet-toolbar .MuiTab-root { min-height: 44px; padding: 8px 2px; }
+  .checklist-status-label { flex-direction: row; flex-wrap: wrap; gap: 0 4px; }
   .checklist-status-count { max-width: 100%; }
   .checklist-page .checklist-category-select .MuiSelect-select { padding-left: 10px; }
-  .checklist-page .task-collection .list-task { grid-template-columns: 44px minmax(0, 1fr) 44px; min-height: 98px; padding: 6px 4px; gap: 0 4px; }
-  .checklist-page .task-tools { flex-direction: column; gap: 0; }
-  .checklist-page .task-copy { padding-block: 6px; }
+  .checklist-page .task-collection .list-task { grid-template-columns: 44px minmax(0, 1fr) 44px; min-height: 76px; padding: 9px 4px; gap: 0 4px; }
+  .checklist-page .task-tools { flex-direction: row; gap: 0; }
+  .checklist-page .task-copy { padding-block: 0; }
   .checklist-page .task-collection .task-text { font-size: 15px; line-height: 24px; }
   .checklist-secondary-tool { padding-top: 18px; }
 }

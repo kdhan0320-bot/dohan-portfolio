@@ -136,6 +136,11 @@ const ProjectDetailPage = () => {
           />)}
         </div>}
 
+        {ready.heroNote && <section className="case-hero-note" aria-label="첫 화면의 구성 판단">
+          <h2>{ready.heroNote.title}</h2>
+          <p>{ready.heroNote.text}</p>
+        </section>}
+
         {ready.imageFirst && <section className="case-project-facts" aria-label="제작 역할과 도구">
           <dl className="case-facts">
             {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
@@ -158,7 +163,7 @@ const ProjectDetailPage = () => {
             <div><p className="case-eyebrow">{focusedCase ? '선택과 근거' : '02 / 화면과 판단'}</p><h2 id="case-decisions-heading">{ready.decisionsTitle || '이렇게 구성했습니다.'}</h2></div>
             {!focusedCase && <p className="case-section__note">화면에 반영한 선택과 그 이유입니다.</p>}
           </div>
-          {focusedCase && <p className="case-assumption">{ready.context.summary}</p>}
+          {focusedCase && ready.context?.summary && <p className="case-assumption">{ready.context.summary}</p>}
           <div className="case-decisions__list">
             {decisions.map((decision, index) => {
               const evidence = decision.evidence || [
@@ -247,8 +252,8 @@ const ProjectDetailPage = () => {
             <ScopeList title="포함하지 않은 기능" items={ready.scope?.notIncluded} />
           </div>}
           {focusedCase && ready.verification && <div className="case-validation-summary">
-            <p>{ready.verification.method}</p>
-            <p>{ready.verification.limit}</p>
+            {ready.verification.method && <p>{ready.verification.method}</p>}
+            {ready.verification.limit && <p>{ready.verification.limit}</p>}
           </div>}
           {(ready.resultLimit?.done || ready.resultLimit?.limit) && <div className="case-outcome">
             {ready.resultLimit.done && <div><h3>작업 결과</h3><p>{ready.resultLimit.done}</p></div>}

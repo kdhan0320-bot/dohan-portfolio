@@ -309,12 +309,82 @@
   .case-page *, .works-page * { transition: none !important; }
 }
 
-/* Galpirok pairs each device capture with its own caption and original. */
+/* Galpirok leads with the working result, then shows the reasoning beside it. */
+.case-page[data-project-slug="jobflow"] .case-intro { padding-bottom: 28px; }
+.case-page[data-project-slug="jobflow"] .case-intro__grid { margin-top: 24px; }
+.case-page[data-project-slug="jobflow"] .case-cover { margin-bottom: 0; }
+.case-page[data-project-slug="jobflow"] .case-hero-note {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 32px 56px;
+  padding: 36px 0 28px;
+}
+.case-page[data-project-slug="jobflow"] .case-hero-note h2 {
+  max-width: 420px;
+  font-size: 28px;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: -.035em;
+}
+.case-page[data-project-slug="jobflow"] .case-hero-note p,
+.case-page[data-project-slug="jobflow"] .case-decision__summary,
+.case-page[data-project-slug="jobflow"] .case-scope__grid--summary p,
+.case-page[data-project-slug="jobflow"] .case-validation-summary p {
+  color: var(--muted, #536371);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.case-page[data-project-slug="jobflow"] .case-project-facts { padding-bottom: 36px; }
+.case-page[data-project-slug="jobflow"] .case-project-facts .case-facts { margin-top: 0 !important; }
+.case-page[data-project-slug="jobflow"] .case-section { padding: 48px 0; }
+.case-page[data-project-slug="jobflow"] .case-section__heading { margin-bottom: 32px; }
+.case-page[data-project-slug="jobflow"] .case-decisions__list { gap: 48px; }
+.case-page[data-project-slug="jobflow"] .case-decision {
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: 40px 56px;
+  align-items: center;
+}
+.case-page[data-project-slug="jobflow"] .case-decision > .case-figure--portrait { grid-column: 1; grid-row: 1; }
+.case-page[data-project-slug="jobflow"] .case-decision:has(> .case-figure--portrait) .case-decision__copy { grid-column: 2; grid-row: 1; }
+.case-page[data-project-slug="jobflow"] .case-decision__summary { max-width: 610px; margin-top: 22px; }
+.case-page[data-project-slug="jobflow"] .case-decision + .case-decision { padding-top: 48px; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait { max-width: 390px; justify-self: center; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait .case-figure__surface { padding: 0; background: transparent; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait img { max-width: 390px; aspect-ratio: 390 / 620; height: auto; object-fit: cover; object-position: top; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait figcaption { flex-wrap: wrap; gap: 4px 20px; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait figcaption > span { flex-basis: 100%; }
+.case-page[data-project-slug="jobflow"] .case-figure--portrait figcaption a { margin: 0; }
+.case-page[data-project-slug="jobflow"] .case-decision--wide { display: block; }
+.case-page[data-project-slug="jobflow"] .case-decision--wide .case-decision__copy { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 0 56px; }
+.case-page[data-project-slug="jobflow"] .case-decision--wide .case-decision__number { grid-column: 1 / -1; }
+.case-page[data-project-slug="jobflow"] .case-decision--wide .case-decision__summary { margin-top: 0; }
+.case-page[data-project-slug="jobflow"] .case-decision--wide > .case-figure { margin-top: 28px; }
+.case-page[data-project-slug="jobflow"] .case-scope__grid--summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
+.case-page[data-project-slug="jobflow"] .case-scope__grid--summary p { margin-top: 16px; }
+.case-page[data-project-slug="jobflow"] .case-validation-summary { padding-top: 20px; border-top: 1px solid var(--line, #d7e0e7); }
 .case-page[data-project-slug="jobflow"] .case-responsive-image { display: block; width: 100%; }
 .case-page[data-project-slug="jobflow"] .case-original-mobile,
 .case-page[data-project-slug="jobflow"] .case-caption-mobile { display: none; }
 @media (max-width: 760px) {
+  .case-page[data-project-slug="jobflow"] .case-intro { padding-bottom: 22px; }
+  .case-page[data-project-slug="jobflow"] .case-intro__grid { gap: 16px; margin-top: 18px; }
+  .case-page[data-project-slug="jobflow"] .case-hero-note { grid-template-columns: 1fr; gap: 16px; padding: 26px 0; }
+  .case-page[data-project-slug="jobflow"] .case-hero-note h2 { font-size: 24px; }
+  .case-page[data-project-slug="jobflow"] .case-project-facts { padding-bottom: 28px; }
+  .case-page[data-project-slug="jobflow"] .case-section { padding: 32px 0; }
+  .case-page[data-project-slug="jobflow"] .case-section__heading { margin-bottom: 28px; }
+  .case-page[data-project-slug="jobflow"] .case-decisions__list { gap: 32px; }
+  .case-page[data-project-slug="jobflow"] .case-decision,
+  .case-page[data-project-slug="jobflow"] .case-decision--wide { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .case-page[data-project-slug="jobflow"] .case-decision + .case-decision { padding-top: 32px; }
+  .case-page[data-project-slug="jobflow"] .case-decision .case-decision__copy { display: contents; }
+  .case-page[data-project-slug="jobflow"] .case-decision__number { order: 0; margin-bottom: 10px; }
+  .case-page[data-project-slug="jobflow"] .case-decision h3 { order: 1; }
+  .case-page[data-project-slug="jobflow"] .case-decision > .case-figure { order: 2; width: 100%; margin-top: 22px; align-self: center; }
+  .case-page[data-project-slug="jobflow"] .case-decision .case-decision__summary { order: 3; margin-top: 22px; }
+  .case-page[data-project-slug="jobflow"] .case-scope__grid--summary { grid-template-columns: 1fr; gap: 4px; }
   .case-page[data-project-slug="jobflow"] .case-responsive-image { max-width: 390px; }
+  .case-page[data-project-slug="jobflow"] .case-cover .case-responsive-image img { aspect-ratio: 375 / 530; width: 100%; height: auto; object-fit: cover; object-position: center 75%; }
   .case-page[data-project-slug="jobflow"] .case-original-desktop,
   .case-page[data-project-slug="jobflow"] .case-caption-desktop { display: none; }
   .case-page[data-project-slug="jobflow"] .case-original-mobile { display: inline-flex; }

@@ -60,37 +60,20 @@ function detail(id, image, decisions, scope, extra = {}) {
 export const PROJECT_DETAIL_READY = {
   jobflow: detail(
     'jobflow',
-    media('detail/current/galpirok-welcome.jpg', '갈피록 홈 — 개인 입사지원 관리 목적과 실제 샘플 회사 기록', '1363 / 936'),
+    media('detail/current/galpirok-welcome.jpg', '갈피록 홈 — 시작 행동과 지원 단계별 샘플 회사 기록. 모바일에서는 지원 기록 영역을 부분 보기로 표시', '1440 / 900', { mobile: { src: 'detail/current/galpirok-welcome-mobile.jpg', original: 'detail/current/galpirok-welcome-mobile.jpg', aspectRatio: '375 / 1029', label: '모바일 홈 · 지원 기록 영역(부분 보기)' } }),
     [
       {
-        title: '갈피·폴더는 남기고, 실제 기록을 앞에.',
-        evidence: [
-          { label: '문제', text: '큰 삽화와 반복 장식이 회사 기록보다 먼저 보였습니다.' },
-          { label: '김도한의 선택', text: 'AI 그림·기성 템플릿 같은 인상을 줄이고 실제 기록과 조작을 먼저 보여주도록 요청했습니다.' },
-          { label: 'AI 협업·반영 결과', text: 'AI가 큰 삽화와 배경 장식을 줄이고, 회사별 상태·마감·준비 목록 중심으로 화면을 구현했습니다.' },
-        ],
-        media: media('detail/current/galpirok-overview.jpg', '갈피록 오늘의 지원 — 가까운 마감과 남은 준비를 모은 실제 샘플 화면', '1363 / 936'),
-        mediaLabel: '오늘의 지원 · 마감과 준비 기록',
-      },
-      {
         title: '모바일에서는 마감 회사를 먼저.',
-        evidence: [
-          { label: '문제', text: '모바일에서 달력 아래까지 내려야 마감 회사를 확인할 수 있었습니다.' },
-          { label: '김도한의 선택', text: '검토에서 확인한 모바일 마감 일정의 정보 순서를 바로잡도록 요청했습니다.' },
-          { label: 'AI 협업·반영 결과', text: 'AI가 모바일의 가까운 마감 목록을 앞에 두고, 달력은 필요할 때 펼치도록 구현했습니다.' },
-        ],
-        media: media('detail/current/galpirok-calendar.jpg', '갈피록 마감 일정 — 회사별 마감 목록과 날짜 탐색', '1348 / 926', { mobile: { src: 'detail/current/galpirok-calendar-mobile.jpg', aspectRatio: '390 / 844', label: '모바일 마감 일정 · 회사 기록을 먼저 확인' } }),
-        mediaLabel: '마감 일정 · 회사별 기록과 달력',
+        summary: '김도한은 화면 검토에서 지적된 모바일 마감 일정의 정보 순서를 고치도록 요청했습니다. AI가 가까운 마감 회사와 남은 기간을 먼저 배치하고, 달력은 필요할 때 펼치도록 구현했습니다. 월 전체를 항상 펼쳐 두는 대신 당장 확인할 회사 기록을 우선한 구성입니다.',
+        media: media('detail/current/galpirok-calendar-mobile.jpg', '모바일 마감 일정의 상단 부분 보기 — 접힌 달력 아래 가까운 마감 회사와 남은 기간', '390 / 844', { frameWidth: 390, original: 'detail/current/galpirok-calendar-mobile.jpg', relatedOriginal: { src: 'detail/current/galpirok-calendar.jpg', label: 'PC 화면 보기' } }),
+        mediaLabel: '모바일 마감 일정 · 가까운 마감 목록(부분 보기)',
       },
       {
-        title: '할 일과 조작은 가까이, 탭은 안정적으로.',
-        evidence: [
-          { label: '문제', text: 'PC에서 할 일과 수정·삭제 버튼이 멀었고, 화면 폭을 바꾸면 상태 탭이 좁게 모이는 경우가 있었습니다.' },
-          { label: '김도한의 선택', text: '불필요한 여백과 반응형 전환 문제를 함께 수정하도록 요청했습니다.' },
-          { label: 'AI 협업·반영 결과', text: 'AI가 기록 영역의 폭과 행 간격을 조정하고, 상태 탭과 필터 배치를 고쳤습니다.' },
-        ],
-        media: media('detail/current/galpirok-checklist.jpg', '갈피록 준비 체크 — 할 일과 수정·삭제 조작, 상태 탭과 분류 필터', '1363 / 936', { mobile: { src: 'detail/current/galpirok-checklist-mobile.jpg', aspectRatio: '375 / 812', label: '모바일 준비 체크 · 상태 탭과 할 일 목록' } }),
-        mediaLabel: '준비 체크 · 기록과 조작을 가까이 배치',
+        title: '준비 체크는 읽기와 완료에 집중.',
+        layout: 'wide',
+        summary: '김도한은 PC의 넓은 빈 공간과 모바일에서 길어지는 목록을 다시 다듬도록 요청했습니다. AI가 상태 탭·필터와 항목의 간격, 수정·삭제 조작의 배치를 조정했습니다. 글자를 줄이기보다 자주 확인하는 할 일과 완료 상태에 먼저 시선이 가도록 했습니다.',
+        media: media('detail/current/galpirok-checklist.jpg', '갈피록 준비 체크 — 할 일과 완료 상태, 항목별 관리 조작', '1440 / 900', { mobile: { src: 'detail/current/galpirok-checklist-mobile.jpg', aspectRatio: '390 / 844', label: '모바일 준비 체크 · 할 일과 완료 상태' } }),
+        mediaLabel: 'PC 실제 화면 · 준비 항목과 조작',
       },
     ],
     {
@@ -99,14 +82,27 @@ export const PROJECT_DETAIL_READY = {
       notIncluded: ['실시간 알림·외부 채용 API', '면접 일정 등록·통계·드래그 이동', '제품 내 AI 문장 생성'],
     },
     {
+      imageFirst: true,
+      presentation: 'focused-decisions',
+      decisionsTitle: '화면 크기에 맞춰 바꾼 우선순위.',
+      context: {},
+      heroNote: {
+        title: '그림 대신, 지원 기록을 대표 장면으로.',
+        text: '김도한은 AI 그림을 줄인 뒤 생긴 상단 쏠림과 문서 같은 인상을 지적했습니다. 갈피·폴더 정체성을 유지하면서 시각적 구성을 보완하도록 요청했고, AI가 시작 버튼과 실제 회사 기록이 연결되도록 홈의 배치를 다시 구성했습니다.',
+      },
       aiCollaboration: [
         { label: '김도한', value: '서비스 목적·우선순위 · 가독성·모바일 개선 요청 · 방향 선택 · 샘플·코드 검증 범위와 공개 결정' },
         { label: 'AI 협업', value: '디자인 제안 · 코드 작성·수정 · 샘플·코드 검사 실행 · 브라우저 화면 확인·캡처' },
       ],
-      resultLimit: {
-        done: '장식보다 기록과 조작이 먼저 보이도록 홈·마감 일정·준비 체크를 다듬었습니다. 이미지와 공개 샘플에서 현재 구성을 확인할 수 있습니다.',
-        limit: '샘플·코드와 PC·모바일 브라우저 화면을 확인한 범위입니다. 실제 계정의 인증·DB 저장 유지, 모바일 실기기, 사용자 조사·채용 성과는 검증하지 않았습니다.',
+      scopeTitle: '구현 범위와 확인하지 않은 것.',
+      scopeSummary: [
+        { title: '구현과 샘플', text: '회사별 지원 현황·마감 일정·준비 체크·면접 질문과 답변을 관리합니다. 가입 없는 샘플은 2026.09.27 기준의 가상 데이터이며, 편집 내용은 브라우저 메모리에서만 유지되고 새로고침하면 초기화됩니다.' },
+        { title: '검증의 경계', text: '샘플·코드와 PC·모바일 브라우저 화면을 확인한 범위입니다. 인증·사용자별 저장 코드는 있지만 실제 계정의 인증·DB 저장 유지, 모바일 실기기, 사용자 조사·채용 성과는 검증하지 않았습니다.' },
+      ],
+      verification: {
+        method: '실시간 알림·외부 채용 API·면접 일정 등록·통계·드래그 이동은 제공하지 않습니다. 작성 요청문 만들기는 로컬 템플릿이며 AI 모델을 호출하지 않습니다.',
       },
+      resultLimit: {},
     },
   ),
   seolbiit: detail(

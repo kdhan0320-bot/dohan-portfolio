@@ -83,7 +83,7 @@ export default function ApplicationsPage() {
           {BOARD_COLUMNS.map((column, index) => {
             const rows = filtered.filter(a => boardColumn(a.status) === column.id);
             return <section className={`job-lane ${lane === column.id ? 'mobile-selected' : ''}`} id={`lane-${column.id}`} key={column.id} role={mobile ? 'tabpanel' : undefined} aria-labelledby={mobile ? `lane-tab-${column.id}` : `lane-title-${column.id}`} style={{ '--lane-color': column.color, '--lane-tint': column.tint }}>
-              <header className="job-lane-heading"><span className="lane-number" aria-hidden="true">{index + 1}</span><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}</span></header>
+              {!mobile && <header className="job-lane-heading"><span className="lane-number" aria-hidden="true">{index + 1}</span><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}</span></header>}
               <div className="job-lane-cards">{rows.map(card)}</div>
               {!rows.length && <div className="job-lane-empty" aria-label="회사 없음"><span aria-hidden="true">—</span>{column.id === 'before' && <p>{query ? '이 단계에는 검색 결과가 없어요' : '지원할 회사를 등록해보세요'}</p>}</div>}
               {column.id === 'before' && <Button className="lane-add" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>지원할 회사 등록</Button>}
