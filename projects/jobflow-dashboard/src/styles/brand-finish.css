@@ -24,23 +24,24 @@
   .site-header-inner, .site-header-meta-inner { width: min(1560px, calc(100% - 128px)); }
   .workspace-with-topnav > .workspace-content { padding: 44px 0 64px; }
   .workspace-main { width: min(1560px, calc(100% - 64px)); padding: 38px 40px 40px; border: 1px solid #D7DFE7; border-radius: 16px; background: #FCFDFE; box-shadow: 0 14px 40px -30px #344B6655; }
+  .workspace-main:has(.overview-page), .workspace-main:has(.checklist-page) { max-width: 1320px; }
   .workspace-main::before { display: none; }
   .workspace-main .overview-page, .workspace-main .calendar-page, .workspace-main .checklist-page, .workspace-main .interview-page { max-width: none; }
   .workspace-main .page-heading { margin-bottom: 28px; }
   .workspace-main .page-heading h1 { font-size: 32px; line-height: 42px; }
   .workspace-main .heading-icon { width: 48px; height: 48px; border-radius: 12px 12px 12px 3px; }
   .workspace-main .overview-page .overview-deadline { background: #FCF6E8; border-color: #D9C99F; }
-  .workspace-main .overview-page .overview-deadline-body { grid-template-columns: 132px minmax(0,1fr); padding: 16px 28px 28px; gap: 28px; }
-  .workspace-main .overview-page .overview-date-leaf { min-height: 160px; background: #F0DFB7; border-color: #DBC58E; border-radius: 4px 4px 16px 4px; }
+  .workspace-main .overview-page .overview-deadline-body { grid-template-columns: 112px minmax(0,1fr); padding: 16px 24px 24px; gap: 24px; }
+  .workspace-main .overview-page .overview-date-leaf { min-height: 144px; background: #F0DFB7; border-color: #DBC58E; border-radius: 4px 4px 16px 4px; }
   .workspace-main .overview-page .overview-date-leaf > strong { font-size: 64px; }
   .workspace-main .overview-page .overview-stages { background: #F6F8FA; border-color: #D8E0E7; }
   .workspace-main .overview-page .overview-stages dl { margin-top: 28px; gap: 12px; }
-  .workspace-main .overview-page .overview-stages dl > div { min-height: 118px; padding: 18px 14px; border: 1px solid #FFFFFF; }
+  .workspace-main .overview-page .overview-stages dl > div { min-height: 110px; padding: 16px 10px; border: 1px solid #FFFFFF; }
   .workspace-main .overview-page .overview-stages dd { font-size: 38px; line-height: 46px; }
   .workspace-main .overview-page .overview-preparation-panel > header { background: #E6F0EA; }
   .workspace-main .overview-page .overview-interview-panel > header { background: #EEE8F5; }
-  .workspace-main .overview-page .overview-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; margin-top: 28px; }
-  .workspace-main .overview-page .overview-tasks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+  .workspace-main .overview-page .overview-grid { grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 24px; margin-top: 24px; }
+  .workspace-main .overview-page .overview-tasks { display: grid; grid-template-columns: minmax(0, 1fr); }
   .workspace-main .overview-page .overview-tasks > .empty-state { grid-column: 1 / -1; }
   .workspace-main .overview-page .overview-interviews { display: block; }
   .workspace-main .overview-page .overview-task { min-height: 78px; }
@@ -70,7 +71,7 @@
 
 @media (min-width: 1200px) {
   .workspace-main .job-tile-bottom { flex-direction: row; align-items: center; }
-  .workspace-main .checklist-page { display: grid; grid-template-columns: 248px minmax(0,1fr); column-gap: 28px; align-items: start; }
+  .workspace-main .checklist-page { display: grid; grid-template-columns: 224px minmax(0,1fr); column-gap: 24px; align-items: start; }
   .workspace-main .checklist-page > .page-heading, .workspace-main .checklist-page > .MuiAlert-root { grid-column: 1 / -1; }
   .workspace-main .checklist-page .checklist-company-scope { display: flex; flex-direction: column; align-items: stretch; gap: 28px; min-height: 320px; padding: 26px 24px; margin: 16px 0 0; background: #F0F5F3; border: 1px solid #CFDDD6; border-radius: 0 14px 14px 14px; position: relative; }
   .workspace-main .checklist-page .checklist-company-scope::before { content: ''; position: absolute; height: 17px; width: 58%; left: -1px; top: -17px; border: 1px solid #C8DBCF; border-bottom: 0; border-radius: 8px 12px 0 0; background: #E3EEE7; pointer-events: none; }
@@ -89,6 +90,7 @@
   .workspace-main .checklist-page .checklist-category-chips > button { padding-inline: 10px; }
   .workspace-main .checklist-page .task-collection .list-task { min-height: 80px; padding-inline: 8px; }
   .workspace-main .checklist-page .task-collection .list-task::before { width: 3px; height: 18px; }
+  .workspace-main .checklist-page .task-collection .empty-state { text-align: left; padding: 30px 60px; }
   .workspace-main .checklist-page .checklist-secondary-tool { grid-column: 2; }
 }
 
@@ -98,9 +100,9 @@
   .workspace-main { padding: 44px 40px 48px; margin-block: 0; }
   .workspace-main .page-heading { margin-bottom: 36px; }
   .workspace-main .page-heading h1 { font-size: 36px; line-height: 46px; }
-  .workspace-main .overview-page .overview-deadline-body { padding-block: 28px 36px; }
-  .workspace-main .overview-page .overview-stages dl { margin-top: 40px; }
-  .workspace-main .overview-page .overview-task { min-height: 86px; }
+  .workspace-main .overview-page .overview-deadline-body { padding-block: 24px 28px; }
+  .workspace-main .overview-page .overview-stages dl { margin-top: 28px; }
+  .workspace-main .overview-page .overview-task { min-height: 78px; }
   .workspace-main .job-lane { min-height: 440px; }
   .workspace-main .job-tile { padding-block: 20px; }
   .workspace-main .calendar-layout .calendar-day { min-height: 100px; }

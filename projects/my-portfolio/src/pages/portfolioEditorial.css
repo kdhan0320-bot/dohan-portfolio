@@ -384,6 +384,7 @@
 .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid { max-width: 900px; margin-inline: auto; column-gap: 80px; }
 .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid > div { width: 100%; max-width: 390px; }
 .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__note { max-width: 900px; margin-inline: auto; }
+.case-comparison__controls { display: none; }
 .case-page[data-project-slug="jobflow"] .case-scope__grid--summary { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
 .case-page[data-project-slug="jobflow"] .case-scope__grid--summary p { margin-top: 16px; }
 .case-page[data-project-slug="jobflow"] .case-validation-summary { padding-top: 20px; border-top: 1px solid var(--line, #d7e0e7); }
@@ -399,10 +400,13 @@
 .case-page[data-project-slug="jobflow"] .case-service-flow__controls button > span { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__controls button[aria-pressed="true"] { border-color: #345f86; box-shadow: inset 0 -3px #345f86; background: #e7eef5; font-weight: 650; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__controls button:hover { background: #edf1f5; }
-.case-page[data-project-slug="jobflow"] .case-service-flow__panel { display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); align-items: start; gap: 32px; }
-.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; }
-.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { max-width: 390px; justify-self: end; }
-.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-service-flow__copy { align-self: center; max-width: 420px; padding-top: 0; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__stage { display: grid; overflow-anchor: none; }
+/* Every step contributes its intrinsic size to the same grid cell. Switching
+   changes visibility, not the section height or a browser scroll anchor. */
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel { grid-area: 1 / 1; display: grid; grid-template-columns: minmax(0, 2.6fr) minmax(0, 1fr); align-items: start; align-content: start; gap: 32px; visibility: hidden; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel[data-active="true"] { visibility: visible; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__panel--portrait .case-figure { max-width: 390px; justify-self: center; }
+.case-page[data-project-slug="jobflow"] .case-service-flow__announcement { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy { padding-top: 12px; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy h3 { max-width: 430px; margin-top: 12px; font-size: 24px; font-weight: 650; line-height: 1.4; letter-spacing: -.035em; }
 .case-page[data-project-slug="jobflow"] .case-service-flow__copy p:not(.case-eyebrow) { margin-top: 16px; color: var(--muted); font-size: 16px; line-height: 1.75; }
@@ -446,6 +450,13 @@
   .case-page[data-project-slug="jobflow"] .case-decision .case-decision__summary { margin-top: 16px; }
   .case-page[data-project-slug="jobflow"] .case-comparison__grid { gap: 26px; }
   .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid { justify-items: center; }
+  .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .case-page[data-project-slug="jobflow"] .case-comparison__controls button { min-height: 44px; padding: 10px 16px; border: 1px solid #cbd6e1; border-radius: 7px; background: transparent; color: var(--ink); font-size: 15px; cursor: pointer; }
+  .case-page[data-project-slug="jobflow"] .case-comparison__controls button[aria-pressed="true"] { border-color: #345f86; background: #e7eef5; color: #274e72; font-weight: 650; box-shadow: inset 0 -2px #345f86; }
+  .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid { overflow-anchor: none; }
+  .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid > div { grid-area: 1 / 1; visibility: hidden; }
+  .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__grid > div[data-active="true"] { visibility: visible; }
+  .case-page[data-project-slug="jobflow"] .case-comparison--mobile .case-comparison__label { display: none; }
   .case-page[data-project-slug="jobflow"] .case-scope__grid--summary { grid-template-columns: 1fr; gap: 4px; }
   .case-page[data-project-slug="jobflow"] .case-responsive-image { max-width: 390px; }
   .case-page[data-project-slug="jobflow"] .case-figure--crop-responsive .case-figure__surface { aspect-ratio: auto; }

@@ -1,5 +1,5 @@
 /* The folder is an interactive record, not an illustration of the product. */
-.welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 80% 36%, #DCE7F2 0, transparent 54%), linear-gradient(130deg, #F9FAFC 12%, #F0F4F8 60%, #F4F7F5); }
+.welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 84% 34%, #C7D9EA 0, #DCE7F180 30%, transparent 58%), radial-gradient(ellipse at 65% 88%, #E0DDEB99 0, transparent 42%), linear-gradient(130deg, #F9FAFC 12%, #F0F4F8 60%, #F4F7F5); }
 .welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 96px); width: min(1560px, calc(100% - 128px)); margin-inline: auto; padding-block: 64px; }
 .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1560px, calc(100% - 128px)); margin-inline: auto; }
 .galpi-intro { min-width: 0; padding-bottom: 12px; }
@@ -13,7 +13,7 @@
 .galpi-intro-action > small { display: block; max-width: 320px; font-size: 14px; line-height: 22px; color: #65717D; margin-top: 14px; }
 .galpi-intro-action .MuiAlert-root { margin-top: 14px; }
 .galpi-product-stage { min-width: 0; padding-top: 14px; }
-.application-preview { position: relative; padding: 0 24px 20px; background: #E4EBF1; border: 1px solid #C4CFD9; border-radius: 0 18px 18px 18px; box-shadow: 0 14px 28px -22px #243B5266; }
+.application-preview { position: relative; padding: 0 24px 20px; background: #E4EBF1; border: 1px solid #BAC9D7; border-radius: 0 18px 18px 18px; box-shadow: 0 20px 48px -28px #294B7270; }
 .application-preview::before { content: ''; position: absolute; height: 15px; width: 42%; left: -1px; top: -15px; border: 1px solid #C4CFD9; border-bottom: 0; background: #E4EBF1; border-radius: 9px 14px 0 0; }
 .preview-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; padding-block: 24px 22px; }
 .preview-toolbar h2 { color: #344E69; font-size: 16px; font-weight: 500; line-height: 24px; }

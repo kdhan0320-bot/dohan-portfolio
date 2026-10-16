@@ -17,7 +17,7 @@ export default function WelcomePage() {
     try {
       if (!user && !isGuest) await enterGuestMode();
       const sampleExists = !isGuest || demoApplications.some(row => row.id === companyId);
-      navigate(companyId && !user && sampleExists ? `/?company=${companyId}` : '/');
+      navigate(companyId && !user && sampleExists ? `/?company=${companyId}` : user ? '/' : '/overview');
     } catch (e) { setError(getAuthErrorMessage(e)); }
     finally { setBusy(false); }
   }
@@ -31,7 +31,7 @@ export default function WelcomePage() {
           <h1 id="welcome-title">입사지원 현황과<br /><em>마감일을 한눈에.</em></h1>
           <p>지원할 회사를 직접 등록하고 관리해요.</p>
           <div className="galpi-intro-action">
-            <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : isGuest ? '체험 이어하기' : '샘플 체험하기'}</Button>
+            <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : '샘플 체험하기'}</Button>
             <small>{user ? '로그인한 계정의 지원 기록으로 이동합니다.' : '가입 없이 체험 · 가상 데이터 · 새로고침 시 초기화'}</small>
             {error && <Alert severity="error">{error}</Alert>}
           </div>

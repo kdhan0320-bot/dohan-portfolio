@@ -71,7 +71,6 @@ const ScreenChoices = ({ choices }) => {
 const ServiceWalkthrough = ({ flow }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const panelId = useId();
-  const step = flow.steps[selectedIndex];
   return <section className="case-section case-service-flow" aria-labelledby="case-flow-heading">
     <div className="case-section__heading">
       <p className="case-eyebrow">같은 회사로 이어지는 실제 샘플</p>
@@ -79,31 +78,48 @@ const ServiceWalkthrough = ({ flow }) => {
       <p className="case-service-flow__record">{flow.summary}</p>
     </div>
     <div className="case-service-flow__controls" role="group" aria-label="사용 단계별 실제 화면 선택">
-      {flow.steps.map((item, index) => <button key={item.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>
+      {flow.steps.map((item, index) => <button key={item.label} type="button" aria-pressed={selectedIndex === index} aria-controls={`${panelId}-${index}`} onClick={() => setSelectedIndex(index)}>
         <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.label}
       </button>)}
     </div>
-    <div className={`case-service-flow__panel${isPortrait(step.media) ? ' case-service-flow__panel--portrait' : ''}`} id={panelId}>
-      <ScreenFigure key={step.media.src} media={step.media} label={step.caption} priority />
-      <div className="case-service-flow__copy" aria-live="polite" aria-atomic="true">
-        <p className="case-eyebrow">{step.screen}</p>
-        <h3>{step.title}</h3>
-        <p>{step.action}</p>
-        {step.result && <p className="case-service-flow__result">{step.result}</p>}
-      </div>
+    <div className="case-service-flow__stage">
+      {flow.steps.map((step, index) => <div
+        key={step.label}
+        className={`case-service-flow__panel${isPortrait(step.media) ? ' case-service-flow__panel--portrait' : ''}`}
+        id={`${panelId}-${index}`}
+        data-active={selectedIndex === index}
+        aria-hidden={selectedIndex !== index}
+        inert={selectedIndex !== index ? '' : undefined}
+      >
+        <ScreenFigure media={step.media} label={step.caption} priority={selectedIndex === index} />
+        <div className="case-service-flow__copy">
+          <p className="case-eyebrow">{step.screen}</p>
+          <h3>{step.title}</h3>
+          <p>{step.action}</p>
+          {step.result && <p className="case-service-flow__result">{step.result}</p>}
+        </div>
+      </div>)}
     </div>
+    <p className="case-service-flow__announcement" aria-live="polite" aria-atomic="true">{flow.steps[selectedIndex].screen}: {flow.steps[selectedIndex].title}</p>
     <p className="case-service-flow__note">{flow.note}</p>
   </section>;
 };
 
-const ScreenComparison = ({ decision }) => <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
+const ScreenComparison = ({ decision }) => {
+  const [selectedIndex, setSelectedIndex] = useState(1);
+  const panelId = useId();
+  const selectable = decision.comparison.layout === 'mobile';
+  return <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
+  {selectable && <div className="case-comparison__controls" role="group" aria-label="모바일 마감 일정 개선 전후 선택">
+    {['개선 전', '개선 후'].map((label, index) => <button key={label} type="button" aria-pressed={selectedIndex === index} aria-controls={`${panelId}-${index}`} onClick={() => setSelectedIndex(index)}>{label}</button>)}
+  </div>}
   <div className="case-comparison__grid">
-    <div>
+    <div id={`${panelId}-0`} data-active={selectedIndex === 0}>
       <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>
       <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
       <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
     </div>
-    <div>
+    <div id={`${panelId}-1`} data-active={selectedIndex === 1}>
       <p className="case-comparison__label case-comparison__label--current">{decision.comparison.afterHeading || '현재 화면'}</p>
       <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
       <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
@@ -116,6 +132,7 @@ const ScreenComparison = ({ decision }) => <div className={`case-comparison${dec
     </a>}
   </p>
 </div>;
+};
 
 const WorkspaceComparison = ({ decision }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
