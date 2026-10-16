@@ -1,5 +1,5 @@
 import Field from '../components/ui/Field';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { Box, Card, CardContent, Typography, Button, Alert, Avatar, Stack, Skeleton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
@@ -12,6 +12,7 @@ import { getAuthErrorMessage } from '../utils/authErrors';
 import { createRecordExport, loadRecordExport, downloadRecordExport } from '../utils/recordExport';
 import { getSafeDataErrorMessage } from '../utils/dataErrors';
 import { applicationDraftStore } from '../utils/applicationDraftStore';
+import { recordDraftStore, recordDraftValues } from '../utils/recordDraftStore';
 const SettingsPage = () => {
   const {
     user,
@@ -24,13 +25,23 @@ const SettingsPage = () => {
   } = useAuth();
   const navigate = useNavigate();
   const userId = user?.id;
+  const profileScope = userId && !isGuest ? `user:${userId}` : null;
   const profileAccountRef = useRef(user);
+  const profileBaseline = useRef(null);
+  const profileForm = useRef({ display_name: '', target_role: '' });
+  const profileMounted = useRef(true);
+  useEffect(() => {
+    profileMounted.current = true;
+    return () => { profileMounted.current = false; };
+  }, []);
+  useSyncExternalStore(recordDraftStore.subscribe, recordDraftStore.getRevision);
   useEffect(() => { profileAccountRef.current = user; }, [user]);
   const [displayName, setDisplayName] = useState('');
   const [targetRole, setTargetRole] = useState('');
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
+  const [restoringProfile, setRestoringProfile] = useState(false);
   const [profileLoading, setProfileLoading] = useState(true);
   const [loadedProfileId, setLoadedProfileId] = useState(null);
   const [profileLoadError, setProfileLoadError] = useState('');
@@ -39,6 +50,44 @@ const SettingsPage = () => {
   const [exportError, setExportError] = useState('');
   const [exported, setExported] = useState(false);
   const profileReady = Boolean(user?.id && !isGuest && !profileLoading && loadedProfileId === user.id);
+  const profileBusy = saving || restoringProfile;
+  const hasProfileDraft = profileReady && Boolean(recordDraftStore.read(profileScope, 'profile', 'profile'));
+  const changeProfile = (field, value) => {
+    if (!profileReady || profileBusy) return;
+    const next = { ...profileForm.current, [field]: value };
+    profileForm.current = next;
+    // A previous visit's save can finish after this baseline was read.
+    // Keep explicit input until a save or an explicit restore confirms it.
+    recordDraftStore.write(profileScope, 'profile', 'profile', next, profileBaseline.current, { preserveWhenUnchanged: true });
+    setDisplayName(next.display_name); setTargetRole(next.target_role);
+    setSaved(false); setError('');
+  };
+  const discardProfileDraft = async () => {
+    if (!profileReady || profileBusy) return;
+    const restoringUserId = userId;
+    const expectedValues = { ...profileForm.current };
+    setRestoringProfile(true);
+    setSaved(false); setError('');
+    try {
+      // A save from a previous visit may have finished after this page loaded.
+      // Re-read before discarding so the restore target is actually saved data.
+      const { data, error: readError } = await supabase.from('jobflow_profiles').select('display_name, target_role').eq('id', restoringUserId).maybeSingle();
+      if (readError) throw readError;
+      if (!profileMounted.current || profileAccountRef.current?.id !== restoringUserId) return;
+      const values = recordDraftValues('profile', {
+        display_name: data ? data.display_name ?? '' : profileAccountRef.current?.user_metadata?.display_name ?? '',
+        target_role: data?.target_role ?? '',
+      });
+      if (!recordDraftStore.clear(profileScope, 'profile', 'profile', expectedValues)) return;
+      profileBaseline.current = values;
+      profileForm.current = values;
+      setDisplayName(values.display_name); setTargetRole(values.target_role);
+    } catch {
+      if (profileMounted.current && profileAccountRef.current?.id === restoringUserId) setError('저장된 프로필을 불러오지 못했어요. 작성 중인 입력은 유지했어요.');
+    } finally {
+      if (profileMounted.current) setRestoringProfile(false);
+    }
+  };
   const handleExport = async () => {
     if (exporting) return;
     setExporting(true); setExportError(''); setExported(false);
@@ -83,8 +132,19 @@ const SettingsPage = () => {
           setProfileLoadError('프로필 정보를 불러오지 못했어요. 기존 정보를 보호하기 위해 편집을 잠시 멈췄어요.');
           return;
         }
-        setDisplayName(data ? data.display_name ?? '' : fallbackName);
-        setTargetRole(data?.target_role ?? '');
+        const baseline = recordDraftValues('profile', {
+          display_name: data ? data.display_name ?? '' : fallbackName,
+          target_role: data?.target_role ?? '',
+        });
+        const scope = `user:${userId}`;
+        const recovered = recordDraftStore.read(scope, 'profile', 'profile');
+        const values = recovered?.values || baseline;
+        profileBaseline.current = baseline;
+        profileForm.current = values;
+        // Read the server first; a failed read must never enable saving a stale draft.
+        if (recovered) recordDraftStore.write(scope, 'profile', 'profile', values, baseline, { preserveWhenUnchanged: true });
+        setDisplayName(values.display_name);
+        setTargetRole(values.target_role);
         setLoadedProfileId(userId);
       } catch {
         if (!cancelled) {
@@ -100,23 +160,25 @@ const SettingsPage = () => {
     };
   }, [userId, isGuest, profileAttempt]);
   const handleSave = async () => {
-    if (!profileReady || saving) return;
+    if (!profileReady || profileBusy) return;
     setError('');
     setSaved(false);
     setSaving(true);
+    const values = { ...profileForm.current };
+    const savingUserId = user.id;
     try {
-      const {
-        data,
-        error: saveError
-      } = await supabase.from('jobflow_profiles').upsert({
-        id: user.id,
-        email: user.email,
-        display_name: displayName,
-        target_role: targetRole,
-        updated_at: new Date().toISOString()
-      }).select('id').maybeSingle();
-      if (saveError) throw saveError;
-      if (!data) throw new Error('저장할 프로필을 찾지 못했거나 권한이 없습니다.');
+      await recordDraftStore.save(profileScope, 'profile', 'profile', values, async () => {
+        const { data, error: saveError } = await supabase.from('jobflow_profiles').upsert({
+          id: savingUserId,
+          email: user.email,
+          ...values,
+          updated_at: new Date().toISOString()
+        }).select('id').maybeSingle();
+        if (saveError) throw saveError;
+        if (!data) throw new Error('저장할 프로필을 찾지 못했거나 권한이 없습니다.');
+      });
+      if (profileAccountRef.current?.id !== savingUserId) return;
+      profileBaseline.current = values;
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
     } catch (saveError) {
@@ -195,13 +257,17 @@ const SettingsPage = () => {
           {saved && <Alert severity="success" sx={{ mb: 2 }}>프로필을 저장했어요.</Alert>}
           {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
           {profileLoadError && <Alert severity="error" sx={{ mb: 2 }} action={<Button color="inherit" onClick={() => { setProfileLoading(true); setProfileAttempt(attempt => attempt + 1); }}>다시 불러오기</Button>}>{profileLoadError}</Alert>}
+          {hasProfileDraft && <Alert severity="info" sx={{ mb: 2 }}>저장 전 입력은 이 탭에서 유지돼요. 새로고침·로그아웃하면 사라져요.</Alert>}
           <Stack spacing={2}>
-            <Field label="이름" fullWidth value={displayName} onChange={e => setDisplayName(e.target.value)} disabled={!profileReady || saving} placeholder="홍길동" />
-            <Field label="목표 직무" fullWidth value={targetRole} onChange={e => setTargetRole(e.target.value)} disabled={!profileReady || saving} placeholder="예: UX/UI 디자이너" />
+            <Field label="이름" fullWidth value={displayName} onChange={e => changeProfile('display_name', e.target.value)} disabled={!profileReady || profileBusy} placeholder="홍길동" />
+            <Field label="목표 직무" fullWidth value={targetRole} onChange={e => changeProfile('target_role', e.target.value)} disabled={!profileReady || profileBusy} placeholder="예: UX/UI 디자이너" />
             <Field label="이메일" fullWidth value={user?.email ?? ''} disabled helperText="이메일은 변경할 수 없습니다" />
-            <Button variant="contained" onClick={handleSave} disabled={!profileReady || saving} sx={{ alignSelf: 'flex-start' }}>
-              {saving ? '저장 중…' : '프로필 저장'}
-            </Button>
+            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+              <Button variant="contained" onClick={handleSave} disabled={!profileReady || profileBusy}>
+                {saving ? '저장 중…' : '프로필 저장'}
+              </Button>
+              {hasProfileDraft && <Button onClick={discardProfileDraft} disabled={profileBusy}>{restoringProfile ? '저장된 값 불러오는 중…' : '저장된 값으로 되돌리기'}</Button>}
+            </Stack>
           </Stack>
         </CardContent>
       </Card>

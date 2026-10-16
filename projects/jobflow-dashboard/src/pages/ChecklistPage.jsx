@@ -279,7 +279,7 @@ export default function ChecklistPage() {
                   { value: 'todo', label: '진행 중', count: scopedItems.length - scopedDone },
                   { value: 'done', label: '완료', count: scopedDone },
                   { value: 'all', label: '전체', count: scopedItems.length }
-                ].map(status => <Tab key={status.value} value={status.value} aria-label={`${status.label} ${status.count}`} label={<span className="checklist-status-label"><span>{status.label}</span><span className="checklist-status-count">{status.count}</span></span>} />)}
+                ].map(status => <Tab key={status.value} id={`checklist-tab-${status.value}`} aria-controls={`checklist-panel-${status.value}`} value={status.value} aria-label={`${status.label} ${status.count}`} label={<span className="checklist-status-label"><span>{status.label}</span><span className="checklist-status-count">{status.count}</span></span>} />)}
               </Tabs>
             </div>
             <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
@@ -289,7 +289,8 @@ export default function ChecklistPage() {
               {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
             </Field>
           </div>
-          <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
+          {['todo', 'done', 'all'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
+          {tab === value && <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
             {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>
               <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={e => toggleTask(item, e.target.checked)} slotProps={{ input: { id: `task-check-${item.id}`, 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}` } }} />
               <span className="task-copy">
@@ -303,7 +304,8 @@ export default function ChecklistPage() {
             {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : tab === 'todo' && scopedItems.length > 0 ? '이 목록의 준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}>
               {filter !== '전체' ? <Button onClick={() => setFilter('전체')}>전체 분류 보기</Button> : <Button onClick={openAdd}>할 일 추가하기</Button>}
             </Empty>}
-          </div>
+          </div>}
+          </div>)}
         </section>
         <div className="checklist-secondary-tool"><Link to="/document-helper">작성 요청문 도구</Link></div>
       </>}

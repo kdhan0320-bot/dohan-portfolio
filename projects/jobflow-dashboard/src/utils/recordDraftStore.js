@@ -2,6 +2,7 @@ const FIELDS = {
   interview: { application_id: null, question: '', answer: '', related_project: '', importance: '보통', is_reviewed: false },
   checklist: { application_id: null, title: '', category: '서류' },
   documentHelper: { type: '', role: '', company: '', project: '', experience: '', result: '', generatedResult: '', resultCreated: false },
+  profile: { display_name: '', target_role: '' },
 };
 
 export function recordDraftValues(kind, input = {}) {
@@ -44,12 +45,12 @@ export function createRecordDraftStore() {
     if (drafts.delete(key)) notify();
     return true;
   }
-  function write(scope, kind, recordId, values, baseline) {
+  function write(scope, kind, recordId, values, baseline, { preserveWhenUnchanged = false } = {}) {
     const key = keyFor(scope, kind, recordId);
     if (!key) return;
     const cleanValues = recordDraftValues(kind, values);
     const cleanBaseline = recordDraftValues(kind, baseline);
-    if (sameValues(cleanValues, cleanBaseline)) { clear(scope, kind, recordId); return; }
+    if (!preserveWhenUnchanged && sameValues(cleanValues, cleanBaseline)) { clear(scope, kind, recordId); return; }
     drafts.set(key, { scope, kind, recordId, values: cleanValues, baseline: cleanBaseline, revision: revision + 1 });
     notify();
   }

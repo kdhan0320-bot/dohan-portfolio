@@ -34,7 +34,14 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const pendingModeFocus = useRef(false);
   const cooldownEnd = useRef(Date.now() + cooldown * 1000);
+
+  useEffect(() => {
+    if (!pendingModeFocus.current) return;
+    pendingModeFocus.current = false;
+    emailRef.current?.focus();
+  }, [helpMode]);
 
   useEffect(() => {
     if (!cooldown) return;
@@ -49,6 +56,7 @@ export default function LoginPage() {
   }
 
   function changeMode(mode) {
+    pendingModeFocus.current = true;
     const nextParams = new URLSearchParams(searchParams);
     if (mode) nextParams.set('mode', mode);
     else nextParams.delete('mode');
@@ -59,7 +67,6 @@ export default function LoginPage() {
     setFields({});
     setError('');
     setSuccess('');
-    emailRef.current?.focus();
   }
 
   async function submit(event) {
@@ -132,7 +139,7 @@ export default function LoginPage() {
       <h1 id="login-title">{heading}</h1>
       <div className="login-sample-entry">
         <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>샘플 체험하기</Button>
-        <p>{isGuest ? '이 탭에서 작성한 샘플 기록과 초안은 유지돼요.' : '가입 없이 이용 · 새로고침하면 초기화'}</p>
+        <p>{isGuest ? '샘플 체험으로 돌아가면 이 탭의 기록과 초안이 유지돼요.' : '가입 없이 이용 · 새로고침하면 초기화'}</p>
       </div>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);
@@ -142,12 +149,14 @@ export default function LoginPage() {
         setError('');
         setSuccess('');
       }} variant="fullWidth" aria-label="로그인 또는 회원가입">
-        <Tab label="로그인" disabled={busy} />
-        <Tab label="회원가입" disabled={busy} />
+        <Tab id="auth-tab-0" aria-controls="auth-panel-0" label="로그인" disabled={busy} />
+        <Tab id="auth-tab-1" aria-controls="auth-panel-1" label="회원가입" disabled={busy} />
       </Tabs>}
+      {(helpMode ? ['help'] : [0, 1]).map(value => <div key={value} id={!helpMode ? `auth-panel-${value}` : undefined} role={!helpMode ? 'tabpanel' : undefined} aria-labelledby={!helpMode ? `auth-tab-${value}` : undefined} hidden={!helpMode && tab !== value}>
+      {(helpMode || tab === value) &&
       <form onSubmit={submit} noValidate>
         {!isAuthConfigured && <p className="auth-preview-note">미리보기에서는 샘플 체험만 가능합니다.</p>}
-        {isGuest && !helpMode && <p className="auth-sample-note">할 일·면접·요청문 초안은 로그인 시 지워져요. 샘플 기록은 계정으로 옮겨지지 않아요.</p>}
+        {isGuest && !helpMode && <p className="auth-sample-note">실제 계정으로 로그인하면 샘플 초안은 초기화돼요. 샘플 기록은 계정으로 옮겨지지 않아요.</p>}
         {(error || (!helpMode && authError)) && <Alert severity="error">{error || authError}</Alert>}
         {success && <Alert severity="success" role="status">{success}</Alert>}
         {!helpMode && tab === 1 && <Field label="이름 (선택)" placeholder="이름을 입력해주세요" autoComplete="name" value={displayName} onChange={event => setDisplayName(event.target.value)} disabled={busy} />}
@@ -166,7 +175,8 @@ export default function LoginPage() {
         <Button type="submit" variant="contained" fullWidth disabled={busy || Boolean(helpMode && cooldown)}>
           {busy ? '처리 중…' : helpMode && cooldown ? `${cooldown}초 후 다시 요청` : helpMode === 'recovery' ? '변경 링크 요청' : helpMode === 'confirmation' ? '인증 이메일 요청' : tab === 0 ? '로그인' : '회원가입'}
         </Button>
-      </form>
+      </form>}
+      </div>)}
       {helpMode ? <Button className="auth-return" disabled={busy} onClick={() => changeMode(null)}>로그인으로 돌아가기</Button> : <div className="auth-help-actions">
         <Button disabled={busy} onClick={() => changeMode('recovery')}>비밀번호를 잊었나요?</Button>
         <Button disabled={busy} onClick={() => changeMode('confirmation')}>인증 이메일 다시 받기</Button>

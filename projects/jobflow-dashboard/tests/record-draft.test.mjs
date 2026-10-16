@@ -41,6 +41,14 @@ test('returning all values to their original state removes the unsaved draft', (
   assert.equal(store.hasDrafts(), false);
 });
 
+test('explicit preservation can retain unchanged input until a fresh comparison or save confirms it', () => {
+  const store = createRecordDraftStore();
+  store.write('user:a', 'profile', 'profile', { display_name: '입력값' }, { display_name: '입력값' }, { preserveWhenUnchanged: true });
+  assert.equal(store.read('user:a', 'profile', 'profile').values.display_name, '입력값');
+  store.write('user:a', 'profile', 'profile', { display_name: '입력값' }, { display_name: '입력값' });
+  assert.equal(store.hasDrafts(), false);
+});
+
 test('successful save clears its draft only after the record save completes', async () => {
   const store = createRecordDraftStore();
   store.write('sample', 'interview', 'new', answer, blank);
@@ -94,9 +102,17 @@ test('account transition or logout clears only that account and a fresh tab has 
   const store = createRecordDraftStore();
   store.write('user:a', 'interview', 'new', answer, blank);
   store.write('user:a', 'checklist', 'new', { title: '개인 준비' }, {});
+  store.write('user:a', 'profile', 'profile', { display_name: '저장 전 이름', target_role: '목표 직무' }, {});
   store.clearScope('user:a');
   assert.equal(store.hasDrafts(), false);
   assert.equal(createRecordDraftStore().read('user:a', 'interview', 'new'), null);
+  assert.equal(createRecordDraftStore().read('user:a', 'profile', 'profile'), null);
+});
+
+test('profile drafts retain only editable name and role, never account identifiers or credentials', () => {
+  assert.deepEqual(recordDraftValues('profile', {
+    display_name: '입력한 이름', target_role: '웹 퍼블리셔', id: 'account-a', email: 'a@example.com', password: 'not retained',
+  }), { display_name: '입력한 이름', target_role: '웹 퍼블리셔' });
 });
 
 test('draft subscription updates recovery notices and unload protection on write, discard and reset', () => {

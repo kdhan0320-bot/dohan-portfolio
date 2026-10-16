@@ -240,11 +240,13 @@ export default function InterviewPage() {
       {selectedCompany && <Button component={Link} to={companyDestination(selectedCompany.id)} size="small">회사 정보</Button>}
     </div>
     <Tabs className="interview-status-tabs" value={tab} variant="scrollable" scrollButtons="auto" allowScrollButtonsMobile onChange={(_, v) => { setTab(v); setActiveId(null); }} aria-label="복습 상태">
-      <Tab value="todo" label={`복습할 질문 ${scopedNotes.length - done}`} />
-      <Tab value="done" label={`복습 완료 ${done}`} />
-      <Tab value="all" label={`전체 ${scopedNotes.length}`} />
+      <Tab id="interview-tab-todo" aria-controls="interview-panel-todo" value="todo" label={`복습할 질문 ${scopedNotes.length - done}`} />
+      <Tab id="interview-tab-done" aria-controls="interview-panel-done" value="done" label={`복습 완료 ${done}`} />
+      <Tab id="interview-tab-all" aria-controls="interview-panel-all" value="all" label={`전체 ${scopedNotes.length}`} />
     </Tabs>
   </div>
+  {['todo', 'done', 'all'].map(value => <div key={value} id={`interview-panel-${value}`} role="tabpanel" aria-labelledby={`interview-tab-${value}`} hidden={tab !== value}>
+  {tab === value && <>
   <LoadState loading={pageLoading} error={pageError} retry={refreshPage} />
   {!pageLoading && !pageError && missingCompany && <Alert severity="info" action={<Button color="inherit" onClick={() => selectCompany('all')}>전체 질문 보기</Button>}>이 회사의 지원 기록을 찾을 수 없어요. 삭제한 회사인지 확인해주세요.</Alert>}
   {!pageLoading && !pageError && !missingCompany && (activeNote ? <div className="interview-workspace">
@@ -300,6 +302,8 @@ export default function InterviewPage() {
       {scopedNotes.length > 0 && <Button onClick={() => setTab('all')}>전체 질문 보기</Button>}
       <Button onClick={startNew}>새 질문 기록하기</Button>
     </Empty>
+  </div>)}
+  </>}
   </div>)}
   </div>
   <Dialog className="record-editor-dialog" aria-labelledby="note-dialog-title" open={open} onClose={requestClose} slotProps={{ transition: { onEntered: focusEditorField } }} fullWidth maxWidth="sm">

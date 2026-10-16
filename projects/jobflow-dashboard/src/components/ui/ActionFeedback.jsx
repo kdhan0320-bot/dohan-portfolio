@@ -10,12 +10,16 @@ const ActionFeedback = ({ feedback, onClose }) => {
     <Snackbar
       open={Boolean(feedback)}
       autoHideDuration={4000}
+      disableWindowBlurListener
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       sx={{
         bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', sm: 24 },
         pointerEvents: 'none',
-        '& .MuiAlert-action': { pointerEvents: 'auto' }
+        // Only the dismiss button receives clicks; the action wrapper must not
+        // intercept links behind the temporary notification.
+        '& .MuiAlert-action': { pointerEvents: 'none' },
+        '& .MuiAlert-action button': { pointerEvents: 'auto' }
       }}
     >
       <Alert
