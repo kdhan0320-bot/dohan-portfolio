@@ -295,10 +295,8 @@
     line-height: 1.4
   }
   .hero-measure {
-    left: auto;
-    right: 5%;
-    top: 310px;
-    opacity: .7
+    /* 본문과 버튼의 공간을 우선 확보하는 폭에서는 장식을 생략합니다. */
+    display: none
   }
   .card-caption h3 {
     font-size: 20px
@@ -324,9 +322,6 @@
   }
   .hero-shade {
     background: linear-gradient(90deg,#242628f0,#242628b0 50%,#24262822)
-  }
-  .hero-measure {
-    display: none
   }
   .card-caption {
     grid-template-columns: 1fr;

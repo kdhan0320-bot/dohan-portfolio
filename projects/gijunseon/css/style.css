@@ -243,7 +243,7 @@ a,button {
 .desktop-nav>.nav-contact {
   background: var(--dark);
   color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   min-width: 136px;
   font-weight: 500
 }
@@ -283,7 +283,7 @@ a,button {
   min-height: 52px;
   padding: 12px 24px;
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: 4px;
   font-weight: 500;
   line-height: 26px;
   transition: background .16s,color .16s
@@ -448,7 +448,10 @@ dialog {
   color: var(--text);
   background: white;
   box-shadow: 0 16px 48px #0003;
-  overflow: auto
+  overflow: auto;
+  /* 한국어는 단어를 유지하고, 긴 이메일처럼 폭보다 긴 값만 나눕니다. */
+  word-break: keep-all;
+  overflow-wrap: anywhere
 }
 
 dialog::backdrop {
@@ -456,8 +459,9 @@ dialog::backdrop {
 }
 
 dialog h2 {
-  font-size: 28px;
-  line-height: 40px;
+  font-size: 26px;
+  line-height: 38px;
+  letter-spacing: -.02em;
   padding-right: 32px
 }
 
@@ -673,7 +677,7 @@ dialog h2 {
     max-width: calc(100% - 24px)
   }
   dialog h2 {
-    font-size: 23px;
+    font-size: 22px;
     line-height: 34px
   }
   .dialog-close {
