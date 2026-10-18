@@ -26,7 +26,8 @@
 .consult-checkbox-label span { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
 .consult-acknowledgement { white-space: nowrap; }
 .consult-checkbox-label input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: #b94f35; cursor: pointer; }
-.consult-checkbox-label input[aria-invalid='true'] { outline: 2px solid #a32f25; outline-offset: 2px; }
+/* 오류 표시는 초점 테두리와 분리해 키보드 위치도 함께 보이게 합니다. */
+.consult-checkbox-label input[aria-invalid='true'] { box-shadow: 0 0 0 2px #a32f25; }
 .consult-privacy-open { display: inline-flex; align-items: center; justify-content: flex-end; gap: 14px; flex: none; min-width: 104px; min-height: 48px; color: #5c6265; font-size: 14px; line-height: 24px; }
 .consult-submit { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 52px; margin-top: 16px; }
 .consult-form-note { margin: 14px 0 0; color: #5c6265; font-size: 13px; line-height: 22px; word-break: keep-all; overflow-wrap: break-word; }
