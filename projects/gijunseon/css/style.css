@@ -627,10 +627,13 @@ dialog h2 {
     height: 32px
   }
   .page-hero {
-    min-height: 214px
+    display: flex;
+    flex-direction: column;
+    min-height: 0
   }
   .page-hero>.container {
-    padding-block: 26px 112px
+    order: -1;
+    padding-block: 26px 20px
   }
   .page-hero h1 {
     font-size: 28px;
@@ -641,14 +644,16 @@ dialog h2 {
     margin-bottom: 7px
   }
   .page-hero-image {
-    inset: 90px 0 0 0;
+    position: relative;
+    inset: auto;
+    flex: none;
     width: 100%;
     height: 124px;
     opacity: 1;
     object-position: 68% center
   }
   .page-hero:after {
-    inset: 75px 0 auto;
+    inset: auto 0 79px;
     width: 100%;
     height: 60px;
     background: linear-gradient(var(--tint),#f0f0ec00)

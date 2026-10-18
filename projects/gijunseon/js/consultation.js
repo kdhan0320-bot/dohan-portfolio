@@ -15,7 +15,10 @@ const preparationDialog = document.querySelector('#preparation-dialog');
 const errorSummary = document.querySelector('#consult-error-summary');
 const errorList = document.querySelector('#consult-error-list');
 const fieldIds = ['consult-company', 'consult-name', 'consult-email', 'consult-consent'];
+const validatedFields = new Set();
 let hasSubmitted = false;
+let pointerIsDown = false;
+let pendingBlurField = null;
 const product = document.querySelector('.consult-product');
 const markerWrapper = document.querySelector('.consult-product-marker');
 // These are the original Figma coordinates. Scale the wrapper, leaving SVG dimensions intact.
@@ -70,6 +73,24 @@ function showFieldError(field, message) {
   if (message) field.setAttribute('aria-invalid', 'true');
   else field.removeAttribute('aria-invalid');
 }
+
+function finishBlurValidation() {
+  if (!pendingBlurField) return;
+  showFieldError(pendingBlurField, fieldError(pendingBlurField));
+  pendingBlurField = null;
+}
+
+// 최초 오류도 클릭 도중 입력칸 아래 요소를 밀지 않도록 클릭이 끝난 뒤 표시합니다.
+document.addEventListener('pointerdown', () => { pointerIsDown = true; });
+function finishPointerValidation() {
+  pointerIsDown = false;
+  finishBlurValidation();
+}
+// 터치는 pointerup 뒤에 합성 click이 발생하므로 click까지 기다립니다.
+['click', 'auxclick', 'pointercancel', 'contextmenu', 'keydown'].forEach(type => {
+  document.addEventListener(type, finishPointerValidation);
+});
+window.addEventListener('blur', finishPointerValidation);
 
 function validateForm() {
   errorList.replaceChildren();
@@ -136,10 +157,16 @@ fieldIds.forEach((id) => {
   const field = document.getElementById(id);
   field.addEventListener(field.type === 'checkbox' ? 'change' : 'input', () => {
     if (hasSubmitted) validateForm();
+    else if (validatedFields.has(id)) showFieldError(field, fieldError(field));
   });
   field.addEventListener('blur', () => {
     if (field.type === 'checkbox' && !hasSubmitted) return;
-    if (field.value.trim() || hasSubmitted) showFieldError(field, fieldError(field));
+    // 한 번 확인한 항목은 입력 중에도 갱신해, 다음 클릭 때 오류 영역이 사라지며 밀리지 않게 합니다.
+    if (field.value.trim() || hasSubmitted || validatedFields.has(id)) {
+      validatedFields.add(id);
+      if (pointerIsDown) pendingBlurField = field;
+      else showFieldError(field, fieldError(field));
+    }
   });
 });
 

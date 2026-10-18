@@ -21,88 +21,58 @@
     <div class="document-intro">
       <p class="document-eyebrow">제출용 구현 설명</p>
       <h1>기준선 구현 노트</h1>
-      <p class="document-lead">산업용 비전 검사를 소개하는 가상 기업 사이트입니다. Figma 디자인을 바탕으로 홈의 제품 소개와 검사 예시, 별도 도입 절차, 상담 시연을 반응형 웹으로 구성합니다.</p>
+      <p class="document-lead">산업용 비전 검사를 소개하는 가상 기업 사이트입니다. 기존 Figma 작품을 실제 HTML 요소와 반응형 웹으로 구현했습니다.</p>
       <div class="document-links">
         <a href="index.html">실행 화면 보기 <span aria-hidden="true">↗</span></a>
         <a href="https://www.figma.com/design/3ZJ4TUGqBNAewsJYzheOWo?node-id=451-747" target="_blank" rel="noreferrer">Figma 원본 <span class="sr-only">새 창</span><span aria-hidden="true">↗</span></a>
+        <a href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/gijunseon" target="_blank" rel="noreferrer">코드·실행 방법 <span class="sr-only">새 창</span><span aria-hidden="true">↗</span></a>
       </div>
     </div>
 
     <dl class="document-facts">
       <div><dt>목표</dt><dd>디자인 구현 · 반응형 · 기본 상호작용</dd></div>
-      <div><dt>범위</dt><dd>제품 소개 · 적용 공정 · 검사 예시 · 도입 절차 · 상담</dd></div>
-      <div><dt>기반</dt><dd>HTML · CSS · JavaScript<br>별도 패키지·빌드 없이 실행</dd></div>
+      <div><dt>범위</dt><dd>메인 · 적용 공정 · 검사 3종 · 도입 절차 · 상담</dd></div>
+      <div><dt>기반</dt><dd>HTML · CSS · JavaScript<br>패키지 설치·빌드 없이 실행</dd></div>
     </dl>
 
+    <section class="document-section document-roles" aria-labelledby="implementation-production">
+      <h2 id="implementation-production">제작 역할</h2>
+      <p><strong>본인</strong> — 원본 Figma 작품과 요구 범위를 제시하고, 디자인 방향과 수정 결과를 확인했습니다.</p>
+      <p><strong>AI 지원</strong> — 코드 작성, 반응형·접근성 보완, 도식 정리와 검수를 지원했습니다. 이 결과물만으로 본인의 독립적인 코딩 능력을 검증했다고 주장하지 않습니다.</p>
+    </section>
+
     <section class="document-section" aria-labelledby="implementation-methods">
-      <h2 id="implementation-methods">구현 방식</h2>
+      <h2 id="implementation-methods">핵심 구현 3가지</h2>
       <ol class="method-list">
         <li>
           <span class="method-number" aria-hidden="true">01</span>
-          <h3>디자인을 문서 구조로</h3>
-          <p>제목·탭·폼을 실제 HTML로 나누고 공통 색상은 CSS 변수로 관리했습니다. 검사 표시는 원본 628×471 좌표를 비율로 변환해 사진이 줄어도 같은 부위를 가리킵니다.</p>
-          <p class="document-path"><code>css/style.css</code> · <code>js/inspection.js</code></p>
+          <h3>반응형과 사진 구성</h3>
+          <p>Grid·Flex로 화면 폭에 맞춰 배치와 메뉴를 바꿉니다. 사진 크기별 파일을 제공하고, 검사 표시와 확대 위치는 비율로 관리합니다.</p>
+          <p class="document-path"><code>css/home.css</code> · <code>js/images.js</code></p>
         </li>
         <li>
           <span class="method-number" aria-hidden="true">02</span>
-          <h3>콘텐츠에 맞춘 반응형</h3>
-          <p>Grid/Flex로 배치를 조정했습니다. 메뉴는 900px 이하에서, 검사 사진은 700px 이하에서 구성을 바꾸며, 모바일 배너는 제목과 사진을 나눠 읽기 쉽게 배치했습니다.</p>
-          <p class="document-path"><code>css/home.css</code> · <code>css/inspection.css</code></p>
-        </li>
-        <li>
-          <span class="method-number" aria-hidden="true">03</span>
-          <h3>선택을 다음 화면까지</h3>
-          <p>검사 데이터와 URL의 <code>type</code>을 연결해 탭·사진·설명·상담 항목을 맞췄습니다. 직접 진입과 뒤로가기를 지원하고, 탭은 방향키·Home·End로 조작합니다.</p>
+          <h3>이어지는 검사 선택</h3>
+          <p>탭·사진·설명·상담 항목이 같은 검사 데이터를 사용합니다. URL에 선택을 반영해 직접 진입과 뒤로가기도 지원합니다.</p>
           <p class="document-path"><code>js/data.js</code> · <code>js/inspection.js</code></p>
         </li>
         <li>
-          <span class="method-number" aria-hidden="true">04</span>
-          <h3>오류 안내와 초점 이동</h3>
-          <p>빈 값·이메일 형식·필수 동의를 확인하고, 오류 요약에서 입력칸으로 이동합니다. 안내창은 Escape로 닫고 원래 위치로 초점을 돌려줍니다.</p>
-          <p class="document-path"><code>js/consultation.js</code> · <code>js/common.js</code></p>
+          <span class="method-number" aria-hidden="true">03</span>
+          <h3>키보드와 폼 안내</h3>
+          <p>탭 방향키, 보이는 초점, 안내창의 Escape·초점 복귀를 제공합니다. 폼 오류는 해당 입력칸으로 연결하고 준비 안내를 읽어도 입력을 유지합니다.</p>
+          <p class="document-path"><code>js/common.js</code> · <code>js/consultation.js</code></p>
         </li>
       </ol>
     </section>
 
-    <section class="document-section" aria-labelledby="implementation-refinements">
-      <h2 id="implementation-refinements">피드백을 반영한 보완</h2>
-      <ul class="refinement-list">
-        <li><strong>페이지 역할</strong><span>홈에는 제품 소개·검사 3종·도입 검토 요약을 둡니다. 적용 공정은 검사 시점을, 별도 도입 절차는 검토 흐름을 설명하고 상담 시연으로 연결합니다.</span></li>
-        <li><strong>검사 설명</strong><span>사진 아래에 검사 대상·확인 포인트·상담 전 준비를 추가했습니다. 인쇄 예시와 실제 바코드 판독 결과도 구분했습니다.</span></li>
-        <li><strong>입력 유지</strong><span>상담 중 준비 안내를 읽고 돌아올 때 페이지를 다시 열지 않아, 입력 내용과 선택 검사를 유지합니다.</span></li>
-        <li><strong>브랜드와 제목</strong><span>기존 색상을 유지하고 두 로고 후보 중 선택한 심볼 정돈안을 적용했습니다. 로고의 선·간격과 제목의 굵기를 정돈하고, 파비콘은 작은 크기용 완전한 형태로 보완했습니다.</span></li>
-        <li><strong>도식과 모바일</strong><span>도입 과정과 공정 안내의 카메라·대상물·선 굵기를 같은 SVG 표현으로 맞췄습니다. 모바일에서는 도식 옆에 설명을 배치하고 사진과 여백을 조절했습니다.</span></li>
-        <li><strong>포커스와 안내</strong><span>어두운 영역의 키보드 초점은 밝은 강조색과 짙은 받침으로 구분합니다. 시연 확인 문구를 명확히 하고, JavaScript가 없을 때 작동하지 않는 안내 버튼은 비활성화했습니다.</span></li>
-        <li><strong>이미지 전달</strong><span id="implementation-image-status">Figma 원본은 보존하고, 큰 사진에는 크기별 WebP를 적용했습니다. 검사 선택 후 필요한 이미지만 요청하며 전체·확대 사진은 같은 파일을 공유합니다. 이미지 최적화 회차에서 인쇄 검사 초기 리소스는 6.08MB에서 0.464MB로 약 92.4% 줄었습니다. 이번 마감 이후 용량을 재측정한 수치는 아닙니다.</span></li>
-      </ul>
-    </section>
-
-    <section class="document-section document-production" aria-labelledby="implementation-production">
-      <div>
-        <h2 id="implementation-production">제작 범위와 AI 활용</h2>
-        <p>기존 Figma 작품을 바탕으로 코드 작성·반응형·접근성 보완과 검수에 AI 코딩 지원을 활용했습니다. 이 문서는 실제 구현 방식과 실행한 검사 결과를 기록합니다.</p>
-      </div>
-      <div class="practice-note">
-        <h3>직접 수정해 볼 부분</h3>
-        <p id="implementation-owner-status">구조를 이해하기 위한 두 가지 연습</p>
-        <ul>
-          <li><code>js/data.js</code>의 문구를 수정하고 탭별 반영 설명하기</li>
-          <li>폼 검증 조건을 바꾸고 오류·키보드 이동 시연하기</li>
-        </ul>
-      </div>
-    </section>
-
     <section class="document-section" aria-labelledby="implementation-validation">
-      <h2 id="implementation-validation">검증과 시연 범위</h2>
+      <h2 id="implementation-validation">시연과 검증 범위</h2>
+      <p class="document-demo">문의는 브라우저 안에서만 확인하는 시연입니다. 서버 전송·개인정보 저장·실제 상담 접수는 하지 않습니다.</p>
       <div id="implementation-verification" class="verification-note">
-        <p>홈·도입 절차 확장 검증 · 2026-10-18 · 로컬 Chromium · 320·390·768·1440px</p>
-        <p>홈과 새 도입 절차를 렌더링하고 실제 캡처를 확인했습니다. 검사 범위에서 가로 넘침·누락 이미지·페이지/콘솔/HTTP 오류를 발견하지 못했습니다. 도입 절차는 배치 전환 부근 760·761px에서도 확인했습니다.</p>
-        <p>22개 핵심 동작 검사가 통과했습니다. 메뉴·탭·뒤로가기·필수 입력 오류·안내창의 키보드 조작과 초점 복귀, 상담 준비 이후 입력·동의·검사 선택 유지와 개인정보 비전송을 재검사했습니다. 새 도입 절차의 단계 이동과 상담 연결도 확인했습니다.</p>
-        <p>앞선 이미지 최적화 비교는 같은 390×844px·DPR 1·빈 캐시·스크롤 전 조건에서 문서를 제외한 리소스 본문 용량을 측정한 결과입니다. 이번 확장본의 용량을 다시 측정한 수치는 아닙니다.</p>
+        <p><strong>로컬 검증 · 2026-10-18</strong><br>Chromium 320·390·768·1440px의 8화면에서 가로 넘침·이미지·콘솔 오류를 확인했습니다. 핵심 동작 22개가 통과했고, 이메일 수정 후 동의 첫 클릭과 비전송도 별도로 확인했습니다.</p>
       </div>
-      <p class="document-limit">실제 휴대전화, Safari·Firefox, 스크린리더와 외부 배포 환경의 로딩 속도는 미검증입니다.</p>
-      <p class="document-limit">문의는 브라우저 안에서만 검증하며 서버로 전송하거나 개인정보를 저장하지 않습니다. 실제 상담 접수·API·DB 기능은 없습니다.</p>
-      <p id="implementation-deployment" class="document-limit">선택한 A 로고를 유지한 홈 제품 소개·별도 도입 절차 확장본입니다. 미리보기 확인과 배포 승인을 거쳤으며, 위 검증 기록은 로컬 Chromium에서 확인한 범위를 설명합니다.</p>
+      <p id="implementation-deployment" class="document-limit">모바일 간격과 검사 표시를 정돈하고, 이메일 오류 안내가 바뀔 때 동의 확인란의 첫 클릭이 빠지던 동작을 보완했습니다.</p>
+      <p class="document-limit">실제 휴대전화·Safari·Firefox·스크린리더·외부망 로딩 속도는 미검증입니다. 실제 검사 정확도·인증·고객 실적을 주장하지 않습니다.</p>
     </section>
   </main>
 

@@ -121,6 +121,14 @@
   .inspection-tabs button { padding-inline: 4px; font-size: 14px; }
   .inspection-panel { margin-top: 24px; }
   .inspection-visuals { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  /* 원본 SVG의 좌표와 형태를 유지하면서 축소된 선을 약 2px로 보완합니다. */
+  .inspection-mark {
+    --mark-spread: max(0px, calc(1px - var(--photo-scale, 1) * 1px));
+    filter: drop-shadow(var(--mark-spread) 0 0 #923a27)
+      drop-shadow(calc(0px - var(--mark-spread)) 0 0 #923a27)
+      drop-shadow(0 var(--mark-spread) 0 #923a27)
+      drop-shadow(0 calc(0px - var(--mark-spread)) 0 #923a27);
+  }
   .inspection-visual-heading { min-height: 38px; align-items: baseline; }
   .inspection-visual-heading h2 { font-size: 17px; line-height: 26px; }
   .inspection-zoom-label { font-size: 13px; padding-top: 0; }
@@ -140,7 +148,7 @@
   .inspection-consultation { padding-inline: 16px; }
 }
 @media (max-width: 600px) {
-  .inspection-hero { min-height: 214px; }
-  .inspection-hero-image { inset: 90px 0 0; width: 100%; height: 124px; opacity: 1; }
+  .inspection-hero { min-height: 0; }
+  .inspection-hero-image { position: relative; inset: auto; flex: none; width: 100%; height: 124px; opacity: 1; }
   .inspection-hero-image::after { display: none; }
 }
