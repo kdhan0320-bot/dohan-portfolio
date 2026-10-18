@@ -1,0 +1,146 @@
+/* The reference uses a 628 × 471 photo viewport. Percentage geometry keeps
+   the original ROI and the two-times enlargement aligned at every width. */
+.inspection-content {
+  --inspection-tint: #f4e7e0;
+  --zoom-x: -88.1258%;
+  --zoom-y: -47.5011%;
+  --roi-x: 60%;
+  --roi-y: 40.8344%;
+  --roi-width: 18.125%;
+  --roi-height: 15.8333%;
+  --mark-x: 31.8742%;
+  --mark-y: 34.1677%;
+  --mark-width: 36.25%;
+  --mark-height: 31.6667%;
+  padding-top: 48px;
+  padding-bottom: 56px;
+}
+
+.inspection-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 160px;
+  background: #f0f0ec;
+}
+.inspection-hero-copy { position: relative; z-index: 1; }
+.inspection-hero-image { position: absolute; inset: 0 0 0 50%; overflow: hidden; }
+.inspection-hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 44.4444%;
+  background: linear-gradient(90deg, #f0f0ec, rgb(240 240 236 / 0%));
+}
+.inspection-hero-image img {
+  position: absolute;
+  left: 0;
+  top: -25.62%;
+  width: 100%;
+  height: 151.25%;
+  max-width: none;
+  object-fit: cover;
+}
+.inspection-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+.inspection-tabs button {
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 12px 12px;
+  border: 0;
+  border-bottom: 1px solid #cdd0cb;
+  background: transparent;
+  color: #5c6265;
+  font: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.inspection-tabs button:hover { color: #923a27; background: #f7f6f2; }
+.inspection-tabs button[aria-selected="true"] { color: #923a27; border-bottom: 3px solid #b94f35; padding-bottom: 10px; }
+.inspection-panel { margin-top: 28px; }
+.inspection-visuals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.inspection-figure { min-width: 0; margin: 0; }
+.inspection-visual-heading { min-height: 44px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.inspection-visual-heading h2 { margin: 0; font-size: 20px; font-weight: 400; line-height: 30px; }
+.inspection-zoom-label { flex-shrink: 0; color: #923a27; font-size: 14px; line-height: 22px; }
+.inspection-photo { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #f0f0ec; }
+.inspection-original { display: block; width: 100%; height: 100%; object-fit: contain; }
+.inspection-roi { position: absolute; left: var(--roi-x); top: var(--roi-y); width: var(--roi-width); height: var(--roi-height); border: 2px solid #923a27; }
+.inspection-zoom-image { position: absolute; left: var(--zoom-x); top: var(--zoom-y); width: 200%; height: 200%; max-width: none; object-fit: contain; }
+.inspection-mark { position: absolute; left: var(--mark-x); top: var(--mark-y); width: var(--mark-width); height: var(--mark-height); }
+.inspection-mark img { max-width: none; transform: scale(var(--photo-scale, 1)) translate(-1px, -1px); transform-origin: top left; }
+.inspection-explanation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  margin: 24px 0 0;
+  padding: 28px;
+  background: var(--page);
+}
+.inspection-explanation > div { min-width: 0; }
+.inspection-explanation dt {
+  margin-bottom: 10px;
+  color: var(--action-hover);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.inspection-explanation dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 26px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+.inspection-disclaimer { margin: 24px 0 0; color: #5c6265; font-size: 14px; line-height: 22px; }
+.inspection-consultation { display: flex; align-items: center; gap: 28px; min-height: 104px; margin-top: 43px; padding: 24px 24px 24px 28px; background: var(--inspection-tint); }
+.inspection-focus-icon { position: relative; display: block; flex: 0 0 32px; height: 32px; }
+.inspection-focus-icon img:first-child { position: absolute; left: -.75px; top: -.75px; }
+.inspection-focus-icon img:last-child { position: absolute; left: 8px; top: 4px; }
+.inspection-consultation h2 { margin: 0; flex: 1; font-size: 24px; font-weight: 400; line-height: 36px; }
+.inspection-consultation .btn { flex-shrink: 0; min-width: 248px; }
+
+@media (max-width: 1000px) {
+  .inspection-tabs { gap: 20px; }
+  .inspection-visual-heading { min-height: 44px; align-items: flex-start; gap: 8px; }
+  .inspection-visual-heading h2 { font-size: 18px; line-height: 28px; }
+  .inspection-zoom-label { padding-top: 3px; font-size: 13px; }
+  .inspection-explanation { gap: 20px; padding: 24px; }
+  .inspection-consultation { gap: 20px; }
+  .inspection-consultation h2 { font-size: 20px; line-height: 30px; }
+  .inspection-consultation .btn { min-width: 220px; }
+}
+@media (max-width: 700px) {
+  .inspection-content { padding-top: 28px; padding-bottom: 40px; }
+  .inspection-hero { min-height: 176px; }
+  .inspection-hero-image { left: 32%; opacity: .36; }
+  .inspection-hero-image::after { width: 80%; }
+  .inspection-hero-copy h1 { max-width: 90%; font-size: 30px; line-height: 44px; }
+  .inspection-tabs { gap: 8px; }
+  .inspection-tabs button { padding-inline: 4px; font-size: 14px; }
+  .inspection-panel { margin-top: 24px; }
+  .inspection-visuals { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .inspection-visual-heading { min-height: 38px; align-items: baseline; }
+  .inspection-visual-heading h2 { font-size: 17px; line-height: 26px; }
+  .inspection-zoom-label { font-size: 12px; padding-top: 0; }
+  .inspection-explanation { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 24px 20px; }
+  .inspection-explanation > div + div { border-top: 1px solid var(--border); padding-top: 20px; }
+  .inspection-explanation dt { margin-bottom: 6px; }
+  .inspection-explanation dd { font-size: 15px; line-height: 25px; }
+  .inspection-disclaimer { margin-top: 18px; font-size: 13px; line-height: 22px; word-break: keep-all; }
+  .inspection-consultation { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 18px 14px; margin-top: 28px; padding: 24px 20px; }
+  .inspection-focus-icon { width: 28px; height: 32px; }
+  .inspection-consultation h2 { font-size: 18px; line-height: 28px; }
+  .inspection-consultation .btn { grid-column: 1 / -1; min-width: 0; width: 100%; }
+}
+@media (max-width: 359px) {
+  .inspection-visual-heading h2 { font-size: 15px; }
+  .inspection-visual-heading { gap: 4px; }
+  .inspection-consultation { padding-inline: 16px; }
+}
+@media (max-width: 600px) {
+  .inspection-hero { min-height: 214px; }
+  .inspection-hero-image { inset: 90px 0 0; width: 100%; height: 124px; opacity: 1; }
+  .inspection-hero-image::after { display: none; }
+}

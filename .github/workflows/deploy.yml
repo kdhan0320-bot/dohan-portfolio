@@ -84,6 +84,8 @@ jobs:
           cp _site/jobflow-dashboard/index.html _site/jobflow-dashboard/404.html
           mkdir -p _site/ott-service
           cp -r "projects/OTT Service/." _site/ott-service
+          mkdir -p _site/gijunseon
+          cp -r projects/gijunseon/. _site/gijunseon
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

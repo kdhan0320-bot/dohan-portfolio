@@ -1,0 +1,518 @@
+{
+  "tool": "sharp 0.35.5, libvips 8.18.7, libwebp 1.6.0",
+  "method": "Resize preserving original aspect ratio, no crop/retouch/colour adjustment, no upscaling; keep source ICC when present; original source bytes unchanged.",
+  "assets": [
+    {
+      "name": "home-hero",
+      "source": "home-img34.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 90,
+      "role": "Main hero; preserve full image, CSS retains existing crop",
+      "aliases": [],
+      "original": {
+        "width": 2172,
+        "height": 724,
+        "format": "jpeg",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 194712,
+        "sha256": "3a68ca3a9c051b1f8b261300bf52d68b59270437738f8ece8b78b5ad20aabc0a"
+      },
+      "variants": [
+        {
+          "filename": "home-hero-480.webp",
+          "width": 480,
+          "height": 160,
+          "bytes": 19570,
+          "sha256": "e3e255c86d2d6d50e107de256d5bebe2281327b8c7a82c125bf7425ed6b6e9cc",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "home-hero-800.webp",
+          "width": 800,
+          "height": 267,
+          "bytes": 40580,
+          "sha256": "7f074ef600be297c9deb6143f80ccafd2825bec0adcaefacf53888f0555cee3f",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "home-hero-1280.webp",
+          "width": 1280,
+          "height": 427,
+          "bytes": 74034,
+          "sha256": "ab3e1a225c3021a6f1a87240ee5c8d1c05a122a78589aa1080be17302f46961c",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "home-hero-1920.webp",
+          "width": 1920,
+          "height": 640,
+          "bytes": 119578,
+          "sha256": "00188d9efbb43aa45a0dfab0fe27de14db75cea55b56e60dd8a9216bfb94912e",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "scratch",
+      "source": "451-1002-img6.png",
+      "aliases": [
+        "home-img28.png",
+        "451-2246-img5.png"
+      ],
+      "widths": [
+        480,
+        800,
+        1000
+      ],
+      "quality": 94,
+      "role": "Product image; maximum original resolution retained for CSS 2x inspection crop",
+      "original": {
+        "width": 1000,
+        "height": 750,
+        "format": "jpeg",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 29476,
+        "sha256": "df796c340b0feebf223344c3c4bde20856baa8288b491c4f0398fe40c90ea407"
+      },
+      "variants": [
+        {
+          "filename": "scratch-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 18500,
+          "sha256": "ead82aa6a47c09636da4eef7395713e289ce36b301b79f3b31a7a9cb225ef37a",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "scratch-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 44026,
+          "sha256": "39b80c6f31de082980362ebc60fa2c49e680f0551de6ddc91679860228f27da4",
+          "smallerThanOriginal": false
+        },
+        {
+          "filename": "scratch-1000.webp",
+          "width": 1000,
+          "height": 750,
+          "bytes": 52756,
+          "sha256": "d8d2f875297f4f870027210fe8af75697a087da9e9d3fb9d42cda2adfb257e29",
+          "smallerThanOriginal": false
+        }
+      ],
+      "keepOriginalForZoom": true,
+      "canonical": {
+        "filename": "scratch-original.jpg",
+        "width": 1000,
+        "height": 750,
+        "bytes": 29476,
+        "sha256": "df796c340b0feebf223344c3c4bde20856baa8288b491c4f0398fe40c90ea407",
+        "byteIdenticalToOriginal": true
+      }
+    },
+    {
+      "name": "missing",
+      "source": "451-1181-img6.png",
+      "aliases": [
+        "home-img30.png"
+      ],
+      "widths": [
+        480,
+        800,
+        1000
+      ],
+      "quality": 94,
+      "role": "Product image; maximum original resolution retained for CSS 2x inspection crop",
+      "original": {
+        "width": 1000,
+        "height": 750,
+        "format": "jpeg",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 31871,
+        "sha256": "21dd3f14575ca7953626f0ed6a133f90dd2695d727a064250ff5057a80cd4cb2"
+      },
+      "variants": [
+        {
+          "filename": "missing-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 18188,
+          "sha256": "5d1d05fb013ac937130818c835c1762cf85f401197d2fdb924f5725690bb172e",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "missing-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 46158,
+          "sha256": "1961b2aa9113aed8c5b54965e8bfdba49603ab91187b5994398403f7191131e3",
+          "smallerThanOriginal": false
+        },
+        {
+          "filename": "missing-1000.webp",
+          "width": 1000,
+          "height": 750,
+          "bytes": 57468,
+          "sha256": "fff0ffecc0dee1fef96457267659292fc9a9f44530027f1ebb2860a66c5f36f0",
+          "smallerThanOriginal": false
+        }
+      ],
+      "keepOriginalForZoom": true,
+      "canonical": {
+        "filename": "missing-original.jpg",
+        "width": 1000,
+        "height": 750,
+        "bytes": 31871,
+        "sha256": "21dd3f14575ca7953626f0ed6a133f90dd2695d727a064250ff5057a80cd4cb2",
+        "byteIdenticalToOriginal": true
+      }
+    },
+    {
+      "name": "print",
+      "source": "451-1360-img6.png",
+      "aliases": [
+        "home-img32.png"
+      ],
+      "widths": [
+        480,
+        800,
+        1280,
+        1448
+      ],
+      "quality": 94,
+      "role": "Product image; maximum original resolution retained for CSS 2x inspection crop",
+      "original": {
+        "width": 1448,
+        "height": 1086,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 1734667,
+        "sha256": "a6139f6b66448d295c1cc273d396e29a4195bf70e97068759881e44ccfa0fd20"
+      },
+      "variants": [
+        {
+          "filename": "print-480.webp",
+          "width": 480,
+          "height": 360,
+          "bytes": 9864,
+          "sha256": "d6de5686a78cd9c52c6b1467a0b1a18a50451614062146763ab0fd4b206fab04",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "print-800.webp",
+          "width": 800,
+          "height": 600,
+          "bytes": 24018,
+          "sha256": "4f440da270ab2de06acd9c25a9f1a618ec591f05d828e3b42e313eff72625531",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "print-1280.webp",
+          "width": 1280,
+          "height": 960,
+          "bytes": 62304,
+          "sha256": "a1fdd8b3444d834f73d5ab020b5359f56917e986d876741efc7ddf6225a82e7b",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "print-1448.webp",
+          "width": 1448,
+          "height": 1086,
+          "bytes": 81582,
+          "sha256": "b3ca315030f07d32f6486ac93fd7407e89f739d913686df46642562d36009b1f",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "inspection-scratch-banner",
+      "source": "451-1002-img8.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 86,
+      "role": "Inspection page banner",
+      "aliases": [],
+      "original": {
+        "width": 2163,
+        "height": 727,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 1994286,
+        "sha256": "bb7e80696fcf88eda7e0cf9474e658f87b3571fb76d4e3faa763bda4585cf0bb"
+      },
+      "variants": [
+        {
+          "filename": "inspection-scratch-banner-480.webp",
+          "width": 480,
+          "height": 161,
+          "bytes": 10042,
+          "sha256": "b7c4118a5892ab25aed878b008a3dc2b9cd6534e3941042a2f692f8365c97b78",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-scratch-banner-800.webp",
+          "width": 800,
+          "height": 269,
+          "bytes": 21980,
+          "sha256": "ba515d734c33f511bf0401cb44e919e2f997156f61f3ae301cd05150c5b5998f",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-scratch-banner-1280.webp",
+          "width": 1280,
+          "height": 430,
+          "bytes": 47360,
+          "sha256": "a9d8d0373adc27f4b353a0f63f7456bafaa95caba55ad57e45e2541f24a8ab32",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-scratch-banner-1920.webp",
+          "width": 1920,
+          "height": 645,
+          "bytes": 84382,
+          "sha256": "f28e75224bf885c042d0a28701431ae39ffdc8c37ccf24d325f3a985402a2738",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "inspection-missing-banner",
+      "source": "451-1181-img8.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 86,
+      "role": "Inspection page banner",
+      "aliases": [],
+      "original": {
+        "width": 2172,
+        "height": 724,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 2129684,
+        "sha256": "e063c453819a7c758b48664b7e287f3fbe1ce56ef7e5442a843a4fb48bda90f5"
+      },
+      "variants": [
+        {
+          "filename": "inspection-missing-banner-480.webp",
+          "width": 480,
+          "height": 160,
+          "bytes": 12426,
+          "sha256": "03c6fd065235017ffea5d1c9d5b9396312b06942bd719da4938981b78c542478",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-missing-banner-800.webp",
+          "width": 800,
+          "height": 267,
+          "bytes": 29416,
+          "sha256": "dcaad55839b23f67082393b9b925fd60e55aa73484e49a000bd4661a6fb564be",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-missing-banner-1280.webp",
+          "width": 1280,
+          "height": 427,
+          "bytes": 63176,
+          "sha256": "87d3068b837e54d879b9eaa110268511fd656a273dc2e4688dd43bc05b66ca07",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-missing-banner-1920.webp",
+          "width": 1920,
+          "height": 640,
+          "bytes": 110662,
+          "sha256": "3e6bdd6c6bb9a34058215038b223fb2700b838724642ca03adbf431f3b0910ff",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "inspection-print-banner",
+      "source": "451-1360-img8.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 86,
+      "role": "Inspection page banner",
+      "aliases": [],
+      "original": {
+        "width": 2172,
+        "height": 724,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 1935263,
+        "sha256": "23dd8d11ba5d2f966a76b80f2fe0875050876b7232779e92e4ea80ae86d75673"
+      },
+      "variants": [
+        {
+          "filename": "inspection-print-banner-480.webp",
+          "width": 480,
+          "height": 160,
+          "bytes": 10610,
+          "sha256": "3d9556c2f8729ea6a2e4b86cecfe4486a9e3566012ad8c6cc013eb4e86098aaa",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-print-banner-800.webp",
+          "width": 800,
+          "height": 267,
+          "bytes": 21852,
+          "sha256": "1f1b125567aa4fcfa98e163391d7c4791517e46c8ebe6b0c4ac29e02a1a04c28",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-print-banner-1280.webp",
+          "width": 1280,
+          "height": 427,
+          "bytes": 42722,
+          "sha256": "b3d3d02457352cfaa415a8a421cfcdef376f25f57361d83e5e8dfb986e94bc3c",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "inspection-print-banner-1920.webp",
+          "width": 1920,
+          "height": 640,
+          "bytes": 73722,
+          "sha256": "eec6f06c85d9aa6f30c8eec1c96ba92de1c5c6a3561a20b126e3ac920e84e46a",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "process-banner",
+      "source": "451-854-img11.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 86,
+      "role": "Process page banner",
+      "aliases": [],
+      "original": {
+        "width": 2172,
+        "height": 724,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 2155199,
+        "sha256": "45914ebd47e2ce815534a19ebb22ad9948d86699332071025117e6056352dc60"
+      },
+      "variants": [
+        {
+          "filename": "process-banner-480.webp",
+          "width": 480,
+          "height": 160,
+          "bytes": 21120,
+          "sha256": "058e6288f61ea434c09781f54be9980c834eb96cbd5b87904902e230742aeb1d",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "process-banner-800.webp",
+          "width": 800,
+          "height": 267,
+          "bytes": 43538,
+          "sha256": "9ff6328b31ec6103e687db5ac065b19686ae0b23b81f2c52638eb96a401a5ccc",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "process-banner-1280.webp",
+          "width": 1280,
+          "height": 427,
+          "bytes": 77204,
+          "sha256": "134e855455c057e6526d58ff592d5095e9121a1314768115e5771976a8a0299e",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "process-banner-1920.webp",
+          "width": 1920,
+          "height": 640,
+          "bytes": 126226,
+          "sha256": "9c4f8565a2dc40d863615eebf24d02d9ed8c71fa8fadf2b827e3b895c6fc0e06",
+          "smallerThanOriginal": true
+        }
+      ]
+    },
+    {
+      "name": "consultation-banner",
+      "source": "451-2246-img7.png",
+      "widths": [
+        480,
+        800,
+        1280,
+        1920
+      ],
+      "quality": 86,
+      "role": "Consultation page banner",
+      "aliases": [],
+      "original": {
+        "width": 2172,
+        "height": 724,
+        "format": "png",
+        "space": "srgb",
+        "hasProfile": false,
+        "bytes": 2087828,
+        "sha256": "c1ab53fe9ceec8fffb928ffd3199a22cd3e926ae5a0b749f412decb9091d2473"
+      },
+      "variants": [
+        {
+          "filename": "consultation-banner-480.webp",
+          "width": 480,
+          "height": 160,
+          "bytes": 11040,
+          "sha256": "1822a63be98be045411a94c4dca9c0077ebbb49a41099f6474d654b208ed9fd6",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "consultation-banner-800.webp",
+          "width": 800,
+          "height": 267,
+          "bytes": 25372,
+          "sha256": "cab4da39c08923030636085ea305b09059ee1808695dfaba17a753e2aeadef93",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "consultation-banner-1280.webp",
+          "width": 1280,
+          "height": 427,
+          "bytes": 55268,
+          "sha256": "6373ef7635b870b5000688c8e15219d3deb69d3b101a6c258694a008e3261ad9",
+          "smallerThanOriginal": true
+        },
+        {
+          "filename": "consultation-banner-1920.webp",
+          "width": 1920,
+          "height": 640,
+          "bytes": 101506,
+          "sha256": "f1eddfd96bb3838f7a15008d06ab7ba5d646b300f32208c646674a149bb6fb9f",
+          "smallerThanOriginal": true
+        }
+      ]
+    }
+  ],
+  "runtimeRecommendation": "Use scratch-original.jpg and missing-original.jpg on every page: these canonical JPEG copies are byte-identical to the source and smaller than q94 WebP, and a shared URL allows browser cache reuse. Use responsive WebP for all banners and print product; whole/zoom print images should select the same candidate for cache reuse."
+}

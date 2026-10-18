@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="기준선의 표면 흠집, 부품 누락, 인쇄 상태 검사 예시를 전체 제품과 확대 사진으로 확인하세요.">
+  <title>표면 흠집 검사 · 기준선</title>
+  <link rel="icon" href="assets/figma/home-img.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/inspection.css">
+  <script type="module" src="./js/inspection.js"></script>
+<noscript><style>[data-selected-image], .inspection-tabs, .inspection-mark, .consult-product-marker {display:none!important}</style></noscript>
+</head>
+<body data-page="inspection">
+<a class="skip-link" href="#main-content">본문으로 바로가기</a>
+  <header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="기준선 홈"><span class="brand-icon" aria-hidden="true"><img src="assets/figma/home-img.svg" alt=""><img src="assets/figma/home-img1.svg" alt=""><img src="assets/figma/home-img2.svg" alt=""></span><span>기준선</span></a><nav class="desktop-nav" aria-label="주 메뉴"><a href="inspection.html" aria-current="page">검사 예시</a><a href="process.html">적용 공정</a><a href="index.html#introduction">도입 절차</a><a href="consultation.html" class="nav-contact">도입 상담</a></nav><button class="menu-trigger" type="button" aria-haspopup="dialog" aria-controls="mobile-menu" aria-expanded="false"><span class="menu-lines" aria-hidden="true"></span>메뉴</button></div></header>
+  <main id="main-content" tabindex="-1">
+    <section class="page-hero inspection-hero" aria-labelledby="inspection-title">
+      <div class="inspection-hero-image" aria-hidden="true">
+        <img data-selected-image id="inspection-banner" alt="" width="2163" height="727"><noscript><img src="assets/optimized/inspection-scratch-banner-800.webp" alt="" width="2163" height="727"></noscript>
+      </div>
+      <div class="container inspection-hero-copy">
+        <p class="eyebrow">검사 예시</p>
+        <h1 id="inspection-title">표면 흠집 검사</h1>
+      </div>
+    </section>
+
+    <section class="container inspection-content" aria-label="검사 종류별 예시">
+      <div class="inspection-tabs" role="tablist" aria-label="검사 종류">
+        <button id="tab-scratch" type="button" role="tab" aria-selected="true" aria-controls="inspection-panel" data-type="scratch">표면 흠집</button>
+        <button id="tab-missing" type="button" role="tab" aria-selected="false" aria-controls="inspection-panel" tabindex="-1" data-type="missing">부품 누락</button>
+        <button id="tab-print" type="button" role="tab" aria-selected="false" aria-controls="inspection-panel" tabindex="-1" data-type="print">인쇄 상태</button>
+      </div>
+
+      <div id="inspection-panel" class="inspection-panel" role="tabpanel" aria-labelledby="tab-scratch" tabindex="0">
+        <div class="inspection-visuals">
+          <figure class="inspection-figure">
+            <figcaption class="inspection-visual-heading">
+              <h2>전체 제품 · 검사 위치</h2>
+            </figcaption>
+            <div class="inspection-photo inspection-photo-whole">
+              <img data-selected-image id="inspection-whole" class="inspection-original" alt="표면에 선형 흠집이 있는 금속 제품. 사각형으로 검사 위치를 표시했습니다." width="1000" height="750"><noscript><img class="inspection-original" src="assets/optimized/scratch-original.jpg" alt="표면에 선형 흠집이 있는 금속 제품. 사각형으로 검사 위치를 표시했습니다." width="1000" height="750"></noscript>
+              <span class="inspection-roi" aria-hidden="true"></span>
+            </div>
+          </figure>
+          <figure class="inspection-figure">
+            <figcaption class="inspection-visual-heading">
+              <h2 id="inspection-feature">표시 영역 확대 · 선형 흠집</h2>
+              <span class="inspection-zoom-label">2배 확대</span>
+            </figcaption>
+            <div class="inspection-photo inspection-photo-detail">
+              <img data-selected-image id="inspection-detail" class="inspection-zoom-image" alt="금속 제품의 선형 흠집을 2배 확대한 사진." width="1000" height="750"><noscript><img class="inspection-zoom-image" src="assets/optimized/scratch-original.jpg" alt="금속 제품의 선형 흠집을 2배 확대한 사진." width="1000" height="750"></noscript>
+              <span class="inspection-mark" aria-hidden="true"><img id="inspection-mark" src="./assets/figma/451-1002-img7.svg" alt=""></span>
+            </div>
+          </figure>
+        </div>
+        <dl class="inspection-explanation" aria-label="검사 예시 안내">
+          <div>
+            <dt>검사 대상</dt>
+            <dd id="inspection-target">가공 후 금속 부품 표면의 선형 흠집을 살펴보는 예시입니다.</dd>
+          </div>
+          <div>
+            <dt>확인 포인트</dt>
+            <dd id="inspection-point">표시 영역에서 가늘게 이어진 흠집의 위치와 형태를 확인해 보세요.</dd>
+          </div>
+          <div>
+            <dt>상담 전 준비</dt>
+            <dd id="inspection-preparation">제품 전체·흠집 부위 사진과 정상·불량으로 구분한 샘플을 준비해 주세요.</dd>
+          </div>
+        </dl>
+        <p class="inspection-disclaimer">이미지 예시입니다. 실제 판정 조건은 샘플 확인 후 정합니다.</p>
+        <div class="inspection-consultation">
+          <span class="inspection-focus-icon" aria-hidden="true">
+            <img src="./assets/figma/451-1002-img4.svg" alt="">
+            <img src="./assets/figma/451-1002-img5.svg" alt="">
+          </span>
+          <h2 id="inspection-cta-title">표면 흠집 검사 도입</h2>
+          <a id="inspection-consultation-link" class="btn btn-primary" href="./consultation.html?type=scratch">이 검사로 상담하기 <img class="arrow" src="./assets/figma/451-1002-img3.svg" alt=""></a>
+        </div>
+      </div>
+      <p id="inspection-status" class="visually-hidden" role="status" aria-live="polite"></p>
+      <noscript><p>JavaScript가 꺼져 있어 표면 흠집 예시를 표시합니다. 다른 검사 탭을 사용하려면 JavaScript를 켜 주세요.</p></noscript>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html" aria-label="기준선 홈"><span class="brand-icon" aria-hidden="true"><img src="assets/figma/home-img.svg" alt=""><img src="assets/figma/home-img1.svg" alt=""><img src="assets/figma/home-img2.svg" alt=""></span><span>기준선</span></a><p class="footer-note">산업용 비전 검사</p><nav class="footer-nav" aria-label="하단 메뉴"><a href="inspection.html">검사 예시</a><a href="process.html">적용 공정</a><a href="index.html#introduction">도입 절차</a></nav></div><div class="container portfolio-note"><p>개인 포트폴리오 · 가상 기업</p><a href="implementation.html">구현 설명 보기 <span aria-hidden="true">↗</span></a></div></footer>
+</body>
+</html>
