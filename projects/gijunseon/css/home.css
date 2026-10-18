@@ -92,20 +92,134 @@
   border-inline: 1px solid #ffffff66
 }
 
-.home-inspections {
-  padding-block: 56px 62px
+.home-solutions {
+  padding-block: 80px;
+  background: var(--page);
+  scroll-margin-top: 24px
 }
 
-.home-inspections h2,.section-heading h2 {
+/* 같은 HTML 순서로 모바일에서는 소개 → 사진 → 구성 설명을 읽습니다. */
+.solution-layout {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  grid-template-areas: 'media intro' 'media details';
+  gap: 16px 64px;
+  align-items: start
+}
+
+.solution-intro {
+  grid-area: intro;
+  display: flex;
+  flex-direction: column;
+  gap: 16px
+}
+
+.solution-eyebrow {
+  color: var(--action-hover);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px
+}
+
+.solution-intro h2 {
+  font-size: 32px;
+  line-height: 46px
+}
+
+.solution-description {
+  color: var(--secondary);
+  font-size: 16px;
+  line-height: 28px;
+  word-break: keep-all;
+  overflow-wrap: anywhere
+}
+
+.solution-media {
+  grid-area: media;
+  align-self: center;
+  min-width: 0
+}
+
+.solution-media-image {
+  height: 420px;
+  overflow: hidden
+}
+
+.solution-media-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 76% center
+}
+
+.solution-media figcaption {
+  margin-top: 12px;
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 22px
+}
+
+.solution-details {
+  grid-area: details;
+  min-width: 0
+}
+
+.solution-features {
+  margin: 0
+}
+
+.solution-features>div {
+  display: grid;
+  grid-template-columns: 72px minmax(0,1fr);
+  gap: 16px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border)
+}
+
+.solution-features dt {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px
+}
+
+.solution-features dd {
+  margin: 0;
+  color: var(--secondary);
+  font-size: 15px;
+  line-height: 26px;
+  word-break: keep-all;
+  overflow-wrap: anywhere
+}
+
+.solution-process-link {
+  margin-top: 16px;
+  padding-inline: 0;
+  color: var(--action-hover);
+  font-weight: 500
+}
+
+.home-inspections {
+  padding-block: 64px
+}
+
+.home-inspections h2,.section-heading h2,.home-consultation h2 {
   font-size: 30px;
   line-height: 40px
+}
+
+.inspection-lead {
+  margin-top: 12px;
+  color: var(--secondary);
+  font-size: 16px;
+  line-height: 26px;
+  word-break: keep-all
 }
 
 .inspection-cards {
   display: grid;
   grid-template-columns: repeat(3,minmax(0,1fr));
   gap: 24px;
-  margin-top: 36px
+  margin-top: 32px
 }
 
 .inspection-card {
@@ -206,8 +320,7 @@
 .introduction {
   background: var(--dark);
   color: white;
-  min-height: 432px;
-  padding-block: 62px 72px;
+  padding-block: 56px;
   scroll-margin-top: 24px
 }
 
@@ -218,11 +331,9 @@
   gap: 24px
 }
 
-.preparation-link {
-  background: none;
-  border: 0;
+.adoption-detail-link {
   color: white;
-  padding: 0;
+  padding-inline: 0;
   font-weight: 500
 }
 
@@ -230,7 +341,7 @@
   display: grid;
   grid-template-columns: repeat(3,1fr);
   gap: 24px;
-  margin-top: 40px
+  margin-top: 32px
 }
 
 .intro-steps li {
@@ -253,40 +364,62 @@
 .intro-steps h3 {
   font-size: 20px;
   line-height: 28px;
-  margin-top: 24px
+  margin-top: 16px
 }
 
 .intro-steps h3 span {
-  color: var(--accent);
   margin-right: 10px
 }
 
 .step-description {
-  max-width: 290px;
-  margin: 12px auto 0;
-  color: #d1d5d2;
+  max-width: 330px;
+  margin: 8px auto 0;
+  color: white;
   font-size: 15px;
   line-height: 25px;
   word-break: keep-all;
   overflow-wrap: anywhere
 }
 
-.intro-steps li+li:before {
-  content: '';
-  position: absolute;
-  left: -34px;
-  top: 74px;
-  width: 46px;
-  height: 14px;
-  background: url('../assets/figma/home-img0102.svg') left center no-repeat
-}
-
 .hero-content {
   padding-top: 90px
 }
 
-.home-inspections {
-  padding-top: 64px
+.home-consultation {
+  padding-block: 48px
+}
+
+.home-consultation-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px
+}
+
+.home-consultation-copy {
+  min-width: 0
+}
+
+.home-consultation-copy p {
+  margin-top: 12px;
+  color: var(--secondary);
+  font-size: 16px;
+  line-height: 26px;
+  word-break: keep-all
+}
+
+.home-consultation-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 16px
+}
+
+.home-consultation-actions .btn-primary {
+  min-width: 216px
+}
+
+.home-consultation-actions .btn-secondary {
+  min-width: 228px
 }
 
 @media(max-width:1100px) {
@@ -305,8 +438,13 @@
     padding-inline: 0;
     font-size: 14px
   }
-  .intro-steps li+li:before {
-    left: -26px
+  .solution-layout {
+    column-gap: 40px
+  }
+  .home-consultation-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 24px
   }
 }
 
@@ -315,13 +453,25 @@
     padding-block: 72px 90px
   }
   .hero-description {
-    max-width: 420px
+    max-width: 520px
   }
   .home-hero-photo {
     object-position: 60% center
   }
   .hero-shade {
     background: linear-gradient(90deg,#242628f0,#242628b0 50%,#24262822)
+  }
+  .home-solutions {
+    padding-block: 48px
+  }
+  .solution-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'intro' 'media' 'details';
+    gap: 16px
+  }
+  .solution-intro h2 {
+    font-size: 28px;
+    line-height: 40px
   }
   .card-caption {
     grid-template-columns: 1fr;
@@ -359,13 +509,9 @@
   }
   .intro-steps h3 {
     font-size: 18px;
-    margin-top: 8px
+    margin-top: 16px
   }
-  .intro-steps li+li:before {
-    left: -20px;
-    transform: scale(.65)
-  }
-  .section-heading h2,.home-inspections h2 {
+  .section-heading h2,.home-inspections h2,.home-consultation h2 {
     font-size: 26px
   }
 }
@@ -402,6 +548,9 @@
     margin-top: 18px;
     word-break: keep-all
   }
+  .hero-description span {
+    display: block
+  }
   .hero-actions {
     gap: 10px;
     margin-top: 24px
@@ -416,17 +565,24 @@
   .hero-actions .arrow {
     display: none
   }
-  .home-inspections {
-    padding-block: 40px
+  .solution-media-image {
+    height: auto;
+    aspect-ratio: 350 / 260
   }
-  .home-inspections h2,.section-heading h2 {
+  .solution-media figcaption {
+    margin-top: 8px
+  }
+  .home-inspections {
+    padding-block: 40px 48px
+  }
+  .home-inspections h2,.section-heading h2,.home-consultation h2 {
     font-size: 26px;
-    line-height: 36px
+    line-height: 40px
   }
   .inspection-cards {
     grid-template-columns: 1fr;
     gap: 24px;
-    margin-top: 24px
+    margin-top: 32px
   }
   .card-caption {
     grid-template-columns: minmax(0,1fr) auto;
@@ -446,10 +602,10 @@
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
-    gap: 8px
+    gap: 12px
   }
-  .preparation-link {
-    font-size: 14px
+  .adoption-detail-link {
+    font-size: 16px
   }
   .introduction {
     padding-block: 40px
@@ -457,20 +613,16 @@
   .intro-steps {
     grid-template-columns: 1fr;
     gap: 24px;
-    margin-top: 28px
+    margin-top: 32px
   }
   .intro-steps li {
     display: grid;
     grid-template-columns: clamp(112px,33vw,144px) minmax(0,1fr);
     grid-template-areas: 'art title' 'art copy';
     column-gap: 16px;
-    row-gap: 6px;
+    row-gap: 8px;
     align-content: center;
     text-align: left
-  }
-  .intro-steps li+li {
-    padding-top: 24px;
-    border-top: 1px solid #ffffff26
   }
   .step-art {
     grid-area: art;
@@ -489,9 +641,17 @@
     grid-area: copy;
     margin: 0;
     font-size: 14px;
-    line-height: 24px
+    line-height: 25px
   }
-  .intro-steps li+li:before {
-    display: none
+  .home-consultation {
+    padding-block: 40px
+  }
+  .home-consultation-actions {
+    flex-direction: column;
+    width: 100%
+  }
+  .home-consultation-actions .btn {
+    width: 100%;
+    min-width: 0
   }
 }

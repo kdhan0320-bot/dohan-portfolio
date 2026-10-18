@@ -1,0 +1,310 @@
+/* 도입 절차 Figma 817:2 / 817:3. 공통 토큰과 도식을 그대로 사용합니다. */
+.adoption-hero {
+  padding-block: 56px;
+  background: var(--tint);
+}
+
+.adoption-hero .container {
+  display: grid;
+  gap: 12px;
+}
+
+.adoption-eyebrow {
+  color: var(--action-hover);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.adoption-hero h1 {
+  font-size: 40px;
+  line-height: 56px;
+}
+
+.adoption-lead {
+  max-width: 860px;
+  color: var(--secondary);
+  font-size: 18px;
+  line-height: 30px;
+}
+
+.adoption-jump {
+  padding-block: 32px;
+}
+
+.adoption-jump ol {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 16px;
+}
+
+.adoption-jump a {
+  display: grid;
+  gap: 4px;
+  padding: 20px;
+  background: var(--page);
+  border-radius: 4px;
+}
+
+.adoption-jump a:hover {
+  box-shadow: inset 0 0 0 1px var(--action);
+}
+
+.adoption-jump span,.adoption-preparation-number {
+  color: var(--action);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.adoption-jump strong {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  white-space: nowrap;
+}
+
+.adoption-steps {
+  display: grid;
+  gap: 48px;
+  padding-block: 24px 64px;
+}
+
+.adoption-step {
+  scroll-margin-top: 24px;
+}
+
+.adoption-step h2 {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 30px;
+  line-height: 42px;
+}
+
+.adoption-step h2 span {
+  flex: 0 0 42px;
+  color: var(--action);
+  font-size: 26px;
+}
+
+.adoption-step-lead {
+  margin-top: 8px;
+  color: var(--secondary);
+  line-height: 26px;
+}
+
+.adoption-step-body {
+  display: grid;
+  grid-template-columns: 400px minmax(0,1fr);
+  gap: 40px;
+  margin-top: 24px;
+}
+
+.adoption-art {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  background: var(--page);
+}
+
+.adoption-art img {
+  max-width: 100%;
+  height: auto;
+}
+
+.adoption-facts {
+  margin: 0;
+  align-self: start;
+  line-height: 26px;
+}
+
+.adoption-facts>div {
+  display: grid;
+  grid-template-columns: 112px minmax(0,1fr);
+  gap: 24px;
+  padding-block: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.adoption-facts dt {
+  font-weight: 500;
+}
+
+.adoption-facts dd {
+  margin: 0;
+  color: var(--secondary);
+}
+
+.adoption-note {
+  color: var(--secondary);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.adoption-preparation {
+  padding-block: 48px;
+  background: var(--page);
+}
+
+.adoption-preparation h2 {
+  font-size: 30px;
+  line-height: 42px;
+}
+
+.adoption-preparation-list {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.adoption-preparation-list li {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 24px;
+  background: var(--surface);
+}
+
+.adoption-preparation-list h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+
+.adoption-preparation-list p {
+  color: var(--secondary);
+  line-height: 26px;
+}
+
+.adoption-cta {
+  padding-block: 48px;
+  background: var(--dark);
+  color: var(--surface);
+}
+
+.adoption-cta>.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.adoption-cta h2 {
+  font-size: 30px;
+  line-height: 44px;
+}
+
+.adoption-cta p {
+  margin-top: 12px;
+  line-height: 26px;
+}
+
+.adoption-cta .btn {
+  min-width: 236px;
+  flex: none;
+}
+
+.adoption-cta :focus-visible {
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 8px var(--dark);
+}
+
+.adoption-lead,.adoption-step p,.adoption-facts,.adoption-note,
+.adoption-preparation-list p,.adoption-cta p {
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+@media(max-width:1100px) {
+  .adoption-step-body {
+    grid-template-columns: minmax(280px, .85fr) minmax(0,1.15fr);
+    gap: 32px;
+  }
+  .adoption-facts>div {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding-block: 16px;
+  }
+  .adoption-cta>.container {
+    gap: 32px;
+  }
+}
+
+@media(max-width:760px) {
+  .adoption-step-body {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .adoption-art {
+    min-height: 200px;
+  }
+  .adoption-preparation-list {
+    grid-template-columns: 1fr;
+  }
+  .adoption-cta>.container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .adoption-cta .btn {
+    width: 100%;
+  }
+}
+
+@media(max-width:600px) {
+  .adoption-hero {
+    padding-block: 40px;
+  }
+  .adoption-hero h1 {
+    font-size: 32px;
+    line-height: 44px;
+  }
+  .adoption-hero h1 span {
+    display: block;
+  }
+  .adoption-lead {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .adoption-jump {
+    padding-block: 24px;
+  }
+  .adoption-jump ol {
+    gap: 12px;
+  }
+  .adoption-jump a {
+    padding: 12px;
+  }
+  .adoption-jump strong {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .adoption-steps {
+    gap: 40px;
+    padding-block: 16px 48px;
+  }
+  .adoption-step h2,.adoption-preparation h2 {
+    font-size: 26px;
+    line-height: 38px;
+  }
+  .adoption-step h2 span {
+    flex-basis: 34px;
+    font-size: 22px;
+    line-height: 34px;
+  }
+  .adoption-preparation,.adoption-cta {
+    padding-block: 40px;
+  }
+  .adoption-cta h2 {
+    font-size: 26px;
+    line-height: 38px;
+  }
+}
+
+@media(max-width:360px) {
+  .adoption-jump ol {
+    gap: 8px;
+  }
+  .adoption-jump a {
+    padding: 10px;
+  }
+}

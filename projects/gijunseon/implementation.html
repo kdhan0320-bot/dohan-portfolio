@@ -21,7 +21,7 @@
     <div class="document-intro">
       <p class="document-eyebrow">제출용 구현 설명</p>
       <h1>기준선 구현 노트</h1>
-      <p class="document-lead">산업용 비전 검사를 소개하는 가상 기업 사이트입니다. 기존 Figma 디자인을 반응형 웹으로 구현하고, 검사 예시 탐색에서 상담 시연까지 연결했습니다.</p>
+      <p class="document-lead">산업용 비전 검사를 소개하는 가상 기업 사이트입니다. Figma 디자인을 바탕으로 홈의 제품 소개와 검사 예시, 별도 도입 절차, 상담 시연을 반응형 웹으로 구성합니다.</p>
       <div class="document-links">
         <a href="index.html">실행 화면 보기 <span aria-hidden="true">↗</span></a>
         <a href="https://www.figma.com/design/3ZJ4TUGqBNAewsJYzheOWo?node-id=451-747" target="_blank" rel="noreferrer">Figma 원본 <span class="sr-only">새 창</span><span aria-hidden="true">↗</span></a>
@@ -30,7 +30,7 @@
 
     <dl class="document-facts">
       <div><dt>목표</dt><dd>디자인 구현 · 반응형 · 기본 상호작용</dd></div>
-      <div><dt>범위</dt><dd>메인 · 공정 안내 · 검사 예시 · 상담</dd></div>
+      <div><dt>범위</dt><dd>제품 소개 · 적용 공정 · 검사 예시 · 도입 절차 · 상담</dd></div>
       <div><dt>기반</dt><dd>HTML · CSS · JavaScript<br>별도 패키지·빌드 없이 실행</dd></div>
     </dl>
 
@@ -67,6 +67,7 @@
     <section class="document-section" aria-labelledby="implementation-refinements">
       <h2 id="implementation-refinements">피드백을 반영한 보완</h2>
       <ul class="refinement-list">
+        <li><strong>페이지 역할</strong><span>홈에는 제품 소개·검사 3종·도입 검토 요약을 둡니다. 적용 공정은 검사 시점을, 별도 도입 절차는 검토 흐름을 설명하고 상담 시연으로 연결합니다.</span></li>
         <li><strong>검사 설명</strong><span>사진 아래에 검사 대상·확인 포인트·상담 전 준비를 추가했습니다. 인쇄 예시와 실제 바코드 판독 결과도 구분했습니다.</span></li>
         <li><strong>입력 유지</strong><span>상담 중 준비 안내를 읽고 돌아올 때 페이지를 다시 열지 않아, 입력 내용과 선택 검사를 유지합니다.</span></li>
         <li><strong>브랜드와 제목</strong><span>기존 색상을 유지하고 두 로고 후보 중 선택한 심볼 정돈안을 적용했습니다. 로고의 선·간격과 제목의 굵기를 정돈하고, 파비콘은 작은 크기용 완전한 형태로 보완했습니다.</span></li>
@@ -94,13 +95,14 @@
     <section class="document-section" aria-labelledby="implementation-validation">
       <h2 id="implementation-validation">검증과 시연 범위</h2>
       <div id="implementation-verification" class="verification-note">
-        <p>2026-10-18 · 로컬 Chromium · 320·390·768·1440px</p>
-        <p>4개 화면의 가로 넘침, 누락 이미지, 페이지 오류를 검사하고 실제 렌더링을 확인했습니다. 앞선 이미지 최적화 비교는 같은 390×844px·DPR 1·빈 캐시·스크롤 전 조건에서 문서를 제외한 리소스 본문 용량을 측정한 결과입니다.</p>
-        <p>메뉴·탭·뒤로가기, 필수 입력 오류, 안내창의 키보드 조작과 초점 복귀를 재검사했습니다. 상담 준비 안내 이후 입력·동의·검사 선택 유지와 개인정보 비전송을 확인했습니다.</p>
+        <p>홈·도입 절차 확장 검증 · 2026-10-18 · 로컬 Chromium · 320·390·768·1440px</p>
+        <p>홈과 새 도입 절차를 렌더링하고 실제 캡처를 확인했습니다. 검사 범위에서 가로 넘침·누락 이미지·페이지/콘솔/HTTP 오류를 발견하지 못했습니다. 도입 절차는 배치 전환 부근 760·761px에서도 확인했습니다.</p>
+        <p>22개 핵심 동작 검사가 통과했습니다. 메뉴·탭·뒤로가기·필수 입력 오류·안내창의 키보드 조작과 초점 복귀, 상담 준비 이후 입력·동의·검사 선택 유지와 개인정보 비전송을 재검사했습니다. 새 도입 절차의 단계 이동과 상담 연결도 확인했습니다.</p>
+        <p>앞선 이미지 최적화 비교는 같은 390×844px·DPR 1·빈 캐시·스크롤 전 조건에서 문서를 제외한 리소스 본문 용량을 측정한 결과입니다. 이번 확장본의 용량을 다시 측정한 수치는 아닙니다.</p>
       </div>
       <p class="document-limit">실제 휴대전화, Safari·Firefox, 스크린리더와 외부 배포 환경의 로딩 속도는 미검증입니다.</p>
       <p class="document-limit">문의는 브라우저 안에서만 검증하며 서버로 전송하거나 개인정보를 저장하지 않습니다. 실제 상담 접수·API·DB 기능은 없습니다.</p>
-      <p id="implementation-deployment" class="document-limit">선택한 A 로고 적용 · GitHub Pages 정적 배포 · 문의는 실제 전송되지 않는 시연용입니다.</p>
+      <p id="implementation-deployment" class="document-limit">선택한 A 로고를 유지한 홈 제품 소개·별도 도입 절차 확장본입니다. 미리보기 확인과 배포 승인을 거쳤으며, 위 검증 기록은 로컬 Chromium에서 확인한 범위를 설명합니다.</p>
     </section>
   </main>
 
