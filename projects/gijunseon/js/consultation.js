@@ -51,7 +51,7 @@ function renderSelection(announce = false) {
 }
 
 function fieldError(field) {
-  if (field.type === 'checkbox') return field.checked ? '' : '개인정보 시연 안내를 확인하고 필수 항목에 동의해 주세요.';
+  if (field.type === 'checkbox') return field.checked ? '' : '개인정보 시연 안내 확인란을 선택해 주세요.';
   if (!field.value.trim()) {
     return {
       'consult-company': '회사명을 입력해 주세요.',
@@ -158,4 +158,7 @@ form.addEventListener('submit', (event) => {
 renderSelection();
 new ResizeObserver(sizeMarker).observe(product);
 setupDialogs();
-document.querySelector('#consult-submit').disabled = false;
+// JavaScript 없이 보이는 버튼은 비활성 상태로 두고, 시연 준비가 끝나면 활성화합니다.
+[changeButton, privacyButton, document.querySelector('#consult-submit')].forEach(button => {
+  button.disabled = false;
+});

@@ -39,7 +39,7 @@ h1,h2,h3,p,figure {
 }
 
 h1,h2,h3 {
-  font-weight: 400;
+  font-weight: 500;
   word-break: keep-all;
   overflow-wrap: break-word
 }
@@ -86,6 +86,22 @@ ul,ol {
 :focus-visible {
   outline: 3px solid #236caa;
   outline-offset: 5px
+}
+
+/* 어두운 배경은 기존 강조색으로 초점을 표시합니다. 사진 위에는 짙은 받침을 둡니다. */
+:is(.home-hero,.introduction,.process-cta) :focus-visible {
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 8px var(--dark)
+}
+
+[data-open-preparation]:disabled {
+  color: var(--secondary);
+  text-decoration: none;
+  opacity: .65
+}
+
+.introduction [data-open-preparation]:disabled {
+  color: #d1d5d2
 }
 
 main:focus {
@@ -146,38 +162,45 @@ a,button {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-height: 44px;
   flex: none;
-  font-size: 22px;
-  letter-spacing: -.22px
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -.8px
 }
 
 .brand-icon {
-  position: relative;
   display: block;
-  width: 40px;
-  height: 42px
+  flex: none;
+  width: 36px;
+  height: 36px
 }
 
 .brand-icon img {
+  width: 100%;
+  height: 100%
+}
+
+/* 글자 중심안은 이 클래스와 파비콘만 교체해 같은 구조에서 비교할 수 있습니다. */
+.brand--wordmark .brand-icon {
+  display: none
+}
+
+.brand--wordmark .brand-name {
+  position: relative;
+  padding-bottom: 8px
+}
+
+.brand--wordmark .brand-name:after {
+  content: '';
   position: absolute;
-  max-width: none
-}
-
-.brand-icon img:nth-child(1) {
-  left: 1.5px;
-  top: 1.4px
-}
-
-.brand-icon img:nth-child(2) {
-  left: 1.5px;
-  top: 21.5px
-}
-
-.brand-icon img:nth-child(3) {
-  left: 11.5px;
-  top: 18.5px
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--action)
 }
 
 .desktop-nav {
@@ -326,8 +349,8 @@ a,button {
   gap: 8px 20px;
   border-top: 1px solid var(--border);
   color: var(--secondary);
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 22px;
   padding-block: 4px;
   flex-wrap: wrap
 }
@@ -592,8 +615,12 @@ dialog h2 {
     height: 72px
   }
   .brand {
-    font-size: 20px;
+    font-size: 22px;
     gap: 10px
+  }
+  .brand-icon {
+    width: 32px;
+    height: 32px
   }
   .page-hero {
     min-height: 214px

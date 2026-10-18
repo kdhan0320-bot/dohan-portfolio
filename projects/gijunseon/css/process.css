@@ -53,11 +53,13 @@
   display: grid;
   place-items: center;
   min-height: 200px;
+  padding-inline: 12px;
   overflow: hidden
 }
 
 .process-art img {
-  max-width: none
+  width: min(100%,320px);
+  height: auto
 }
 
 .process-art.scratch {
@@ -140,12 +142,12 @@
 
 @media(max-width:700px) {
   .process-list {
-    padding-block: 36px;
-    gap: 36px
+    padding-block: 32px;
+    gap: 28px
   }
   .process-row {
     grid-template-columns: 1fr;
-    gap: 16px
+    gap: 12px
   }
   .process-copy {
     padding-top: 0
@@ -158,10 +160,11 @@
     margin-top: 8px
   }
   .process-art {
-    min-height: 200px
+    min-height: 176px;
+    padding-block: 8px
   }
   .process-art img {
-    transform: scale(.9)
+    max-width: 256px
   }
   .process-cta>.container {
     padding-block: 32px;

@@ -41,7 +41,10 @@ export function setupDialogs() {
 }
 setupDialogs();
 document.querySelector('.menu-trigger').addEventListener('click', event => openDialog(document.querySelector('#mobile-menu'), event.currentTarget));
-document.querySelectorAll('[data-open-preparation]').forEach(button => button.addEventListener('click', event => openDialog(document.querySelector('#preparation-dialog'), event.currentTarget)));
+document.querySelectorAll('[data-open-preparation]').forEach(button => {
+  button.addEventListener('click', event => openDialog(document.querySelector('#preparation-dialog'), event.currentTarget));
+  button.disabled = false;
+});
 document.querySelectorAll('#mobile-menu a').forEach(link => link.addEventListener('click', () => document.querySelector('#mobile-menu').close()));
 matchMedia('(min-width:901px)').addEventListener('change', event => { if(event.matches) document.querySelector('#mobile-menu').close(); });
 

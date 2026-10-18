@@ -2,7 +2,7 @@
 .consult-selection-card { padding: 24px; background: #f4e7e0; }
 .consult-small { margin: 0; color: #5c6265; font-size: 14px; line-height: 22px; }
 .consult-selection-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
-.consult-selection h2, .consult-contact h2 { margin: 0; font-size: 26px; line-height: 38px; font-weight: 400; letter-spacing: -.02em; }
+.consult-selection h2, .consult-contact h2 { margin: 0; font-size: 26px; line-height: 38px; font-weight: 500; letter-spacing: -.02em; }
 .consult-change { min-width: 136px; min-height: 44px; padding: 9px 16px; background: #fff; border: 1px solid #7b8180; border-radius: 2px; font-size: 16px; line-height: 24px; white-space: nowrap; }
 .consult-product { position: relative; aspect-ratio: 4 / 3; margin-top: 14px; overflow: hidden; }
 .consult-product > img:first-child { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -23,6 +23,8 @@
 .consult-consent { margin-top: 16px; }
 .consult-consent-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .consult-checkbox-label { display: flex; align-items: center; gap: 12px; min-height: 48px; font-size: 14px; line-height: 24px; cursor: pointer; }
+.consult-checkbox-label span { min-width: 0; word-break: keep-all; overflow-wrap: break-word; }
+.consult-acknowledgement { white-space: nowrap; }
 .consult-checkbox-label input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: #b94f35; cursor: pointer; }
 .consult-checkbox-label input[aria-invalid='true'] { outline: 2px solid #a32f25; outline-offset: 2px; }
 .consult-privacy-open { display: inline-flex; align-items: center; justify-content: flex-end; gap: 14px; flex: none; min-width: 104px; min-height: 48px; color: #5c6265; font-size: 14px; line-height: 24px; }
@@ -35,7 +37,7 @@
 .consult-error-summary a { display: inline-block; padding-block: 4px; color: inherit; font-size: 14px; line-height: 22px; text-decoration: underline; text-underline-offset: 3px; }
 .consult-dialog { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 40px; border: 0; border-radius: 4px; color: #252829; background: #fff; box-shadow: 0 16px 48px rgb(0 0 0 / 18%); overflow: auto; }
 .consult-dialog::backdrop { background: rgb(36 38 40 / 55%); }
-.consult-dialog h2 { margin: 0; padding-right: 32px; font-size: 26px; font-weight: 400; line-height: 38px; letter-spacing: -.02em; }
+.consult-dialog h2 { margin: 0; padding-right: 32px; font-size: 26px; font-weight: 500; line-height: 38px; letter-spacing: -.02em; }
 .consult-dialog-close { position: absolute; top: 24px; right: 24px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: #252829; font: inherit; font-size: 30px; line-height: 1; cursor: pointer; }
 .consult-dialog-close img { max-width: none; }
 .consult-dialog-confirm { display: flex; justify-content: center; align-items: center; width: 100%; min-height: 52px; }
@@ -43,7 +45,7 @@
 .consult-inspection-dialog .consult-dialog-confirm { margin-top: 28px; }
 .consult-privacy-dialog { width: min(520px, calc(100% - 32px)); padding-block: 32px 40px; }
 .consult-privacy-dialog h2 { font-size: 16px; line-height: 24px; font-weight: 500; }
-.consult-privacy-dialog > p { margin: 28px 0 32px; color: #5c6265; font-size: 16px; line-height: 24px; }
+.consult-privacy-dialog > p { margin: 28px 0 32px; color: #5c6265; font-size: 16px; line-height: 24px; word-break: keep-all; overflow-wrap: break-word; }
 .consult-privacy-dialog .consult-dialog-confirm { min-height: 44px; }
 .consult-privacy-dialog .consult-dialog-close { top: 20px; right: 32px; }
 .consult-complete-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 26px auto 32px; border-radius: 50%; background: #e9f1eb; }
@@ -54,7 +56,10 @@
 .consult-complete-summary p { margin: 0; overflow-wrap: anywhere; font-size: 16px; line-height: 24px; }
 .consult-complete-summary p + p { margin-top: 14px; color: #5c6265; font-size: 14px; line-height: 22px; }
 .consult-complete-dialog .consult-dialog-confirm { margin-top: 44px; }
-.consult-noscript { margin: 24px; padding: 16px; background: #f4e7e0; font-size: 14px; line-height: 24px; }
+.consult-noscript { margin: 0 0 24px; padding: 16px; background: #f4e7e0; font-size: 14px; line-height: 24px; word-break: keep-all; overflow-wrap: break-word; }
+.consult-change:disabled, .consult-privacy-open:disabled, .consult-submit:disabled { color: #5c6265; background: #f0f0ec; border-color: #cdd0cb; cursor: not-allowed; }
+.consult-privacy-open:disabled { background: transparent; text-decoration: none; }
+.consult-privacy-open:disabled img, .consult-submit:disabled img { opacity: .45; }
 
 @media (max-width: 1100px) {
   .consult-layout { grid-template-columns: minmax(280px, 340px) minmax(0, 1fr); gap: 40px; }
@@ -94,7 +99,7 @@
   .consult-checkbox-label { align-items: flex-start; padding-block: 12px; }
   .consult-checkbox-label span { min-width: 0; }
   .consult-privacy-open { margin-left: 36px; min-height: 44px; justify-content: flex-start; }
-  .consult-form-note { font-size: 12px; line-height: 20px; }
+  .consult-form-note { font-size: 13px; line-height: 22px; }
   .consult-dialog { padding: 28px 24px; }
   .consult-dialog-close, .consult-privacy-dialog .consult-dialog-close { top: 14px; right: 12px; }
   .consult-dialog h2 { font-size: 22px; line-height: 34px; }
