@@ -1,4 +1,6 @@
-.consult-layout { display: grid; grid-template-columns: 400px minmax(0, 720px); align-items: start; gap: 64px; width: min(1184px, calc(100% - 64px)); margin: 48px auto 28px; }
+body[data-page="consultation"] > main { display: flex; flex-direction: column; }
+/* 큰 화면의 여유 높이는 폼 위아래에 나눕니다. 입력칸 자체는 늘리지 않습니다. */
+.consult-layout { flex: 1 0 auto; display: grid; grid-template-columns: 400px minmax(0, 720px); align-items: start; align-content: center; gap: 64px; width: min(1184px, calc(100% - 64px)); margin: 48px auto 28px; }
 .consult-selection-card { padding: 24px; background: #f4e7e0; }
 .consult-small { margin: 0; color: #5c6265; font-size: 14px; line-height: 22px; }
 .consult-selection-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
@@ -40,7 +42,7 @@
 .consult-error-summary { margin: 0 0 24px; padding: 18px 20px; border: 1px solid #a32f25; background: #fff7f4; color: #a32f25; }
 .consult-error-summary h3 { margin: 0 0 8px; font-size: 16px; line-height: 24px; font-weight: 500; }
 .consult-error-summary ul { margin: 0; padding-left: 20px; list-style: disc; }
-.consult-error-summary a { display: block; padding-block: 4px; color: inherit; font-size: 14px; line-height: 22px; text-decoration: underline; text-underline-offset: 3px; }
+.consult-error-summary a { display: block; padding-block: 4px; color: inherit; font-size: 14px; line-height: 22px; text-decoration: underline; text-underline-offset: 3px; word-break: keep-all; overflow-wrap: anywhere; }
 .consult-dialog { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 40px; border: 0; border-radius: 4px; color: #252829; background: #fff; box-shadow: 0 16px 48px rgb(0 0 0 / 18%); overflow: auto; }
 .consult-dialog::backdrop { background: rgb(36 38 40 / 55%); }
 .consult-dialog-close { position: absolute; top: 24px; right: 24px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: #252829; font: inherit; font-size: 30px; line-height: 1; cursor: pointer; }

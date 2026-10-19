@@ -34,6 +34,24 @@ body:has(dialog[open]) {
   overflow: hidden
 }
 
+/* 짧은 페이지에서도 푸터 아래로 화면 바탕이 남지 않도록 합니다.
+   최소 높이만 지정하므로 긴 본문과 오류 안내는 자연스럽게 늘어납니다. */
+body[data-page] {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh
+}
+
+body[data-page] > main {
+  flex: 1 0 auto
+}
+
+body[data-page] > .site-header,
+body[data-page] > .site-footer {
+  flex: none
+}
+
 h1,h2,h3,p,figure {
   margin: 0
 }

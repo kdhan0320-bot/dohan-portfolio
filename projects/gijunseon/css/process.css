@@ -1,4 +1,11 @@
+body[data-page="process"] > main {
+  display: flex;
+  flex-direction: column
+}
+
 .process-list {
+  flex: 1 0 auto;
+  align-content: center;
   padding-block: 48px;
   display: grid;
   gap: 24px

@@ -289,13 +289,15 @@
 
 .card-caption h3 {
   font-size: 22px;
-  line-height: 38px;
+  line-height: 34px;
   letter-spacing: -.22px
 }
 
 .card-caption .text-link {
   padding-inline: 0;
-  font-size: 16px
+  padding-block: 5px;
+  min-height: 34px;
+  font-size: 15px
 }
 
 .card-description {
@@ -335,6 +337,15 @@
   color: white;
   padding-inline: 0;
   font-weight: 500
+}
+
+/* 최신 PC 원본의 제목·링크 위치. 링크의 키보드/클릭 영역은 44px을 유지합니다. */
+@media(min-width:901px) {
+  .introduction .section-heading { height: 40px; }
+  .introduction .section-heading h2 { transform: translateY(-6px); }
+  .introduction .adoption-detail-link { line-height: 40px; padding-block: 0; transform: translateY(-6px); }
+  /* 사용자가 옮긴 PC 푸터 문구와 구현 설명 버튼의 위치입니다. */
+  .portfolio-note { position: relative; top: -10px; padding-right: 59px; }
 }
 
 .intro-steps {
@@ -561,7 +572,7 @@
   .hero-actions .btn {
     min-width: 0;
     flex: 1 1 160px;
-    font-size: 14px;
+    font-size: 16px;
     padding: 12px 10px;
     gap: 8px
   }
