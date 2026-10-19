@@ -386,10 +386,12 @@
 }
 
 .home-consultation {
-  padding-block: 48px
+  padding-block: 0
 }
 
 .home-consultation-inner {
+  min-height: 144px;
+  padding-block: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -644,8 +646,9 @@
     font-size: 14px;
     line-height: 25px
   }
-  .home-consultation {
-    padding-block: 40px
+  .home-consultation-inner {
+    padding-block: 24px;
+    gap: 24px
   }
   .home-consultation-actions {
     flex-direction: column;

@@ -348,9 +348,8 @@ a,button {
   align-items: center;
   justify-content: flex-end;
   gap: 12px 20px;
-  min-height: 77px;
-  padding-block: 16px;
-  border-top: 1px solid var(--border);
+  min-height: 60px;
+  padding-block: 8px;
   color: var(--secondary);
   font-size: 13px;
   line-height: 22px;
@@ -383,8 +382,8 @@ a,button {
   align-items: center;
   justify-content: space-between;
   gap: 32px;
-  min-height: 192px;
-  padding-block: 40px;
+  min-height: 144px;
+  padding-block: 32px;
 }
 .consultation-band-inner h2 { font-size: 30px; line-height: 44px; position: relative; z-index: 1; }
 .consultation-band-copy { display: flex; align-items: center; gap: 24px; }
@@ -394,14 +393,14 @@ a,button {
   .consultation-band-inner h2 { font-size: 26px; line-height: 38px; }
 }
 @media(max-width:760px) {
-  .consultation-band-inner { min-height: 252px; padding-block: 32px; flex-direction: column; align-items: stretch; justify-content: center; gap: 24px; }
+  .consultation-band-inner { min-height: 200px; padding-block: 24px; flex-direction: column; align-items: stretch; justify-content: center; gap: 24px; }
   .consultation-band-inner h2 { font-size: 24px; line-height: 36px; }
   .consultation-band-inner .btn { width: 100%; min-width: 0; }
   .consultation-band-copy { gap: 16px; }
 }
 
 .footer-inner {
-  min-height: 104px;
+  min-height: 88px;
   display: flex;
   align-items: center;
   gap: 24px;
@@ -616,7 +615,7 @@ dialog h2 {
     height: 76px
   }
   .footer-inner {
-    padding-block: 24px
+    padding-block: 16px
   }
   .footer-note {
     font-size: 13px

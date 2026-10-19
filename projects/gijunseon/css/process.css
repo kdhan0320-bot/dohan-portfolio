@@ -74,40 +74,10 @@
   background: #f6eeda
 }
 
-.process-focus {
-  position: absolute;
-  right: 282px;
-  top: 36px;
-  width: 152px;
-  height: 120px
-}
-
-.process-focus img {
-  position: absolute
-}
-
-.process-focus img:nth-child(1) {
-  left: -.75px;
-  top: 15.25px
-}
-
-.process-focus img:nth-child(2) {
-  left: 66px;
-  top: 0
-}
-
-.process-focus img:nth-child(3) {
-  left: 75px;
-  top: 0
-}
-
 @media(max-width:1100px) {
   .process-row {
     gap: 36px;
     grid-template-columns: 1fr 1.4fr
-  }
-  .process-focus {
-    display: none
   }
 }
 

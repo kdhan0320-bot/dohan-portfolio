@@ -10,6 +10,11 @@
 .consult-product-marker { position: absolute; inset: 0 auto auto 0; width: 352px; height: 264px; transform-origin: top left; transform: scale(var(--consult-marker-scale, 1)); pointer-events: none; }
 .consult-product-marker img { position: absolute; left: 210.2px; top: 106.8px; max-width: none; }
 .consult-preparation { display: inline-flex; align-items: center; gap: 16px; min-height: 44px; margin-top: 12px; padding: 6px 0; font-size: 14px; line-height: 24px; }
+/* 최신 PC Figma의 카드 위치를 반영하되 좁은 화면에서는 기존 여백을 유지합니다. */
+@media (min-width: 1360px) {
+  .consult-selection { margin-left: -43px; margin-right: 43px; }
+  .consult-preparation { margin-top: 30px; }
+}
 .consult-preparation, .consult-privacy-open { border: 0; background: transparent; }
 .consult-arrow { flex: none; max-width: none; }
 .consult-contact-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
