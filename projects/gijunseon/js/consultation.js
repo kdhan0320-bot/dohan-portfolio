@@ -54,7 +54,7 @@ function renderSelection(announce = false) {
 }
 
 function fieldError(field) {
-  if (field.type === 'checkbox') return field.checked ? '' : '개인정보 시연 안내 확인란을 선택해 주세요.';
+  if (field.type === 'checkbox') return field.checked ? '' : '개인정보 안내 확인란을 선택해 주세요.';
   if (!field.value.trim()) {
     return {
       'consult-company': '회사명을 입력해 주세요.',

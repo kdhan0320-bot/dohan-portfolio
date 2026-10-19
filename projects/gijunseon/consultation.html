@@ -7,9 +7,9 @@
   <title>도입 상담 — 기준선</title>
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon-symbol.svg">
   <link rel="stylesheet" href="css/fonts.css">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/consultation.css">
-  <script type="module" src="js/consultation.js"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261019-finish">
+  <link rel="stylesheet" href="css/consultation.css?v=20261019-finish">
+  <script type="module" src="js/consultation.js?v=20261019-finish"></script>
 <noscript><style>[data-selected-image], .inspection-tabs, .inspection-mark, .consult-product-marker {display:none!important}</style></noscript>
 </head>
 <body data-page="consultation">
@@ -45,7 +45,7 @@
         <noscript><p class="consult-noscript">JavaScript가 꺼져 있어 검사 변경·안내 창·폼 시연 버튼을 사용할 수 없습니다. 시연하려면 JavaScript를 켜 주세요. 입력 정보는 전송되지 않습니다.</p></noscript>
         <div class="consult-contact-heading">
           <h2 id="consult-contact-title">상담받을 연락처</h2>
-          <p>시연용 · 실제 전송되지 않습니다.</p>
+          <p>입력 정보는 실제 전송되지 않습니다.</p>
         </div>
         <form id="consult-form" novalidate>
           <div class="consult-error-summary" id="consult-error-summary" tabindex="-1" aria-labelledby="consult-error-title" hidden>
@@ -73,7 +73,7 @@
             <div class="consult-consent-row">
               <label class="consult-checkbox-label" for="consult-consent">
                 <input id="consult-consent" name="consent" type="checkbox" required aria-describedby="consult-consent-error">
-                <span>개인정보 시연 안내를 <span class="consult-acknowledgement">확인했습니다. (필수)</span></span>
+                <span>개인정보 안내를 <span class="consult-acknowledgement">확인했습니다. (필수)</span></span>
               </label>
               <button class="text-link consult-privacy-open" id="consult-privacy-open" type="button" aria-haspopup="dialog" disabled>내용 보기 <img class="consult-arrow" src="assets/figma/451-2246-img3.svg" alt=""></button>
             </div>
@@ -81,12 +81,12 @@
           </div>
 
           <button class="btn btn-primary consult-submit" id="consult-submit" type="submit" disabled>상담 요청하기 <img class="consult-arrow" src="assets/figma/451-2246-img4.svg" alt=""></button>
-          <p class="consult-form-note">시연용 · 입력 정보는 이 화면에서만 사용되며 수집·저장되지 않습니다.</p>
+          <p class="consult-form-note">입력 정보는 이 화면에서만 사용되며 수집·저장되지 않습니다.</p>
         </form>
       </section>
     </div>
   </main>
-  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html" aria-label="기준선 홈"><span class="brand-icon" aria-hidden="true"><img src="assets/brand/symbol-refined.svg" width="36" height="36" alt=""></span><span class="brand-name">기준선</span></a><p class="footer-note">산업용 비전 검사</p><nav class="footer-nav" aria-label="하단 메뉴"><a href="inspection.html">검사 예시</a><a href="process.html">적용 공정</a><a href="adoption.html">도입 절차</a></nav></div><div class="container portfolio-note"><p>개인 포트폴리오 · 가상 기업</p><a href="implementation.html">구현 설명 보기 <span aria-hidden="true">↗</span></a></div></footer>
+  <footer class="site-footer"><div class="container footer-inner"><a class="brand" href="index.html" aria-label="기준선 홈"><span class="brand-icon" aria-hidden="true"><img src="assets/brand/symbol-refined.svg" width="36" height="36" alt=""></span><span class="brand-name">기준선</span></a><p class="footer-note">산업용 비전 검사</p><nav class="footer-nav" aria-label="하단 메뉴"><a href="inspection.html">검사 예시</a><a href="process.html">적용 공정</a><a href="adoption.html">도입 절차</a></nav></div><div class="container portfolio-note"><a class="implementation-button" href="implementation.html">구현 설명 보기</a></div></footer>
 
   <dialog class="consult-dialog consult-inspection-dialog" id="consult-inspection-dialog" aria-labelledby="consult-inspection-dialog-title">
     <button class="consult-dialog-close" type="button" data-dialog-close aria-label="검사 변경 닫기"><img src="assets/figma/741-4-img.svg" alt=""></button>
@@ -102,16 +102,15 @@
 
   <dialog class="consult-dialog consult-privacy-dialog" id="consult-privacy-dialog" aria-labelledby="consult-privacy-title" aria-describedby="consult-privacy-description">
     <button class="consult-dialog-close" type="button" data-dialog-close aria-label="개인정보 안내 닫기"><img src="assets/figma/741-4-img.svg" alt=""></button>
-    <h2 id="consult-privacy-title">개인정보 시연 안내</h2>
-    <p id="consult-privacy-description">이 화면은 포트폴리오 시연입니다.<br class="consult-desktop-break"> 입력 정보는 전송·수집·저장되지 않습니다.</p>
+    <h2 id="consult-privacy-title">개인정보 안내</h2>
+    <p id="consult-privacy-description">입력 정보는 전송·수집·저장되지 않습니다.<br>입력과 확인 흐름만 살펴볼 수 있습니다.</p>
     <button class="btn btn-primary consult-dialog-confirm" type="button" data-dialog-close>확인</button>
   </dialog>
 
   <dialog class="consult-dialog consult-complete-dialog" id="consult-complete-dialog" aria-labelledby="consult-complete-title" aria-describedby="consult-complete-description">
-    <button class="consult-dialog-close" type="button" data-dialog-close aria-label="시연 완료 안내 닫기"><img src="assets/figma/741-3-img.svg" alt=""></button>
-    <p class="consult-small">포트폴리오 시연</p>
+    <button class="consult-dialog-close" type="button" data-dialog-close aria-label="입력 확인 완료 안내 닫기"><img src="assets/figma/741-3-img.svg" alt=""></button>
     <div class="consult-complete-icon" aria-hidden="true"><img src="assets/figma/741-3-img1.svg" alt=""></div>
-    <h2 id="consult-complete-title">상담 요청 시연 완료</h2>
+    <h2 id="consult-complete-title">입력 확인 완료</h2>
     <p id="consult-complete-description">실제 전송 없이 화면 흐름을 확인했습니다.</p>
     <div class="consult-complete-summary">
       <p id="consult-complete-inspection">표면 흠집</p>

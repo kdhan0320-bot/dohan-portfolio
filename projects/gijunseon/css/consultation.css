@@ -102,7 +102,6 @@
   .consult-dialog { padding: 28px 24px; }
   .consult-dialog-close, .consult-privacy-dialog .consult-dialog-close { top: 14px; right: 12px; }
   .consult-privacy-dialog > p { margin-top: 24px; }
-  .consult-desktop-break { display: none; }
   .consult-complete-dialog > #consult-complete-description { margin-bottom: 28px; }
   .consult-complete-dialog .consult-dialog-confirm { margin-top: 28px; }
 }

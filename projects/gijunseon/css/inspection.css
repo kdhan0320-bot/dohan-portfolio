@@ -106,12 +106,10 @@
   overflow-wrap: break-word;
 }
 .inspection-disclaimer { margin: 24px 0 0; color: #5c6265; font-size: 14px; line-height: 22px; }
-.inspection-consultation { display: flex; align-items: center; gap: 28px; min-height: 104px; margin-top: 43px; padding: 24px 24px 24px 28px; background: var(--inspection-tint); }
+.inspection-consultation { margin-top: 43px; padding-inline: 28px; background: var(--inspection-tint); }
 .inspection-focus-icon { position: relative; display: block; flex: 0 0 32px; height: 32px; }
 .inspection-focus-icon img:first-child { position: absolute; left: -.75px; top: -.75px; }
 .inspection-focus-icon img:last-child { position: absolute; left: 8px; top: 4px; }
-.inspection-consultation h2 { margin: 0; flex: 1; font-size: 24px; font-weight: 500; line-height: 36px; }
-.inspection-consultation .btn { flex-shrink: 0; min-width: 248px; }
 
 @media (max-width: 1000px) {
   .inspection-tabs { gap: 20px; }
@@ -119,16 +117,11 @@
   .inspection-visual-heading h2 { font-size: 18px; line-height: 28px; }
   .inspection-zoom-label { padding-top: 3px; font-size: 13px; }
   .inspection-explanation { gap: 20px; padding: 24px; }
-  .inspection-consultation { gap: 20px; }
-  .inspection-consultation h2 { font-size: 20px; line-height: 30px; }
-  .inspection-consultation .btn { min-width: 220px; }
 }
 @media (max-width: 700px) {
   .inspection-content { padding-top: 28px; padding-bottom: 40px; }
-  .inspection-hero { min-height: 176px; }
   .inspection-hero-image { left: 32%; opacity: .36; }
   .inspection-hero-image::after { width: 80%; }
-  .inspection-hero-copy h1 { max-width: 90%; font-size: 30px; line-height: 44px; }
   .inspection-tabs { gap: 8px; }
   .inspection-tabs button { padding-inline: 4px; font-size: 14px; }
   .inspection-panel { margin-top: 24px; }
@@ -141,10 +134,8 @@
   .inspection-explanation dt { margin-bottom: 6px; }
   .inspection-explanation dd { font-size: 15px; line-height: 25px; }
   .inspection-disclaimer { margin-top: 18px; font-size: 13px; line-height: 22px; word-break: keep-all; }
-  .inspection-consultation { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 18px 14px; margin-top: 28px; padding: 24px 20px; }
+  .inspection-consultation { margin-top: 28px; padding-inline: 20px; }
   .inspection-focus-icon { width: 28px; height: 32px; }
-  .inspection-consultation h2 { font-size: 18px; line-height: 28px; }
-  .inspection-consultation .btn { grid-column: 1 / -1; min-width: 0; width: 100%; }
 }
 @media (max-width: 359px) {
   .inspection-visual-heading h2 { font-size: 15px; }

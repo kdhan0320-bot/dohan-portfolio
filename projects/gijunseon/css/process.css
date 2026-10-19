@@ -74,32 +74,6 @@
   background: #f6eeda
 }
 
-.process-cta {
-  background: var(--dark);
-  color: white
-}
-
-.process-cta>.container {
-  position: relative;
-  min-height: 192px;
-  display: flex;
-  gap: 24px;
-  align-items: center;
-  justify-content: space-between
-}
-
-.process-cta h2 {
-  font-size: 30px;
-  line-height: 44px;
-  position: relative;
-  z-index: 1
-}
-
-.process-cta .btn {
-  min-width: 236px;
-  flex: none
-}
-
 .process-focus {
   position: absolute;
   right: 282px;
@@ -135,9 +109,6 @@
   .process-focus {
     display: none
   }
-  .process-cta h2 {
-    font-size: 26px
-  }
 }
 
 @media(max-width:700px) {
@@ -165,18 +136,5 @@
   }
   .process-art img {
     max-width: 256px
-  }
-  .process-cta>.container {
-    padding-block: 32px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px
-  }
-  .process-cta h2 {
-    font-size: 25px;
-    line-height: 38px
-  }
-  .process-cta .btn {
-    width: 100%
   }
 }

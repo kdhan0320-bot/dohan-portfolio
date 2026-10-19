@@ -89,7 +89,7 @@ ul,ol {
 }
 
 /* 어두운 배경은 기존 강조색으로 초점을 표시합니다. 사진 위에는 짙은 받침을 둡니다. */
-:is(.home-hero,.introduction,.process-cta) :focus-visible {
+:is(.home-hero,.introduction) :focus-visible {
   outline-color: var(--accent);
   box-shadow: 0 0 0 8px var(--dark)
 }
@@ -346,27 +346,58 @@ a,button {
 .portfolio-note {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px 20px;
+  justify-content: flex-end;
+  gap: 12px 20px;
+  min-height: 77px;
+  padding-block: 16px;
   border-top: 1px solid var(--border);
   color: var(--secondary);
   font-size: 13px;
   line-height: 22px;
-  padding-block: 4px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
 }
-
-.portfolio-note a {
+.portfolio-note p { margin-right: auto; }
+.implementation-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  min-width: 160px;
   min-height: 44px;
-  color: var(--action-hover)
+  margin-left: auto;
+  padding: 10px 20px;
+  border: 1px solid #7b8180;
+  border-radius: 4px;
+  color: var(--text);
+  background: var(--surface);
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
 }
+.implementation-button:hover { border-color: var(--action-hover); color: var(--action-hover); }
 
-.portfolio-note a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px
+/* 세 서브페이지의 상담 영역은 높이·제목·버튼을 같은 기준으로 맞춥니다. */
+.consultation-band-dark { background: var(--dark); color: var(--surface); }
+.consultation-band-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 192px;
+  padding-block: 40px;
+}
+.consultation-band-inner h2 { font-size: 30px; line-height: 44px; position: relative; z-index: 1; }
+.consultation-band-copy { display: flex; align-items: center; gap: 24px; }
+.consultation-band-inner .btn { flex: none; min-width: 248px; }
+.consultation-band-dark :focus-visible { outline-color: var(--accent); box-shadow: 0 0 0 8px var(--dark); }
+@media(max-width:1100px) {
+  .consultation-band-inner h2 { font-size: 26px; line-height: 38px; }
+}
+@media(max-width:760px) {
+  .consultation-band-inner { min-height: 252px; padding-block: 32px; flex-direction: column; align-items: stretch; justify-content: center; gap: 24px; }
+  .consultation-band-inner h2 { font-size: 24px; line-height: 36px; }
+  .consultation-band-inner .btn { width: 100%; min-width: 0; }
+  .consultation-band-copy { gap: 16px; }
 }
 
 .footer-inner {
@@ -634,15 +665,17 @@ dialog h2 {
   }
   .page-hero>.container {
     order: -1;
-    padding-block: 26px 20px
+    min-height: 156px;
+    padding-block: 26px
   }
   .page-hero h1 {
     font-size: 28px;
-    line-height: 1.4
+    line-height: 38px
   }
   .page-hero .eyebrow {
     font-size: 13px;
-    margin-bottom: 7px
+    line-height: 20px;
+    margin-bottom: 8px
   }
   .page-hero-image {
     position: relative;
@@ -659,6 +692,7 @@ dialog h2 {
     height: 60px;
     background: linear-gradient(var(--tint),#f0f0ec00)
   }
+  .implementation-button { width: 100%; }
   .footer-inner {
     gap: 12px 24px
   }
