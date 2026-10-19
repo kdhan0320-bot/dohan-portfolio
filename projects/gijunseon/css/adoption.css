@@ -1,12 +1,32 @@
 /* 도입 절차 Figma 817:2 / 817:3. 공통 토큰과 도식을 그대로 사용합니다. */
 .adoption-hero {
+  position: relative;
+  overflow: hidden;
   padding-block: 56px;
   background: var(--tint);
 }
 
 .adoption-hero .container {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 12px;
+}
+
+.adoption-hero-image {
+  position: absolute;
+  inset: 0 0 0 50%;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adoption-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 24%;
+  background: linear-gradient(90deg,var(--tint),transparent);
 }
 
 .adoption-eyebrow {
@@ -229,6 +249,27 @@
   }
 }
 
+@media(min-width:601px) and (max-width:900px) {
+  .adoption-hero h1 {
+    font-size: 34px;
+    line-height: 48px;
+  }
+  .adoption-hero h1 span {
+    display: block;
+  }
+  .adoption-lead {
+    max-width: 55%;
+  }
+  .adoption-hero-image {
+    left: 60%;
+    width: 40%;
+  }
+  .adoption-hero::after {
+    left: 60%;
+    width: 25%;
+  }
+}
+
 @media(max-width:760px) {
   .adoption-step-body {
     grid-template-columns: 1fr;
@@ -252,7 +293,22 @@
 
 @media(max-width:600px) {
   .adoption-hero {
+    display: flex;
+    flex-direction: column;
+    padding-block: 0;
+  }
+  .adoption-hero .container {
+    order: -1;
     padding-block: 40px;
+  }
+  .adoption-hero-image {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 184px;
+  }
+  .adoption-hero::after {
+    display: none;
   }
   .adoption-hero h1 {
     font-size: 32px;

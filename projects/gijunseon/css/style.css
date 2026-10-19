@@ -286,6 +286,7 @@ a,button {
   border-radius: 4px;
   font-weight: 500;
   line-height: 26px;
+  text-align: center;
   transition: background .16s,color .16s
 }
 
