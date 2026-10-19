@@ -182,6 +182,22 @@ form.addEventListener('submit', (event) => {
   openDialog(completeDialog, document.querySelector('#consult-submit'));
 });
 
+// 완료 안내를 닫으면 새 시연을 시작합니다. 준비·개인정보 안내에서는 입력을 유지합니다.
+// form.reset()만으로는 별도로 관리하는 오류 상태가 지워지지 않아 함께 정리합니다.
+completeDialog.addEventListener('close', () => {
+  hasSubmitted = false;
+  validatedFields.clear();
+  pendingBlurField = null;
+  pointerIsDown = false;
+  form.reset();
+  fieldIds.forEach(id => showFieldError(document.getElementById(id), ''));
+  errorList.replaceChildren();
+  errorSummary.hidden = true;
+  document.querySelector('#consult-complete-email').textContent = '';
+  lastFormFocus = document.querySelector('#consult-company');
+  lastFormFocus.focus();
+});
+
 renderSelection();
 new ResizeObserver(sizeMarker).observe(product);
 setupDialogs();
