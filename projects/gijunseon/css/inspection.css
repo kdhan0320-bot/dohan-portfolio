@@ -83,15 +83,22 @@
 .inspection-mark img { max-width: none; transform: scale(var(--photo-scale, 1)) translate(-1px, -1px); transform-origin: top left; }
 .inspection-explanation {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 28px;
   margin: 24px 0 0;
-  padding: 28px;
+  padding: 20px 28px 48px;
   background: var(--page);
 }
-.inspection-explanation > div { min-width: 0; }
+.inspection-explanation > div {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr);
+  align-items: start;
+  gap: 22px;
+  min-width: 0;
+  min-height: 28px;
+}
 .inspection-explanation dt {
-  margin-bottom: 10px;
+  margin: 0;
   color: var(--action-hover);
   font-size: 15px;
   font-weight: 500;
@@ -105,6 +112,7 @@
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+.inspection-copy-mobile { display: none; }
 .inspection-disclaimer { margin: 24px 0 0; color: #5c6265; font-size: 14px; line-height: 22px; }
 .inspection-consultation { margin-top: 43px; padding-inline: 28px; background: var(--inspection-tint); }
 .inspection-focus-icon { position: relative; display: block; flex: 0 0 32px; height: 32px; }
@@ -116,7 +124,8 @@
   .inspection-visual-heading { min-height: 44px; align-items: flex-start; gap: 8px; }
   .inspection-visual-heading h2 { font-size: 18px; line-height: 28px; }
   .inspection-zoom-label { padding-top: 3px; font-size: 13px; }
-  .inspection-explanation { gap: 20px; padding: 24px; }
+  .inspection-explanation { gap: 24px; padding: 24px; }
+  .inspection-explanation > div { grid-template-columns: 120px minmax(0, 1fr); gap: 20px; }
 }
 @media (max-width: 700px) {
   .inspection-content { padding-top: 28px; padding-bottom: 40px; }
@@ -130,9 +139,12 @@
   .inspection-visual-heading h2 { font-size: 17px; line-height: 26px; }
   .inspection-zoom-label { font-size: 13px; padding-top: 0; }
   .inspection-explanation { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 24px 20px; }
+  .inspection-explanation > div { display: block; min-height: 0; }
   .inspection-explanation > div + div { border-top: 1px solid var(--border); padding-top: 20px; }
   .inspection-explanation dt { margin-bottom: 6px; }
   .inspection-explanation dd { font-size: 15px; line-height: 25px; }
+  .inspection-copy-desktop { display: none; }
+  .inspection-copy-mobile { display: inline; }
   .inspection-disclaimer { margin-top: 18px; font-size: 13px; line-height: 22px; word-break: keep-all; }
   .inspection-consultation { margin-top: 28px; padding-inline: 20px; }
   .inspection-focus-icon { width: 28px; height: 32px; }

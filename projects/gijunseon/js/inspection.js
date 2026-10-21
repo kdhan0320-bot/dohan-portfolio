@@ -1,5 +1,5 @@
 import './common.js';
-import { inspections } from './data.js';
+import { inspections } from './data.js?v=20261021-figma';
 import { setResponsiveImage } from './images.js';
 
 // Measured from the Figma photo viewport (628 × 471). The photograph remains
@@ -94,6 +94,17 @@ function selectInspection(type, { updateHistory = false, announce = false } = {}
   document.querySelector('#inspection-feature').textContent = `표시 영역 확대 · ${layout.feature}`;
   Object.entries(descriptionFields).forEach(([key, element]) => {
     element.textContent = inspection.details[key];
+    const mobileText = inspection.details[`${key}Mobile`];
+    if (mobileText) {
+      // Figma 모바일의 짧은 문구를 사용하되, 숨긴 문구는 읽기 순서에서 제외합니다.
+      const desktopCopy = document.createElement('span');
+      desktopCopy.className = 'inspection-copy-desktop';
+      desktopCopy.textContent = inspection.details[key];
+      const mobileCopy = document.createElement('span');
+      mobileCopy.className = 'inspection-copy-mobile';
+      mobileCopy.textContent = mobileText;
+      element.replaceChildren(desktopCopy, mobileCopy);
+    }
   });
   ctaTitle.textContent = `${inspection.title} 도입`;
   ctaLink.href = `./consultation.html?type=${type}`;

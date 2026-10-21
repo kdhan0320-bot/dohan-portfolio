@@ -1,5 +1,6 @@
 /* 도입 절차 Figma 817:2 / 817:3. 공통 토큰과 도식을 그대로 사용합니다. */
 .adoption-jump {
+  display: none;
   padding-block: 32px;
 }
 
@@ -153,6 +154,10 @@
   overflow-wrap: break-word;
 }
 
+@media(min-width:761px) {
+  .adoption-cta h2 { font-weight: 400; }
+}
+
 @media(max-width:1100px) {
   .adoption-step-body {
     grid-template-columns: minmax(280px, .85fr) minmax(0,1.15fr);
@@ -181,6 +186,7 @@
 @media(max-width:600px) {
   .adoption-hero h1 span { display: block; }
   .adoption-jump {
+    display: block;
     padding-block: 24px;
   }
   .adoption-jump ol {

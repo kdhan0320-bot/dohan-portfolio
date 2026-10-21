@@ -1,4 +1,4 @@
-import { inspections } from './data.js';
+import { inspections } from './data.js?v=20261021-figma';
 import { setResponsiveImage } from './images.js';
 import { openDialog, setupDialogs } from './common.js';
 
@@ -6,7 +6,7 @@ import { openDialog, setupDialogs } from './common.js';
 const queryType = new URLSearchParams(window.location.search).get('type');
 let selectedType = Object.hasOwn(inspections, queryType) ? queryType : 'scratch';
 const form = document.querySelector('#consult-form');
-const inspectionSelect = document.querySelector('#consult-inspection-select');
+const inspectionOptions = [...document.querySelectorAll('[data-inspection-type]')];
 const inspectionDialog = document.querySelector('#consult-inspection-dialog');
 const changeButton = document.querySelector('#consult-change');
 const privacyButton = document.querySelector('#consult-privacy-open');
@@ -35,10 +35,10 @@ function sizeMarker() {
 function renderSelection(announce = false) {
   const inspection = inspections[selectedType];
   document.querySelector('#consult-selection-title').textContent = inspection.name;
-  document.querySelector('#consult-selection-card').style.backgroundColor = inspection.tint;
+  changeButton.setAttribute('aria-label', `검사 유형 변경: ${inspection.name}`);
   const productImage = document.querySelector('#consult-product-image');
   const productMark = document.querySelector('#consult-product-mark');
-  setResponsiveImage(productImage, inspection.image, '(max-width: 600px) 34vw, (max-width: 820px) 40vw, 352px');
+  setResponsiveImage(productImage, inspection.image, '(max-width: 560px) 150px, (max-width: 820px) 40vw, 400px');
   productImage.alt = `${inspection.name} 검사 대상 제품`;
   const geometry = markerGeometry[selectedType];
   productMark.src = selectedType === 'scratch' ? 'assets/figma/451-2246-img6.svg' : inspection.cardMark;
@@ -47,7 +47,9 @@ function renderSelection(announce = false) {
   markerWrapper.style.width = `${geometry.width}px`;
   markerWrapper.style.height = `${geometry.width * .75}px`;
   sizeMarker();
-  inspectionSelect.value = selectedType;
+  inspectionOptions.forEach(option => {
+    option.setAttribute('aria-pressed', String(option.dataset.inspectionType === selectedType));
+  });
   if (announce) {
     document.querySelector('#consult-selection-status').textContent = `${inspection.name} 검사를 선택했습니다.`;
   }
@@ -117,17 +119,19 @@ function validateForm() {
 }
 
 changeButton.addEventListener('click', () => {
-  inspectionSelect.value = selectedType;
   openDialog(inspectionDialog, changeButton);
+  inspectionDialog.querySelector('[aria-pressed="true"]').focus();
 });
 
-document.querySelector('#consult-inspection-apply').addEventListener('click', () => {
-  selectedType = inspectionSelect.value;
-  renderSelection(true);
-  const nextUrl = new URL(window.location.href);
-  nextUrl.searchParams.set('type', selectedType);
-  window.history.replaceState(null, '', nextUrl);
-  inspectionDialog.close();
+inspectionOptions.forEach(option => {
+  option.addEventListener('click', () => {
+    selectedType = option.dataset.inspectionType;
+    renderSelection(true);
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('type', selectedType);
+    window.history.replaceState(null, '', nextUrl);
+    inspectionDialog.close();
+  });
 });
 
 privacyButton.addEventListener('click', () => {

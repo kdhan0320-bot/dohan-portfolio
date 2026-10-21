@@ -7,9 +7,9 @@
   <title>도입 상담 — 기준선</title>
   <link rel="icon" type="image/svg+xml" href="assets/brand/favicon-symbol.svg">
   <link rel="stylesheet" href="css/fonts.css">
-  <link rel="stylesheet" href="css/style.css?v=20261019-viewport">
-  <link rel="stylesheet" href="css/consultation.css?v=20261019-viewport">
-  <script type="module" src="js/consultation.js?v=20261019-finish"></script>
+  <link rel="stylesheet" href="css/style.css?v=20261021-figma">
+  <link rel="stylesheet" href="css/consultation.css?v=20261021-figma">
+  <script type="module" src="js/consultation.js?v=20261021-figma"></script>
 <noscript><style>[data-selected-image], .inspection-tabs, .inspection-mark, .consult-product-marker {display:none!important}</style></noscript>
 </head>
 <body data-page="consultation">
@@ -30,14 +30,13 @@
           <p class="consult-small">선택한 검사</p>
           <div class="consult-selection-heading">
             <h2 id="consult-selection-title">표면 흠집</h2>
-            <button class="btn-secondary consult-change" id="consult-change" type="button" aria-haspopup="dialog" disabled>검사 변경</button>
           </div>
-          <div class="consult-product">
+          <p class="consult-selection-hint" id="consult-selection-hint"><span>사진을 눌러 검사 유형을 바꿀 수 있습니다.</span><span>사진을 눌러 유형 선택</span></p>
+          <button class="consult-product consult-change" id="consult-change" type="button" aria-label="검사 유형 변경: 표면 흠집" aria-describedby="consult-selection-hint" aria-haspopup="dialog" aria-controls="consult-inspection-dialog" disabled>
             <img data-selected-image id="consult-product-image" alt="표면 흠집을 검사하는 금속 제품" width="352" height="264"><noscript><img src="assets/optimized/scratch-original.jpg" alt="표면 흠집을 검사하는 금속 제품" width="352" height="264"></noscript>
             <span class="consult-product-marker" aria-hidden="true"><img id="consult-product-mark" src="assets/figma/451-2246-img6.svg" alt=""></span>
-          </div>
+          </button>
         </div>
-        <button class="text-link consult-preparation" type="button" data-open-preparation disabled>상담 전 준비할 정보 <img class="consult-arrow" src="assets/figma/home-img27.svg" alt=""></button>
         <p class="sr-only" id="consult-selection-status" role="status"></p>
       </aside>
 
@@ -91,13 +90,11 @@
   <dialog class="consult-dialog consult-inspection-dialog" id="consult-inspection-dialog" aria-labelledby="consult-inspection-dialog-title">
     <button class="consult-dialog-close" type="button" data-dialog-close aria-label="검사 변경 닫기"><img src="assets/figma/741-4-img.svg" alt=""></button>
     <h2 id="consult-inspection-dialog-title">검사 변경</h2>
-    <label for="consult-inspection-select">상담할 검사 종류</label>
-    <select id="consult-inspection-select">
-      <option value="scratch">표면 흠집</option>
-      <option value="missing">부품 누락</option>
-      <option value="print">인쇄 상태</option>
-    </select>
-    <button class="btn btn-primary consult-dialog-confirm" id="consult-inspection-apply" type="button">선택한 검사로 변경</button>
+    <div class="consult-inspection-options" role="group" aria-label="상담할 검사 종류">
+      <button class="consult-inspection-option" type="button" data-inspection-type="scratch" aria-pressed="true"><span>표면 흠집</span><span class="consult-inspection-selected" aria-hidden="true">선택됨</span></button>
+      <button class="consult-inspection-option" type="button" data-inspection-type="missing" aria-pressed="false"><span>부품 누락</span><span class="consult-inspection-selected" aria-hidden="true">선택됨</span></button>
+      <button class="consult-inspection-option" type="button" data-inspection-type="print" aria-pressed="false"><span>인쇄 상태</span><span class="consult-inspection-selected" aria-hidden="true">선택됨</span></button>
+    </div>
   </dialog>
 
   <dialog class="consult-dialog consult-privacy-dialog" id="consult-privacy-dialog" aria-labelledby="consult-privacy-title" aria-describedby="consult-privacy-description">

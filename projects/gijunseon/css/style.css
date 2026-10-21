@@ -274,22 +274,25 @@ a,button {
 .menu-trigger {
   display: none;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
+  width: 80px;
+  font-size: 14px;
+  line-height: 22px;
   min-height: 44px;
   border: 1px solid var(--border);
   background: white;
-  padding: 8px 12px
+  padding: 8px
 }
 
 .menu-lines {
   display: grid;
-  gap: 5px
+  gap: 10.5px
 }
 
 .menu-lines:before,.menu-lines:after {
   content: '';
-  width: 17px;
-  height: 1px;
+  width: 18px;
+  height: 1.5px;
   background: currentColor
 }
 

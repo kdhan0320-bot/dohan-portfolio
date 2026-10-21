@@ -1,32 +1,38 @@
 body[data-page="consultation"] > main { display: flex; flex-direction: column; }
 /* 큰 화면의 여유 높이는 폼 위아래에 나눕니다. 입력칸 자체는 늘리지 않습니다. */
-.consult-layout { flex: 1 0 auto; display: grid; grid-template-columns: 400px minmax(0, 720px); align-items: start; align-content: center; gap: 64px; width: min(1184px, calc(100% - 64px)); margin: 48px auto 28px; }
-.consult-selection-card { padding: 24px; background: #f4e7e0; }
+.consult-layout { flex: 1 0 auto; display: grid; grid-template-columns: 448px minmax(0, 720px); align-items: start; align-content: center; gap: 64px; width: min(1232px, calc(100% - 64px)); margin: 48px auto 28px; }
+.consult-selection-card { padding: 24px 24px 28px; background: #f7f6f3; }
 .consult-small { margin: 0; color: #5c6265; font-size: 14px; line-height: 22px; }
-.consult-selection-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; }
+.consult-selection-heading { margin-top: 10px; }
 .consult-selection h2, .consult-contact h2 { margin: 0; font-size: 26px; line-height: 38px; font-weight: 500; letter-spacing: -.02em; }
-.consult-change { min-width: 136px; min-height: 44px; padding: 9px 16px; background: #fff; border: 1px solid #7b8180; border-radius: 4px; font-size: 16px; line-height: 24px; white-space: nowrap; }
-.consult-product { position: relative; aspect-ratio: 4 / 3; margin-top: 14px; overflow: hidden; }
+.consult-selection h2 { font-weight: 400; letter-spacing: 0; }
+.consult-selection-hint { margin: 0; color: #5c6265; font-size: 14px; line-height: 24px; text-align: center; }
+.consult-selection-hint > span + span { display: none; }
+.consult-product { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; margin: 4px 0 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: 0 3px 10px rgb(36 39 41 / 13%); overflow: hidden; cursor: pointer; }
+.consult-product:focus-visible { outline: 3px solid #923a27; outline-offset: 3px; }
+.consult-product:disabled { cursor: not-allowed; }
 .consult-product > img:first-child { display: block; width: 100%; height: 100%; object-fit: contain; }
 .consult-product > noscript > img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .consult-product-marker { position: absolute; inset: 0 auto auto 0; width: 352px; height: 264px; transform-origin: top left; transform: scale(var(--consult-marker-scale, 1)); pointer-events: none; }
 .consult-product-marker img { position: absolute; left: 210.2px; top: 106.8px; max-width: none; }
-.consult-preparation { display: inline-flex; align-items: center; gap: 16px; min-height: 44px; margin-top: 12px; padding: 6px 0; font-size: 14px; line-height: 24px; }
-/* 최신 PC Figma의 카드 위치를 반영하되 좁은 화면에서는 기존 여백을 유지합니다. */
+/* PC 시안은 카드 448px, 간격 64px, 폼 720px을 왼쪽 공통 여백에 맞춥니다. */
 @media (min-width: 1360px) {
-  .consult-selection { margin-left: -43px; margin-right: 43px; }
-  .consult-preparation { margin-top: 30px; }
+  .consult-layout { margin-left: calc((100% - 1280px) / 2); margin-right: auto; }
 }
-.consult-preparation, .consult-privacy-open { border: 0; background: transparent; }
+.consult-privacy-open { border: 0; background: transparent; }
 .consult-arrow { flex: none; max-width: none; }
 .consult-contact-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
 .consult-contact-heading > p { margin: 0; color: #5c6265; font-size: 13px; line-height: 22px; }
+@media (min-width: 821px) {
+  .consult-contact-heading > p { display: none; }
+  .consult-contact:has(.consult-error-summary:not([hidden])) .consult-contact-heading > p { display: block; }
+}
 .consult-field + .consult-field { margin-top: 16px; }
 .consult-field label { display: block; margin-bottom: 10px; font-size: 14px; line-height: 22px; }
-.consult-field input, .consult-inspection-dialog select { display: block; width: 100%; min-width: 0; min-height: 52px; padding: 12px 16px; border: 1px solid #7b8180; border-radius: 0; background: #fff; color: #252829; font: inherit; font-size: 16px; line-height: 26px; }
+.consult-field input { display: block; width: 100%; min-width: 0; min-height: 52px; padding: 12px 16px; border: 1px solid #7b8180; border-radius: 0; background: #fff; color: #252829; font: inherit; font-size: 16px; line-height: 26px; }
 .consult-field input::placeholder { color: #5c6265; opacity: 1; }
 .consult-field input[aria-invalid='true'] { border-color: #a32f25; box-shadow: inset 0 0 0 1px #a32f25; }
-.consult-field input:focus-visible, .consult-inspection-dialog select:focus-visible, .consult-checkbox-label input:focus-visible { outline: 3px solid #923a27; outline-offset: 3px; }
+.consult-field input:focus-visible, .consult-checkbox-label input:focus-visible { outline: 3px solid #923a27; outline-offset: 3px; }
 .consult-consent { margin-top: 16px; }
 .consult-consent-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .consult-checkbox-label { display: flex; align-items: center; gap: 12px; min-height: 48px; font-size: 14px; line-height: 24px; cursor: pointer; }
@@ -38,21 +44,27 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
 .consult-privacy-open { display: inline-flex; align-items: center; justify-content: flex-end; gap: 14px; flex: none; min-width: 104px; min-height: 48px; color: #5c6265; font-size: 14px; line-height: 24px; }
 .consult-submit { display: flex; align-items: center; justify-content: center; gap: 14px; width: 100%; min-height: 52px; margin-top: 16px; }
 .consult-form-note { margin: 14px 0 0; color: #5c6265; font-size: 13px; line-height: 22px; word-break: keep-all; overflow-wrap: break-word; }
-.consult-field-error { margin: 8px 0 0; color: #a32f25; font-size: 14px; line-height: 22px; }
+.consult-field-error { margin: 8px 0 0; color: #252829; font-size: 14px; line-height: 22px; }
 .consult-error-summary { margin: 0 0 24px; padding: 18px 20px; border: 1px solid #a32f25; background: #fff7f4; color: #a32f25; }
 .consult-error-summary h3 { margin: 0 0 8px; font-size: 16px; line-height: 24px; font-weight: 500; }
 .consult-error-summary ul { margin: 0; padding-left: 20px; list-style: disc; }
-.consult-error-summary a { display: block; padding-block: 4px; color: inherit; font-size: 14px; line-height: 22px; text-decoration: underline; text-underline-offset: 3px; word-break: keep-all; overflow-wrap: anywhere; }
+.consult-error-summary a { display: block; padding-block: 4px; color: #252829; font-size: 14px; line-height: 22px; text-decoration: underline; text-underline-offset: 3px; word-break: keep-all; overflow-wrap: anywhere; }
 .consult-dialog { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 40px; border: 0; border-radius: 4px; color: #252829; background: #fff; box-shadow: 0 16px 48px rgb(0 0 0 / 18%); overflow: auto; }
 .consult-dialog::backdrop { background: rgb(36 38 40 / 55%); }
 .consult-dialog-close { position: absolute; top: 24px; right: 24px; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; color: #252829; font: inherit; font-size: 30px; line-height: 1; cursor: pointer; }
 .consult-dialog-close img { max-width: none; }
 .consult-dialog-confirm { display: flex; justify-content: center; align-items: center; width: 100%; min-height: 52px; }
-.consult-inspection-dialog label { display: block; margin: 28px 0 10px; font-size: 14px; line-height: 22px; }
-.consult-inspection-dialog .consult-dialog-confirm { margin-top: 28px; }
+.consult-inspection-dialog { padding-bottom: 32px; }
+.consult-inspection-dialog h2 { padding-bottom: 10px; border-bottom: 1px solid #cdd0cb; }
+.consult-inspection-options { display: grid; gap: 2px; margin-top: 17px; }
+.consult-inspection-option { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 56px; padding: 16px; border: 0; background: #fff; color: #252829; font: inherit; font-size: 16px; line-height: 24px; text-align: left; cursor: pointer; }
+.consult-inspection-option:hover { background: #f7f6f3; }
+.consult-inspection-option:focus-visible { position: relative; z-index: 1; }
+.consult-inspection-selected { flex: none; visibility: hidden; color: #b94f35; font-size: 14px; font-weight: 500; }
+.consult-inspection-option[aria-pressed='true'] .consult-inspection-selected { visibility: visible; }
 .consult-privacy-dialog { width: min(520px, calc(100% - 32px)); padding-block: 32px 40px; }
 .consult-privacy-dialog > p { margin: 28px 0 32px; color: #5c6265; font-size: 16px; line-height: 24px; word-break: keep-all; overflow-wrap: break-word; }
-.consult-privacy-dialog .consult-dialog-confirm { min-height: 44px; }
+.consult-privacy-dialog .consult-dialog-confirm { min-height: 52px; }
 .consult-privacy-dialog .consult-dialog-close { top: 20px; right: 32px; }
 .consult-complete-icon { display: grid; place-items: center; width: 64px; height: 64px; margin: 26px auto 32px; border-radius: 50%; background: #e9f1eb; }
 .consult-complete-icon img { max-width: none; }
@@ -63,7 +75,7 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
 .consult-complete-summary p + p { margin-top: 14px; color: #5c6265; font-size: 14px; line-height: 22px; }
 .consult-complete-dialog .consult-dialog-confirm { margin-top: 44px; }
 .consult-noscript { margin: 0 0 24px; padding: 16px; background: #f4e7e0; font-size: 14px; line-height: 24px; word-break: keep-all; overflow-wrap: break-word; }
-.consult-change:disabled, .consult-privacy-open:disabled, .consult-submit:disabled { color: #5c6265; background: #f0f0ec; border-color: #cdd0cb; cursor: not-allowed; }
+.consult-privacy-open:disabled, .consult-submit:disabled { color: #5c6265; background: #f0f0ec; border-color: #cdd0cb; cursor: not-allowed; }
 .consult-privacy-open:disabled { background: transparent; text-decoration: none; }
 .consult-privacy-open:disabled img, .consult-submit:disabled img { opacity: .45; }
 
@@ -73,18 +85,20 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
   .consult-contact-heading > p { margin-top: 6px; }
   .consult-selection-card { padding: 20px; }
   .consult-selection h2 { font-size: 24px; }
-  .consult-change { min-width: 104px; }
   .consult-consent-row { flex-wrap: wrap; gap: 0; }
   .consult-privacy-open { margin-left: 36px; min-height: 44px; justify-content: flex-start; }
 }
 
 @media (max-width: 820px) {
   .consult-layout { grid-template-columns: 1fr; max-width: 600px; margin-block: 32px 48px; gap: 32px; }
-  .consult-selection-card { display: grid; grid-template-columns: minmax(0, 1fr) 43%; align-items: start; column-gap: 20px; }
+  .consult-selection-card { display: grid; grid-template-columns: minmax(0, 1fr) 43%; align-items: start; column-gap: 20px; padding-block: 16px; }
   .consult-selection-card > .consult-small { grid-column: 1; }
-  .consult-selection-heading { grid-column: 1; display: block; margin-top: 8px; }
-  .consult-change { margin-top: 12px; }
-  .consult-product { grid-column: 2; grid-row: 1 / 3; margin-top: 0; align-self: center; }
+  .consult-selection-heading { grid-column: 1; margin-top: 4px; }
+  .consult-selection h2 { font-weight: 500; }
+  .consult-selection-hint { grid-column: 1; display: grid; place-items: center; min-height: 44px; margin-top: 8px; font-size: 12px; }
+  .consult-selection-hint > span:first-child { display: none; }
+  .consult-selection-hint > span + span { display: inline; }
+  .consult-product { grid-column: 2; grid-row: 1 / 4; margin-top: 0; align-self: center; }
   .consult-contact-heading { display: flex; }
   .consult-contact-heading > p { margin-top: 0; }
   .consult-consent-row { flex-wrap: nowrap; }
@@ -92,11 +106,10 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
 }
 
 @media (max-width: 560px) {
-  .consult-layout { width: calc(100% - 40px); gap: 28px; }
-  .consult-selection-card { padding: 16px; grid-template-columns: minmax(0, 1fr) 40%; column-gap: 12px; }
+  .consult-layout { width: calc(100% - 40px); gap: 32px; }
+  .consult-selection-card { min-height: 144px; padding: 16px; grid-template-columns: minmax(0, 1fr) min(47.17%, 150px); column-gap: 12px; }
   .consult-selection h2 { font-size: 22px; line-height: 34px; }
   .consult-selection-heading { margin-top: 4px; }
-  .consult-change { min-width: 104px; padding-inline: 14px; margin-top: 8px; font-size: 14px; }
   .consult-product { align-self: center; }
   .consult-contact-heading { display: block; margin-bottom: 24px; }
   .consult-contact h2 { font-size: 24px; line-height: 36px; }
@@ -107,6 +120,10 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
   .consult-privacy-open { margin-left: 36px; min-height: 44px; justify-content: flex-start; }
   .consult-form-note { font-size: 13px; line-height: 22px; }
   .consult-dialog { padding: 28px 24px; }
+  .consult-inspection-dialog { padding-bottom: 26px; }
+  .consult-inspection-dialog h2 { padding-bottom: 0; border-bottom: 0; }
+  .consult-inspection-options { margin-top: 24px; }
+  .consult-inspection-selected { font-size: 13px; }
   .consult-dialog-close, .consult-privacy-dialog .consult-dialog-close { top: 14px; right: 12px; }
   .consult-privacy-dialog > p { margin-top: 24px; }
   .consult-complete-dialog > #consult-complete-description { margin-bottom: 28px; }

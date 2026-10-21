@@ -344,8 +344,7 @@
   .introduction .section-heading { height: 40px; }
   .introduction .section-heading h2 { transform: translateY(-6px); }
   .introduction .adoption-detail-link { line-height: 40px; padding-block: 0; transform: translateY(-6px); }
-  /* 사용자가 옮긴 PC 푸터 문구와 구현 설명 버튼의 위치입니다. */
-  .portfolio-note { position: relative; top: -10px; padding-right: 59px; }
+  .site-footer .footer-inner { column-gap: 19px; }
 }
 
 .intro-steps {
@@ -397,7 +396,9 @@
 }
 
 .home-consultation {
-  padding-block: 0
+  padding-block: 0;
+  background: var(--dark);
+  color: var(--page)
 }
 
 .home-consultation-inner {
@@ -415,7 +416,7 @@
 
 .home-consultation-copy p {
   margin-top: 12px;
-  color: var(--secondary);
+  color: inherit;
   font-size: 16px;
   line-height: 26px;
   word-break: keep-all
@@ -433,6 +434,21 @@
 
 .home-consultation-actions .btn-secondary {
   min-width: 228px
+}
+
+/* 최신 PC 원본은 상담 영역까지 어두운 배경으로 연결하고 푸터를 한 줄로 정돈합니다. */
+.home-consultation :focus-visible {
+  outline-color: var(--accent);
+  box-shadow: 0 0 0 8px var(--dark)
+}
+
+.site-footer .portfolio-note {
+  display: none
+}
+
+.site-footer .footer-inner {
+  min-height: 104px;
+  padding-bottom: 16px
 }
 
 @media(max-width:1100px) {
@@ -558,7 +574,7 @@
     font-size: 16px;
     line-height: 26px;
     max-width: 300px;
-    margin-top: 18px;
+    margin-top: 2px;
     word-break: keep-all
   }
   .hero-description span {
@@ -661,6 +677,17 @@
     padding-block: 24px;
     gap: 24px
   }
+  .home-consultation {
+    background: var(--surface);
+    color: var(--text)
+  }
+  .home-consultation-copy p {
+    color: var(--secondary)
+  }
+  .home-consultation :focus-visible {
+    outline-color: #236caa;
+    box-shadow: none
+  }
   .home-consultation-actions {
     flex-direction: column;
     width: 100%
@@ -668,5 +695,17 @@
   .home-consultation-actions .btn {
     width: 100%;
     min-width: 0
+  }
+  .site-footer .footer-inner {
+    min-height: 141px;
+    padding-block: 16px
+  }
+  .footer-project-note {
+    display: none
+  }
+  .site-footer .portfolio-note {
+    display: flex;
+    min-height: 47px;
+    padding-block: 8px 17px
   }
 }

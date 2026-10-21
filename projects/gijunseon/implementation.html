@@ -7,7 +7,7 @@
   <title>기준선 구현 노트 · 웹퍼블리싱 포트폴리오</title>
   <link rel="icon" href="assets/brand/favicon-symbol.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/fonts.css">
-  <link rel="stylesheet" href="css/style.css?v=20261019-viewport">
+  <link rel="stylesheet" href="css/style.css?v=20261021-figma">
   <link rel="stylesheet" href="css/implementation.css">
 </head>
 <body class="implementation-document">
@@ -60,7 +60,7 @@
         <li>
           <span class="method-number" aria-hidden="true">03</span>
           <h3>키보드와 폼 안내</h3>
-          <p>탭 방향키, 보이는 초점, 안내창의 Escape·초점 복귀를 제공합니다. 폼 오류는 해당 입력칸으로 연결하고 준비 안내를 읽어도 입력을 유지합니다.</p>
+          <p>탭 방향키, 보이는 초점, 안내창의 Escape·초점 복귀를 제공합니다. 폼 오류는 해당 입력칸으로 연결하고 검사 변경·개인정보 안내 중에도 입력을 유지합니다.</p>
           <p class="document-path"><code>js/common.js</code> · <code>js/consultation.js</code></p>
         </li>
       </ol>
@@ -70,9 +70,9 @@
       <h2 id="implementation-validation">시연과 검증 범위</h2>
       <p class="document-demo">문의는 브라우저 안에서만 확인하는 시연입니다. 서버 전송·개인정보 저장·실제 상담 접수는 하지 않습니다.</p>
       <div id="implementation-verification" class="verification-note">
-        <p><strong>마감 검증 · 2026-10-19</strong><br>메인·검사 예시·적용 공정·도입 절차·상담의 하단을 320·390·768·1440px에서 확인했습니다. 상담 영역과 푸터 여백을 줄이고 구현 설명 버튼은 메인에만 남겼습니다. 네 폭에서 완료창을 닫은 뒤 입력 초기화를 확인했으며, 320px 오류 항목의 키보드 초점과 390px 메뉴·팝업·도입 단계 이동도 직접 검증했습니다. 상세 범위는 코드·실행 방법의 기록에서 확인할 수 있습니다.</p>
+        <p><strong>마감 검증 · 2026-10-21</strong><br>선생님 피드백이 반영된 Figma에 맞춰 메인 상담·푸터, PC 검사 설명, 도입 단계 배치와 상담 사진 선택을 수정했습니다. 주요 7화면을 320·390·768·1440px에서 확인하고 공정·상담은 1920·2552px에서도 확인했습니다. 네 폭에서 상담 오류·키보드 이동·완료 후 초기화를 검사했으며 메뉴·검사 선택·팝업·도입 단계 이동도 직접 확인했습니다. 상세 범위는 코드·실행 방법의 기록에서 확인할 수 있습니다.</p>
       </div>
-      <p id="implementation-deployment" class="document-limit">긴 오류 문장의 불릿을 첫 줄에 맞추고, 축소된 검사 표시선의 두께를 보완했습니다. 오류 표시와 키보드 초점은 함께 보입니다. 준비·개인정보 안내를 닫을 때는 입력을 유지하고, 시연 완료 안내를 닫으면 연락처·동의·오류를 초기화한 뒤 회사명으로 초점을 옮깁니다. 선택한 검사 종류는 유지합니다.</p>
+      <p id="implementation-deployment" class="document-limit">긴 오류 문장의 불릿을 첫 줄에 맞추고, 축소된 검사 표시선의 두께를 보완했습니다. 오류 표시와 키보드 초점은 함께 보입니다. 검사 변경·개인정보 안내를 닫을 때는 입력을 유지하고, 시연 완료 안내를 닫으면 연락처·동의·오류를 초기화한 뒤 회사명으로 초점을 옮깁니다. 선택한 검사 종류는 유지합니다.</p>
       <p class="document-limit">실제 휴대전화·Safari·Firefox·스크린리더·외부망 로딩 속도는 미검증입니다. 실제 검사 정확도·인증·고객 실적을 주장하지 않습니다.</p>
     </section>
   </main>
