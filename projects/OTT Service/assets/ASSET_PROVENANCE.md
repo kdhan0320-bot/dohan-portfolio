@@ -1,5 +1,49 @@
 # 잔상관 Asset Provenance
 
+## v36 장면의 행동과 선택을 중심으로 재구성 — 2026-10-26
+
+내장 OpenAI `image_gen.imagegen` 도구로 기존 자체 생성 이미지 두 장을 편집했습니다. 기존 영화·배우·브랜드·특정 작가 이미지는 새로 입력하지 않았습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다. ‘느린 궤도’는 녹음 때문에 멈춘 기록 작업, ‘별을 접는 아이’는 마지막 종이에 담을 소원을 고민하는 행동에 초점을 맞췄습니다. AI 생성 사실을 유지하며 실제 촬영이나 수작업 원화로 설명하지 않습니다.
+
+출력 PNG의 구도를 유지한 채 Sharp WebP quality 88, effort 6으로 인코딩했습니다. 원본·이전 배포 이미지를 보존했습니다. 화면별 크롭은 CSS이며 별도 합성·색 보정은 하지 않았습니다.
+
+### frames-v36/orbit.webp
+
+- 참조: assets/frames-v31/orbit.webp
+- 도구: OpenAI image_gen.imagegen, referenced_image_paths 1개, transparent_background=false
+- 원본: exec-5a939c59-8083-4d89-b10d-f52df132308b.png
+- 원본·배포 치수와 SHA-256: 아래 자산 표
+
+최종 프롬프트:
+
+```text
+Edit the attached self-generated fictional film still for the short film 'A Slow Orbit'. Preserve the adult station archivist in a faded grey work shirt, the worn functional orbital station, the small recorder and paper log. Reframe as an intimate observational film still, portrait 3:4, at desk height from slightly to the side. The archivist has just stopped routine logging to listen to one recorded message; one finger rests naturally on the recorder, the other hand leaves an unfinished dated log. The action of listening and the interrupted everyday routine must read clearly. Replace the giant centered circular window with a small off-center utilitarian observation window near the top edge; only a restrained sliver of space, no giant planet. Practical soft cool overhead light, daylight-neutral skin, muted grey-green and worn cream surfaces, subtle warm recorder indicator only. Believable low-budget independent science-fiction set with coherent pipes and hardware, natural unposed posture, restrained contrast and ordinary material texture. No heroic glow, no cinematic teal-orange grading, no decorative stars, no excessive grain, no futuristic holograms, no legible text, no title, no border, no watermark. Keep face, hands and recorder within the central 65% to work in poster and mobile crops. Generate one image.
+```
+
+### frames-v36/atlas.webp
+
+- 참조: assets/frames-v24/atlas.webp
+- 도구: OpenAI image_gen.imagegen, referenced_image_paths 1개, transparent_background=false
+- 원본: exec-0b3104fa-c2fb-4930-8404-9731b6ed78f8.png
+- 원본·배포 치수와 SHA-256: 아래 자산 표
+
+최종 프롬프트:
+
+```text
+Edit the attached self-generated animated-film artwork for the fictional film 'The Paper Constellation'. Preserve the child with a loose dark ponytail and muted plum sweater, the modest wooden desk, the paper-star premise and a handmade 2D animation medium. Recompose as a quiet close scene from a slightly raised side angle: the child pauses with both hands over ONE last cream sheet, one unfinished crease, looking down deciding whose wish to choose. Place two imperfect folded paper stars nearby as evidence of earlier attempts; keep hands anatomically coherent and the paper clearly readable. The small window sits off-center and shows a plain deep-blue predawn sky with only one tiny point of light; no giant glowing paper stars in the sky, no decorative floating objects. Remove ornamental clutter, golden haze and symmetrical cozy-fantasy staging. Muted ink blue, plum, warm grey and cream, soft neutral desk light, matte gouache shapes with sparse visible pencil corrections and imperfect paper edges, expressive restrained 2D character rather than 3D render or glossy digital painting. Landscape 4:3 composition, hands, face and last sheet within central 65%, enough plain dark desk at bottom for a later web title overlay. No typography, no text, no watermark. Generate one image.
+```
+
+### 자산 표
+
+| 파일 | 치수 | 바이트 | SHA-256 |
+|---|---|---:|---|
+| exec-5a939c59-8083-4d89-b10d-f52df132308b.png | 1086×1448 | 2121591 | `0f16b86d1b2273f1f60b4cb3b966b1f985da07dafd006be4213a7f9bcf10a40a` |
+| orbit.webp | 1086×1448 | 155306 | `4602b33d5a744ee84bdebe7c2617b40e8baf180ca3d42caefa03786ac28dc492` |
+| exec-0b3104fa-c2fb-4930-8404-9731b6ed78f8.png | 1448×1086 | 2644861 | `6f4ab0c8002218075bc463d37732a8390fc609f322a90ac5e992cc63766e75d5` |
+| atlas.webp | 1448×1086 | 247102 | `1619d4809a9f804e5c1f4db12abafcf6debe1835adacfd3c1b6fc8f7ae611e8e` |
+
+보관함 보기 아이콘 2종은 기존 1.6px 선 아이콘과 맞춘 인라인 SVG입니다. 외부 아이콘 세트를 추가하지 않았습니다. 소개용 캡처는 현재 브라우저 화면이며 시연 메모만 넣었습니다.
+
+
 ## v35 이야기 단서 중심 이미지 마감 — 2026-10-15
 
 내장 OpenAI image_gen.imagegen 도구로 기존 자체 생성 이미지 두 장을 참조해 편집했습니다. 외부 배우·영화·브랜드 이미지는 입력하지 않았습니다. 불이 켜지는 시간은 두 이웃이 비상통화 패널을 함께 살피는 행동, 밤의 온실은 닫힌 유리문과 관리자의 일지로 가상 줄거리의 단서를 보여줍니다. 정확한 모델 버전은 도구가 제공하지 않아 기재하지 않습니다.

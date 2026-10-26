@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=d4df7cd4745b" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=278ec228bfdb"></script>
+    <link href="css/style.css?v=ec35e8a5f1c7" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=e323d3388c42"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -150,11 +150,9 @@
               <div aria-label="분위기와 시간으로 고르는 단편영화" class="film-rail" id="homeFilms" role="region" tabindex="0"></div>
               <div class="rail-edge rail-edge-start" aria-hidden="true"></div>
               <div class="rail-edge rail-edge-end" aria-hidden="true"></div>
-              <button aria-label="이전 영화" aria-controls="homeFilms" class="icon-button rail-arrow rail-prev" data-rail-prev="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-back"></use></svg></button>
-              <button aria-label="다음 영화" aria-controls="homeFilms" class="icon-button rail-arrow rail-next" data-rail-next="homeFilms"><svg aria-hidden="true" class="icon"><use href="#i-arrow"></use></svg></button>
             </div>
             <div class="rail-pagination">
-              <div class="rail-track" aria-hidden="true"><span></span></div>
+              <label class="sr-only" for="railPosition">영화 목록 위치</label><input id="railPosition" class="rail-position" type="range" min="0" max="100" value="0" step="1" aria-controls="homeFilms" />
               <span class="rail-status" data-rail-status="homeFilms"></span>
             </div>
           </div>
@@ -174,7 +172,7 @@
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
             <a class="home-collection" href="#themes/beyond" data-theme-preview="beyond">
-              <img src="assets/frames-v31/orbit.webp" alt="" width="1086" height="1448" loading="lazy" />
+              <img src="assets/frames-v36/atlas.webp" alt="" width="1448" height="1086" loading="lazy" />
               <div><p class="home-collection-meta">03 · 작품 4편</p><h3 class="curation-feature-title">상상 바깥으로</h3><p class="curation-feature-note">익숙한 세계 바깥의 신호.</p></div>
               <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg>
             </a>
@@ -193,29 +191,9 @@
       >
         <div class="wrap">
           <div class="page-heading" id="themesPageHeading">
-            <h1 id="themesTitle" tabindex="-1">큐레이션</h1>
+            <h1 id="themesTitle" tabindex="-1">큐레이션</h1><p class="page-description">비슷한 분위기 안에서, 다른 이야기를 발견해보세요.</p>
           </div>
           <div class="theme-overview" id="themeOverview"></div>
-          <div hidden="" id="themeDetail">
-            <nav
-              aria-label="큐레이션 선택"
-              class="theme-tabs"
-              id="themeTabs"
-            ></nav>
-            <div class="theme-collection" id="themeCollection">
-              <div class="theme-hero frame-stack">
-                <div class="theme-story">
-                  <div class="theme-story-title">
-                    <p class="theme-caption"><span id="themeNumber"></span><span id="themeTagline"></span></p>
-                    <h1 id="themeTitle" tabindex="-1"></h1>
-                  </div>
-                  <div class="theme-story-note"><p id="themeDescription"></p><p class="theme-duration" id="themeDuration"></p></div>
-                </div>
-              </div>
-              <div class="film-grid theme-films" id="themeFilms"></div>
-            </div>
-            <div class="theme-detail-footer"><button class="text-link" id="themeArticle" type="button">큐레이션 노트 읽기</button><a class="text-link theme-more" href="#themes">모든 큐레이션</a></div>
-          </div>
         </div>
       </section>
       <div class="catalog-shell interior-page" hidden="" id="catalogView">
@@ -283,6 +261,10 @@
                 </svg>
               </button>
             </div>
+            <div aria-label="보관함 보기" class="library-view" hidden="" id="libraryView" role="group">
+              <button aria-controls="filmGrid" aria-pressed="true" data-library-view="reading" type="button" aria-label="메모 읽기" title="메모 읽기"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h5v16H4zM13 5h7M13 10h7M13 15h7M13 20h4"/></svg><span class="view-tooltip" aria-hidden="true">메모 읽기</span></button>
+              <button aria-controls="filmGrid" aria-pressed="false" data-library-view="compact" type="button" aria-label="작품 훑기" title="작품 훑기"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="view-tooltip" aria-hidden="true">작품 훑기</span></button>
+            </div>
           </div>
           <div class="catalog-options" id="catalogOptions">
             <div class="duration-field catalog-duration" id="durationField">
@@ -305,10 +287,6 @@
           </div>
           <div class="results-bar" id="resultsBar">
             <p aria-live="polite" id="resultCount" role="status"></p>
-            <div aria-label="보관함 보기" class="library-view" hidden="" id="libraryView" role="group">
-              <button aria-controls="filmGrid" aria-pressed="true" data-library-view="reading" type="button">메모 읽기</button>
-              <button aria-controls="filmGrid" aria-pressed="false" data-library-view="compact" type="button">작품 훑기</button>
-            </div>
             <button class="text-link" hidden="" id="resetFilters">조건 초기화</button>
           </div>
           <div class="film-grid" id="filmGrid"></div>
@@ -432,7 +410,7 @@
       id="articleDialog"
     >
       <button
-        aria-label="큐레이션 노트 닫기"
+        aria-label="큐레이션 닫기"
         class="icon-button close-button"
         data-close="articleDialog"
       >

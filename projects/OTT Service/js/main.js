@@ -67,7 +67,7 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "orbit",
-      posterPath: "assets/frames-v31/orbit.webp",
+      posterPath: "assets/frames-v36/orbit.webp",
       posterPosition: "60% center",
       position: "63% center",
       detailPosition: "center top",
@@ -139,7 +139,7 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "atlas",
-      posterPath: "assets/frames-v24/atlas.webp",
+      posterPath: "assets/frames-v36/atlas.webp",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:
@@ -232,10 +232,10 @@
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
-        tide: "첫 선택 · 남겨진 소리에서 기억으로",
-        forest: "인물의 기억보다 풍경의 소리가 궁금할 때",
-        bluehour: "옛 친구와 나란히 시간을 보내는 재회",
-        nocturne: "재회의 오후와 대비되는 새벽 식탁의 대화",
+        tide: "아버지가 남긴 소리에서 기억을 꺼내는 이야기",
+        forest: "대사보다 물과 숲의 소리에 머무는 21분",
+        bluehour: "옛 친구와 다시 나란히 보내는 오후",
+        nocturne: "낯선 손님과 주인이 식탁에서 시작하는 대화",
       },
     },
     {
@@ -251,10 +251,10 @@
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
-        letters: "18분의 입구 · 편지가 불러오는 지난여름",
-        windows: "오랜 친구 대신, 이름 모를 이웃과 한자리",
-        rooftop: "편지와 다른 방식으로, 말 못 한 마음을 연주로",
-        relay: "함께 모이는 데서 한발 더, 동료에게 건네는 바통",
+        letters: "서랍 속 편지로 두 친구의 여름을 되짚기",
+        windows: "멈춘 엘리베이터에서 처음 마주한 이웃",
+        rooftop: "마지막 연주로 못다 한 말을 전하는 밴드",
+        relay: "기록보다 동료를 돌아보는 마지막 계주",
       },
     },
     {
@@ -264,16 +264,16 @@
       article: "enclosed-spaces",
       previewDescription: "온실의 비밀, 종이별과 미래의 신호",
       previewImage: "assets/frames-v35/greenhouse.webp",
-      glimpseImage: "assets/frames-v31/orbit.webp",
-      imageAlt: "지구가 보이는 관측 기지에서 메시지를 듣는 기록원",
+      glimpseImage: "assets/frames-v36/orbit.webp",
+      imageAlt: "관측 기지에서 기록을 멈추고 녹음에 귀 기울이는 기록원",
       accent: "#C3B6EC",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
-        greenhouse: "일지의 흔적을 좇는 미스터리부터",
-        orbit: "사건 추적에서 귀환을 기다리는 일상으로",
-        atlas: "기다리는 사람과 소원을 고르는 아이",
-        signal: "일지와 다른 단서, 자기 목소리로 온 구조 요청",
+        greenhouse: "사라진 관리자의 일지가 여는 비밀",
+        orbit: "녹음 한 통이 바꾸는 관측 기지의 하루",
+        atlas: "마지막 종이에 담을 소원을 고르는 아이",
+        signal: "자기 목소리로 도착한 미래의 구조 요청",
       },
     },
   ];
@@ -284,8 +284,7 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "소리로 기억을 만나는 〈파도가 머문 자리〉에서 시작해보세요. 아버지가 남긴 소리라는 단서와, 설명 대신 풍경의 소리에 귀 기울이는 〈숲의 호흡〉을 대비해 골랐습니다.",
-        "함께 보내는 시간이 궁금하면 〈파란 오후〉와 〈새벽 두 시의 식탁〉으로 옮겨가세요. 옛 친구와 다시 보내는 오후, 손님과 주인이 이야기를 시작하는 새벽을 나란히 두었습니다.",
+        "기억을 꺼내는 파도와 숲의 소리에서, 친구와 이웃이 나누는 대화로 이어집니다. 사건의 속도보다 인물과 풍경에 머물고 싶을 때 고른 네 편입니다.",
       ],
     },
     {
@@ -294,8 +293,7 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "짧은 이야기부터 찾는다면 18분의 〈여름의 편지〉가 입구입니다. 부치지 않은 편지를 찾는 두 친구와, 마지막 연주로 못다 한 말을 건네는 〈옥상의 작은 밴드〉를 ‘남겨둔 마음’으로 묶었습니다.",
-        "〈불이 켜지는 시간〉은 멈춘 엘리베이터가 이웃을 모으고, 〈마지막 바통〉은 계주가 선수에게 동료를 돌아보게 합니다. 지난 기억을 따라갈지, 함께할 계기에서 출발할지 골라보세요.",
+        "18분의 편지에서 시작해 연주와 계주로 관계를 넓혀갑니다. 말로 다 하지 못한 마음을 무엇으로 건네는지, 서로 다른 행동을 나란히 보세요.",
       ],
     },
     {
@@ -304,8 +302,7 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "단서를 좇고 싶다면 〈밤의 온실〉부터 살펴보세요. 사라진 관리자의 일지를 읽는 이야기 옆에, 아직 일어나지 않은 사고를 막으려 신호의 발신지를 추적하는 〈수신 불가〉를 놓았습니다.",
-        "다른 입구는 〈느린 궤도〉와 〈별을 접는 아이〉입니다. 귀환을 기다리는 일상과 마지막 종이에 담을 소원을 나란히 두었습니다. 사건의 답보다 인물의 기다림과 고민에 관심이 갈 때 골라보세요.",
+        "일지와 신호의 비밀을 좇을지, 귀환과 마지막 소원을 기다릴지 골라보세요. 낯선 세계를 단서가 이끄는 이야기와 인물의 선택이 이끄는 이야기로 묶었습니다.",
       ],
     },
   ];
@@ -551,82 +548,20 @@
     } else if (context !== "theme") article.append(makeDraftLink(film));
     return article;
   }
-  function renderThemes(id) {
-    const theme = themes.find((item) => item.id === id);
-    $("themesPageHeading").hidden = Boolean(theme);
-    $("themesView").setAttribute("aria-labelledby", theme ? "themeTitle" : "themesTitle");
-    $("themeOverview").hidden = Boolean(theme);
-    $("themeDetail").hidden = !theme;
-    $("themeTabs").hidden = !theme;
-    document.querySelectorAll("[data-theme]").forEach((link) => {
-      if (theme && link.dataset.theme === theme.id)
-        link.setAttribute("aria-current", "true");
-      else link.removeAttribute("aria-current");
-    });
-    if (!theme) {
-      updateSaveButtons();
-      return false;
-    }
-    $("themeDetail").dataset.theme = theme.id;
-    $("themeDetail").style.setProperty("--theme-accent", theme.accent);
-    $("themeCollection").dataset.theme = theme.id;
-    $("themeNumber").textContent = theme.number;
-    $("themeTagline").textContent = "큐레이션";
-    $("themeTitle").textContent = theme.name;
-    $("themeArticle").dataset.article = theme.article;
-    $("themeDescription").replaceChildren(
-      ...theme.descriptionLines.flatMap((text, index) => {
-        const line = document.createElement("span");
-        line.className = "theme-description-line";
-        line.textContent = text;
-        return index ? [document.createTextNode(" "), line] : [line];
-      }),
-    );
-    const selectedFilms = theme.films.map((filmId) =>
-      films.find((film) => film.id === filmId),
-    );
-    $("themeDuration").textContent =
-      `작품 ${selectedFilms.length}편 · 총 ${selectedFilms.reduce((sum, film) => sum + film.minutes, 0)}분`;
-    $("themeFilms").replaceChildren(
-      ...selectedFilms.map((film) => {
-        const card = makeCard(film, "theme");
-        const note = document.createElement("p");
-        note.className = "film-curator-note";
-        note.textContent = theme.filmNotes[film.id];
-        card.append(note);
-        return card;
-      }),
-    );
+  function renderThemes() {
     updateSaveButtons();
-    return true;
   }
   function makeThemePreview(theme) {
     const link = document.createElement("a");
     link.className = "theme-preview theme-overview-card";
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
-    link.style.setProperty("--theme-accent", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편${icon("arrow")}</span></div>`;
-    const glimpse = document.createElement("img");
-    glimpse.className = "theme-preview-glimpse";
-    glimpse.src = theme.glimpseImage;
-    glimpse.alt = "";
-    glimpse.setAttribute("aria-hidden", "true");
-    glimpse.width = 1672;
-    glimpse.height = 941;
-    glimpse.loading = "lazy";
-    link.querySelector(".theme-preview-image > img").after(glimpse);
+    link.setAttribute("aria-haspopup", "dialog");
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편 · 큐레이션 보기${icon("arrow")}</span></div>`;
     return link;
   }
-  $("themeOverview").replaceChildren(
-    ...themes.map(makeThemePreview),
-  );
-  $("themeTabs").innerHTML = themes
-    .map(
-      (theme) =>
-        `<a href="#themes/${theme.id}" data-theme="${theme.id}"><span aria-hidden="true">${theme.number}</span>${theme.name}</a>`,
-    )
-    .join("");
+  $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
+  document.querySelectorAll("[data-theme-preview]").forEach(link => link.setAttribute("aria-haspopup", "dialog"));
   const homeSelection = [
     "tide",
     "rooftop",
@@ -734,20 +669,13 @@
         String(button.dataset.homeMood === state.homeMood),
       ),
     );
-    [railPrevious, railNext, railStatus].forEach((control) => {
-      if (control) control.hidden = visible.length === 0;
-    });
-    if (!visible.length) {
-      if (railPrevious) railPrevious.disabled = true;
-      if (railNext) railNext.disabled = true;
-    }
+    railStatus.hidden = visible.length === 0;
     filmRail.scrollLeft = 0;
     updateSaveButtons();
   }
   const filmRail = $("homeFilms");
-  const railPrevious = document.querySelector('[data-rail-prev="homeFilms"]');
-  const railNext = document.querySelector('[data-rail-next="homeFilms"]');
   const railStatus = document.querySelector('[data-rail-status="homeFilms"]');
+  const railPosition = $("railPosition");
   let railFrame = 0;
   let railDrag = null;
   let railSuppressClickUntil = 0;
@@ -812,20 +740,6 @@
     filmRail.classList.toggle("rail-draggable", max > 2);
     if (railStatus) railStatus.hidden = max <= 2;
     const focused = document.activeElement;
-    if (railPrevious) railPrevious.disabled = left <= 2;
-    if (railNext) railNext.disabled = left >= max - 2;
-    if (
-      (focused === railPrevious && railPrevious.disabled) ||
-      (focused === railNext && railNext.disabled)
-    ) {
-      const target =
-        railPrevious && !railPrevious.disabled
-          ? railPrevious
-          : railNext && !railNext.disabled
-            ? railNext
-            : filmRail;
-      target.focus({ preventScroll: true });
-    }
     const cards = [...filmRail.children].map((card, index) => {
       const rect = card.getBoundingClientRect();
       const fullyVisible = shown && (
@@ -855,11 +769,27 @@
         );
         if (mostVisible.visibleWidth > 0) visible = [mostVisible];
       }
-      railStatus.textContent = visible.length
-        ? `${visible[0].index + 1}${visible.length > 1 ? `–${visible.at(-1).index + 1}` : ""} / ${filmRail.children.length}`
-        : `0 / ${filmRail.children.length}`;
+      const range = visible.length ? `${String(visible[0].index + 1).padStart(2, "0")}${visible.length > 1 ? `–${String(visible.at(-1).index + 1).padStart(2, "0")}` : ""}` : "00";
+      railStatus.innerHTML = `<span class="rail-current">${range}</span><span class="rail-divider" aria-hidden="true">/</span><span>${String(cards.length).padStart(2, "0")}</span>`;
+      railPosition.value = String(max ? Math.round(left / max * 100) : 0);
+      railPosition.setAttribute("aria-valuetext", `전체 ${cards.length}편 중 ${visible.length ? visible[0].index + 1 : 0}번째부터 표시`);
+      railPosition.disabled = max <= 2;
     }
   }
+  railPosition.addEventListener("input", () => {
+    armRailMotion();
+    filmRail.scrollTo({ left: railMetrics().max * Number(railPosition.value) / 100, behavior: "instant" });
+    requestRailUpdate();
+  });
+  railPosition.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const metrics = railMetrics();
+    const step = (filmRail.firstElementChild?.getBoundingClientRect().width || 1) + metrics.gap;
+    const left = event.key === "Home" ? 0 : event.key === "End" ? metrics.max : metrics.left + (event.key === "ArrowRight" ? step : -step);
+    filmRail.scrollTo({ left, behavior: "instant" });
+    requestRailUpdate();
+  });
   function requestRailUpdate() {
     if (!railFrame) railFrame = requestAnimationFrame(updateRail);
   }
@@ -960,8 +890,6 @@
     },
     true,
   );
-  railPrevious?.addEventListener("click", () => scrollRail(-1));
-  railNext?.addEventListener("click", () => scrollRail(1));
   filmRail.addEventListener("wheel", armRailMotion, { passive: true });
   filmRail.addEventListener("touchmove", armRailMotion, { passive: true });
   filmRail.addEventListener("scroll", onRailScroll, { passive: true });
@@ -1193,8 +1121,8 @@
       else render();
       heading = $("catalogTitle");
     } else if (view === "themes") {
-      const hasTheme = renderThemes(themeId);
-      heading = hasTheme ? $("themeTitle") : $("themesTitle");
+      renderThemes();
+      heading = $("themesTitle");
     } else {
       updateSaveButtons();
     }
@@ -1213,6 +1141,8 @@
     searchRequested = false;
     firstRoute = false;
     requestRailUpdate();
+    if (view === "themes" && themes.some(item => item.id === themeId))
+      showArticle(themes.find(item => item.id === themeId).article, document.querySelector(`#themeOverview [data-theme-preview="${themeId}"]`));
   }
   window.addEventListener("hashchange", route);
   document.addEventListener("click", (event) => {
@@ -1230,6 +1160,11 @@
     const hash = link.getAttribute("href");
     if (!/^#(home|browse|saved|themes|journal|news)(\/|$)/.test(hash)) return;
     event.preventDefault();
+    if (link.dataset.themePreview) {
+      const theme = themes.find(item => item.id === link.dataset.themePreview);
+      if (theme) showArticle(theme.article, link);
+      return;
+    }
     if (
       state.view === "home" &&
       link.matches('.nav [data-view="browse"]')
@@ -1669,9 +1604,11 @@
     const article = articles.find((item) => item.id === id);
     if (!article) return;
     const film = films.find((item) => item.id === article.film);
-    $("articleTitle").textContent = article.title;
-    $("articleCategory").textContent = article.category;
-    $("articleImage").src = film.stillPath || `assets/stills/${film.image}.webp`;
+    const theme = themes.find((item) => item.article === article.id);
+    $("articleDialog").dataset.theme = theme?.id || "";
+    $("articleTitle").textContent = theme?.name || article.title;
+    $("articleCategory").textContent = `큐레이션 ${theme?.number || ""} · 작품 ${theme?.films.length || 1}편`;
+    $("articleImage").src = theme?.previewImage || posterPath(film);
     $("articleImage").alt = `${film.title}의 가상 영화 장면`;
     $("articleImage").width = 1672;
     $("articleImage").height = 941;
@@ -1682,7 +1619,6 @@
         return paragraph;
       }),
     );
-    const theme = themes.find((item) => item.article === article.id);
     const relatedFilms = (theme?.films || [film.id]).map((id) =>
       films.find((item) => item.id === id),
     );
@@ -1693,7 +1629,7 @@
       button.dataset.detail = relatedFilm.id;
       if (index === 0) button.id = "articleFilmLink";
       button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span>${icon("arrow")}`;
+      button.innerHTML = `<img src="${posterPath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.id === "orbit" ? "center 52%" : relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
       return button;
     }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));
@@ -1939,6 +1875,8 @@
         return;
       }
       document.body.classList.remove("dialog-open");
+      if (dialog.id === "articleDialog" && context?.restoreFocus && state.view === "themes" && location.hash.startsWith("#themes/"))
+        history.replaceState(null, "", "#themes");
       // A queued close event must not steal focus from the new route heading.
       if (!context?.restoreFocus || context.routeVersion !== dialogRouteVersion) return;
       if (detailId && deletedNotes.has(detailId)) {
