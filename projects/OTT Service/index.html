@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=6146dde6c8d1" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=16bc8f1b6725"></script>
+    <link href="css/style.css?v=26ac687c4362" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=8e2fbb8cf2b5"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -159,7 +159,7 @@
           <div class="home-empty" id="homeEmpty" hidden><p>이 조건에 맞는 영화가 아직 없어요.</p><button class="text-link" id="homeReset" type="button">조건 초기화</button></div>
         </section>
         <section class="home-events wrap section" aria-labelledby="homeEventsTitle">
-          <div class="section-heading"><h2 id="homeEventsTitle">이벤트</h2><p class="events-label">잔상관 테마 기획전</p></div>
+          <div class="section-heading"><h2 id="homeEventsTitle">테마 기획전</h2><p class="events-label">네 편으로 이어지는 이야기</p></div>
           <div class="event-grid">
             <a class="event-banner event-lead" href="#themes/quiet" data-theme-preview="quiet">
               <div class="event-copy"><p class="event-kicker">01 · 파란 숨 고르기</p><h3>잠깐, 세상의<br />소리를 낮추고.</h3><p class="event-description">파도에서 대화로 이어지는 네 편.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
@@ -188,7 +188,7 @@
       >
         <div class="wrap">
           <div class="page-heading" id="themesPageHeading">
-            <h1 id="themesTitle" tabindex="-1">큐레이션</h1><p class="page-description">비슷한 분위기 안에서, 다른 이야기를 발견해보세요.</p>
+            <h1 id="themesTitle" tabindex="-1">큐레이션</h1><p class="page-description">네 장면의 연결을 따라, 함께 고른 이유를 발견하세요.</p>
           </div>
           <div class="theme-overview" id="themeOverview"></div>
         </div>
@@ -262,28 +262,17 @@
               <button aria-controls="filmGrid" aria-pressed="true" data-library-view="reading" type="button" aria-label="메모 읽기" title="메모 읽기"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h5v16H4zM13 5h7M13 10h7M13 15h7M13 20h4"/></svg><span class="view-tooltip" aria-hidden="true">메모 읽기</span></button>
               <button aria-controls="filmGrid" aria-pressed="false" data-library-view="compact" type="button" aria-label="작품 훑기" title="작품 훑기"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="view-tooltip" aria-hidden="true">작품 훑기</span></button>
             </div>
-          </div>
-          <div class="catalog-options" id="catalogOptions">
-            <div class="duration-field catalog-duration" id="durationField">
-              <label for="durationFilter">러닝타임</label>
-              <select id="durationFilter">
-                <option value="all">전체 시간</option>
-                <option value="20">20분 이내</option>
-                <option value="30">30분 이내</option>
-                <option value="over30">30분 초과</option>
-              </select>
-            </div>
-            <div class="sort-field" id="sortField">
-              <label class="sr-only" for="catalogSort">영화 정렬</label>
-              <select id="catalogSort">
-                <option value="recommended">잔상관 추천순</option>
-                <option value="short">짧은 러닝타임순</option>
-                <option value="title">제목순</option>
-              </select>
-            </div>
+            <details class="catalog-options" id="catalogOptions">
+              <summary><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg><span id="catalogOptionsLabel">필터·정렬</span><span class="options-active" id="catalogOptionsActive" hidden aria-hidden="true"></span></summary>
+              <div class="catalog-options-panel">
+                <fieldset id="durationField"><legend>러닝타임</legend><select id="durationFilter" hidden><option value="all">전체 시간</option><option value="20">20분 이내</option><option value="30">30분 이내</option><option value="over30">30분 초과</option></select><div class="option-choices" data-options-for="durationFilter"></div></fieldset>
+                <fieldset id="sortField"><legend>정렬</legend><select id="catalogSort" hidden><option value="recommended">잔상관 추천순</option><option value="short">짧은 러닝타임순</option><option value="title">제목순</option></select><div class="option-choices" data-options-for="catalogSort"></div></fieldset>
+                <button class="text-link options-done" id="catalogOptionsDone" type="button">선택 완료<svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg></button>
+              </div>
+            </details>
           </div>
           <div class="results-bar" id="resultsBar">
-            <p aria-live="polite" id="resultCount" role="status"></p>
+            <div class="results-summary"><p aria-live="polite" id="resultCount" role="status"></p><p id="catalogSelection" class="catalog-selection" hidden></p></div>
             <button class="text-link" hidden="" id="resetFilters">조건 초기화</button>
           </div>
           <div class="film-grid" id="filmGrid"></div>
@@ -325,27 +314,14 @@
         </div>
       </div>
     </footer>
-    <dialog
-      aria-labelledby="detailTitle"
-      class="detail-dialog"
-      id="detailDialog"
-    >
-      <button
-        aria-label="영화 찜하기"
-        aria-pressed="false"
-        class="icon-button save-button detail-bookmark"
-        id="detailSave"
-        type="button"
-      >
-        <svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg>
-      </button>
-      <button
-        aria-label="영화 정보 닫기"
-        class="icon-button close-button"
-        data-close="detailDialog"
-      >
-        <svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg>
-      </button>
+    <dialog id="cinemaDialog" class="cinema-dialog" aria-labelledby="detailTitle">
+      <div class="cinema-toolbar">
+        <button class="text-link cinema-back" id="cinemaBack" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg><span>기획전으로</span></button>
+        <span class="cinema-context" id="cinemaContext">작품 살펴보기</span>
+        <button aria-label="영화 찜하기" aria-pressed="false" class="icon-button save-button detail-bookmark" id="detailSave" type="button"><svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg></button>
+        <button aria-label="팝업 닫기" class="icon-button close-button" data-close="cinemaDialog" type="button"><svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg></button>
+      </div>
+      <section id="detailDialog" class="detail-dialog cinema-view" hidden>
       <div class="detail-layout dialog-scroll">
         <div class="detail-visual">
           <img
@@ -400,37 +376,18 @@
           <p class="detail-disclaimer">가상 작품 · 포트폴리오 미리보기</p>
         </div>
       </div>
-    </dialog>
-    <dialog
-      aria-labelledby="articleTitle"
-      class="article-dialog"
-      id="articleDialog"
-    >
-      <button
-        aria-label="큐레이션 닫기"
-        class="icon-button close-button"
-        data-close="articleDialog"
-      >
-        <svg aria-hidden="true" class="icon">
-          <use href="#i-close"></use>
-        </svg>
-      </button>
+      </section>
+      <section id="articleDialog" class="article-dialog cinema-view" hidden>
       <div class="dialog-scroll">
-        <img
-          alt=""
-          class="article-image"
-          height="1200"
-          id="articleImage"
-          width="800"
-        />
         <div class="article-content">
           <p class="eyebrow" id="articleCategory"></p>
           <h2 id="articleTitle" tabindex="-1"></h2>
           <div id="articleBody"></div>
-          <div class="article-sequence-heading"><h3>이 순서로 살펴보세요</h3><p id="articleRuntime"></p></div>
-          <div aria-label="노트에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
+          <div class="article-sequence-heading"><h3>장면의 연결</h3><p id="articleRuntime"></p></div>
+          <div aria-label="기획전에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
         </div>
       </div>
+      </section>
     </dialog>
     <dialog aria-labelledby="aboutTitle" class="about-dialog" id="aboutDialog">
       <button

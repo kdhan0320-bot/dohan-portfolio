@@ -226,6 +226,7 @@
       number: "01",
       article: "faces",
       lens: "소리에서 대화로",
+      sequence: ["파도의 기억", "숲의 호흡", "친구의 목소리", "새벽의 대화"],
       previewDescription: "파도와 숲에 귀를 기울인 뒤, 사람의 목소리로 돌아오는 네 편.",
       previewImage: "assets/stills/tide.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
@@ -245,6 +246,7 @@
       number: "02",
       article: "running-time",
       lens: "마음을 건네는 방식",
+      sequence: ["꺼내는 마음", "곁에 선 이웃", "못다 한 연주", "이어받는 바통"],
       previewDescription: "편지와 도움, 연주와 계주. 말 대신 건네는 행동으로 관계를 읽는 네 편.",
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
@@ -265,6 +267,7 @@
       number: "03",
       article: "enclosed-spaces",
       lens: "낯선 세계, 남겨진 선택",
+      sequence: ["펼쳐진 일지", "기다리는 귀환", "접어 둔 소원", "도착한 신호"],
       previewDescription: "일지를 펼치고, 귀환을 기다리고, 소원을 고르는 사람들. 세계보다 선택에 주목한 네 편.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
@@ -530,7 +533,10 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-meta"><span aria-hidden="true">${theme.number} / </span>${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div><div class="theme-preview-copy"><div class="theme-preview-heading"><h3>${theme.name}</h3>${icon("arrow")}</div><p class="theme-lens">${theme.lens}</p></div>`;
+    link.innerHTML = `<div class="theme-preview-copy"><p class="theme-lens"><span>${theme.number}</span> 장면의 연결 · ${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div></div><div class="theme-sequence">${theme.films.map((id, index) => {
+      const film = films.find(item => item.id === id);
+      return `<figure class="sequence-frame"><div class="sequence-image"><img src="${scenePath(film)}" alt="" width="800" height="600" loading="lazy" style="object-position:${film.sequencePosition || film.detailPosition || film.posterPosition || "center"}"></div><figcaption><span class="sequence-number">${String(index + 1).padStart(2, "0")}</span><span>${theme.sequence[index]}</span></figcaption></figure>`;
+    }).join("")}</div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
@@ -976,6 +982,7 @@
     $("durationFilter").value = state.duration;
     $("catalogSort").value = state.sort;
     syncPickers();
+    syncCatalogOptions();
     $("catalogTools").classList.toggle("library-tools", state.view === "saved");
     document
       .querySelectorAll("[data-library-filter]")
@@ -985,7 +992,7 @@
           String(button.dataset.libraryFilter === state.libraryFilter),
         ),
       );
-    $("resetFilters").hidden = !filtered;
+    $("resetFilters").hidden = !filtered && state.sort === "recommended";
     $("clearSearch").hidden = !state.query;
     document
       .querySelectorAll("[data-mood]")
@@ -1034,6 +1041,7 @@
   function resetFilters() {
     state.mood = "all";
     state.duration = "all";
+    state.sort = "recommended";
     state.query = "";
     if (state.view === "saved") state.libraryFilter = "all";
     $("searchInput").value = "";
@@ -1052,6 +1060,7 @@
   }
   function route() {
     closePickers();
+    $("catalogOptions").open = false;
     stopRailMotion();
     dialogRouteVersion += 1;
     document
@@ -1239,6 +1248,14 @@
   const dialogContexts = new Map();
   const pendingDialogClosures = new WeakMap();
   let dialogRouteVersion = 0;
+  let activeCinemaView = null;
+  const closingDialogs = new WeakMap();
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function isDialogOpen(view) {
+    return view?.classList.contains("cinema-view")
+      ? $("cinemaDialog").open && activeCinemaView === view
+      : Boolean(view?.open);
+  }
   // Drafts survive internal navigation, but never count as saved library notes.
   // They are intentionally memory-only and disappear on refresh or tab close.
   const noteDrafts = new Map();
@@ -1250,10 +1267,10 @@
   let noteDirty = false;
   let noteMode = "edit";
   let noteSizeFrame = 0;
-  function resizeNoteText() {
+  function resizeNoteText(keepCaretVisible = false) {
     noteSizeFrame = 0;
     const textarea = $("noteText");
-    if (!$("detailDialog").open || !$("noteDisclosure").open || !textarea.getClientRects().length)
+    if (!isDialogOpen($("detailDialog")) || !$("noteDisclosure").open || !textarea.getClientRects().length)
       return;
     const scroller = textarea.closest(".dialog-scroll");
     const scrollTop = scroller.scrollTop;
@@ -1274,6 +1291,26 @@
     textarea.scrollTop = 0;
     // Measuring a shorter temporary box must not pull a long popup back to its top.
     scroller.scrollTop = scrollTop;
+    if (keepCaretVisible === true && document.activeElement === textarea) {
+      // Measure the insertion line with the same wrapping as the growing field.
+      // Scrolling only its content container leaves the close toolbar in place.
+      const measure = document.createElement("div");
+      Object.assign(measure.style, {
+        position: "fixed", visibility: "hidden", pointerEvents: "none",
+        left: "-10000px", top: "0", width: style.width,
+        boxSizing: style.boxSizing, font: style.font, padding: style.padding,
+        border: style.border, letterSpacing: style.letterSpacing,
+        whiteSpace: "pre-wrap", overflowWrap: "break-word", wordBreak: style.wordBreak,
+      });
+      measure.textContent = textarea.value.slice(0, textarea.selectionEnd) + "\u200b";
+      document.body.append(measure);
+      const caretBottom = textarea.getBoundingClientRect().top + measure.offsetHeight - parseFloat(style.paddingBottom);
+      measure.remove();
+      const visible = scroller.getBoundingClientRect();
+      const lineHeight = parseFloat(style.lineHeight) || 24;
+      if (caretBottom > visible.bottom - 24) scroller.scrollTop += caretBottom - visible.bottom + 24;
+      else if (caretBottom - lineHeight < visible.top + 16) scroller.scrollTop += caretBottom - lineHeight - visible.top - 16;
+    }
   }
   function requestNoteResize() {
     if (!noteSizeFrame) noteSizeFrame = requestAnimationFrame(resizeNoteText);
@@ -1290,40 +1327,96 @@
     } else noteDrafts.delete(activeDetailId);
     updateDraftLinks();
   }
-  function closeDialog(dialog, { restoreFocus = true } = {}) {
-    if (!dialog?.open) return;
-    const context = dialogContexts.get(dialog) || {};
+  function closeDialog(view, { restoreFocus = true } = {}) {
+    const host = view?.id === "cinemaDialog" || view?.classList.contains("cinema-view") ? $("cinemaDialog") : view;
+    if (!host?.open) return;
+    const closing = closingDialogs.get(host);
+    if (closing) {
+      if (!restoreFocus) { closing.context.restoreFocus = false; closing.finish(); }
+      return;
+    }
+    if (host.id === "cinemaDialog") view = activeCinemaView;
+    const context = dialogContexts.get(view) || {};
     context.restoreFocus = restoreFocus;
-    dialogContexts.delete(dialog);
-    if (dialog.id === "detailDialog") {
+    context.viewId = view?.id;
+    dialogContexts.delete(view);
+    if (view?.id === "detailDialog") {
       rememberNoteDraft();
       activeDetailId = null;
       noteDirty = false;
     }
-    const pending = pendingDialogClosures.get(dialog) || [];
+    const pending = pendingDialogClosures.get(host) || [];
     pending.push(context);
-    pendingDialogClosures.set(dialog, pending);
-    dialog.close();
+    pendingDialogClosures.set(host, pending);
+    let animation;
+    let closeTimer;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(closeTimer);
+      closingDialogs.delete(host);
+      host.inert = false;
+      host.close();
+      animation?.cancel();
+    };
+    closingDialogs.set(host, { context, finish });
+    if (restoreFocus && !reducedMotion.matches) {
+      host.inert = true;
+      animation = host.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: "ease-in", fill: "forwards" });
+      animation.finished.then(finish, () => {});
+      // A throttled animation clock must not leave a closing dialog inert.
+      closeTimer = setTimeout(finish, 180);
+    } else finish();
   }
-  function openDialog(dialog, trigger, heading, { returnToArticle = null, scrollTop = 0, focusTarget = heading } = {}) {
-    document.querySelectorAll("dialog[open]").forEach((open) => {
-      if (open !== dialog) closeDialog(open, { restoreFocus: false });
+  function openDialog(view, trigger, heading, { returnToArticle = null, scrollTop = 0, focusTarget = heading } = {}) {
+    const cinema = view.classList.contains("cinema-view");
+    const host = cinema ? $("cinemaDialog") : view;
+    const closing = closingDialogs.get(host);
+    if (closing) { closing.context.restoreFocus = false; closing.finish(); }
+    document.querySelectorAll("dialog[open]").forEach(open => {
+      if (open !== host) closeDialog(open, { restoreFocus: false });
     });
-    dialogContexts.set(dialog, {
+    dialogContexts.set(view, {
       trigger,
-      detailId: dialog.id === "detailDialog" ? activeDetailId : null,
+      detailId: view.id === "detailDialog" ? activeDetailId : null,
       restoreFocus: true,
       routeVersion: dialogRouteVersion,
       returnToArticle,
     });
-    if (!dialog.open) dialog.showModal();
-    dialog.scrollTop = 0;
-    const scroller = dialog.querySelector(".dialog-scroll");
+    if (cinema) {
+      activeCinemaView = view;
+      [$("detailDialog"), $("articleDialog")].forEach(item => { item.hidden = item !== view; });
+      host.dataset.view = view.id;
+      host.setAttribute("aria-labelledby", heading.id);
+      $("detailSave").hidden = view.id !== "detailDialog";
+      $("cinemaBack").hidden = !returnToArticle;
+      $("cinemaContext").hidden = Boolean(returnToArticle);
+      $("cinemaContext").textContent = view.id === "articleDialog" ? "테마 기획전" : "작품 살펴보기";
+      $("cinemaBack").setAttribute("aria-label", `${$("articleTitle").textContent} 기획전으로 돌아가기`);
+    }
+    const wasOpen = host.open;
+    if (!wasOpen) host.showModal();
+    host.scrollTop = 0;
+    const scroller = view.querySelector(".dialog-scroll");
     scroller?.scrollTo({ top: scrollTop, behavior: "instant" });
-    dialog.dataset.scrolled = String((scroller?.scrollTop || 0) > 8);
+    host.dataset.scrolled = String((scroller?.scrollTop || 0) > 8);
     document.body.classList.add("dialog-open");
     focusTarget.focus({ preventScroll: true });
+    if (!reducedMotion.matches) {
+      view.getAnimations().forEach(animation => animation.cancel());
+      view.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], { duration: wasOpen ? 180 : 200, easing: "ease-out" });
+    }
   }
+  $("cinemaBack").addEventListener("click", () => {
+    const article = dialogContexts.get($("detailDialog"))?.returnToArticle;
+    if (!article) return;
+    rememberNoteDraft();
+    activeDetailId = null;
+    noteDirty = false;
+    dialogContexts.delete($("detailDialog"));
+    openDialog($("articleDialog"), article.trigger, $("articleTitle"), { scrollTop: article.scrollTop, focusTarget: article.focusTarget });
+  });
   function noteSavedMessage() {
     return state.notesStorageAvailable
       ? "메모를 저장했어요."
@@ -1461,7 +1554,7 @@
     renderNoteUndo();
   });
   function focusAfterNoteUndo(id) {
-    if ($("detailDialog").open && activeDetailId === id) {
+    if (isDialogOpen($("detailDialog")) && activeDetailId === id) {
       (noteMode === "read" && state.notes[id] ? $("noteDraftNotice").hidden ? $("noteReadText") : $("noteDraftNotice")
         : $("noteDisclosure").querySelector("summary")).focus();
       return;
@@ -1497,7 +1590,7 @@
     if (latest[id]) {
       state.notes = latest;
       deleted.message = "다른 탭의 새 메모가 있어 복원하지 않았어요.";
-      if ($("detailDialog").open && activeDetailId === id) {
+      if (isDialogOpen($("detailDialog")) && activeDetailId === id) {
         noteMode = "read";
         $("noteDisclosure").open = true;
         loadNote();
@@ -1514,7 +1607,7 @@
     // Preserve a newer local draft if one was started after deleting the note.
     if (!noteDrafts.has(id) && deleted.draft) noteDrafts.set(id, deleted.draft);
     deletedNotes.delete(id);
-    if ($("detailDialog").open && activeDetailId === id) {
+    if (isDialogOpen($("detailDialog")) && activeDetailId === id) {
       noteMode = "read";
       $("noteDisclosure").open = true;
       loadNote("삭제한 메모를 복원했어요.");
@@ -1529,7 +1622,7 @@
     if (!film) return;
     const articleDialog = $("articleDialog");
     const articleContext = dialogContexts.get(articleDialog);
-    const returnToArticle = articleDialog.open && trigger?.closest("#articleDialog")
+    const returnToArticle = isDialogOpen(articleDialog) && trigger?.closest("#articleDialog")
       ? {
           trigger: articleContext?.trigger,
           scrollTop: articleDialog.querySelector(".dialog-scroll").scrollTop,
@@ -1537,7 +1630,7 @@
         }
       : null;
     if (returnToArticle) trigger = articleContext?.trigger || trigger;
-    if ($("detailDialog").open) rememberNoteDraft();
+    if (isDialogOpen($("detailDialog"))) rememberNoteDraft();
     activeDetailId = id;
     $("detailTitle").textContent = film.title;
     $("detailDialog").dataset.filmId = film.id;
@@ -1584,10 +1677,6 @@
     $("articleDialog").dataset.theme = theme?.id || "";
     $("articleTitle").textContent = theme?.name || article.title;
     $("articleCategory").textContent = `${trigger?.closest(".home-events") ? "테마 기획전" : "큐레이션"} ${theme?.number || ""} · 작품 ${theme?.films.length || 1}편`;
-    $("articleImage").src = theme?.previewImage || scenePath(film);
-    $("articleImage").alt = `${film.title}의 가상 영화 장면`;
-    $("articleImage").width = 1672;
-    $("articleImage").height = 941;
     $("articleBody").replaceChildren(
       ...article.paragraphs.map((copy) => {
         const paragraph = document.createElement("p");
@@ -1606,13 +1695,13 @@
       button.dataset.detail = relatedFilm.id;
       if (index === 0) button.id = "articleFilmLink";
       button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title"><span class="article-film-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
+      button.innerHTML = `<span class="article-step"><span class="article-film-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${theme?.sequence[index] || "작품 살펴보기"}</span><img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.sequencePosition || relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
       return button;
     }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
   function focusNote() {
-    if (!activeDetailId || !$("detailDialog").open) return;
+    if (!activeDetailId || !isDialogOpen($("detailDialog"))) return;
     $("noteDisclosure").open = true;
     updateNoteDisclosureLabel();
     resizeNoteText();
@@ -1642,7 +1731,7 @@
   $("noteText").addEventListener("input", () => {
     rememberNoteDraft();
     updateNoteCount();
-    resizeNoteText();
+    resizeNoteText(true);
     $("noteStatus").textContent = noteDirty
       ? noteDraftMessage()
       : state.notes[activeDetailId]
@@ -1778,10 +1867,9 @@
     if (close) closeDialog($(close.dataset.close));
   });
   document.querySelectorAll("dialog").forEach((dialog) => {
-    const scroller = dialog.querySelector(".dialog-scroll");
-    scroller?.addEventListener("scroll", () => {
+    dialog.querySelectorAll(".dialog-scroll").forEach(scroller => scroller.addEventListener("scroll", () => {
       dialog.dataset.scrolled = String(scroller.scrollTop > 8);
-    }, { passive: true });
+    }, { passive: true }));
     dialog.addEventListener("cancel", (event) => {
       event.preventDefault();
       closeDialog(dialog);
@@ -1845,16 +1933,12 @@
       clearTimeout(toastTimer);
       $("toast").classList.remove("visible");
       document.body.append($("toast"));
-      if (context?.restoreFocus && context.routeVersion === dialogRouteVersion && context.returnToArticle) {
-        const article = context.returnToArticle;
-        openDialog($("articleDialog"), article.trigger, $("articleTitle"), {
-          scrollTop: article.scrollTop,
-          focusTarget: article.focusTarget,
-        });
-        return;
+      if (dialog.id === "cinemaDialog") {
+        activeCinemaView = null;
+        [$("detailDialog"), $("articleDialog")].forEach(view => { view.hidden = true; dialogContexts.delete(view); });
       }
       document.body.classList.remove("dialog-open");
-      if (dialog.id === "articleDialog" && context?.restoreFocus && state.view === "themes" && location.hash.startsWith("#themes/"))
+      if (dialog.id === "cinemaDialog" && context?.restoreFocus && state.view === "themes" && location.hash.startsWith("#themes/"))
         history.replaceState(null, "", "#themes");
       // A queued close event must not steal focus from the new route heading.
       if (!context?.restoreFocus || context.routeVersion !== dialogRouteVersion) return;
@@ -1931,7 +2015,7 @@
       });
       if (
         activeDetailId &&
-        $("detailDialog").open &&
+        isDialogOpen($("detailDialog")) &&
         previousNotes[activeDetailId] !== state.notes[activeDetailId]
       ) {
         noteDirty = noteDrafts.has(activeDetailId);
@@ -2040,7 +2124,52 @@
     select.labels?.[0]?.addEventListener("click", event => { event.preventDefault(); button.focus(); });
     pickers.set(select.id, { select, button, menu, options, label });
   }
-  [$("homeDuration"), $("durationFilter"), $("catalogSort")].forEach(enhanceSelect);
+  enhanceSelect($("homeDuration"));
+  [$("durationFilter"), $("catalogSort")].forEach(select => {
+    const choices = document.querySelector(`[data-options-for="${select.id}"]`);
+    [...select.options].forEach(option => {
+      const label = document.createElement("label");
+      label.className = "option-choice";
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `${select.id}Choice`;
+      input.value = option.value;
+      const text = document.createElement("span");
+      text.textContent = option.textContent;
+      label.append(input, text);
+      choices.append(label);
+      input.addEventListener("change", () => {
+        select.value = input.value;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+  });
+  function syncCatalogOptions() {
+    const saved = state.view === "saved";
+    $("catalogOptionsLabel").textContent = saved ? "정렬" : "필터·정렬";
+    const selections = [];
+    [$("durationFilter"), $("catalogSort")].forEach(select => {
+      document.querySelectorAll(`[name="${select.id}Choice"]`).forEach(input => { input.checked = input.value === select.value; });
+      if (select.id === "durationFilter" ? !saved && select.value !== "all" : select.value !== "recommended") selections.push(select.selectedOptions[0].textContent);
+    });
+    $("catalogSelection").textContent = selections.join(" · ");
+    $("catalogSelection").hidden = !selections.length;
+    $("catalogOptionsActive").hidden = !selections.length;
+  }
+  const closeCatalogOptions = (focus = false) => {
+    $("catalogOptions").open = false;
+    if (focus) $("catalogOptions").querySelector("summary").focus({ preventScroll: true });
+  };
+  $("catalogOptionsDone").addEventListener("click", () => closeCatalogOptions(true));
+  $("catalogOptions").addEventListener("keydown", event => {
+    if (event.key === "Escape") { event.preventDefault(); closeCatalogOptions(true); }
+  });
+  document.addEventListener("pointerdown", event => {
+    if (!event.target.closest("#catalogOptions")) closeCatalogOptions();
+  });
+  document.addEventListener("focusin", event => {
+    if (!event.target.closest("#catalogOptions")) closeCatalogOptions();
+  });
   document.addEventListener("pointerdown", event => {
     if (!event.target.closest(".select-picker")) closePickers();
   });
