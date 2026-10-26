@@ -9,6 +9,7 @@ import { isAuthConfigured } from '../lib/supabase';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { EMAIL_COOLDOWN_KEY, EMAIL_COOLDOWN_MS, emailCooldownSeconds } from '../utils/authRecovery';
 import { Brand } from '../components/ui/Brand';
+import { workspaceReturn } from '../utils/workspaceReturn';
 import '../styles/auth.css';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -123,7 +124,7 @@ export default function LoginPage() {
     setError('');
     try {
       await enterGuestMode();
-      navigate('/overview');
+      navigate(isGuest ? workspaceReturn(searchParams.get('returnTo')) : '/overview');
     } catch (caught) {
       setError(getAuthErrorMessage(caught));
     } finally {
@@ -138,7 +139,7 @@ export default function LoginPage() {
       <Button component={Link} to="/welcome" className="login-back">서비스 소개</Button>
       <h1 id="login-title">{heading}</h1>
       <div className="login-sample-entry">
-        <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>샘플 체험하기</Button>
+        <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>{isGuest ? '샘플로 돌아가기' : '샘플 체험하기'}</Button>
         <p>{isGuest ? '샘플 체험으로 돌아가면 이 탭의 기록과 초안이 유지돼요.' : '가입 없이 이용 · 새로고침하면 초기화'}</p>
       </div>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {

@@ -2,6 +2,7 @@ import { Suspense, useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import Header from './Header';
+import SiteFooter from './SiteFooter';
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -23,5 +24,6 @@ export default function Layout() {
         </Suspense>
       </main>
     </div>
+    <SiteFooter />
   </div>;
 }

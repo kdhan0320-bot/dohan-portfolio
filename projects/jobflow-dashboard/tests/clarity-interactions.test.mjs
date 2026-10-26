@@ -4,6 +4,8 @@ import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
 import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
+import { preparationGroups } from '../src/utils/preparationGroups.js';
+import { shortDate } from '../src/utils/dates.js';
 import * as constants from '../src/constants/index.js';
 
 const jsx = (type, props, key) => ({ type, props, key });
@@ -42,6 +44,10 @@ async function mount(page, dependencies) {
     '../components/ui/Field': 'Field',
     '../components/ui/PageUI': Object.fromEntries(['PageHeading', 'LoadState', 'Empty', 'ConfirmDelete', 'CompanyMark'].map(name => [name, name])),
     '../components/ui/ActionFeedback': 'Feedback',
+    '../components/ui/PreparationItem': 'PreparationItem',
+    '../components/ui/StatusChip': 'StatusChip',
+    '../utils/preparationGroups': { preparationGroups },
+    '../utils/dates': { shortDate },
     '../constants': constants,
     ...dependencies,
   };
@@ -87,6 +93,7 @@ test('home record preview opens without navigating or starting a guest session',
     'react-router-dom': { useNavigate: () => to => destinations.push(to) },
     '../context/AuthContext': { useAuth: () => ({ enterGuestMode: async () => guestStarts++ }) },
     '../components/layout/SiteHeader': 'Header',
+    '../components/layout/SiteFooter': 'Footer',
     '../components/ui/ProductPreview': 'Preview',
     '../components/applications/CompanySummary': { CompanySummary: 'CompanySummary' },
     '../utils/authErrors': { getAuthErrorMessage: error => error.message },
@@ -110,13 +117,13 @@ test('completing a task keeps its checked row visible until the status filter ch
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'checklist'),
   });
-  const checkbox = () => page.find(node => node.type === 'Checkbox');
-  await checkbox().props.onChange({ target: { checked: true } }); page.render();
-  assert.equal(checkbox().props.checked, true);
-  assert.match(page.text(), /이력서 확인/);
-  await checkbox().props.onChange({ target: { checked: false } }); page.render();
-  assert.equal(checkbox().props.checked, false);
-  await checkbox().props.onChange({ target: { checked: true } }); page.render();
+  const checkbox = () => page.find(node => node.type === 'PreparationItem');
+  await checkbox().props.onToggle(checkbox().props.item, true); page.render();
+  assert.equal(checkbox().props.item.is_done, true);
+  assert.equal(checkbox().props.item.title, '이력서 확인');
+  await checkbox().props.onToggle(checkbox().props.item, false); page.render();
+  assert.equal(checkbox().props.item.is_done, false);
+  await checkbox().props.onToggle(checkbox().props.item, true); page.render();
   page.find(node => node.type === 'Tabs').props.onChange(null, 'done'); page.render();
   page.find(node => node.type === 'Tabs').props.onChange(null, 'todo'); page.render();
   assert.equal(checkbox(), null);

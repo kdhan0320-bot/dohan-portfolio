@@ -235,21 +235,21 @@ export const DEMO_CHECKLISTS = [{
 }, {
   id: 'cl-4',
   application_id: 'demo-1',
-  title: '면접 질문 5개 답변 작성',
+  title: '자기소개 답변 소리 내어 연습',
   category: '면접',
   is_done: false,
   sort_order: 4
 }, {
   id: 'cl-5',
   application_id: 'demo-1',
-  title: '블루핀랩 면접 복장 준비',
+  title: '면접 복장 준비',
   category: '면접',
   is_done: false,
   sort_order: 5
 }, {
   id: 'cl-6',
   application_id: 'demo-3',
-  title: '모션브릿지 이력서 최종 확인',
+  title: '이력서 최종 확인',
   category: '서류',
   is_done: false,
   sort_order: 6

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import { CompanyMark } from './PageUI';
-import { APPLICATION_STATUSES, DEMO_APPLICATIONS, DEMO_TODAY } from '../../constants';
+import { APPLICATION_STATUSES, DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel } from '../../utils/dates';
 
@@ -14,6 +14,7 @@ export default function ProductPreview({ onOpen }) {
   const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === stage.id);
   const status = APPLICATION_STATUSES.find(item => item.value === selected.status);
   const before = stage.id === 'before';
+  const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
   function moveTab(event, index) {
     let next;
     if (event.key === 'ArrowRight') next = (index + 1) % BOARD_COLUMNS.length;
@@ -45,10 +46,7 @@ export default function ProductPreview({ onOpen }) {
             <strong>{shortDate(before ? selected.deadline : selected.applied_date)}</strong>
             {before && <b>{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}
           </div>
-          <div className="preview-documents" aria-label="서류 준비 상태">
-            <span className={selected.resume_submitted ? 'is-done' : ''}>이력서 <em>{selected.resume_submitted ? '제출 완료' : '미제출'}</em></span>
-            <span className={selected.portfolio_submitted ? 'is-done' : ''}>포트폴리오 <em>{selected.portfolio_submitted ? '제출 완료' : '미제출'}</em></span>
-          </div>
+          <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}><span aria-hidden="true" className="preview-task-box" />{item.title}</li>)}</ul> : <p>등록한 준비 항목이 없어요.</p>}</div>
         </div>
         <p className="preview-record-memo"><span>기록 메모</span>{selected.memo}</p>
         <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>

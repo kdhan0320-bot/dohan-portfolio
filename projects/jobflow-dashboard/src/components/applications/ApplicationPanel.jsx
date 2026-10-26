@@ -13,7 +13,7 @@ import { isValidApplicationUrl } from '../../utils/applicationPayload';
 
 export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onDelete }) {
   const fullScreen = useMediaQuery('(max-width: 599px)');
-  const { form, change: changeDraft, clear: clearDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
+  const { form, change: changeDraft, clear: clearDraft, reset: resetDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [editing, setEditing] = useState(Boolean(creating));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -23,6 +23,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   const [confirmLeave, setConfirmLeave] = useState(false);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
+  const summaryEditButton = useRef(null);
   const lane = boardColumn(form.status);
   function change(key, value) {
     changeDraft(key, value);
@@ -31,11 +32,19 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   function close() {
     if (busy) return;
     if (editing && dirty) setConfirmLeave(true);
+    else if (editing && !creating) returnToSummary();
     else onClose();
   }
+  function returnToSummary() {
+    setEditing(false);
+    window.requestAnimationFrame(() => summaryEditButton.current?.focus({ preventScroll: true }));
+  }
   function discardAndLeave() {
-    clearDraft();
-    onClose();
+    resetDraft();
+    setConfirmLeave(false);
+    setError(''); setErrors({});
+    if (!creating) returnToSummary();
+    else onClose();
   }
   async function save(e) {
     e.preventDefault();
@@ -90,7 +99,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
       </div>
       {!editing ? <>
         <div className="company-panel-body"><LiveCompanySummary application={application} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
-        <div className="company-panel-footer"><Button onClick={close}>닫기</Button><Button variant="outlined" onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
+        <div className="company-panel-footer"><Button onClick={close}>닫기</Button><Button ref={summaryEditButton} variant="outlined" onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
       </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
@@ -132,7 +141,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     </Dialog>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>입력을 버리고 닫을까요?</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>입력 버리고 닫기</Button></DialogActions>
+      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{creating ? '입력을 버리고 닫을까요?' : '수정을 취소하고 회사 기록으로 돌아갈까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>{creating ? '입력 버리고 닫기' : '수정 취소'}</Button></DialogActions>
     </Dialog>
   </>;
 }

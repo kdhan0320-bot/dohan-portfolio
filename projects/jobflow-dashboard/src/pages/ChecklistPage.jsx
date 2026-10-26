@@ -1,7 +1,7 @@
 import Field from '../components/ui/Field';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Button, Checkbox, Menu, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
+import { Button, Menu, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
@@ -10,7 +10,11 @@ import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
 import { CHECKLIST_CATEGORIES } from '../constants';
-import { PageHeading, LoadState, Empty, ConfirmDelete, CompanyMark } from '../components/ui/PageUI';
+import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
+import PreparationItem from '../components/ui/PreparationItem';
+import StatusChip from '../components/ui/StatusChip';
+import { preparationGroups } from '../utils/preparationGroups';
+import { shortDate } from '../utils/dates';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import '../styles/company-checklist.css';
 
@@ -47,12 +51,11 @@ export default function ChecklistPage() {
   const taskListRef = useRef(null);
   const dialogTriggerRef = useRef(null);
   const companyItems = items.filter(item => companyScope === 'all' || (companyScope === 'common' ? !item.application_id : item.application_id === companyScope));
-  const done = companyItems.filter(item => item.is_done).length;
   const scopedItems = companyItems.filter(item => filter === '전체' || item.category === filter);
   const scopedDone = scopedItems.filter(item => item.is_done).length;
   const filtered = scopedItems.filter(item => tab === 'all' || item.is_done === (tab === 'done') || (tab === 'todo' && completedHere.includes(item.id)));
   const scopeLabel = selectedCompany?.company_name || (companyScope === 'common' ? '공통 준비' : '전체 준비');
-  const progress = companyItems.length ? Math.round(done / companyItems.length * 100) : 0;
+  const groups = preparationGroups(filtered, applications);
   const addDirty = Boolean(adding && addOriginal.current && (
     title !== addOriginal.current.title || category !== addOriginal.current.category ||
     (applicationId || null) !== addOriginal.current.application_id
@@ -191,14 +194,16 @@ export default function ChecklistPage() {
   }
   async function toggleTask(item, checked) {
     if (busy) return;
+    const originalInput = document.getElementById(`task-check-${item.id}`);
+    const keepFocus = document.activeElement === originalInput;
     const index = filtered.findIndex(record => record.id === item.id);
     const nextId = tab !== 'done' ? item.id : (filtered[index + 1]?.id ?? filtered[index - 1]?.id);
     if (checked) setCompletedHere(ids => [...new Set([...ids, item.id])]);
-    const saved = await action(item.id, () => toggle(item.id, checked), `${item.title} · ${checked ? '완료했어요' : '완료를 취소했어요'}`);
+    const saved = await action(item.id, () => toggle(item.id, checked), checked ? '완료했어요. 다시 누르면 취소할 수 있어요.' : '완료 표시를 취소했어요.');
     if (!saved) setCompletedHere(ids => ids.filter(id => id !== item.id));
-    if (saved) window.requestAnimationFrame(() => {
+    if (saved && keepFocus && (document.activeElement === document.body || document.activeElement === originalInput)) window.requestAnimationFrame(() => {
       const nextInput = nextId ? document.getElementById(`task-check-${nextId}`) : null;
-      if (nextInput) nextInput.focus();
+      if (nextInput) nextInput.focus({ preventScroll: true });
       else taskListRef.current?.focus({ preventScroll: true });
     });
   }
@@ -252,64 +257,53 @@ export default function ChecklistPage() {
     finally { setBusy(''); }
   }
 
-  return <div className="checklist-page">
-    <PageHeading art="check" title="준비 체크">
+  return <div className="checklist-page grouped-checklist">
+    <PageHeading art="check" title="준비 체크" description="회사별로 할 일을 모으고, 마친 일은 바로 표시해요.">
       <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
     {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
     <LoadState loading={loading || companiesLoading} error={error || companiesError} retry={() => { refresh(); refreshCompanies(); }} />
     {!loading && !companiesLoading && !error && !companiesError && <>
       {missingCompany ? <Alert severity="warning" action={<Button color="inherit" onClick={() => setScope('all')}>전체 준비 보기</Button>}>선택한 회사를 찾을 수 없어요. 삭제되었거나 접근할 수 없는 회사입니다.</Alert> : <>
-        <section className="checklist-company-scope" aria-label="회사별 준비 선택과 완료 현황">
-          <div className="checklist-scope-controls">
-            {selectedCompany && <CompanyMark name={selectedCompany.company_name} />}
-            <Field className="checklist-scope-select" label="회사 선택" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)} slotProps={{ select: { renderValue: value => value === 'all' ? '전체 회사 + 공통 준비' : value === 'common' ? '공통 준비' : companyLabel(value) } }}>
-              <MenuItem value="all">전체 회사 + 공통 준비</MenuItem>
-              <MenuItem value="common">공통 준비</MenuItem>
-              {companyOptions.map(company => <MenuItem className="checklist-company-option" key={company.id} value={company.id}>{companyLabel(company.id)}</MenuItem>)}
-            </Field>
+        <div className="preparation-controls">
+          <div className="preparation-status-tabs">
+            <Tabs value={tab} onChange={(_, value) => { setTab(value); setCompletedHere([]); }} variant="fullWidth" aria-label="할 일 상태">
+              {[
+                { value: 'todo', label: '남은 일', count: scopedItems.length - scopedDone },
+                { value: 'all', label: '전체', count: scopedItems.length },
+                { value: 'done', label: '완료', count: scopedDone }
+              ].map(status => <Tab key={status.value} id={`checklist-tab-${status.value}`} aria-controls={`checklist-panel-${status.value}`} value={status.value} label={`${status.label} ${status.count}`} />)}
+            </Tabs>
           </div>
-          <div className="checklist-progress">
-            <div className="checklist-progress-copy"><span>준비 완료</span><span><strong>{done}</strong> / {companyItems.length}</span></div>
-            <div className="checklist-progress-track" role="progressbar" aria-label={`${scopeLabel} 준비 완료`} aria-valuemin={0} aria-valuemax={companyItems.length || 1} aria-valuenow={done} aria-valuetext={companyItems.length ? `${companyItems.length}개 중 ${done}개 완료` : '등록한 할 일 없음'}><span style={{ width: `${progress}%` }} /></div>
-          </div>
-        </section>
-        <section className="checklist-sheet" aria-label={`${scopeLabel}의 할 일 목록`}>
-          <div className="checklist-filterbar">
-            <div className="checklist-sheet-toolbar">
-              <Tabs value={tab} onChange={(_, value) => { setTab(value); setCompletedHere([]); }} variant="fullWidth" scrollButtons={false} aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
-                {[
-                  { value: 'todo', label: '진행 중', count: scopedItems.length - scopedDone },
-                  { value: 'done', label: '완료', count: scopedDone },
-                  { value: 'all', label: '전체', count: scopedItems.length }
-                ].map(status => <Tab key={status.value} id={`checklist-tab-${status.value}`} aria-controls={`checklist-panel-${status.value}`} value={status.value} aria-label={`${status.label} ${status.count}`} label={<span className="checklist-status-label"><span>{status.label}</span><span className="checklist-status-count">{status.count}</span></span>} />)}
-              </Tabs>
+          <details className="preparation-filter-options">
+            <summary>목록 좁히기{companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}</summary>
+            <div className="preparation-filter-fields">
+              <Field label="회사" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
+                <MenuItem value="all">전체 회사 + 공통 준비</MenuItem><MenuItem value="common">공통 준비</MenuItem>
+                {companyOptions.map(company => <MenuItem className="checklist-company-option" key={company.id} value={company.id}>{companyLabel(company.id)}</MenuItem>)}
+              </Field>
+              <Field label="분류" select size="small" value={filter} onChange={event => { setFilter(event.target.value); setCompletedHere([]); }}>
+                {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
+              </Field>
             </div>
-            <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
-              {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => { setFilter(value); setCompletedHere([]); }}>{value}</button>)}
-            </div>
-            <Field className="checklist-category-select" id="checklist-category-filter" label="분류" select size="small" value={filter} onChange={event => { setFilter(event.target.value); setCompletedHere([]); }}>
-              {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
-            </Field>
-          </div>
-          {['todo', 'done', 'all'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
-          {tab === value && <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · 표시된 항목 ${filtered.length}개`}>
-            {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>
-              <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={e => toggleTask(item, e.target.checked)} slotProps={{ input: { id: `task-check-${item.id}`, 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}` } }} />
-              <span className="task-copy">
-                <span className="task-text">{item.title}</span>{item.is_done && <span className="completion-label">완료</span>}
-                <span className="checklist-task-meta"><span className="task-category">{item.category}</span>{companyScope === 'all' && <><span aria-hidden="true">·</span>{item.application_id && companyMap.has(item.application_id) ? <span title={companyLabel(item.application_id)}>{companyMap.get(item.application_id).company_name}</span> : <span>{companyLabel(item.application_id)}</span>}</>}</span>
-              </span>
-              <span className="task-tools">
+          </details>
+        </div>
+        {(companyScope !== 'all' || filter !== '전체') && <div className="preparation-filter-summary"><span>{scopeLabel}{filter !== '전체' ? ` · ${filter}` : ''}</span><Button onClick={() => { setScope('all'); setFilter('전체'); }}>필터 해제</Button></div>}
+        {['all', 'todo', 'done'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
+          {tab === value && <div className="preparation-groups" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · 표시된 항목 ${filtered.length}개`}>
+            {groups.map(group => {
+              const allGroupItems = scopedItems.filter(item => (item.application_id || 'common') === group.id);
+              const row = item => <PreparationItem key={item.id} item={item} onToggle={toggleTask} disabled={Boolean(busy)} inputId={`task-check-${item.id}`} recent={completedHere.includes(item.id)} showCategory>
                 <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>
-              </span>
-            </div>)}
-            {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : tab === 'todo' && scopedItems.length > 0 ? '이 목록의 준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}>
-              {filter !== '전체' ? <Button onClick={() => setFilter('전체')}>전체 분류 보기</Button> : <Button onClick={openAdd}>할 일 추가하기</Button>}
-            </Empty>}
+              </PreparationItem>;
+              return <section className={`preparation-group company-record${group.id === 'common' ? ' preparation-group-common' : ''}`} key={group.id} aria-label={`${group.title} 할 일`}>
+                <header className="preparation-group-heading"><span className="record-bookmark" aria-hidden="true" /><h2>{group.title}</h2>{group.company && <StatusChip status={group.company.status} />}<p>{group.company?.deadline && <span>공고 마감 {shortDate(group.company.deadline)}</span>}<span>남은 일 {allGroupItems.filter(item => !item.is_done).length}개</span><span>완료 {allGroupItems.filter(item => item.is_done).length}개</span></p></header>
+                <div className="preparation-group-items">{group.items.map(row)}</div>
+              </section>;
+            })}
+            {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : tab === 'todo' && scopedItems.length > 0 ? '이 목록의 준비를 모두 마쳤어요' : '이 조건에 맞는 할 일이 없어요'}>{filter !== '전체' ? <Button onClick={() => setFilter('전체')}>전체 분류 보기</Button> : <Button onClick={openAdd}>할 일 추가하기</Button>}</Empty>}
           </div>}
-          </div>)}
-        </section>
+        </div>)}
         <div className="checklist-secondary-tool"><Link to="/document-helper">작성 요청문 도구</Link></div>
       </>}
     </>}

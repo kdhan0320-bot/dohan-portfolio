@@ -27,7 +27,13 @@ const ActionFeedback = ({ feedback, onClose }) => {
         closeText="알림 닫기"
         severity={feedback?.severity ?? 'success'}
         variant="filled"
-        sx={{ width: '100%' }}
+        sx={{
+          width: '100%', alignItems: 'center', paddingBlock: '6px',
+          '& .MuiAlert-icon': { alignItems: 'center', padding: 0, marginRight: '10px' },
+          '& .MuiAlert-message': { padding: '6px 0', minWidth: 0, overflowWrap: 'anywhere' },
+          '& .MuiAlert-action': { alignItems: 'center', padding: '0 0 0 8px', marginRight: '-8px', alignSelf: 'center' },
+          '& .MuiAlert-action button': { width: 44, height: 44, padding: '10px' }
+        }}
       >
         {feedback?.message}
       </Alert>

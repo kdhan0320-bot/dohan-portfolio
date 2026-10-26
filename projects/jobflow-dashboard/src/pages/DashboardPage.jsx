@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Checkbox } from '@mui/material';
+import { Button } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
@@ -8,13 +8,14 @@ import useInterviewNotes from '../hooks/useInterviewNotes';
 import { useAuth } from '../context/AuthContext';
 import { useToday } from '../hooks/useToday';
 import { deadlineLabel, shortDate } from '../utils/dates';
-import { pendingDeadlines, WEEKDAYS } from '../utils/calendar';
+import { WEEKDAYS } from '../utils/calendar';
 import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
-import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
+import { attentionCompanies, beforeApplication } from '../utils/preparationGroups';
+import { PageHeading, LoadState, Empty } from '../components/ui/PageUI';
 import StatusChip from '../components/ui/StatusChip';
+import PreparationItem from '../components/ui/PreparationItem';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import ApplicationPanel from '../components/applications/ApplicationPanel';
-import '../styles/overview-refinement.css';
 
 export default function DashboardPage() {
   const apps = useApplications();
@@ -24,124 +25,59 @@ export default function DashboardPage() {
   const today = useToday();
   const [busy, setBusy] = useState('');
   const [feedback, setFeedback] = useState(null);
-  const taskInputs = useRef(new Map());
   const [completedHere, setCompletedHere] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
-  const selected = apps.applications.find(application => application.id === selectedId);
-  const preparationLink = useRef(null);
-  const pendingFocus = useRef(null);
-  useEffect(() => {
-    if (busy || pendingFocus.current === null) return;
-    const target = taskInputs.current.get(pendingFocus.current) || preparationLink.current;
-    pendingFocus.current = null;
-    target?.focus({ preventScroll: true });
-  }, [busy, check.items]);
-  const upcoming = pendingDeadlines(apps.applications).filter(a => a.deadline >= today);
-  const overdue = pendingDeadlines(apps.applications).filter(a => a.deadline < today);
-  const focus = upcoming[0];
-  const todo = check.items.filter(i => !i.is_done);
-  const visibleTasks = check.items.filter(i => !i.is_done || completedHere.includes(i.id)).slice(0, 5);
-  const companyById = new Map(apps.applications.map(application => [application.id, application]));
-  const interviewCompanies = apps.applications.filter(application => application.status === '면접 예정');
-  const remainingQuestions = interview.notes.filter(note => !note.is_reviewed);
-  const companyPath = (path, id) => `${path}?company=${encodeURIComponent(id)}`;
+  const taskInputs = useRef(new Map());
+  const selected = apps.applications.find(company => company.id === selectedId);
+  const companies = attentionCompanies(apps.applications, check.items);
+  const common = check.items.filter(item => !item.application_id);
+  const pending = items => items.filter(item => !item.is_done).length;
+  const visible = items => items.filter(item => !item.is_done || completedHere.includes(item.id));
   const date = new Date(`${today}T12:00:00Z`);
   const dateText = `${Number(today.slice(5, 7))}월 ${Number(today.slice(8))}일 ${WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일${isGuest ? ' · 샘플 기준일' : ''}`;
-  const focusDate = focus && new Date(`${focus.deadline}T12:00:00Z`);
-  const pausedCount = apps.applications.filter(application => application.status === '보류').length;
+  const loading = apps.loading || check.loading || interview.loading;
+  const error = apps.error || check.error || interview.error;
   async function complete(item, checked) {
     if (busy) return;
     const originalInput = taskInputs.current.get(item.id);
-    const keepFocus = document.activeElement === originalInput;
-    if (checked) setCompletedHere(ids => [...new Set([...ids, item.id])]);
+    const focused = document.activeElement === originalInput;
     setBusy(item.id);
     try {
       await check.toggle(item.id, checked);
-      setFeedback({ message: `${item.title} · ${checked ? '완료했어요' : '완료를 취소했어요'}` });
-    } catch (error) {
-      setCompletedHere(ids => ids.filter(id => id !== item.id));
-      setFeedback({ severity: 'error', message: error.message });
-    } finally {
-      if (keepFocus && (document.activeElement === document.body || document.activeElement === originalInput)) pendingFocus.current = item.id;
+      setCompletedHere(ids => checked ? [...new Set([...ids, item.id])] : ids.filter(id => id !== item.id));
+      setFeedback({ message: checked ? '완료했어요. 다시 누르면 취소할 수 있어요.' : '완료 표시를 취소했어요.' });
+    } catch (caught) { setFeedback({ severity: 'error', message: caught.message }); }
+    finally {
       setBusy('');
+      if (focused && (document.activeElement === document.body || document.activeElement === originalInput)) window.requestAnimationFrame(() => taskInputs.current.get(item.id)?.focus({ preventScroll: true }));
     }
   }
-  return <div className="overview-page">
+  const task = item => <PreparationItem key={item.id} item={item} onToggle={complete} disabled={Boolean(busy)} recent={completedHere.includes(item.id)} inputRef={node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); }} />;
+  return <div className="overview-page company-first-overview">
     <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
-    <LoadState loading={apps.loading || check.loading || interview.loading} error={apps.error || check.error || interview.error} retry={() => { apps.refresh(); check.refresh(); interview.refresh(); }} />
-    {!apps.loading && !check.loading && !interview.loading && !apps.error && !check.error && !interview.error && <>
-      <div className="overview-focus-grid">
-      <section className="overview-deadline" aria-labelledby="next-title">
-        <header className="overview-deadline-heading">
-          <h2 id="next-title">가까운 지원 마감</h2>
-          <Button component={Link} to="/calendar">마감 일정 보기</Button>
-        </header>
-        {focus ? <div className="overview-deadline-body">
-          <time className="overview-date-leaf" dateTime={focus.deadline} aria-label={`${focus.deadline.replaceAll('-', '.')} ${WEEKDAYS[(focusDate.getUTCDay() + 6) % 7]}요일 마감`}>
-            <span>{Number(focus.deadline.slice(5, 7))}월</span>
-            <strong>{Number(focus.deadline.slice(8))}</strong>
-            <span>{WEEKDAYS[(focusDate.getUTCDay() + 6) % 7]}요일 마감</span>
-          </time>
-            <div className="overview-deadline-identity">
-              <span className="overview-deadline-badge">{deadlineLabel(focus.deadline, today)}</span>
-              <h3>{focus.company_name}</h3>
-              <p>{focus.position || '직무 미입력'}</p>
-              <div className="overview-deadline-actions"><StatusChip status={focus.status} /><Button onClick={() => setSelectedId(focus.id)} variant="outlined" aria-haspopup="dialog">회사 기록 보기</Button></div>
-            </div>
-        </div> : <div className="overview-deadline-empty">
-          <div>
-            <h3>{apps.applications.length ? '다가오는 지원 마감이 없어요' : '지원할 회사를 등록해보세요'}</h3>
-            <p>{apps.applications.length ? '지원 전 회사의 다가오는 마감을 확인할 수 있어요.' : '회사와 마감일을 기록하면 여기서 확인할 수 있어요.'}</p>
-          </div>
-          <Button component={Link} to={apps.applications.length ? '/' : '/?new=1'} variant="outlined">{apps.applications.length ? '지원 현황 열기' : '지원할 회사 등록'}</Button>
-        </div>}
-        {upcoming.length > 1 && <ul className="overview-other-deadlines" aria-label="다음 지원 마감">{upcoming.slice(1, 3).map(company => <li key={company.id}><time dateTime={company.deadline}>{shortDate(company.deadline)}</time><span>{company.company_name}</span><small>{deadlineLabel(company.deadline, today)}</small></li>)}</ul>}
+    <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); interview.refresh(); }} />
+    {!loading && !error && <>
+      <section className="attention-section" aria-labelledby="attention-title">
+        <div className="section-intro"><h2 id="attention-title">지금 챙길 회사</h2><p>지원 전 마감순 · 면접 준비</p></div>
+        {companies.length ? <div className="attention-records">{companies.map(company => {
+          const tasks = check.items.filter(item => item.application_id === company.id);
+          const notes = interview.notes.filter(note => note.application_id === company.id);
+          const stage = BOARD_COLUMNS.find(column => column.id === boardColumn(company.status));
+          return <article className="company-record" key={company.id} style={{ '--record-accent': stage?.color || '#58728e' }}>
+            <header className="company-record-heading"><span className="record-bookmark" aria-hidden="true" /><StatusChip status={company.status} /><h3>{company.company_name}</h3><p>{company.position || '직무 미입력'}</p></header>
+            <div className="record-schedule"><span>공고 마감</span><time dateTime={company.deadline || undefined}>{company.deadline ? shortDate(company.deadline) : '미등록'}</time>{beforeApplication(company) && company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>
+            <section className="record-preparation" aria-label={`${company.company_name} 준비할 일`}><h4>남은 준비 <span>{pending(tasks)}개</span></h4>{visible(tasks).length ? visible(tasks).map(task) : <p className="record-empty-copy">{tasks.length ? '등록한 준비를 모두 마쳤어요.' : '아직 등록한 준비가 없어요.'}</p>}</section>
+            {notes.length > 0 && <div className="record-question-note"><span>면접 질문 {notes.length}개</span><span>답변 작성 {notes.filter(note => note.answer?.trim()).length}개</span></div>}
+            <div className="company-record-action"><Button onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}>회사 기록 보기</Button></div>
+          </article>;
+        })}</div> : <Empty title={apps.applications.length ? '지금 챙길 회사가 없어요' : '첫 지원 회사를 등록해보세요'}><Button component={Link} to={apps.applications.length ? '/' : '/?new=1'}>{apps.applications.length ? '지원 현황 보기' : '회사 등록하기'}</Button></Empty>}
       </section>
-      <section className="overview-stages" aria-labelledby="overview-stages-title">
-        <header><h2 id="overview-stages-title">내 지원 현황</h2><Button component={Link} to="/">전체 {apps.applications.length}곳</Button></header>
-        <dl>{BOARD_COLUMNS.map(column => <div key={column.id} style={{ '--stage-ink': column.color, '--stage-tint': column.tint }}>
-          <dt>{column.label}</dt><dd>{apps.applications.filter(application => boardColumn(application.status) === column.id).length}<span>곳</span></dd>
-        </div>)}</dl>
-        {pausedCount > 0 && <span className="overview-paused">보류한 회사 {pausedCount}곳</span>}
-      </section>
+      <section className="common-preparation" aria-labelledby="common-preparation-title"><header><div><h2 id="common-preparation-title">공통 준비 <span>남은 {pending(common)}개</span></h2><p>회사와 관계없이 챙길 일</p></div><Button component={Link} to="/checklist">준비 관리</Button></header><div className="common-preparation-items">{visible(common).length ? visible(common).map(task) : <p className="record-empty-copy">{common.length ? '공통 준비를 모두 마쳤어요.' : '등록한 공통 준비가 없어요.'}</p>}</div></section>
+      <div className="support-summary" aria-label="내 지원 현황">
+        <Link to="/">지원 현황 <strong>{apps.applications.length}곳</strong></Link>
+        <dl>{BOARD_COLUMNS.map(column => <div key={column.id}><dt><i style={{ background: column.color }} aria-hidden="true" />{column.label}</dt><dd>{apps.applications.filter(company => boardColumn(company.status) === column.id).length}</dd></div>)}{apps.applications.some(company => company.status === '보류') && <div><dt>보류</dt><dd>{apps.applications.filter(company => company.status === '보류').length}</dd></div>}</dl>
       </div>
-      {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
-      <div className="overview-grid overview-preparation-surface">
-        <section className="overview-panel overview-preparation-panel" aria-labelledby="todo-title">
-          <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button ref={preparationLink} component={Link} to="/checklist">준비 전체</Button></header>
-          <div className="overview-tasks">
-            {visibleTasks.map(item => {
-              const company = companyById.get(item.application_id);
-              return <div className={`overview-task${item.is_done ? ' is-complete' : ''}`} key={item.id}>
-                <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={event => complete(item, event.target.checked)} slotProps={{ input: { 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}`, ref: node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); } } }} />
-                <span className="overview-task-copy">
-                  <span>{item.title}{item.is_done && <small className="completion-label">완료</small>}</span>
-                  {company ? <small>{company.company_name}</small> : <small>공통 준비</small>}
-                </span>
-              </div>;
-            })}
-            {!visibleTasks.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}
-          </div>
-        </section>
-        <section className="overview-panel overview-interview-panel" aria-labelledby="interview-title">
-          <header><h2 id="interview-title">면접 준비 <span>{interviewCompanies.length}곳</span></h2><Button component={Link} to="/interview">질문 전체</Button></header>
-          <div className="overview-interviews">
-            {interviewCompanies.slice(0, 3).map(company => {
-              const questions = interview.notes.filter(note => note.application_id === company.id);
-              const remaining = questions.filter(note => !note.is_reviewed).length;
-              return <div className="overview-interview" key={company.id}>
-                <CompanyMark name={company.company_name} />
-                <span className="overview-interview-copy">
-                  <strong>{company.company_name}</strong>
-                  {questions[0] && <span className="overview-question-preview">{questions[0].question}</span>}<small>{!questions.length ? '질문을 준비해보세요' : remaining ? `연습할 질문 ${remaining}개` : '등록한 질문 연습 완료'}</small>
-                </span>
-                <Button component={Link} to={companyPath('/interview', company.id)} variant="outlined" size="small" aria-label={`${company.company_name} ${questions.length ? '면접 연습하기' : '면접 질문 준비'}`}>{questions.length ? '연습하기' : '질문 준비'}</Button>
-              </div>;
-            })}
-            {!interviewCompanies.length && <Empty title="면접 예정인 회사가 없어요"><Button component={Link} to="/interview">{remainingQuestions.length ? `남은 질문 ${remainingQuestions.length}개 연습` : '면접 질문 준비하기'}</Button></Empty>}
-          </div>
-        </section>
-      </div>
+
     </>}
     {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); check.refresh(); }} onSave={async payload => { await apps.update(selected.id, payload); setSelectedId(null); check.refresh(); setFeedback({ message: '회사 정보를 저장했어요.' }); }} onDelete={async id => { await apps.remove(id); setSelectedId(null); check.refresh(); interview.refresh(); setFeedback({ message: '회사를 삭제했어요.' }); }} />}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

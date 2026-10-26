@@ -87,27 +87,6 @@
 
 @media (min-width: 1200px) {
   .workspace-main .job-tile-bottom { flex-direction: row; align-items: center; }
-  .workspace-main .checklist-page { display: grid; grid-template-columns: 224px minmax(0,1fr); column-gap: 24px; align-items: start; }
-  .workspace-main .checklist-page > .page-heading, .workspace-main .checklist-page > .MuiAlert-root { grid-column: 1 / -1; }
-  .workspace-main .checklist-page .checklist-company-scope { display: flex; flex-direction: column; align-items: stretch; gap: 28px; min-height: 320px; padding: 26px 24px; margin: 16px 0 0; background: #F0F5F3; border: 1px solid #CFDDD6; border-radius: 0 14px 14px 14px; position: relative; }
-  .workspace-main .checklist-page .checklist-company-scope::before { content: ''; position: absolute; height: 17px; width: 58%; left: -1px; top: -17px; border: 1px solid #C8DBCF; border-bottom: 0; border-radius: 8px 12px 0 0; background: #E3EEE7; pointer-events: none; }
-  .workspace-main .checklist-page .checklist-scope-controls { flex: none; flex-wrap: wrap; align-items: start; }
-  .workspace-main .checklist-page .checklist-scope-select { flex-basis: 100%; }
-  .workspace-main .checklist-page .checklist-scope-select > .field-label { position: static; width: auto; height: auto; margin: 0 0 10px; overflow: visible; clip: auto; white-space: normal; font-size: 14px; color: #3F6353; }
-  .workspace-main .checklist-page .checklist-progress { flex: none; gap: 18px; padding-top: 24px; border-top: 1px solid #C7DACF; }
-  .workspace-main .checklist-page .checklist-progress-copy { flex-direction: column; gap: 10px; font-size: 16px; color: #456B59; }
-  .workspace-main .checklist-page .checklist-progress-copy strong { font-size: 64px; line-height: 1.1; letter-spacing: -.045em; color: #2E6550; }
-  .workspace-main .checklist-page .checklist-progress-copy > span:last-child { font-size: 22px; }
-  .workspace-main .checklist-page .checklist-progress-track { height: 10px; background: #C4DCCF; }
-  .workspace-main .checklist-page .checklist-sheet { padding: 20px 24px 24px; border: 1px solid #D4DED7; border-radius: 12px; background: #FFFFFF; }
-  .workspace-main .checklist-page .checklist-filterbar { gap: 8px 16px; }
-  .workspace-main .checklist-page .checklist-sheet-toolbar { flex-basis: 280px; }
-  .workspace-main .checklist-page .checklist-category-chips { gap: 4px; }
-  .workspace-main .checklist-page .checklist-category-chips > button { padding-inline: 10px; }
-  .workspace-main .checklist-page .task-collection .list-task { min-height: 80px; padding-inline: 8px; }
-  .workspace-main .checklist-page .task-collection .list-task::before { width: 3px; height: 18px; }
-  .workspace-main .checklist-page .task-collection .empty-state { text-align: left; padding: 30px 60px; }
-  .workspace-main .checklist-page .checklist-secondary-tool { grid-column: 2; }
 }
 
 @media (min-width: 1800px) and (min-height: 1000px) {
@@ -132,8 +111,6 @@
   .workspace-main .page-heading { margin-bottom: 20px; }
   .workspace-main .interview-page .practice-card { min-height: 300px; padding: 24px 28px 20px; }
   .workspace-main .interview-page .practice-question { margin-top: 24px; }
-  .workspace-main .checklist-page .checklist-company-scope { min-height: 320px; }
-  .workspace-main .checklist-page .task-collection .list-task { min-height: 72px; }
 }
 @media (max-width: 699px) {
   .workspace-main .job-lane { padding-top: 12px; min-height: 220px; }

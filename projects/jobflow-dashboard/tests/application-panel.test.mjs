@@ -17,6 +17,7 @@ function panelWith(application = null) {
   let cursor = 0;
   let values = applicationDraft(application);
   const saves = [];
+  let closes = 0;
   const noOp = () => {};
   const react = {
     useState(initial) {
@@ -45,7 +46,8 @@ function panelWith(application = null) {
       form: values,
       change: (key, value) => { values = { ...values, [key]: value }; },
       clear: noOp,
-      dirty: true,
+      reset: () => { values = applicationDraft(application); },
+      dirty: JSON.stringify(values) !== JSON.stringify(applicationDraft(application)),
       restored: false,
     }) },
     '../ui/Field': 'Field',
@@ -67,7 +69,7 @@ function panelWith(application = null) {
   });
   function render() {
     cursor = 0;
-    return module.exports.default({ application, creating: !application, draftScope: 'sample', onClose: noOp, onSave: async value => saves.push(value), onDelete: noOp });
+    return module.exports.default({ application, creating: !application, draftScope: 'sample', onClose: () => closes++, onSave: async value => saves.push(value), onDelete: noOp });
   }
   function find(predicate, node) {
     if (arguments.length < 2) node = render();
@@ -78,6 +80,8 @@ function panelWith(application = null) {
   }
   return {
     saves,
+    closes: () => closes,
+    click: label => find(node => node.type === 'Button' && node.props.children === label).props.onClick(),
     edit: () => find(node => node.type === 'Button' && node.props.children === '회사 정보 수정').props.onClick(),
     hasSummary: () => Boolean(find(node => node.type === 'CompanySummary')),
     hasForm: () => Boolean(find(node => node.type === 'form')),
@@ -144,4 +148,18 @@ test('a missing edited company name is revealed and remains visible while it is 
   assert.equal(panel.field('회사 이름').props.error, false);
   assert.equal(panel.details().props.open, true);
   assert.equal(panel.saves.length, 0);
+});
+
+
+test('cancelling a company edit returns to its summary and discards only the cancelled draft', () => {
+  const panel = panelWith({ id: 'company-a', company_name: '검증용 회사', memo: '원래 메모' });
+  panel.edit(); panel.click('취소');
+  assert.equal(panel.hasSummary(), true);
+  assert.equal(panel.closes(), 0);
+  panel.edit(); panel.change('준비 메모', '취소할 수정'); panel.click('취소');
+  panel.click('수정 취소');
+  assert.equal(panel.hasSummary(), true);
+  assert.equal(panel.closes(), 0);
+  panel.edit();
+  assert.equal(panel.field('준비 메모').props.value, '원래 메모');
 });

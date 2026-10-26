@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Dialog, DialogContent, DialogActions, DialogTitle, IconButton } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 import SiteHeader from '../components/layout/SiteHeader';
+import SiteFooter from '../components/layout/SiteFooter';
 import ProductPreview from '../components/ui/ProductPreview';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
@@ -33,7 +34,7 @@ export default function WelcomePage() {
         <div className="galpi-intro-heading">
           <span className="galpi-eyebrow">개인 입사지원 관리</span>
           <h1 id="welcome-title">입사지원 현황과 <em>마감일을 한눈에.</em></h1>
-          <p>지원할 회사를 직접 등록하고 관리해요.</p>
+          <p>지원할 회사를 직접 등록하고,<br className="intro-mobile-break" /> 마감과 준비할 일을 한 기록에서 관리해요.</p>
           <div className="galpi-intro-action">
             <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : '샘플 체험하기'}</Button>
             <small>{user ? '로그인한 계정의 지원 기록으로 이동합니다.' : '가입 없이 체험 · 가상 데이터 · 새로고침 시 초기화'}</small>
@@ -50,6 +51,6 @@ export default function WelcomePage() {
       <DialogContent>{preview && <CompanySummary application={preview} tasks={DEMO_CHECKLISTS} notes={DEMO_INTERVIEW_NOTES} today={DEMO_TODAY} />}</DialogContent>
       <DialogActions><Button onClick={() => setPreviewId(null)}>닫기</Button></DialogActions>
     </Dialog>
-    <footer className="welcome-footer"><span>갈피록 · 김도한의 포트폴리오 프로젝트</span><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a></footer>
+    <SiteFooter publicMode />
   </div>;
 }

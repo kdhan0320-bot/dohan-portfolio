@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { transform } from 'esbuild';
+import { workspaceReturn } from '../src/utils/workspaceReturn.js';
 import { EMAIL_COOLDOWN_KEY, EMAIL_COOLDOWN_MS, emailCooldownSeconds } from '../src/utils/authRecovery.js';
 
 const source = await readFile(new URL('../src/pages/LoginPage.jsx', import.meta.url), 'utf8');
@@ -16,13 +17,14 @@ function find(tree, predicate) {
 
 // Router search updates can commit after local state and an animation frame.
 // Attach new input refs before effects, as React does, without account requests.
-function loginPage() {
+function loginPage(returnTo = null) {
   const state = [];
   const effects = new Map();
   const pendingEffects = [];
   const frames = [];
   let cursor = 0;
-  let search = new URLSearchParams();
+  let search = new URLSearchParams(returnTo ? { returnTo } : {});
+  const destinations = [];
   let pendingSearch;
   let tree;
   let active = null;
@@ -56,12 +58,13 @@ function loginPage() {
     react,
     'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'Fragment' },
     '@mui/material': Object.fromEntries(['Button', 'Alert', 'Tabs', 'Tab', 'IconButton', 'InputAdornment'].map(name => [name, name])),
-    'react-router-dom': { Link: 'Link', useNavigate: () => noOp, useSearchParams: () => [search, value => { pendingSearch = value; }] },
+    'react-router-dom': { Link: 'Link', useNavigate: () => to => destinations.push(to), useSearchParams: () => [search, value => { pendingSearch = value; }] },
     '../components/ui/Field': 'Field',
     '../components/ui/Brand': { Brand: 'Brand' },
-    '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
+    '../context/AuthContext': { useAuth: () => ({ isGuest: true, enterGuestMode: async () => {} }) },
     '../lib/supabase': { isAuthConfigured: false },
     '../utils/authErrors': { getAuthErrorMessage: noOp },
+    '../utils/workspaceReturn': { workspaceReturn },
     '../utils/authRecovery': { EMAIL_COOLDOWN_KEY, EMAIL_COOLDOWN_MS, emailCooldownSeconds },
     '../styles/auth.css': {},
   };
@@ -94,10 +97,11 @@ function loginPage() {
   commit();
   return {
     commit,
+    destinations,
     tree: () => tree,
     active: () => active,
     selectTab(value) { find(tree, node => node.type === 'Tabs')[0].props.onChange(null, value); commit(); },
-    click(label) { find(tree, node => node.type === 'Button' && node.props.children === label)[0].props.onClick(); },
+    click(label) { return find(tree, node => node.type === 'Button' && node.props.children === label)[0].props.onClick(); },
     finishRoute() { search = pendingSearch; pendingSearch = undefined; commit(); },
     flushFrame() { for (const callback of frames.splice(0)) callback(); },
   };
@@ -138,4 +142,11 @@ test('login and signup each expose one associated panel without duplicate inputs
     assert.equal(find(tree, node => node.type === 'form').length, 1);
   }
   assert.equal(page.active(), null, 'switching a tab does not steal focus from its tab button');
+});
+
+
+test('returning from login restores the originating sample route and company filter', async () => {
+  const page = loginPage('/interview?company=demo-1');
+  await page.click('샘플로 돌아가기');
+  assert.deepEqual(page.destinations, ['/interview?company=demo-1']);
 });

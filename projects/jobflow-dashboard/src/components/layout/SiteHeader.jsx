@@ -28,7 +28,7 @@ const activePath = (pathname, to) => {
 
 export default function SiteHeader({ publicMode = false }) {
   const { user, isGuest, enterGuestMode, loading } = useAuth();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -86,7 +86,7 @@ export default function SiteHeader({ publicMode = false }) {
         closeFocusRef.current = 'content';
         setMobileOpen(false);
       }
-      navigate(user ? '/settings' : '/login');
+      navigate(user ? '/settings' : `/login?returnTo=${encodeURIComponent(pathname + search)}`);
       if (!fromDrawer) focusContent();
     } catch (error) {
       setFeedback({ severity: 'error', message: getAuthErrorMessage(error) });
@@ -114,12 +114,6 @@ export default function SiteHeader({ publicMode = false }) {
           <IconButton className="site-menu-toggle" ref={menuButtonRef} aria-label="메뉴 열기" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'site-mobile-menu' : undefined} onClick={() => setMobileOpen(true)}><MenuOutlined /></IconButton>
         </div>
       </div>
-      {!publicMode && <div className="site-header-meta">
-        <div className="site-header-meta-inner">
-          <p>{isGuest ? <><span className="site-sample-badge">샘플 체험</span><span>가상 데이터 · 새로고침하면 초기화</span></> : !user ? '메뉴를 선택하면 가상 데이터로 체험해요.' : '나의 지원 기록을 한곳에서 관리해요.'}</p>
-          {hasWorkspace && <nav className="site-secondary-nav" aria-label="보조 메뉴">{secondaryLinks.map(item => menuLink(item))}</nav>}
-        </div>
-      </div>}
     </header>
     {!publicMode && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
       {mainLinks.map(item => menuLink(item, false, true))}

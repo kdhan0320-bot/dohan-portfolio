@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import { PageHeading } from '../components/ui/PageUI';
-import PaperGraphic from '../components/ui/PaperGraphic';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { createRecordExport, loadRecordExport, downloadRecordExport } from '../utils/recordExport';
 import { getSafeDataErrorMessage } from '../utils/dataErrors';
@@ -201,7 +200,7 @@ const SettingsPage = () => {
       <div className="settings-grid">
         <section className="panel settings-card" aria-labelledby="sample-settings-title">
           <div className="settings-summary">
-            <PaperGraphic kind="folder" className="settings-mark" />
+            <span className="settings-record-marker" aria-hidden="true" />
             <div>
               <span className="settings-status">가상 샘플 체험 중</span>
               <h2 id="sample-settings-title">샘플 기록장</h2>
@@ -225,7 +224,7 @@ const SettingsPage = () => {
             <p>로그인하고 내 지원 기록을 저장하세요.</p>
             <p className="settings-note">체험 중 수정한 샘플은 옮겨지지 않아요.</p>
           </div>
-          <Button variant="contained" onClick={() => navigate('/login')}>내 기록 시작하기</Button>
+          <Button variant="contained" onClick={() => navigate('/login?returnTo=%2Fsettings')}>내 기록 시작하기</Button>
         </section>
       </div>
       {saved && <Alert severity="success" sx={{ mt: 2 }}>샘플 기록을 초기화했어요.</Alert>}

@@ -3,7 +3,7 @@ import { applicationDraftStore, applicationFormValues, sameApplicationValues } f
 
 export default function useApplicationDraft({ scope, recordId, initial }) {
   const [baseline] = useState(() => applicationFormValues(initial));
-  const [recovered] = useState(() => applicationDraftStore.read(scope, recordId));
+  const [recovered, setRecovered] = useState(() => applicationDraftStore.read(scope, recordId));
   const [form, setForm] = useState(() => recovered || baseline);
   const formRef = useRef(form);
   const dirty = !sameApplicationValues(form, baseline);
@@ -31,5 +31,12 @@ export default function useApplicationDraft({ scope, recordId, initial }) {
     applicationDraftStore.clear(scope, recordId, formRef.current);
   }
 
-  return { form, change, clear, dirty, restored };
+  function reset() {
+    clear();
+    formRef.current = baseline;
+    setForm(baseline);
+    setRecovered(null);
+  }
+
+  return { form, change, clear, reset, dirty, restored };
 }
