@@ -7,35 +7,40 @@ import useChecklist from '../hooks/useChecklist';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import { useAuth } from '../context/AuthContext';
 import { useToday } from '../hooks/useToday';
-import { deadlineLabel } from '../utils/dates';
-import { companyDestination, pendingDeadlines, WEEKDAYS } from '../utils/calendar';
+import { deadlineLabel, shortDate } from '../utils/dates';
+import { pendingDeadlines, WEEKDAYS } from '../utils/calendar';
 import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
 import StatusChip from '../components/ui/StatusChip';
 import ActionFeedback from '../components/ui/ActionFeedback';
+import ApplicationPanel from '../components/applications/ApplicationPanel';
 import '../styles/overview-refinement.css';
 
 export default function DashboardPage() {
   const apps = useApplications();
   const check = useChecklist();
   const interview = useInterviewNotes();
-  const { isGuest } = useAuth();
+  const { isGuest, user } = useAuth();
   const today = useToday();
   const [busy, setBusy] = useState('');
   const [feedback, setFeedback] = useState(null);
   const taskInputs = useRef(new Map());
-  const pendingFocus = useRef(null);
+  const [completedHere, setCompletedHere] = useState([]);
+  const [selectedId, setSelectedId] = useState(null);
+  const selected = apps.applications.find(application => application.id === selectedId);
   const preparationLink = useRef(null);
+  const pendingFocus = useRef(null);
   useEffect(() => {
     if (busy || pendingFocus.current === null) return;
     const target = taskInputs.current.get(pendingFocus.current) || preparationLink.current;
     pendingFocus.current = null;
-    target?.focus();
+    target?.focus({ preventScroll: true });
   }, [busy, check.items]);
   const upcoming = pendingDeadlines(apps.applications).filter(a => a.deadline >= today);
   const overdue = pendingDeadlines(apps.applications).filter(a => a.deadline < today);
   const focus = upcoming[0];
   const todo = check.items.filter(i => !i.is_done);
+  const visibleTasks = check.items.filter(i => !i.is_done || completedHere.includes(i.id)).slice(0, 5);
   const companyById = new Map(apps.applications.map(application => [application.id, application]));
   const interviewCompanies = apps.applications.filter(application => application.status === '면접 예정');
   const remainingQuestions = interview.notes.filter(note => !note.is_reviewed);
@@ -44,26 +49,22 @@ export default function DashboardPage() {
   const dateText = `${Number(today.slice(5, 7))}월 ${Number(today.slice(8))}일 ${WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일${isGuest ? ' · 샘플 기준일' : ''}`;
   const focusDate = focus && new Date(`${focus.deadline}T12:00:00Z`);
   const pausedCount = apps.applications.filter(application => application.status === '보류').length;
-  async function complete(item) {
+  async function complete(item, checked) {
     if (busy) return;
     const originalInput = taskInputs.current.get(item.id);
     const keepFocus = document.activeElement === originalInput;
-    const shouldRestoreFocus = () => keepFocus && (
-      document.activeElement === document.body || document.activeElement === originalInput
-    );
-    const index = todo.findIndex(task => task.id === item.id);
-    const remaining = todo.filter(task => task.id !== item.id).slice(0, 5);
+    if (checked) setCompletedHere(ids => [...new Set([...ids, item.id])]);
     setBusy(item.id);
     try {
-      await check.toggle(item.id, true);
-      if (shouldRestoreFocus()) pendingFocus.current = remaining[Math.min(index, remaining.length - 1)]?.id || '';
-      setFeedback({ message: '준비할 일을 완료했어요.' });
+      await check.toggle(item.id, checked);
+      setFeedback({ message: `${item.title} · ${checked ? '완료했어요' : '완료를 취소했어요'}` });
+    } catch (error) {
+      setCompletedHere(ids => ids.filter(id => id !== item.id));
+      setFeedback({ severity: 'error', message: error.message });
+    } finally {
+      if (keepFocus && (document.activeElement === document.body || document.activeElement === originalInput)) pendingFocus.current = item.id;
+      setBusy('');
     }
-    catch (e) {
-      if (shouldRestoreFocus()) pendingFocus.current = item.id;
-      setFeedback({ severity: 'error', message: e.message });
-    }
-    finally { setBusy(''); }
   }
   return <div className="overview-page">
     <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
@@ -85,7 +86,7 @@ export default function DashboardPage() {
               <span className="overview-deadline-badge">{deadlineLabel(focus.deadline, today)}</span>
               <h3>{focus.company_name}</h3>
               <p>{focus.position || '직무 미입력'}</p>
-              <div className="overview-deadline-actions"><StatusChip status={focus.status} /><Button component={Link} to={companyDestination(focus.id)} variant="contained">지원 정보 열기</Button></div>
+              <div className="overview-deadline-actions"><StatusChip status={focus.status} /><Button onClick={() => setSelectedId(focus.id)} variant="outlined" aria-haspopup="dialog">회사 기록 보기</Button></div>
             </div>
         </div> : <div className="overview-deadline-empty">
           <div>
@@ -94,13 +95,14 @@ export default function DashboardPage() {
           </div>
           <Button component={Link} to={apps.applications.length ? '/' : '/?new=1'} variant="outlined">{apps.applications.length ? '지원 현황 열기' : '지원할 회사 등록'}</Button>
         </div>}
+        {upcoming.length > 1 && <ul className="overview-other-deadlines" aria-label="다음 지원 마감">{upcoming.slice(1, 3).map(company => <li key={company.id}><time dateTime={company.deadline}>{shortDate(company.deadline)}</time><span>{company.company_name}</span><small>{deadlineLabel(company.deadline, today)}</small></li>)}</ul>}
       </section>
       <section className="overview-stages" aria-labelledby="overview-stages-title">
         <header><h2 id="overview-stages-title">내 지원 현황</h2><Button component={Link} to="/">전체 {apps.applications.length}곳</Button></header>
         <dl>{BOARD_COLUMNS.map(column => <div key={column.id} style={{ '--stage-ink': column.color, '--stage-tint': column.tint }}>
           <dt>{column.label}</dt><dd>{apps.applications.filter(application => boardColumn(application.status) === column.id).length}<span>곳</span></dd>
         </div>)}</dl>
-        {pausedCount > 0 && <Link className="overview-paused" to="/?view=paused">보류한 회사 {pausedCount}곳</Link>}
+        {pausedCount > 0 && <span className="overview-paused">보류한 회사 {pausedCount}곳</span>}
       </section>
       </div>
       {overdue.length > 0 && <div className="overdue-note"><span>마감이 지난 미지원 회사가 {overdue.length}곳 있어요.</span><Button component={Link} to={`/?lane=before&company=${encodeURIComponent(overdue[0].id)}`}>확인하기</Button></div>}
@@ -108,17 +110,17 @@ export default function DashboardPage() {
         <section className="overview-panel overview-preparation-panel" aria-labelledby="todo-title">
           <header><h2 id="todo-title">남은 준비 <span>{todo.length}</span></h2><Button ref={preparationLink} component={Link} to="/checklist">준비 전체</Button></header>
           <div className="overview-tasks">
-            {todo.slice(0, 5).map(item => {
+            {visibleTasks.map(item => {
               const company = companyById.get(item.application_id);
-              return <div className="overview-task" key={item.id}>
-                <Checkbox checked={false} disabled={Boolean(busy)} onChange={() => complete(item)} slotProps={{ input: { 'aria-label': `${item.title} 완료`, ref: node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); } } }} />
+              return <div className={`overview-task${item.is_done ? ' is-complete' : ''}`} key={item.id}>
+                <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={event => complete(item, event.target.checked)} slotProps={{ input: { 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}`, ref: node => { if (node) taskInputs.current.set(item.id, node); else taskInputs.current.delete(item.id); } } }} />
                 <span className="overview-task-copy">
-                  <span>{item.title}</span>
-                  {company ? <Link to={companyPath('/checklist', company.id)} aria-label={`${company.company_name} 준비 체크 열기`}>{company.company_name}</Link> : <small>공통 준비</small>}
+                  <span>{item.title}{item.is_done && <small className="completion-label">완료</small>}</span>
+                  {company ? <small>{company.company_name}</small> : <small>공통 준비</small>}
                 </span>
               </div>;
             })}
-            {!todo.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}
+            {!visibleTasks.length && <Empty title={check.items.length ? '준비를 모두 마쳤어요' : '준비할 일을 추가해보세요'}><Button component={Link} to="/checklist">준비 체크 열기</Button></Empty>}
           </div>
         </section>
         <section className="overview-panel overview-interview-panel" aria-labelledby="interview-title">
@@ -131,7 +133,7 @@ export default function DashboardPage() {
                 <CompanyMark name={company.company_name} />
                 <span className="overview-interview-copy">
                   <strong>{company.company_name}</strong>
-                  <small>{!questions.length ? '질문을 준비해보세요' : remaining ? `연습할 질문 ${remaining}개` : '등록한 질문 연습 완료'}</small>
+                  {questions[0] && <span className="overview-question-preview">{questions[0].question}</span>}<small>{!questions.length ? '질문을 준비해보세요' : remaining ? `연습할 질문 ${remaining}개` : '등록한 질문 연습 완료'}</small>
                 </span>
                 <Button component={Link} to={companyPath('/interview', company.id)} variant="outlined" size="small" aria-label={`${company.company_name} ${questions.length ? '면접 연습하기' : '면접 질문 준비'}`}>{questions.length ? '연습하기' : '질문 준비'}</Button>
               </div>;
@@ -141,6 +143,7 @@ export default function DashboardPage() {
         </section>
       </div>
     </>}
+    {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); check.refresh(); }} onSave={async payload => { await apps.update(selected.id, payload); setSelectedId(null); check.refresh(); setFeedback({ message: '회사 정보를 저장했어요.' }); }} onDelete={async id => { await apps.remove(id); setSelectedId(null); check.refresh(); interview.refresh(); setFeedback({ message: '회사를 삭제했어요.' }); }} />}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </div>;
 }

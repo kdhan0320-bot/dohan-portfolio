@@ -19,7 +19,7 @@ export default function Layout() {
     <div className="workspace-content">
       <main className="workspace-main" id="main-content" ref={mainRef} tabIndex={-1}>
         <Suspense fallback={<div className="route-load-state" role="status"><CircularProgress size={28} /><p>화면을 불러오고 있어요.</p></div>}>
-          <Outlet />
+          <div className="route-surface" key={pathname}><Outlet /></div>
         </Suspense>
       </main>
     </div>

@@ -6,6 +6,7 @@ import Search from '@mui/icons-material/Search';
 import Pause from '@mui/icons-material/Pause';
 import Close from '@mui/icons-material/Close';
 import useApplications from '../hooks/useApplications';
+import useChecklist from '../hooks/useChecklist';
 import { useToday } from '../hooks/useToday';
 import { deadlineLabel, shortDate } from '../utils/dates';
 import { BOARD_COLUMNS, boardColumn, boardRows } from '../utils/applicationBoard';
@@ -20,6 +21,7 @@ export default function ApplicationsPage() {
   const { user, isGuest } = useAuth();
   const draftScope = isGuest ? 'sample' : user?.id ? `user:${user.id}` : null;
   const { applications, loading, error, refresh, add, update, remove } = useApplications();
+  const checklist = useChecklist();
   const [params, setParams] = useSearchParams();
   const [feedback, setFeedback] = useState(null);
   const query = params.get('q') || '';
@@ -42,7 +44,7 @@ export default function ApplicationsPage() {
     const firstLane = mobile && !paused && value.trim() && matches.length ? boardColumn(matches[0].status) : null;
     changeParams({ q: value, ...(firstLane ? { lane: firstLane } : {}) }, true);
   }
-  function closePanel() { changeParams({ company: null, new: null }, true); }
+  function closePanel() { changeParams({ company: null, new: null }, true); checklist.refresh(); }
   function clearSearch() {
     changeParams({ q: null }, true);
     window.requestAnimationFrame(() => document.getElementById('board-company-search')?.focus());
@@ -62,6 +64,7 @@ export default function ApplicationsPage() {
     const pending = boardColumn(a.status) === 'before';
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-haspopup="dialog">
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
+      {!checklist.loading && !checklist.error && <span className="job-tile-preparation">{(() => { const remaining = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return remaining.length ? `남은 준비 ${remaining.length}개 · ${remaining[0].title}` : checklist.items.some(item => item.application_id === a.id) ? '준비 항목 완료' : '등록한 준비 항목 없음'; })()}</span>}
       <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
     </button>;
   }
@@ -77,16 +80,15 @@ export default function ApplicationsPage() {
     {!loading && !error && <>
       {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>‘{query.trim()}’와 일치하는 회사·직무가 {paused ? '보류함' : '지원 현황'}에 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>지원 현황으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
         <Tabs className="mobile-board-tabs" value={lane} onChange={(_,value) => changeParams({ lane: value }, true)} variant="fullWidth" aria-label="전형 단계">
-          {BOARD_COLUMNS.map(c => <Tab key={c.id} id={`lane-tab-${c.id}`} aria-controls={`lane-${c.id}`} value={c.id} label={<span>{c.label}<b>{filtered.filter(a => boardColumn(a.status) === c.id).length}</b></span>} />)}
+          {BOARD_COLUMNS.map(c => <Tab key={c.id} id={`lane-tab-${c.id}`} aria-controls={`lane-${c.id}`} value={c.id} label={<span>{c.label}<b>{filtered.filter(a => boardColumn(a.status) === c.id).length}곳</b></span>} />)}
         </Tabs>
         <div className="job-board" aria-label="지원 전부터 결과까지의 전형 현황">
-          {BOARD_COLUMNS.map((column, index) => {
+          {BOARD_COLUMNS.map(column => {
             const rows = filtered.filter(a => boardColumn(a.status) === column.id);
             return <section className={`job-lane ${lane === column.id ? 'mobile-selected' : ''}`} id={`lane-${column.id}`} key={column.id} role={mobile ? 'tabpanel' : undefined} aria-labelledby={mobile ? `lane-tab-${column.id}` : `lane-title-${column.id}`} style={{ '--lane-color': column.color, '--lane-tint': column.tint }}>
-              {!mobile && <header className="job-lane-heading"><span className="lane-number" aria-hidden="true">{index + 1}</span><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}</span></header>}
+              {!mobile && <header className="job-lane-heading"><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}곳</span></header>}
               <div className="job-lane-cards">{rows.map(card)}</div>
               {!rows.length && <div className="job-lane-empty" aria-label="회사 없음"><span aria-hidden="true">—</span>{column.id === 'before' && <p>{query ? '이 단계에는 검색 결과가 없어요' : '지원할 회사를 등록해보세요'}</p>}</div>}
-              {column.id === 'before' && <Button className="lane-add" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}>지원할 회사 등록</Button>}
             </section>;
           })}
         </div>

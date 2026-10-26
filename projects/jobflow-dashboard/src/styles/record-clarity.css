@@ -1,0 +1,85 @@
+/* Readable summaries stay in the current workspace; editing is a separate mode. */
+.company-summary-dialog .MuiDialogTitle-root { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: 24px 24px 12px; font-size: 24px; line-height: 1.4; font-weight: 500; }
+.summary-preview-label { display: block; margin-bottom: 6px; color: #667481; font-size: 13px; font-weight: 400; }
+.company-summary { color: #33414e; font-size: 15px; line-height: 1.65; }
+.company-summary h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 0 0 12px; color: #293b4a; font-size: 16px; font-weight: 500; }
+.company-summary h3 > span { color: #617381; font-size: 14px; font-weight: 400; }
+.summary-identity { display: flex; align-items: center; gap: 12px; padding: 4px 0 22px; }
+.summary-identity > div:not(.company-mark) { flex: 1; min-width: 0; }
+.summary-identity p { margin: 0; font-size: 17px; color: #303e4b; }
+.summary-identity small { color: #64717c; font-size: 14px; }
+.summary-schedule { padding: 18px 20px; background: #eef3f8; border-left: 3px solid #7c99b5; border-radius: 3px 10px 10px 3px; }
+.summary-schedule dl { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0; }
+.summary-schedule dt { color: #607384; font-size: 14px; margin-bottom: 4px; }
+.summary-schedule dd { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 0; color: #314f69; font-size: 20px; }
+.summary-deadline { color: #7a581f; background: #f9eed5; border-radius: 4px; padding: 1px 6px; font-size: 14px; }
+.summary-documents { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 18px; padding: 16px 0; border-bottom: 1px solid #e1e6ea; font-size: 14px; }
+.summary-documents > span:first-child { color: #657580; }
+.summary-documents b { margin-left: 4px; font-weight: 500; }
+.summary-preparation, .summary-questions, .summary-memo { margin-top: 22px; }
+.company-summary ul { list-style: none; padding: 0; margin: 0; }
+.summary-preparation li, .summary-questions li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-top: 1px solid #e8ecef; }
+.summary-preparation .summary-task-title, .summary-questions li > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.summary-preparation .MuiCheckbox-root { flex: 0 0 44px; width: 44px; height: 44px; padding: 10px; margin: -8px 0 -8px -10px; }
+.summary-preparation li.is-complete .summary-task-title { color: #65776b; text-decoration: line-through; }
+.summary-task-state, .summary-preparation li > small { color: #587669; font-size: 13px; line-height: 24px; flex-shrink: 0; }
+.summary-task-state { min-width: 34px; }
+.summary-empty { color: #64737e; font-size: 14px; margin: 0; }
+.summary-questions small { color: #677683; white-space: nowrap; font-size: 13px; line-height: 24px; }
+.summary-memo p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.summary-feedback { margin: 10px 0 0; color: #326d61; font-size: 14px; }
+.summary-feedback[role='alert'] { color: #a33f42; }
+.company-panel-summary .company-panel-body { gap: 0; }
+.completion-label { display: inline-block; margin-left: 10px; color: #326d61; font-size: 13px; font-weight: 400; text-decoration: none; white-space: nowrap; }
+.overview-task.is-complete { background: #f1f6f3; border-radius: 6px; }
+.overview-task.is-complete .overview-task-copy > span { color: #5a7163; }
+.overview-task.is-complete .completion-label { font-size: 13px; }
+.workspace-main .job-tile-preparation { display: block; margin: 12px 0 0; padding-top: 12px; border-top: 1px solid #e6ebef; color: #5d6d79; font-size: 14px; line-height: 1.6; text-align: left; overflow-wrap: anywhere; }
+.workspace-main .job-tile .job-tile-bottom { border-top: 0; padding-top: 12px; margin-top: 0; }
+.workspace-main .lane-count { min-width: 43px; height: 28px; border-radius: 6px; font-size: 14px; }
+.calendar-page button.agenda-company { width: 100%; text-align: left; font: inherit; color: inherit; cursor: pointer; }
+.agenda-preparation { display: block; border-top: 1px solid #e1e5e7; padding-top: 10px; margin-top: 12px; font-size: 14px; line-height: 1.6; color: #5a6a76; overflow-wrap: anywhere; }
+.interview-page .practice-primary-action { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 20px 0; }
+.practice-primary-action > span { color: #687781; font-size: 13px; }
+.practice-answer-placeholder { color: #66727c; margin: 22px 0; }
+.interview-page .practice-review-check { margin-left: -10px; color: #5b7064; }
+.interview-page .practice-review-check .MuiFormControlLabel-label { font-size: 14px; }
+.interview-page .practice-toolbar { align-items: center; }
+.workspace-main .interview-page .practice-answer { margin-top: 24px; padding: 20px; border-radius: 6px; background: #f5f7f9; }
+.workspace-main .interview-page .practice-answer p { font-size: 16px; line-height: 1.85; }
+.inline-answer-editor > h2 { font-size: 21px; font-weight: 500; line-height: 1.6; margin: 0 0 20px; }
+.inline-editor-actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 20px; }
+.interview-question-details { border-top: 1px solid #dfe6eb; margin-top: 4px; padding-top: 12px; }
+.interview-question-details > summary { color: #52687b; cursor: pointer; min-height: 44px; display: list-item; align-content: center; font-size: 14px; }
+.interview-question-details .field-stack { padding: 12px 0; }
+.record-editor-dialog .interview-question-details { border: 0; margin: 0; padding: 0; }
+
+.route-surface { min-width: 0; animation: record-enter 150ms ease-out; }
+@keyframes record-enter { from { opacity: .75; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .route-surface { animation: none; } }
+@media (max-width: 699px) {
+  .interview-page .interview-company-filter { flex-basis: 100%; }
+  .interview-page .practice-navigation { grid-template-columns: minmax(0, 1fr); }
+  .interview-page .practice-pagination { display: none; }
+  .workspace-main .interview-page .practice-answer { padding: 16px; }
+  .summary-identity { flex-wrap: wrap; gap: 10px; }
+  .summary-identity .MuiChip-root { margin-left: auto; }
+  .company-summary-dialog .MuiDialog-paper { margin: 16px; width: calc(100% - 32px); max-height: calc(100dvh - 32px); }
+  .company-summary-dialog .MuiDialogTitle-root { padding: 20px 18px 12px; font-size: 22px; }
+  .company-summary-dialog .MuiDialogContent-root { padding: 8px 18px 18px; }
+  .summary-schedule { padding: 16px; }
+  .summary-schedule dl { gap: 12px; }
+  .summary-schedule dd { font-size: 18px; }
+  .summary-questions li { flex-wrap: wrap; gap: 2px 10px; }
+  .summary-questions li > span { flex-basis: 100%; }
+}
+
+.overview-stages .overview-paused { text-decoration: none; border-bottom: 0; cursor: default; }
+
+.overview-other-deadlines { list-style: none; padding: 14px 0 0; margin: 0; border-top: 1px solid #ded5bf; }
+.overview-other-deadlines li { display: flex; flex-wrap: wrap; gap: 8px 16px; color: #645941; font-size: 14px; line-height: 24px; }
+.overview-other-deadlines li > span { flex: 1; min-width: 100px; }
+.overview-other-deadlines small { font-size: 14px; }
+.overview-question-preview { color: #425966; font-size: 15px; line-height: 24px; }
+
+.interview-page .practice-navigation .mobile-question-select { width: 100%; }

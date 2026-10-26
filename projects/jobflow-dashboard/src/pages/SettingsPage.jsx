@@ -104,7 +104,7 @@ const SettingsPage = () => {
   const exportControl = <div className="settings-export">
     <h3>{isGuest ? '샘플 기록 내려받기' : '내 기록 내려받기'}</h3>
     <p>회사·준비 체크·면접 질문을 JSON 파일로 보관해요.{isGuest ? ' 가상 샘플임을 파일에 표시합니다.' : ' 저장된 프로필도 함께 포함됩니다.'}</p>
-    <Button variant="outlined" startIcon={<DownloadOutlined />} onClick={handleExport} disabled={exporting}>{exporting ? '기록 불러오는 중…' : 'JSON 파일 내려받기'}</Button>
+    <Button variant="outlined" startIcon={<DownloadOutlined />} onClick={handleExport} disabled={exporting}>{exporting ? '기록 불러오는 중…' : '지원 기록 내려받기'}</Button>
     {exportError && <Alert severity="error">{exportError} 파일은 생성하지 않았어요.</Alert>}
     {exported && <Alert severity="success">파일 다운로드를 요청했어요. 브라우저의 다운로드 목록을 확인해주세요.</Alert>}
   </div>;
@@ -209,7 +209,7 @@ const SettingsPage = () => {
           </div>
           <div className="settings-control">
             <div className="settings-control-copy">
-              <p>수정한 샘플은 초기화하거나 새로고침하면 사라져요.</p>
+              <p>초기화하면 수정한 샘플 기록이 처음 상태로 돌아가요. 현재 화면은 유지됩니다.</p>
             </div>
             <Button className="settings-control-action" variant="outlined" onClick={() => {
               applicationDraftStore.clearSample();

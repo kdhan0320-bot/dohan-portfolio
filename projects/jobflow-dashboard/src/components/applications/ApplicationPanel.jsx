@@ -1,52 +1,26 @@
 import { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, MenuItem, useMediaQuery } from '@mui/material';
 import Close from '@mui/icons-material/Close';
 import OpenInNew from '@mui/icons-material/OpenInNew';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
-import ChecklistOutlined from '@mui/icons-material/ChecklistOutlined';
-import ChatBubbleOutlineOutlined from '@mui/icons-material/ChatBubbleOutlineOutlined';
-import useChecklist from '../../hooks/useChecklist';
-import useInterviewNotes from '../../hooks/useInterviewNotes';
 import useApplicationDraft from '../../hooks/useApplicationDraft';
 import Field from '../ui/Field';
+import LiveCompanySummary from './CompanySummary';
 import { CompanyMark, ConfirmDelete } from '../ui/PageUI';
 import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../../constants';
 import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
 
-function CompanyPreparation({ applicationId, onVisit, disabled }) {
-  const checklist = useChecklist();
-  const interview = useInterviewNotes();
-  const loading = checklist.loading || interview.loading;
-  const error = checklist.error || interview.error;
-  const tasks = checklist.items.filter(item => item.application_id === applicationId && !item.is_done).length;
-  const questions = interview.notes.filter(note => note.application_id === applicationId && !note.is_reviewed).length;
-  return <section className="company-preparation" aria-labelledby="company-preparation-title">
-    <h3 id="company-preparation-title">이 회사의 준비</h3>
-    {error && <Alert severity="error" action={<Button color="inherit" onClick={() => { checklist.refresh(); interview.refresh(); }}>재시도</Button>}>준비 기록을 불러오지 못했어요.</Alert>}
-    <div className="company-preparation-links">
-      <Button onClick={() => onVisit(`/checklist?company=${encodeURIComponent(applicationId)}`)} disabled={disabled}>
-        <span className="preparation-link-icon"><ChecklistOutlined /></span><span><strong>준비 체크</strong><small>{loading ? '불러오는 중…' : error ? '기록 열기' : `남은 할 일 ${tasks}개`}</small></span>
-      </Button>
-      <Button onClick={() => onVisit(`/interview?company=${encodeURIComponent(applicationId)}`)} disabled={disabled}>
-        <span className="preparation-link-icon"><ChatBubbleOutlineOutlined /></span><span><strong>면접 연습</strong><small>{loading ? '불러오는 중…' : error ? '기록 열기' : `연습할 질문 ${questions}개`}</small></span>
-      </Button>
-    </div>
-  </section>;
-}
-
 export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onDelete }) {
-  const navigate = useNavigate();
   const fullScreen = useMediaQuery('(max-width: 599px)');
   const { form, change: changeDraft, clear: clearDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
+  const [editing, setEditing] = useState(Boolean(creating));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [errors, setErrors] = useState({});
   const [extraOpen, setExtraOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
-  const [destination, setDestination] = useState(null);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
   const lane = boardColumn(form.status);
@@ -56,19 +30,12 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   }
   function close() {
     if (busy) return;
-    setDestination(null);
-    if (dirty) setConfirmLeave(true);
+    if (editing && dirty) setConfirmLeave(true);
     else onClose();
-  }
-  function visit(to) {
-    if (busy) return;
-    if (dirty) { setDestination(to); setConfirmLeave(true); }
-    else navigate(to);
   }
   function discardAndLeave() {
     clearDraft();
-    if (destination) navigate(destination);
-    else onClose();
+    onClose();
   }
   async function save(e) {
     e.preventDefault();
@@ -104,7 +71,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
       scroll="paper"
       slotProps={{
         paper: {
-          className: 'company-panel',
+          className: `company-panel${!editing ? ' company-panel-summary' : ''}`,
           sx: {
             height: { xs: '100dvh', sm: 'auto' },
             maxHeight: { xs: '100dvh', sm: 'calc(100dvh - 64px)' },
@@ -121,7 +88,10 @@ export default function ApplicationPanel({ application, creating, draftScope, on
         <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
         <IconButton onClick={close} disabled={busy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>
-      <form onSubmit={save} noValidate className="company-panel-form">
+      {!editing ? <>
+        <div className="company-panel-body"><LiveCompanySummary application={application} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
+        <div className="company-panel-footer"><Button onClick={close}>닫기</Button><Button variant="outlined" onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
+      </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
           {restored && <Alert severity="info">저장하지 않은 입력을 복원했어요.</Alert>}
@@ -142,7 +112,6 @@ export default function ApplicationPanel({ application, creating, draftScope, on
             <FormControlLabel control={<Checkbox checked={Boolean(form.resume_submitted)} onChange={e => change('resume_submitted', e.target.checked)} disabled={busy} />} label="이력서 제출" />
             <FormControlLabel control={<Checkbox checked={Boolean(form.portfolio_submitted)} onChange={e => change('portfolio_submitted', e.target.checked)} disabled={busy} />} label="포트폴리오 제출" />
           </div>}
-          {!creating && <CompanyPreparation applicationId={application.id} onVisit={visit} disabled={busy} />}
           {!creating && field('memo', '준비 메모', { multiline: true, minRows: 3, placeholder: '다음에 할 일을 적어보세요.' })}
           <details className="panel-extra" open={extraOpen} onToggle={event => setExtraOpen(event.currentTarget.open)}>
             <summary>{creating ? '공고·지원일 추가' : '회사·공고 정보 수정'}</summary>
@@ -159,11 +128,11 @@ export default function ApplicationPanel({ application, creating, draftScope, on
           {!creating && <Button className="company-delete" color="error" startIcon={<DeleteOutlined />} onClick={() => setDeleting(true)} disabled={busy}>회사 삭제</Button>}
         </div>
         <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
-      </form>
+      </form>}
     </Dialog>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>입력을 버리고 {destination ? '이동할까요?' : '닫을까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>입력 버리고 {destination ? '이동' : '닫기'}</Button></DialogActions>
+      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>입력을 버리고 닫을까요?</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>입력 버리고 닫기</Button></DialogActions>
     </Dialog>
   </>;
 }

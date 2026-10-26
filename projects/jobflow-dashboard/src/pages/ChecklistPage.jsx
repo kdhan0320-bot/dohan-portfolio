@@ -25,6 +25,7 @@ export default function ChecklistPage() {
   const companyMap = new Map(applications.map(company => [company.id, company]));
   const companyOptions = [...applications].sort((a, b) => a.company_name.localeCompare(b.company_name, 'ko'));
   const [tab, setTab] = useState('todo');
+  const [completedHere, setCompletedHere] = useState([]);
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('서류');
   const [applicationId, setApplicationId] = useState(companyScope === 'all' || companyScope === 'common' ? '' : companyScope);
@@ -49,7 +50,7 @@ export default function ChecklistPage() {
   const done = companyItems.filter(item => item.is_done).length;
   const scopedItems = companyItems.filter(item => filter === '전체' || item.category === filter);
   const scopedDone = scopedItems.filter(item => item.is_done).length;
-  const filtered = scopedItems.filter(item => tab === 'all' || item.is_done === (tab === 'done'));
+  const filtered = scopedItems.filter(item => tab === 'all' || item.is_done === (tab === 'done') || (tab === 'todo' && completedHere.includes(item.id)));
   const scopeLabel = selectedCompany?.company_name || (companyScope === 'common' ? '공통 준비' : '전체 준비');
   const progress = companyItems.length ? Math.round(done / companyItems.length * 100) : 0;
   const addDirty = Boolean(adding && addOriginal.current && (
@@ -64,6 +65,7 @@ export default function ChecklistPage() {
   useEffect(() => {
     setInputError('');
     setFilter('전체');
+    setCompletedHere([]);
   }, [companyScope]);
 
   function setScope(value) {
@@ -190,8 +192,10 @@ export default function ChecklistPage() {
   async function toggleTask(item, checked) {
     if (busy) return;
     const index = filtered.findIndex(record => record.id === item.id);
-    const nextId = tab === 'all' ? item.id : (filtered[index + 1]?.id ?? filtered[index - 1]?.id);
-    const saved = await action(item.id, () => toggle(item.id, checked), checked ? '할 일을 완료했어요.' : '완료를 취소했어요.');
+    const nextId = tab !== 'done' ? item.id : (filtered[index + 1]?.id ?? filtered[index - 1]?.id);
+    if (checked) setCompletedHere(ids => [...new Set([...ids, item.id])]);
+    const saved = await action(item.id, () => toggle(item.id, checked), `${item.title} · ${checked ? '완료했어요' : '완료를 취소했어요'}`);
+    if (!saved) setCompletedHere(ids => ids.filter(id => id !== item.id));
     if (saved) window.requestAnimationFrame(() => {
       const nextInput = nextId ? document.getElementById(`task-check-${nextId}`) : null;
       if (nextInput) nextInput.focus();
@@ -264,7 +268,6 @@ export default function ChecklistPage() {
               <MenuItem value="common">공통 준비</MenuItem>
               {companyOptions.map(company => <MenuItem className="checklist-company-option" key={company.id} value={company.id}>{companyLabel(company.id)}</MenuItem>)}
             </Field>
-            {selectedCompany && <Button component={Link} to={`/?company=${encodeURIComponent(selectedCompany.id)}`} size="small" className="checklist-company-link">회사 정보</Button>}
           </div>
           <div className="checklist-progress">
             <div className="checklist-progress-copy"><span>준비 완료</span><span><strong>{done}</strong> / {companyItems.length}</span></div>
@@ -274,7 +277,7 @@ export default function ChecklistPage() {
         <section className="checklist-sheet" aria-label={`${scopeLabel}의 할 일 목록`}>
           <div className="checklist-filterbar">
             <div className="checklist-sheet-toolbar">
-              <Tabs value={tab} onChange={(_, value) => setTab(value)} variant="fullWidth" scrollButtons={false} aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
+              <Tabs value={tab} onChange={(_, value) => { setTab(value); setCompletedHere([]); }} variant="fullWidth" scrollButtons={false} aria-label={`${scopeLabel} · ${filter} 분류의 할 일 상태`}>
                 {[
                   { value: 'todo', label: '진행 중', count: scopedItems.length - scopedDone },
                   { value: 'done', label: '완료', count: scopedDone },
@@ -283,19 +286,19 @@ export default function ChecklistPage() {
               </Tabs>
             </div>
             <div className="checklist-category-chips" role="group" aria-label="할 일 분류">
-              {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>{value}</button>)}
+              {['전체', ...CHECKLIST_CATEGORIES].map(value => <button type="button" key={value} aria-pressed={filter === value} onClick={() => { setFilter(value); setCompletedHere([]); }}>{value}</button>)}
             </div>
-            <Field className="checklist-category-select" id="checklist-category-filter" label="분류" select size="small" value={filter} onChange={event => setFilter(event.target.value)}>
+            <Field className="checklist-category-select" id="checklist-category-filter" label="분류" select size="small" value={filter} onChange={event => { setFilter(event.target.value); setCompletedHere([]); }}>
               {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
             </Field>
           </div>
           {['todo', 'done', 'all'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
-          {tab === value && <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · ${tab === 'todo' ? '진행 중' : tab === 'done' ? '완료' : '전체'} ${filtered.length}개`}>
+          {tab === value && <div className="task-collection" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · 표시된 항목 ${filtered.length}개`}>
             {filtered.map(item => <div className={`list-task ${item.is_done ? 'done' : ''}`} data-category={item.category} key={item.id}>
               <Checkbox checked={item.is_done} disabled={Boolean(busy)} onChange={e => toggleTask(item, e.target.checked)} slotProps={{ input: { id: `task-check-${item.id}`, 'aria-label': `${item.title} ${item.is_done ? '완료 취소' : '완료'}` } }} />
               <span className="task-copy">
-                <span className="task-text">{item.title}</span>
-                <span className="checklist-task-meta"><span className="task-category">{item.category}</span>{companyScope === 'all' && <><span aria-hidden="true">·</span>{item.application_id && companyMap.has(item.application_id) ? <Link to={`/?company=${encodeURIComponent(item.application_id)}`} title={companyLabel(item.application_id)}>{companyMap.get(item.application_id).company_name}</Link> : <span>{companyLabel(item.application_id)}</span>}</>}</span>
+                <span className="task-text">{item.title}</span>{item.is_done && <span className="completion-label">완료</span>}
+                <span className="checklist-task-meta"><span className="task-category">{item.category}</span>{companyScope === 'all' && <><span aria-hidden="true">·</span>{item.application_id && companyMap.has(item.application_id) ? <span title={companyLabel(item.application_id)}>{companyMap.get(item.application_id).company_name}</span> : <span>{companyLabel(item.application_id)}</span>}</>}</span>
               </span>
               <span className="task-tools">
                 <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>

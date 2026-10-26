@@ -1,21 +1,20 @@
 /* The folder is an interactive record, not an illustration of the product. */
 .welcome-product-first { display: flex; flex-direction: column; background: radial-gradient(ellipse at 84% 34%, #C7D9EA 0, #DCE7F180 30%, transparent 58%), radial-gradient(ellipse at 65% 88%, #E0DDEB99 0, transparent 42%), linear-gradient(130deg, #F9FAFC 12%, #F0F4F8 60%, #F4F7F5); }
-.welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); align-items: center; align-content: center; gap: clamp(40px, 5vw, 96px); width: min(1560px, calc(100% - 128px)); margin-inline: auto; padding-block: 64px; }
+.welcome-product-first > main { flex: 1; display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; align-content: center; gap: 40px; width: min(1040px, calc(100% - 80px)); margin-inline: auto; padding-block: 64px; }
 .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: min(1560px, calc(100% - 128px)); margin-inline: auto; }
-.galpi-intro { min-width: 0; padding-bottom: 12px; }
-.galpi-eyebrow { display: flex; align-items: center; gap: 9px; color: #53616D; font-size: 14px; line-height: 22px; margin-bottom: 22px; }
+.galpi-intro { min-width: 0; padding: 0; text-align: center; }
+.galpi-eyebrow { display: flex; align-items: center; justify-content: center; gap: 9px; color: #53616D; font-size: 14px; line-height: 22px; margin-bottom: 14px; }
 .galpi-eyebrow::before { content: ''; width: 10px; height: 18px; background: #3D6594; clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
-.galpi-intro h1 { color: var(--ink); font-size: clamp(36px, 3.2vw, 64px); font-weight: 450; line-height: 1.32; letter-spacing: -.045em; word-break: keep-all; }
+.galpi-intro h1 { color: var(--ink); font-size: clamp(34px, 3.2vw, 54px); font-weight: 450; line-height: 1.32; letter-spacing: -.045em; word-break: keep-all; }
 .galpi-intro h1 em { color: #345C87; font-style: normal; font-weight: inherit; }
-.galpi-intro-heading > p { color: #53616D; font-size: 17px; line-height: 28px; margin-top: 22px; word-break: keep-all; }
-.galpi-intro-action { margin-top: 34px; }
+.galpi-intro-heading > p { color: #53616D; font-size: 17px; line-height: 28px; margin-top: 16px; word-break: keep-all; }
+.galpi-intro-action { margin-top: 24px; }
 .galpi-intro-action > .MuiButton-root { min-width: 200px; font-size: 16px; font-weight: 500; min-height: 52px; border-radius: 8px; padding-inline: 26px; }
-.galpi-intro-action > small { display: block; max-width: 320px; font-size: 14px; line-height: 22px; color: #65717D; margin-top: 14px; }
+.galpi-intro-action > small { display: block; max-width: none; font-size: 14px; line-height: 22px; color: #65717D; margin-top: 14px; }
 .galpi-intro-action .MuiAlert-root { margin-top: 14px; }
-.galpi-product-stage { min-width: 0; padding-top: 14px; }
-.application-preview { position: relative; padding: 0 24px 20px; background: #E4EBF1; border: 1px solid #BAC9D7; border-radius: 0 18px 18px 18px; box-shadow: 0 20px 48px -28px #294B7270; }
-.application-preview::before { content: ''; position: absolute; height: 15px; width: 42%; left: -1px; top: -15px; border: 1px solid #C4CFD9; border-bottom: 0; background: #E4EBF1; border-radius: 9px 14px 0 0; }
-.preview-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; padding-block: 24px 22px; }
+.galpi-product-stage { min-width: 0; width: 100%; max-width: 920px; margin-inline: auto; }
+.application-preview { position: relative; padding: 0; border-radius: 12px; background: transparent; box-shadow: 0 22px 55px -38px #294B7270; }
+.preview-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; padding: 0 2px 14px; }
 .preview-toolbar h2 { color: #344E69; font-size: 16px; font-weight: 500; line-height: 24px; }
 .preview-toolbar > span { color: #536574; font-size: 13px; line-height: 20px; }
 .preview-stage-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; align-items: end; }
@@ -23,7 +22,7 @@
 .preview-stage-tabs > button[aria-selected='true'] { min-height: 64px; background: #FFF; border-top: 3px solid var(--tab-ink); z-index: 1; }
 .preview-stage-tabs > button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .preview-tab-index { font-size: 12px; opacity: .85; font-variant-numeric: tabular-nums; }
-.preview-record { position: relative; padding: 28px; border: 1px solid #C8D2DC; border-radius: 0 0 8px 8px; background: #FFF; min-height: 376px; }
+.preview-record { position: relative; padding: 28px; border: 1px solid #C8D2DC; border-radius: 0 0 8px 8px; background: #FFF; min-height: 0; }
 .preview-record[hidden] { display: none; }
 .preview-record-heading { display: flex; align-items: center; gap: 12px; }
 .preview-record-heading .company-mark { flex-shrink: 0; width: 42px; height: 46px; border-radius: 5px; font-size: 18px; font-weight: 400; }
@@ -38,9 +37,8 @@
 .preview-date-block > b { display: inline-block; vertical-align: top; margin: 4px 0 0 10px; color: #78571B; background: #FAF1DE; border-radius: 4px; font-size: 13px; line-height: 24px; padding-inline: 6px; font-weight: 500; }
 .preview-documents { display: grid; gap: 14px; }
 .preview-documents > span { display: flex; align-items: center; gap: 8px; color: #475766; font-size: 14px; line-height: 22px; white-space: nowrap; }
-.preview-documents svg { flex-shrink: 0; border: 1px solid #98A4B0; border-radius: 3px; width: 17px; height: 17px; color: transparent; }
-.preview-documents .is-done svg { color: #326D61; border-color: #7FA99C; background: #E6F2ED; }
-.preview-documents em { font-style: normal; margin-left: auto; color: #697581; font-size: 13px; }
+.preview-documents em { font-style: normal; margin-left: auto; color: #697581; background: #f0f3f6; border-radius: 4px; padding: 2px 6px; font-size: 13px; }
+.preview-documents .is-done em { color: #326D61; background: #E6F2ED; }
 .preview-record-memo { display: grid; gap: 6px; margin: 0; padding-top: 18px; border-top: 1px solid #E1E6EB; font-size: 14px; line-height: 23px; color: #475766; min-height: 72px; word-break: keep-all; overflow-wrap: anywhere; }
 .preview-record-memo > span { font-size: 13px; line-height: 20px; color: #6C7782; }
 .preview-open-record.MuiButton-root { display: flex; width: fit-content; margin-top: 14px; margin-left: auto; padding: 9px 0 9px 10px; min-height: 44px; font-size: 14px; font-weight: 500; }
@@ -49,19 +47,16 @@
 .application-preview button:focus-visible, .preview-record:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; z-index: 2; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
 @media (min-width: 1800px) {
-  .application-preview { padding: 0 32px 24px; }
-  .preview-toolbar { padding-block: 30px 26px; }
-  .preview-record { min-height: 430px; padding: 36px; }
+  .preview-record { min-height: 0; padding: 28px 32px; }
   .preview-record-heading h3 { font-size: 24px; }
-  .preview-record-body { padding-block: 32px; }
+  .preview-record-body { padding-block: 20px; }
   .preview-date-block > strong { font-size: 52px; }
   .galpi-intro-heading > p { font-size: 19px; line-height: 30px; }
 }
 @media (max-width: 1100px) {
-  .welcome-product-first > main { width: calc(100% - 56px); grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 28px; }
+  .welcome-product-first > main { width: calc(100% - 56px); grid-template-columns: minmax(0, 1fr); gap: 28px; }
   .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 56px); }
   .galpi-intro h1 { font-size: 36px; }
-  .application-preview { padding-inline: 18px; }
   .preview-record { padding: 22px; }
   .preview-record-heading h3 { font-size: 19px; }
   .preview-tab-index { display: none; }
@@ -73,6 +68,7 @@
   .welcome-product-first > main { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 36px 40px; width: min(620px, calc(100% - 40px)); }
   .galpi-intro { padding: 0; }
   .galpi-intro h1 { font-size: clamp(30px, 6vw, 42px); }
+  .galpi-intro h1 em { display: block; }
   .galpi-eyebrow { margin-bottom: 12px; }
   .galpi-intro-heading > p { margin-top: 14px; font-size: 16px; }
   .galpi-intro-action { margin-top: 24px; }
@@ -84,10 +80,10 @@
 @media (max-width: 480px) {
   .welcome-product-first > main { gap: 28px; padding-top: 26px; }
   .welcome-product-first .welcome-footer, .welcome-product-first .site-header-inner { width: calc(100% - 40px); }
-  .galpi-intro-action > .MuiButton-root { width: 100%; }
+  .galpi-intro-action > .MuiButton-root { width: auto; min-width: 200px; }
   .galpi-intro-action > small { font-size: 13px; line-height: 20px; }
-  .application-preview { padding: 0 12px 14px; border-radius: 0 12px 12px 12px; }
-  .preview-toolbar { padding-block: 18px 16px; gap: 2px 8px; }
+  .application-preview { padding: 0; border-radius: 0 12px 12px 12px; }
+  .preview-toolbar { padding-block: 0 12px; gap: 2px 8px; }
   .preview-toolbar h2 { font-size: 15px; }
   .preview-toolbar > span { font-size: 12px; }
   .preview-stage-tabs { gap: 3px; }

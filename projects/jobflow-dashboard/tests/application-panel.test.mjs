@@ -49,6 +49,7 @@ function panelWith(application = null) {
       restored: false,
     }) },
     '../ui/Field': 'Field',
+    './CompanySummary': 'CompanySummary',
     '../ui/PageUI': { CompanyMark: 'CompanyMark', ConfirmDelete: 'ConfirmDelete' },
     '../../constants': { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS },
     '../../utils/applicationBoard': { applicationDraft, BOARD_COLUMNS, boardColumn },
@@ -77,6 +78,9 @@ function panelWith(application = null) {
   }
   return {
     saves,
+    edit: () => find(node => node.type === 'Button' && node.props.children === '회사 정보 수정').props.onClick(),
+    hasSummary: () => Boolean(find(node => node.type === 'CompanySummary')),
+    hasForm: () => Boolean(find(node => node.type === 'form')),
     details: () => find(node => node.type === 'details'),
     field: label => find(node => node.type === 'Field' && node.props.label === label),
     change: (label, value) => find(node => node.type === 'Field' && node.props.label === label).props.onChange({ target: { value } }),
@@ -106,6 +110,7 @@ test('correcting an invalid posting address keeps the extra fields open through 
 
 test('manual disclosure choices persist across other edits, while a fresh company starts collapsed', async () => {
   const panel = panelWith({ id: 'company-a', company_name: '첫 회사' });
+  panel.edit();
   assert.equal(panel.details().props.open, false);
   panel.toggle(true);
   panel.change('지원 직무', '웹 퍼블리셔');
@@ -121,11 +126,16 @@ test('manual disclosure choices persist across other edits, while a fresh compan
   // ApplicationsPage keys each panel by scope and record ID, so switching
   // companies mounts a new panel rather than carrying its disclosure state.
   const next = panelWith({ id: 'company-b', company_name: '두 번째 회사' });
+  assert.equal(next.hasSummary(), true);
+  next.edit();
   assert.equal(next.details().props.open, false);
 });
 
 test('a missing edited company name is revealed and remains visible while it is corrected', async () => {
   const panel = panelWith({ id: 'company-a', company_name: '검증용 회사' });
+  assert.equal(panel.hasSummary(), true);
+  assert.equal(panel.hasForm(), false);
+  panel.edit();
   panel.change('회사 이름', '');
   await panel.submit();
   assert.equal(panel.details().props.open, true);

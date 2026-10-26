@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
-import CheckRounded from '@mui/icons-material/CheckRounded';
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import { CompanyMark } from './PageUI';
 import { APPLICATION_STATUSES, DEMO_APPLICATIONS, DEMO_TODAY } from '../../constants';
@@ -8,7 +7,7 @@ import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel } from '../../utils/dates';
 
 // This preview uses the same fictional records as the editable sample.
-export default function ProductPreview({ onOpen, busy, signedIn = false }) {
+export default function ProductPreview({ onOpen }) {
   const [stageIndex, setStageIndex] = useState(0);
   const tabRefs = useRef([]);
   const stage = BOARD_COLUMNS[stageIndex];
@@ -30,7 +29,7 @@ export default function ProductPreview({ onOpen, busy, signedIn = false }) {
     <div className="preview-toolbar"><h2>회사별 지원 기록</h2><span>샘플 · {DEMO_TODAY.replaceAll('-', '.')}</span></div>
     <div className="preview-stage-tabs" role="tablist" aria-label="샘플 지원 단계">
       {BOARD_COLUMNS.map((column, index) => <button key={column.id} type="button" role="tab" id={`preview-tab-${column.id}`} aria-controls={`preview-panel-${column.id}`} aria-selected={index === stageIndex} tabIndex={index === stageIndex ? 0 : -1} ref={element => { tabRefs.current[index] = element; }} onClick={() => setStageIndex(index)} onKeyDown={event => moveTab(event, index)} style={{ '--tab-ink': column.color, '--tab-tint': column.tint }}>
-        <span className="preview-tab-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span>{column.label}</span>
+        <span>{column.label}</span>
       </button>)}
     </div>
     {BOARD_COLUMNS.map((column, index) => <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} hidden={index !== stageIndex} className="preview-record" tabIndex={0}>
@@ -47,12 +46,12 @@ export default function ProductPreview({ onOpen, busy, signedIn = false }) {
             {before && <b>{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}
           </div>
           <div className="preview-documents" aria-label="서류 준비 상태">
-            <span className={selected.resume_submitted ? 'is-done' : ''}><CheckRounded aria-hidden="true" />이력서 <em>{selected.resume_submitted ? '제출' : '준비'}</em></span>
-            <span className={selected.portfolio_submitted ? 'is-done' : ''}><CheckRounded aria-hidden="true" />포트폴리오 <em>{selected.portfolio_submitted ? '제출' : '준비'}</em></span>
+            <span className={selected.resume_submitted ? 'is-done' : ''}>이력서 <em>{selected.resume_submitted ? '제출 완료' : '미제출'}</em></span>
+            <span className={selected.portfolio_submitted ? 'is-done' : ''}>포트폴리오 <em>{selected.portfolio_submitted ? '제출 완료' : '미제출'}</em></span>
           </div>
         </div>
         <p className="preview-record-memo"><span>기록 메모</span>{selected.memo}</p>
-        <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} disabled={busy} className="preview-open-record">{signedIn ? '내 지원 현황 열기' : '이 회사 기록 열기'}</Button>
+        <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
       </>}
     </div>)}
     <p className="preview-caption">단계를 선택해 회사 기록을 살펴보세요.</p>

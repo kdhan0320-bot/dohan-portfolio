@@ -54,6 +54,8 @@ function calendarPage({ compact = true, query = '' } = {}) {
     },
     '@mui/material': { Button: 'button', IconButton: 'button', useMediaQuery: () => compact },
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: DEMO_APPLICATIONS, loading: false, error: null }) },
+    '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], loading: false, error: null, refresh: () => {} }) },
+    '../components/applications/ApplicationPanel': 'company-panel',
     '../hooks/useToday': { useToday: () => DEMO_TODAY },
     '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
     '../utils/calendar': calendar,
@@ -100,6 +102,9 @@ function calendarPage({ compact = true, query = '' } = {}) {
   render();
   return {
     agenda, document,
+    openCompany: id => { find(node => node.props?.className === 'agenda-company' && node.key === id).props.onClick(); render(); },
+    closeCompany: () => { find(node => node.type === 'company-panel').props.onClose(); render(); },
+    company: () => find(node => node.type === 'company-panel').props.application,
     query: () => params,
     pickerHidden: () => find(node => node.props?.id === 'calendar-date-picker').props.hidden,
     title: () => text(find(node => node.props?.id === 'agenda-title')),
@@ -187,4 +192,15 @@ test('desktop date selection keeps the calendar visible and never forces an agen
   assert.equal(page.pickerHidden(), false);
   assert.equal(page.agenda.focusCalls[0].preventScroll, true, 'a removed scope button hands focus to the result without moving the page');
   assert.equal(page.agenda.scrollCalls.length, 0);
+});
+
+
+test('opening a company keeps the calendar selection and closes back to the same agenda', () => {
+  const page = calendarPage({ compact: false, query: 'month=2026-09&date=2026-09-29' });
+  const before = page.query().toString();
+  page.openCompany('demo-3');
+  assert.equal(page.company().id, 'demo-3');
+  assert.equal(page.query().toString(), before);
+  page.closeCompany();
+  assert.equal(page.query().toString(), before);
 });

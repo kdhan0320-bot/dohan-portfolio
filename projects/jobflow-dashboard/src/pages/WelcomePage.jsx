@@ -1,23 +1,27 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Alert, Button } from '@mui/material';
+import { Alert, Button, Dialog, DialogContent, DialogActions, DialogTitle, IconButton } from '@mui/material';
+import Close from '@mui/icons-material/Close';
 import SiteHeader from '../components/layout/SiteHeader';
 import ProductPreview from '../components/ui/ProductPreview';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
+import { CompanySummary } from '../components/applications/CompanySummary';
+import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES, DEMO_TODAY } from '../constants';
 
 export default function WelcomePage() {
-  const { user, isGuest, demoApplications, enterGuestMode, loading } = useAuth();
+  const { user, isGuest, enterGuestMode, loading } = useAuth();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  async function start(companyId) {
+  const [previewId, setPreviewId] = useState(null);
+  const preview = DEMO_APPLICATIONS.find(company => company.id === previewId);
+  async function start() {
     if (busy || loading) return;
     setBusy(true); setError('');
     try {
       if (!user && !isGuest) await enterGuestMode();
-      const sampleExists = !isGuest || demoApplications.some(row => row.id === companyId);
-      navigate(companyId && !user && sampleExists ? `/?company=${companyId}` : user ? '/' : '/overview');
+      navigate(user ? '/' : '/overview');
     } catch (e) { setError(getAuthErrorMessage(e)); }
     finally { setBusy(false); }
   }
@@ -28,7 +32,7 @@ export default function WelcomePage() {
       <section className="galpi-intro" aria-labelledby="welcome-title">
         <div className="galpi-intro-heading">
           <span className="galpi-eyebrow">개인 입사지원 관리</span>
-          <h1 id="welcome-title">입사지원 현황과<br /><em>마감일을 한눈에.</em></h1>
+          <h1 id="welcome-title">입사지원 현황과 <em>마감일을 한눈에.</em></h1>
           <p>지원할 회사를 직접 등록하고 관리해요.</p>
           <div className="galpi-intro-action">
             <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : '샘플 체험하기'}</Button>
@@ -38,9 +42,14 @@ export default function WelcomePage() {
         </div>
       </section>
       <section className="galpi-product-stage" aria-label="갈피록 지원 관리 미리보기">
-        <ProductPreview onOpen={start} busy={busy || loading} signedIn={Boolean(user)} />
+        <ProductPreview onOpen={setPreviewId} />
       </section>
     </main>
+    <Dialog open={Boolean(preview)} onClose={() => setPreviewId(null)} aria-labelledby="preview-company-title" fullWidth maxWidth="sm" className="company-summary-dialog">
+      <DialogTitle id="preview-company-title"><span><small className="summary-preview-label">가상 샘플 기록</small>{preview?.company_name}</span><IconButton aria-label="회사 기록 닫기" onClick={() => setPreviewId(null)}><Close /></IconButton></DialogTitle>
+      <DialogContent>{preview && <CompanySummary application={preview} tasks={DEMO_CHECKLISTS} notes={DEMO_INTERVIEW_NOTES} today={DEMO_TODAY} />}</DialogContent>
+      <DialogActions><Button onClick={() => setPreviewId(null)}>닫기</Button></DialogActions>
+    </Dialog>
     <footer className="welcome-footer"><span>갈피록 · 김도한의 포트폴리오 프로젝트</span><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a></footer>
   </div>;
 }
