@@ -1366,6 +1366,7 @@ body[data-view="browse"] #filmGrid .film-art { aspect-ratio: 2/3; }
 
 /* v41: readable scene captions, a shared cinema window and connected curation. */
 html { scrollbar-gutter: stable; }
+dialog { max-width: none; }
 .spotlight-caption { padding: 10px 16px; border-radius: 3px; background: #101719e8; box-shadow: 0 4px 24px #07101933; text-shadow: 0 1px 3px #0008; }
 .spotlight-label { color: #edc8b3; }
 .spotlight-meta { color: #eeeee6; }
