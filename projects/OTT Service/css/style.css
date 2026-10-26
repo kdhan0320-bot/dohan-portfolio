@@ -1465,3 +1465,38 @@ dialog { max-width: none; }
   .cinema-view .detail-content, .cinema-view .article-content { padding: 24px 22px; }
   .article-step { gap: 6px; }
 }
+
+/* v42: one quiet editing mark connects the banner, sequence and cinema window. */
+.scene-index { display: inline-grid; place-items: center; flex: none; min-width: 28px; height: 24px; padding-inline: 3px; border: 1px solid #cbb79a55; border-right-color: transparent; border-bottom-color: transparent; font-variant-numeric: tabular-nums; line-height: 1; }
+.event-kicker, #articleCategory { display: flex; align-items: center; gap: 10px; }
+.theme-lens .scene-index { margin-right: 8px; vertical-align: middle; }
+.sequence-frame figcaption, .article-step { align-items: center; word-break: keep-all; }
+.sequence-frame figcaption::after, .article-step::after { content: ''; flex: 1; min-width: 8px; height: 1px; background: #cbb79a30; }
+.sequence-image::after { content: ''; position: absolute; inset: auto 0 0; height: 2px; background: var(--collection-surface,#dfb79a); opacity: .65; transform: scaleX(0); transform-origin: left; transition: transform .24s ease; pointer-events: none; }
+.theme-preview:is(:hover,:focus-visible) .sequence-image::after { transform: scaleX(1); }
+.theme-preview:is(:hover,:focus-visible) .sequence-frame:nth-child(2) .sequence-image::after { transition-delay: .04s; }
+.theme-preview:is(:hover,:focus-visible) .sequence-frame:nth-child(3) .sequence-image::after { transition-delay: .08s; }
+.theme-preview:is(:hover,:focus-visible) .sequence-frame:nth-child(4) .sequence-image::after { transition-delay: .12s; }
+.article-film-link:is(:hover,:focus-visible) .scene-index, .event-banner:is(:hover,:focus-visible) .scene-index { border-top-color: currentColor; border-left-color: currentColor; }
+.article-sequence-heading { margin-top: 14px; }
+.article-afterword { margin-top: 28px; padding-top: 18px; border-top: 1px solid #cbb79a30; }
+#articleBody.article-afterword { margin-top: 28px; }
+#articleBody.article-afterword p { margin-top: 0; }
+@media (min-width: 1101px) {
+  .library-reading .film-card:has(.film-note-preview[hidden]) .film-art { width: 64px; }
+  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(0,1fr) auto; align-self: center; align-items: center; }
+  .library-reading .film-card:has(.film-note-preview[hidden]) .film-foot { grid-row: 1; width: 100%; max-width: 240px; }
+  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-end; margin-top: 0; }
+}
+@media (max-width: 600px) {
+  .cinema-view .article-content { padding-top: 20px; }
+  .article-sequence-heading { gap: 4px 12px; margin-top: 12px; }
+  .article-step { min-height: 3.2em; }
+  .article-afterword { padding-top: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sequence-image::after { transition: none !important; }
+}
+@media (max-width: 380px) {
+  .sequence-frame figcaption::after, .article-step::after { display: none; }
+}

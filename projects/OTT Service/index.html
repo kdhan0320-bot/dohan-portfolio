@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=dae40b646f96" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=8e2fbb8cf2b5"></script>
+    <link href="css/style.css?v=016891d9a70f" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=ad57ee44f662"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -162,15 +162,15 @@
           <div class="section-heading"><h2 id="homeEventsTitle">테마 기획전</h2><p class="events-label">네 편으로 이어지는 이야기</p></div>
           <div class="event-grid">
             <a class="event-banner event-lead" href="#themes/quiet" data-theme-preview="quiet">
-              <div class="event-copy"><p class="event-kicker">01 · 파란 숨 고르기</p><h3>잠깐, 세상의<br />소리를 낮추고.</h3><p class="event-description">파도에서 대화로 이어지는 네 편.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
+              <div class="event-copy"><p class="event-kicker"><span class="scene-index">01</span>파란 숨 고르기</p><h3>잠깐, 세상의<br />소리를 낮추고.</h3><p class="event-description">파도에서 대화로 이어지는 네 편.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
               <div class="event-art" aria-hidden="true"><img src="assets/frames-v24/forest.webp" alt="" width="1672" height="941" loading="lazy" /></div>
             </a>
             <a class="event-banner event-warm" href="#themes/warmth" data-theme-preview="warmth">
-              <div class="event-copy"><p class="event-kicker">02 · 다정한 반전</p><h3>말 대신<br />건네는 마음.</h3><p class="event-description">편지와 연주, 행동으로 읽는 관계.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
+              <div class="event-copy"><p class="event-kicker"><span class="scene-index">02</span>다정한 반전</p><h3>말 대신<br />건네는 마음.</h3><p class="event-description">편지와 연주, 행동으로 읽는 관계.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
               <div class="event-art" aria-hidden="true"><img src="assets/frames-v31/letters.webp" alt="" width="1536" height="1024" loading="lazy" /></div>
             </a>
             <a class="event-banner event-beyond" href="#themes/beyond" data-theme-preview="beyond">
-              <div class="event-copy"><p class="event-kicker">03 · 상상 바깥으로</p><h3>익숙한 세계의<br />다음 장면.</h3><p class="event-description">낯선 세계에 남겨진 선택들.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
+              <div class="event-copy"><p class="event-kicker"><span class="scene-index">03</span>상상 바깥으로</p><h3>익숙한 세계의<br />다음 장면.</h3><p class="event-description">낯선 세계에 남겨진 선택들.</p><span class="event-link">기획전 보기 <svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg></span></div>
               <div class="event-art" aria-hidden="true"><img src="assets/frames-v39/orbit.jpg" alt="" width="1086" height="1448" loading="lazy" /></div>
             </a>
           </div>
@@ -277,7 +277,7 @@
           </div>
           <div class="film-grid" id="filmGrid"></div>
           <div class="empty-state" hidden="" id="emptyState">
-            <div class="empty-art" aria-hidden="true"><svg class="empty-mark"><use href="#i-bookmark"></use></svg></div>
+            <div class="empty-art" aria-hidden="true"><svg class="empty-mark"><use id="emptyIcon" href="#i-bookmark"></use></svg></div>
             <h2 id="emptyTitle">아직 보관한 영화가 없어요.</h2>
             <p id="emptyText">
               찜하거나 관심 메모를 남긴 작품을 모아보세요.
@@ -382,9 +382,9 @@
         <div class="article-content">
           <p class="eyebrow" id="articleCategory"></p>
           <h2 id="articleTitle" tabindex="-1"></h2>
-          <div id="articleBody"></div>
-          <div class="article-sequence-heading"><h3>장면의 연결</h3><p id="articleRuntime"></p></div>
+          <div class="article-sequence-heading"><h3 id="articleLens">장면의 연결</h3><p id="articleRuntime"></p></div>
           <div aria-label="기획전에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
+          <div id="articleBody" class="article-afterword" role="note" aria-label="함께 고른 이유"></div>
         </div>
       </div>
       </section>

@@ -533,9 +533,9 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-copy"><p class="theme-lens"><span>${theme.number}</span> 장면의 연결 · ${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div></div><div class="theme-sequence">${theme.films.map((id, index) => {
+    link.innerHTML = `<div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span> 장면의 연결 · ${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div></div><div class="theme-sequence">${theme.films.map((id, index) => {
       const film = films.find(item => item.id === id);
-      return `<figure class="sequence-frame"><div class="sequence-image"><img src="${scenePath(film)}" alt="" width="800" height="600" loading="lazy" style="object-position:${film.sequencePosition || film.detailPosition || film.posterPosition || "center"}"></div><figcaption><span class="sequence-number">${String(index + 1).padStart(2, "0")}</span><span>${theme.sequence[index]}</span></figcaption></figure>`;
+      return `<figure class="sequence-frame"><div class="sequence-image"><img src="${scenePath(film)}" alt="" width="800" height="600" loading="lazy" style="object-position:${film.sequencePosition || film.detailPosition || film.posterPosition || "center"}"></div><figcaption><span class="sequence-number scene-index">${String(index + 1).padStart(2, "0")}</span><span>${theme.sequence[index]}</span></figcaption></figure>`;
     }).join("")}</div>`;
     return link;
   }
@@ -992,7 +992,7 @@
           String(button.dataset.libraryFilter === state.libraryFilter),
         ),
       );
-    $("resetFilters").hidden = !filtered && state.sort === "recommended";
+    $("resetFilters").hidden = visible.length === 0 || (!filtered && state.sort === "recommended");
     $("clearSearch").hidden = !state.query;
     document
       .querySelectorAll("[data-mood]")
@@ -1006,20 +1006,24 @@
       state.view === "saved" &&
       !emptyLibrary &&
       !films.some((film) => inLibraryFilter(film.id));
+    const hasQuery = Boolean(state.query.trim());
+    $("emptyIcon").setAttribute("href", emptyLibrary || emptyCategory ? "#i-bookmark" : "#i-search");
     $("emptyTitle").textContent = emptyLibrary
       ? "아직 보관한 영화가 없어요."
       : emptyCategory
         ? state.libraryFilter === "saved"
           ? "아직 찜한 영화가 없어요."
           : "아직 메모를 남긴 영화가 없어요."
-        : "조건에 맞는 영화가 없어요.";
+        : hasQuery ? "검색한 영화를 찾지 못했어요." : "조건에 맞는 영화가 없어요.";
     $("emptyText").textContent = emptyLibrary
       ? "찜하거나 관심 메모를 남긴 작품을 모아보세요."
       : emptyCategory
         ? "다른 분류에서 영화를 찾아보세요."
         : state.view === "saved"
           ? `보관함에는 ${libraryCount}편이 있어요. 다른 검색어나 분류로 다시 찾아보세요.`
-          : "분위기나 러닝타임을 바꿔보세요.";
+          : hasQuery
+            ? "검색어를 바꾸거나 분위기·러닝타임 조건을 풀어보세요."
+            : "분위기나 러닝타임을 바꿔보세요.";
     $("emptyAction").dataset.action = emptyLibrary ? "browse" : "reset";
     $("emptyAction").textContent = emptyLibrary
       ? "영화 찾기"
@@ -1676,7 +1680,12 @@
     const theme = themes.find((item) => item.article === article.id);
     $("articleDialog").dataset.theme = theme?.id || "";
     $("articleTitle").textContent = theme?.name || article.title;
-    $("articleCategory").textContent = `${trigger?.closest(".home-events") ? "테마 기획전" : "큐레이션"} ${theme?.number || ""} · 작품 ${theme?.films.length || 1}편`;
+    $("articleCategory").replaceChildren();
+    const issue = document.createElement("span");
+    issue.className = "scene-index";
+    issue.textContent = theme?.number || "01";
+    $("articleCategory").append(issue, "장면의 연결");
+    $("articleLens").textContent = theme?.lens || "함께 고른 작품";
     $("articleBody").replaceChildren(
       ...article.paragraphs.map((copy) => {
         const paragraph = document.createElement("p");
@@ -1695,7 +1704,7 @@
       button.dataset.detail = relatedFilm.id;
       if (index === 0) button.id = "articleFilmLink";
       button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<span class="article-step"><span class="article-film-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${theme?.sequence[index] || "작품 살펴보기"}</span><img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.sequencePosition || relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
+      button.innerHTML = `<span class="article-step"><span class="article-film-number scene-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${theme?.sequence[index] || "작품 살펴보기"}</span><img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.sequencePosition || relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
       return button;
     }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));
