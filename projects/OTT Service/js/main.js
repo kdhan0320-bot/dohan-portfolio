@@ -67,11 +67,12 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "orbit",
-      posterPath: "assets/frames-v36/orbit.webp",
-      posterPosition: "60% center",
-      position: "63% center",
-      detailPosition: "center top",
-      detailRatio: "1.05",
+      posterPath: "assets/frames-v39/orbit.jpg",
+      posterArtwork: "assets/posters-v39/orbit.jpg",
+      posterPosition: "center 42%",
+      position: "center 42%",
+      detailPosition: "center 42%",
+      detailRatio: "1.15",
       description:
         "지구로 돌아갈 날을 기다리는 우주 기록원. 마지막 메시지 한 통이 고요한 관측 기지의 일상을 바꾼다.",
       keywords: "우주 행성 미래 SF 새로운 세계 경이",
@@ -224,7 +225,8 @@
       name: "파란 숨 고르기",
       number: "01",
       article: "faces",
-      previewDescription: "파도·숲의 소리, 재회와 새벽 대화",
+      lens: "소리에서 대화로",
+      previewDescription: "파도와 숲에 귀를 기울인 뒤, 사람의 목소리로 돌아오는 네 편.",
       previewImage: "assets/stills/tide.webp",
       glimpseImage: "assets/frames-v24/forest.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
@@ -243,7 +245,8 @@
       name: "다정한 반전",
       number: "02",
       article: "running-time",
-      previewDescription: "편지·연주·계주로 다시 잇는 관계",
+      lens: "마음을 건네는 방식",
+      previewDescription: "편지와 도움, 연주와 계주. 말 대신 건네는 행동으로 관계를 읽는 네 편.",
       previewImage: "assets/frames-v31/letters.webp",
       glimpseImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
@@ -262,16 +265,17 @@
       name: "상상 바깥으로",
       number: "03",
       article: "enclosed-spaces",
-      previewDescription: "온실의 비밀, 종이별과 미래의 신호",
+      lens: "낯선 세계, 남겨진 선택",
+      previewDescription: "일지를 펼치고, 귀환을 기다리고, 소원을 고르는 사람들. 세계보다 선택에 주목한 네 편.",
       previewImage: "assets/frames-v35/greenhouse.webp",
-      glimpseImage: "assets/frames-v36/orbit.webp",
-      imageAlt: "관측 기지에서 기록을 멈추고 녹음에 귀 기울이는 기록원",
+      glimpseImage: "assets/frames-v39/orbit.jpg",
+      imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
       accent: "#C3B6EC",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
         greenhouse: "사라진 관리자의 일지가 여는 비밀",
-        orbit: "녹음 한 통이 바꾸는 관측 기지의 하루",
+        orbit: "지구를 바라보는 기록원에게 도착한 마지막 메시지",
         atlas: "마지막 종이에 담을 소원을 고르는 아이",
         signal: "자기 목소리로 도착한 미래의 구조 요청",
       },
@@ -302,7 +306,7 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "일지와 신호의 비밀을 좇을지, 귀환과 마지막 소원을 기다릴지 골라보세요. 낯선 세계를 단서가 이끄는 이야기와 인물의 선택이 이끄는 이야기로 묶었습니다.",
+        "온실의 비밀에서 귀환과 마지막 소원, 미래의 신호로 이어집니다. 낯선 세계보다 그 안의 선택에 주목했습니다.",
       ],
     },
   ];
@@ -478,7 +482,10 @@
     requestRailUpdate();
   }
   // The complete poster preserves its lettering; scene images remain available for detail views.
-  const posterPath = (film) => `assets/posters-v37/${film.id}.jpg`;
+  const posterPath = (film) => film.posterArtwork || `assets/posters-v37/${film.id}.jpg`;
+  const themeMinutes = (theme) => theme.films.reduce(
+    (total, id) => total + films.find((film) => film.id === id).minutes, 0,
+  );
   const scenePath = (film) =>
     film.posterPath || `assets/posters-v8/${film.image}.webp`;
   function makeCard(film, context = "catalog") {
@@ -525,7 +532,7 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><img class="theme-glimpse" src="${theme.glimpseImage}" alt="" width="1086" height="1448" loading="lazy"><span class="theme-preview-number" aria-hidden="true">COLLECTION ${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편 · 큐레이션 보기${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><img class="theme-glimpse" src="${theme.glimpseImage}" alt="" width="1086" height="1448" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span aria-hidden="true">${theme.number}</span>${theme.lens}</p><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">${theme.films.length}편 · 총 ${themeMinutes(theme)}분${icon("arrow")}</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
@@ -1593,6 +1600,7 @@
     const relatedFilms = (theme?.films || [film.id]).map((id) =>
       films.find((item) => item.id === id),
     );
+    $("articleRuntime").textContent = `${relatedFilms.length}편 · 총 ${relatedFilms.reduce((total, item) => total + item.minutes, 0)}분`;
     $("articleFilmLinks").replaceChildren(...relatedFilms.map((relatedFilm, index) => {
       const button = document.createElement("button");
       button.type = "button";
@@ -1600,7 +1608,7 @@
       button.dataset.detail = relatedFilm.id;
       if (index === 0) button.id = "articleFilmLink";
       button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.id === "orbit" ? "center 52%" : relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
+      button.innerHTML = `<img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title"><span class="article-film-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
       return button;
     }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));

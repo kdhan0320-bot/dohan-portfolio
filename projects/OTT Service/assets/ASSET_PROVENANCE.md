@@ -1,5 +1,43 @@
 # 잔상관 Asset Provenance
 
+## v39 영화 편집 잡지 방향 · 느린 궤도 — 2026-10-26
+
+사용자가 선택한 “영화 편집 잡지 — 강한 이미지 배치와 편집 디자인” 방향에 따라, 다른 작품의 녹음 장면과 비슷했던 느린 궤도를 관측창·지구·귀환을 기다리는 기록원 중심으로 다시 구성했습니다. 내장 OpenAI `image_gen.imagegen` 편집을 사용했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다.
+
+- 장면 입력: `assets/frames-v36/orbit.webp` (기존 자체 생성 이미지)
+- 포스터 입력: 아래 새 장면의 원본 PNG
+- 장면 원본 PNG: `exec-dc2fe185-2e5a-4989-8cde-c1025723b43d.png`
+- 포스터 원본 PNG: `exec-eeb7a9d3-2240-4010-a130-5c72be84c69f.png`
+- 장면 배포본: `assets/frames-v39/orbit.jpg`, 1086×1448, 254025 bytes, SHA-256 `A73754EECDC8077904E8273EC5F32C1E64D89F24B6B0E2C23916155EBA7C82B9`
+- 포스터 배포본: `assets/posters-v39/orbit.jpg`, 1024×1536, 281766 bytes, SHA-256 `2B0D3536D57FE08D161FC369F75F504636A179063706D2DE8EA2CE10BF73E515`
+- 배포본은 Windows System.Drawing JPEG quality 88로 형식만 변환했습니다. 기존 자산을 보존하며, 장면의 반응형 크롭은 CSS로 지정합니다.
+- 포스터의 “느린 궤도 / A SLOW ORBIT” 글자도 AI 이미지 편집 결과입니다. 직접 촬영·직접 레터링·독점 권리·법적 무위험을 주장하지 않습니다. 참고 사이트의 포스터나 브랜드 자산은 입력하지 않았습니다.
+
+### 장면 최종 프롬프트
+
+```text
+Use case: identity-preserve.
+Asset type: a text-free cinematic still for the fictional Korean short film "느린 궤도 / A SLOW ORBIT", for the Jansang independent-film discovery website.
+Input image 1 is the existing fictional character/reference, not a layout to copy. Preserve the ordinary adult woman record keeper, tied-back dark hair and worn grey work clothes, and the quiet grounded practical-set feeling. Recompose the scene substantially so it does not resemble another film's close-up of a radio operator.
+Scene: inside a small, lived-in orbital observation station. The woman has paused her records and is standing with her back/three-quarter back to us beside a tall, simple observation window. Outside the window, a small believable sunlit curve of Earth and deep black space establish that she is far from home. An opened paper log and a small unbranded audio-message recorder on a narrow sill connect the last message to her daily work. This is a quiet moment of waiting to return to Earth, not an action scene.
+Composition: vertical 3:4 film still. The observation window and Earth are the dominant shapes in the upper-middle area; the woman is smaller, in the lower-middle/left, with a gentle human silhouette. Keep both window and person legible within the central 75% for responsive cropping. Reserve natural dark wall space around the subjects; do not fill the scene with electronic control panels.
+Style: believable low-budget independent science-fiction cinematography, practical physical set, natural imperfect fabric and worn painted metal, restrained cool daylight, soft film grain, modest contrast. Avoid glossy game-art rendering, highly polished beauty lighting, cinematic orange/teal grading, dense star fields, extravagant nebulae, fisheye lenses and huge impossible planets. One person only. No text, title, letters, logos, watermarks, award laurels or recognizable existing film designs.
+```
+
+### 포스터 최종 프롬프트
+
+```text
+Use case: text-localization.
+Asset type: finished 2:3 vertical poster for the original fictional short film "느린 궤도".
+Input image 1 is the exact scene to preserve: a female record keeper with tied hair, in worn grey work clothes, quietly looking at Earth through an orbital station observation window, a paper log and small recorder on the sill. Preserve the physical set, person, natural textures and cool daylight. Adapt the framing into a 2:3 portrait poster without distorting anatomy or the Earth.
+Add only the following accurate title typography as an intentional film-poster composition:
+Korean main title (verbatim): "느린 궤도"
+English subtitle (verbatim): "A SLOW ORBIT"
+Set the Korean title as clear, architectural, moderately narrow off-white lettering in the dark sky area inside the upper part of the window. Use generous but natural spacing and strong readable size, with two subtly staggered lines "느린" then "궤도" if needed to fit the composition. Let the title feel designed for this film's quiet waiting and distance, not like a website label or generic bold headline. Set the English subtitle below it much smaller, widely spaced but readable. Keep both titles away from the woman's silhouette, Earth's bright edge and outer trim edges; keep all lettering inside a safe margin of at least 6%.
+No extra words, taglines, credits, dates, actor names, fake film festivals or laurels, rating marks, watermarks or logos. No glossy effects, bevels, decorative orbit lines, frames, UI badges or additional images. The result must be one finished printed-film-poster style artwork, naturally combining image and typography.
+```
+
+
 ## v37 작품별 제목을 포함한 포스터 — 2026-10-26
 
 사용자가 선택한 방향에 따라 기존 자체 생성 장면 12개를 내장 OpenAI `image_gen.imagegen`으로 편집했습니다. 참조 사이트의 포스터·폰트 파일·브랜드 이미지는 입력하거나 복제하지 않았습니다. 작품별 한국어 제목·영어 부제와 배치를 생성 이미지 안에 포함했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다.
