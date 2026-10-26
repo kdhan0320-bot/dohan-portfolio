@@ -205,8 +205,8 @@ select:hover { border-color: #bdb9b2; }
 .library-reading .film-note-preview { display: block; -webkit-line-clamp: unset; max-width: 640px; white-space: pre-wrap; font-size: 16px; line-height: 1.8; }
 .library-reading .saved-actions { margin-top: 18px; }
 @media (min-width: 1101px) {
-  .library-reading .film-card { grid-template-columns: 120px minmax(0,1fr); }
-  .library-reading .saved-copy { display: grid; grid-template-columns: minmax(180px,240px) minmax(0,1fr); column-gap: 32px; align-items: start; align-self: center; min-width: 0; }
+  .library-reading .film-card { grid-template-columns: 96px minmax(0,1fr); padding-block: 16px; }
+  .library-reading .saved-copy { display: grid; grid-template-columns: minmax(180px,240px) minmax(0,1fr); column-gap: 32px; align-items: start; align-self: start; min-width: 0; }
   .library-reading .film-foot { grid-column: 1; grid-row: 1/4; }
   .library-reading .film-note-badge { grid-column: 2; grid-row: 1; margin-top: 0; }
   .library-reading .film-note-preview { grid-column: 2; grid-row: 2; margin-top: 8px; }
@@ -1034,8 +1034,11 @@ body[data-view="browse"] .film-foot { align-items: flex-start; padding-top: 16px
 .library-view button { position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 5px; }
 .library-view button[aria-pressed="true"] { background: #e2ab9517; color: #efc6b3; }
 .library-view .icon { width: 20px; height: 20px; }
-.view-tooltip { pointer-events: none; position: absolute; z-index: 8; top: calc(100% + 8px); right: 0; padding: 6px 10px; width: max-content; font-size: 14px; color: var(--text); background: #34342f; border-radius: 4px; visibility: hidden; opacity: 0; transition: opacity .15s; }
-.library-view button:hover .view-tooltip, .library-view button:focus-visible .view-tooltip { visibility: visible; opacity: 1; }
+.view-tooltip { pointer-events: none; position: absolute; z-index: 8; bottom: calc(100% + 8px); right: 0; padding: 6px 10px; width: max-content; font-size: 14px; color: var(--text); background: #34342f; border-radius: 4px; visibility: hidden; opacity: 0; transition: opacity .15s; }
+.library-view button:focus-visible .view-tooltip { visibility: visible; opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .library-view button:hover .view-tooltip { visibility: visible; opacity: 1; }
+}
 .library-reading .film-card, .library-compact .film-card { border-color: transparent; background: #222321; }
 .library-reading .film-note-preview, .note-reader-text { border-left-color: #e2ab9540; }
 .detail-dialog { margin-block: min(7vh,64px) auto; max-height: calc(100dvh - min(7vh,64px) - 24px); border-color: #ffffff30; }

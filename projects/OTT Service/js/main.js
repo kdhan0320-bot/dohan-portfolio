@@ -1712,6 +1712,8 @@
     }
     deletedNotes.set(id, deleted);
     noteDrafts.delete(id);
+    // Keep recovery as the immediate next action; a new note is still one disclosure away.
+    $("noteDisclosure").open = false;
     loadNote();
     refreshLibrary();
     renderNoteUndo();
