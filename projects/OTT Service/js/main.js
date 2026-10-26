@@ -228,7 +228,6 @@
       lens: "소리에서 대화로",
       previewDescription: "파도와 숲에 귀를 기울인 뒤, 사람의 목소리로 돌아오는 네 편.",
       previewImage: "assets/stills/tide.webp",
-      glimpseImage: "assets/frames-v24/forest.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
       accent: "#9CBFDF",
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
@@ -248,7 +247,7 @@
       lens: "마음을 건네는 방식",
       previewDescription: "편지와 도움, 연주와 계주. 말 대신 건네는 행동으로 관계를 읽는 네 편.",
       previewImage: "assets/frames-v31/letters.webp",
-      glimpseImage: "assets/frames-v35/windows.webp",
+      galleryImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
       accent: "#EDBA88",
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
@@ -268,7 +267,6 @@
       lens: "낯선 세계, 남겨진 선택",
       previewDescription: "일지를 펼치고, 귀환을 기다리고, 소원을 고르는 사람들. 세계보다 선택에 주목한 네 편.",
       previewImage: "assets/frames-v35/greenhouse.webp",
-      glimpseImage: "assets/frames-v39/orbit.jpg",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
       accent: "#C3B6EC",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
@@ -532,7 +530,7 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><img class="theme-glimpse" src="${theme.glimpseImage}" alt="" width="1086" height="1448" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span aria-hidden="true">${theme.number}</span>${theme.lens}</p><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">${theme.films.length}편 · 총 ${themeMinutes(theme)}분${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-meta"><span aria-hidden="true">${theme.number} / </span>${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div><div class="theme-preview-copy"><div class="theme-preview-heading"><h3>${theme.name}</h3>${icon("arrow")}</div><p class="theme-lens">${theme.lens}</p></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
