@@ -1,5 +1,229 @@
 # 잔상관 Asset Provenance
 
+## v37 작품별 제목을 포함한 포스터 — 2026-10-26
+
+사용자가 선택한 방향에 따라 기존 자체 생성 장면 12개를 내장 OpenAI `image_gen.imagegen`으로 편집했습니다. 참조 사이트의 포스터·폰트 파일·브랜드 이미지는 입력하거나 복제하지 않았습니다. 작품별 한국어 제목·영어 부제와 배치를 생성 이미지 안에 포함했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다.
+
+원본 생성 PNG는 로컬에 보존했으며 배포용은 Windows System.Drawing으로 JPEG quality 90으로 형식만 변환했습니다. 출력은 1024×1536입니다. 포스터 원본 전체를 표시하며, 팝업과 기획전의 장면에는 이전 자체 생성 이미지를 사용합니다. 새 포스터도 AI 생성물이며 실제 촬영·직접 레터링·독점적 저작권 또는 법적 무위험을 주장하지 않습니다.
+
+참조·생성·배포 파일의 SHA-256은 실제 파일에서 계산했습니다. 아래 프롬프트는 각 도구 호출에 전달한 최종 입력입니다.
+
+### posters-v37/tide.jpg
+
+- 참조: `assets/stills/tide.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-62733d55-1134-4c44-8c04-8eb988c59d67.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 163612 | `7beed8ce22686214667b7004b0c3546da9a69ce4011ca290a37fef7cc615f46e` |
+| 생성 PNG | 2302948 | `5e99681c5e18a98b19a0c6dd727d94f497093c7cc81947b9285e45545cdefdce` |
+| 배포 JPEG | 286893 | `7a35377740af996c12562f86b17365b43c878b712ba81c4651d6dda03e273a13` |
+
+최종 프롬프트:
+
+```text
+Create a finished portrait 2:3 Korean independent short-film poster by editing the reference. This is a fictional film in a portfolio. Preserve the recognizable setting, characters, objects and visual medium. Recompose into a carefully designed complete poster where typography and image belong together, not a generic bottom dark gradient with a caption. Natural restrained art direction, strong readability at small poster size. Exact Korean title, no misspelling. No invented actor/director credits, awards, laurels, release dates, logos, watermark or UI. Only specified Korean title and optional exact English subtitle. Keep all text safely inset. Output only the flat full-bleed poster artwork, no mockup. Preserve the coastal house and warm lit window, rocks and quiet sea. Calm blue grey, muted warm light. Reframe with house lower right and generous naturally clouded sky. Title exact '파도가 머문 자리' in distinctive medium-weight Korean literary serif lettering in warm ivory, composed in upper left open sky as a balanced whole, subtle printed quality, with small subtitle 'WHERE THE TIDE STAYS'. The sea and house remain important, avoid oversized type or fake distressed texture.
+```
+
+### posters-v37/rooftop.jpg
+
+- 참조: `assets/frames-v33/rooftop.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-9198f41d-3db3-4cd6-90a3-75a4a8dab785.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 177632 | `416780078bd2ec5a6f245c7d9315d6f44b2f6dfb627274ef34d7ad4f83e4d518` |
+| 생성 PNG | 2272988 | `02e9da0c863897804a1bc077109214d372238eb177908f89c7ac9931f6fa3b8e` |
+| 배포 JPEG | 326911 | `84629adf8254ac3e1d542e9976ca629a6c0d6a10ef3ffeb188d497a8b0ede5d3` |
+
+최종 프롬프트:
+
+```text
+Create a finished portrait 2:3 Korean independent short-film poster by editing the reference. This is a fictional film in a portfolio. Preserve the recognizable setting, characters, objects and visual medium. Recompose into a carefully designed complete poster where typography and image belong together, not a generic bottom dark gradient with a caption. Natural restrained art direction, strong readability at small poster size. Exact Korean title, no misspelling. No invented actor/director credits, awards, laurels, release dates, logos, watermark or UI. Only specified Korean title and optional exact English subtitle. Keep all text safely inset. Output only the flat full-bleed poster artwork, no mockup. Preserve three band members, their instruments and the single seated listener, rooftop and dusk. Design like a modest intimate indie music film poster with tasteful gig-poster lettering: exact title '옥상의 작은 밴드' in custom warm pale yellow hand-lettered Korean, lively but carefully aligned at upper sky above the band; title forms an irregular compact block, not generic sans, not at bottom. Optional small subtitle 'ROOFTOP ENCORE'. Preserve faces/hands/instruments; no extra audience, no extra lights, no glitter, no oversaturated sunset.
+```
+
+### posters-v37/atlas.jpg
+
+- 참조: `assets/frames-v36/atlas.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-2cc2ad86-dbbc-46ad-9340-218700e2693f.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 247102 | `1619d4809a9f804e5c1f4db12abafcf6debe1835adacfd3c1b6fc8f7ae611e8e` |
+| 생성 PNG | 2882724 | `238404f4e7974a29c0c53659a9ea792ff7daf7573060b457de92d81abf45de73` |
+| 배포 JPEG | 408937 | `d4ffbb0c6959aa4f6e0cfbf4504479a7d52bcfb86ef8de96e639e81a4ce72c73` |
+
+최종 프롬프트:
+
+```text
+Create a finished portrait 2:3 Korean independent short-film poster by editing the reference. This is a fictional film in a portfolio. Preserve the recognizable setting, characters, objects and visual medium. Recompose into a carefully designed complete poster where typography and image belong together, not a generic bottom dark gradient with a caption. Natural restrained art direction, strong readability at small poster size. Exact Korean title, no misspelling. No invented actor/director credits, awards, laurels, release dates, logos, watermark or UI. Only specified Korean title and optional exact English subtitle. Keep all text safely inset. Output only the flat full-bleed poster artwork, no mockup. Preserve illustrated child, final sheet of paper, paper stars and night window. Recompose vertically with child and hands lower half and window sky above. Exact title '별을 접는 아이' integrated into the upper night-sky negative space using beautiful cream Korean paper-cut-inspired lettering with subtle folded paper edges. All parts of title balanced in scale, do not enlarge '아이' separately. Tiny English subtitle 'THE PAPER CONSTELLATION'. Handmade restrained storybook film poster, not glowing magical spectacle; one small distant star, no additional characters.
+```
+
+### posters-v37/signal.jpg
+
+- 참조: `assets/frames-v33/signal.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-40324e25-e968-440f-9309-68e9e2c40843.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 127824 | `9790b7fa841d5636025b31639888f5ca770534ca694292eaeae674ba23f83a77` |
+| 생성 PNG | 2044699 | `1b00b68efb4daa2c8ca27995ec9041eaff668d41a05f69595276cf9d62ac7ad5` |
+| 배포 JPEG | 242388 | `6e861ad53c449346dd9b899686d40639b3e4f6ba278484f892d16913f5710d08` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished flat portrait 2:3 Korean independent short-film poster. Preserve identifiable characters, setting, props and photographic naturalism. Compose image and exact Korean lettering as one art-directed poster, never a generic dark gradient caption. Natural restrained texture, intentional negative space and legibility at thumbnail size. Only requested exact Korean title and exact English subtitle; no invented credits, awards, laurels, dates, UI, logo or watermark. Exact title '수신 불가', English 'NO SIGNAL'. Keep technician face/hands/radio fully legible. Place title boldly across bottom foreground blurred desk, not over face or radio: condensed geometric Korean block lettering in muted pale mint, three very fine offset signal interruptions through a few strokes while fully readable. Strong horizontal baseline, small monospaced English subtitle below. Documentary grey-green low light, no neon or excessive grain.
+```
+
+### posters-v37/letters.jpg
+
+- 참조: `assets/frames-v31/letters.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-77b6c3d0-bc2b-48ec-81fd-0feb090e1ec9.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 105110 | `f1bb3faa5f24aa6da57f59bafdc89316a5a100c239ab2b01a5e36a31dd4311ae` |
+| 생성 PNG | 2268604 | `901ea7d8b2f1d5fd0ba39d84f6e0ea39c42e2152392f8f5194ac283aa0ec69f1` |
+| 배포 JPEG | 273733 | `b32c7f87706a3250ecd228945971ab52738aef54930c8678e2a3d0d6f12ae631` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished flat portrait 2:3 Korean independent short-film poster. Preserve identifiable characters, setting, props and photographic naturalism. Compose image and exact Korean lettering as one art-directed poster, never a generic dark gradient caption. Natural restrained texture, intentional negative space and legibility at thumbnail size. Only requested exact Korean title and exact English subtitle; no invented credits, awards, laurels, dates, UI, logo or watermark. Exact title '여름의 편지', English 'LETTERS FROM SUMMER'. Preserve two friends sorting old room, letter in hand, open drawer and envelope. Portrait reframe with meaningful hands and letter middle and wooden surface bottom. Compose Korean title lower right in intimate dark forest-green handwritten pen lettering on a clean warm paper-colored margin that softly relates to the envelope, like an elegant printed literary film poster. Asymmetric, generous breathing room, natural daylight, not sepia all over, no giant brush strokes, readable and not faux random handwriting.
+```
+
+### posters-v37/forest.jpg
+
+- 참조: `assets/frames-v24/forest.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-50b5278c-8b50-43ad-afd9-44d33b557425.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 495082 | `1745de8353262c62118a6a863979a423257065deec601c5532ed66fceb425378` |
+| 생성 PNG | 3276360 | `9b432507c5588ef83e43d642fa73a14a44b2938cbf3761434bcc8e33e02267c1` |
+| 배포 JPEG | 536860 | `4988a2664a41f4032136a0a4ba876fd33f7c8984900dc3f873558e3bb073dfeb` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished flat portrait 2:3 Korean independent short-film poster. Preserve identifiable characters, setting, props and photographic naturalism. Compose image and exact Korean lettering as one art-directed poster, never a generic dark gradient caption. Natural restrained texture, intentional negative space and legibility at thumbnail size. Only requested exact Korean title and exact English subtitle; no invented credits, awards, laurels, dates, UI, logo or watermark. Exact title '숲의 호흡', English 'THE BREATH OF THE FOREST'. No people. Keep intimate real wet woodland stream, irregular moss and leaves, no sunbeams or fantasy. Art-direction a quiet photographic nature documentary: warm ivory editorial border around the portrait photograph, title in distinctive dark botanical Korean serif at the lower border on one clean line with a small English subtitle. Image occupies roughly 80 percent, careful spacing. This is a complete flat poster, not a framed object or gallery mockup.
+```
+
+### posters-v37/greenhouse.jpg
+
+- 참조: `assets/frames-v35/greenhouse.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-44d0c89d-fd24-4765-b118-1c3937b6d1f6.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 316168 | `9a2c5f16af21c0e7fa45cabad773df2bf4d06ebd31812460ded2935000aff723` |
+| 생성 PNG | 2722056 | `e189de0042c8877b538854129d36c3e708077b3646074ff683ff8b499f039c38` |
+| 배포 JPEG | 470768 | `67654838c87872673f1ea726423f4d040a471b6ab88f5328085b2b73196c27f0` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster, flat full bleed artwork. Preserve identifiable people, objects, setting and photographic naturalism. Art-direct exact Korean title with the scene, not a generic caption or dark bottom gradient. Legible title and natural composition. No fake credits, dates, awards, laurels, logo or watermark. Only requested title/subtitle. Exact Korean title '밤의 온실', optional small English 'THE GLASSHOUSE AT NIGHT'. Keep closed door warm bulb and open botanical journal held in foreground. Compose large restrained pale sage Korean serif title in two vertically stacked lines near upper left among the dark leaf silhouettes, slight custom tall letter forms echoing greenhouse frames, no vines grown from letters. Reframe portrait, journal remains clear below. Quiet mysterious realism, no horror faces, no glowing glyphs.
+```
+
+### posters-v37/orbit.jpg
+
+- 참조: `assets/frames-v36/orbit.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-840f0749-cd1f-4c36-91f1-ca6f32903288.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 155306 | `4602b33d5a744ee84bdebe7c2617b40e8baf180ca3d42caefa03786ac28dc492` |
+| 생성 PNG | 2094861 | `0cc8532b7629de79abe92cc3f0aa1ee5932403ea971153a6dc4cf935d5773283` |
+| 배포 JPEG | 263236 | `389e602684421dc8455c8c61af85117aa2a891565a705f9bca145506b6fc371f` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster, flat full bleed artwork. Preserve identifiable people, objects, setting and photographic naturalism. Art-direct exact Korean title with the scene, not a generic caption or dark bottom gradient. Legible title and natural composition. No fake credits, dates, awards, laurels, logo or watermark. Only requested title/subtitle. Exact Korean title '느린 궤도', English 'A SLOW ORBIT'. Preserve lone record keeper listening to reel recorder, written log and small space window. Design spare archival science-fiction poster: title in precise off-white widely spaced geometric Korean typography near bottom across naturally dark lower foreground; small monospaced subtitle. One very subtle thin orbital curve can connect negative space without crossing face or hands. No planet spectacle, no neon, no fabricated technical numbers. Restrained utilitarian photography.
+```
+
+### posters-v37/windows.jpg
+
+- 참조: `assets/frames-v35/windows.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-5559d4b0-8b3b-4c08-a9b2-7d6aff359684.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 143506 | `22d5c2822ac9256a21c9642ce1a4679a89a9695c3b4fd54d7e002e53ca391174` |
+| 생성 PNG | 2361869 | `0ecc70da84b73e98477584a5b7f59d6ffe124e7cabd8dc4a68f939f99abad604` |
+| 배포 JPEG | 289094 | `44ed93acfc8ab2f535499e244806367065a874657bc3bf5a9008c7ab1b1653eb` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster, flat full bleed artwork. Preserve identifiable people, objects, setting and photographic naturalism. Art-direct exact Korean title with the scene, not a generic caption or dark bottom gradient. Legible title and natural composition. No fake credits, dates, awards, laurels, logo or watermark. Only requested title/subtitle. Exact Korean title '불이 켜지는 시간', English 'WHEN THE LIGHTS COME ON'. Preserve two neighbors, elevator emergency call action and natural uneasy expressions. Portrait composition with characters centered, large warm pale amber title near lower third over coat negative space, rounded humanist Korean lettering in 3 balanced short lines ('불이' / '켜지는' / '시간'), gently staggered alignment like windows coming alight; no outlines or shadow effects. Title stays away from hands and faces. Muted warm grey metal, subtle warmth not glossy romance.
+```
+
+### posters-v37/bluehour.jpg
+
+- 참조: `assets/frames-v24/bluehour.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-ce6f33e7-8d81-4b0a-9fbd-35d4c55a22e4.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 306744 | `913f845e627d7bc7525c3234f0ab3bda2a72dfd5d879ec042d21b84e7bef8b47` |
+| 생성 PNG | 3106815 | `c13bcaf050d802ccc04fd83d08120d7beb08e7abf9e10ec4e2ee8f195694237b` |
+| 배포 JPEG | 524218 | `a875d46dc18c62c326eee25746659d0cc5c1a5079fb65de794c4ca90a74c610e` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster. Output flat artwork only. Preserve characters, actions, important objects, scene style and naturalism. Exact title beautifully art-directed with the image, readable at thumbnail size. No generic gradient caption. No fake credits, laurels, awards, dates, logo, watermark, UI or additional characters. Only specified title and subtitle. Preserve illustrated two friends with two bicycles beside hometown sea, calm daytime and painterly texture. Exact Korean '파란 오후', small English 'BLUE AFTERNOON'. Portrait composition opens blue sky upper half; expressive blue rounded hand-painted Korean title in upper sky in two balanced lines, gentle curves and distinctive irregular letter shapes, more like a hand-painted independent animation poster than a UI font. Blue lettering contrasts with pale sky, people and bicycles lower half visible. No neon, no golden sunset, no glossy 3D.
+```
+
+### posters-v37/relay.jpg
+
+- 참조: `assets/frames-v33/relay.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-f74e50cf-a5d2-49f3-9184-753d2568b0a4.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 176696 | `0164b6428a12e7407489d3a56007c279112145c92cc3bdbae7854fb5b46c7440` |
+| 생성 PNG | 2603589 | `14a2929c2253e388323506b86293ba2ffc46b9ed3e9c28b5595cfa29e7183d43` |
+| 배포 JPEG | 339522 | `2019713fd2027976ac1d3e550bc54fbb57eb3ecb15697b611ebd7cc52d6f2b9a` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster. Output flat artwork only. Preserve characters, actions, important objects, scene style and naturalism. Exact title beautifully art-directed with the image, readable at thumbnail size. No generic gradient caption. No fake credits, laurels, awards, dates, logo, watermark, UI or additional characters. Only specified title and subtitle. Preserve two adult runners, injured runner knee support, intact baton being passed between two clear anatomically correct hands, and track. Exact Korean '마지막 바통', small English 'THE FINAL RELAY'. Recompose portrait with hands and baton center. Strong athletic condensed Korean lettering at lower left over track negative space, warm white with a small muted red accent line derived from running lanes, slightly forward slanted, title two lines. Do not put any text over the hands, baton or faces. Overcast daylight, sweat and real fabric, no glamour retouching or action that changes the relay handoff.
+```
+
+### posters-v37/nocturne.jpg
+
+- 참조: `assets/frames-v31/nocturne.webp`
+- 도구: OpenAI image_gen.imagegen · referenced_image_paths 1개 · transparent_background=false
+- 생성 PNG: `exec-6572e945-a277-42c2-96b3-7c699fdda8bf.png`
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 참조 | 114304 | `a5825c06659040bd8f3c2edba84abfbe24c259e155c7ee93edbd4a6a596b91c5` |
+| 생성 PNG | 2130044 | `38e88723880fd9109201c91e58de9f2f63eb83ee26086b0ff0dd7e6be2a721e2` |
+| 배포 JPEG | 235209 | `6e128f3522fe839897083d4b6b561a362eb4987278081ea114f1af563fa79033` |
+
+최종 프롬프트:
+
+```text
+Edit the reference into a finished portrait 2:3 Korean independent short-film poster. Output flat artwork only. Preserve characters, actions, important objects, scene style and naturalism. Exact title beautifully art-directed with the image, readable at thumbnail size. No generic gradient caption. No fake credits, laurels, awards, dates, logo, watermark, UI or additional characters. Only specified title and subtitle. Preserve older woman restaurant owner speaking with young customer across one soup bowl, same quiet small diner. Exact Korean title '새벽 두 시의 식탁', English 'TABLE AT TWO'. Art-direction a quiet conversational drama poster: title in warm off-white Korean literary lettering along upper-left dark window, deliberate grouping '새벽 두 시의' / '식탁', medium weight and gently irregular ink rhythm, not oversized, leaving faces entirely clear. Portrait scene retains soup and table reflection, muted green tiles and small warm kitchen light. No dramatic glow, no extra food or people.
+```
+
 ## v36 장면의 행동과 선택을 중심으로 재구성 — 2026-10-26
 
 내장 OpenAI `image_gen.imagegen` 도구로 기존 자체 생성 이미지 두 장을 편집했습니다. 기존 영화·배우·브랜드·특정 작가 이미지는 새로 입력하지 않았습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다. ‘느린 궤도’는 녹음 때문에 멈춘 기록 작업, ‘별을 접는 아이’는 마지막 종이에 담을 소원을 고민하는 행동에 초점을 맞췄습니다. AI 생성 사실을 유지하며 실제 촬영이나 수작업 원화로 설명하지 않습니다.

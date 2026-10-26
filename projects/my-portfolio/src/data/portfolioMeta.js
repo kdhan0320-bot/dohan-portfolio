@@ -190,13 +190,13 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-v36-home.jpg', '잔상관 현재 홈 — 영화 포스터와 하단 위치 표시', '1440 / 960'),
+    media('detail/current/jansang-v37-home.jpg', '잔상관 현재 홈 — 대표 장면과 제목을 포함한 영화 포스터', '1425 / 950'),
     [
       {
-        title: '홈에서는 발견하고, 영화 찾기에서는 비교하기.',
+        title: '제목도 작품의 분위기에 맞게.',
         layout: 'wide',
-        summary: '김도한은 글씨를 더 줄이지 않고 영화가 먼저 보이도록 요청했습니다. 홈의 포스터와 영화 찾기의 장면·제목을 구분하고, 겹친 선과 조작부를 줄였습니다.',
-        media: media('detail/current/jansang-v36-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1440 / 960', { mobile: { src: 'detail/current/jansang-v36-browse-mobile.jpg', original: 'detail/current/jansang-v36-browse-mobile-full.jpg', aspectRatio: '390 / 844', label: '영화 찾기 · 조건과 첫 작품 행' } }),
+        summary: '김도한은 참고 사례를 고르고 포스터 안의 글씨가 자연스럽게 어울리도록 요청했습니다. AI가 12편의 제목·구도를 작품별로 편집했고, 웹 글자 크기·굵기는 유지했습니다. 목록에서는 포스터 전체를, 상세에서는 원래 장면을 보여줍니다.',
+        media: media('detail/current/jansang-v37-browse.jpg', '잔상관 영화 찾기 — 제목과 분위기·시간 조건을 함께 비교하는 작품 격자', '1425 / 950', { mobile: { src: 'detail/current/jansang-v37-browse-mobile.jpg', original: 'detail/current/jansang-v37-browse-mobile-full.jpg', aspectRatio: '375 / 812', label: '영화 찾기 · 조건과 첫 작품 행' } }),
         mediaLabel: '영화 찾기 · 조건과 작품을 함께 비교',
         check: { result: '동작 확인 · 분위기·시간 조건 전달과 작품 상세 진입.' },
       },
@@ -205,8 +205,8 @@ export const PROJECT_DETAIL_READY = {
         layout: 'wide',
         summary: '검색 옆 아이콘으로 ‘메모 읽기 / 작품 훑기’를 바꾸고 선택을 유지합니다. 저장한 메모는 먼저 읽고, ‘메모 수정’에서 펼쳐 편집합니다. 짧게 훑을 때는 원문을 한 번 더 열어야 합니다.',
         mediaChoices: [
-          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v36-saved.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1440 / 468', { original: 'detail/current/jansang-v36-saved-full.jpg', relatedOriginal: { src: 'detail/current/jansang-v36-reading-full.jpg', label: '메모 읽기 목록 보기' }, mobile: { src: 'detail/current/jansang-v36-saved-mobile.jpg', original: 'detail/current/jansang-v36-saved-mobile-full.jpg', aspectRatio: '390 / 844', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
-          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v36-note.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 599', { original: 'detail/current/jansang-v36-note-full.jpg', mobile: { src: 'detail/current/jansang-v36-note-mobile.jpg', aspectRatio: '390 / 844', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
+          { label: '작품 훑기', caption: '보관함 · 조작부와 세 작품(시연)', media: media('detail/current/jansang-v37-saved-full.jpg', '잔상관 보관함의 작품 훑기 — 저장한 세 작품과 메모 보기 진입', '1425 / 1042', { original: 'detail/current/jansang-v37-saved-full.jpg', relatedOriginal: { src: 'detail/current/jansang-v37-reading-full.jpg', label: '메모 읽기 목록 보기' }, mobile: { src: 'detail/current/jansang-v37-saved-mobile.jpg', original: 'detail/current/jansang-v37-saved-mobile-full.jpg', aspectRatio: '375 / 812', label: '보관함 · 작품 훑기 일부(시연)', breakpoint: 1100 } }) },
+          { label: '메모 보기', caption: '같은 작품의 메모 보기 · 팝업 영역', media: media('detail/current/jansang-v37-note-full.jpg', '숲의 호흡 관심 메모 — 저장 원문을 먼저 읽고 메모 수정으로 진입하는 팝업', '1440 / 960', { original: 'detail/current/jansang-v37-note-full.jpg', mobile: { src: 'detail/current/jansang-v37-note-mobile.jpg', aspectRatio: '390 / 844', label: '같은 메모의 읽기 화면 · 수정은 별도 진입', breakpoint: 1100 } }) },
         ],
         check: { result: '동작 확인 · 메모 검색·읽기·수정·삭제 복원과 보기 선택 유지.' },
       },
@@ -228,16 +228,16 @@ export const PROJECT_DETAIL_READY = {
       resultLimit: {},
       hero: {
         summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.',
-        media: [media('detail/current/jansang-v36-home.jpg', '잔상관 현재 홈 — 영화 포스터와 하단 위치 표시', '1440 / 960', { mobile: { src: 'detail/current/jansang-v36-home-mobile.jpg', aspectRatio: '390 / 844', label: '홈 · 실제 모바일 첫 화면' } })],
-        mediaLabel: '홈 · 실제 가로 목록 화면',
+        media: [media('detail/current/jansang-v37-home.jpg', '잔상관 현재 홈 — 대표 장면과 제목을 포함한 영화 포스터', '1425 / 950', { original: 'detail/current/jansang-v37-home-full.jpg', mobile: { src: 'detail/current/jansang-v37-home-mobile.jpg', original: 'detail/current/jansang-v37-home-mobile-full.jpg', aspectRatio: '375 / 812', label: '홈 · 실제 모바일 첫 화면' } })],
+        mediaLabel: '홈 · 대표 장면과 가로 영화 목록 — 원본에서 기획전까지 확인',
       },
       context: {
         summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.',
       },
       decisionsNote: {
-        title: '큐레이션 · 함께 보는 이유',
-        text: '김도한이 전달한 갤러리·짧은 팝업 피드백을 반영했습니다. ‘다정한 반전’은 편지·엘리베이터·연주·계주를 관계의 계기로 묶고, 이미지 옆에 고른 이유를 남깁니다.',
-        media: media('detail/current/jansang-v36-curation.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 499', { original: 'detail/current/jansang-v36-curation-full.jpg', mobile: { src: 'detail/current/jansang-v36-curation-mobile.jpg', aspectRatio: '390 / 844', label: '큐레이션 팝업 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
+        title: '기획전에서 함께 볼 영화를 발견하기.',
+        text: '김도한은 홈의 큐레이션 구간을 테마 기획전 배너로 바꾸고 상단 큐레이션 메뉴는 유지하기로 선택했습니다. 배너와 갤러리는 짧은 소개·추천작 팝업으로 연결됩니다. ‘다정한 반전’은 편지·연주·계주를 관계의 계기로 묶었습니다.',
+        media: media('detail/current/jansang-v37-curation-full.jpg', '다정한 반전 — 관계의 계기로 묶은 선정작과 작품별 이유', '1440 / 960', { original: 'detail/current/jansang-v37-curation-full.jpg', mobile: { src: 'detail/current/jansang-v37-curation-mobile.jpg', aspectRatio: '390 / 844', label: '큐레이션 팝업 · 첫 두 작품과 선정 이유', breakpoint: 1100 } }),
         mediaLabel: '다정한 반전 · 팝업의 설명과 추천작',
       },
       verification: {
@@ -245,7 +245,7 @@ export const PROJECT_DETAIL_READY = {
         limit: '사용자 조사, 실제 iOS/Safari·스크린리더, 제3자 사용성·채용 효과는 검증하지 않았습니다.',
       },
       aiCollaboration: [
-        { label: '김도한', value: '이미지 우선·가독성 유지 방향 제시, 화면 피드백, 개선 우선순위 선택, 수정·공개 판단' },
+        { label: '김도한', value: '참고 사례 선택, 포스터 제목·테마 기획전·홈 정렬 방향 제시, 가독성 유지와 화면 피드백, 수정·공개 판단' },
         { label: 'AI 협업', value: '디자인·큐레이션 제안·편집, OpenAI 도구로 가상 영화 이미지 생성, HTML·CSS·JavaScript 작성·브라우저 검사' },
       ],
     },

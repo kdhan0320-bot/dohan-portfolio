@@ -307,6 +307,7 @@
     },
   ];
   const $ = (id) => document.getElementById(id);
+  const pickers = new Map();
   const storageKey = "jansang-cinema:saved:v1";
   const notesKey = "jansang-cinema:notes:v1";
   const libraryViewKey = "jansang-cinema:library-view:v1";
@@ -476,49 +477,16 @@
     updateDraftLinks();
     requestRailUpdate();
   }
-  // Keep long movie names in deliberate phrase groups at every card size.
-  const titleLines = {
-    tide: ["파도가", "머문 자리"],
-    letters: ["여름의", "편지"],
-    greenhouse: ["밤의", "온실"],
-    orbit: ["느린", "궤도"],
-    windows: ["불이", "켜지는 시간"],
-    forest: ["숲의 호흡"],
-    bluehour: ["파란", "오후"],
-    atlas: ["별을 접는", "아이"],
-    rooftop: ["옥상의", "작은 밴드"],
-    signal: ["수신", "불가"],
-    relay: ["마지막", "바통"],
-    nocturne: ["새벽 두 시의", "식탁"],
-  };
-  const posterLayouts = {
-    tide: "bottom-left",
-    letters: "bottom-center",
-    greenhouse: "top-left",
-    orbit: "bottom-center",
-    windows: "bottom-left",
-    forest: "top-center",
-    bluehour: "top-center",
-    atlas: "bottom-center",
-    rooftop: "top-left",
-    signal: "bottom-left",
-    relay: "top-left",
-    nocturne: "bottom-center",
-  };
-  const posterPath = (film) =>
+  // The complete poster preserves its lettering; scene images remain available for detail views.
+  const posterPath = (film) => `assets/posters-v37/${film.id}.jpg`;
+  const scenePath = (film) =>
     film.posterPath || `assets/posters-v8/${film.image}.webp`;
   function makeCard(film, context = "catalog") {
     const article = document.createElement("article");
     article.className = "film-card";
     article.dataset.filmId = film.id;
     article.dataset.cardContext = context;
-    article.dataset.posterLayout = posterLayouts[film.id];
-    const displayTitle = (titleLines[film.id] || [film.title])
-      .map((line) => `<span class="film-title-line">${line}</span>`)
-      .join(" ");
-    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="800" height="1200" loading="lazy"><span class="film-label"><span class="film-title">${displayTitle}</span></span></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>${context === "saved" ? "관심 메모" : "메모 있음"}</span>`;
-    if (film.posterPosition)
-      article.querySelector(".film-art img").style.objectPosition = film.posterPosition;
+    article.innerHTML = `<h3><button class="film-art" type="button" data-detail="${film.id}" aria-label="${film.title} 작품 보기"><img src="${posterPath(film)}" alt="" width="1024" height="1536" loading="lazy"></button></h3><div class="film-foot"><div class="film-caption">${context === "home" ? "" : `<p class="film-card-title">${film.title}</p>`}<p class="film-card-meta"><span>${film.genre}</span><span>${film.minutes}분</span></p></div><button class="poster-save save-button" type="button" data-save="${film.id}" aria-label="${film.title} 찜하기" title="${film.title} 찜하기" aria-pressed="false">${icon("bookmark")}</button></div><span class="film-note-badge" data-note-for="${film.id}"${state.notes[film.id] ? "" : " hidden"}>${context === "saved" ? "관심 메모" : "메모 있음"}</span>`;
     if (context === "home")
       article.querySelector(".film-art").setAttribute(
         "aria-label", `${film.title} 작품 보기 · ${film.genre} · ${film.minutes}분`,
@@ -557,7 +525,7 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><span class="theme-preview-number" aria-hidden="true">${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편 · 큐레이션 보기${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.previewImage}" alt="" width="1672" height="941" loading="lazy"><img class="theme-glimpse" src="${theme.glimpseImage}" alt="" width="1086" height="1448" loading="lazy"><span class="theme-preview-number" aria-hidden="true">COLLECTION ${theme.number}</span></div><div class="theme-preview-copy"><h3>${theme.name}</h3><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-preview-meta">작품 ${theme.films.length}편 · 큐레이션 보기${icon("arrow")}</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
@@ -663,6 +631,7 @@
     $("homeEmpty").hidden = visible.length > 0;
     $("homeResultCount").textContent = `${visible.length}편`;
     $("homeDuration").value = state.homeDuration;
+    syncPickers();
     document.querySelectorAll("[data-home-mood]").forEach((button) =>
       button.setAttribute(
         "aria-pressed",
@@ -1001,6 +970,7 @@
     $("durationField").hidden = state.view !== "browse";
     $("durationFilter").value = state.duration;
     $("catalogSort").value = state.sort;
+    syncPickers();
     $("catalogTools").classList.toggle("library-tools", state.view === "saved");
     document
       .querySelectorAll("[data-library-filter]")
@@ -1076,6 +1046,7 @@
     else location.hash = hash;
   }
   function route() {
+    closePickers();
     stopRailMotion();
     dialogRouteVersion += 1;
     document
@@ -1575,12 +1546,12 @@
         detailImage.style.visibility = "visible";
     };
     detailImage.style.visibility = "hidden";
-    detailImage.alt = `${film.title}의 가상 영화 포스터`;
+    detailImage.alt = `${film.title}의 가상 영화 장면`;
     detailImage.width = 800;
     detailImage.height = 1200;
     detailImage.style.objectPosition = film.detailPosition || film.posterPosition || "center";
     $("detailDialog").style.setProperty("--detail-image-ratio", film.detailRatio || "1.4");
-    detailImage.src = posterPath(film);
+    detailImage.src = scenePath(film);
     // Keep the previous film's poster hidden until the new source is ready.
     // A failed image still reveals its alternative text instead of staying blank.
     if (typeof detailImage.decode === "function")
@@ -1607,8 +1578,8 @@
     const theme = themes.find((item) => item.article === article.id);
     $("articleDialog").dataset.theme = theme?.id || "";
     $("articleTitle").textContent = theme?.name || article.title;
-    $("articleCategory").textContent = `큐레이션 ${theme?.number || ""} · 작품 ${theme?.films.length || 1}편`;
-    $("articleImage").src = theme?.previewImage || posterPath(film);
+    $("articleCategory").textContent = `${trigger?.closest(".home-events") ? "테마 기획전" : "큐레이션"} ${theme?.number || ""} · 작품 ${theme?.films.length || 1}편`;
+    $("articleImage").src = theme?.previewImage || scenePath(film);
     $("articleImage").alt = `${film.title}의 가상 영화 장면`;
     $("articleImage").width = 1672;
     $("articleImage").height = 941;
@@ -1629,7 +1600,7 @@
       button.dataset.detail = relatedFilm.id;
       if (index === 0) button.id = "articleFilmLink";
       button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<img src="${posterPath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.id === "orbit" ? "center 52%" : relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
+      button.innerHTML = `<img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.id === "orbit" ? "center 52%" : relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
       return button;
     }));
     openDialog($("articleDialog"), trigger, $("articleTitle"));
@@ -1976,6 +1947,99 @@
     $("main-content").focus();
     $("main-content").scrollIntoView({ block: "start" });
   });
+  function syncPickers() {
+    pickers.forEach(({ select, button, options, label }) => {
+      const selected = select.selectedOptions[0];
+      button.querySelector(".picker-value").textContent = selected?.textContent || "선택";
+      button.setAttribute("aria-label", `${label}: ${selected?.textContent || "선택"}`);
+      options.forEach(option => option.setAttribute("aria-selected", String(option.dataset.value === select.value)));
+    });
+  }
+  function closePickers(returnFocus = false) {
+    pickers.forEach(({ button, menu }) => {
+      if (menu.hidden) return;
+      menu.hidden = true;
+      button.setAttribute("aria-expanded", "false");
+      if (returnFocus) button.focus({ preventScroll: true });
+    });
+  }
+  function enhanceSelect(select) {
+    const label = select.labels?.[0]?.textContent.trim() || "영화 정렬";
+    const wrapper = document.createElement("div");
+    wrapper.className = "select-picker";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.id = `${select.id}Button`;
+    button.className = "picker-button";
+    button.setAttribute("aria-haspopup", "listbox");
+    button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-controls", `${select.id}Menu`);
+    button.innerHTML = '<span class="picker-value"></span><svg class="icon picker-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
+    const menu = document.createElement("div");
+    menu.id = `${select.id}Menu`;
+    menu.className = "picker-menu";
+    menu.hidden = true;
+    menu.setAttribute("role", "listbox");
+    menu.setAttribute("aria-label", label);
+    const options = [...select.options].map(item => {
+      const option = document.createElement("button");
+      option.type = "button";
+      option.tabIndex = -1;
+      option.className = "picker-option";
+      option.dataset.value = item.value;
+      option.setAttribute("role", "option");
+      option.textContent = item.textContent;
+      option.addEventListener("click", () => {
+        select.value = item.value;
+        closePickers(true);
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+        syncPickers();
+      });
+      menu.append(option);
+      return option;
+    });
+    const open = (last = false) => {
+      closePickers();
+      menu.hidden = false;
+      button.setAttribute("aria-expanded", "true");
+      (last ? options.at(-1) : options.find(option => option.dataset.value === select.value) || options[0]).focus();
+    };
+    button.addEventListener("click", () => menu.hidden ? open() : closePickers(true));
+    button.addEventListener("keydown", event => {
+      if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
+      event.preventDefault();
+      open(event.key === "ArrowUp");
+    });
+    menu.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closePickers(true);
+      } else if (event.key === "Tab") {
+        closePickers(true);
+      } else if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+        event.preventDefault();
+        const current = options.indexOf(document.activeElement);
+        const index = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (current + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
+        options[index].focus();
+      } else if (event.key.length === 1 && event.key !== " ") {
+        const option = options.find(item => item.textContent.startsWith(event.key));
+        if (option) { event.preventDefault(); option.focus(); }
+      }
+    });
+    select.after(wrapper);
+    wrapper.append(button, menu);
+    select.hidden = true;
+    select.labels?.[0]?.addEventListener("click", event => { event.preventDefault(); button.focus(); });
+    pickers.set(select.id, { select, button, menu, options, label });
+  }
+  [$("homeDuration"), $("durationFilter"), $("catalogSort")].forEach(enhanceSelect);
+  document.addEventListener("pointerdown", event => {
+    if (!event.target.closest(".select-picker")) closePickers();
+  });
+  document.addEventListener("focusin", event => {
+    if (!event.target.closest(".select-picker")) closePickers();
+  });
+  syncPickers();
   renderHome();
   route();
 })();
