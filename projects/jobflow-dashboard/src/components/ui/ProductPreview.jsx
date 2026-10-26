@@ -46,7 +46,7 @@ export default function ProductPreview({ onOpen }) {
             <strong>{shortDate(before ? selected.deadline : selected.applied_date)}</strong>
             {before && <b>{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}
           </div>
-          <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}><span aria-hidden="true" className="preview-task-box" />{item.title}</li>)}</ul> : <p>등록한 준비 항목이 없어요.</p>}</div>
+          <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>등록한 준비 항목이 없어요.</p>}</div>
         </div>
         <p className="preview-record-memo"><span>기록 메모</span>{selected.memo}</p>
         <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>

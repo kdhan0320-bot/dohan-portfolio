@@ -81,6 +81,8 @@ function panelWith(application = null) {
   return {
     saves,
     closes: () => closes,
+    close: () => find(node => node.type === 'IconButton' && node.props['aria-label'] === '회사 정보 닫기').props.onClick(),
+    escape: () => find(node => node.type === 'Dialog' && node.props['aria-labelledby'] === 'company-panel-title').props.onClose(),
     click: label => find(node => node.type === 'Button' && node.props.children === label).props.onClick(),
     edit: () => find(node => node.type === 'Button' && node.props.children === '회사 정보 수정').props.onClick(),
     hasSummary: () => Boolean(find(node => node.type === 'CompanySummary')),
@@ -153,13 +155,29 @@ test('a missing edited company name is revealed and remains visible while it is 
 
 test('cancelling a company edit returns to its summary and discards only the cancelled draft', () => {
   const panel = panelWith({ id: 'company-a', company_name: '검증용 회사', memo: '원래 메모' });
-  panel.edit(); panel.click('취소');
+  panel.edit(); panel.click('기록으로 돌아가기');
   assert.equal(panel.hasSummary(), true);
   assert.equal(panel.closes(), 0);
-  panel.edit(); panel.change('준비 메모', '취소할 수정'); panel.click('취소');
+  panel.edit(); panel.change('준비 메모', '취소할 수정'); panel.click('기록으로 돌아가기');
   panel.click('수정 취소');
   assert.equal(panel.hasSummary(), true);
   assert.equal(panel.closes(), 0);
   panel.edit();
   assert.equal(panel.field('준비 메모').props.value, '원래 메모');
+});
+
+test('X and Escape close an unchanged edit directly, while dirty X confirms the actual close', () => {
+  const clean = panelWith({ id: 'company-a', company_name: '검증 회사' });
+  clean.edit(); clean.close();
+  assert.equal(clean.closes(), 1);
+  const escape = panelWith({ id: 'company-a', company_name: '검증 회사' });
+  escape.edit(); escape.escape();
+  assert.equal(escape.closes(), 1);
+  const dirty = panelWith({ id: 'company-a', company_name: '검증 회사', memo: '원래 메모' });
+  dirty.edit(); dirty.change('준비 메모', '작성 중'); dirty.close();
+  assert.equal(dirty.closes(), 0);
+  dirty.click('계속 작성');
+  assert.equal(dirty.field('준비 메모').props.value, '작성 중');
+  dirty.close(); dirty.click('입력 버리고 닫기');
+  assert.equal(dirty.closes(), 1);
 });

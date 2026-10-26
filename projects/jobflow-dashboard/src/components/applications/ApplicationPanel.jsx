@@ -21,6 +21,8 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   const [extraOpen, setExtraOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmLeave, setConfirmLeave] = useState(false);
+  const [leaveTo, setLeaveTo] = useState('close');
+  const [summaryBusy, setSummaryBusy] = useState(false);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
   const summaryEditButton = useRef(null);
@@ -30,10 +32,17 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     setErrors(prev => ({ ...prev, [key]: '' }));
   }
   function close() {
-    if (busy) return;
+    if (busy || summaryBusy) return;
+    setLeaveTo('close');
     if (editing && dirty) setConfirmLeave(true);
-    else if (editing && !creating) returnToSummary();
     else onClose();
+  }
+  function cancelEdit() {
+    if (busy) return;
+    if (creating) { close(); return; }
+    setLeaveTo('summary');
+    if (dirty) setConfirmLeave(true);
+    else returnToSummary();
   }
   function returnToSummary() {
     setEditing(false);
@@ -43,7 +52,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     resetDraft();
     setConfirmLeave(false);
     setError(''); setErrors({});
-    if (!creating) returnToSummary();
+    if (leaveTo === 'summary') returnToSummary();
     else onClose();
   }
   async function save(e) {
@@ -95,11 +104,11 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     >
       <div className="company-panel-head">
         <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
-        <IconButton onClick={close} disabled={busy} aria-label="회사 정보 닫기"><Close /></IconButton>
+        <IconButton onClick={close} disabled={busy || summaryBusy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>
       {!editing ? <>
-        <div className="company-panel-body"><LiveCompanySummary application={application} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
-        <div className="company-panel-footer"><Button onClick={close}>닫기</Button><Button ref={summaryEditButton} variant="outlined" onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
+        <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
+        <div className="company-panel-footer"><Button onClick={close} disabled={summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="outlined" disabled={summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
       </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
@@ -136,12 +145,12 @@ export default function ApplicationPanel({ application, creating, draftScope, on
           </details>
           {!creating && <Button className="company-delete" color="error" startIcon={<DeleteOutlined />} onClick={() => setDeleting(true)} disabled={busy}>회사 삭제</Button>}
         </div>
-        <div className="company-panel-footer"><Button onClick={close} disabled={busy}>취소</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
+        <div className="company-panel-footer"><Button onClick={cancelEdit} disabled={busy}>{creating ? '취소' : '기록으로 돌아가기'}</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>}
     </Dialog>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{creating ? '입력을 버리고 닫을까요?' : '수정을 취소하고 회사 기록으로 돌아갈까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>{creating ? '입력 버리고 닫기' : '수정 취소'}</Button></DialogActions>
+      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{leaveTo === 'close' ? '입력을 버리고 닫을까요?' : '수정을 취소하고 회사 기록으로 돌아갈까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>{leaveTo === 'close' ? '입력 버리고 닫기' : '수정 취소'}</Button></DialogActions>
     </Dialog>
   </>;
 }

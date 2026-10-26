@@ -12,7 +12,8 @@ import useRecordDraft from '../hooks/useRecordDraft';
 import { CHECKLIST_CATEGORIES } from '../constants';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import PreparationItem from '../components/ui/PreparationItem';
-import StatusChip from '../components/ui/StatusChip';
+import RecordStage from '../components/ui/RecordStage';
+import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { preparationGroups } from '../utils/preparationGroups';
 import { shortDate } from '../utils/dates';
 import ActionFeedback from '../components/ui/ActionFeedback';
@@ -296,8 +297,8 @@ export default function ChecklistPage() {
               const row = item => <PreparationItem key={item.id} item={item} onToggle={toggleTask} disabled={Boolean(busy)} inputId={`task-check-${item.id}`} recent={completedHere.includes(item.id)} showCategory>
                 <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>
               </PreparationItem>;
-              return <section className={`preparation-group company-record${group.id === 'common' ? ' preparation-group-common' : ''}`} key={group.id} aria-label={`${group.title} 할 일`}>
-                <header className="preparation-group-heading"><span className="record-bookmark" aria-hidden="true" /><h2>{group.title}</h2>{group.company && <StatusChip status={group.company.status} />}<p>{group.company?.deadline && <span>공고 마감 {shortDate(group.company.deadline)}</span>}<span>남은 일 {allGroupItems.filter(item => !item.is_done).length}개</span><span>완료 {allGroupItems.filter(item => item.is_done).length}개</span></p></header>
+              return <section className={`preparation-group company-record${group.id === 'common' ? ' preparation-group-common' : ''}`} key={group.id} aria-label={`${group.title} 할 일`} style={{ '--record-accent': BOARD_COLUMNS.find(column => column.id === boardColumn(group.company?.status))?.color || '#688b77' }}>
+                <header className="preparation-group-heading"><h2>{group.title}</h2>{group.company && <RecordStage status={group.company.status} />}<p>{group.company?.deadline && <span>공고 마감 {shortDate(group.company.deadline)}</span>}<span>남은 일 {allGroupItems.filter(item => !item.is_done).length}개</span><span>완료 {allGroupItems.filter(item => item.is_done).length}개</span></p></header>
                 <div className="preparation-group-items">{group.items.map(row)}</div>
               </section>;
             })}

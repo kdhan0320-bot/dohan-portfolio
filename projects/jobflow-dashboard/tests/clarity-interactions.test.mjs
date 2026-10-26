@@ -7,12 +7,13 @@ import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
 import { preparationGroups } from '../src/utils/preparationGroups.js';
 import { shortDate } from '../src/utils/dates.js';
 import * as constants from '../src/constants/index.js';
+import { BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
 
 const jsx = (type, props, key) => ({ type, props, key });
 const text = node => Array.isArray(node) ? node.map(text).join('') : node && typeof node === 'object' ? text(node.props?.children) : node == null ? '' : String(node);
 const names = ['Button', 'MenuItem', 'Dialog', 'DialogTitle', 'DialogContent', 'DialogActions', 'IconButton', 'Alert', 'Checkbox', 'FormControlLabel', 'Menu', 'Tabs', 'Tab'];
 
-async function mount(page, dependencies) {
+async function mount(page, dependencies, props) {
   const source = await readFile(new URL(`../src/pages/${page}.jsx`, import.meta.url), 'utf8');
   const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
   const states = [];
@@ -46,6 +47,8 @@ async function mount(page, dependencies) {
     '../components/ui/ActionFeedback': 'Feedback',
     '../components/ui/PreparationItem': 'PreparationItem',
     '../components/ui/StatusChip': 'StatusChip',
+    '../components/ui/RecordStage': 'RecordStage',
+    '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
     '../utils/preparationGroups': { preparationGroups },
     '../utils/dates': { shortDate },
     '../constants': constants,
@@ -64,13 +67,13 @@ async function mount(page, dependencies) {
     },
   });
   function render() {
-    cursor = 0; effects = []; tree = module.exports.default(); effects.forEach(effect => effect());
+    cursor = 0; effects = []; tree = module.exports.default(props); effects.forEach(effect => effect());
   }
   function find(predicate, node = tree) {
     if (!node || typeof node !== 'object') return null;
     if (Array.isArray(node)) return node.map(child => find(predicate, child ?? null)).find(Boolean) || null;
     if (predicate(node)) return node;
-    return find(predicate, node.props?.children ?? null) || find(predicate, node.props?.action ?? null);
+    return find(predicate, node.props?.children ?? null) || find(predicate, node.props?.action ?? null) || find(predicate, node.props?.preparationEditor ?? null);
   }
   render();
   return { render, find, text: () => text(tree), async click(label) { const node = find(item => item.type === 'Button' && text(item) === label); assert.ok(node, label); await node.props.onClick(); render(); } };
@@ -85,6 +88,40 @@ function draftHook(store, type) {
     save: async (id, values, action) => { const row = await action(); store.clear('sample', type, id, values); return row; },
   }) };
 }
+
+test('company preparation keeps its company and draft across closing, failures and retry', async () => {
+  const store = createRecordDraftStore();
+  const calls = [];
+  let fail = true;
+  const dependencies = {
+    '../../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], loading: false, add: async (...args) => { calls.push(args); if (fail) throw new Error('저장 실패'); return { id: 'added' }; } }) },
+    '../../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes: [], loading: false }) },
+    '../../hooks/useRecordDraft': draftHook(store, 'company-preparation'),
+    '../../hooks/useToday': { useToday: () => '2026-09-27' },
+    '../../constants': constants,
+    '../ui/Field': 'Field', '../ui/PreparationItem': 'PreparationItem', '../ui/StatusChip': 'StatusChip',
+    '../ui/PageUI': { CompanyMark: 'CompanyMark', LoadState: 'LoadState' },
+    '../../utils/dates': { shortDate }, '../../utils/applicationPayload': { isValidApplicationUrl: () => false },
+  };
+  const props = { application: { id: 'sky', company_name: '스카이뷰', status: '관심' } };
+  const page = await mount('../components/applications/CompanySummary', dependencies, props);
+  await page.click('할 일 추가');
+  const submit = async view => { await view.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); view.render(); };
+  await submit(page);
+  assert.equal(calls.length, 0, 'empty input must not write a record');
+  page.find(node => node.type === 'Field' && node.props.id === 'company-task-title').props.onChange({ target: { value: '포트폴리오 확인' } }); page.render();
+  const reopened = await mount('../components/applications/CompanySummary', dependencies, props);
+  assert.equal(reopened.find(node => node.type === 'Field' && node.props.id === 'company-task-title').props.value, '포트폴리오 확인');
+  await submit(reopened);
+  assert.deepEqual(calls[0], ['포트폴리오 확인', '서류', 'sky']);
+  assert.equal(reopened.find(node => node.type === 'Field' && node.props.id === 'company-task-title').props.value, '포트폴리오 확인');
+  assert.ok(store.read('sample', 'company-preparation', 'sky'), 'failed save retains draft');
+  fail = false; await submit(reopened);
+  assert.equal(store.read('sample', 'company-preparation', 'sky'), null);
+  assert.equal(reopened.find(node => node.type === 'form'), null);
+  const another = await mount('../components/applications/CompanySummary', dependencies, { application: { id: 'other', status: '면접 예정' } });
+  assert.equal(another.find(node => node.type === 'form'), null, 'another company does not inherit the draft');
+});
 
 test('home record preview opens without navigating or starting a guest session', async () => {
   const destinations = [];
