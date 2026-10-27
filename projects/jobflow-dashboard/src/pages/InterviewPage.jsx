@@ -57,6 +57,7 @@ export default function InterviewPage() {
   const pendingDelete = useRef(null);
   const emptyResult = useRef(null);
   const pendingResultFocus = useRef(false);
+  const validationFocus = useRef(null);
   useEffect(() => {
     if (busy || pageLoading || !pendingResultFocus.current) return;
     pendingResultFocus.current = false;
@@ -74,6 +75,17 @@ export default function InterviewPage() {
   useEffect(() => {
     if (open && editingId) document.getElementById('note-answer')?.focus({ preventScroll: true });
   }, [open, editingId]);
+  useEffect(() => {
+    // Validation changes the available field area; reveal the focused input
+    // after that layout update, while the error and completion actions stay put.
+    if (!formError || !editingId || !validationFocus.current) return;
+    const fieldId = validationFocus.current;
+    validationFocus.current = null;
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(fieldId)?.scrollIntoView?.({ block: 'center' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [formError, editingId]);
   function companyLabel(note) {
     return note.application_id ? companyMap.get(note.application_id)?.company_name || '연결한 회사 없음' : '공통 질문';
   }
@@ -144,12 +156,14 @@ export default function InterviewPage() {
     e.preventDefault();
     if (busy || companiesLoading || companiesError) return;
     if (form.application_id && !companyMap.has(form.application_id)) {
+      validationFocus.current = 'note-company';
       setFormError('연결한 회사를 찾을 수 없어요. 지원 회사를 다시 선택해주세요.');
       document.getElementById('note-company')?.closest('details')?.setAttribute('open', '');
       document.getElementById('note-company')?.focus();
       return;
     }
     if (!form.question.trim()) {
+      validationFocus.current = 'note-question';
       setFormError('질문을 입력해주세요.');
       document.getElementById('note-question')?.closest('details')?.setAttribute('open', '');
       document.getElementById('note-question')?.focus();
@@ -204,10 +218,10 @@ export default function InterviewPage() {
       setBusy('');
     }
   }
-  const answerField = <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" multiline minRows={editingId ? 6 : 4} value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
+  const answerField = <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" multiline minRows={4} value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
   const questionField = <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={event => changeForm({ ...form, question: event.target.value })} />;
   const editorFields = <div className="field-stack">
-    {formError && <Alert severity="error">{formError}</Alert>}
+    {!editingId && formError && <Alert severity="error">{formError}</Alert>}
     {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
     {!editingId && questionField}
     {answerField}
@@ -266,7 +280,7 @@ export default function InterviewPage() {
       </div>
       </div>
       {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label="면접 답변 작성">
-        <h2>{originalForm.question}</h2>{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '답변 저장'}</Button></div>
+        <h2>{originalForm.question}</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '답변 저장'}</Button></div>
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
           <span className="practice-company-label">

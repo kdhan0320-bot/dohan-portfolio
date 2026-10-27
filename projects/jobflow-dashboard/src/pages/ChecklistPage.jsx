@@ -325,7 +325,7 @@ export default function ChecklistPage() {
             </Field>
           </div>
         </div></DialogContent>
-        <DialogActions><Button disabled={Boolean(busy)} onClick={closeAdd}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>{busy === 'add' ? '저장 중…' : '추가 저장'}</Button></DialogActions>
+        <DialogActions><Button disabled={Boolean(busy)} onClick={closeAdd}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>{busy === 'add' ? '저장 중…' : '추가하기'}</Button></DialogActions>
       </form>
     </Dialog>
     <Dialog className="checklist-edit-dialog record-editor-dialog" open={Boolean(editing)} onClose={closeEdit} disableRestoreFocus slotProps={{ transition: { onExited: restoreDialogFocus } }} aria-labelledby="edit-task-dialog-title" fullWidth maxWidth="sm">

@@ -100,6 +100,7 @@
 .workspace-main .interview-page .practice-primary-action > span { color: #3d6594; font-size: 14px; font-weight: 500; }
 .workspace-main .interview-page .practice-primary-action + .practice-answer { margin: 12px 0 0; }
 .workspace-main .interview-page .practice-answer p { margin-top: 0; }
+.inline-answer-editor .inline-editor-error { flex-shrink: 0; margin-bottom: 12px; }
 .interview-page .practice-toolbar { justify-content: flex-end; margin-top: 0; }
 .settings-record-marker { display: block; width: 24px; height: 42px; flex: 0 0 24px; background: #70899e; clip-path: polygon(0 0,100% 0,100% 100%,50% 82%,0 100%); }
 .settings-card .settings-reset-result { min-height: 24px; margin: 12px 0 0; font-size: 14px; line-height: 24px; color: #39715b; }
@@ -308,6 +309,24 @@
   .workspace-main .interview-page .practice-question { margin-top: 16px; }
   .workspace-main .interview-page .practice-primary-action { margin-top: 16px; }
   .workspace-main .interview-page .practice-answer { padding: 16px; }
+  /* In a short desktop, only the editor fields scroll. Completion actions keep
+     their own space and never cover a textarea or an expanded optional field. */
+  .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content { padding-bottom: 12px; }
+  .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content > .workspace-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: 12px; }
+  .workspace-main .route-surface:has(.inline-answer-editor) { flex: 1; min-height: 0; display: flex; }
+  .interview-page:has(.inline-answer-editor) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .interview-page:has(.inline-answer-editor) > .page-heading,
+  .interview-page:has(.inline-answer-editor) > .interview-controls { flex-shrink: 0; }
+  .interview-page:has(.inline-answer-editor) .interview-workspace { flex: 1; min-height: 0; align-items: stretch; }
+  .interview-page:has(.inline-answer-editor) .question-queue { min-height: 0; overflow-y: auto; }
+  .interview-page:has(.inline-answer-editor) .practice-desk { min-height: 0; display: flex; flex-direction: column; }
+  .interview-page:has(.inline-answer-editor) .practice-navigation { flex-shrink: 0; }
+  .workspace-main .interview-page .inline-answer-editor { flex: 1; min-height: 0; padding-block: 16px; }
+  .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 8px; }
+  .workspace-main .inline-answer-editor > .field-stack { flex: 1; min-height: 0; gap: 6px; overflow-y: auto; padding: 6px; margin: -6px; }
+  .workspace-main .inline-answer-editor > .field-stack :is(input, textarea, button, select, a, summary) { scroll-margin-block: 8px; }
+  .workspace-main .inline-answer-editor .interview-question-details { padding-top: 4px; }
+  .workspace-main .inline-answer-editor .inline-editor-actions { flex-shrink: 0; margin-top: 8px; padding-top: 8px; border-top: 1px solid #dfe6eb; }
 }
 
 .summary-identity > div.company-quick-status { flex: 0 0 190px; min-width: 0; }
