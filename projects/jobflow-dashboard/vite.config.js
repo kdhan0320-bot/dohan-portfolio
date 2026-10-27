@@ -11,10 +11,9 @@ function startupRecoveryPlugin() {
     transformIndexHtml: {
       order: 'post',
       handler(html) {
-        return {
-          html: html.replace('<!--galpirok-startup-->', startupShell),
-          tags: [{ tag: 'script', children: startupRecovery, injectTo: 'head-prepend' }],
-        }
+        // Keep the encoding declaration first, then install the guard before module requests.
+        return html.replace('<!--galpirok-startup-->', startupShell)
+          .replace('<meta charset="UTF-8" />', `<meta charset="UTF-8" /><script>${startupRecovery}</script>`)
       },
     },
     generateBundle() {
