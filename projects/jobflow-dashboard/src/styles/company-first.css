@@ -96,7 +96,10 @@
 .interview-page .practice-card-meta .MuiIconButton-root { flex: 0 0 44px; width: 44px; height: 44px; margin-right: -8px; }
 .interview-page .practice-card-meta .practice-company-label { flex: 1; }
 .interview-page .practice-card-meta .practice-answer-state { flex-shrink: 0; }
-.workspace-main .interview-page .practice-primary-action { margin-bottom: 0; }
+.workspace-main .interview-page .practice-primary-action { justify-content: space-between; margin: 20px 0 0; }
+.workspace-main .interview-page .practice-primary-action > span { color: #3d6594; font-size: 14px; font-weight: 500; }
+.workspace-main .interview-page .practice-primary-action + .practice-answer { margin: 12px 0 0; }
+.workspace-main .interview-page .practice-answer p { margin-top: 0; }
 .interview-page .practice-toolbar { justify-content: flex-end; margin-top: 0; }
 .settings-record-marker { display: block; width: 24px; height: 42px; flex: 0 0 24px; background: #70899e; clip-path: polygon(0 0,100% 0,100% 100%,50% 82%,0 100%); }
 .settings-card .settings-reset-result { min-height: 24px; margin: 12px 0 0; font-size: 14px; line-height: 24px; color: #39715b; }
@@ -259,7 +262,8 @@
   .site-header .site-header-inner, .welcome-product-first .site-header-inner { width: min(1440px, calc(100% - 64px)); }
   .site-footer-inner { width: min(1440px, calc(100% - 64px)); padding-block: clamp(6px, calc(6vh - 46px), 25px); }
   .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 32px; line-height: 42px; }
-  .workspace-main .interview-page .practice-answer { max-width: 72ch; }
+  .workspace-main .interview-page .practice-answer,
+  .workspace-main .interview-page .practice-primary-action { max-width: 72ch; }
   /* Scale space, never type, with the available desktop height. Long records
      still grow naturally instead of being clipped or hidden behind a footer. */
   .workspace-main .job-tile { padding: clamp(12px, calc(2vh - 8px), 18px); }
@@ -269,15 +273,12 @@
   .workspace-main .job-lane-cards { gap: 10px; }
   .workspace-main .job-lane { min-height: 360px; padding-bottom: 14px; }
   .workspace-main .calendar-layout .calendar-day { min-height: clamp(64px, calc(10vh - 44px), 96px); }
-  .workspace-with-topnav > .workspace-content > .workspace-main:has(.settings-page) { flex-grow: 1; display: flex; flex-direction: column; background: transparent; border-color: transparent; box-shadow: none; }
-  .workspace-main .route-surface:has(.settings-page) { flex-grow: 1; display: flex; flex-direction: column; }
-  /* Keep the heading and controls together. Extra desktop height is shared
-     above and below the group; feedback can grow down without recentering it. */
-  .workspace-with-topnav .workspace-main .route-surface > .settings-page { flex-grow: 0; display: flex; flex-direction: column; margin-top: max(0px, calc((100dvh - 900px) / 2)); }
-  .workspace-main .settings-grid { width: 100%; margin: 0; padding-bottom: 0; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 32px; align-items: stretch; }
+  /* Settings shares the workspace heading origin; each card keeps its natural
+     height instead of stretching a short account action across an empty panel. */
+  .workspace-main .settings-grid { width: 100%; margin: 0; padding-bottom: 0; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 32px; align-items: start; }
   .workspace-main .settings-grid > .settings-card:not(.settings-account) { padding: 32px; border: 1px solid #d7dfe7; border-radius: 12px; background: #fcfdfe; }
   .workspace-main .settings-grid > .MuiCard-root.settings-card > .MuiCardContent-root { padding: 0; }
-  .workspace-main .settings-account { padding: 32px; justify-content: center; }
+  .workspace-main .settings-account { padding: 32px; justify-content: flex-start; }
   .workspace-main .settings-control { align-items: flex-start; }
   .workspace-main .settings-control-action { margin-top: 8px; }
 }
@@ -302,6 +303,11 @@
   .workspace-main .job-board { padding-top: 24px; }
   .workspace-main .job-lane-heading { min-height: 48px; padding-block: 8px; }
   .concise-overview .section-intro { min-height: 32px; margin-bottom: 12px; }
+  .workspace-main .interview-page .practice-pagination { min-height: 24px; }
+  .workspace-main .interview-page .practice-card { min-height: 0; padding: 20px 28px; }
+  .workspace-main .interview-page .practice-question { margin-top: 16px; }
+  .workspace-main .interview-page .practice-primary-action { margin-top: 16px; }
+  .workspace-main .interview-page .practice-answer { padding: 16px; }
 }
 
 .summary-identity > div.company-quick-status { flex: 0 0 190px; min-width: 0; }
