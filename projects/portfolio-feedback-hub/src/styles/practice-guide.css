@@ -134,7 +134,7 @@
   text-align: center;
 }
 
-.practice-guide .is-picked .guide-scene-choice { color: #fff; border-color: #6250c7; background: #6250c7; }
+.practice-guide .is-picked .guide-scene-choice { color: #5140b0; border-color: #6250c7; background: #eeebfa; }
 
 .practice-guide .guide-scene-reason-action {
   align-self: flex-end;
