@@ -25,7 +25,9 @@
 .preview-record { position: relative; padding: 28px; border: 1px solid #C8D2DC; border-radius: 0 0 8px 8px; background: #FFF; min-height: 0; }
 /* Overlaid subgrids share the tallest heading/body/memo, including wrapped text.
    Inactive panels keep their size but visibility:hidden removes their focus targets. */
-.preview-records { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(4, auto); }
+.preview-records { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(4, auto); }
+.preview-records::before, .preview-records::after { content: ''; position: absolute; z-index: -1; inset: 12px 6px -5px; border: 1px solid #c8d2dc; border-radius: 0 0 7px 7px; background: #f9fbfc; pointer-events: none; }
+.preview-records::before { inset: 16px 12px -10px; background: #edf2f6; }
 .preview-records > .preview-record { grid-column: 1; grid-row: 1 / span 4; display: grid; grid-template-rows: subgrid; }
 .preview-records > .preview-record[hidden] { display: grid; visibility: hidden; pointer-events: none; }
 .preview-record-heading { align-self: start; }
@@ -51,7 +53,7 @@
 .preview-record-memo > span { font-size: 13px; line-height: 20px; color: #6C7782; }
 .preview-open-record.MuiButton-root { display: flex; width: fit-content; margin-top: 14px; margin-left: auto; padding: 9px 0 9px 10px; min-height: 44px; font-size: 14px; font-weight: 500; }
 .preview-open-record .MuiSvgIcon-root { font-size: 18px; }
-.preview-caption { margin: 14px 0 0; color: #536574; font-size: 13px; line-height: 22px; }
+.preview-caption { margin: 24px 0 0; color: #536574; font-size: 13px; line-height: 22px; }
 .application-preview button:focus-visible, .preview-record:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; z-index: 2; }
 .welcome-product-first .welcome-footer { background: transparent; font-size: 12px; min-height: 76px; }
 @media (min-width: 1800px) {

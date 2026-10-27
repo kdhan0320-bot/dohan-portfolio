@@ -6,6 +6,7 @@ import RouteBoundary from './components/ui/RouteBoundary';
 import { CircularProgress, Box } from '@mui/material';
 import { getRouteTitle } from './constants';
 import { legacyBoardDestination } from './utils/applicationBoard';
+import { observeVisibleViewport } from './utils/visibleViewport';
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const WelcomePage = lazy(() => import('./pages/WelcomePage'));
@@ -30,6 +31,10 @@ const RouteTitleManager = () => {
   }, [pathname]);
   return null;
 };
+function VisibleViewportManager() {
+  useEffect(() => observeVisibleViewport(window, document.documentElement), []);
+  return null;
+}
 function BoardAlias({ creating = false }) {
   const { id } = useParams();
   const { search } = useLocation();
@@ -88,6 +93,7 @@ function PageRoutes() {
   </RouteBoundary>;
 }
 const App = () => <HashRouter>
+  <VisibleViewportManager />
   <RouteTitleManager />
   <AuthProvider>
     <PageRoutes />

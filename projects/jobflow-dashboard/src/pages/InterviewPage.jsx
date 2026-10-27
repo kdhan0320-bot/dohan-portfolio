@@ -22,6 +22,7 @@ const INITIAL = {
 };
 function revealMobileEditor(editor) {
   if (!editor || !window.matchMedia?.('(max-width: 999px)')?.matches) return;
+  if (document.documentElement?.hasAttribute('data-keyboard-open')) return;
   const rect = editor.getBoundingClientRect();
   if (rect.top < 88 || rect.bottom > window.innerHeight - 76) {
     window.scrollTo({ top: window.scrollY + rect.top - 88, behavior: 'instant' });

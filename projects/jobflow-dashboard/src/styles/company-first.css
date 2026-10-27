@@ -109,11 +109,42 @@
 .inline-answer-editor .interview-answer-field textarea { min-height: 10.2em; resize: none; overflow-y: hidden; }
 .date-picker-control { position: relative; display: inline-flex; }
 .date-picker-control .MuiIconButton-root { width: 44px; height: 44px; }
-.date-picker-native { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; padding: 0; border: 0; }
+.date-choice-dialog .MuiDialog-paper { width: 368px; max-width: calc(100% - 32px); overflow: hidden; border-radius: 12px; }
+.date-choice-dialog .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.date-choice-dialog .MuiDialogTitle-root { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 16px; font-size: 18px; border-bottom: 1px solid #e1e6eb; }
+.date-choice-dialog .MuiDialogContent-root { padding: 12px; }
+.date-choice-dialog .MuiDialogTitle-root + .MuiDialogContent-root { padding-top: 12px; }
+.date-choice-dialog .MuiDialogActions-root { padding: 12px 16px; border-top: 1px solid #e1e6eb; justify-content: space-between; }
+.date-choice-month { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
+.date-choice-month > label { flex: 1; min-width: 0; }
+.date-choice-month select { width: 100%; min-height: 44px; background: #fff; border: 1px solid #d3dde5; border-radius: 6px; color: #334e68; padding: 6px; font: inherit; font-size: 15px; }
+.date-choice-month .MuiIconButton-root { width: 40px; height: 44px; }
+.date-choice-grid { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.date-choice-grid th { height: 30px; color: #657482; font-size: 13px; font-weight: 400; }
+.date-choice-grid td { padding: 1px; text-align: center; }
+.date-choice-grid button { width: 100%; height: 44px; padding: 0; border: 1px solid transparent; border-radius: 5px; background: #fff; color: #334e68; font: inherit; font-size: 15px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.date-choice-grid button[data-outside] { color: #77838d; background: #f5f7f9; }
+.date-choice-grid button:hover { background: #e9eff5; }
+.date-choice-grid button[data-selected] { background: #3d6594; color: #fff; }
+.date-choice-grid button:focus-visible { outline: 2px solid #3d6594; outline-offset: -2px; box-shadow: inset 0 0 0 3px #fff; }
 @media (max-width: 999px) {
+  .MuiDialog-root .MuiDialog-container { height: var(--visible-height, 100dvh); transform: translateY(var(--visible-top, 0px)); }
+  .MuiDialog-root .MuiDialog-paper { max-height: calc(var(--visible-height, 100dvh) - 32px); }
+  .MuiDialog-root .MuiDialog-paperFullScreen { height: var(--visible-height, 100dvh); max-height: var(--visible-height, 100dvh); }
+  html[data-keyboard-open] .site-mobile-tabbar { visibility: hidden; }
+  html[data-keyboard-open]:has(.inline-answer-editor) .site-header { visibility: hidden; }
+  .date-choice-dialog .MuiDialog-paper { margin: 16px; }
+  .date-choice-dialog .MuiDialogActions-root { flex-direction: row; }
+  .date-choice-dialog .MuiDialogActions-root > .MuiButton-root { width: auto; flex: 0 0 auto; margin: 0; }
+  html[data-keyboard-open]:has(.inline-answer-editor) { overflow: hidden; }
+  html[data-keyboard-open] .workspace-main .interview-page .inline-answer-editor {
+    position: fixed; z-index: 1200; top: calc(var(--visible-top, 0px) + 8px); left: 12px; right: 12px;
+    width: auto; height: calc(var(--visible-height, 100dvh) - 16px); margin: 0;
+    background: #fff; box-shadow: 0 0 0 100vmax #f0f4f8f5;
+  }
   .workspace-main .interview-page .inline-answer-editor {
     display: flex; flex-direction: column; min-height: 0; overflow: hidden;
-    height: calc(100dvh - 172px - env(safe-area-inset-bottom, 0px));
+    height: calc(var(--visible-height, 100dvh) - 172px - env(safe-area-inset-bottom, 0px));
     padding-block: 16px;
   }
   .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 12px; }
