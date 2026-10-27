@@ -35,6 +35,9 @@
 }
 
 .practice-guide .guide-scene-3 .guide-scene-topline { color: #c1becf; }
+.practice-guide .guide-scene-goals { display: flex; gap: 6px; margin-top: 8px; }
+.practice-guide .guide-scene-goals > span { flex: 1; min-width: 0; padding: 3px 6px; border: 1px solid #c9c2db; border-radius: 4px; color: #65616f; background: #fff; font-size: 12px; line-height: 1.5; text-align: center; white-space: nowrap; }
+.practice-guide .guide-scene-goals > .is-active { border-color: #8878bf; color: #4f3daa; background: #eeebfa; }
 .practice-guide .guide-scene-mobile-toolbar,
 .practice-guide .guide-step-mobile-copy { display: none; }
 

@@ -25,7 +25,7 @@ export const EXERCISES = [{
     revisedPoint: '제목과 이미지에 같은 폭을 배분했어요.',
     preferredSide: 'A',
     takeaway: '작품 감상이 목표라면 이미지에 더 넓은 면적을 줘요.',
-    comparison: { fixed: '같은 A/B 화면', changed: '제목에서 작품으로', changeLabel: '달리 본 목표' },
+    comparison: { fixed: '같은 A/B 화면', changed: '이름 찾기 → 작품 감상', changeLabel: '달리 본 목표' },
     explanation: '두 화면은 그대로 두고 목표만 바꿨어요. A는 제목을 읽을 수 있게 유지하면서 이미지에 더 넓은 폭을 배분했어요.',
     tradeoff: '전시 이름을 빠르게 확인해야 하는 방문자에게는 큰 제목을 둔 B가 더 적합할 수 있어요.',
   },

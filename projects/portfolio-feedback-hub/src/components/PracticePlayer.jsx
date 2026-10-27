@@ -150,9 +150,9 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
     event.preventDefault();
     zoomViewportRef.current?.scrollBy({ left: event.key === 'ArrowRight' ? 80 : -80 });
   };
-  const resetComparison = (clearMemo = true) => {
+  const resetComparison = ({ clearMemo = true, resetView = true } = {}) => {
     setSelected(null); setRevealed(false);
-    setVisibleSide('A');
+    if (resetView) setVisibleSide('A');
     if (clearMemo) setMemo('');
   };
   const restart = () => {
@@ -162,7 +162,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   };
   const switchGoal = (nextGoal, moveToQuestion = false) => {
     if (nextGoal === alternateGoal) return;
-    resetComparison(false);
+    resetComparison({ clearMemo: false, resetView: false });
     goalChangePending.current = moveToQuestion;
     setAlternateGoal(nextGoal);
   };
@@ -176,10 +176,11 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
     <div className={`practice-toolbar${standalone ? ' practice-toolbar-standalone' : ''}${exercise.alternateGoal ? ' practice-toolbar-goals' : ''}`}>
       {standalone && <Link className="practice-back" to="/exercises">연습 모음</Link>}
       <div className="practice-meta"><span className="practice-step">{String(number).padStart(2, '0')}<span> / {String(total).padStart(2, '0')}</span></span><span className="practice-step-track" aria-hidden="true">{Array.from({ length: total }, (_, index) => <i key={index} className={index === number - 1 ? 'is-current' : undefined} />)}</span><span>{exercise.context}</span></div>
-      {exercise.alternateGoal && <div className="practice-goal-controls" ref={goalControlsRef} tabIndex={-1} role="group" aria-label="같은 두 화면의 비교 목표">
+      {exercise.alternateGoal && <div className="practice-goal-controls" ref={goalControlsRef} tabIndex={-1} role="group" aria-label="같은 A/B 화면의 비교 목표" aria-describedby={`${id}-goal-help`}>
         <span className="practice-goal-label">비교 목표</span>
-        <button aria-pressed={!alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(false)}>제목 먼저</button>
-        <button aria-pressed={alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(true)}>작품 먼저</button>
+        <button aria-pressed={!alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(false)}>전시 이름 찾기</button>
+        <button aria-pressed={alternateGoal} aria-controls={`${id}-question`} onClick={() => switchGoal(true)}>작품 감상하기</button>
+        <p className="practice-goal-help" id={`${id}-goal-help`}>같은 A/B 화면에서 목표만 바꿔 비교해요.</p>
       </div>}
     </div>
     <div className="practice-question">
@@ -226,9 +227,9 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       {exercise.alternateGoal && <div className={`practice-goal-switch${reviewedGoals.length === 2 ? ' has-perspective' : ''}`}>
         {reviewedGoals.length === 2 ? <div className="practice-perspective" aria-label="두 목표의 제안 비교">
           <p className="practice-perspective-title">목표별 제안</p>
-          <dl><div><dt>제목 먼저</dt><dd>{exercise.revisedSide}</dd></div><div><dt>작품 먼저</dt><dd>{exercise.alternateGoal.preferredSide}</dd></div></dl>
+          <dl><div><dt>이름 찾기</dt><dd>{exercise.revisedSide}</dd></div><div><dt>작품 감상</dt><dd>{exercise.alternateGoal.preferredSide}</dd></div></dl>
         </div> : <p>같은 화면을 다른 목표로 보면?</p>}
-        <button className={hasUnreviewedGoal ? 'practice-primary' : 'practice-secondary'} onClick={() => switchGoal(!alternateGoal, true)}>{alternateGoal ? '제목 먼저 비교' : '작품 먼저 비교'}</button>
+        <button className={hasUnreviewedGoal ? 'practice-primary' : 'practice-secondary'} onClick={() => switchGoal(!alternateGoal, true)}>{alternateGoal ? '이름 찾기로 비교' : '작품 감상으로 비교'}</button>
       </div>}
       <div className="practice-result-actions"><button className="practice-secondary" onClick={restart}>다시 비교하기</button>{nextExercise ? <Link className={hasUnreviewedGoal ? 'practice-secondary' : 'practice-primary'} to={`/practice/${nextExercise.id}`}>다음 연습</Link> : <Link className="practice-primary" to="/recap">6가지 기준 정리</Link>}</div>
       <div className="practice-result-details">

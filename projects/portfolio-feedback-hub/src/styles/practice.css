@@ -45,8 +45,9 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .practice-player { padding: 0; background: transparent; border: 0; }
 .practice-toolbar { margin-bottom: 8px; }
 .practice-toolbar-goals { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; }
-.practice-goal-controls { display: grid; grid-template-columns: auto repeat(2, 96px); align-items: center; gap: 8px; }
+.practice-goal-controls { display: grid; grid-template-columns: auto repeat(2, 116px); align-items: center; gap: 8px; }
 .practice-goal-label { margin-right: 4px; color: #62636e; font-size: 13px; }
+.practice-goal-controls .practice-goal-help { grid-column: 1 / -1; margin: 0; color: #62636e; font-size: 13px; line-height: 1.6; word-break: keep-all; }
 .practice-goal-controls > button { width: 100%; min-width: 0; height: 44px; padding: 9px 8px; border: 1px solid #b9bac8; border-radius: 6px; color: #62606f; background: #fff; font-size: 13px; font-weight: 400; white-space: nowrap; }
 .practice-goal-controls > button[aria-pressed=true] { border-color: #6250c7; color: #5140b0; background: #eeebfa; }
 .practice-goal-controls > button:hover { border-color: #8576c3; }

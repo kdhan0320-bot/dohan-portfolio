@@ -7,7 +7,7 @@ import { usePageTitle } from '../utils/pageMeta';
 import '../styles/practice-recap.css';
 
 const summaries = {
-  gallery: '문구는 그대로, 제목은 더 크게.',
+  gallery: '이름 찾기는 큰 제목, 작품 감상은 넓은 그림.',
   sound: '조작은 그대로, 첫 재생에 강조를.',
   portfolio: '같은 내용, 묶음 안은 가깝게·사이는 멀게.',
   flower: '사진은 그대로, 글자 뒤에 읽을 면을.',
@@ -23,7 +23,7 @@ export default function PracticeRecapPage() {
     <div className="shell practice-recap">
       <header className="practice-recap-heading">
         <h1>6가지 디자인 기준</h1>
-        <p>같게 둔 것과 달리 둔 것, 다음 화면에서도 살펴보세요.</p>
+        <p>같은 화면도 목표에 따라 선택이 달라져요.</p>
       </header>
       <div className="practice-recap-grid">
         {EXERCISES.map((exercise, index) => <Link className="practice-recap-card" key={exercise.id} to={`/practice/${exercise.id}`} aria-label={`${exercise.principle} 연습 다시 보기`} aria-describedby={`principle-${exercise.kind}`}>

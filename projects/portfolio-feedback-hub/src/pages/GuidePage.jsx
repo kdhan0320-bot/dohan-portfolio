@@ -7,7 +7,7 @@ import sculpture from '../assets/perspective-sculpture.webp';
 import '../styles/practice-guide.css';
 
 const steps = [
-  ['목표 읽기', '질문과 비교 포인트에서 살펴볼 부분을 확인해요. 첫 연습은 목표를 바꿔 같은 화면을 다시 비교할 수 있어요.'],
+  ['목표 읽기', '질문과 비교 포인트를 읽어요. 첫 연습은 같은 A/B 화면에서 목표만 바꿔요.'],
   ['비교하고 선택', '두 화면을 비교한 뒤, 목표에 더 적합한 쪽을 골라요.', 'A·B 보기는 화면만 바꿔요. 선택하면 설계 이유 보기 버튼이 바로 보여요.'],
   ['이유 확인', 'A/B 그림과 이유를 보고, 고른 기준에서 같게 둔 것과 달리 둔 것을 짚어봐요.', '큰 핵심 그림과 고른 기준을 읽고 다음 연습으로 이어가요. 전체 보기로 원래 화면도 확인할 수 있어요.'],
 ];
@@ -23,6 +23,7 @@ function GuideScene({ stage }) {
   const visibleSide = stage === 1 ? 'A' : 'B';
   return <div className={`guide-scene guide-scene-${stage}`} aria-hidden="true">
     <div className="guide-scene-topline"><span>글자 위계</span><span>01 / 06</span></div>
+    {stage === 1 && <div className="guide-scene-goals"><span className="is-active">전시 이름 찾기</span><span>작품 감상하기</span></div>}
     <div className="guide-scene-question">전시 제목이 먼저 읽히는 쪽은?</div>
     <div className="guide-scene-mobile-toolbar" hidden={stage === 3}>
       <div className="guide-scene-view-switch">{['A', 'B'].map(side => <span key={side} className={side === visibleSide ? 'is-viewing' : undefined}>{side} 보기{stage > 1 && side === 'B' && <PracticeIcon name="check" />}</span>)}</div>
