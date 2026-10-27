@@ -18,15 +18,23 @@
 .preview-toolbar h2 { color: #344E69; font-size: 16px; font-weight: 500; line-height: 24px; }
 .preview-toolbar > span { color: #536574; font-size: 13px; line-height: 20px; }
 .preview-stage-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; align-items: end; }
-.preview-stage-tabs > button { position: relative; min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 4px; border: 1px solid #C8D2DC; border-bottom: 0; border-radius: 8px 8px 0 0; color: var(--tab-ink); background: var(--tab-tint); cursor: pointer; font: inherit; font-size: 14px; line-height: 22px; }
-.preview-stage-tabs > button[aria-selected='true'] { min-height: 64px; background: #FFF; border-top: 3px solid var(--tab-ink); z-index: 1; }
+.preview-stage-tabs > button { position: relative; min-width: 0; min-height: 64px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 10px 4px; border: 1px solid #C8D2DC; border-top-width: 3px; border-bottom: 0; border-radius: 8px 8px 0 0; color: var(--tab-ink); background: var(--tab-tint); cursor: pointer; font: inherit; font-size: 14px; line-height: 22px; }
+.preview-stage-tabs > button[aria-selected='true'] { background: #FFF; border-top-color: var(--tab-ink); z-index: 1; }
 .preview-stage-tabs > button:hover { text-decoration: underline; text-underline-offset: 4px; }
 .preview-tab-index { font-size: 12px; opacity: .85; font-variant-numeric: tabular-nums; }
 .preview-record { position: relative; padding: 28px; border: 1px solid #C8D2DC; border-radius: 0 0 8px 8px; background: #FFF; min-height: 0; }
-.preview-record[hidden] { display: none; }
+/* Overlaid subgrids share the tallest heading/body/memo, including wrapped text.
+   Inactive panels keep their size but visibility:hidden removes their focus targets. */
+.preview-records { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(4, auto); }
+.preview-records > .preview-record { grid-column: 1; grid-row: 1 / span 4; display: grid; grid-template-rows: subgrid; }
+.preview-records > .preview-record[hidden] { display: grid; visibility: hidden; pointer-events: none; }
+.preview-record-heading { align-self: start; }
+.preview-record-body { align-self: stretch; }
+.preview-record-memo { align-self: start; }
+.preview-records .preview-open-record { align-self: end; }
 .preview-record-heading { display: flex; align-items: center; gap: 12px; }
 .preview-record-heading .company-mark { flex-shrink: 0; width: 42px; height: 46px; border-radius: 5px; font-size: 18px; font-weight: 400; }
-.preview-record-heading > div { min-width: 0; flex: 1; }
+.preview-record-heading > div:not(.record-stage) { min-width: 0; flex: 1; }
 .preview-record-heading h3 { color: var(--ink); font-size: 21px; line-height: 30px; font-weight: 500; letter-spacing: -.025em; overflow-wrap: anywhere; }
 .preview-record-heading p { margin: 3px 0 0; font-size: 14px; line-height: 22px; color: var(--muted); }
 .preview-status { flex-shrink: 0; padding: 4px 8px; border-radius: 4px; font-size: 13px; line-height: 20px; }
@@ -87,8 +95,7 @@
   .preview-toolbar h2 { font-size: 15px; }
   .preview-toolbar > span { font-size: 12px; }
   .preview-stage-tabs { gap: 3px; }
-  .preview-stage-tabs > button { min-height: 44px; font-size: 13px; }
-  .preview-stage-tabs > button[aria-selected='true'] { min-height: 50px; }
+  .preview-stage-tabs > button { min-height: 50px; font-size: 13px; }
   .preview-record { padding: 20px 16px 10px; }
   .preview-record-heading { gap: 9px; flex-wrap: wrap; }
   .preview-record-heading .company-mark { width: 32px; height: 36px; font-size: 15px; }

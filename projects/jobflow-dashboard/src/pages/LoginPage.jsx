@@ -140,7 +140,7 @@ export default function LoginPage() {
       <h1 id="login-title">{heading}</h1>
       <div className="login-sample-entry">
         <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>{isGuest ? '샘플로 돌아가기' : '샘플 체험하기'}</Button>
-        <p>{isGuest ? '샘플 체험으로 돌아가면 이 탭의 기록과 초안이 유지돼요.' : '가입 없이 이용 · 새로고침하면 초기화'}</p>
+        {isGuest ? <p className="login-sample-policy">돌아가면 샘플 기록·초안이 유지돼요.<br /><span>계정 로그인 시 초기화되며, 계정으로 옮겨지지 않아요.</span></p> : <p>가입 없이 이용 · 새로고침하면 초기화</p>}
       </div>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);
@@ -157,7 +157,6 @@ export default function LoginPage() {
       {(helpMode || tab === value) &&
       <form onSubmit={submit} noValidate>
         {!isAuthConfigured && <p className="auth-preview-note">미리보기에서는 샘플 체험만 가능합니다.</p>}
-        {isGuest && !helpMode && <p className="auth-sample-note">실제 계정으로 로그인하면 샘플 초안은 초기화돼요. 샘플 기록은 계정으로 옮겨지지 않아요.</p>}
         {(error || (!helpMode && authError)) && <Alert severity="error">{error || authError}</Alert>}
         {success && <Alert severity="success" role="status">{success}</Alert>}
         {!helpMode && tab === 1 && <Field label="이름 (선택)" placeholder="이름을 입력해주세요" autoComplete="name" value={displayName} onChange={event => setDisplayName(event.target.value)} disabled={busy} />}

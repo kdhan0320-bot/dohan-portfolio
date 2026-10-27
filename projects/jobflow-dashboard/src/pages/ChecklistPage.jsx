@@ -259,7 +259,7 @@ export default function ChecklistPage() {
   }
 
   return <div className="checklist-page grouped-checklist">
-    <PageHeading art="check" title="준비 체크" description="회사별로 할 일을 모으고, 마친 일은 바로 표시해요.">
+    <PageHeading art="check" title="준비 체크" description="회사별 할 일을 확인하고 완료해요.">
       <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
     {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
@@ -277,7 +277,7 @@ export default function ChecklistPage() {
             </Tabs>
           </div>
           <details className="preparation-filter-options">
-            <summary>목록 좁히기{companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}</summary>
+            <summary data-applied={companyScope !== 'all' || filter !== '전체'} aria-label={`목록 필터${companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}`}><span className="preparation-filter-full">목록 좁히기{companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}</span><span className="preparation-filter-short">필터</span></summary>
             <div className="preparation-filter-fields">
               <Field label="회사" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
                 <MenuItem value="all">전체 회사 + 공통 준비</MenuItem><MenuItem value="common">공통 준비</MenuItem>

@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
 import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
-import { CompanyMark } from './PageUI';
-import { APPLICATION_STATUSES, DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
+import RecordStage from './RecordStage';
+import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel } from '../../utils/dates';
 
@@ -11,10 +11,6 @@ export default function ProductPreview({ onOpen }) {
   const [stageIndex, setStageIndex] = useState(0);
   const tabRefs = useRef([]);
   const stage = BOARD_COLUMNS[stageIndex];
-  const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === stage.id);
-  const status = APPLICATION_STATUSES.find(item => item.value === selected.status);
-  const before = stage.id === 'before';
-  const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
   function moveTab(event, index) {
     let next;
     if (event.key === 'ArrowRight') next = (index + 1) % BOARD_COLUMNS.length;
@@ -33,12 +29,16 @@ export default function ProductPreview({ onOpen }) {
         <span>{column.label}</span>
       </button>)}
     </div>
-    {BOARD_COLUMNS.map((column, index) => <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} hidden={index !== stageIndex} className="preview-record" tabIndex={0}>
-      {index === stageIndex && <>
+    <div className="preview-records">
+    {BOARD_COLUMNS.map((column, index) => {
+      const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === column.id);
+      const before = column.id === 'before';
+      const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
+      const inactive = index !== stageIndex;
+      return <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} aria-hidden={inactive || undefined} hidden={inactive} className="preview-record" tabIndex={inactive ? -1 : 0}>
         <div className="preview-record-heading">
-          <CompanyMark name={selected.company_name} />
           <div><h3>{selected.company_name}</h3><p>{selected.position}</p></div>
-          <span className="preview-status" style={{ color: status.color, background: status.bg }}>{selected.status}</span>
+          <RecordStage status={selected.status} />
         </div>
         <div className="preview-record-body">
           <div className="preview-date-block">
@@ -50,8 +50,9 @@ export default function ProductPreview({ onOpen }) {
         </div>
         <p className="preview-record-memo"><span>기록 메모</span>{selected.memo}</p>
         <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
-      </>}
-    </div>)}
+      </div>;
+    })}
+    </div>
     <p className="preview-caption">단계를 선택해 회사 기록을 살펴보세요.</p>
   </div>;
 }

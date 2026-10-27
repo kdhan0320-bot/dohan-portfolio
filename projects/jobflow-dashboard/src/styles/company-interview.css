@@ -133,7 +133,6 @@
   .workspace-main .interview-page .page-heading .heading-actions { flex: 0 0 auto; width: auto; align-self: center; }
   .workspace-main .interview-page .page-heading .heading-actions > .MuiButton-root { width: auto; padding-inline: 12px; white-space: nowrap; }
   .interview-page .page-heading-title-row { gap: 10px; }
-  .workspace-main .interview-page .page-heading .page-heading-copy > .muted { display: none; }
   .interview-page .interview-controls { gap: 6px; margin-bottom: 10px; }
   .interview-page .interview-company-filter { flex-wrap: wrap; gap: 4px 10px; }
   .interview-page .interview-company-filter > .form-field { flex: 1 1 250px; max-width: none; gap: 10px; }

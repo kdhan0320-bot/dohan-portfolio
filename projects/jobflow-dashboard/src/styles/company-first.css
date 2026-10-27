@@ -152,13 +152,15 @@
 }
 @media (prefers-reduced-motion: reduce) { .preparation-item { transition: none; } }
 
-/* The same four-position bookmark connects the overview and preparation records. */
-.record-stage { display: flex; align-items: center; gap: 10px; color: #536b7d; font-size: 13px; line-height: 20px; }
-.record-stage-track { display: flex; align-items: center; gap: 3px; height: 20px; flex-shrink: 0; }
-.record-stage-track i { width: 15px; height: 3px; background: #d8e1e7; }
-.record-stage-track i.is-current { height: 17px; background: var(--stage-color); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); }
+/* The bookmark attaches to the record edge and carries its current stage. */
+.record-stage { display: flex; align-items: flex-start; gap: 10px; color: var(--stage-color); font-size: 13px; line-height: 20px; white-space: nowrap; }
+.record-stage > span:last-child { padding-top: 10px; }
+.record-stage-marker { display: block; flex: 0 0 20px; width: 20px; height: 38px; background: var(--stage-color); clip-path: polygon(0 0,100% 0,100% 100%,50% 79%,0 100%); }
 .today-records { border-block: 1px solid #cdd9e2; background: #fff; }
-.today-record { display: grid; grid-template-columns: minmax(230px, 1.2fr) 135px minmax(220px, 1.4fr) auto; align-items: center; gap: 28px; padding: 25px 28px; border-left: 3px solid var(--record-accent); }
+.today-record { position: relative; display: grid; grid-template-columns: minmax(230px, 1.2fr) 135px minmax(220px, 1.4fr) auto; align-items: center; gap: 28px; padding: 25px 28px; }
+.today-record .record-stage { position: absolute; top: 0; left: 28px; }
+.today-company { padding-top: 22px; }
+.today-record-in-progress .today-next { grid-column: 2 / 4; }
 .today-record + .today-record { border-top: 1px solid #dce4ea; }
 .today-record-first { background: linear-gradient(100deg, #edf4fa 0%, #fafcfe 75%); }
 .today-company, .today-next { min-width: 0; }
@@ -180,7 +182,11 @@
 .today-common p { margin: 6px 0 0; color: #50675a; font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
 .today-common .MuiButton-root { flex-shrink: 0; }
 .grouped-checklist .preparation-group-heading { padding: 24px; border-top: 3px solid var(--record-accent); border-radius: 4px 13px 0 0; }
-.preparation-group-heading .record-stage { flex-direction: column; align-items: flex-end; gap: 3px; }
+.preparation-group-heading .record-stage { margin-top: -27px; }
+.preview-record-heading { padding-right: 100px; }
+.preview-record-heading .record-stage { position: absolute; top: 0; right: 28px; }
+.preview-record-heading .record-stage-marker { width: 24px; flex-basis: 24px; height: 44px; }
+.preview-record-heading .record-stage > span:last-child { padding-top: 15px; }
 .preparation-group-common { grid-column: auto; }
 .preparation-group-common .preparation-group-items { grid-template-columns: minmax(0, 1fr); }
 .company-task-add.MuiButton-root { margin-top: 8px; }
@@ -189,9 +195,10 @@
 .company-task-entry-actions > .form-field { flex: 1; min-width: 90px; max-width: 220px; margin: 0 auto 0 0; }
 .company-task-entry-actions > .MuiButton-root { min-width: 60px; }
 @media (min-width: 1500px) and (min-height: 1000px) {
-  .workspace-with-topnav > .workspace-content:has(.concise-overview) { padding-top: clamp(72px, 8vh, 128px); }
   .concise-overview .today-record { padding-block: 30px; }
 }
+@media (min-width: 1800px) { .preview-record-heading .record-stage { right: 32px; } }
+@media (max-width: 1100px) { .preview-record-heading .record-stage { right: 22px; } }
 @media (max-width: 1100px) and (min-width: 700px) {
   .today-record { grid-template-columns: minmax(190px, 1fr) 110px minmax(170px, 1fr); gap: 18px; padding: 22px; }
   .today-record-open.MuiButton-root { grid-column: 3; justify-self: end; margin-top: -10px; }
@@ -211,6 +218,56 @@
   .today-common h2 span { display: block; margin: 0; }
   .today-common p { font-size: 14px; }
   .grouped-checklist .preparation-group-heading { padding: 18px; }
-  .preparation-group-heading .record-stage { font-size: 12px; }
-  .preparation-group-heading .record-stage-track i { width: 12px; }
+  .preparation-group-heading .record-stage { font-size: 12px; margin-top: -21px; }
+  .today-record .record-stage { left: 16px; }
+  .record-stage-marker { width: 16px; flex-basis: 16px; height: 32px; }
+  .record-stage > span:last-child { padding-top: 7px; }
+  .today-company { padding-top: 18px; }
+  .today-record-in-progress .today-company, .today-record-in-progress .today-next { grid-column: 1 / -1; }
+  .preview-record-heading { padding-right: 88px; }
+  .preview-record-heading .record-stage-marker { width: 18px; flex-basis: 18px; height: 36px; }
+  .preview-record-heading .record-stage > span:last-child { padding-top: 10px; }
+}
+@media (max-width: 480px) { .preview-record-heading .record-stage { right: 16px; } }
+
+/* One workspace frame: routes change their contents, never the reading origin. */
+.workspace-with-topnav .workspace-main .route-surface > div { width: 100%; max-width: none; margin-inline: 0; }
+.workspace-with-topnav .workspace-main .route-surface .page-heading { min-height: 80px; margin: 0 0 28px; padding: 0; }
+.concise-overview .section-intro { margin: 0 0 18px; min-height: 44px; }
+.preparation-filter-short { display: none; }
+@media (min-width: 1000px) {
+  .workspace-with-topnav > .workspace-content,
+  .workspace-with-topnav > .workspace-content:has(.settings-page) { padding: clamp(40px, 5vh, 72px) 0 64px; }
+  .workspace-with-topnav .workspace-main { width: min(1440px, calc(100% - 64px)); max-width: 1440px; padding: 40px; }
+  .site-header .site-header-inner, .welcome-product-first .site-header-inner { width: min(1440px, calc(100% - 64px)); }
+  .site-footer-inner { width: min(1440px, calc(100% - 64px)); }
+  .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 32px; line-height: 42px; }
+  .workspace-main .interview-page .practice-answer { max-width: 72ch; }
+}
+@media (max-width: 999px) and (min-width: 700px) {
+  .workspace-with-topnav .workspace-main { width: 100%; padding: 28px; }
+}
+@media (max-width: 699px) {
+  .workspace-with-topnav .workspace-main { width: 100%; padding: 24px 20px 36px; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 44px auto; min-height: 74px; gap: 8px 12px; margin: 0 0 16px; padding: 0; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading .page-heading-copy { display: contents; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading .page-heading-title-row { grid-column: 1; grid-row: 1; gap: 10px; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading .heading-actions { grid-column: 2; grid-row: 1; width: auto; align-self: center; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading .heading-actions > .MuiButton-root { width: auto; white-space: nowrap; padding-inline: 12px; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading .muted { display: block; grid-column: 1 / -1; grid-row: 2; margin: 0; font-size: 14px; line-height: 22px; }
+  .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 25px; line-height: 34px; }
+  .concise-overview .section-intro { margin: 0 0 12px; min-height: 30px; }
+  .preparation-controls { position: relative; display: block; padding: 0 0 12px; }
+  .preparation-status-tabs { max-width: none; padding-right: 48px; }
+  .preparation-status-tabs .MuiTab-root { padding-inline: 4px; font-size: 13px; min-height: 44px; }
+  .preparation-filter-options > summary { position: absolute; right: 0; top: 0; width: 44px; min-height: 44px; padding: 0; display: grid; place-items: center; font-size: 13px; list-style: none; border: 1px solid #d1dce5; border-radius: 6px; background: #fff; }
+  .preparation-filter-options > summary::-webkit-details-marker { display: none; }
+  .preparation-filter-full { display: none; }
+  .preparation-filter-short { display: inline; }
+  .preparation-filter-options > summary[data-applied='true']::after { content: ''; position: absolute; right: 4px; top: 4px; width: 5px; height: 5px; border-radius: 50%; background: #426488; }
+  .preparation-filter-options[open] > summary { background: #e9f1fa; border-color: #6183a5; }
+  .preparation-filter-options > summary:focus-visible { outline: 2px solid #426488; outline-offset: 3px; }
+  .preparation-filter-fields { padding: 16px 0 0; }
+  .preparation-filter-summary { padding-bottom: 12px; }
+  .preparation-group-heading { grid-template-columns: minmax(0, 1fr) auto; }
 }

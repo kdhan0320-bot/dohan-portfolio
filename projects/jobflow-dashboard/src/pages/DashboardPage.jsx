@@ -42,9 +42,9 @@ export default function DashboardPage() {
           const nextTask = tasks.find(item => !item.is_done);
           const stage = BOARD_COLUMNS.find(column => column.id === boardColumn(company.status));
           const upcoming = beforeApplication(company);
-          return <article className={`today-record${index === 0 ? ' today-record-first' : ''}`} key={company.id} style={{ '--record-accent': stage?.color || '#58728e' }}>
+          return <article className={`today-record${index === 0 ? ' today-record-first' : ''}${upcoming ? '' : ' today-record-in-progress'}`} key={company.id} style={{ '--record-accent': stage?.color || '#58728e' }}>
             <div className="today-company"><RecordStage status={company.status} /><h3>{company.company_name}</h3><p>{company.position || '직무 미입력'}</p></div>
-            <div className="today-date"><span>{upcoming ? '지원 마감' : '지원한 날짜'}</span><time dateTime={(upcoming ? company.deadline : company.applied_date) || undefined}>{(upcoming ? company.deadline : company.applied_date) ? shortDate(upcoming ? company.deadline : company.applied_date) : '미등록'}</time>{upcoming && company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>
+            {upcoming && <div className="today-date"><span>지원 마감</span><time dateTime={company.deadline || undefined}>{company.deadline ? shortDate(company.deadline) : '미등록'}</time>{company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>}
             <div className="today-next"><span>다음 준비{pending(tasks) > 0 && <small> · 남은 {pending(tasks)}개</small>}</span><p>{nextTask?.title || (tasks.length ? '등록한 준비를 모두 마쳤어요' : '준비할 일을 등록해보세요')}</p></div>
             <Button className="today-record-open" onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}>기록 보기 <span aria-hidden="true">→</span></Button>
           </article>;
