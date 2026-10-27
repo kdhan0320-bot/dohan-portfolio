@@ -1,5 +1,4 @@
-// Original comparison artwork. Both canvases use the same content and tone;
-// neither is marked as the preferred answer to the exercise below.
+// The same composition, with attention framed around the image or the title.
 export default function ComparisonMotif() {
   return <svg className="comparison-motif" viewBox="0 0 420 200" fill="none" aria-hidden="true" focusable="false">
     <path d="M12 39V17h22M386 17h22v22M12 161v22h22m352 0h22v-22" stroke="#9286b4" strokeWidth="1.5" />
@@ -13,10 +12,11 @@ export default function ComparisonMotif() {
       <rect x={x + 14} y="67" width="58" height="73" rx="4" fill="#ddd5f5" />
       <rect x={x + 23} y="87" width="27" height="35" rx="3" transform={`rotate(-12 ${x + 23} 87)`} fill="#ab9bd9" />
       <rect x={x + 38} y="79" width="23" height="39" rx="3" transform={`rotate(12 ${x + 38} 79)`} fill="#7461ac" />
-      <path d={`M${x + 86} 74h56M${x + 86} 86h39`} stroke="#48424f" strokeWidth={index ? 5 : 3} />
+      <path d={`M${x + 86} 74h56M${x + 86} 86h39`} stroke="#48424f" strokeWidth="3" />
       <path d={`M${x + 86} 104h53M${x + 86} 112h43`} stroke="#aaa3b5" strokeWidth="2" />
       <rect x={x + 86} y="127" width="52" height="13" rx="3" fill="#b4d3c9" />
       <path d={`M${x + 14} 151h44`} stroke="#c3bccf" strokeWidth="2" />
+      <rect x={x + (index ? 80 : 10)} y={index ? 64 : 63} width={index ? 68 : 66} height={index ? 30 : 81} rx="4" stroke="#8a74c2" strokeWidth="1.5" />
     </g>)}
     <path d="m205 153 5-25 18 19-11-1-8 11Z" fill="#c8b8fa" stroke="#302c3b" strokeWidth="2" strokeLinejoin="round" />
   </svg>;
