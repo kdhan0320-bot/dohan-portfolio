@@ -1,8 +1,37 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'node:fs'
+
+const startupShell = readFileSync(new URL('./src/startup-shell.html', import.meta.url), 'utf8')
+const startupRecovery = readFileSync(new URL('./src/startupRecovery.js', import.meta.url), 'utf8')
+
+function startupRecoveryPlugin() {
+  return {
+    name: 'galpirok-startup-recovery',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        return {
+          html: html.replace('<!--galpirok-startup-->', startupShell),
+          tags: [{ tag: 'script', children: startupRecovery, injectTo: 'head-prepend' }],
+        }
+      },
+    },
+    generateBundle() {
+      // These two entry URLs were observed in cached public HTML before this guard existed.
+      // Keep small recovery bridges so that those documents can reach the current version too.
+      for (const name of ['index-B1ncJhLB.js', 'index-lnYHg2Gk.js']) {
+        this.emitFile({
+          type: 'asset', fileName: `assets/${name}`,
+          source: `document.getElementById('root').innerHTML = ${JSON.stringify(startupShell)};\n${startupRecovery}\nwindow.dispatchEvent(new Event('galpirok:startup-failed'));`,
+        })
+      }
+    },
+  }
+}
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), startupRecoveryPlugin()],
   base: process.env.NODE_ENV === 'production' ? '/dohan-portfolio/jobflow-dashboard/' : '/',
   build: {
     rollupOptions: {

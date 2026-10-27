@@ -92,11 +92,16 @@ function PageRoutes() {
     </Suspense>
   </RouteBoundary>;
 }
-const App = () => <HashRouter>
+const App = () => {
+  useEffect(() => {
+    window.dispatchEvent(new Event('galpirok:ready'));
+  }, []);
+  return <HashRouter>
   <VisibleViewportManager />
   <RouteTitleManager />
   <AuthProvider>
     <PageRoutes />
   </AuthProvider>
 </HashRouter>;
+};
 export default App;

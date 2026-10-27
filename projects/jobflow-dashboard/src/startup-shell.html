@@ -1,0 +1,18 @@
+<style>
+  .startup-shell { box-sizing: border-box; min-height: 100svh; display: grid; place-content: center; padding: 32px 24px; background: #f5f8fa; color: #293941; font: 16px/1.7 system-ui, sans-serif; }
+  .startup-shell > div { width: min(100%, 440px); margin: auto; }
+  .startup-shell h1 { font-size: 24px; line-height: 1.4; margin: 12px 0; }
+  .startup-shell p { margin: 12px 0 24px; }
+  .startup-shell button { border: 0; border-radius: 8px; padding: 12px 20px; min-height: 44px; background: #3d6288; color: white; font: inherit; cursor: pointer; }
+  .startup-shell button:focus-visible { outline: 3px solid #293941; outline-offset: 4px; }
+  .startup-shell [hidden] { display: none; }
+</style>
+<main class="startup-shell" id="startup-shell" aria-labelledby="startup-title">
+  <div>
+    <span>갈피록 · 개인 입사지원 관리</span>
+    <h1 id="startup-title">갈피록을 열고 있어요</h1>
+    <p id="startup-message" role="status">지원 기록 화면을 불러오는 중입니다.</p>
+    <button type="button" id="startup-retry" hidden>다시 불러오기</button>
+    <noscript><p>갈피록을 이용하려면 브라우저의 JavaScript를 켜주세요.</p></noscript>
+  </div>
+</main>
