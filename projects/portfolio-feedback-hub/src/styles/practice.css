@@ -174,7 +174,7 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .exercise-library h1, .practice-guide h1 { font-size: 32px; line-height: 1.4; font-weight: 400; letter-spacing: -.035em; }
 .exercise-library-heading > p { color: #656776; font-size: 13px; line-height: 1.6; }
 .exercise-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
-.exercise-filters button { padding: 10px 16px; min-height: 42px; color: #595b68; background: transparent; border: 1px solid #cfd0da; border-radius: 7px; font-size: 14px; }
+.exercise-filters button { padding: 10px 16px; min-height: 44px; color: #595b68; background: transparent; border: 1px solid #cfd0da; border-radius: 7px; font-size: 14px; }
 .exercise-filters button[aria-pressed=true] { color: #5140b0; background: #eeebfa; border-color: #6250c7; }
 .exercise-filters button:hover { border-color: #8576c3; }
 .practice-page { padding-block: 28px 60px; }
@@ -199,12 +199,10 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .practice-surface .footer-brand strong { font-weight: 500; }
 .practice-surface .footer-perspective { padding-left: 28px; border-left: 1px solid #55505f; color: #e5e0ef; font-size: 17px; font-weight: 400; line-height: 1.7; }
 .practice-surface .footer-perspective > span { color: #c6b8e8; }
-.practice-surface .footer-links { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.practice-surface .footer-links { display: flex; justify-content: flex-end; }
 .practice-surface .footer-links a { display: inline-flex; align-items: center; min-height: 40px; color: #d1d1df; font-size: 13px; }
-.practice-surface .footer-top { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: 9px 12px; border: 1px solid #6d657e; border-radius: 6px; color: #e5dff2; background: transparent; font-size: 13px; }
-.practice-surface .footer-top:hover { color: #fff; border-color: #b7a2df; background: #37323f; }
 .practice-surface .footer-links a:hover { color: #fff; }
-.practice-surface .footer-links :is(a, button):focus-visible { outline-color: #b8a8f0; }
+.practice-surface .footer-links a:focus-visible { outline-color: #b8a8f0; }
 @media (max-width: 1020px) {
   .practice-surface .shell, .practice-surface .header-inner { width: calc(100% - 48px); }
   .practice-action-row { align-items: flex-start; }
@@ -249,7 +247,7 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .practice-guide-steps li > span { margin-bottom: 10px; }
   .practice-surface .site-footer { grid-template-columns: 1fr; gap: 20px; }
   .practice-surface .footer-perspective { padding-left: 16px; font-size: 17px; }
-  .practice-surface .footer-links { flex-direction: row; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid #45414e; }
+  .practice-surface .footer-links { justify-content: flex-start; padding-top: 8px; border-top: 1px solid #45414e; }
   .practice-goal-switch.has-perspective { grid-template-columns: 1fr; align-items: stretch; }
 }
 @media (max-width: 700px) {
@@ -308,7 +306,10 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .exercise-library h1 { font-size: 27px; }
   .exercise-filters { gap: 6px; }
   .exercise-filters button { padding-inline: 13px; font-size: 12px; }
-  .practice-surface .footer-links { flex-wrap: wrap; column-gap: 22px; }
+}
+@media (max-width: 360px) {
+  .exercise-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .exercise-filters button { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .practice-surface *, .practice-surface *::before, .practice-surface *::after, .practice-zoom-dialog::backdrop { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
