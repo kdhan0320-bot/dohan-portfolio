@@ -197,7 +197,7 @@ const SettingsPage = () => {
   if (isGuest) {
     return <Box className="settings-page">
       <PageHeading art="settings" title="설정" description="기록장과 계정을 관리해요." />
-      <div className="settings-grid">
+      <div className="settings-grid settings-sample-grid">
         <section className="panel settings-card" aria-labelledby="sample-settings-title">
           <div className="settings-summary">
             <span className="settings-record-marker" aria-hidden="true" />
@@ -206,18 +206,19 @@ const SettingsPage = () => {
               <h2 id="sample-settings-title">샘플 기록장</h2>
             </div>
           </div>
-          <div className="settings-control">
-            <div className="settings-control-copy">
+          <div className="settings-sample-actions">
+            <div className="settings-reset">
+              <h3>샘플 기록 초기화</h3>
               <p>초기화하면 수정한 샘플 기록이 처음 상태로 돌아가요. 현재 화면은 유지됩니다.</p>
+              <Button variant="outlined" onClick={() => {
+                applicationDraftStore.clearSample();
+                resetDemo();
+                setSaved(true);
+              }}>샘플 초기화</Button>
+              <p className="settings-reset-result" role="status">{saved ? '샘플 기록을 초기화했어요.' : ''}</p>
             </div>
-            <Button className="settings-control-action" variant="outlined" onClick={() => {
-              applicationDraftStore.clearSample();
-              resetDemo();
-              setSaved(true);
-            }}>샘플 초기화</Button>
+            {exportControl}
           </div>
-          <p className="settings-reset-result" role="status">{saved ? '샘플 기록을 초기화했어요.' : ''}</p>
-          {exportControl}
         </section>
         <section className="panel settings-card settings-account" aria-labelledby="start-record-title">
           <div className="settings-control-copy">

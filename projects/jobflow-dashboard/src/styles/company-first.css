@@ -339,6 +339,36 @@
   .workspace-main .settings-control { align-items: flex-start; }
   .workspace-main .settings-control-action { margin-top: 8px; }
 }
+/* Sample tools share one reading row; account entry is a separate, quieter row.
+   Keep the page heading and footer on the same origins as the other routes. */
+.workspace-main .settings-sample-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.settings-sample-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--line); }
+.settings-sample-actions > div { min-width: 0; }
+.settings-sample-actions .settings-export { margin: 0; padding: 0 0 0 32px; border: 0; border-left: 1px solid var(--line); }
+.settings-sample-actions h3 { margin: 0 0 8px; font-size: 17px; line-height: 1.5; font-weight: 500; }
+.settings-sample-actions > div > p:not(.settings-reset-result) { max-width: 58ch; min-height: 48px; margin: 0 0 20px; font-size: 14px; line-height: 24px; }
+.workspace-main .settings-sample-grid .settings-account { flex-direction: row; align-items: center; gap: 32px; padding: 24px 32px; }
+.settings-sample-grid .settings-account .settings-control-copy { flex: 1; }
+.settings-sample-grid .settings-account .MuiButton-root { align-self: center; flex-shrink: 0; }
+.settings-sample-grid .settings-account .settings-note { margin-top: 4px; }
+@media (min-width: 1000px) and (max-height: 900px) {
+  .workspace-main .settings-sample-grid { gap: 16px; }
+  .workspace-main .settings-sample-grid > .settings-card:not(.settings-account) { padding: 20px 24px; }
+  .settings-sample-grid .settings-summary > div { display: flex; flex-direction: row-reverse; align-items: baseline; gap: 16px; }
+  .settings-sample-grid .settings-status { margin: 0; }
+  .settings-sample-actions { margin-top: 16px; padding-top: 16px; }
+  .workspace-main .settings-sample-grid .settings-account { padding: 12px 24px; }
+}
+@media (min-width: 1200px) and (max-height: 900px) {
+  .settings-sample-actions > div > p:not(.settings-reset-result) { min-height: 24px; margin-bottom: 16px; }
+}
+@media (max-width: 699px) {
+  .settings-sample-actions { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 20px; padding-top: 20px; }
+  .settings-sample-actions .settings-export { border-left: 0; border-top: 1px solid var(--line); padding: 20px 0 0; }
+  .settings-sample-actions > div > p:not(.settings-reset-result) { min-height: 0; margin-bottom: 16px; }
+  .workspace-main .settings-sample-grid .settings-account { flex-direction: column; align-items: flex-start; gap: 20px; padding: 22px; }
+  .settings-sample-grid .settings-account .MuiButton-root { align-self: flex-start; }
+}
 @media (min-width: 1000px) and (max-height: 1100px) {
   .workspace-with-topnav .workspace-main { padding: 28px; }
   .workspace-with-topnav .workspace-main .route-surface .page-heading { margin-bottom: 20px; }
