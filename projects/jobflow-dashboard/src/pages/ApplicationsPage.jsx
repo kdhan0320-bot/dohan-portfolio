@@ -58,7 +58,7 @@ export default function ApplicationsPage() {
     const row = creating ? await add(payload) : await update(selected.id, payload);
     const destination = boardColumn(row.status);
     changeParams({ company: null, new: null, q: null, view: destination === 'paused' ? 'paused' : null, lane: destination === 'paused' ? null : destination }, true);
-    setFeedback({ message: creating ? `${row.company_name} 등록 완료` : `${row.company_name} · ${row.status} 저장 완료` });
+    setFeedback({ message: creating ? '회사를 등록했어요.' : '회사 정보를 저장했어요.' });
     if (typeof document !== 'undefined') window.requestAnimationFrame(() => document.getElementById(`company-card-${row.id}`)?.focus());
   }
   async function deleteCompany(id) {

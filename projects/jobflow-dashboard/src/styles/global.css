@@ -681,7 +681,7 @@ h3 {
 .form-field .MuiOutlinedInput-notchedOutline { top: 0; }
 .form-field .MuiOutlinedInput-notchedOutline legend { display: none; }
 .form-field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline { border-color: var(--ink-action); }
-.form-field .MuiOutlinedInput-root.Mui-focused { box-shadow: 0 0 0 3px #3D659412; }
+.form-field .MuiOutlinedInput-root.Mui-focused { box-shadow: none; }
 .form-field .MuiSelect-select { display: flex; align-items: center; }
 .form-field .MuiInputAdornment-root { margin-left: 0; }
 .form-field .MuiFormHelperText-root { font-size: 13px; }
@@ -697,7 +697,8 @@ h3 {
 .form-field input:focus-visible,
 .form-field textarea:focus-visible,
 .form-field [role="combobox"]:focus-visible { outline: 0 !important; }
-.form-field .MuiOutlinedInput-root:has(:focus-visible) { outline: 3px solid var(--focus); outline-offset: 3px; }
+/* One clear border marks focus for typing, keyboard navigation and selects. */
+.form-field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline { border-width: 2px; }
 .note-card { border-top: 3px solid #C8B3B6; background: #FFFFFF; }
 .note-card .note-top { margin-bottom: 18px; }
 .note-card .note-answer { background: #F6F3F1; border: 0; border-radius: 9px; padding: 18px; }

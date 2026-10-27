@@ -15,6 +15,8 @@ const ActionFeedback = ({ feedback, onClose }) => {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       sx={{
         bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', sm: 24 },
+        left: '50%', right: 'auto', transform: 'translateX(-50%)',
+        width: 'max-content', maxWidth: 'min(480px, calc(100% - 32px))',
         pointerEvents: 'none',
         // Only the dismiss button receives clicks; the action wrapper must not
         // intercept links behind the temporary notification.
@@ -28,7 +30,7 @@ const ActionFeedback = ({ feedback, onClose }) => {
         severity={feedback?.severity ?? 'success'}
         variant="filled"
         sx={{
-          width: '100%', alignItems: 'center', paddingBlock: '6px',
+          width: '100%', minWidth: 0, alignItems: 'center', paddingBlock: '6px',
           '& .MuiAlert-icon': { alignItems: 'center', padding: 0, marginRight: '10px' },
           '& .MuiAlert-message': { padding: '6px 0', minWidth: 0, overflowWrap: 'anywhere' },
           '& .MuiAlert-action': { alignItems: 'center', padding: '0 0 0 8px', marginRight: '-8px', alignSelf: 'center' },

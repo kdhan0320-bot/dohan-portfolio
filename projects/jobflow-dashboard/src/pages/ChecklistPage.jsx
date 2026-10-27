@@ -253,7 +253,7 @@ export default function ChecklistPage() {
       await drafts.save(editing.id, editing, () => update(editing.id, { ...editing, application_id: editing.application_id || null }));
       if (companyScope !== 'all') setScope(editing.application_id || 'common');
       setEditing(null); setFilter('전체');
-      setFeedback({ message: '할 일을 수정했어요.' });
+      setFeedback({ message: '할 일을 저장했어요.' });
     } catch (e) { setEditError(e.message); }
     finally { setBusy(''); }
   }

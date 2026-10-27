@@ -247,7 +247,8 @@
 @media (max-width: 480px) { .preview-record-heading .record-stage { right: 16px; } }
 
 /* One workspace frame: routes change their contents, never the reading origin. */
-.workspace-with-topnav .workspace-main .route-surface > div { width: 100%; max-width: none; margin-inline: 0; }
+/* Floating notifications size themselves, independently of the page sections. */
+.workspace-with-topnav .workspace-main .route-surface > div:not(.MuiSnackbar-root) { width: 100%; max-width: none; margin-inline: 0; }
 .workspace-with-topnav .workspace-main .route-surface .page-heading { min-height: 80px; margin: 0 0 28px; padding: 0; }
 .concise-overview .section-intro { margin: 0 0 18px; min-height: 44px; }
 .preparation-filter-short { display: none; }

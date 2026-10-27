@@ -190,7 +190,7 @@ export default function InterviewPage() {
         setActiveId(editingId);
       } else { setActiveId(null); }
       setFeedback({
-        message: editingId ? '면접 노트를 수정했어요.' : '면접 노트를 추가했어요.'
+        message: editingId ? '답변을 저장했어요.' : '면접 질문을 추가했어요.'
       });
       setEditingId(null);
     } catch (e) {
@@ -207,7 +207,7 @@ export default function InterviewPage() {
       setTarget(null);
       pendingResultFocus.current = true;
       setFeedback({
-        message: '면접 노트를 삭제했어요.'
+        message: '면접 질문을 삭제했어요.'
       });
     } catch (e) {
       setFeedback({
