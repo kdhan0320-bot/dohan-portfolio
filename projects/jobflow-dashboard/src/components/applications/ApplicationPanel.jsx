@@ -173,8 +173,13 @@ export default function ApplicationPanel({ application, creating, draftScope, on
       </form>}
     </Dialog>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
-    <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" maxWidth="xs" fullWidth>
-      <DialogTitle id="discard-title">변경 내용을 저장하지 않았어요</DialogTitle><DialogContent>{leaveTo === 'close' ? '입력을 버리고 닫을까요?' : '수정을 취소하고 회사 기록으로 돌아갈까요?'}</DialogContent><DialogActions><Button onClick={() => setConfirmLeave(false)}>계속 작성</Button><Button onClick={discardAndLeave}>{leaveTo === 'close' ? '입력 버리고 닫기' : '수정 취소'}</Button></DialogActions>
+    <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" aria-describedby="discard-description" maxWidth="xs" fullWidth>
+      <DialogTitle id="discard-title">작성 내용을 저장하지 않았어요</DialogTitle>
+      <DialogContent><p id="discard-description">{leaveTo === 'close' ? '닫으면 이번에 작성하거나 수정한 내용이 사라져요.' : '돌아가면 이번에 수정한 내용이 사라지고, 저장된 회사 기록이 표시돼요.'}</p></DialogContent>
+      <DialogActions>
+        <Button autoFocus variant="contained" onClick={() => setConfirmLeave(false)}>계속 작성</Button>
+        <Button variant="outlined" onClick={discardAndLeave}>{leaveTo === 'close' ? '저장하지 않고 닫기' : '저장하지 않고 돌아가기'}</Button>
+      </DialogActions>
     </Dialog>
   </>;
 }

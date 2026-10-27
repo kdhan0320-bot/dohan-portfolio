@@ -177,7 +177,7 @@ export default function LoginPage() {
         </Button>
       </form>}
       </div>)}
-      {helpMode ? <Button className="auth-return" disabled={busy} onClick={() => changeMode(null)}>로그인으로 돌아가기</Button> : <div className="auth-help-actions">
+      {helpMode ? <Button className="auth-return" disabled={busy} onClick={() => changeMode(null)}>로그인으로 돌아가기</Button> : tab === 0 && <div className="auth-help-actions">
         <Button disabled={busy} onClick={() => changeMode('recovery')}>비밀번호를 잊었나요?</Button>
         <Button disabled={busy} onClick={() => changeMode('confirmation')}>인증 이메일 다시 받기</Button>
       </div>}

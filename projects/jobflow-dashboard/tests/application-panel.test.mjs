@@ -211,7 +211,7 @@ test('cancelling a company edit returns to its summary and discards only the can
   assert.equal(panel.hasSummary(), true);
   assert.equal(panel.closes(), 0);
   panel.edit(); panel.change('준비 메모', '취소할 수정'); panel.click('기록으로 돌아가기');
-  panel.click('수정 취소');
+  panel.click('저장하지 않고 돌아가기');
   assert.equal(panel.hasSummary(), true);
   assert.equal(panel.closes(), 0);
   panel.edit();
@@ -230,6 +230,6 @@ test('X and Escape close an unchanged edit directly, while dirty X confirms the 
   assert.equal(dirty.closes(), 0);
   dirty.click('계속 작성');
   assert.equal(dirty.field('준비 메모').props.value, '작성 중');
-  dirty.close(); dirty.click('입력 버리고 닫기');
+  dirty.close(); dirty.click('저장하지 않고 닫기');
   assert.equal(dirty.closes(), 1);
 });

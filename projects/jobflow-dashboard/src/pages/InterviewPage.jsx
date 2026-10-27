@@ -317,10 +317,10 @@ export default function InterviewPage() {
   </Dialog>
   <Dialog open={confirmDiscard} onClose={() => setConfirmDiscard(false)} aria-labelledby="discard-note-title" aria-describedby="discard-note-description" fullWidth maxWidth="xs">
     <DialogTitle id="discard-note-title">작성 내용을 저장하지 않았어요</DialogTitle>
-    <DialogContent><p id="discard-note-description">닫으면 방금 입력하거나 수정한 내용이 사라집니다.</p></DialogContent>
+    <DialogContent><p id="discard-note-description">닫으면 이번에 작성하거나 수정한 내용이 사라져요.</p></DialogContent>
     <DialogActions>
-      <Button autoFocus onClick={() => setConfirmDiscard(false)}>계속 작성</Button>
-      <Button onClick={discardDraft}>저장하지 않고 닫기</Button>
+      <Button autoFocus variant="contained" onClick={() => setConfirmDiscard(false)}>계속 작성</Button>
+      <Button variant="outlined" onClick={discardDraft}>저장하지 않고 닫기</Button>
     </DialogActions>
   </Dialog>
   <ConfirmDelete open={Boolean(target)} title={target?.question} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={deleteNote} />

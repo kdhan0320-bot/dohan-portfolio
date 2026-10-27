@@ -110,6 +110,7 @@ function loginPage(returnTo = null) {
 test('help navigation focuses the new email field after a delayed route commit', () => {
   const page = loginPage();
   page.selectTab(1);
+  page.selectTab(0);
   page.click('비밀번호를 잊었나요?');
   page.commit();
   page.flushFrame();

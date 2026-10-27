@@ -344,9 +344,9 @@ export default function ChecklistPage() {
       </form>
     </Dialog>
     <Dialog open={Boolean(confirmDiscard)} onClose={() => setConfirmDiscard('')} aria-labelledby="discard-task-title" aria-describedby="discard-task-description" fullWidth maxWidth="xs">
-      <DialogTitle id="discard-task-title">내용을 저장하지 않았어요</DialogTitle>
-      <DialogContent><p id="discard-task-description">닫으면 작성한 내용이 사라집니다.</p></DialogContent>
-      <DialogActions><Button autoFocus onClick={() => setConfirmDiscard('')}>계속 작성</Button><Button onClick={discardDraft}>저장하지 않고 닫기</Button></DialogActions>
+      <DialogTitle id="discard-task-title">작성 내용을 저장하지 않았어요</DialogTitle>
+      <DialogContent><p id="discard-task-description">닫으면 이번에 작성하거나 수정한 내용이 사라져요.</p></DialogContent>
+      <DialogActions><Button autoFocus variant="contained" onClick={() => setConfirmDiscard('')}>계속 작성</Button><Button variant="outlined" onClick={discardDraft}>저장하지 않고 닫기</Button></DialogActions>
     </Dialog>
     <ConfirmDelete open={Boolean(target)} title={target?.title} busy={Boolean(busy)} onClose={() => setTarget(null)} onConfirm={() => action('delete', async () => { await remove(target.id); drafts.clear(target.id); setTarget(null); window.requestAnimationFrame(() => taskListRef.current?.focus({ preventScroll: true })); }, '할 일을 삭제했어요.')} />
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
