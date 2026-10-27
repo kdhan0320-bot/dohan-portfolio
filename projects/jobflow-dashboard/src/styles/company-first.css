@@ -101,8 +101,10 @@
 .workspace-main .interview-page .practice-primary-action + .practice-answer { margin: 12px 0 0; }
 .workspace-main .interview-page .practice-answer p { margin-top: 0; }
 .inline-answer-editor .inline-editor-error { flex-shrink: 0; margin-bottom: 12px; }
-/* Let the textarea grow with the answer. Only the surrounding fields scroll;
-   fixed textarea heights create a second scrollbar and clip the label. */
+/* Let the textarea grow with the answer; only the surrounding fields scroll.
+   Keep wrapping width stable while auto-height measurement briefly removes
+   overflow. Otherwise the missing scrollbar makes long answers measure short. */
+.inline-answer-editor > .field-stack { scrollbar-gutter: stable; }
 .inline-answer-editor > .field-stack > .interview-answer-field { flex: 1 0 auto; display: flex; flex-direction: column; }
 .inline-answer-editor .interview-answer-field > .MuiFormControl-root { flex: 1; }
 .inline-answer-editor .interview-answer-field .MuiInputBase-root { flex: 1; align-items: flex-start; }
