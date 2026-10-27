@@ -79,8 +79,7 @@
   background: #fff;
   box-shadow: none;
 }
-.interview-page .practice-card::after { right: 16px; top: -1px; width: 8px; height: 18px; background: #3d6594; box-shadow: none; }
-.interview-page .practice-card.is-reviewed::after { background: #326d61; }
+.interview-page .practice-card::after { right: 16px; top: -1px; width: 8px; height: 18px; background: #805e24; box-shadow: none; }
 .interview-page .practice-card-meta { align-items: flex-start; min-height: 22px; padding-right: 0; font-size: 14px; gap: 8px 12px; }
 .interview-page .practice-card-meta .practice-company-label {
   display: flex;

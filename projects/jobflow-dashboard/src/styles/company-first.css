@@ -2,7 +2,6 @@
 .site-footer { background: #f3f6f9; color: #5b6b78; border-top: 1px solid #dce4eb; }
 .site-footer-inner { width: min(1320px, calc(100% - 64px)); margin: auto; padding: 25px 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; font-size: 14px; line-height: 1.7; }
 .site-footer strong { color: #3b536b; font-size: 14px; font-weight: 500; }
-.site-footer p { margin: 3px 0 0; font-size: 13px; }
 .site-footer nav { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 24px; }
 .site-footer a { display: inline-flex; align-items: center; min-height: 44px; color: #506579; text-underline-offset: 4px; }
 .site-footer a:hover { text-decoration: underline; }
@@ -113,7 +112,7 @@
   .site-footer nav { gap: 4px 20px; }
 }
 @media (max-width: 699px) {
-  .site-footer-inner { width: calc(100% - 40px); padding: 22px 0; }
+  .site-footer-inner { width: calc(100% - 40px); padding: 16px 0; }
   .site-footer nav { gap: 0 16px; }
   .site-footer a { font-size: 13px; }
   .support-summary { gap: 6px; padding: 0 0 16px; }
@@ -158,7 +157,7 @@
 .record-stage-label .MuiChip-root { vertical-align: top; }
 .record-stage-marker { display: block; flex: 0 0 20px; width: 20px; height: 38px; background: var(--stage-color); clip-path: polygon(0 0,100% 0,100% 100%,50% 79%,0 100%); }
 .today-records { border-block: 1px solid #cdd9e2; background: #fff; }
-.today-record { position: relative; display: grid; grid-template-columns: minmax(230px, 1.2fr) 135px minmax(220px, 1.4fr) auto; align-items: center; gap: 28px; padding: 25px 28px; }
+.today-record { position: relative; display: grid; grid-template-columns: minmax(230px, .85fr) 135px minmax(220px, 1.75fr) auto; align-items: center; gap: 28px; padding: 25px 28px; }
 .today-record .record-stage { position: absolute; top: 0; left: 28px; }
 .today-company { grid-column: 1; grid-row: 1; padding-top: 22px; }
 .today-next { grid-column: 3; grid-row: 1; }
@@ -186,7 +185,8 @@
 .grouped-checklist .preparation-group-heading { padding: 24px; border-top: 3px solid var(--record-accent); border-radius: 4px 13px 0 0; }
 .preparation-group-heading .record-stage { margin-top: -27px; }
 .preview-record-heading { padding-right: 120px; }
-.preview-record-heading .record-stage { position: absolute; top: 0; right: 28px; }
+/* Reserve the same bookmark slot even when the outcome chip is wider. */
+.preview-record-heading .record-stage { position: absolute; top: 0; right: 28px; width: 96px; }
 .preview-record-heading .record-stage-marker { width: 24px; flex-basis: 24px; height: 44px; }
 .preview-record-heading .record-stage-label { padding-top: 10px; }
 .preparation-group-common { grid-column: auto; }
@@ -234,6 +234,7 @@
   .today-company { padding-top: 16px; }
   .today-record-in-progress .today-company { grid-column: 1 / -1; }
   .preview-record-heading { padding-right: 104px; }
+  .preview-record-heading .record-stage { width: 88px; }
   .preview-record-heading .record-stage-marker { width: 18px; flex-basis: 18px; height: 36px; }
   .preview-record-heading .record-stage-label { padding-top: 6px; }
 }

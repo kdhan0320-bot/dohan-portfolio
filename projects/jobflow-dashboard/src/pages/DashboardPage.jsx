@@ -36,7 +36,7 @@ export default function DashboardPage() {
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!loading && !error && <>
       <section className="attention-section" aria-labelledby="attention-title">
-        <div className="section-intro"><h2 id="attention-title">지금 챙길 회사</h2><p>마감 있는 지원 전 → 면접 → 그 외</p></div>
+        <div className="section-intro"><h2 id="attention-title">지금 챙길 회사</h2><p>가까운 마감과 면접 준비부터 확인하세요.</p></div>
         {companies.length ? <div className="today-records">{companies.map((company, index) => {
           const tasks = check.items.filter(item => item.application_id === company.id);
           const nextTask = tasks.find(item => !item.is_done);
