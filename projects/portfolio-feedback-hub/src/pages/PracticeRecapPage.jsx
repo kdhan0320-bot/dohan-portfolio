@@ -7,12 +7,12 @@ import { usePageTitle } from '../utils/pageMeta';
 import '../styles/practice-recap.css';
 
 const summaries = {
-  gallery: '먼저 볼 정보에 크기와 비중을.',
-  sound: '중심이 되는 조작을 눈에 띄게.',
-  portfolio: '관련 정보는 가깝게, 다른 정보는 여유 있게.',
-  flower: '사진 위에도 글자가 읽힐 공간을.',
-  walk: '경로의 차이와 선의 뜻을 함께.',
-  signup: '입력하는 동안에도 조건이 보이게.'
+  gallery: '문구는 그대로, 제목에 크기와 비중을.',
+  sound: '조작은 그대로, 첫 재생에 강조를.',
+  portfolio: '내용은 그대로, 간격으로 묶음을.',
+  flower: '사진은 그대로, 글자 뒤에 읽을 면을.',
+  walk: '경로는 그대로, 선과 범례로 구분을.',
+  signup: '조건은 그대로, 입력 중에도 보이는 곳에.'
 };
 
 export default function PracticeRecapPage() {
@@ -23,7 +23,7 @@ export default function PracticeRecapPage() {
     <div className="shell practice-recap">
       <header className="practice-recap-heading">
         <h1>6가지 디자인 기준</h1>
-        <p>다음 화면을 볼 때도 떠올려 보세요.</p>
+        <p>같게 둔 것과 달리 둔 것, 다음 화면에서도 살펴보세요.</p>
       </header>
       <div className="practice-recap-grid">
         {EXERCISES.map((exercise, index) => <Link className="practice-recap-card" key={exercise.id} to={`/practice/${exercise.id}`} aria-label={`${exercise.principle} 연습 다시 보기`} aria-describedby={`principle-${exercise.kind}`}>

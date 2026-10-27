@@ -106,7 +106,12 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .practice-result-symbol { display: grid; place-items: center; flex: 0 0 32px; height: 32px; border-radius: 5px; background: #dfd8f6; color: #5f4bb7; font-size: 16px; font-weight: 500; line-height: 1; }
 .practice-result .practice-result-status { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; color: #565365; font-size: 14px; line-height: 1.6; }
 .practice-result :is(h2,h3) { font-size: 21px; font-weight: 400; line-height: 1.5; letter-spacing: -.025em; }
-.practice-result .practice-result-explanation { max-width: 72ch; margin-top: 14px; color: #565866; font-size: 15px; line-height: 1.8; }
+.practice-criteria { margin-top: 16px; padding-block: 14px; border-block: 1px solid #d6d2e4; }
+.practice-criteria .practice-criteria-title { margin-bottom: 8px; color: #5140b0; font-size: 13px; font-weight: 500; line-height: 1.5; }
+.practice-criteria dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin: 0; }
+.practice-criteria dl > div { min-width: 0; }
+.practice-criteria dt { margin-bottom: 4px; color: #686676; font-size: 12px; line-height: 1.5; }
+.practice-criteria dd { margin: 0; color: #393545; font-size: 14px; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
 .practice-result-mark-note { display: flex; align-items: center; gap: 8px; margin: 14px 0 12px !important; color: #65616e; font-size: 13px; line-height: 1.6; }
 .practice-result-mark-note > span { flex: 0 0 13px; height: 11px; border: 2px solid #c66043; border-radius: 2px; }
 .practice-result-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
@@ -122,12 +127,12 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .practice-goal-switch { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; padding: 14px 16px; border: 1px solid #d9d5e9; border-radius: 6px; background: #ffffffb3; }
 .practice-goal-switch p { color: #565866; font-size: 14px; line-height: 1.6; }
 .practice-goal-switch button { flex-shrink: 0; }
-.practice-goal-switch.has-perspective { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 20px; border-left: 3px solid #8e7ccb; }
-.practice-perspective .practice-perspective-title { color: #44365f; font-size: 16px; }
-.practice-perspective dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 14px 0; }
-.practice-perspective dt { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: #62606f; font-size: 12px; }
-.practice-perspective dd { margin: 0; color: #44365f; font-size: 14px; line-height: 1.6; word-break: keep-all; }
-.practice-perspective dt > span { display: grid; place-items: center; flex: 0 0 28px; height: 28px; border: 1px solid #c9bfdf; border-radius: 4px; font-size: 15px; }
+.practice-goal-switch.has-perspective { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; border-left: 3px solid #8e7ccb; }
+.practice-perspective .practice-perspective-title { color: #44365f; font-size: 14px; }
+.practice-perspective dl { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 8px 0 0; }
+.practice-perspective dl > div { display: flex; align-items: center; gap: 6px; }
+.practice-perspective dt { color: #62606f; font-size: 12px; }
+.practice-perspective dd { margin: 0; color: #5140b0; font-size: 14px; font-weight: 500; line-height: 1.5; }
 .practice-result-details { margin-top: 20px; border-top: 1px solid #d6d2e4; }
 .practice-result-details details { border-bottom: 1px solid #d6d2e4; }
 .practice-result-details summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 16px 0; color: #4f5060; font-size: 15px; font-weight: 400; cursor: pointer; list-style: none; }
@@ -257,17 +262,22 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .practice-surface .site-footer { grid-template-columns: 1fr; gap: 20px; }
   .practice-surface .footer-perspective { padding-left: 16px; font-size: 17px; }
   .practice-surface .footer-links { justify-content: flex-start; padding-top: 8px; border-top: 1px solid #45414e; }
-  .practice-goal-switch.has-perspective { grid-template-columns: 1fr; align-items: stretch; }
 }
 @media (max-width: 700px) {
   .practice-result-comparison { grid-template-columns: 1fr; gap: 12px; }
-  .practice-result-figure { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 12px; }
-  .practice-result-figure-label { grid-area: 1 / 1; justify-content: flex-start; margin-bottom: 8px; min-height: 44px; }
-  .practice-result-zoom { grid-area: 1 / 2; width: auto; align-self: start; margin: 0 0 8px; padding: 10px 8px; }
+  .practice-result-figure { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 0; border: 0; border-radius: 0; background: transparent; }
+  .practice-result-figure + .practice-result-figure { padding-top: 8px; border-top: 1px solid #dcd7e8; }
+  .practice-result-figure-label { grid-area: 1 / 1; justify-content: flex-start; margin-bottom: 4px; min-height: 44px; }
+  .practice-result-zoom { grid-area: 1 / 2; width: auto; align-self: start; margin: 0 0 4px; padding: 10px 4px; }
   .practice-result-full, .practice-result-wide-label { display: none; }
   .practice-result-detail { display: block; grid-column: 1 / -1; min-width: 0; overflow: hidden; border-radius: 3px; }
   .practice-result-mobile-label { display: inline; }
-  .practice-result-figure figcaption { grid-column: 1 / -1; }
+  .practice-result-figure figcaption { grid-column: 1 / -1; margin-top: 8px; }
+  .practice-result .practice-result-status { margin-bottom: 8px; }
+  .practice-result-mark-note { margin: 10px 0 6px !important; }
+  .practice-criteria { margin-top: 14px; padding-block: 12px; }
+  .practice-result-actions { margin-top: 14px; }
+  .practice-result-details { margin-top: 14px; }
   .practice-goal-controls { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .practice-goal-label { grid-column: 1 / -1; margin: 0 0 2px; font-size: 12px; }
   .practice-current-view { margin-top: 8px !important; color: #5c48bb; font-size: 13px; line-height: 1.6; }
@@ -305,14 +315,16 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .practice-confirm > span { text-align: center; }
   .practice-result { padding: 18px 14px; }
   .practice-result-comparison { gap: 8px; }
-  .practice-result-figure { padding: 8px; }
   .practice-result-figure-label { align-items: center; gap: 8px; line-height: 1.5; }
   .practice-result-figure figcaption { font-size: 14px; line-height: 1.65; word-break: keep-all; }
   .practice-result-zoom { font-size: 12px; gap: 4px; }
   .practice-result-heading { align-items: flex-start; gap: 12px; }
   .practice-result-symbol { flex-basis: 28px; height: 28px; }
   .practice-result :is(h2,h3) { font-size: 18px; }
-  .practice-goal-switch { align-items: stretch; flex-direction: column; gap: 12px; padding: 14px; }
+  .practice-goal-switch, .practice-goal-switch.has-perspective { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; margin-top: 14px; padding: 12px; }
+  .practice-goal-switch p { font-size: 13px; }
+  .practice-goal-switch button { padding-inline: 10px; font-size: 13px; }
+  .practice-criteria dl { gap: 12px; }
   .practice-result-actions > * { flex: 1; padding-inline: 10px; }
   .practice-memo-meta { align-items: flex-start; }
   .practice-memo-meta > span { max-width: 200px; line-height: 1.7; }
