@@ -99,6 +99,8 @@
 .workspace-main .interview-page .practice-primary-action { margin-bottom: 0; }
 .interview-page .practice-toolbar { justify-content: flex-end; margin-top: 0; }
 .settings-record-marker { display: block; width: 24px; height: 42px; flex: 0 0 24px; background: #70899e; clip-path: polygon(0 0,100% 0,100% 100%,50% 82%,0 100%); }
+.settings-card .settings-reset-result { min-height: 24px; margin: 12px 0 0; font-size: 14px; line-height: 24px; color: #39715b; }
+.settings-reset-result + .settings-export { margin-top: 16px; }
 @media (min-width: 1000px) {
   .workspace-with-topnav > .workspace-content { padding-block: clamp(40px, 5vh, 72px) 64px; }
   .workspace-with-topnav > .workspace-content:has(.settings-page) { padding-top: clamp(40px, 5vh, 72px); }
@@ -246,13 +248,53 @@
 .concise-overview .section-intro { margin: 0 0 18px; min-height: 44px; }
 .preparation-filter-short { display: none; }
 @media (min-width: 1000px) {
+  /* One desktop scroll region. The footer occupies its own row, never overlays
+     records, and stays in place when filters or page lengths change. */
+  .workspace-with-topnav { height: 100dvh; min-height: 0; overflow: hidden; }
+  .workspace-with-topnav > .site-header, .workspace-with-topnav > .site-footer { flex-shrink: 0; }
   .workspace-with-topnav > .workspace-content,
-  .workspace-with-topnav > .workspace-content:has(.settings-page) { padding: clamp(40px, 5vh, 72px) 0 64px; }
+  .workspace-with-topnav > .workspace-content:has(.settings-page) { min-height: 0; overflow-y: auto; scrollbar-gutter: stable both-edges; display: flex; flex-direction: column; padding: clamp(24px, calc(8vh - 56px), 56px) 0 32px; }
+  .workspace-with-topnav > .workspace-content > .workspace-main { flex-shrink: 0; }
   .workspace-with-topnav .workspace-main { width: min(1440px, calc(100% - 64px)); max-width: 1440px; padding: 40px; }
   .site-header .site-header-inner, .welcome-product-first .site-header-inner { width: min(1440px, calc(100% - 64px)); }
   .site-footer-inner { width: min(1440px, calc(100% - 64px)); }
   .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 32px; line-height: 42px; }
   .workspace-main .interview-page .practice-answer { max-width: 72ch; }
+  /* Scale space, never type, with the available desktop height. Long records
+     still grow naturally instead of being clipped or hidden behind a footer. */
+  .workspace-main .job-tile { padding: clamp(12px, calc(2vh - 8px), 18px); }
+  .workspace-main .job-tile-heading { margin-bottom: 0; }
+  .workspace-main .job-tile-preparation { margin-top: 10px; padding-top: 10px; }
+  .workspace-main .job-tile .job-tile-bottom { padding-top: 10px; }
+  .workspace-main .job-lane-cards { gap: 10px; }
+  .workspace-main .job-lane { min-height: 360px; padding-bottom: 14px; }
+  .workspace-main .calendar-layout .calendar-day { min-height: clamp(64px, calc(10vh - 44px), 96px); }
+  .workspace-with-topnav > .workspace-content > .workspace-main:has(.settings-page) { flex-grow: 1; display: flex; flex-direction: column; background: transparent; border-color: transparent; box-shadow: none; }
+  .workspace-main .route-surface:has(.settings-page), .workspace-main .settings-page { flex-grow: 1; display: flex; flex-direction: column; }
+  .workspace-main .settings-grid { width: 100%; max-width: 1120px; margin: clamp(32px, calc(20vh - 160px), 128px) auto auto; padding-bottom: 32px; grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr); gap: 32px; align-items: stretch; }
+  .workspace-main .settings-grid > .settings-card:not(.settings-account) { padding: 32px; border: 1px solid #d7dfe7; border-radius: 12px; background: #fcfdfe; }
+  .workspace-main .settings-grid > .MuiCard-root.settings-card > .MuiCardContent-root { padding: 0; }
+  .workspace-main .settings-account { padding: 32px; justify-content: center; }
+  .workspace-main .settings-control { align-items: flex-start; }
+  .workspace-main .settings-control-action { margin-top: 8px; }
+}
+@media (min-width: 1000px) and (max-height: 1100px) {
+  .workspace-with-topnav .workspace-main { padding: 28px; }
+  .workspace-with-topnav .workspace-main .route-surface .page-heading { margin-bottom: 20px; }
+  .workspace-main .board-toolbar { margin-bottom: 20px; }
+  .workspace-main .job-lane-heading { min-height: 54px; }
+  .workspace-main .job-board { padding-top: 16px; }
+  .concise-overview .today-record { padding-block: 20px; }
+}
+
+.summary-identity > div.company-quick-status { flex: 0 0 190px; min-width: 0; }
+.company-quick-status .form-field { margin: 0; }
+.company-quick-status .status-save-feedback { min-height: 20px; margin: 6px 0 0; color: #55705f; font-size: 12px; line-height: 20px; overflow-wrap: anywhere; }
+.company-quick-status .status-save-feedback.is-error { color: #a33d42; }
+@media (max-width: 599px) {
+  .summary-identity:has(.company-quick-status) { flex-wrap: wrap; }
+  .summary-identity > div.company-quick-status { flex-basis: 100%; display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 1fr); align-items: end; gap: 12px; }
+  .company-quick-status .status-save-feedback { margin: 0 0 9px; }
 }
 @media (max-width: 999px) and (min-width: 700px) {
   .workspace-with-topnav .workspace-main { width: 100%; padding: 28px; }

@@ -1,6 +1,56 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import vm from 'node:vm';
+import { transform } from 'esbuild';
 import { createApplicationDraftStore, applicationFormValues, sameApplicationValues } from '../src/utils/applicationDraftStore.js';
+
+const hookSource = await readFile(new URL('../src/hooks/useApplicationDraft.js', import.meta.url), 'utf8');
+const { code: hookCode } = await transform(hookSource, { loader: 'js', format: 'cjs' });
+function mountedDraft(store, initial) {
+  const state = [];
+  let cursor = 0;
+  const module = { exports: {} };
+  vm.runInNewContext(hookCode, { module, exports: module.exports, require: name => name === 'react' ? {
+    useEffect() {},
+    useRef(value) { const key = cursor++; return state[key] ??= { current: value }; },
+    useState(value) { const key = cursor++; if (!(key in state)) state[key] = typeof value === 'function' ? value() : value; return [state[key], next => { state[key] = typeof next === 'function' ? next(state[key]) : next; }]; },
+  } : { applicationDraftStore: store, applicationFormValues, sameApplicationValues } });
+  return () => { cursor = 0; return module.exports.default({ scope: 'sample', recordId: 'company-a', initial }); };
+}
+
+test('a saved status rebases the real editor draft and cancelling keeps the new saved status', () => {
+  const store = createApplicationDraftStore();
+  const initial = { company_name: '검증 회사', status: '관심', memo: '저장 메모' };
+  const render = mountedDraft(store, initial);
+  render().change('memo', '미완성 메모');
+  render().acceptSavedFields({ status: '면접 예정' });
+  assert.equal(render().form.memo, '미완성 메모');
+  assert.equal(render().form.status, '면접 예정');
+  assert.equal(store.read('sample', 'company-a').status, '면접 예정');
+  assert.equal(render().dirty, true);
+  render().reset();
+  assert.equal(render().form.memo, '저장 메모');
+  assert.equal(render().form.status, '면접 예정');
+  assert.equal(render().dirty, false);
+  assert.equal(store.read('sample', 'company-a'), null);
+});
+
+test('a late status response preserves newer input after reopening and never resurrects discarded input', () => {
+  const store = createApplicationDraftStore();
+  const initial = { company_name: '검증 회사', status: '관심', memo: '저장 메모' };
+  const old = mountedDraft(store, initial);
+  old().change('memo', '이전 초안');
+  const reopened = mountedDraft(store, initial);
+  reopened().change('memo', '새로운 초안');
+  reopened().change('status', '불합격');
+  old().acceptSavedFields({ status: '면접 예정' });
+  assert.equal(store.read('sample', 'company-a').memo, '새로운 초안');
+  assert.equal(store.read('sample', 'company-a').status, '불합격');
+  store.clear('sample', 'company-a');
+  old().acceptSavedFields({ status: '합격' });
+  assert.equal(store.read('sample', 'company-a'), null);
+});
 
 function storageDouble() {
   const records = new Map();

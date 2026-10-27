@@ -216,6 +216,7 @@ const SettingsPage = () => {
               setSaved(true);
             }}>샘플 초기화</Button>
           </div>
+          <p className="settings-reset-result" role="status">{saved ? '샘플 기록을 초기화했어요.' : ''}</p>
           {exportControl}
         </section>
         <section className="panel settings-card settings-account" aria-labelledby="start-record-title">
@@ -227,7 +228,6 @@ const SettingsPage = () => {
           <Button variant="contained" onClick={() => navigate('/login?returnTo=%2Fsettings')}>내 기록 시작하기</Button>
         </section>
       </div>
-      {saved && <Alert severity="success" sx={{ mt: 2 }}>샘플 기록을 초기화했어요.</Alert>}
       {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
     </Box>;
   }

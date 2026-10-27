@@ -12,11 +12,12 @@ import { isValidApplicationUrl } from '../src/utils/applicationPayload.js';
 const source = await readFile(new URL('../src/components/applications/ApplicationPanel.jsx', import.meta.url), 'utf8');
 const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
 
-function panelWith(application = null) {
+function panelWith(application = null, options = {}) {
   const state = [];
   let cursor = 0;
-  let values = applicationDraft(application);
+  let values = { ...applicationDraft(application), ...options.draft };
   const saves = [];
+  const statusSaves = [];
   let closes = 0;
   const noOp = () => {};
   const react = {
@@ -47,6 +48,7 @@ function panelWith(application = null) {
       change: (key, value) => { values = { ...values, [key]: value }; },
       clear: noOp,
       reset: () => { values = applicationDraft(application); },
+      acceptSavedFields: fields => { values = { ...values, ...fields }; },
       dirty: JSON.stringify(values) !== JSON.stringify(applicationDraft(application)),
       restored: false,
     }) },
@@ -69,17 +71,23 @@ function panelWith(application = null) {
   });
   function render() {
     cursor = 0;
-    return module.exports.default({ application, creating: !application, draftScope: 'sample', onClose: () => closes++, onSave: async value => saves.push(value), onDelete: noOp });
+    return module.exports.default({ application, creating: !application, draftScope: 'sample', onClose: () => closes++, onSave: async value => saves.push(value), onDelete: noOp, onStatusChange: application ? async status => {
+      statusSaves.push(status);
+      await options.statusSave?.(status);
+      application = { ...application, status };
+    } : undefined });
   }
   function find(predicate, node) {
     if (arguments.length < 2) node = render();
     if (!node || typeof node !== 'object') return null;
     if (Array.isArray(node)) return node.map(child => find(predicate, child)).find(Boolean) || null;
     if (predicate(node)) return node;
-    return find(predicate, node.props?.children ?? null);
+    return find(predicate, node.props?.children ?? null) || find(predicate, node.props?.statusControl ?? null);
   }
   return {
     saves,
+    statusSaves,
+    feedback: () => find(node => node.type === 'p' && node.props.className?.includes('status-save-feedback'))?.props,
     closes: () => closes,
     close: () => find(node => node.type === 'IconButton' && node.props['aria-label'] === '회사 정보 닫기').props.onClick(),
     escape: () => find(node => node.type === 'Dialog' && node.props['aria-labelledby'] === 'company-panel-title').props.onClose(),
@@ -112,6 +120,50 @@ test('correcting an invalid posting address keeps the extra fields open through 
   await panel.submit();
   assert.equal(panel.saves.length, 1);
   assert.equal(panel.saves[0].job_url, 'https://example.com/jobs');
+});
+
+test('quick status saves from the summary without closing or saving an unfinished memo', async () => {
+  const panel = panelWith({ id: 'company-a', company_name: '검증 회사', status: '관심', memo: '저장된 메모' }, { draft: { memo: '미완성 메모' } });
+  await panel.field('현재 상태').props.onChange({ target: { value: '면접 예정' } });
+  assert.deepEqual(panel.statusSaves, ['면접 예정']);
+  assert.equal(panel.hasSummary(), true);
+  assert.equal(panel.closes(), 0);
+  assert.equal(panel.saves.length, 0);
+  assert.match(panel.feedback().children, /저장했어요/);
+  panel.edit();
+  assert.equal(panel.field('현재 상태').props.value, '면접 예정');
+  assert.equal(panel.field('준비 메모').props.value, '미완성 메모');
+});
+
+test('quick status keeps the saved value on failure and permits a retry', async () => {
+  let fail = true;
+  const panel = panelWith({ id: 'company-a', company_name: '검증 회사', status: '관심' }, { statusSave: async () => { if (fail) throw new Error('저장 실패'); } });
+  await panel.field('현재 상태').props.onChange({ target: { value: '서류 진행' } });
+  assert.equal(panel.field('현재 상태').props.value, '관심');
+  assert.equal(panel.field('현재 상태').props.disabled, false);
+  assert.equal(panel.feedback().role, 'alert');
+  assert.equal(panel.closes(), 0);
+  fail = false;
+  await panel.field('현재 상태').props.onChange({ target: { value: '서류 진행' } });
+  assert.equal(panel.field('현재 상태').props.value, '서류 진행');
+});
+
+test('quick status rejects repeated or invalid changes and blocks dismissal while saving', async () => {
+  let release;
+  const panel = panelWith({ id: 'company-a', company_name: '검증 회사', status: '관심' }, { statusSave: () => new Promise(resolve => { release = resolve; }) });
+  const handler = panel.field('현재 상태').props.onChange;
+  await handler({ target: { value: '관심' } });
+  await handler({ target: { value: 'unknown' } });
+  assert.equal(panel.statusSaves.length, 0);
+  const request = handler({ target: { value: '합격' } });
+  await handler({ target: { value: '불합격' } });
+  assert.equal(panel.field('현재 상태').props.disabled, true);
+  panel.close();
+  assert.equal(panel.closes(), 0);
+  assert.deepEqual(panel.statusSaves, ['합격']);
+  release();
+  await request;
+  assert.equal(panel.field('현재 상태').props.value, '합격');
 });
 
 test('manual disclosure choices persist across other edits, while a fresh company starts collapsed', async () => {

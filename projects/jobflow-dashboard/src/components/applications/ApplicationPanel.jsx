@@ -11,9 +11,9 @@ import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '..
 import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
 
-export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onDelete }) {
+export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onStatusChange, onDelete }) {
   const fullScreen = useMediaQuery('(max-width: 599px)');
-  const { form, change: changeDraft, clear: clearDraft, reset: resetDraft, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
+  const { form, change: changeDraft, clear: clearDraft, reset: resetDraft, acceptSavedFields, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [editing, setEditing] = useState(Boolean(creating));
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -23,10 +23,34 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [leaveTo, setLeaveTo] = useState('close');
   const [summaryBusy, setSummaryBusy] = useState(false);
+  const [statusFeedback, setStatusFeedback] = useState(null);
+  const statusPending = useRef(false);
   const companyInput = useRef(null);
   const urlInput = useRef(null);
   const summaryEditButton = useRef(null);
   const lane = boardColumn(form.status);
+  async function changeStatus(status) {
+    if (busy || summaryBusy || statusPending.current || status === application.status || !APPLICATION_STATUSES.some(item => item.value === status)) return;
+    statusPending.current = true;
+    setBusy(true);
+    setStatusFeedback(null);
+    try {
+      await onStatusChange(status);
+      acceptSavedFields({ status });
+      setStatusFeedback({ message: `${status} 상태로 저장했어요.` });
+    } catch (error) {
+      setStatusFeedback({ error: true, message: error.message || '상태를 저장하지 못했어요. 다시 선택해주세요.' });
+    } finally {
+      statusPending.current = false;
+      setBusy(false);
+    }
+  }
+  const statusControl = onStatusChange && <div className="company-quick-status">
+    <Field id="company-quick-status" label="현재 상태" select size="small" value={application?.status || ''} disabled={busy || summaryBusy} onChange={event => changeStatus(event.target.value)}>
+      {APPLICATION_STATUSES.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
+    </Field>
+    <p className={statusFeedback?.error ? 'status-save-feedback is-error' : 'status-save-feedback'} role={statusFeedback?.error ? 'alert' : 'status'}>{busy ? '저장 중…' : statusFeedback?.message || '선택하면 바로 저장돼요.'}</p>
+  </div>;
   function change(key, value) {
     changeDraft(key, value);
     setErrors(prev => ({ ...prev, [key]: '' }));
@@ -107,8 +131,8 @@ export default function ApplicationPanel({ application, creating, draftScope, on
         <IconButton onClick={close} disabled={busy || summaryBusy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>
       {!editing ? <>
-        <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
-        <div className="company-panel-footer"><Button onClick={close} disabled={summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="outlined" disabled={summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
+        <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} disabled={busy} statusControl={statusControl} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
+        <div className="company-panel-footer"><Button onClick={close} disabled={busy || summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="outlined" disabled={busy || summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
       </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}

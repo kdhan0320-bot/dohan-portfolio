@@ -44,7 +44,12 @@ export default function ApplicationsPage() {
     const firstLane = mobile && !paused && value.trim() && matches.length ? boardColumn(matches[0].status) : null;
     changeParams({ q: value, ...(firstLane ? { lane: firstLane } : {}) }, true);
   }
-  function closePanel() { changeParams({ company: null, new: null }, true); checklist.refresh(); }
+  function closePanel() {
+    const recordId = selected?.id;
+    changeParams({ company: null, new: null }, true);
+    checklist.refresh();
+    window.requestAnimationFrame(() => (document.getElementById(`company-card-${recordId}`) || document.getElementById('board-add-company'))?.focus({ preventScroll: true }));
+  }
   function clearSearch() {
     changeParams({ q: null }, true);
     window.requestAnimationFrame(() => document.getElementById('board-company-search')?.focus());
@@ -59,6 +64,12 @@ export default function ApplicationsPage() {
   async function deleteCompany(id) {
     await remove(id); closePanel(); setFeedback({ message: '회사를 삭제했어요.' });
     if (typeof document !== 'undefined') window.requestAnimationFrame(() => document.getElementById('board-add-company')?.focus());
+  }
+  async function changeStatus(status) {
+    await update(selected.id, { status });
+    const destination = boardColumn(status);
+    // Keep the record open, then reveal its new column when it is closed.
+    changeParams({ view: destination === 'paused' ? 'paused' : null, lane: destination === 'paused' ? null : destination }, true);
   }
   function card(a) {
     const pending = boardColumn(a.status) === 'before';
@@ -94,7 +105,7 @@ export default function ApplicationsPage() {
         </div>
         <p className="board-instruction">회사를 선택해 전형 상태와 회사별 준비를 관리하세요.</p>
       </>}
-      {(creating || selected) && <ApplicationPanel key={`${draftScope}:${creating ? 'new' : selected.id}`} draftScope={draftScope} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onDelete={deleteCompany} />}
+      {(creating || selected) && <ApplicationPanel key={`${draftScope}:${creating ? 'new' : selected.id}`} draftScope={draftScope} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onStatusChange={creating ? undefined : changeStatus} onDelete={deleteCompany} />}
       {params.get('company') && !selected && !creating && <div className="missing-company" role="status">이 회사 정보를 찾을 수 없어요.<Button onClick={closePanel}>닫기</Button></div>}
     </>}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
