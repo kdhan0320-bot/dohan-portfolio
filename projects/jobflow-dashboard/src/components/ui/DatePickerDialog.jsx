@@ -15,12 +15,24 @@ export default function DatePickerDialog({ open, anchorEl, value, referenceDate,
   const pendingFocus = useRef(false);
   useEffect(() => {
     if (!open || !inline) return;
-    const frame = requestAnimationFrame(() => {
+    let observer;
+    let frame = requestAnimationFrame(() => {
       const button = dayButtons.current.get(validDate(value) ? value : referenceDate);
+      const surface = button?.closest('.date-choice-surface');
+      const reveal = () => surface?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
       button?.focus({ preventScroll: true });
-      button?.closest('.date-choice-surface')?.scrollIntoView({ block: 'nearest' });
+      reveal();
+      if (!surface || typeof ResizeObserver === 'undefined') return;
+      // Refit the open calendar when its scrollport changes, without moving focus.
+      observer = new ResizeObserver(() => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(reveal);
+      });
+      observer.observe(surface);
+      const scrollport = surface.closest('.company-panel-body');
+      if (scrollport) observer.observe(scrollport);
     });
-    return () => cancelAnimationFrame(frame);
+    return () => { cancelAnimationFrame(frame); observer?.disconnect(); };
   }, [open, inline, value, referenceDate]);
   useEffect(() => {
     if (!open) return;
