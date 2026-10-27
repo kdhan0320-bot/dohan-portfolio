@@ -6,7 +6,7 @@ import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
 import { useToday } from '../hooks/useToday';
-import { deadlineLabel, shortDate } from '../utils/dates';
+import { deadlineLabel } from '../utils/dates';
 import { WEEKDAYS } from '../utils/calendar';
 import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { attentionCompanies, beforeApplication } from '../utils/preparationGroups';
@@ -44,7 +44,7 @@ export default function DashboardPage() {
           const upcoming = beforeApplication(company);
           return <article className={`today-record${index === 0 ? ' today-record-first' : ''}${upcoming ? '' : ' today-record-in-progress'}`} key={company.id} style={{ '--record-accent': stage?.color || '#58728e' }}>
             <div className="today-company"><RecordStage status={company.status} /><h3>{company.company_name}</h3><p>{company.position || '직무 미입력'}</p></div>
-            {upcoming && <div className="today-date"><span>지원 마감</span><time dateTime={company.deadline || undefined}>{company.deadline ? shortDate(company.deadline) : '미등록'}</time>{company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>}
+            {upcoming && <div className="today-date"><span>지원 마감</span><time className={company.deadline ? 'record-date' : undefined} dateTime={company.deadline || undefined}>{company.deadline ? <><span className="record-date-month">{Number(company.deadline.slice(5, 7))}.</span>{Number(company.deadline.slice(8, 10))}</> : '미등록'}</time>{company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>}
             <div className="today-next"><span>다음 준비{pending(tasks) > 0 && <small> · 남은 {pending(tasks)}개</small>}</span><p>{nextTask?.title || (tasks.length ? '등록한 준비를 모두 마쳤어요' : '준비할 일을 등록해보세요')}</p></div>
             <Button className="today-record-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span className="today-open-label">기록 보기</span><span aria-hidden="true">→</span></Button>
           </article>;

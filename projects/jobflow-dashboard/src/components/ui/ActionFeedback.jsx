@@ -1,6 +1,12 @@
+import { useEffect, useState } from 'react';
 import { Alert, Snackbar } from '@mui/material';
 
 const ActionFeedback = ({ feedback, onClose }) => {
+  const [lastFeedback, setLastFeedback] = useState(feedback);
+  useEffect(() => { if (feedback) setLastFeedback(feedback); }, [feedback]);
+  // Retain the message through Snackbar's exit transition, so it does not
+  // collapse into an icon-only pill before fading out.
+  const displayedFeedback = feedback || lastFeedback;
   const handleClose = (_event, reason) => {
     if (reason === 'clickaway') return;
     onClose?.();
@@ -27,7 +33,7 @@ const ActionFeedback = ({ feedback, onClose }) => {
       <Alert
         onClose={handleClose}
         closeText="알림 닫기"
-        severity={feedback?.severity ?? 'success'}
+        severity={displayedFeedback?.severity ?? 'success'}
         variant="filled"
         sx={{
           width: '100%', minWidth: 0, alignItems: 'center', paddingBlock: '6px',
@@ -37,7 +43,7 @@ const ActionFeedback = ({ feedback, onClose }) => {
           '& .MuiAlert-action button': { width: 44, height: 44, padding: '10px' }
         }}
       >
-        {feedback?.message}
+        {displayedFeedback?.message}
       </Alert>
     </Snackbar>
   );

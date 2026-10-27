@@ -424,19 +424,33 @@
 /* The wordmark's tapered finishing stroke continues through record markers and dates. */
 :root {
   --galpi-marker: polygon(0 0, 100% 0, 100% 91%, 58% 80%, 0 100%);
-  --galpi-ink-stroke: polygon(0 58%, 100% 0, 77% 65%, 34% 100%);
+  --galpi-ink-stroke: url('../assets/galpirok-stroke.svg');
+  --galpi-date-ink: #547e9c;
 }
 .record-stage-marker, .record-bookmark, .settings-record-marker,
 .galpi-eyebrow::before, .login-form-section::before, .practice-card::after,
 .agenda-record-marker { clip-path: var(--galpi-marker); }
 .record-stage-marker { transition: background-color 160ms ease; }
-.preview-date-block { border-left: 0; }
-.preview-date-block::before { content: ''; position: absolute; inset: 2px auto 0 0; width: 3px; background: var(--stage-ink); clip-path: polygon(0 0,100% 3%,75% 100%,15% 84%); }
+.preview-date-block { border-left: 0; padding-left: 0; }
+.preview-date-block::before { content: none; }
 .today-date time, .agenda-date time { position: relative; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
-.today-date time::after, .agenda-date time::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 4px; background: #547e9c; opacity: .55; clip-path: var(--galpi-ink-stroke); }
+.record-date { position: relative; display: inline-block; white-space: nowrap; }
+.record-date-month { font-size: .72em; letter-spacing: -.015em; margin-right: .07em; }
+.record-date::after { content: ''; position: absolute; left: 0; width: 100%; bottom: -.08em; height: .18em; min-height: 5px; background: var(--galpi-date-ink); opacity: .8; mask: var(--galpi-ink-stroke) center / 100% 100% no-repeat; pointer-events: none; }
+.preview-date-block .record-date { --galpi-date-ink: var(--stage-ink); }
+.today-date time:not([datetime]) { font-size: 16px; letter-spacing: 0; }
 .agenda-company { position: relative; }
 .agenda-record-marker { display: block; align-self: flex-start; flex: 0 0 13px; width: 13px; height: 29px; background: #426488; margin-top: -16px; }
 .agenda-date { display: inline-flex; align-items: baseline; gap: 8px; }
 .agenda-date time { color: #344f68; font-size: 23px; font-weight: 450; line-height: 1.4; }
 .agenda-date small { font-size: 13px; color: #637585; }
+/* One quiet stroke crosses the ribbon; the status is still conveyed by text. */
+.record-stage-marker, .record-bookmark, .settings-record-marker,
+.login-form-section::before, .workspace-main .interview-page .practice-card::after, .agenda-record-marker {
+  background-image: var(--galpi-ink-stroke);
+  background-repeat: no-repeat;
+  background-size: 82% 5px;
+  background-position: center calc(100% - 9px);
+  background-blend-mode: soft-light;
+}
 @media (prefers-reduced-motion: reduce) { .record-stage-marker { transition: none; } }

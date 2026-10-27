@@ -33,6 +33,7 @@ export default function ProductPreview({ onOpen }) {
     {BOARD_COLUMNS.map((column, index) => {
       const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === column.id);
       const before = column.id === 'before';
+      const [month, day] = shortDate(before ? selected.deadline : selected.applied_date).split('.');
       const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
       const inactive = index !== stageIndex;
       return <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} aria-hidden={inactive || undefined} hidden={inactive} className="preview-record" tabIndex={inactive ? -1 : 0}>
@@ -43,7 +44,7 @@ export default function ProductPreview({ onOpen }) {
         <div className="preview-record-body">
           <div className="preview-date-block">
             <span>{before ? '지원 마감' : '지원한 날짜'}</span>
-            <strong>{shortDate(before ? selected.deadline : selected.applied_date)}</strong>
+            <strong className="record-date"><span className="record-date-month">{month}.</span>{day}</strong>
             {before && <b>{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}
           </div>
           <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>등록한 준비 항목이 없어요.</p>}</div>
