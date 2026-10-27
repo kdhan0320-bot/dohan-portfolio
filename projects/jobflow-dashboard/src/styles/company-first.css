@@ -101,17 +101,21 @@
 .workspace-main .interview-page .practice-primary-action + .practice-answer { margin: 12px 0 0; }
 .workspace-main .interview-page .practice-answer p { margin-top: 0; }
 .inline-answer-editor .inline-editor-error { flex-shrink: 0; margin-bottom: 12px; }
+.inline-answer-editor > .field-stack > .interview-answer-field { flex: 1 0 160px; min-height: 160px; display: flex; flex-direction: column; }
+.inline-answer-editor .interview-answer-field > .MuiFormControl-root { flex: 1; min-height: 0; }
+.inline-answer-editor .interview-answer-field .MuiInputBase-root { flex: 1; min-height: 0; align-items: stretch; }
+.inline-answer-editor .interview-answer-field textarea { height: 100%; min-height: 0; box-sizing: border-box; overflow-y: auto; }
 .date-picker-control { position: relative; display: inline-flex; }
 .date-picker-control .MuiIconButton-root { width: 44px; height: 44px; }
 .date-picker-native { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; padding: 0; border: 0; }
 @media (max-width: 999px) {
   .workspace-main .interview-page .inline-answer-editor {
     display: flex; flex-direction: column; min-height: 0; overflow: hidden;
-    max-height: calc(100dvh - 172px - env(safe-area-inset-bottom, 0px));
+    height: calc(100dvh - 172px - env(safe-area-inset-bottom, 0px));
     padding-block: 16px;
   }
   .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 12px; }
-  .workspace-main .inline-answer-editor > .field-stack { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px; margin: -4px; }
+  .workspace-main .inline-answer-editor > .field-stack { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px; margin: -4px; }
   .workspace-main .inline-answer-editor > .field-stack :is(input, textarea, button, select, summary) { scroll-margin-block: 12px; }
   .workspace-main .inline-answer-editor .inline-editor-actions { flex-shrink: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid #dfe6eb; background: #fff; }
   .workspace-main .inline-answer-editor .inline-editor-actions .MuiButton-root { min-height: 44px; min-width: 88px; }

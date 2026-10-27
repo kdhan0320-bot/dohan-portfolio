@@ -145,7 +145,7 @@ export default function InterviewPage() {
     if (id) { setActiveId(id); if (companyScope !== 'all' && (values.application_id || 'common') !== companyScope) selectCompany(values.application_id || 'common'); }
     setDraftId(draftKey);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
-    setConfirmDiscard(false); setFormError(''); setOpen(true);
+    setConfirmDiscard(false); setFormError(''); setFeedback(null); setOpen(true);
   }
   function resumeDraft() {
     const pending = drafts.pending;
@@ -245,7 +245,10 @@ export default function InterviewPage() {
       setBusy('');
     }
   }
-  const answerField = <Field id="note-answer" disabled={Boolean(busy)} label="나의 답변 (선택)" multiline minRows={4} value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
+  const answerField = <Field id="note-answer" className="interview-answer-field" disabled={Boolean(busy)} label="나의 답변 (선택)" multiline
+    minRows={editingId ? undefined : 4} rows={editingId ? 6 : undefined}
+    slotProps={{ input: editingId ? { inputComponent: 'textarea' } : {} }}
+    value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
   const questionField = <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={event => changeForm({ ...form, question: event.target.value })} />;
   const editorFields = <div className="field-stack">
     {!editingId && formError && <Alert severity="error">{formError}</Alert>}
