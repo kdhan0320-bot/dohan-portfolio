@@ -216,3 +216,9 @@
 .practice-guide .guide-scene-3 .guide-scene-option { display: block; }
 .practice-guide .guide-scene-3 .guide-scene-option-label { display: flex; }
 .practice-guide .guide-scene-3 .guide-scene-gallery-copy { padding: 6px; }
+
+@media (max-width: 700px) {
+  .practice-guide .guide-scene-3 .guide-scene-options { grid-template-columns: 1fr; }
+  .practice-guide .guide-scene-3 .guide-scene-gallery,
+  .practice-guide .guide-scene-3 .guide-scene-gallery img { height: 80px; }
+}

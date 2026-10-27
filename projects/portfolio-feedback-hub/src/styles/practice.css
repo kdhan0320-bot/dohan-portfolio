@@ -113,6 +113,8 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
 .practice-result-figure { display: flex; flex-direction: column; min-width: 0; margin: 0; padding: 12px; border: 1px solid #dcd7e8; border-radius: 6px; background: #fff; }
 .practice-result-figure-label { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 8px; min-height: 28px; margin-bottom: 8px; color: #5140b0; font-size: 12px; }
 .practice-result-figure-label > span:first-child { color: #46414f; font-size: 16px; font-weight: 500; }
+.practice-result-detail, .practice-result-mobile-label { display: none; }
+.practice-result-mark-note.is-gap-note > span { flex-basis: 8px; height: 16px; border-right: 0; border-radius: 0; }
 .practice-result-art { width: 100%; overflow: hidden; border-radius: 3px; }
 .practice-result-figure figcaption { margin-top: 12px; color: #484652; font-size: 14px; line-height: 1.7; word-break: keep-all; }
 .practice-result-zoom { display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 100%; min-height: 44px; margin-top: auto; padding: 10px 0 0; border: 0; color: #5140b0; background: transparent; font-size: 13px; }
@@ -258,6 +260,14 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .practice-goal-switch.has-perspective { grid-template-columns: 1fr; align-items: stretch; }
 }
 @media (max-width: 700px) {
+  .practice-result-comparison { grid-template-columns: 1fr; gap: 12px; }
+  .practice-result-figure { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 10px; padding: 12px; }
+  .practice-result-figure-label { grid-area: 1 / 1; justify-content: flex-start; margin-bottom: 8px; min-height: 44px; }
+  .practice-result-zoom { grid-area: 1 / 2; width: auto; align-self: start; margin: 0 0 8px; padding: 10px 8px; }
+  .practice-result-full, .practice-result-wide-label { display: none; }
+  .practice-result-detail { display: block; grid-column: 1 / -1; min-width: 0; overflow: hidden; border-radius: 3px; }
+  .practice-result-mobile-label { display: inline; }
+  .practice-result-figure figcaption { grid-column: 1 / -1; }
   .practice-goal-controls { width: 100%; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
   .practice-goal-label { grid-column: 1 / -1; margin: 0 0 2px; font-size: 12px; }
   .practice-current-view { margin-top: 8px !important; color: #5c48bb; font-size: 13px; line-height: 1.6; }
@@ -296,8 +306,8 @@ html:has(.practice-zoom-dialog[open]) { overflow: hidden; scrollbar-gutter: auto
   .practice-result { padding: 18px 14px; }
   .practice-result-comparison { gap: 8px; }
   .practice-result-figure { padding: 8px; }
-  .practice-result-figure-label { flex-direction: column; align-items: flex-start; justify-content: flex-start; height: 48px; flex-shrink: 0; gap: 2px; line-height: 1.5; }
-  .practice-result-figure figcaption { font-size: 13px; line-height: 1.65; word-break: normal; }
+  .practice-result-figure-label { align-items: center; gap: 8px; line-height: 1.5; }
+  .practice-result-figure figcaption { font-size: 14px; line-height: 1.65; word-break: keep-all; }
   .practice-result-zoom { font-size: 12px; gap: 4px; }
   .practice-result-heading { align-items: flex-start; gap: 12px; }
   .practice-result-symbol { flex-basis: 28px; height: 28px; }

@@ -53,11 +53,11 @@ function Portfolio({ compact = false }) {
     <div className="ea-topline"><span className="ea-wordmark">STUDIO HAN</span><span>PORTFOLIO</span></div>
     <div className="ea-work-heading"><span>선택한 작업</span><span>01—02</span></div>
     <div className="ea-project-list">
-      <div className="ea-project-group ea-target">
+      <div className="ea-project-group">
         <span className="ea-project-title"><span className="ea-project-mark ea-project-mark-blue" />산책 기록 앱</span>
         <span className="ea-project-description">{compact ? '걸은 길을 모으는 앱' : '매일 걸은 길을 모으는 모바일 서비스'}</span>
       </div>
-      <div className="ea-project-group ea-target">
+      <div className="ea-project-group">
         <span className="ea-project-title"><span className="ea-project-mark ea-project-mark-coral" />전시 예약 웹</span>
         <span className="ea-project-description">{compact ? '관람 시간을 예약하는 웹' : '전시와 관람 시간을 예약하는 웹'}</span>
       </div>
@@ -108,10 +108,10 @@ function Signup({ revised = false }) {
 
 const artwork = { gallery: Gallery, sound: Sound, portfolio: Portfolio, flower: Flower, walk: Walk, signup: Signup };
 
-export default function ExerciseArtwork({ kind = 'gallery', variant = 'original', highlight = false, compact = false, focusTarget }) {
+export default function ExerciseArtwork({ kind = 'gallery', variant = 'original', highlight = false, compact = false, focusTarget, detail = false }) {
   const resolvedKind = Object.hasOwn(artwork, kind) ? kind : 'gallery';
   const Drawing = artwork[resolvedKind];
-  return <div aria-hidden="true" className={`exercise-artwork ea-${resolvedKind}${variant === 'revised' ? ' ea-revised' : ''}${highlight ? ' ea-highlight' : ''}${compact ? ' ea-compact' : ''}`}>
+  return <div aria-hidden="true" className={`exercise-artwork ea-${resolvedKind}${variant === 'revised' ? ' ea-revised' : ''}${highlight ? ' ea-highlight' : ''}${compact ? ' ea-compact' : ''}${detail ? ' ea-detail' : ''}`}>
     <Drawing focusTarget={focusTarget} compact={compact} revised={variant === 'revised'} />
   </div>;
 }

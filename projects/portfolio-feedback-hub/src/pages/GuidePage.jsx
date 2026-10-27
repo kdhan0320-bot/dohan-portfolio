@@ -8,8 +8,8 @@ import '../styles/practice-guide.css';
 
 const steps = [
   ['목표 읽기', '질문과 비교 포인트에서 살펴볼 부분을 확인해요. 첫 연습은 목표를 바꿔 같은 화면을 다시 비교할 수 있어요.'],
-  ['비교하고 선택', '두 화면을 비교한 뒤, 목표에 더 적합한 쪽을 골라요.', 'A·B 보기는 화면만 바꿔요. 비교 후 아래 선택 버튼을 눌러요.'],
-  ['이유 확인', '설계 이유 보기를 누르면 A/B 그림의 표시와 이유를 함께 볼 수 있어요. 작은 그림은 크게 볼 수 있어요.'],
+  ['비교하고 선택', '두 화면을 비교한 뒤, 목표에 더 적합한 쪽을 골라요.', 'A·B 보기는 화면만 바꿔요. 선택하면 설계 이유 보기 버튼이 바로 보여요.'],
+  ['이유 확인', '설계 이유 보기를 누르면 A/B 그림의 표시와 이유를 함께 볼 수 있어요.', 'A/B의 핵심 부분과 이유를 이어서 살펴봐요. 전체 보기로 원래 화면도 확인할 수 있어요.'],
 ];
 
 const questions = [
@@ -29,8 +29,8 @@ function GuideScene({ stage }) {
       <span className="guide-scene-expand"><PracticeIcon name="expand" />확대</span>
     </div>
     <div className="guide-scene-options">
-      {['A', 'B'].map((side) => <div key={side} className={`guide-scene-option guide-scene-option-${side.toLowerCase()}${side === visibleSide ? ' is-current-view' : ''}${stage > 1 && side === 'B' ? ' is-picked' : ''}`}>
-        <div className="guide-scene-option-label"><span>{side}</span>{stage > 1 && side === 'B' && <span className="guide-scene-check"><PracticeIcon name="check" /></span>}</div>
+      {['A', 'B'].map((side) => <div key={side} className={`guide-scene-option guide-scene-option-${side.toLowerCase()}${side === visibleSide ? ' is-current-view' : ''}${stage === 2 && side === 'B' ? ' is-picked' : ''}`}>
+        <div className="guide-scene-option-label"><span>{side}{stage === 3 && side === 'B' ? ' · 제안' : ''}</span>{stage === 2 && side === 'B' && <span className="guide-scene-check"><PracticeIcon name="check" /></span>}{stage === 3 && <span>전체 보기</span>}</div>
         <div className="guide-scene-gallery">
           <div className="guide-scene-gallery-copy"><span className="guide-scene-gallery-title">시선의<br />모양</span><span className="guide-scene-gallery-rule" /></div>
           <img src={sculpture} alt="" />

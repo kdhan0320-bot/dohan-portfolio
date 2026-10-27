@@ -11,7 +11,18 @@ function focusBelowHeader(target, smooth = true) {
   window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset), behavior: smooth && !window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'smooth' : 'instant' });
 }
 
-// Scale the full comparison drawing, preserving its original layout and A/B differences.
+function keepReasonInView(target) {
+  if (!target?.isConnected) return;
+  const bounds = target.getBoundingClientRect();
+  const headerBottom = target.closest('.practice-surface')?.querySelector('.site-header')?.getBoundingClientRect().bottom || 0;
+  const distance = bounds.bottom > window.innerHeight - 20
+    ? bounds.bottom - window.innerHeight + 20
+    : bounds.top < headerBottom + 20 ? bounds.top - headerBottom - 20 : 0;
+  if (!distance) return;
+  window.scrollBy({ top: distance, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+}
+
+// Keep the full drawing on wide screens; on mobile expose the same illustration's key region.
 function ResultArtwork({ sourceRefs, kind, variant, focusTarget }) {
   const frameRef = useRef(null);
   const [size, setSize] = useState({ width: 480, height: 300, scale: 0 });
@@ -28,11 +39,11 @@ function ResultArtwork({ sourceRefs, kind, variant, focusTarget }) {
     resize();
     return () => observer.disconnect();
   }, [sourceRefs]);
-  return <div ref={frameRef} className="practice-result-art" style={{ height: size.height * size.scale }}>
+  return <><div ref={frameRef} className="practice-result-art practice-result-full" style={{ height: size.height * size.scale }}>
     <div style={{ width: size.width, transform: `scale(${size.scale})`, transformOrigin: 'top left' }}>
       <ExerciseArtwork kind={kind} variant={variant} highlight focusTarget={focusTarget} />
     </div>
-  </div>;
+  </div><div className="practice-result-detail"><ExerciseArtwork kind={kind} variant={variant} highlight focusTarget={focusTarget} detail /></div></>;
 }
 
 export default function PracticePlayer({ exercise, nextExercise, number = 1, total = 6, standalone = false }) {
@@ -55,6 +66,7 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   const artworkRefs = useRef({});
   const goalControlsRef = useRef(null);
   const resultRef = useRef(null);
+  const confirmRef = useRef(null);
   const questionRef = useRef(null);
   const goalChangePending = useRef(false);
   const QuestionHeading = standalone ? 'h1' : 'h2';
@@ -103,8 +115,10 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
   }, [revealed]);
 
   const choose = side => {
-    if (selected === side) return;
+    if (selected === side && revealed) return;
     setSelected(side); setRevealed(false);
+    // Scroll only enough to reveal the next action; keep keyboard focus on the choice.
+    requestAnimationFrame(() => keepReasonInView(confirmRef.current));
   };
   const revealReason = () => {
     setVisibleSide(preferredSide);
@@ -191,18 +205,18 @@ export default function PracticePlayer({ exercise, nextExercise, number = 1, tot
       </article>)}
     </div>
     <div className="practice-action-row">
-      {!revealed && <div className="practice-confirm"><span aria-live="polite">{selected ? `내 선택 ${selected}` : 'A 또는 B를 선택해 주세요.'}</span><button className="practice-primary" disabled={!selected} onClick={revealReason}>설계 이유 보기</button></div>}
+      {!revealed && <div className="practice-confirm" ref={confirmRef}><span aria-live="polite">{selected ? `내 선택 ${selected}` : 'A 또는 B를 선택해 주세요.'}</span><button className="practice-primary" disabled={!selected} onClick={revealReason}>설계 이유 보기</button></div>}
     </div>
     {revealed && <div className="practice-result" ref={resultRef} tabIndex={-1} aria-label="선택과 설계 이유">
       <p className="practice-result-status">내 선택 {selected}<span>·</span>이 목표의 제안 {preferredSide}</p>
       <div className="practice-result-heading"><span className="practice-result-symbol" aria-hidden="true">{preferredSide}</span><ResultHeading>{goal.takeaway}</ResultHeading></div>
-      <p className="practice-result-mark-note"><span aria-hidden="true" />테두리는 이번 목표에서 살펴볼 부분이에요.</p>
+      <p className={`practice-result-mark-note${exercise.kind === 'portfolio' ? ' is-gap-note' : ''}`}><span aria-hidden="true" />{exercise.kind === 'portfolio' ? '세로 표시는 제목·설명 사이와 작업 사이의 간격이에요.' : '테두리는 이번 목표에서 살펴볼 부분이에요.'}</p>
       <div className="practice-result-comparison" role="group" aria-label="A와 B 그림으로 보는 설계 이유">
         {['A', 'B'].map(side => <figure key={side} className="practice-result-figure">
           <div className="practice-result-figure-label"><span>{side}</span>{side === preferredSide && <span>이 목표의 제안</span>}</div>
           <ResultArtwork sourceRefs={artworkRefs} kind={exercise.kind} variant={variantFor(side)} focusTarget={goal.focusTarget} />
           <figcaption>{side === exercise.revisedSide ? goal.revisedPoint : goal.originalPoint}</figcaption>
-          <button className="practice-result-zoom" aria-label={`${side} 해설 그림 크게 보기`} onClick={() => openZoom(side)}><PracticeIcon name="expand" />{side} 크게 보기</button>
+          <button className="practice-result-zoom" aria-label={`${side} 전체 화면 크게 보기`} onClick={() => openZoom(side)}><PracticeIcon name="expand" /><span className="practice-result-wide-label">{side} 크게 보기</span><span className="practice-result-mobile-label">전체 보기</span></button>
         </figure>)}
       </div>
       <p className="practice-result-explanation">{goal.explanation}</p>

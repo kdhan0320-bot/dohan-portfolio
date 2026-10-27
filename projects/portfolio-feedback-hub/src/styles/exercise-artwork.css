@@ -50,10 +50,9 @@
 .exercise-artwork.ea-portfolio { background: #f5f5f6; --ea-ink: #303949; }
 .exercise-artwork .ea-work-heading { display: flex; align-items: center; justify-content: space-between; margin-top: 3px; margin-bottom: 24px; font-size: 18px; font-weight: 750; letter-spacing: -.03em; }
 .exercise-artwork .ea-work-heading > span:last-child { font-size: 11px; font-weight: 500; letter-spacing: .03em; color: #6b7382; }
-.exercise-artwork .ea-project-list { display: flex; flex-direction: column; gap: 24px; }
-.exercise-artwork .ea-project-group { display: flex; flex-direction: column; gap: 24px; }
-.exercise-artwork.ea-revised .ea-project-list { gap: 42px; }
-.exercise-artwork.ea-revised .ea-project-group { gap: 6px; }
+.exercise-artwork .ea-project-list { --ea-list-gap: 24px; --ea-group-gap: 24px; display: flex; flex-direction: column; gap: var(--ea-list-gap); }
+.exercise-artwork .ea-project-group { position: relative; display: flex; flex-direction: column; gap: var(--ea-group-gap); }
+.exercise-artwork.ea-revised .ea-project-list { --ea-list-gap: 42px; --ea-group-gap: 6px; }
 .exercise-artwork .ea-project-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; }
 .exercise-artwork .ea-project-mark { flex: 0 0 13px; width: 13px; height: 13px; background: #7285a6; border-radius: 2px; }
 .exercise-artwork .ea-project-mark-coral { background: #b97961; border-radius: 50%; }
@@ -152,9 +151,46 @@
   .exercise-artwork .ea-gallery-copy > .ea-mini-action { padding-inline: 8px; }
   .exercise-artwork .ea-topline > span:last-child { font-size: 11px; }
   .exercise-artwork .ea-project-description { font-size: 11px; white-space: normal; }
-  .exercise-artwork .ea-project-group { gap: 16px; }
-  .exercise-artwork .ea-project-list { gap: 16px; }
-  .exercise-artwork.ea-revised .ea-project-group { gap: 6px; }
-  .exercise-artwork.ea-revised .ea-project-list { gap: 34px; }
+  .exercise-artwork .ea-project-list { --ea-list-gap: 16px; --ea-group-gap: 16px; }
+  .exercise-artwork.ea-revised .ea-project-list { --ea-list-gap: 34px; --ea-group-gap: 6px; }
   .exercise-artwork .ea-flower-title { font-size: 25px; left: 14px; padding-inline: 12px; }
+}
+
+/* Brackets measure empty space; they never enclose either project's content. */
+.exercise-artwork.ea-highlight.ea-portfolio .ea-project-description { position: relative; }
+.exercise-artwork.ea-highlight.ea-portfolio .ea-project-description::before,
+.exercise-artwork.ea-highlight.ea-portfolio .ea-project-group + .ea-project-group::before {
+  content: ''; position: absolute; bottom: 100%; left: 4px; width: 8px;
+  height: var(--ea-group-gap); border-left: 2px solid #c66043; border-block: 2px solid #c66043;
+}
+.exercise-artwork.ea-highlight.ea-portfolio .ea-project-group + .ea-project-group::before { height: var(--ea-list-gap); }
+
+/* Focused mobile explanations reuse the original content, typography and comparison rules. */
+.exercise-artwork.ea-detail { height: auto; padding: 14px; }
+.exercise-artwork.ea-detail .ea-topline,
+.exercise-artwork.ea-detail .ea-eyebrow,
+.exercise-artwork.ea-detail .ea-mini-action,
+.exercise-artwork.ea-detail .ea-sound-cover,
+.exercise-artwork.ea-detail .ea-track,
+.exercise-artwork.ea-detail .ea-progress,
+.exercise-artwork.ea-detail .ea-work-heading,
+.exercise-artwork.ea-detail .ea-flower-edition,
+.exercise-artwork.ea-detail .ea-walk-heading,
+.exercise-artwork.ea-detail .ea-signup-heading,
+.exercise-artwork.ea-detail .ea-faux-field:first-child,
+.exercise-artwork.ea-detail .ea-faux-submit { display: none; }
+.exercise-artwork.ea-detail .ea-gallery-layout { height: 160px; }
+.exercise-artwork.ea-detail .ea-gallery-copy { justify-content: center; gap: 12px; }
+.exercise-artwork.ea-detail .ea-gallery-title { min-height: 66px; }
+.exercise-artwork.ea-detail .ea-player-controls { margin: 0; }
+.exercise-artwork.ea-detail .ea-project-list { padding-left: 8px; }
+.exercise-artwork.ea-detail .ea-project-description { word-break: keep-all; }
+.exercise-artwork.ea-detail .ea-flower-image { height: 142px; }
+.exercise-artwork.ea-detail .ea-flower-title { top: 18px; }
+.exercise-artwork.ea-detail .ea-map { height: 142px; }
+.exercise-artwork.ea-detail .ea-faux-field { margin: 0; }
+@container (max-width: 340px) {
+  .exercise-artwork.ea-gallery .ea-eyebrow { font-size: 10px; letter-spacing: .04em; white-space: nowrap; }
+  .exercise-artwork.ea-gallery:not(.ea-revised) .ea-gallery-layout { grid-template-columns: minmax(78px, 38fr) minmax(0, 62fr); }
+  .exercise-artwork .ea-gallery-copy > .ea-mini-action { padding-inline: 4px; }
 }
