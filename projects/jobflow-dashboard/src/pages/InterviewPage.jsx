@@ -1,5 +1,5 @@
 import Field from '../components/ui/Field';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Alert, Menu } from '@mui/material';
 import Add from '@mui/icons-material/Add';
@@ -64,7 +64,32 @@ export default function InterviewPage() {
   const pendingDelete = useRef(null);
   const emptyResult = useRef(null);
   const pendingResultFocus = useRef(false);
-  const validationFocus = useRef(null);
+  const [validationTarget, setValidationTarget] = useState(null);
+  const answerInput = useRef(null);
+  useLayoutEffect(() => {
+    const input = answerInput.current;
+    if (!open || !editingId || !input) return;
+    const fields = input.closest('.field-stack');
+    let width = input.clientWidth;
+    const fitAnswer = () => {
+      const scrollTop = fields?.scrollTop || 0;
+      input.style.height = 'auto';
+      input.style.height = `${input.scrollHeight}px`;
+      if (fields) fields.scrollTop = scrollTop;
+      revealMobileEditor(input.closest('.inline-answer-editor'));
+    };
+    fitAnswer();
+    // Measure the visible input itself so its actual wrapping and height stay
+    // in sync when the available width changes.
+    const observer = window.ResizeObserver && new window.ResizeObserver(() => {
+      if (input.clientWidth !== width) {
+        width = input.clientWidth;
+        fitAnswer();
+      }
+    });
+    observer?.observe(input);
+    return () => observer?.disconnect();
+  }, [open, editingId, form.answer]);
   useEffect(() => {
     if (busy || pageLoading || !pendingResultFocus.current) return;
     pendingResultFocus.current = false;
@@ -93,22 +118,23 @@ export default function InterviewPage() {
     return () => observer?.disconnect();
   }, [open, editingId]);
   useEffect(() => {
-    // Validation changes the available field area; reveal the focused input
-    // after that layout update, while the error and completion actions stay put.
-    if (!formError || !editingId || !validationFocus.current) return;
-    const fieldId = validationFocus.current;
-    validationFocus.current = null;
+    // Each failed submit is a new request, even when the error text is unchanged.
+    // Open the details first, then reveal the field after React has laid out the error.
+    if (!validationTarget) return;
+    const field = document.getElementById(validationTarget.fieldId);
+    field?.closest('details')?.setAttribute('open', '');
     const frame = window.requestAnimationFrame(() => {
-      const field = document.getElementById(fieldId);
+      if (!field) return;
+      field.focus({ preventScroll: true });
       const editor = field?.closest('.inline-answer-editor');
       revealMobileEditor(editor);
       const fields = editor?.querySelector('.field-stack');
       if (fields) {
         fields.scrollTo({ top: fields.scrollTop + field.getBoundingClientRect().top - fields.getBoundingClientRect().top - (fields.clientHeight - field.offsetHeight) / 2, behavior: 'instant' });
-      } else field?.scrollIntoView?.({ block: 'center' });
+      } else field.scrollIntoView?.({ block: 'nearest' });
     });
     return () => window.cancelAnimationFrame(frame);
-  }, [formError, editingId]);
+  }, [validationTarget]);
   function companyLabel(note) {
     return note.application_id ? companyMap.get(note.application_id)?.company_name || '연결한 회사 없음' : '공통 질문';
   }
@@ -145,7 +171,7 @@ export default function InterviewPage() {
     if (id) { setActiveId(id); if (companyScope !== 'all' && (values.application_id || 'common') !== companyScope) selectCompany(values.application_id || 'common'); }
     setDraftId(draftKey);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
-    setConfirmDiscard(false); setFormError(''); setFeedback(null); setOpen(true);
+    setConfirmDiscard(false); setFormError(''); setValidationTarget(null); setFeedback(null); setOpen(true);
   }
   function resumeDraft() {
     const pending = drafts.pending;
@@ -183,17 +209,13 @@ export default function InterviewPage() {
     e.preventDefault();
     if (busy || companiesLoading || companiesError) return;
     if (form.application_id && !companyMap.has(form.application_id)) {
-      validationFocus.current = 'note-company';
       setFormError('연결한 회사를 찾을 수 없어요. 지원 회사를 다시 선택해주세요.');
-      document.getElementById('note-company')?.closest('details')?.setAttribute('open', '');
-      document.getElementById('note-company')?.focus({ preventScroll: true });
+      setValidationTarget({ fieldId: 'note-company' });
       return;
     }
     if (!form.question.trim()) {
-      validationFocus.current = 'note-question';
       setFormError('질문을 입력해주세요.');
-      document.getElementById('note-question')?.closest('details')?.setAttribute('open', '');
-      document.getElementById('note-question')?.focus({ preventScroll: true });
+      setValidationTarget({ fieldId: 'note-question' });
       return;
     }
     setBusy(editingId ? 'edit' : 'add');
@@ -246,6 +268,7 @@ export default function InterviewPage() {
     }
   }
   const answerField = <Field id="note-answer" className="interview-answer-field" disabled={Boolean(busy)} label="나의 답변 (선택)" multiline
+    inputRef={editingId ? answerInput : undefined}
     minRows={editingId ? undefined : 4} rows={editingId ? 6 : undefined}
     slotProps={{ input: editingId ? { inputComponent: 'textarea' } : {} }}
     value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
@@ -313,6 +336,10 @@ export default function InterviewPage() {
         if (event.target.closest('.inline-editor-actions')) return;
         const editor = event.currentTarget;
         window.requestAnimationFrame(() => { if (editor.contains(document.activeElement)) revealMobileEditor(editor); });
+      }} onKeyUp={event => {
+        // Native caret navigation can scroll the document as well as the fields.
+        // Keep the actions above the mobile navigation after that default action.
+        if (event.target.tagName === 'TEXTAREA') revealMobileEditor(event.currentTarget);
       }}>
         <h2>{originalForm.question}</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '답변 저장'}</Button></div>
       </form> : <article className="practice-card">

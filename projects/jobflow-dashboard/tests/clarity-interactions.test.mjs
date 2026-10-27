@@ -13,7 +13,7 @@ const jsx = (type, props, key) => ({ type, props, key });
 const text = node => Array.isArray(node) ? node.map(text).join('') : node && typeof node === 'object' ? text(node.props?.children) : node == null ? '' : String(node);
 const names = ['Button', 'MenuItem', 'Dialog', 'DialogTitle', 'DialogContent', 'DialogActions', 'IconButton', 'Alert', 'Checkbox', 'FormControlLabel', 'Menu', 'Tabs', 'Tab'];
 
-async function mount(page, dependencies, props) {
+async function mount(page, dependencies, props, documentOverrides = {}) {
   const source = await readFile(new URL(`../src/pages/${page}.jsx`, import.meta.url), 'utf8');
   const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
   const states = [];
@@ -38,6 +38,7 @@ async function mount(page, dependencies, props) {
       states[index] = deps;
     },
   };
+  react.useLayoutEffect = react.useEffect;
   const modules = {
     react, 'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'fragment' },
     '@mui/material': Object.fromEntries(names.map(name => [name, name])),
@@ -58,7 +59,7 @@ async function mount(page, dependencies, props) {
   const module = { exports: {} };
   vm.runInNewContext(code, {
     module, exports: module.exports, URLSearchParams,
-    document: { body: fieldNode, activeElement: fieldNode, getElementById: () => fieldNode },
+    document: { body: fieldNode, activeElement: fieldNode, getElementById: () => fieldNode, ...documentOverrides },
     window: { requestAnimationFrame: fn => { fn(); return 1; }, cancelAnimationFrame() {} },
     require(name) {
       if (name.startsWith('@mui/icons-material/') || name.endsWith('.css')) return 'Icon';
@@ -202,4 +203,39 @@ test('inline interview editing restores an unfinished answer after leaving and s
   await page.click('계속 작성');
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer').props.value, '아직 저장하지 않은 답변');
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.value, '');
+});
+
+test('repeating an invalid interview save reopens and reveals the question every time', async () => {
+  let revealed = 0;
+  let focused = 0;
+  let detailsOpen = false;
+  let saves = 0;
+  const fields = { scrollTop: 0, clientHeight: 150, getBoundingClientRect: () => ({ top: 300 }), scrollTo() { revealed++; } };
+  const field = {
+    offsetHeight: 50,
+    focus() { focused++; },
+    getBoundingClientRect: () => ({ top: 600 }),
+    closest: selector => selector === 'details' ? { setAttribute() { detailsOpen = true; } }
+      : selector === '.inline-answer-editor' ? { querySelector: () => fields } : null,
+  };
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({
+      notes: [{ id: 'q1', question: '지원한 이유는?', answer: '기존 답변', application_id: null }],
+      update: async () => { saves++; },
+    }) },
+  }, undefined, { getElementById: id => id === 'note-question' ? field : null });
+  await page.click('답변 수정');
+  page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '' } });
+  page.render();
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    detailsOpen = false;
+    await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} });
+    page.render();
+    assert.equal(detailsOpen, true, 'a collapsed field must reopen');
+    assert.equal(focused, attempt, 'focus must run on every invalid save');
+    assert.equal(revealed, attempt, 'the same error must still reveal its input');
+  }
+  assert.equal(saves, 0, 'invalid attempts must never save a record');
 });
