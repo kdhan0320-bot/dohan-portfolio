@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createRecordExport, loadRecordExport } from '../src/utils/recordExport.js';
+import { createRecordExport, loadRecordExport, getRecordExportFilename } from '../src/utils/recordExport.js';
 
 function makeClient({ failTable, changedUser = false } = {}) {
   const calls = [];
@@ -32,6 +32,23 @@ test('sample backups are explicitly labelled and preserve question-only notes', 
   assert.equal(result.interviews[0].answer, '');
   assert.equal(result.exported_at, '2026-10-16T00:00:00Z');
 });
+
+for (const [instant, koreanDate] of [
+  ['2026-10-27T14:59:59.999Z', '2026-10-27'],
+  ['2026-10-27T15:00:00.000Z', '2026-10-28'],
+  ['2026-10-31T15:00:00.000Z', '2026-11-01'],
+  ['2026-12-31T15:00:00.000Z', '2027-01-01'],
+  ['2028-02-28T15:00:00.000Z', '2028-02-29'],
+  ['2026-10-27T08:00:00-07:00', '2026-10-28'],
+]) {
+  test(`export filenames use Korea's date at ${instant}`, () => {
+    for (const sample of [true, false]) {
+      const records = createRecordExport({ applications: [], checklist: [], interviews: [], sample }, instant);
+      assert.equal(getRecordExportFilename(records), `galpirok-${sample ? 'sample' : 'personal'}-${koreanDate}.json`);
+      assert.equal(records.exported_at, instant, 'the machine-readable export timestamp must stay unchanged');
+    }
+  });
+}
 
 test('exports every page and filters every table to the signed-in owner', async () => {
   const client = makeClient();

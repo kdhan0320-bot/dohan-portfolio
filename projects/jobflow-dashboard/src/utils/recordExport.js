@@ -1,4 +1,7 @@
 const PAGE_SIZE = 500;
+const EXPORT_DATE_FORMAT = new Intl.DateTimeFormat('en', {
+  timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+});
 const EXPORT_FIELDS = {
   applications: 'id,company_name,position,status,job_url,deadline,applied_date,location,company_size,priority,resume_submitted,portfolio_submitted,memo,created_at,updated_at',
   portfolio_checklists: 'id,application_id,title,category,is_done,sort_order,created_at,updated_at',
@@ -48,12 +51,20 @@ export async function loadRecordExport(client, userId) {
   return createRecordExport({ applications, checklist, interviews, profile: profile.data });
 }
 
+export function getRecordExportFilename(records) {
+  // Only the filename uses Korea's calendar date; exported_at stays an ISO instant.
+  const parts = EXPORT_DATE_FORMAT.formatToParts(new Date(records.exported_at));
+  const date = ['year', 'month', 'day'].map(type => parts.find(part => part.type === type).value).join('-');
+  return `galpirok-${records.data_type}-${date}.json`;
+}
+
 export function downloadRecordExport(records) {
+  const filename = getRecordExportFilename(records);
   const blob = new Blob([JSON.stringify(records, null, 2)], { type: 'application/json;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `galpirok-${records.data_type}-${records.exported_at.slice(0, 10)}.json`;
+  link.download = filename;
   document.body.appendChild(link);
   link.click();
   link.remove();
