@@ -5,6 +5,8 @@ import OpenInNew from '@mui/icons-material/OpenInNew';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
 import useApplicationDraft from '../../hooks/useApplicationDraft';
 import Field from '../ui/Field';
+import DateField from '../ui/DateField';
+import { applicationDateErrors } from '../../utils/dateInput';
 import LiveCompanySummary from './CompanySummary';
 import { CompanyMark, ConfirmDelete } from '../ui/PageUI';
 import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../../constants';
@@ -82,13 +84,14 @@ export default function ApplicationPanel({ application, creating, draftScope, on
   async function save(e) {
     e.preventDefault();
     if (busy) return;
-    const invalid = {};
+    const invalid = applicationDateErrors(form);
     if (!form.company_name.trim()) invalid.company_name = '회사 이름을 입력해주세요.';
     if (!isValidApplicationUrl(form.job_url)) invalid.job_url = 'http:// 또는 https://로 시작하는 공고 주소를 입력해주세요.';
     setErrors(invalid);
     if (Object.keys(invalid).length) {
-      if (invalid.job_url || (!creating && invalid.company_name)) setExtraOpen(true);
-      window.requestAnimationFrame(() => (invalid.company_name ? companyInput : urlInput).current?.focus());
+      if (invalid.job_url || invalid.applied_date || (!creating && invalid.company_name)) setExtraOpen(true);
+      const firstInvalid = ['company_name', 'deadline', 'job_url', 'applied_date'].find(key => invalid[key]);
+      window.requestAnimationFrame(() => document.getElementById(`company-${firstInvalid}`)?.focus());
       return;
     }
     setBusy(true); setError('');
@@ -101,7 +104,10 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     try { await onDelete(application.id); clearDraft(); }
     catch (e) { setError(e.message); setDeleting(false); setBusy(false); }
   }
-  const field = (key, label, extra = {}) => <Field id={`company-${key}`} label={label} value={form[key] ?? ''} disabled={busy} onChange={e => change(key, e.target.value)} error={Boolean(errors[key])} helperText={errors[key]} {...extra} />;
+  const field = (key, label, extra = {}) => {
+    const Component = extra.type === 'date' ? DateField : Field;
+    return <Component id={`company-${key}`} label={label} value={form[key] ?? ''} disabled={busy} onChange={e => change(key, e.target.value)} error={Boolean(errors[key])} helperText={errors[key]} {...extra} />;
+  };
   return <>
     <Dialog
       open

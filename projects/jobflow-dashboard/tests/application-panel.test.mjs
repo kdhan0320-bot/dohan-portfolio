@@ -6,6 +6,7 @@ import { transform } from 'esbuild';
 import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '../src/constants/index.js';
 import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
 import { isValidApplicationUrl } from '../src/utils/applicationPayload.js';
+import { applicationDateErrors } from '../src/utils/dateInput.js';
 
 // Run the actual panel's validation, input and disclosure handlers. Native
 // details focus/geometry are checked separately in the browser.
@@ -18,6 +19,7 @@ function panelWith(application = null, options = {}) {
   let values = { ...applicationDraft(application), ...options.draft };
   const saves = [];
   const statusSaves = [];
+  const focused = [];
   let closes = 0;
   const noOp = () => {};
   const react = {
@@ -53,16 +55,19 @@ function panelWith(application = null, options = {}) {
       restored: false,
     }) },
     '../ui/Field': 'Field',
+    '../ui/DateField': 'Field',
     './CompanySummary': 'CompanySummary',
     '../ui/PageUI': { CompanyMark: 'CompanyMark', ConfirmDelete: 'ConfirmDelete' },
     '../../constants': { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS },
     '../../utils/applicationBoard': { applicationDraft, BOARD_COLUMNS, boardColumn },
     '../../utils/applicationPayload': { isValidApplicationUrl },
+    '../../utils/dateInput': { applicationDateErrors },
   };
   const module = { exports: {} };
   vm.runInNewContext(code, {
     module, exports: module.exports,
     window: { requestAnimationFrame: callback => callback() },
+    document: { getElementById: id => ({ focus: () => focused.push(id) }) },
     require(name) {
       if (name.startsWith('@mui/icons-material/')) return name;
       if (!(name in dependencies)) throw new Error(`Unexpected dependency: ${name}`);
@@ -87,6 +92,7 @@ function panelWith(application = null, options = {}) {
   return {
     saves,
     statusSaves,
+    focused,
     feedback: () => find(node => node.type === 'p' && node.props.className?.includes('status-save-feedback'))?.props,
     closes: () => closes,
     close: () => find(node => node.type === 'IconButton' && node.props['aria-label'] === '회사 정보 닫기').props.onClick(),
@@ -102,6 +108,42 @@ function panelWith(application = null, options = {}) {
     toggle: open => find(node => node.type === 'details').props.onToggle({ currentTarget: { open } }),
   };
 }
+
+test('partial and impossible deadlines cannot silently save as an empty date', async () => {
+  const panel = panelWith();
+  panel.change('회사 이름', '날짜 검사');
+  for (const date of ['2026', '2026-09', '2026-02-29', '2026-13-01']) {
+    panel.change('공고 마감일 (선택)', date);
+    await panel.submit();
+    assert.equal(panel.saves.length, 0);
+    assert.equal(panel.field('공고 마감일 (선택)').props.value, date);
+    assert.equal(panel.field('공고 마감일 (선택)').props.error, true);
+    assert.equal(panel.focused.at(-1), 'company-deadline');
+  }
+  panel.change('공고 마감일 (선택)', '2028-02-29');
+  await panel.submit();
+  assert.equal(panel.saves[0].deadline, '2028-02-29');
+});
+
+test('an incomplete applied date reveals the collapsed field and preserves the saved record', async () => {
+  const record = { id: 'dates', company_name: '날짜 검사', deadline: '2026-10-31', applied_date: '2026-09-27' };
+  const panel = panelWith(record);
+  panel.edit();
+  panel.change('지원한 날짜', '2026-10');
+  panel.toggle(false);
+  await panel.submit();
+  assert.equal(panel.saves.length, 0);
+  assert.equal(record.applied_date, '2026-09-27');
+  assert.equal(panel.field('지원한 날짜').props.value, '2026-10');
+  assert.equal(panel.details().props.open, true);
+  assert.equal(panel.focused.at(-1), 'company-applied_date');
+  panel.change('지원한 날짜', '');
+  panel.change('공고 마감일 (선택)', '');
+  await panel.submit();
+  assert.equal(panel.saves.length, 1, 'optional dates can still be deliberately cleared');
+  assert.equal(panel.saves[0].applied_date, '');
+  assert.equal(panel.saves[0].deadline, '');
+});
 
 test('correcting an invalid posting address keeps the extra fields open through successful saving', async () => {
   const panel = panelWith();

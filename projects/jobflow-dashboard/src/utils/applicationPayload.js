@@ -1,3 +1,5 @@
+import { parseDateInput } from './dateInput.js';
+
 export const APPLICATION_MUTABLE_FIELDS = Object.freeze([
   'company_name',
   'position',
@@ -48,7 +50,9 @@ export const buildApplicationPayload = (input = {}) => (
     if (field === 'job_url') {
       payload[field] = normalizeApplicationUrl(value);
     } else if (DATE_FIELDS.has(field)) {
-      payload[field] = typeof value === 'string' ? value.trim() || null : value ?? null;
+      const parsed = parseDateInput(value);
+      if (parsed.error) throw new TypeError(`${field === 'deadline' ? '공고 마감일' : '지원한 날짜'}: ${parsed.error}`);
+      payload[field] = parsed.value || null;
     } else {
       payload[field] = typeof value === 'string' ? value.trim() : value;
     }

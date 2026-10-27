@@ -101,6 +101,21 @@
 .workspace-main .interview-page .practice-primary-action + .practice-answer { margin: 12px 0 0; }
 .workspace-main .interview-page .practice-answer p { margin-top: 0; }
 .inline-answer-editor .inline-editor-error { flex-shrink: 0; margin-bottom: 12px; }
+.date-picker-control { position: relative; display: inline-flex; }
+.date-picker-control .MuiIconButton-root { width: 44px; height: 44px; }
+.date-picker-native { position: absolute; right: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; pointer-events: none; padding: 0; border: 0; }
+@media (max-width: 999px) {
+  .workspace-main .interview-page .inline-answer-editor {
+    display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+    max-height: calc(100dvh - 172px - env(safe-area-inset-bottom, 0px));
+    padding-block: 16px;
+  }
+  .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 12px; }
+  .workspace-main .inline-answer-editor > .field-stack { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 4px; margin: -4px; }
+  .workspace-main .inline-answer-editor > .field-stack :is(input, textarea, button, select, summary) { scroll-margin-block: 12px; }
+  .workspace-main .inline-answer-editor .inline-editor-actions { flex-shrink: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid #dfe6eb; background: #fff; }
+  .workspace-main .inline-answer-editor .inline-editor-actions .MuiButton-root { min-height: 44px; min-width: 88px; }
+}
 .interview-page .practice-toolbar { justify-content: flex-end; margin-top: 0; }
 .settings-record-marker { display: block; width: 24px; height: 42px; flex: 0 0 24px; background: #70899e; clip-path: polygon(0 0,100% 0,100% 100%,50% 82%,0 100%); }
 .settings-card .settings-reset-result { min-height: 24px; margin: 12px 0 0; font-size: 14px; line-height: 24px; color: #39715b; }
@@ -310,7 +325,9 @@
   .workspace-main .interview-page .practice-question { margin-top: 16px; }
   .workspace-main .interview-page .practice-primary-action { margin-top: 16px; }
   .workspace-main .interview-page .practice-answer { padding: 16px; }
-  /* In a short desktop, only the editor fields scroll. Completion actions keep
+}
+@media (min-width: 1000px) {
+  /* On desktop, only the editor fields scroll. Completion actions keep
      their own space and never cover a textarea or an expanded optional field. */
   .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content { padding-bottom: 12px; }
   .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content > .workspace-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: 12px; }

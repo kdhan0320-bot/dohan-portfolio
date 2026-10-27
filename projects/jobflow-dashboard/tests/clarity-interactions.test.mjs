@@ -54,7 +54,7 @@ async function mount(page, dependencies, props) {
     '../constants': constants,
     ...dependencies,
   };
-  const fieldNode = { focus() {}, closest: () => ({ setAttribute() {} }) };
+  const fieldNode = { focus() {}, closest: selector => selector === 'details' ? { setAttribute() {} } : null };
   const module = { exports: {} };
   vm.runInNewContext(code, {
     module, exports: module.exports, URLSearchParams,
@@ -192,4 +192,13 @@ test('inline interview editing restores an unfinished answer after leaving and s
   assert.equal(notes[0].answer, '아직 저장하지 않은 답변');
   assert.equal(store.read('sample', 'interview', 'question-1'), null);
   assert.match(page.text(), /아직 저장하지 않은 답변/);
+  await page.click('답변 수정');
+  page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '' } }); page.render();
+  await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
+  assert.match(page.text(), /질문을 입력해주세요/);
+  assert.equal(notes[0].question, '지원한 이유는?', 'invalid editing must leave the saved question unchanged');
+  await page.click('취소');
+  await page.click('계속 작성');
+  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer').props.value, '아직 저장하지 않은 답변');
+  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.value, '');
 });

@@ -20,6 +20,13 @@ const INITIAL = {
   importance: '보통',
   is_reviewed: false
 };
+function revealMobileEditor(editor) {
+  if (!editor || !window.matchMedia?.('(max-width: 999px)')?.matches) return;
+  const rect = editor.getBoundingClientRect();
+  if (rect.top < 88 || rect.bottom > window.innerHeight - 76) {
+    window.scrollTo({ top: window.scrollY + rect.top - 88, behavior: 'instant' });
+  }
+}
 export default function InterviewPage() {
   const drafts = useRecordDraft('interview');
   const {
@@ -73,7 +80,17 @@ export default function InterviewPage() {
   const activeHasAnswer = Boolean(activeNote?.answer?.trim());
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
   useEffect(() => {
-    if (open && editingId) document.getElementById('note-answer')?.focus({ preventScroll: true });
+    if (!open || !editingId) return;
+    const answer = document.getElementById('note-answer');
+    answer?.focus({ preventScroll: true });
+    const editor = answer?.closest('form');
+    const revealActions = () => revealMobileEditor(editor);
+    revealActions();
+    // A short answer can grow after opening. React only to a change in editor
+    // height, so typing within the bounded area does not keep moving the page.
+    const observer = window.ResizeObserver && new window.ResizeObserver(revealActions);
+    if (editor) observer?.observe(editor);
+    return () => observer?.disconnect();
   }, [open, editingId]);
   useEffect(() => {
     // Validation changes the available field area; reveal the focused input
@@ -82,7 +99,13 @@ export default function InterviewPage() {
     const fieldId = validationFocus.current;
     validationFocus.current = null;
     const frame = window.requestAnimationFrame(() => {
-      document.getElementById(fieldId)?.scrollIntoView?.({ block: 'center' });
+      const field = document.getElementById(fieldId);
+      const editor = field?.closest('.inline-answer-editor');
+      revealMobileEditor(editor);
+      const fields = editor?.querySelector('.field-stack');
+      if (fields) {
+        fields.scrollTo({ top: fields.scrollTop + field.getBoundingClientRect().top - fields.getBoundingClientRect().top - (fields.clientHeight - field.offsetHeight) / 2, behavior: 'instant' });
+      } else field?.scrollIntoView?.({ block: 'center' });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [formError, editingId]);
@@ -152,6 +175,10 @@ export default function InterviewPage() {
     pendingResultFocus.current = true;
     setConfirmDiscard(false); setOpen(false); setEditingId(null); setForm(INITIAL); setFormError('');
   }
+  function continueDraft() {
+    setConfirmDiscard(false);
+    window.requestAnimationFrame(() => document.getElementById('note-answer')?.focus({ preventScroll: true }));
+  }
   async function submit(e) {
     e.preventDefault();
     if (busy || companiesLoading || companiesError) return;
@@ -159,14 +186,14 @@ export default function InterviewPage() {
       validationFocus.current = 'note-company';
       setFormError('연결한 회사를 찾을 수 없어요. 지원 회사를 다시 선택해주세요.');
       document.getElementById('note-company')?.closest('details')?.setAttribute('open', '');
-      document.getElementById('note-company')?.focus();
+      document.getElementById('note-company')?.focus({ preventScroll: true });
       return;
     }
     if (!form.question.trim()) {
       validationFocus.current = 'note-question';
       setFormError('질문을 입력해주세요.');
       document.getElementById('note-question')?.closest('details')?.setAttribute('open', '');
-      document.getElementById('note-question')?.focus();
+      document.getElementById('note-question')?.focus({ preventScroll: true });
       return;
     }
     setBusy(editingId ? 'edit' : 'add');
@@ -279,7 +306,11 @@ export default function InterviewPage() {
 
       </div>
       </div>
-      {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label="면접 답변 작성">
+      {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label="면접 답변 작성" onFocusCapture={event => {
+        if (event.target.closest('.inline-editor-actions')) return;
+        const editor = event.currentTarget;
+        window.requestAnimationFrame(() => { if (editor.contains(document.activeElement)) revealMobileEditor(editor); });
+      }}>
         <h2>{originalForm.question}</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '답변 저장'}</Button></div>
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
@@ -315,11 +346,11 @@ export default function InterviewPage() {
       </DialogActions>
     </form>
   </Dialog>
-  <Dialog open={confirmDiscard} onClose={() => setConfirmDiscard(false)} aria-labelledby="discard-note-title" aria-describedby="discard-note-description" fullWidth maxWidth="xs">
+  <Dialog open={confirmDiscard} onClose={continueDraft} disableRestoreFocus aria-labelledby="discard-note-title" aria-describedby="discard-note-description" fullWidth maxWidth="xs">
     <DialogTitle id="discard-note-title">작성 내용을 저장하지 않았어요</DialogTitle>
     <DialogContent><p id="discard-note-description">닫으면 이번에 작성하거나 수정한 내용이 사라져요.</p></DialogContent>
     <DialogActions>
-      <Button autoFocus variant="contained" onClick={() => setConfirmDiscard(false)}>계속 작성</Button>
+      <Button autoFocus variant="contained" onClick={continueDraft}>계속 작성</Button>
       <Button variant="outlined" onClick={discardDraft}>저장하지 않고 닫기</Button>
     </DialogActions>
   </Dialog>
