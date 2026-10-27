@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Drawer, IconButton, Tooltip } from '@mui/material';
 import MenuOutlined from '@mui/icons-material/MenuOutlined';
@@ -28,7 +28,7 @@ const activePath = (pathname, to) => {
 
 export default function SiteHeader({ publicMode = false }) {
   const { user, isGuest, enterGuestMode, loading } = useAuth();
-  const { pathname, search } = useLocation();
+  const { pathname, search, state } = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -39,6 +39,14 @@ export default function SiteHeader({ publicMode = false }) {
   const navigationLock = useRef(false);
   const hasWorkspace = Boolean(user || isGuest);
   const homePath = '/welcome';
+
+  useEffect(() => {
+    // Wait for the destination header to mount; the previous drawer may have
+    // unmounted before its exit callback can run.
+    if (!publicMode || !state?.focusWelcome) return;
+    const frame = window.requestAnimationFrame(() => document.getElementById('welcome-content')?.focus({ preventScroll: true }));
+    return () => window.cancelAnimationFrame(frame);
+  }, [publicMode, state]);
 
   function focusContent() {
     window.requestAnimationFrame(() => {
@@ -67,7 +75,7 @@ export default function SiteHeader({ publicMode = false }) {
         closeFocusRef.current = 'content';
         setMobileOpen(false);
       }
-      navigate(to);
+      navigate(to, { state: fromDrawer && to === homePath ? { focusWelcome: true } : null });
       if (!fromDrawer || publicMode) focusContent();
     } catch (error) {
       setFeedback({ severity: 'error', message: getAuthErrorMessage(error) });
@@ -118,7 +126,7 @@ export default function SiteHeader({ publicMode = false }) {
     {!publicMode && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
       {mainLinks.map(item => menuLink(item, false, true))}
     </nav>}
-    <Drawer anchor="right" open={mobileOpen} onClose={closeMenu} ModalProps={{ disableRestoreFocus: true }} slotProps={{
+    <Drawer anchor="top" open={mobileOpen} onClose={closeMenu} ModalProps={{ disableRestoreFocus: true }} slotProps={{
       paper: { className: 'site-mobile-drawer', id: 'site-mobile-menu', role: 'dialog', 'aria-modal': true, 'aria-label': publicMode ? '전체 메뉴' : '보조 메뉴' },
       transition: { onEntered: () => menuCloseRef.current?.focus(), onExited: finishDrawerClose }
     }}>

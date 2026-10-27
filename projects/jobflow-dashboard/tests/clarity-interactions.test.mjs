@@ -243,6 +243,32 @@ test('repeating an invalid interview save reopens and reveals the question every
   assert.equal(saves, 0, 'invalid attempts must never save a record');
 });
 
+test('question management edits company details directly, preserves the answer, and resumes its draft', async () => {
+  const store = createRecordDraftStore();
+  let notes = [{ id: 'q1', question: '지원한 이유는?', answer: '그대로 보존할 긴 답변', application_id: 'a1', related_project: '포트폴리오', importance: '보통', is_reviewed: false }];
+  const dependencies = {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a1', company_name: '첫 회사' }, { id: 'a2', company_name: '둘째 회사' }] }) },
+    '../hooks/useRecordDraft': draftHook(store, 'interview'),
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes, update: async (id, payload) => { notes = [{ ...notes[0], ...payload }]; } }) },
+  };
+  let page = await mount('InterviewPage', dependencies);
+  page.find(node => node.type === 'MenuItem' && text(node) === '질문·회사 수정').props.onClick(); page.render();
+  page.find(node => node.type === 'Menu').props.slotProps.transition.onExited(); page.render();
+  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '질문·회사 정보 수정');
+  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer'), null);
+  page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '새 질문' } }); page.render();
+  page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.onChange({ target: { value: 'a2' } }); page.render();
+  page = await mount('InterviewPage', dependencies);
+  await page.click('이어서 작성');
+  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '질문·회사 정보 수정');
+  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.value, 'a2');
+  await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
+  assert.equal(notes[0].question, '새 질문');
+  assert.equal(notes[0].application_id, 'a2');
+  assert.equal(notes[0].answer, '그대로 보존할 긴 답변');
+  assert.equal(store.read('sample', 'interview', 'q1'), null);
+});
+
 test('answer entry waits for usable layout, reveals its label once, then preserves the editing position', async () => {
   const frames = new Map();
   let nextFrame = 0;

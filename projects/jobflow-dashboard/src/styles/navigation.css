@@ -28,8 +28,8 @@ html { scroll-padding-top: 140px; }
 .site-secondary-nav a:hover, .site-secondary-nav a.is-current { color: var(--ink-action); text-decoration: underline; text-underline-offset: 4px; }
 .site-header a:focus-visible, .site-mobile-drawer a:focus-visible, .site-mobile-tabbar a:focus-visible { outline: 3px solid var(--ink-action); outline-offset: 3px; }
 .site-header a[aria-disabled='true'], .site-mobile-drawer a[aria-disabled='true'], .site-mobile-tabbar a[aria-disabled='true'] { opacity: .65; }
-.site-mobile-drawer.MuiDrawer-paper { width: min(360px, 90vw); background: var(--surface); padding: 22px; }
-.site-mobile-heading { display: flex; align-items: center; justify-content: space-between; padding-bottom: 20px; margin-bottom: 10px; border-bottom: 1px solid #E3D8D1; }
+.site-mobile-drawer.MuiDrawer-paper { inset: 12px 12px auto auto; width: min(360px, calc(100% - 24px)); height: auto; max-height: calc(100dvh - 24px); background: var(--surface); padding: 20px; border: 1px solid var(--line); border-radius: 12px; }
+.site-mobile-heading { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; padding-bottom: 12px; margin-bottom: 8px; border-bottom: 1px solid var(--line); }
 .site-mobile-heading > span { color: var(--ink); font-size: 22px; font-weight: 500; }
 .site-mobile-nav { display: flex; flex-direction: column; gap: 6px; }
 .site-mobile-nav a { display: flex; min-height: 52px; align-items: center; border-radius: 6px; padding: 13px 14px; color: var(--muted); font-size: 17px; }
@@ -38,7 +38,7 @@ html { scroll-padding-top: 140px; }
 .site-mobile-secondary { display: grid; gap: 3px; padding-top: 17px; margin-top: 20px; border-top: 1px solid #E3D8D1; }
 .site-mobile-secondary a { padding: 11px 14px; min-height: 44px; font-size: 14px; color: var(--muted); }
 .site-mobile-secondary a.is-current { color: var(--ink-action); font-weight: 500; }
-.site-mobile-account { margin-top: auto; padding-top: 24px; }
+.site-mobile-account { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
 .site-mobile-account p { color: var(--muted); font-size: 13px; line-height: 1.7; margin-bottom: 16px; }
 .site-mobile-account .MuiButton-root { width: 100%; }
 .site-mobile-account .MuiButton-root + .MuiButton-root { margin-top: 8px; }

@@ -93,6 +93,10 @@
 .preview-preparation li::before { content: ''; width: 4px; height: 4px; flex: 0 0 4px; border-radius: 50%; background: #6c8378; align-self: flex-start; margin-top: 11px; }
 .preview-preparation p { color: #6a7883; font-size: 14px; line-height: 1.7; }
 .interview-page .practice-answer-state { color: #58715f; font-size: 13px; }
+.interview-page .practice-desk { width: 100%; max-width: 900px; }
+.interview-page .question-queue { align-self: start; }
+.practice-answer-label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; color: #3d6594; font-size: 14px; font-weight: 500; }
+.practice-answer-label .practice-answer-state { font-weight: 400; }
 .interview-page .practice-card-meta .MuiIconButton-root { flex: 0 0 44px; width: 44px; height: 44px; margin-right: -8px; }
 .interview-page .practice-card-meta .practice-company-label { flex: 1; }
 .interview-page .practice-card-meta .practice-answer-state { flex-shrink: 0; }
@@ -105,9 +109,8 @@
    Keep wrapping width stable while auto-height measurement briefly removes
    overflow. Otherwise the missing scrollbar makes long answers measure short. */
 .inline-answer-editor > .field-stack { scrollbar-gutter: stable; }
-.inline-answer-editor > .field-stack > .interview-answer-field { flex: 1 0 auto; display: flex; flex-direction: column; }
-.inline-answer-editor .interview-answer-field > .MuiFormControl-root { flex: 1; }
-.inline-answer-editor .interview-answer-field .MuiInputBase-root { flex: 1; align-items: flex-start; }
+.inline-answer-editor > .field-stack > .interview-answer-field { flex: 0 0 auto; }
+.inline-answer-editor .interview-answer-field .MuiInputBase-root { align-items: flex-start; }
 .inline-answer-editor .interview-answer-field textarea { min-height: 10.2em; resize: none; overflow-y: hidden; }
 .date-picker-control { position: relative; display: inline-flex; }
 .date-picker-control .MuiIconButton-root { width: 44px; height: 44px; }
@@ -145,11 +148,12 @@
   html[data-keyboard-open] .workspace-main .interview-page .inline-answer-editor {
     position: fixed; z-index: 1200; top: calc(var(--visible-top, 0px) + 8px); left: 12px; right: 12px;
     width: auto; height: calc(var(--visible-height, 100dvh) - 16px); margin: 0;
+    max-height: calc(var(--visible-height, 100dvh) - 16px);
     background: #fff; box-shadow: 0 0 0 100vmax #f0f4f8f5;
   }
   .workspace-main .interview-page .inline-answer-editor {
     display: flex; flex-direction: column; min-height: 0; overflow: hidden;
-    height: calc(var(--visible-height, 100dvh) - 172px - env(safe-area-inset-bottom, 0px));
+    height: auto; max-height: calc(var(--visible-height, 100dvh) - 172px - env(safe-area-inset-bottom, 0px));
     padding-block: 16px;
   }
   .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 12px; }
@@ -322,7 +326,7 @@
   .site-footer-inner { width: min(1440px, calc(100% - 64px)); padding-block: clamp(6px, calc(6vh - 46px), 25px); }
   .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 32px; line-height: 42px; }
   .workspace-main .interview-page .practice-answer,
-  .workspace-main .interview-page .practice-primary-action { max-width: 72ch; }
+  .workspace-main .interview-page .practice-primary-action { max-width: none; }
   /* Scale space, never type, with the available desktop height. Long records
      still grow naturally instead of being clipped or hidden behind a footer. */
   .workspace-main .job-tile { padding: clamp(12px, calc(2vh - 8px), 18px); }
@@ -403,14 +407,14 @@
   /* On desktop, only the editor fields scroll. Completion actions keep
      their own space and never cover a textarea or an expanded optional field. */
   .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content { padding-bottom: 12px; }
-  .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content > .workspace-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; padding-bottom: 12px; }
+  .workspace-with-topnav:has(.inline-answer-editor) > .workspace-content > .workspace-main { flex: 1 1 auto; min-height: 0; max-height: calc(520px + var(--record-inset, 40px) + 190px); display: flex; flex-direction: column; padding-bottom: 12px; }
   .workspace-main .route-surface:has(.inline-answer-editor) { flex: 1; min-height: 0; display: flex; }
   .interview-page:has(.inline-answer-editor) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
   .interview-page:has(.inline-answer-editor) > .page-heading,
   .interview-page:has(.inline-answer-editor) > .interview-controls { flex-shrink: 0; }
   .interview-page:has(.inline-answer-editor) .interview-workspace { flex: 1; min-height: 0; align-items: stretch; }
   .interview-page:has(.inline-answer-editor) .question-queue { min-height: 0; overflow-y: auto; }
-  .interview-page:has(.inline-answer-editor) .practice-desk { min-height: 0; display: flex; flex-direction: column; }
+  .interview-page:has(.inline-answer-editor) .practice-desk { min-height: 0; max-height: 520px; display: flex; flex-direction: column; }
   .interview-page:has(.inline-answer-editor) .practice-navigation { flex-shrink: 0; }
   .workspace-main .interview-page .inline-answer-editor { flex: 1; min-height: 0; padding-block: 16px; }
   .workspace-main .inline-answer-editor > h2 { flex-shrink: 0; margin-bottom: 8px; }
