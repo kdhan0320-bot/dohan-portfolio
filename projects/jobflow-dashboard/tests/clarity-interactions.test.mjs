@@ -105,6 +105,7 @@ test('company preparation keeps its company and draft across closing, failures a
     '../ui/Field': 'Field', '../ui/PreparationItem': 'PreparationItem', '../ui/StatusChip': 'StatusChip',
     '../ui/PageUI': { CompanyMark: 'CompanyMark', LoadState: 'LoadState' },
     '../../utils/dates': { shortDate }, '../../utils/applicationPayload': { isValidApplicationUrl: () => false },
+    '../../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
   };
   const props = { application: { id: 'sky', company_name: '스카이뷰', status: '관심' } };
   const page = await mount('../components/applications/CompanySummary', dependencies, props);

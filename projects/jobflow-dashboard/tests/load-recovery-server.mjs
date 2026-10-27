@@ -13,7 +13,7 @@ createServer(async (request, response) => {
   if (url.pathname === '/') {
     response.setHeader('Content-Type', 'text/html; charset=utf-8');
     response.end('<html lang="ko"><meta charset="utf-8"><title>갈피록 로딩 검증</title><h1>갈피록 로딩 검증</h1>' +
-      [['normal', '정상 접속'], ['stale', '이전 실행 파일 누락'], ['unavailable', '재시도 후에도 파일 누락'], ['legacy', '복구 코드가 없는 이전 HTML'], ['lazy', '이동할 화면 파일 누락']]
+      [['normal', '정상 접속'], ['outdated', '이전 HTML과 실행 가능한 이전 화면'], ['rollout', '재시도 후에도 배포 버전 불일치'], ['version-offline', '배포 버전 확인 불가'], ['version-slow', '배포 버전 확인 지연'], ['stale', '이전 실행 파일 누락'], ['unavailable', '재시도 후에도 파일 누락'], ['legacy', '복구 코드가 없는 이전 HTML'], ['lazy', '이동할 화면 파일 누락']]
         .map(([fault, label]) => `<p><a href="${base}?fault=${fault}#/welcome">${label}</a></p>`).join('') + '</html>');
     return;
   }
@@ -22,6 +22,15 @@ createServer(async (request, response) => {
   const file = resolve(dist, relative);
   if (!file.startsWith(dist + sep)) { response.writeHead(403).end(); return; }
   const referrer = new URL(request.headers.referer || 'http://127.0.0.1:4174');
+  if (relative === 'release.json') {
+    const fault = referrer.searchParams.get('fault');
+    console.log(`RELEASE ${fault || 'normal'}`);
+    if (fault === 'version-offline') { response.writeHead(503).end('Release unavailable fixture'); return; }
+    if (fault === 'version-slow') {
+      setTimeout(() => { response.setHeader('Content-Type', 'application/json'); response.end(JSON.stringify({ version: '0000000000000000' })); }, 3000);
+      return;
+    }
+  }
   if (referrer.searchParams.get('fault') === 'lazy' && /SettingsPage-.*\.js$/.test(relative)) {
     response.writeHead(404).end('Missing route fixture'); return;
   }
@@ -32,6 +41,9 @@ createServer(async (request, response) => {
       const fault = url.searchParams.get('fault');
       const recovering = url.searchParams.has('__galpirok_reload');
       console.log(`HTML ${fault || 'normal'} ${recovering ? 'retry' : 'initial'}`);
+      if (fault === 'rollout' || (fault === 'outdated' && !recovering)) {
+        html = html.replace(/(name="galpirok-build" content=")[^"]+/, '$10000000000000000');
+      }
       if (fault === 'unavailable' || (fault === 'stale' && !recovering)) {
         html = html.replace(/(<script type="module"[^>]*src=")[^"]+("[^>]*>)/, `$1${base}assets/removed-entry.js$2`);
       }

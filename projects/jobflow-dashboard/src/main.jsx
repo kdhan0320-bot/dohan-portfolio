@@ -6,7 +6,7 @@ import App from './App.jsx'
 import theme from './theme.js'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const mountApplication = () => ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -14,3 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     </ThemeProvider>
   </React.StrictMode>,
 )
+
+// No React form can accept input until the one-time release check has finished.
+if (window.__galpirokStartup) window.__galpirokStartup.then(mountApplication)
+else mountApplication()

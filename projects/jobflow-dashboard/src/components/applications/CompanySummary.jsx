@@ -12,6 +12,12 @@ import { CompanyMark, LoadState } from '../ui/PageUI';
 import StatusChip from '../ui/StatusChip';
 import { shortDate, deadlineLabel } from '../../utils/dates';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
+import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
+
+function SummaryDate({ value }) {
+  const [month, day] = shortDate(value).split('.');
+  return <time className="record-date" dateTime={value}><span className="record-date-month">{month}.</span>{day}</time>;
+}
 
 // The same readable record is used in the home preview and the working dialog.
 // Preview data stays independent of the signed-in user's workspace.
@@ -20,11 +26,12 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
   const companyNotes = notes.filter(item => item.application_id === application.id);
   const remaining = companyTasks.filter(item => !item.is_done).length;
   const pending = ['관심', '지원 예정'].includes(application.status);
-  return <div className="company-summary">
+  const stage = BOARD_COLUMNS.find(column => column.id === boardColumn(application.status));
+  return <div className="company-summary" style={{ '--summary-ink': stage?.color || '#687783', '--summary-tint': stage?.tint || '#EDF1F4' }}>
     <div className="summary-identity"><CompanyMark name={application.company_name} /><div><p>{application.position || '직무 미입력'}</p><small>{[application.location, application.company_size].filter(Boolean).join(' · ')}</small></div>{statusControl || <StatusChip status={application.status} />}</div>
     <section className="summary-schedule" aria-label="지원 일정">
       <h3>지원 일정</h3>
-      <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <><time dateTime={application.deadline}>{shortDate(application.deadline)}</time>{pending && <span className="summary-deadline">{deadlineLabel(application.deadline, today)}</span>}</> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <time dateTime={application.applied_date}>{shortDate(application.applied_date)}</time> : pending ? '아직 지원 전' : '미등록'}</dd></div></dl>
+      <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <><SummaryDate value={application.deadline} />{pending && <span className="summary-deadline">{deadlineLabel(application.deadline, today)}</span>}</> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '아직 지원 전' : '미등록'}</dd></div></dl>
     </section>
     <div className="summary-documents"><span>제출 서류</span><span>이력서 <b>{application.resume_submitted ? '제출 완료' : '미제출'}</b></span><span>포트폴리오 <b>{application.portfolio_submitted ? '제출 완료' : '미제출'}</b></span></div>
     <section className="summary-preparation" aria-label="이 회사의 준비할 일"><h3>준비할 일 <span>남은 {remaining}개</span></h3>
