@@ -7,9 +7,9 @@ import { usePageTitle } from '../utils/pageMeta';
 import '../styles/practice-recap.css';
 
 const summaries = {
-  gallery: '문구는 그대로, 제목에 크기와 비중을.',
+  gallery: '문구는 그대로, 제목은 더 크게.',
   sound: '조작은 그대로, 첫 재생에 강조를.',
-  portfolio: '내용은 그대로, 간격으로 묶음을.',
+  portfolio: '같은 내용, 묶음 안은 가깝게·사이는 멀게.',
   flower: '사진은 그대로, 글자 뒤에 읽을 면을.',
   walk: '경로는 그대로, 선과 범례로 구분을.',
   signup: '조건은 그대로, 입력 중에도 보이는 곳에.'

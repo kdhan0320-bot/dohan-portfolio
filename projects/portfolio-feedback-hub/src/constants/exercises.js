@@ -15,7 +15,7 @@ export const EXERCISES = [{
   revisedDescription: '제목을 더 크게 표시하고, 제목 영역과 작품 이미지에 같은 폭을 배분했습니다.',
   takeaway: '제목을 크게, 먼저 읽히도록 배치했어요.',
   comparison: { fixed: '작품·문구·조작', changed: '제목 강조·영역 비율' },
-  explanation: '전시 이름을 먼저 찾는 목표에서는 B를 제안합니다. 제목을 키우고 글과 이미지에 같은 폭을 배분해 이름에 시선이 머물도록 했습니다.',
+  explanation: '전시 이름을 먼저 찾는 목표에 맞춰 제목을 키웠어요. 글과 이미지에 같은 폭을 배분해 이름에 시선이 머물도록 했어요.',
   tradeoff: '작품 감상을 우선한다면 이미지에 더 넓은 면적을 준 A도 적합할 수 있어요.',
   alternateGoal: {
     question: '작품 이미지를 더 넓게 감상할 수 있는 쪽은?',
@@ -26,7 +26,7 @@ export const EXERCISES = [{
     preferredSide: 'A',
     takeaway: '작품 감상이 목표라면 이미지에 더 넓은 면적을 줘요.',
     comparison: { fixed: '같은 A/B 화면', changed: '제목에서 작품으로', changeLabel: '달리 본 목표' },
-    explanation: '두 화면은 그대로 두고 목표만 바꿨습니다. A는 제목을 읽을 수 있게 유지하면서 이미지의 폭을 넓혀 작품을 살펴볼 공간을 확보했습니다.',
+    explanation: '두 화면은 그대로 두고 목표만 바꿨어요. A는 제목을 읽을 수 있게 유지하면서 이미지에 더 넓은 폭을 배분했어요.',
     tradeoff: '전시 이름을 빠르게 확인해야 하는 방문자에게는 큰 제목을 둔 B가 더 적합할 수 있어요.',
   },
   principle: '글자 위계'
@@ -45,7 +45,7 @@ export const EXERCISES = [{
   revisedDescription: '같은 세 버튼 중 가운데 재생 버튼만 더 크고 짙게 강조되어 있습니다.',
   takeaway: '재생 버튼을 크고 짙게 표시했어요.',
   comparison: { fixed: '곡·세 버튼의 순서', changed: '재생의 크기·짙기' },
-  explanation: '처음 재생하는 상황을 기준으로 재생 버튼을 강조했습니다. 이전·다음 버튼은 양옆에 두고 보조 조작으로 구분했습니다.',
+  explanation: '처음 재생하는 상황을 기준으로 가운데 버튼을 강조했어요. 이전·다음 버튼은 양옆에서 보조 조작으로 구분되게 했어요.',
   tradeoff: '다른 버튼을 지나치게 작게 만들면 조작하기 어려워질 수 있어요.',
   principle: '주요 행동'
 }, {
@@ -63,7 +63,7 @@ export const EXERCISES = [{
   revisedDescription: '각 제목과 설명은 가깝게 묶이고 두 작업 사이에는 더 넓은 간격이 있습니다.',
   takeaway: '같은 작업의 제목과 설명을 가까이 묶었어요.',
   comparison: { fixed: '내용·글자 크기', changed: '묶음 안팎의 간격' },
-  explanation: '내용과 글자 크기를 유지하고 간격만 조정했습니다. 서로 관련된 정보는 가깝게, 다른 작업은 떨어뜨려 놓았습니다.',
+  explanation: '내용과 글자 크기는 유지하고 간격만 조정했어요. 같은 작업의 제목과 설명은 가깝게, 다른 작업은 떨어뜨려 놓았어요.',
   tradeoff: '작업 사이 간격이 너무 넓으면 목록을 훑어보는 흐름이 끊길 수 있어요.',
   principle: '정보 묶기'
 }, {
@@ -81,7 +81,7 @@ export const EXERCISES = [{
   revisedDescription: '같은 사진과 글자를 유지하고 글자 뒤에 어두운 면을 더했습니다.',
   takeaway: '짙은 배경으로 글자를 구분했어요.',
   comparison: { fixed: '사진·문구·글자 크기', changed: '글자 뒤의 짙은 면' },
-  explanation: '글자 크기만 키우는 대신 배경을 어둡게 처리했습니다. 사진의 무늬와 밝기가 달라도 글자가 구분되도록 의도한 선택입니다.',
+  explanation: '사진과 글자 크기는 유지하고 글자 뒤에 짙은 면을 더했어요. 사진의 밝은 부분이나 무늬 위에서도 글자가 구분되도록 했어요.',
   tradeoff: '어두운 면이 꽃의 색을 가리므로 사진의 인상과 함께 조절해야 해요.',
   principle: '글자와 배경 대비'
 }, {
@@ -99,7 +99,7 @@ export const EXERCISES = [{
   revisedDescription: '추천 산책 경로가 짙고 굵은 선으로 표시되고 추천 경로라는 범례가 붙어 있습니다.',
   takeaway: '선의 차이와 범례를 함께 사용했어요.',
   comparison: { fixed: '지도·추천 경로', changed: '선의 굵기·색·범례' },
-  explanation: '추천 경로를 굵고 짙게 표시해 주변 도로와 구분했습니다. 범례를 더해 강조한 선의 뜻도 알 수 있게 했습니다.',
+  explanation: '추천 경로를 굵고 짙게 표시해 주변 도로와 구분했어요. 범례를 붙여 강조한 선의 뜻도 함께 알렸어요.',
   tradeoff: '선이 너무 굵으면 가까운 갈림길을 가릴 수 있어 확대 수준에 맞춰 조절해야 해요.',
   principle: '구분과 안내'
 }, {
@@ -117,7 +117,7 @@ export const EXERCISES = [{
   revisedDescription: '같은 이메일과 마스킹된 비밀번호가 입력되어 있고, 입력칸 바깥의 비밀번호 조건은 계속 보입니다.',
   takeaway: '입력해도 사라지지 않는 위치에 조건을 뒀어요.',
   comparison: { fixed: '입력 내용·조건', changed: '조건 안내의 위치' },
-  explanation: '입력칸 안의 임시 문구는 값을 입력하면 사라집니다. 조건을 입력칸 밖으로 옮겨 작성 중에도 다시 확인할 수 있게 했습니다.',
+  explanation: '입력칸 안의 임시 문구는 값을 입력하면 사라져요. 조건을 입력칸 밖으로 옮겨 작성 중에도 다시 확인할 수 있게 했어요.',
   tradeoff: '안내가 길어지면 양식이 복잡해지므로 필수 조건만 짧게 보여주는 편이 좋아요.',
   principle: '지속되는 입력 안내'
 }];
