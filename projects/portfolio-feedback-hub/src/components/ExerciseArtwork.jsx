@@ -12,17 +12,17 @@ function SoundIcon({ type }) {
   </svg>;
 }
 
-function Gallery() {
+function Gallery({ focusTarget }) {
   return <>
     <div className="ea-topline"><span className="ea-wordmark">FORM & SPACE</span><span>작은 조형의 전시</span></div>
     <div className="ea-gallery-layout">
       <div className="ea-gallery-copy">
         <span className="ea-eyebrow">EXHIBITION 01</span>
-        <div className="ea-gallery-title ea-target"><span>시선의</span><span>모양</span></div>
+        <div className={`ea-gallery-title${focusTarget !== 'image' ? ' ea-target' : ''}`}><span>시선의</span><span>모양</span></div>
         <span className="ea-gallery-description">일상에서 만나는<br />조형의 아름다움</span>
         <span className="ea-mini-action">전시 둘러보기</span>
       </div>
-      <div className="ea-gallery-image ea-target" style={{ backgroundImage: `url(${sculpture})` }} />
+      <div className={`ea-gallery-image${focusTarget !== 'title' ? ' ea-target' : ''}`} style={{ backgroundImage: `url(${sculpture})` }} />
     </div>
   </>;
 }
@@ -90,7 +90,7 @@ function Walk() {
       </svg>
       <span className="ea-map-label ea-map-start">출발</span><span className="ea-map-label ea-map-end">도착</span>
     </div>
-    <div className="ea-map-legend"><span /><span>추천 산책 경로</span></div>
+    <div className="ea-map-legend ea-target"><span /><span>추천 산책 경로</span></div>
   </>;
 }
 
@@ -108,10 +108,10 @@ function Signup({ revised = false }) {
 
 const artwork = { gallery: Gallery, sound: Sound, portfolio: Portfolio, flower: Flower, walk: Walk, signup: Signup };
 
-export default function ExerciseArtwork({ kind = 'gallery', variant = 'original', highlight = false, compact = false }) {
+export default function ExerciseArtwork({ kind = 'gallery', variant = 'original', highlight = false, compact = false, focusTarget }) {
   const resolvedKind = Object.hasOwn(artwork, kind) ? kind : 'gallery';
   const Drawing = artwork[resolvedKind];
   return <div aria-hidden="true" className={`exercise-artwork ea-${resolvedKind}${variant === 'revised' ? ' ea-revised' : ''}${highlight ? ' ea-highlight' : ''}${compact ? ' ea-compact' : ''}`}>
-    <Drawing compact={compact} revised={variant === 'revised'} />
+    <Drawing focusTarget={focusTarget} compact={compact} revised={variant === 'revised'} />
   </div>;
 }

@@ -120,7 +120,7 @@
 .practice-guide .guide-scene-gallery-title { font-size: 12px; font-weight: 400; line-height: 1.35; letter-spacing: -.04em; white-space: nowrap; }
 .practice-guide .guide-scene-option-b .guide-scene-gallery-title { font-size: 18px; line-height: 1.15; }
 .practice-guide .guide-scene-gallery-rule { width: 16px; height: 2px; background: #c8c0b7; }
-.practice-guide .guide-scene-3 .guide-scene-option-b .guide-scene-gallery-title { color: #4f3daa; outline: 1px solid #8977da; outline-offset: 3px; }
+.practice-guide .guide-scene-3 .guide-scene-gallery-title { outline: 1px solid #c66043; outline-offset: 3px; }
 
 .practice-guide .guide-scene-choice {
   display: block;
@@ -209,3 +209,10 @@
   .practice-guide .guide-scene-gallery-copy { padding: 10px; }
   .practice-guide .guide-scene-choice { padding: 7px 2px; }
 }
+
+/* The result now shows both annotated drawings, also on small screens. */
+.practice-guide .guide-scene-3 .guide-scene-mobile-toolbar { display: none; }
+.practice-guide .guide-scene-3 .guide-scene-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.practice-guide .guide-scene-3 .guide-scene-option { display: block; }
+.practice-guide .guide-scene-3 .guide-scene-option-label { display: flex; }
+.practice-guide .guide-scene-3 .guide-scene-gallery-copy { padding: 6px; }
