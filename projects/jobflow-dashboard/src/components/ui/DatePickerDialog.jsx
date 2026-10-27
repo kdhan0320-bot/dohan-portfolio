@@ -1,17 +1,27 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { Button, Popover, IconButton, useMediaQuery } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import Close from '@mui/icons-material/Close';
 import { keyboardDate, monthCells, shiftMonth, validDate, WEEKDAYS } from '../../utils/calendar';
 
-export default function DatePickerDialog({ open, value, referenceDate, label, onSelect, onClose }) {
+export default function DatePickerDialog({ open, anchorEl, value, referenceDate, label, onSelect, onClose }) {
+  const inline = useMediaQuery('(max-width: 699px)');
   const titleId = useId();
   const initial = validDate(value) ? value : referenceDate;
   const [focused, setFocused] = useState(initial);
   const [month, setMonth] = useState(initial.slice(0, 7));
   const dayButtons = useRef(new Map());
   const pendingFocus = useRef(false);
+  useEffect(() => {
+    if (!open || !inline) return;
+    const frame = requestAnimationFrame(() => {
+      const button = dayButtons.current.get(validDate(value) ? value : referenceDate);
+      button?.focus({ preventScroll: true });
+      button?.closest('.date-choice-surface')?.scrollIntoView({ block: 'nearest' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [open, inline, value, referenceDate]);
   useEffect(() => {
     if (!open) return;
     const date = validDate(value) ? value : referenceDate;
@@ -43,10 +53,11 @@ export default function DatePickerDialog({ open, value, referenceDate, label, on
     onSelect(date);
     onClose();
   }
-  return <Dialog open={open} onClose={onClose} aria-labelledby={titleId} className="date-choice-dialog"
-    fullWidth maxWidth="xs" slotProps={{ transition: { onEntered: () => dayButtons.current.get(focused)?.focus() } }}>
-    <DialogTitle id={titleId}>{label}<IconButton aria-label="달력 닫기" onClick={onClose}><Close /></IconButton></DialogTitle>
-    <DialogContent>
+  const content = <div className="date-choice-surface" role="dialog" aria-labelledby={titleId} onKeyDown={event => {
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); onClose(); }
+  }}>
+    <div className="date-choice-title" id={titleId}>{label}<IconButton aria-label="달력 닫기" onClick={onClose}><Close /></IconButton></div>
+    <div className="date-choice-content">
       <div className="date-choice-month">
         <IconButton aria-label="이전 달" disabled={month === '0001-01'} onClick={() => changeMonth(shiftMonth(month, -1))}><ChevronLeft /></IconButton>
         <label><span className="sr-only">연도</span><select aria-label="연도" value={year} onChange={event => changeMonth(`${String(event.target.value).padStart(4, '0')}-${month.slice(5)}`)}>
@@ -68,7 +79,11 @@ export default function DatePickerDialog({ open, value, referenceDate, label, on
               onFocus={() => setFocused(date)} onKeyDown={event => moveDate(event, date)} onClick={() => choose(date)}>{Number(date.slice(8))}</button>
           </td>)}</tr>)}</tbody>
       </table>
-    </DialogContent>
-    <DialogActions><Button onClick={() => choose('')}>날짜 비우기</Button><Button variant="outlined" onClick={onClose}>취소</Button></DialogActions>
-  </Dialog>;
+    </div>
+    <div className="date-choice-actions"><Button onClick={() => choose('')}>날짜 비우기</Button><Button variant="outlined" onClick={onClose}>취소</Button></div>
+  </div>;
+  if (inline) return open ? <div className="date-choice-inline">{content}</div> : null;
+  return <Popover open={open} anchorEl={anchorEl} onClose={onClose} className="date-choice-popover"
+    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    marginThreshold={12} slotProps={{ paper: { sx: { width: 352, maxHeight: 'calc(100dvh - 24px)', borderRadius: '10px' } }, transition: { onEntered: () => dayButtons.current.get(focused)?.focus({ preventScroll: true }) } }}>{content}</Popover>;
 }

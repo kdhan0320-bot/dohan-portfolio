@@ -10,6 +10,11 @@ export default function DateField({ value, onChange, label, disabled, ...props }
   const [open, setOpen] = useState(false);
   const today = useToday();
   const input = useRef(null);
+  const trigger = useRef(null);
+  const closeCalendar = () => {
+    setOpen(false);
+    requestAnimationFrame(() => trigger.current?.focus({ preventScroll: true }));
+  };
   const parsed = parseDateInput(value);
   const title = label.replace(/\s*\(선택\)$/, '');
   return <><Field {...props} type="text" label={label} disabled={disabled} value={value}
@@ -19,12 +24,12 @@ export default function DateField({ value, onChange, label, disabled, ...props }
       htmlInput: { inputMode: 'numeric' },
       input: { endAdornment: <InputAdornment position="end">
         <span className="date-picker-control">
-          <IconButton type="button" disabled={disabled} aria-label={`${title} 달력 열기`} aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(true)}><CalendarMonthOutlined fontSize="small" /></IconButton>
+          <IconButton ref={trigger} type="button" disabled={disabled} aria-label={`${title} 달력 열기`} aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(current => !current)}><CalendarMonthOutlined fontSize="small" /></IconButton>
         </span>
       </InputAdornment> },
       formHelperText: { role: props.error ? 'alert' : undefined },
     }} />
-    <DatePickerDialog open={open} value={parsed.value || ''} referenceDate={today} label={`${title} 선택`}
-      onSelect={date => onChange({ target: { value: date } })} onClose={() => setOpen(false)} />
+    <DatePickerDialog open={open} anchorEl={trigger.current} value={parsed.value || ''} referenceDate={today} label={`${title} 선택`}
+      onSelect={date => onChange({ target: { value: date } })} onClose={closeCalendar} />
   </>;
 }

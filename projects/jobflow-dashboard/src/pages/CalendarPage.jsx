@@ -13,7 +13,7 @@ import { useToday } from '../hooks/useToday';
 import { useAuth } from '../context/AuthContext';
 import { agendaDeadlines, calendarFocusDate, calendarState, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
 import { deadlineLabel } from '../utils/dates';
-import { CompanyMark, Empty, LoadState, PageHeading } from '../components/ui/PageUI';
+import { Empty, LoadState, PageHeading } from '../components/ui/PageUI';
 import '../styles/calendar-refinement.css';
 
 export default function CalendarPage() {
@@ -111,7 +111,7 @@ export default function CalendarPage() {
           </div>
         </section>
         <section className="calendar-agenda" aria-labelledby="agenda-title"><div className="agenda-heading"><span className="section-kicker">지원 전 확인</span><h2 id="agenda-title" ref={agendaTitle} tabIndex={-1}>{scope === 'upcoming' ? '다가오는 마감' : date ? `${Number(date.slice(5, 7))}월 ${Number(date.slice(8))}일` : `${Number(month.slice(5))}월의 마감`}<span>{visible.length}곳</span></h2><div className="agenda-scope-actions">{scope !== 'month' && <Button size="small" onClick={selectMonthAgenda}>{Number(month.slice(5))}월 전체 보기</Button>}{scope !== 'upcoming' && <Button size="small" onClick={selectUpcoming}>다가오는 마감</Button>}</div></div>
-          <div className="agenda-list" aria-live="polite">{visible.map(a => <button type="button" className="agenda-company" key={a.id} onClick={() => setSelectedId(a.id)} aria-haspopup="dialog"><div className="agenda-company-top"><CompanyMark name={a.company_name} /><span className="agenda-company-identity"><strong>{a.company_name}</strong><span>{a.position || '직무 미입력'}</span></span></div><div className="agenda-company-bottom"><span>{Number(a.deadline.slice(5, 7))}.{Number(a.deadline.slice(8))} 마감</span><span className={a.deadline < today ? 'deadline-pill overdue' : 'deadline-pill'}>{deadlineLabel(a.deadline, today)}</span></div>{!checklist.loading && !checklist.error && <span className="agenda-preparation">{(() => { const tasks = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return tasks.length ? `남은 준비 ${tasks.length}개 · ${tasks[0].title}` : '남은 준비 항목 없음'; })()}</span>}</button>)}
+          <div className="agenda-list" aria-live="polite">{visible.map(a => <button type="button" className="agenda-company" key={a.id} onClick={() => setSelectedId(a.id)} aria-haspopup="dialog"><div className="agenda-company-top"><span className="agenda-record-marker" aria-hidden="true" /><span className="agenda-company-identity"><strong>{a.company_name}</strong><span>{a.position || '직무 미입력'}</span></span></div><div className="agenda-company-bottom"><span className="agenda-date"><time dateTime={a.deadline}>{Number(a.deadline.slice(5, 7))}.{Number(a.deadline.slice(8))}</time><small>마감</small></span><span className={a.deadline < today ? 'deadline-pill overdue' : 'deadline-pill'}>{deadlineLabel(a.deadline, today)}</span></div>{!checklist.loading && !checklist.error && <span className="agenda-preparation">{(() => { const tasks = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return tasks.length ? `남은 준비 ${tasks.length}개 · ${tasks[0].title}` : '남은 준비 항목 없음'; })()}</span>}</button>)}
             {!visible.length && <Empty title={scope === 'upcoming' ? '다가오는 마감이 없어요' : date ? '이 날은 마감이 없어요' : '이 달은 마감이 없어요'}><p>{scope === 'upcoming' ? '지원할 회사의 마감일을 등록해보세요.' : '다른 날짜나 달을 선택해보세요.'}</p></Empty>}
           </div>
         </section>

@@ -109,12 +109,14 @@
 .inline-answer-editor .interview-answer-field textarea { min-height: 10.2em; resize: none; overflow-y: hidden; }
 .date-picker-control { position: relative; display: inline-flex; }
 .date-picker-control .MuiIconButton-root { width: 44px; height: 44px; }
-.date-choice-dialog .MuiDialog-paper { width: 368px; max-width: calc(100% - 32px); overflow: hidden; border-radius: 12px; }
-.date-choice-dialog .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.date-choice-dialog .MuiDialogTitle-root { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 16px; font-size: 18px; border-bottom: 1px solid #e1e6eb; }
-.date-choice-dialog .MuiDialogContent-root { padding: 12px; }
-.date-choice-dialog .MuiDialogTitle-root + .MuiDialogContent-root { padding-top: 12px; }
-.date-choice-dialog .MuiDialogActions-root { padding: 12px 16px; border-top: 1px solid #e1e6eb; justify-content: space-between; }
+.date-choice-popover .MuiPopover-paper { border: 1px solid #cbd7e0; box-shadow: 0 12px 32px -12px #293b4a55; }
+.date-choice-inline { min-width: 0; border: 1px solid #cbd7e0; border-radius: 8px; background: #fff; }
+.date-choice-surface .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.date-choice-title { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 12px; font-size: 16px; font-weight: 500; border-bottom: 1px solid #e1e6eb; }
+.date-choice-title .MuiIconButton-root { width: 44px; height: 44px; }
+.date-choice-content { padding: 8px; }
+.date-choice-actions { display: flex; align-items: center; padding: 8px 12px; border-top: 1px solid #e1e6eb; justify-content: space-between; }
+.date-choice-actions > .MuiButton-root { width: auto; min-height: 44px; margin: 0; }
 .date-choice-month { display: flex; align-items: center; gap: 4px; margin-bottom: 8px; }
 .date-choice-month > label { flex: 1; min-width: 0; }
 .date-choice-month select { width: 100%; min-height: 44px; background: #fff; border: 1px solid #d3dde5; border-radius: 6px; color: #334e68; padding: 6px; font: inherit; font-size: 15px; }
@@ -133,9 +135,6 @@
   .MuiDialog-root .MuiDialog-paperFullScreen { height: var(--visible-height, 100dvh); max-height: var(--visible-height, 100dvh); }
   html[data-keyboard-open] .site-mobile-tabbar { visibility: hidden; }
   html[data-keyboard-open]:has(.inline-answer-editor) .site-header { visibility: hidden; }
-  .date-choice-dialog .MuiDialog-paper { margin: 16px; }
-  .date-choice-dialog .MuiDialogActions-root { flex-direction: row; }
-  .date-choice-dialog .MuiDialogActions-root > .MuiButton-root { width: auto; flex: 0 0 auto; margin: 0; }
   html[data-keyboard-open]:has(.inline-answer-editor) { overflow: hidden; }
   html[data-keyboard-open] .workspace-main .interview-page .inline-answer-editor {
     position: fixed; z-index: 1200; top: calc(var(--visible-top, 0px) + 8px); left: 12px; right: 12px;
@@ -421,3 +420,23 @@
   .preparation-filter-summary { padding-bottom: 12px; }
   .preparation-group-heading { grid-template-columns: minmax(0, 1fr) auto; }
 }
+
+/* The wordmark's tapered finishing stroke continues through record markers and dates. */
+:root {
+  --galpi-marker: polygon(0 0, 100% 0, 100% 91%, 58% 80%, 0 100%);
+  --galpi-ink-stroke: polygon(0 58%, 100% 0, 77% 65%, 34% 100%);
+}
+.record-stage-marker, .record-bookmark, .settings-record-marker,
+.galpi-eyebrow::before, .login-form-section::before, .practice-card::after,
+.agenda-record-marker { clip-path: var(--galpi-marker); }
+.record-stage-marker { transition: background-color 160ms ease; }
+.preview-date-block { border-left: 0; }
+.preview-date-block::before { content: ''; position: absolute; inset: 2px auto 0 0; width: 3px; background: var(--stage-ink); clip-path: polygon(0 0,100% 3%,75% 100%,15% 84%); }
+.today-date time, .agenda-date time { position: relative; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+.today-date time::after, .agenda-date time::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 4px; background: #547e9c; opacity: .55; clip-path: var(--galpi-ink-stroke); }
+.agenda-company { position: relative; }
+.agenda-record-marker { display: block; align-self: flex-start; flex: 0 0 13px; width: 13px; height: 29px; background: #426488; margin-top: -16px; }
+.agenda-date { display: inline-flex; align-items: baseline; gap: 8px; }
+.agenda-date time { color: #344f68; font-size: 23px; font-weight: 450; line-height: 1.4; }
+.agenda-date small { font-size: 13px; color: #637585; }
+@media (prefers-reduced-motion: reduce) { .record-stage-marker { transition: none; } }

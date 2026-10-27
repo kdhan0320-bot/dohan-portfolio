@@ -6,6 +6,7 @@ import { transform } from 'esbuild';
 import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
 import { preparationGroups } from '../src/utils/preparationGroups.js';
 import { shortDate } from '../src/utils/dates.js';
+import { revealTextareaCaret } from '../src/utils/textareaCaret.js';
 import * as constants from '../src/constants/index.js';
 import { BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
 
@@ -52,6 +53,7 @@ async function mount(page, dependencies, props, documentOverrides = {}) {
     '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
     '../utils/preparationGroups': { preparationGroups },
     '../utils/dates': { shortDate },
+    '../utils/textareaCaret': { revealTextareaCaret },
     '../constants': constants,
     ...dependencies,
   };
@@ -60,7 +62,7 @@ async function mount(page, dependencies, props, documentOverrides = {}) {
   vm.runInNewContext(code, {
     module, exports: module.exports, URLSearchParams,
     document: { body: fieldNode, activeElement: fieldNode, getElementById: () => fieldNode, ...documentOverrides },
-    window: { requestAnimationFrame: fn => { fn(); return 1; }, cancelAnimationFrame() {} },
+    window: { requestAnimationFrame: fn => { fn(); return 1; }, cancelAnimationFrame() {}, addEventListener() {}, removeEventListener() {} },
     require(name) {
       if (name.startsWith('@mui/icons-material/') || name.endsWith('.css')) return 'Icon';
       if (!(name in modules)) throw new Error(`Unexpected dependency: ${name}`);

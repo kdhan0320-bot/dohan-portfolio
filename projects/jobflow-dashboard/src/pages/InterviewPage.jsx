@@ -11,6 +11,7 @@ import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
+import { revealTextareaCaret } from '../utils/textareaCaret';
 import '../styles/company-interview.css';
 const INITIAL = {
   application_id: null,
@@ -110,13 +111,29 @@ export default function InterviewPage() {
     const answer = document.getElementById('note-answer');
     answer?.focus({ preventScroll: true });
     const editor = answer?.closest('form');
-    const revealActions = () => revealMobileEditor(editor);
+    let frame;
+    const fields = editor?.querySelector('.field-stack');
+    const revealActions = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        revealMobileEditor(editor);
+        revealTextareaCaret(answer, fields);
+      });
+    };
     revealActions();
     // A short answer can grow after opening. React only to a change in editor
     // height, so typing within the bounded area does not keep moving the page.
     const observer = window.ResizeObserver && new window.ResizeObserver(revealActions);
     if (editor) observer?.observe(editor);
-    return () => observer?.disconnect();
+    if (fields) observer?.observe(fields);
+    window.visualViewport?.addEventListener('resize', revealActions);
+    window.addEventListener('resize', revealActions);
+    return () => {
+      observer?.disconnect();
+      window.cancelAnimationFrame(frame);
+      window.visualViewport?.removeEventListener('resize', revealActions);
+      window.removeEventListener('resize', revealActions);
+    };
   }, [open, editingId]);
   useEffect(() => {
     // Each failed submit is a new request, even when the error text is unchanged.
