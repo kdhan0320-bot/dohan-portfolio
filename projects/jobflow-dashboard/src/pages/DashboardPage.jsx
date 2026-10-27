@@ -36,7 +36,7 @@ export default function DashboardPage() {
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!loading && !error && <>
       <section className="attention-section" aria-labelledby="attention-title">
-        <div className="section-intro"><h2 id="attention-title">지금 챙길 회사</h2><p>지원 전 마감순 · 회사 기록에서 준비를 이어가세요</p></div>
+        <div className="section-intro"><h2 id="attention-title">지금 챙길 회사</h2><p>마감 있는 지원 전 → 면접 → 그 외</p></div>
         {companies.length ? <div className="today-records">{companies.map((company, index) => {
           const tasks = check.items.filter(item => item.application_id === company.id);
           const nextTask = tasks.find(item => !item.is_done);
@@ -46,7 +46,7 @@ export default function DashboardPage() {
             <div className="today-company"><RecordStage status={company.status} /><h3>{company.company_name}</h3><p>{company.position || '직무 미입력'}</p></div>
             {upcoming && <div className="today-date"><span>지원 마감</span><time dateTime={company.deadline || undefined}>{company.deadline ? shortDate(company.deadline) : '미등록'}</time>{company.deadline && <b>{deadlineLabel(company.deadline, today)}</b>}</div>}
             <div className="today-next"><span>다음 준비{pending(tasks) > 0 && <small> · 남은 {pending(tasks)}개</small>}</span><p>{nextTask?.title || (tasks.length ? '등록한 준비를 모두 마쳤어요' : '준비할 일을 등록해보세요')}</p></div>
-            <Button className="today-record-open" onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}>기록 보기 <span aria-hidden="true">→</span></Button>
+            <Button className="today-record-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span className="today-open-label">기록 보기</span><span aria-hidden="true">→</span></Button>
           </article>;
         })}</div> : <Empty title={apps.applications.length ? '지금 챙길 회사가 없어요' : '첫 지원 회사를 등록해보세요'}><Button component={Link} to={apps.applications.length ? '/' : '/?new=1'}>{apps.applications.length ? '지원 현황 보기' : '회사 등록하기'}</Button></Empty>}
       </section>

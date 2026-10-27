@@ -154,19 +154,20 @@
 
 /* The bookmark attaches to the record edge and carries its current stage. */
 .record-stage { display: flex; align-items: flex-start; gap: 10px; color: var(--stage-color); font-size: 13px; line-height: 20px; white-space: nowrap; }
-.record-stage > span:last-child { padding-top: 10px; }
+.record-stage-label { padding-top: 10px; }
+.record-stage-label .MuiChip-root { vertical-align: top; }
 .record-stage-marker { display: block; flex: 0 0 20px; width: 20px; height: 38px; background: var(--stage-color); clip-path: polygon(0 0,100% 0,100% 100%,50% 79%,0 100%); }
 .today-records { border-block: 1px solid #cdd9e2; background: #fff; }
 .today-record { position: relative; display: grid; grid-template-columns: minmax(230px, 1.2fr) 135px minmax(220px, 1.4fr) auto; align-items: center; gap: 28px; padding: 25px 28px; }
 .today-record .record-stage { position: absolute; top: 0; left: 28px; }
-.today-company { padding-top: 22px; }
-.today-record-in-progress .today-next { grid-column: 2 / 4; }
+.today-company { grid-column: 1; grid-row: 1; padding-top: 22px; }
+.today-next { grid-column: 3; grid-row: 1; }
 .today-record + .today-record { border-top: 1px solid #dce4ea; }
 .today-record-first { background: linear-gradient(100deg, #edf4fa 0%, #fafcfe 75%); }
 .today-company, .today-next { min-width: 0; }
 .today-company h3 { font-size: 21px; font-weight: 500; line-height: 1.5; color: #2e4356; margin: 10px 0 3px; overflow-wrap: anywhere; }
 .today-company p { font-size: 14px; line-height: 1.6; color: #637585; margin: 0; overflow-wrap: anywhere; }
-.today-date { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 9px; }
+.today-date { grid-column: 2; grid-row: 1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 9px; }
 .today-date > span { width: 100%; }
 .today-date > span, .today-next > span { color: #637585; font-size: 13px; line-height: 1.6; }
 .today-date time { font-size: 25px; line-height: 1.6; font-variant-numeric: tabular-nums; color: #344f68; }
@@ -174,7 +175,8 @@
 .today-next { border-left: 1px solid #d6e1e9; padding-left: 24px; }
 .today-next small { font-size: inherit; white-space: nowrap; }
 .today-next p { font-size: 16px; line-height: 1.65; color: #334c61; margin: 6px 0 0; overflow-wrap: anywhere; }
-.today-record-open.MuiButton-root { min-width: 100px; gap: 14px; white-space: nowrap; }
+.today-record-open.MuiButton-root { grid-column: 4; grid-row: 1; min-width: 100px; gap: 14px; white-space: nowrap; }
+.today-record-open.MuiButton-root:focus-visible { outline: 2px solid #426488; outline-offset: 2px; }
 .today-common { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-top: 22px; padding: 20px 28px; border-left: 3px solid #8ca99a; background: #f3f7f4; }
 .today-common > div { min-width: 0; }
 .today-common h2 { margin: 0; color: #425f50; font-size: 16px; font-weight: 500; line-height: 1.6; }
@@ -183,10 +185,10 @@
 .today-common .MuiButton-root { flex-shrink: 0; }
 .grouped-checklist .preparation-group-heading { padding: 24px; border-top: 3px solid var(--record-accent); border-radius: 4px 13px 0 0; }
 .preparation-group-heading .record-stage { margin-top: -27px; }
-.preview-record-heading { padding-right: 100px; }
+.preview-record-heading { padding-right: 120px; }
 .preview-record-heading .record-stage { position: absolute; top: 0; right: 28px; }
 .preview-record-heading .record-stage-marker { width: 24px; flex-basis: 24px; height: 44px; }
-.preview-record-heading .record-stage > span:last-child { padding-top: 15px; }
+.preview-record-heading .record-stage-label { padding-top: 10px; }
 .preparation-group-common { grid-column: auto; }
 .preparation-group-common .preparation-group-items { grid-template-columns: minmax(0, 1fr); }
 .company-task-add.MuiButton-root { margin-top: 8px; }
@@ -201,32 +203,39 @@
 @media (max-width: 1100px) { .preview-record-heading .record-stage { right: 22px; } }
 @media (max-width: 1100px) and (min-width: 700px) {
   .today-record { grid-template-columns: minmax(190px, 1fr) 110px minmax(170px, 1fr); gap: 18px; padding: 22px; }
-  .today-record-open.MuiButton-root { grid-column: 3; justify-self: end; margin-top: -10px; }
+  .today-record-open.MuiButton-root { grid-column: 3; grid-row: 2; justify-self: end; margin-top: -10px; }
 }
 @media (max-width: 699px) {
   .concise-overview .section-intro { margin: 18px 0 14px; }
-  .concise-overview .section-intro p { display: none; }
-  .today-record { grid-template-columns: minmax(0, 1fr) 94px; gap: 12px 14px; padding: 18px 16px 12px; }
-  .today-company h3 { font-size: 18px; margin: 7px 0 2px; }
+  .concise-overview .section-intro p { display: block; max-width: none; margin: 0; font-size: 12px; line-height: 20px; }
+  .today-record { grid-template-columns: minmax(0, 1fr) 94px; gap: 8px 12px; padding: 14px 14px 12px; }
+  .today-company h3 { font-size: 18px; margin: 4px 0 2px; }
   .today-company p { font-size: 13px; }
   .today-date { align-self: start; justify-content: flex-end; text-align: right; }
   .today-date time { font-size: 23px; }
-  .today-next { grid-column: 1 / -1; border-left: 0; border-top: 1px solid #e0e7ec; padding: 10px 0 0; }
-  .today-next p { font-size: 15px; margin-top: 3px; }
-  .today-record-open.MuiButton-root { grid-column: 1 / -1; justify-self: end; margin: -8px -6px -4px 0; min-height: 40px; }
+  .today-next { grid-column: 1 / -1; grid-row: 2; border-left: 0; border-top: 1px solid #e0e7ec; padding: 8px 24px 0 0; }
+  .today-next p { font-size: 15px; margin-top: 2px; }
+  /* The record is one touch target; the arrow stays outside the preparation text. */
+  .today-record-open.MuiButton-root { position: absolute; grid-area: auto; inset: 0; width: 100%; height: 100%; min-width: 0; min-height: 44px; margin: 0; padding: 0; border-radius: 0; }
+  .today-record-open .today-open-label { display: none; }
+  .today-record-open > span[aria-hidden] { position: absolute; right: 14px; bottom: 16px; }
+  .today-record-open.MuiButton-root:hover { background: rgb(66 100 136 / 4%); }
+  .today-record-open.MuiButton-root:focus-visible { outline-offset: -2px; background: rgb(66 100 136 / 4%); }
   .today-common { padding: 17px 16px; gap: 8px; margin-top: 16px; }
   .today-common h2 span { display: block; margin: 0; }
   .today-common p { font-size: 14px; }
   .grouped-checklist .preparation-group-heading { padding: 18px; }
   .preparation-group-heading .record-stage { font-size: 12px; margin-top: -21px; }
-  .today-record .record-stage { left: 16px; }
+  .today-record .record-stage { left: 14px; }
   .record-stage-marker { width: 16px; flex-basis: 16px; height: 32px; }
-  .record-stage > span:last-child { padding-top: 7px; }
-  .today-company { padding-top: 18px; }
-  .today-record-in-progress .today-company, .today-record-in-progress .today-next { grid-column: 1 / -1; }
-  .preview-record-heading { padding-right: 88px; }
+  .record-stage-label { padding-top: 7px; }
+  .today-record .record-stage-marker { height: 26px; }
+  .today-record .record-stage-label { padding-top: 4px; }
+  .today-company { padding-top: 16px; }
+  .today-record-in-progress .today-company { grid-column: 1 / -1; }
+  .preview-record-heading { padding-right: 104px; }
   .preview-record-heading .record-stage-marker { width: 18px; flex-basis: 18px; height: 36px; }
-  .preview-record-heading .record-stage > span:last-child { padding-top: 10px; }
+  .preview-record-heading .record-stage-label { padding-top: 6px; }
 }
 @media (max-width: 480px) { .preview-record-heading .record-stage { right: 16px; } }
 
@@ -256,7 +265,7 @@
   .workspace-with-topnav .workspace-main .route-surface .page-heading .heading-actions > .MuiButton-root { width: auto; white-space: nowrap; padding-inline: 12px; }
   .workspace-with-topnav .workspace-main .route-surface .page-heading .muted { display: block; grid-column: 1 / -1; grid-row: 2; margin: 0; font-size: 14px; line-height: 22px; }
   .workspace-with-topnav .workspace-main .page-heading h1 { font-size: 25px; line-height: 34px; }
-  .concise-overview .section-intro { margin: 0 0 12px; min-height: 30px; }
+  .concise-overview .section-intro { display: block; margin: 0 0 12px; min-height: 30px; }
   .preparation-controls { position: relative; display: block; padding: 0 0 12px; }
   .preparation-status-tabs { max-width: none; padding-right: 48px; }
   .preparation-status-tabs .MuiTab-root { padding-inline: 4px; font-size: 13px; min-height: 44px; }
