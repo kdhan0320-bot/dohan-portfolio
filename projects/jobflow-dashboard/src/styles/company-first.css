@@ -428,19 +428,28 @@
 /* The wordmark's tapered finishing stroke continues through record markers and dates. */
 :root {
   --galpi-marker: polygon(0 0, 100% 0, 100% 91%, 58% 80%, 0 100%);
+  --galpi-ribbon: url('../assets/galpirok-bookmark.svg');
   --galpi-ink-stroke: url('../assets/galpirok-stroke.svg');
   --galpi-date-ink: #547e9c;
 }
 .record-stage-marker, .record-bookmark, .settings-record-marker,
 .galpi-eyebrow::before, .login-form-section::before, .practice-card::after,
 .agenda-record-marker { clip-path: var(--galpi-marker); }
+@supports (mask-image: url('')) {
+  .record-stage-marker, .record-bookmark, .settings-record-marker,
+  .galpi-eyebrow::before, .login-form-section::before, .practice-card::after,
+  .agenda-record-marker {
+    clip-path: none;
+    mask: var(--galpi-ribbon) center / 100% 100% no-repeat;
+  }
+}
 .record-stage-marker { transition: background-color 160ms ease; }
 .preview-date-block { border-left: 0; padding-left: 0; }
 .preview-date-block::before { content: none; }
 .today-date time, .agenda-date time { position: relative; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
 .record-date { position: relative; display: inline-block; white-space: nowrap; }
 .record-date-month { font-size: .72em; letter-spacing: -.015em; margin-right: .07em; }
-.record-date::after { content: ''; position: absolute; left: 0; width: 100%; bottom: -.08em; height: .18em; min-height: 5px; background: var(--galpi-date-ink); opacity: .8; mask: var(--galpi-ink-stroke) center / 100% 100% no-repeat; pointer-events: none; }
+.record-date::after { content: ''; position: absolute; left: 12%; width: 88%; bottom: -.15em; height: .18em; min-height: 5px; background: var(--galpi-date-ink); opacity: .9; mask: var(--galpi-ink-stroke) center / 100% 100% no-repeat; pointer-events: none; }
 .preview-date-block .record-date { --galpi-date-ink: var(--stage-ink); }
 .today-date time:not([datetime]) { font-size: 16px; letter-spacing: 0; }
 .agenda-company { position: relative; }
@@ -448,13 +457,25 @@
 .agenda-date { display: inline-flex; align-items: baseline; gap: 8px; }
 .agenda-date time { color: #344f68; font-size: 23px; font-weight: 450; line-height: 1.4; }
 .agenda-date small { font-size: 13px; color: #637585; }
-/* One quiet stroke crosses the ribbon; the status is still conveyed by text. */
+/* A fine spine and one ink stroke distinguish the ribbon without a 3D fold. */
 .record-stage-marker, .record-bookmark, .settings-record-marker,
 .login-form-section::before, .workspace-main .interview-page .practice-card::after, .agenda-record-marker {
-  background-image: var(--galpi-ink-stroke);
+  background-image: var(--galpi-ink-stroke), linear-gradient(90deg, transparent 19%, rgb(255 255 255 / 24%) 19% 24%, transparent 24%);
   background-repeat: no-repeat;
-  background-size: 82% 5px;
-  background-position: center calc(100% - 9px);
-  background-blend-mode: soft-light;
+  background-size: 78% 5px, 100% 100%;
+  background-position: center calc(100% - 9px), center;
+  background-blend-mode: soft-light, normal;
+}
+/* The ink finish indicates a selection, rather than decorating every label. */
+.preview-stage-tabs > button > span { position: relative; }
+.preview-stage-tabs > button[aria-selected='true'] > span::after {
+  content: ''; position: absolute; height: 4px; bottom: -5px; left: 0; width: 100%;
+  background: var(--tab-ink); mask: var(--galpi-ink-stroke) center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+.site-primary-nav a.is-current::after {
+  height: 4px; bottom: 3px; border-radius: 0;
+  mask: var(--galpi-ink-stroke) center / 100% 100% no-repeat;
+  pointer-events: none;
 }
 @media (prefers-reduced-motion: reduce) { .record-stage-marker { transition: none; } }
