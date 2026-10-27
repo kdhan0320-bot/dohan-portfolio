@@ -14,7 +14,7 @@ const jsx = (type, props, key) => ({ type, props, key });
 const text = node => Array.isArray(node) ? node.map(text).join('') : node && typeof node === 'object' ? text(node.props?.children) : node == null ? '' : String(node);
 const names = ['Button', 'MenuItem', 'Dialog', 'DialogTitle', 'DialogContent', 'DialogActions', 'IconButton', 'Alert', 'Checkbox', 'FormControlLabel', 'Menu', 'Tabs', 'Tab'];
 
-async function mount(page, dependencies, props, documentOverrides = {}) {
+async function mount(page, dependencies, props, documentOverrides = {}, windowOverrides = {}) {
   const source = await readFile(new URL(`../src/pages/${page}.jsx`, import.meta.url), 'utf8');
   const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
   const states = [];
@@ -62,7 +62,7 @@ async function mount(page, dependencies, props, documentOverrides = {}) {
   vm.runInNewContext(code, {
     module, exports: module.exports, URLSearchParams,
     document: { body: fieldNode, activeElement: fieldNode, getElementById: () => fieldNode, ...documentOverrides },
-    window: { requestAnimationFrame: fn => { fn(); return 1; }, cancelAnimationFrame() {}, addEventListener() {}, removeEventListener() {} },
+    window: { requestAnimationFrame: fn => { fn(); return 1; }, cancelAnimationFrame() {}, addEventListener() {}, removeEventListener() {}, ...windowOverrides },
     require(name) {
       if (name.startsWith('@mui/icons-material/') || name.endsWith('.css')) return 'Icon';
       if (!(name in modules)) throw new Error(`Unexpected dependency: ${name}`);
@@ -240,4 +240,38 @@ test('repeating an invalid interview save reopens and reveals the question every
     assert.equal(revealed, attempt, 'the same error must still reveal its input');
   }
   assert.equal(saves, 0, 'invalid attempts must never save a record');
+});
+
+test('answer entry waits for usable layout, reveals its label once, then preserves the editing position', async () => {
+  const frames = new Map();
+  let nextFrame = 0;
+  let resized;
+  const caretScrollPositions = [];
+  const fields = { clientHeight: 12, scrollTop: 41 };
+  const editor = { querySelector: selector => selector === '.field-stack' ? fields : { offsetHeight: 22 } };
+  const answer = { focus() {}, closest: () => editor, selectionStart: 0, selectionEnd: 0 };
+  const flush = () => { const pending = [...frames.values()]; frames.clear(); pending.forEach(fn => fn()); };
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes: [{ id: 'q1', question: '자기소개', answer: '기존 답변', application_id: null }] }) },
+    '../utils/textareaCaret': { revealTextareaCaret: () => caretScrollPositions.push(fields.scrollTop) },
+  }, undefined, { getElementById: id => id === 'note-answer' ? answer : null }, {
+    requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
+    cancelAnimationFrame: id => frames.delete(id),
+    getComputedStyle: () => ({ lineHeight: '27.2px' }),
+    ResizeObserver: class { constructor(callback) { resized = callback; } observe() {} disconnect() {} },
+  });
+  await page.click('답변 수정');
+  flush();
+  assert.deepEqual(caretScrollPositions, [], 'a padding-only transitional layout must not move the caret');
+  fields.clientHeight = 217;
+  resized(); flush();
+  assert.deepEqual(caretScrollPositions, [0], 'the first usable layout must show the label and first line');
+  fields.scrollTop = 120;
+  answer.selectionStart = answer.selectionEnd = 80;
+  fields.clientHeight = 160;
+  resized(); flush();
+  assert.deepEqual(caretScrollPositions, [0, 120], 'later resizing must not reset the reading or editing position');
+  assert.equal(answer.selectionStart, 80);
 });

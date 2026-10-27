@@ -113,10 +113,21 @@ export default function InterviewPage() {
     const editor = answer?.closest('form');
     let frame;
     const fields = editor?.querySelector('.field-stack');
+    let opening = true;
     const revealActions = () => {
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
         revealMobileEditor(editor);
+        // The editor can briefly measure only its padding while styles and
+        // focus settle. Do not scroll against that provisional height. Start
+        // with the label and first line; later resizes follow the current caret.
+        if (opening && fields) {
+          const label = editor.querySelector('#note-answer-label');
+          const lineHeight = parseFloat(window.getComputedStyle(answer).lineHeight) || 28;
+          if (fields.clientHeight < (label?.offsetHeight || 0) + lineHeight + 24) return;
+          fields.scrollTop = 0;
+          opening = false;
+        }
         revealTextareaCaret(answer, fields);
       });
     };
