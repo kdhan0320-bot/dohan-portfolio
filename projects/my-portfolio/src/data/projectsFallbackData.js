@@ -21,12 +21,10 @@ export const fallbackProjects = [
     "categoryLabel": "B2B 웹 디자인",
     "role": "정보 구조 · 웹 UI 디자인",
     "tools": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tech_stack": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tags": [
       "B2B",
@@ -231,15 +229,13 @@ export const fallbackProjects = [
     "categoryLabel": "버스 도착정보 앱 디자인",
     "role": "모바일 정보 구조 · UI 디자인",
     "tools": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "moreWorksTools": [
       "Figma"
     ],
     "tech_stack": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tags": [
       "모바일 UI",
@@ -359,12 +355,10 @@ export const fallbackProjects = [
     "categoryLabel": "설비 점검 운영 UI",
     "role": "업무 흐름 · 웹 UI 디자인",
     "tools": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tech_stack": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tags": [
       "운영 UI",
@@ -426,12 +420,10 @@ export const fallbackProjects = [
     ],
     "cardScope": "Figma 디자인",
     "tools": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tech_stack": [
-      "Figma",
-      "Auto Layout"
+      "Figma"
     ],
     "tags": [
       "모바일 UI",
@@ -475,41 +467,35 @@ export const fallbackProjects = [
     "cardLimit": "현재 메뉴 탐색 시안 · 실제 주문·결제 미구현",
     "accentColor": "#456D95",
     "figmaDesignUrl": "https://www.figma.com/design/cvfT9QazAFaXVAxZfeUdvr?node-id=1289-674"
-  },  {
+  },{
     "id": "feedback-hub",
     "slug": "feedback-hub",
     "title": "고른시선",
-    "description": "화면의 특정 위치에 의견을 남기고 수정 전후를 비교하는 피드백 보드",
-    "category": "디자인 피드백 웹앱",
+    "description": "같은 A/B 화면을 목적에 맞게 고르고 이유를 확인하는 UI 디자인 비교 연습",
+    "category": "UI 디자인 비교 연습",
     "categories": [
       "more-work",
       "react"
     ],
-    "categoryLabel": "디자인 피드백 웹앱",
-    "role": "UX/UI · React 구현",
+    "categoryLabel": "UI 디자인 비교 연습",
+    "role": "목적·요구사항 · 개선 피드백 · AI 협업",
     "tools": [
       "React",
-      "Vite",
-      "MUI",
-      "Supabase"
+      "MUI"
     ],
     "moreWorksTools": [
       "React",
-      "MUI",
-      "Supabase"
+      "MUI"
     ],
     "tech_stack": [
       "React",
       "Vite",
-      "MUI",
-      "Supabase",
-      "React Router"
+      "MUI"
     ],
     "tags": [
-      "디자인 리뷰",
-      "전후 비교",
-      "React",
-      "샘플 체험"
+      "UI 비교",
+      "정보 위계",
+      "학습 경험"
     ],
     "gradient": "linear-gradient(135deg, #1E3A5F 0%, #2563EB 60%, #0D9488 100%)",
     "thumbnail_url": null,
@@ -523,29 +509,29 @@ export const fallbackProjects = [
     "is_figma_project": false,
     "is_featured": false,
     "moreWorksPublished": true,
-    "moreWorksStatus": "웹앱 · 샘플 리뷰 체험",
+    "moreWorksStatus": "웹 · 비교 연습",
     "sort_order": 5,
     "status": "complete",
-    "overview": "디자인 화면의 위치와 의견을 연결하는 피드백 보드입니다. 예제 화면에서 수정 전후를 비교하고 위치별 의견을 작성해볼 수 있습니다.",
-    "problem": "피드백이 텍스트로만 전달되면 어느 위치를 왜 바꿔야 하는지 다시 확인해야 합니다.",
-    "goal": "화면의 번호·의견·수정안을 함께 읽고, 위치별로 의견을 작성하는 흐름을 제공합니다.",
-    "targetUser": "디자인 피드백의 위치와 수정 이유를 함께 확인하고 싶은 학습자(가정)",
-    "designPoint": "작업 갤러리와 리뷰 화면을 구분하고, 번호 핀·의견·수정 전후를 연결했습니다.",
-    "process": "피드백 용도 정리 → 예제와 리뷰 구조 구성 → React/MUI 구현 → 샘플 체험 화면 점검",
-    "result": "6종 예제 탐색, 수정 전후 비교, 위치별 샘플 의견 추가·삭제를 구현했습니다. 체험 의견은 화면 내 메모리에만 남습니다.",
-    "lesson": "피드백의 내용뿐 아니라 대상 위치와 변경 결과를 함께 보여줘야 맥락이 분명해집니다.",
-    "nextStep": "실제 파일 업로드와 버전·리뷰 좌표 저장, 공동 작업 흐름은 후속 범위입니다.",
+    "overview": "UI 입문자를 위한 6가지 A/B 비교 연습입니다. 목표에 맞는 화면을 선택하고, 무엇을 유지하고 바꿨는지 설명과 함께 확인합니다.",
+    "problem": "화면이 예쁘다는 인상만으로는 어떤 목적에 더 적합한 디자인인지 설명하기 어렵습니다.",
+    "goal": "같은 두 화면에서도 목적이 달라지면 선택이 달라질 수 있음을 비교와 해설로 보여줍니다.",
+    "targetUser": "UI 디자인의 선택 이유를 연습하는 입문자(가정)",
+    "designPoint": "고정된 A/B 화면과 비교 목표를 분리했습니다. 선택 뒤 유지한 요소·달라진 요소·추천 이유와 한계를 보여줍니다.",
+    "process": "비교 연습의 목적 설정 → AI와 예제·설명 구성 → 화면 피드백 → 모바일 비교와 선택 흐름 점검",
+    "result": "6가지 고정 A/B 예제, 목표별 선택·해설, 모바일 화면 전환과 선택 메모를 제공합니다.",
+    "lesson": "더 나은 화면의 기준은 시각적인 취향과 함께 사용자의 목적을 살펴야 합니다.",
+    "nextStep": "입문자가 실제로 선택 이유를 이해하는지 관찰하고 설명을 검토할 필요가 있습니다.",
     "aiContribution": "김도한은 요구사항과 개선 피드백, 방향 선택과 공개 판단을 맡았습니다. AI는 디자인 제안·검토, 화면 편집 또는 코드 작성·검사에 참여했습니다. 사용자 조사나 성과 측정으로 표현하지 않습니다. 예제 시각 자산 제작에도 AI를 활용했으며 제품 내 AI 호출은 없습니다.",
-    "limitation": "공개 회원가입·실제 파일 업로드·리뷰 좌표와 버전의 서버 저장·실시간 공동 작업은 제공하지 않습니다. 샘플 의견은 화면 이동이나 새로고침 후 사라집니다.",
-    "dataUsage": "공개 작업 데이터는 읽기 전용이며, 작업이 없으면 가상 예제를 보여줍니다. 예제의 전후 화면은 고정된 시안입니다. 체험 의견은 서버로 전송하거나 저장하지 않습니다.",
-    "cardProblem": "의견이 가리키는 위치와 수정 전후를 한 화면에서 확인합니다.",
+    "limitation": "예제는 고정된 가상 화면입니다. 사용자 업로드·자동 디자인 평가·학습 점수·서버 저장을 제공하지 않습니다. 실제 학습 효과는 검증하지 않았습니다.",
+    "dataUsage": "6가지 고정 예제와 미리 작성한 해설을 사용합니다. 선택 메모는 현재 페이지 메모리에만 남고 새로고침하면 초기화됩니다.",
+    "cardProblem": "같은 화면도 목적에 따라 다르게 고르는 UI 비교 연습입니다.",
     "cardRole": [
-      "위치·의견·수정안 연결 구조",
-      "AI 협업 React/MUI 구현"
+      "목적·설명·비교 흐름에 대한 피드백",
+      "AI 협업 화면·코드 제작"
     ],
-    "cardScope": "웹앱 · 샘플 리뷰 체험",
-    "cardLimit": "체험 의견은 메모리 저장 · 실제 공동 작업 미제공",
-    "accentColor": "#A94735"
+    "cardScope": "웹 · 고정 A/B 예제 6종",
+    "cardLimit": "고정 예제 · 메모는 페이지 내 임시 저장",
+    "accentColor": "#74618e"
   },  {
     id: 'gamstagram',
     title: 'Mini SNS',
@@ -593,8 +579,8 @@ export const fallbackProjects = [
       "featured",
       "frontend"
     ],
-    "categoryLabel": "반응형 웹 퍼블리싱",
-    "role": "콘텐츠 UI · 웹퍼블리싱",
+    "categoryLabel": "단편영화 큐레이션 웹",
+    "role": "시각 방향·개선 피드백 · AI 협업",
     "tools": [
       "HTML",
       "CSS",
@@ -605,7 +591,7 @@ export const fallbackProjects = [
       "CSS",
       "JavaScript"
     ],
-    "moreWorksRole": "콘텐츠 UI · 웹퍼블리싱",
+    "moreWorksRole": "시각 방향·개선 피드백 · AI 협업",
     "tech_stack": [
       "HTML",
       "CSS",

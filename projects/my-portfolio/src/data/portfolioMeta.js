@@ -2,7 +2,7 @@
 import { fallbackProjects } from './projectsFallbackData.js';
 
 export const NAME = '김도한';
-export const HERO_BADGE = `${NAME} | UX/UI · 웹퍼블리싱`;
+export const HERO_BADGE = `${NAME} | 웹·UI 디자인`;
 export const HERO_EYEBROW = 'DOHAN KIM · SELECTED WORK';
 export const HERO_HEADLINE_LINES = ['김도한.'];
 export const HERO_DESCRIPTION_LINES = [
@@ -14,8 +14,8 @@ export const POSITIONING_EMPHASIS = '명확한';
 export const POSITIONING_SUFFIX = '화면으로.';
 export const POSITIONING_LINE = `${POSITIONING_PREFIX} ${POSITIONING_EMPHASIS} ${POSITIONING_SUFFIX}`;
 export const SUB_DESCRIPTION = '김도한은 주제와 요구사항, 개선 피드백과 방향 선택을 맡고 AI와 디자인·구현을 협업했습니다. 프로젝트별 작업 범위와 실제 결과물을 구분해 소개합니다.';
-export const APPLICATION_FOCUS = ['UX/UI 디자인', '웹퍼블리싱'];
-export const TOOL_LINE = 'Figma · HTML/CSS/JavaScript · React/MUI · GitHub · AI 협업';
+export const APPLICATION_FOCUS = ['웹·UI 디자인', '웹퍼블리싱 학습'];
+export const TOOL_LINE = 'Figma · AI 협업 웹 제작';
 export const LIVE_SITE_URL = 'https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/';
 export const PROJECT_GITHUB_URL = 'https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/my-portfolio';
 
@@ -31,6 +31,7 @@ const evidence = (title, choice, reason, detailMedia, comparison) => ({
 function detail(id, image, decisions, scope, extra = {}) {
   const project = fallbackProjects.find((item) => item.id === id);
   return {
+    imageFirst: true,
     meta: {
       type: project.is_figma_project ? 'Figma 디자인' : '웹 구현',
       role: project.role,
@@ -60,133 +61,43 @@ function detail(id, image, decisions, scope, extra = {}) {
 export const PROJECT_DETAIL_READY = {
   jobflow: detail(
     'jobflow',
-      media('detail/current/galpirok-welcome.jpg', '갈피록 홈 — 개인 입사지원 관리 목적과 시작 행동, 지원 기록 미리보기', '1440 / 900', { mobile: { src: 'detail/current/galpirok-welcome-mobile.jpg', aspectRatio: '375 / 812', label: '모바일 홈 · 실제 첫 화면' } }),
+    media('detail/current/galpirok-welcome-20261028.jpg', '갈피록 시작 화면 — 개인 입사지원 관리 소개와 회사 기록 미리보기', '1348 / 926', { mobile: { src: 'detail/current/galpirok-welcome-mobile-20261028.jpg', aspectRatio: '390 / 844', label: '현재 모바일 홈 · 가상 샘플' } }),
     [
-      {
-        title: '필터를 바꿔도 같은 자리에서.',
-        summary: '김도한은 큰 PC 화면의 상단 쏠림과 여백을 지적했습니다. AI가 작업 폭을 정리하고 검토 중 발견한 필터 이동을 수정해, 목록 길이가 달라도 조작부 위치를 유지했습니다.',
-        media: media('detail/current/galpirok-checklist-filter-empty-v2.png', '현재 준비 체크의 기타 분류 — 진행 중 0개로 바뀌어도 같은 위치에 남는 상태 탭', '2560 / 1440', { crop: { x: 630, y: 270, width: 1265, height: 610 }, mobileCrop: { x: 918, y: 383, width: 360, height: 315, label: 'PC 부분 보기 · 상태 탭과 빈 결과' }, original: 'detail/current/galpirok-checklist-filter-empty-v2.png' }),
-        comparison: {
-          before: media('detail/current/galpirok-checklist-filter-all-v2.png', '현재 준비 체크의 전체 분류 — 진행 중 5개와 첫 준비 항목이 있는 상태', '2560 / 1440', { crop: { x: 630, y: 270, width: 1265, height: 610 }, mobileCrop: { x: 918, y: 383, width: 360, height: 315, label: 'PC 부분 보기 · 상태 탭과 첫 준비 항목' }, original: 'detail/current/galpirok-checklist-filter-all-v2.png' }),
-          beforeHeading: '전체 분류 · 5개',
-          afterHeading: '기타 분류 · 0개',
-          beforeLabel: '현재 · 준비 항목이 있는 작업 영역',
-          afterLabel: '현재 · 준비 항목이 없는 작업 영역',
-          beforeSummary: '진행 중인 준비 항목 5개를 표시합니다.',
-          afterSummary: '준비 항목이 없어도 상태 탭과 목록 시작 위치를 유지합니다.',
-          note: '현재 버전의 두 필터 상태입니다. 같은 2560×1440 원본의 일부를 표시하며, 개선 전후 비교는 아닙니다.',
-          layout: 'workspace',
-        },
+      { title: '기록을 가리지 않는 갈피.', layout: 'wide',
+        summary: '김도한은 설명·장식보다 회사 기록과 조작을 먼저 보여 달라고 요청하고, 큰 폴더 대신 그라데이션을 선택했습니다. 갈피의 인상은 로고·단계 탭·기록의 작은 표시에 남겼습니다.',
+        media: media('detail/current/galpirok-overview-20261028.jpg', '갈피록 오늘의 지원 — 가까운 마감, 다음 준비와 지원 상태', '1363 / 936'),
+        mediaLabel: '오늘의 지원 · 2026.09.27 기준 가상 샘플'
       },
-      {
-        title: '기록을 가리지 않는 갈피.',
-        summary: '김도한은 설명·장식보다 회사 기록과 조작을 먼저 보여 달라고 요청하고, 큰 폴더 대신 그라데이션을 선택했습니다. AI가 배경을 구현하고 갈피는 로고·단계 탭·선택 표시에 남겼습니다.',
+      { title: '질문과 답변을 한곳에서 읽고 다듬기.', layout: 'wide',
+        summary: '면접 질문 목록 옆에서 답변을 읽고 수정합니다. 최근 버전은 질문·회사 편집과 답변 편집의 진입을 구분하고, 긴 답변을 편집할 때의 영역과 저장·취소 위치를 정리했습니다.',
+        media: media('detail/current/galpirok-interview-20261028.jpg', '갈피록 면접 연습 — 회사별 질문, 나의 답변과 수정 버튼', '1363 / 936', { mobile: { src: 'detail/current/galpirok-interview-mobile-20261028.jpg', aspectRatio: '390 / 844', label: '현재 모바일 면접 연습 · 가상 샘플' } }),
+        mediaLabel: '면접 연습 · 질문과 답변 읽기'
       },
-      {
-        title: '가까운 마감부터 확인하기.',
-        summary: 'AI 검토에서 날짜 조작부에 밀린 회사 기록과 다음 달 마감 누락을 확인했습니다. 목록을 먼저 보여주고, 날짜 탐색은 필요할 때 펼치도록 정리했습니다.',
-        media: media('detail/current/galpirok-calendar-mobile.jpg', '개선한 모바일 마감 일정 — 다가오는 마감 목록을 먼저 확인하고 날짜 탐색을 펼치는 화면', '390 / 844', { frameWidth: 390, crop: { x: 15, y: 125, width: 345, height: 505 }, original: 'detail/current/galpirok-calendar-mobile.jpg' }),
-        comparison: {
-          before: media('detail/galpirok-calendar-before-mobile.jpg', '개선 전 모바일 마감 일정 — 9월의 마감만 보이는 기본 목록', '390 / 844', { frameWidth: 390, crop: { x: 15, y: 125, width: 345, height: 505 }, original: 'detail/galpirok-calendar-before-mobile.jpg' }),
-          beforeLabel: '모바일 마감 · 개선 전',
-          afterLabel: '모바일 마감 · 개선 후',
-          beforeSummary: '9월 목록에서 10월 2일 마감을 보려면 다음 달로 이동해야 했습니다.',
-          afterSummary: '9월 29일과 10월 2일 마감을 한 목록에서 확인합니다.',
-          note: '2026.09.27 기준 가상 데이터 · 390×844 화면의 동일 영역을 부분 표시합니다. 전체 원본도 제공합니다.',
-          layout: 'mobile',
-        },
-      },
+      evidence('작은 화면에서는 기록에 자리를 내주기.', '모바일 메뉴는 필요한 높이만 펼쳐지고, 긴 내용은 메뉴 안에서 스크롤하도록 구성했습니다.', '화면 전체를 메뉴로 덮기보다 현재 작업의 맥락을 남기기 위한 구성입니다.'),
     ],
-    {
-      actual: ['지원 현황·마감 목록과 달력', '준비 체크·면접 질문과 답변', '인증·사용자별 저장 코드 — 실제 계정 미검증'],
-      demoStatic: ['가입 없이 편집 가능한 가상 샘플', '2026.09.27 기준 · 새로고침하면 초기화', '요청문 만들기는 로컬 템플릿'],
-      notIncluded: ['실시간 알림·외부 채용 API', '면접 일정 등록·통계·드래그 이동', '제품 내 AI 문장 생성'],
-    },
-    {
-      imageFirst: true,
-      openingFacts: true,
-      presentation: 'focused-decisions',
-      decisionsTitle: '기록을 먼저 읽게 만든 선택.',
-      context: { summary: '기록·조작 우선과 큰 화면 배치에 대한 김도한의 요구, AI가 발견한 동작 문제를 반영한 세 사례입니다. 방향 선택과 구현·검사 역할을 구분했습니다.' },
-      heroNote: {
-        title: '한 회사의 기록에서 다음 준비까지.',
-        text: '지원할 회사를 직접 등록하고 상태·마감·준비할 일을 연결합니다. 같은 회사의 기록을 다시 만들지 않고 준비부터 지원 완료까지 관리합니다.',
-      },
+    { actual: ['지원 기록·마감·준비 체크·면접 답변', '반응형 웹 화면과 편집 흐름', '계정 인증·저장 코드 — 이번 소개 갱신에서 실제 계정 미검증'], demoStatic: ['2026.09.27 기준 가상 회사 샘플', '샘플 편집은 현재 탭의 메모리 · 새로고침 시 초기화'], notIncluded: ['외부 채용 API·실시간 알림', '제품 내 AI 답변 생성', '사용자 조사·채용 성과 검증'] },
+    { imageFirst: true, presentation: 'focused-decisions', decisionsTitle: '기록을 먼저 읽게 만든 선택.',
+      context: { summary: '김도한의 기록·조작 우선 요청과 배치 피드백을 AI와 함께 구체적인 화면으로 옮겼습니다.' },
       aiCollaboration: [
-        { label: '김도한', value: '개인 입사지원 관리 목적 설정, 기록·조작 우선 요청, 큰 화면 배치 피드백, 갈피 유지·그라데이션 선택과 공개 판단.' },
-        { label: 'AI 협업', value: '구체적인 화면·스타일 제안, 코드 작성·수정, 샘플·코드 검사와 캡처.' },
+        { label: '김도한', value: '서비스 목적·우선순위 설정, 기록·조작 우선 요청, 배치 피드백, 갈피·그라데이션 방향 선택' },
+        { label: 'AI 협업', value: '구체적인 화면 제안·편집, 코드 작성·수정, 동작 검사와 캡처' }
       ],
-      serviceFlow: {
-        title: '한 회사의 지원 과정.',
-        summary: '모션브릿지 · 웹 퍼블리셔 · 9월 29일 마감',
-        note: '2026.09.27 기준 가상 회사의 실제 캡처입니다. 단계 선택은 이미지 보기만 바꿉니다.',
-        steps: [
-          {
-            label: '기록', screen: '01 / 지원 현황', title: '지원할 회사의 기록을 확인합니다.',
-            action: '모션브릿지의 직무·지원 예정 상태·9월 29일 마감을 한 기록에 모았습니다.',
-            result: '이 회사 기록을 기준으로 마감과 준비 항목이 연결됩니다.',
-            media: media('detail/current/galpirok-flow-record.jpg', '모션브릿지의 회사 기록 — 웹 퍼블리셔, 지원 예정, 9월 29일 마감', '1440 / 900', { frameWidth: 540, crop: { x: 885, y: 0, width: 540, height: 900 }, original: 'detail/current/galpirok-flow-record.jpg', mobile: { src: 'detail/current/galpirok-flow-record-mobile.jpg', aspectRatio: '390 / 844', label: '모션브릿지 · 지원 예정 기록' } }),
-            caption: '모션브릿지 · 회사 상세 부분 보기',
-          },
-          {
-            label: '마감', screen: '02 / 마감 일정', title: '지원 전에 남은 날짜를 봅니다.',
-            action: '9월 29일 마감과 다음 달의 가까운 마감을 함께 확인합니다.',
-            result: '마감 목록은 관심·지원 예정 상태의 회사만 보여줍니다.',
-            media: media('detail/current/galpirok-flow-deadline.jpg', '마감 일정의 모션브릿지 — 9월 29일 마감과 다음 달의 가까운 마감', '1425 / 990', { crop: { x: 32, y: 167, width: 1347, height: 772 }, original: 'detail/current/galpirok-flow-deadline.jpg', mobile: { src: 'detail/current/galpirok-flow-deadline-mobile.jpg', aspectRatio: '390 / 844', label: '모션브릿지 · 9월 29일 마감' } }),
-            caption: '모션브릿지 · 마감 일정 작업 영역 부분 보기',
-          },
-          {
-            label: '준비', screen: '03 / 준비 체크', title: '이 회사에 필요한 준비를 마칩니다.',
-            action: '모션브릿지에 연결된 준비 항목을 완료로 표시합니다. 공통 준비도 따로 관리합니다.',
-            result: '항목 완료는 지원 상태를 자동으로 바꾸지 않습니다.',
-            media: media('detail/current/galpirok-flow-ready.jpg', '모션브릿지를 선택한 준비 체크 — 연결된 준비 항목의 완료 상태', '1440 / 900', { crop: { x: 53, y: 169, width: 1320, height: 650 }, original: 'detail/current/galpirok-flow-ready.jpg', mobile: { src: 'detail/current/galpirok-flow-ready-mobile.jpg', aspectRatio: '390 / 844', label: '모션브릿지 · 준비 항목 완료' } }),
-            caption: '모션브릿지 · 준비 체크 작업 영역 부분 보기',
-          },
-          {
-            label: '지원 완료', screen: '04 / 지원 현황', title: '제출 후 같은 기록의 상태를 바꿉니다.',
-            action: '같은 회사 기록의 상태를 지원 완료로 저장합니다.',
-            result: '지원 완료로 바꾸면 지원 전 회사의 마감 목록에서 제외됩니다.',
-            media: media('detail/current/galpirok-flow-applied.jpg', '모션브릿지의 회사 기록 — 지원 완료로 저장한 상태', '1440 / 900', { frameWidth: 540, crop: { x: 885, y: 0, width: 540, height: 900 }, original: 'detail/current/galpirok-flow-applied.jpg', mobile: { src: 'detail/current/galpirok-flow-applied-mobile.jpg', aspectRatio: '390 / 844', label: '모션브릿지 · 지원 완료로 변경' } }),
-            caption: '모션브릿지 · 지원 완료 상세 부분 보기',
-          },
-        ],
-      },
-      scopeTitle: '구현 범위와 확인하지 않은 것.',
       scopeSummary: [
-        { title: '구현과 샘플', text: '지원 현황·마감·준비 체크·면접 답변을 관리합니다. 샘플은 2026.09.27 기준 가상 데이터이며 편집 내용은 현재 탭의 메모리에만 남습니다. 새로고침하면 초기화됩니다.' },
-        { title: '검증의 경계', text: '샘플·코드·PC와 모바일 브라우저 화면을 확인했습니다. 실제 계정 인증·DB 저장 유지, 모바일 실기기, 사용자 조사·채용 성과는 검증하지 않았습니다.' },
-      ],
-      verification: {
-        method: '실시간 알림·외부 채용 API·면접 일정 등록·통계·드래그 이동은 제공하지 않습니다. 작성 요청문 만들기는 로컬 템플릿이며 AI 모델을 호출하지 않습니다.',
-      },
-      resultLimit: {},
+        { title: '제작과 데이터', text: '개인 입사지원 관리 웹앱입니다. 공개 체험은 가상 데이터이며 샘플 편집 내용은 새로고침하면 초기화됩니다. 작성 요청문은 로컬 템플릿으로, AI 모델을 호출하지 않습니다.' },
+        { title: '확인 범위', text: '소개 이미지는 2026.10.28에 확인한 공개 웹 화면입니다. 실제 계정 인증·DB 저장 유지, 모바일 실기기와 학습·채용 효과를 검증한 자료는 아닙니다.' }
+      ], resultLimit: {}
     },
   ),
   seolbiit: detail(
     'seolbiit',
-    media('detail/current/seolbigyeol-home.png', '설비결 작업 현황 — 상태 요약과 우선 작업 카드', '1440 / 1200'),
+    media('detail/current/seolbigyeol-20261028.png', '설비결 작업 현황 — 배정 대기, 검토 대기와 진행 중 정비', '1440 / 1080'),
     [
-      evidence(
-        '요청 확인과 배정 영역을 구분했습니다.',
-        '접수 목록과 선택 요청 상세 옆에 담당자·완료 기한·배정 버튼을 별도 영역으로 묶었습니다.',
-        '요청의 내용을 읽는 영역과 배정에 필요한 정보를 확인하는 영역을 구분하려는 설계입니다.',
-        media('detail/current/seolbigyeol-requests.png', '설비결 정비 요청 — 요청 목록과 선택 상세, 담당자 배정', '1440 / 1200'),
-        {
-          before: media('detail/seolbiit-desktop-management.png', '이전 설비잇 정비 작업 관리 — 작업표와 진행 단계·최근 기록이 모인 상세 패널', '1440 / 900'),
-          beforeLabel: '이전 · 설비잇 정비 작업 관리',
-          afterLabel: '현재 · 설비결 정비 요청',
-          beforeSummary: '작업 표 옆의 상세 패널에 요청 정보, 진행 단계, 최근 기록과 배정 버튼이 함께 놓여 있었습니다.',
-          afterSummary: '요청을 확인하는 영역과 담당자·기한을 확인하고 배정하는 영역을 분리했습니다.',
-          note: '동일 프로젝트의 이전·현재 Figma 시안입니다. 화면 구성의 변화이며, 현장 사용자 검증은 진행하지 않았습니다.',
-        },
-      ),
-      evidence('조치 결과를 확인한 뒤 완료합니다.', '보고 검토 창에서 조치 내용과 재확인 결과를 함께 보여주고 보완 요청과 완료를 구분했습니다.', '작업이 끝났다는 표시만으로 넘기지 않고 확인할 근거를 가까이 두었습니다.', media('detail/current/seolbigyeol-review.png', '설비결 정비 보고 검토 — 조치 내용과 재확인 결과', '1440 / 1200')),
+      evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),
+      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 담당자 배정을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-20261028.png', '설비결의 배정 대기 요청과 담당자 배정 확대', '1440 / 1080', { crop: { x: 64, y: 388, width: 784, height: 520 } })),
+      evidence('검토와 진행 중인 작업을 구분.', '검토 대기 보고는 조치 내용·재확인 결과와 검토 버튼을 함께 두고, 진행 중인 정비는 별도 영역에 배치했습니다.', '보고를 확인해야 하는 작업과 아직 정비 중인 작업을 구분하려는 설계입니다.'),
     ],
-    {
-      actual: ['작업 현황의 정보 구조', '점검·정비 운영 화면 디자인', 'Figma 화면 구성'],
-      demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'],
-      notIncluded: ['실제 서비스 코드·서버', '센서 연동·예지보전', '현장 사용자 조사'],
-    },
+    { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
+    { imageFirst: true, decisionsTitle: '현장의 상태를 화면의 순서로.' },
   ),
   'ott-service': detail(
     'ott-service',
@@ -252,10 +163,10 @@ export const PROJECT_DETAIL_READY = {
   ),
   gongjeongbom: detail(
     'gongjeongbom',
-    media('detail/current/gijunseon-home.png', '기준선 — 비전 검사 소개, 결함 사례와 도입 과정', '1440 / 1824'),
+    media('detail/current/gijunseon-20261028.png', '기준선 — 비전 검사 소개, 결함 사례와 도입 과정', '1440 / 2621'),
     [
       evidence('무엇을 검사하는지 이미지로 설명합니다.', '산업 이미지 다음에 흠집·부품 누락·바코드 등 검사 사례를 배치했습니다.', '기술 용어만 읽기 전에 서비스가 다루는 문제를 볼 수 있도록 구성했습니다.'),
-      evidence('사례에서 도입 과정으로 이어집니다.', '검사 사례와 도입 단계, 문의 행동을 순서대로 나눴습니다.', '서비스의 용도를 이해한 뒤 진행 방법과 다음 행동을 찾도록 했습니다.'),
+      evidence('사례에서 도입 과정으로 이어집니다.', '산업 이미지 다음에 제품·공정에 맞춘 솔루션 설명을 두고, 결함 사례·도입 검토·문의 순서로 구성했습니다.', '서비스의 용도를 이해한 뒤 진행 방법과 다음 행동을 찾도록 했습니다.'),
     ],
     {
       actual: ['검사 사례와 도입 과정의 정보 구조', 'Figma 웹사이트 디자인'],
@@ -265,24 +176,21 @@ export const PROJECT_DETAIL_READY = {
   ),
   'feedback-hub': detail(
     'feedback-hub',
-    media('detail/current/goreunsiseon-home.jpg', '고른시선 — 화면 위치별 의견과 수정 전후 미리보기', '1348 / 926'),
+    media('detail/current/goreunsiseon-20261028.jpg', '고른시선 — 같은 A/B 화면과 목적별 비교 목표', '1348 / 926', { mobile: { src: 'detail/current/goreunsiseon-mobile-20261028.jpg', aspectRatio: '390 / 844', label: '현재 모바일 화면 · A/B 보기 전환' } }),
     [
-      evidence('의견과 화면의 위치를 연결합니다.', '화면의 번호 핀을 의견 목록과 연결하고, 선택한 위치에 체험 의견을 작성하도록 구성했습니다.', '의견이 어떤 요소를 가리키는지 다시 설명해야 하는 상황을 줄이려는 설계입니다.'),
-      evidence('수정 전후를 같은 맥락에서 봅니다.', '6종 예제의 수정 전 화면과 수정안을 전환하거나 나란히 비교할 수 있게 했습니다.', '결과만 보는 대신 무엇이 달라졌는지 연결해서 확인하도록 했습니다.'),
-      evidence('체험과 실제 저장의 범위를 구분합니다.', '예제 의견은 화면 내 메모리에만 유지하고, 공개 작업 데이터는 읽기 전용으로 제공합니다.', '포트폴리오 체험이 실제 협업·서버 저장으로 오해되지 않게 했습니다.'),
+      evidence('목표가 바뀌면 같은 화면도 다르게.', '전시 예제에서 A/B 이미지는 유지하고 전시 이름 찾기와 작품 감상하기의 목표를 바꿉니다.', '화면 자체의 우열보다 주어진 목적에 적합한 선택을 생각하도록 했습니다.'),
+      evidence('화면 보기와 답 선택을 구분.', '모바일에서는 A/B 화면 전환과 답 선택을 다른 조작으로 나누고, 그림 속 버튼이 비교용임을 안내합니다.', '다른 화면을 살펴보는 행동이 곧 답을 확정하는 행동으로 이어지지 않도록 했습니다.'),
+      evidence('선택 다음에는 이유와 한계.', '해설에서 유지한 요소와 바뀐 요소, 추천 이유와 다른 선택이 맞을 수 있는 상황을 설명합니다.', '정답을 외우기보다 비교 기준과 적용할 상황을 이해하도록 구성했습니다.'),
     ],
-    {
-      actual: ['작업 검색·분류와 예제 탐색', '위치별 의견·수정 전후 비교', 'React/MUI 화면 구현'],
-      demoStatic: ['가상 예제 6종과 고정 수정안', '체험 의견은 화면 내 메모리', '공개 작업 데이터는 읽기 전용'],
-      notIncluded: ['공개 회원가입·파일 업로드', '리뷰 좌표·버전의 서버 저장', '실시간 공동 작업·제품 내 AI'],
-    },
+    { actual: ['고정 A/B 예제 6종과 목표별 선택', '선택 뒤 해설·핵심 원칙 정리', '모바일 비교 화면 전환'], demoStatic: ['가상 UI 예제와 미리 작성한 해설', '선택 메모는 현재 페이지 메모리'], notIncluded: ['사용자 파일 업로드·자동 평가', '학습 점수·서버 저장', '실제 학습 효과 검증'] },
+    { imageFirst: true, decisionsTitle: '더 예쁜 화면에서, 목적에 맞는 화면으로.' },
   ),
   'bus-arrival': detail(
     'bus-arrival-app',
-    media('detail/current/onjeongryu-home.png', '온정류 — 즐겨찾는 노선의 방향과 도착 시간', '390 / 1084', { frameWidth: 390 }),
+    media('detail/current/onjeongryu-20261028.png', '온정류 — 즐겨찾는 노선의 방향과 도착 시간', '390 / 844', { frameWidth: 390 }),
     [
       evidence('자주 찾는 버스를 먼저 배치합니다.', '즐겨찾는 노선의 번호·방향·도착 시간을 첫 화면의 큰 정보로 묶었습니다.', '반복 조회하는 내용을 여러 화면을 거치지 않고 살펴보도록 구성했습니다.'),
-      evidence('도착 상태를 글자와 크기로 구분합니다.', '남은 분과 ‘곧 도착’ 상태를 노선 정보와 함께 표시했습니다.', '색만 보고 판단하지 않고 현재 도착 상태를 읽을 수 있도록 했습니다.', media('detail/current/onjeongryu-station.png', '온정류 정류장 상세 — 노선별 방향과 도착 예정', '390 / 900', { frameWidth: 390 })),
+      evidence('도착 상태를 글자와 크기로 구분합니다.', '남은 분과 ‘곧 도착’ 상태를 노선 정보와 함께 표시했습니다.', '색만 보고 판단하지 않고 현재 도착 상태를 읽을 수 있도록 했습니다.', media('detail/current/onjeongryu-20261028.png', '온정류 홈의 노선 번호와 도착 시간 확대', '390 / 844', { frameWidth: 390, crop: { x: 20, y: 224, width: 350, height: 305 } })),
     ],
     {
       actual: ['모바일 정보 위계', '도착 정보와 탐색 화면 디자인'],
@@ -293,10 +201,10 @@ export const PROJECT_DETAIL_READY = {
   ),
   brewstep: detail(
     'brewstep',
-    media('detail/current/soyobit-home.png', '소요빛 — 카페 대표 음료와 추천 메뉴', '390 / 1038', { frameWidth: 390 }),
+    media('detail/current/soyobit-20261028.png', '소요빛 — 카페 대표 음료와 추천 메뉴', '390 / 1114', { frameWidth: 390 }),
     [
-      evidence('음료 사진과 메뉴 정보를 함께 보여줍니다.', '대표 음료 사진과 추천 메뉴를 나누고 메뉴명·가격을 사진 가까이에 배치했습니다.', '브랜드 분위기를 느끼면서 실제로 살펴볼 메뉴도 읽을 수 있도록 구성했습니다.'),
-      evidence('주요 화면의 위치를 일정하게 둡니다.', '홈·메뉴·관심 메뉴 등 주요 화면을 하단 탐색에 배치했습니다.', '프로모션을 읽은 뒤에도 메뉴 탐색으로 이동할 위치를 쉽게 찾도록 했습니다.', media('detail/current/soyobit-menu.png', '소요빛 메뉴 — 종류별 분류와 음료·가격·즐겨찾기', '390 / 980', { frameWidth: 390 })),
+      evidence('음료 사진과 메뉴 정보를 함께 보여줍니다.', '추천 메뉴를 먼저 보여주고, 브랜드 이미지와 페어링 제안을 뒤에 배치했습니다. 메뉴명·가격은 사진 가까이에 두었습니다.', '브랜드 분위기를 느끼면서 실제로 살펴볼 메뉴도 읽을 수 있도록 구성했습니다.'),
+      evidence('주요 화면의 위치를 일정하게 둡니다.', '추천 메뉴에는 사진·맛의 표현·가격을 함께 두고, 주요 탐색 메뉴는 하단에 배치했습니다.', '프로모션을 읽은 뒤에도 메뉴 탐색으로 이동할 위치를 쉽게 찾도록 했습니다.', media('detail/current/soyobit-20261028.png', '소요빛 홈의 추천 메뉴 — 음료 사진, 맛의 표현과 가격', '390 / 1114', { frameWidth: 390, crop: { x: 24, y: 90, width: 342, height: 350 } })),
     ],
     {
       actual: ['카페의 모바일 시각 체계', '홈·메뉴 탐색 화면 디자인'],

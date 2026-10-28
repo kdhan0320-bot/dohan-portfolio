@@ -1,33 +1,18 @@
 import './projectCovers.css';
-
-const BASE = import.meta.env.BASE_URL;
-const COVERS = {
-  seolbiit: { theme: 'equipment' },
-  jobflow: { theme: 'record' },
-  'ott-service': { theme: 'cinema' },
-  gongjeongbom: { theme: 'industry' },
-  'feedback-hub': { theme: 'feedback' },
-  'bus-arrival-app': { theme: 'transit', secondary: 'detail/current/onjeongryu-station.png', mobile: true },
-  brewstep: { theme: 'cafe', secondary: 'detail/current/soyobit-menu.png', mobile: true },
+const BASE=import.meta.env.BASE_URL;
+const COVERS={
+ seolbiit:{theme:'equipment',width:1440,height:1080},
+ jobflow:{theme:'record',width:1363,height:936},
+ 'ott-service':{theme:'cinema',width:1425,height:950},
+ gongjeongbom:{theme:'industry',width:1440,height:2621},
+ 'feedback-hub':{theme:'feedback',width:1348,height:926},
+ 'bus-arrival-app':{theme:'transit',width:390,height:844,mobile:true},
+ brewstep:{theme:'cafe',width:390,height:1114,mobile:true},
 };
-
-const ProjectCover = ({ project, eager = false, image, imageAlt }) => {
-  const cover = COVERS[project.id];
-  if (!cover) return <div className="project-cover"><img className="project-cover__main" src={project.thumbnailUrl} alt={project.thumbnailAlt} loading={eager ? 'eager' : 'lazy'} decoding="async" /></div>;
-  return (
-    <div className={`project-cover project-cover--${cover.theme}${cover.mobile ? ' project-cover--mobile' : ''}`}>
-      <div className="project-cover__screens">
-        {cover.theme === 'record' ? (
-          <div className={`project-cover__record-window${image?.includes('overview') ? ' project-cover__record-window--overview' : ''}`}>
-            <img src={image ? `${BASE}${image}` : project.thumbnailUrl} alt={imageAlt || `${project.title} 실제 웹 화면의 작업 영역`} loading={eager ? 'eager' : 'lazy'} decoding="async" width="2560" height="1440" />
-          </div>
-        ) : (
-          <img className="project-cover__main" src={image ? `${BASE}${image}` : project.thumbnailUrl} alt={imageAlt || `${project.title} 실제 ${project.is_figma_project ? '디자인' : '웹'} 화면`} loading={eager ? 'eager' : 'lazy'} decoding="async" />
-        )}
-        {cover.secondary && <img className="project-cover__secondary" src={`${BASE}${cover.secondary}`} alt={`${project.title} 상세 화면`} loading={eager ? 'eager' : 'lazy'} decoding="async" />}
-      </div>
-    </div>
-  );
+const ProjectCover=({project,eager=false,image,imageAlt})=>{
+ const cover=COVERS[project.id]||{};
+ return <div className={`project-cover project-cover--${cover.theme||'default'}${cover.mobile?' project-cover--mobile':''}`}>
+  <div className="project-cover__screens"><img className="project-cover__main" src={image?`${BASE}${image}`:project.thumbnailUrl} alt={imageAlt||project.thumbnailAlt||`${project.title} 실제 화면`} width={cover.width} height={cover.height} loading={eager?'eager':'lazy'} decoding="async"/></div>
+ </div>;
 };
-
 export default ProjectCover;

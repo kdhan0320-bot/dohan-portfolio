@@ -187,21 +187,22 @@ const ProjectDetailPage = () => {
   const focusedCase = ready.presentation === 'focused-decisions';
   const figmaUrl = project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
   const heroMedia = (ready.hero?.media || []).filter((media) => media?.src);
-  const usedImages = new Set(heroMedia.map((media) => media.src));
+  const mediaKey = (item) => `${item.src}:${JSON.stringify(item.crop || null)}`;
+  const usedImages = new Set(heroMedia.map(mediaKey));
   const decisions = (ready.decisions || []).map((decision) => {
     const media = decision.mediaChoices?.[0]?.media || decision.media;
-    const showMedia = media?.src && !usedImages.has(media.src);
-    if (showMedia) usedImages.add(media.src);
+    const showMedia = media?.src && !usedImages.has(mediaKey(media));
+    if (showMedia) usedImages.add(mediaKey(media));
     return { ...decision, media, showMedia };
   });
   const additionalScreens = (ready.mainScreens || []).filter((screen) => {
-    if (!screen.media?.src || usedImages.has(screen.media.src)) return false;
-    usedImages.add(screen.media.src);
+    if (!screen.media?.src || usedImages.has(mediaKey(screen.media))) return false;
+    usedImages.add(mediaKey(screen.media));
     return true;
   });
   const facts = [
     { label: '작업 분야', value: project.categoryLabel || ready.meta?.type },
-    { label: '사용 도구', value: (project.tools || []).join(' · ') || ready.meta?.tools },
+    { label: project.is_figma_project ? '디자인 도구' : '제작에 사용한 기술', value: (project.tools || []).join(' · ') || ready.meta?.tools },
     ...(ready.aiCollaboration || []).map((item) => ({
       label: item.label === '김도한' ? '김도한의 기여' : item.label,
       value: item.value,
@@ -217,7 +218,7 @@ const ProjectDetailPage = () => {
           </button>
           <div className="case-intro__grid">
             <div>
-              <p className="case-eyebrow">{project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · 웹 구현'}</p>
+              <p className="case-eyebrow">{project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · AI 협업 웹 제작'}</p>
               <h1>{project.title}</h1>
             </div>
             <div className="case-intro__description">

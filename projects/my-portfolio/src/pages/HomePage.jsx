@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import HeroSection from '../components/sections/HeroSection';
 import ProjectsSection from '../components/sections/ProjectsSection';
 import MoreWorksSection from '../components/sections/MoreWorksSection';
+import DesignNotesSection from '../components/sections/DesignNotesSection';
 import ContactSection from '../components/sections/ContactSection';
 import { scrollToSection } from '../hooks/useScrollNav';
 
@@ -96,13 +97,8 @@ const HomePage = () => {
     <>
       <HeroSection />
       <ProjectsSection />
+      <DesignNotesSection />
       <MoreWorksSection />
-      <section className="home-about" id="about" aria-labelledby="home-about-title">
-        <div className="portfolio-shell home-about__inner">
-          <div><p className="eyebrow">ABOUT</p><h2 id="home-about-title">업무 경험과,<br />화면을 보는 기준.</h2></div>
-          <div><p>구매·문서·현장에서 쌓은 경험,<br className="desktop-break" /> 직접 제기한 개선 의견과 AI 협업 범위를 소개합니다.</p><Link className="portfolio-button portfolio-button--secondary" to="/about">경력과 작업 기여 보기</Link></div>
-        </div>
-      </section>
       <ContactSection />
     </>
   );

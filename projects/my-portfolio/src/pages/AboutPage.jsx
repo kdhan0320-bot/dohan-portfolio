@@ -8,15 +8,15 @@ const relatedWork = [
     slug: 'seolbiit',
     title: '설비결',
     type: '설비 점검 · 업무 관리',
-    image: 'detail/current/seolbigyeol-home.png',
+    image: 'detail/current/seolbigyeol-20261028.png',
     alt: '설비결의 설비 점검 현황과 요청을 보여주는 실제 디자인 화면',
   },
   {
     slug: 'feedback-hub',
     title: '고른시선',
-    type: '피드백 · 수정 상태',
-    image: 'detail/current/goreunsiseon-home.jpg',
-    alt: '고른시선의 프로젝트와 피드백을 관리하는 실제 웹 화면',
+    type: '목적에 따른 UI 비교',
+    image: 'detail/current/goreunsiseon-20261028.jpg',
+    alt: '고른시선의 고정 A/B 화면과 목표별 비교 연습',
   },
 ];
 
@@ -26,12 +26,12 @@ const AboutPage = () => (
       <header className="about-intro">
         <div>
           <p className="eyebrow">ABOUT DOHAN</p>
-          <h1>김도한의<br /><span>작업 배경.</span></h1>
+          <h1>화면 밖의 경험,<br /><span>디자인의 출발점.</span></h1>
         </div>
         <div className="about-intro__copy">
-          <p className="about-intro__role">UX/UI 디자인 · 웹퍼블리싱 <span>신입 지원</span></p>
+          <p className="about-intro__role">웹·UI 디자인 <span>신입 지원</span></p>
           <p>사무와 생산 현장에서 일한 경험을 바탕으로, 복잡한 정보 속에서 필요한 내용을 찾고 다음 행동을 판단하는 화면에 관심을 두고 있습니다.</p>
-          <p>작품마다 다룬 문제와 선택한 방향, 저와 AI가 맡은 범위를 함께 소개합니다.</p>
+          <p>현재 AI 없이 직접 수정하고 설명할 수 있는 도구는 Figma입니다. 웹퍼블리싱은 학습 중이며, 웹 구현은 AI와 함께 제작했습니다.</p>
         </div>
       </header>
 
@@ -39,7 +39,7 @@ const AboutPage = () => (
         <div className="about-block__heading">
           <p className="eyebrow">01 / 현재의 관심사</p>
           <h2 id="about-interest-title">상태가 보이고,<br />다음 행동이 분명한 화면.</h2>
-          <p>요청의 우선순위와 처리 상태를 어떻게 보여줄지 고민합니다. 설비결에서는 정비 요청과 담당자 배정을, 고른시선에서는 피드백과 수정 상태를 다뤘습니다.</p>
+          <p>요청의 우선순위와 처리 상태를 어떻게 보여줄지 고민합니다. 설비결에서는 정비 요청과 담당자 배정을, 고른시선에서는 목적에 따라 달라지는 화면의 선택 기준을 다뤘습니다.</p>
         </div>
         <div className="about-work-grid">
           {relatedWork.map((work) => (
@@ -90,11 +90,11 @@ const AboutPage = () => (
           <dl className="about-decisions">
             <div>
               <dt>작품이 더 먼저 보이도록</dt>
-              <dd>썸네일이 아래로 치우쳐 보인다고 피드백했습니다. 첫 화면에 실제 작품 화면을 배치하고, 목록의 화면 높이와 상단선을 맞추는 방향을 선택했습니다.</dd>
+              <dd>화면이 밋밋하고 작품의 개성이 충분히 드러나지 않는다고 피드백했습니다. 최신 작품 이미지를 크게 보여주고 배치에 강약을 주는 방향을 선택했습니다.</dd>
             </div>
             <div>
-              <dt>버튼은 간결하게</dt>
-              <dd>반복되는 화살표를 줄이고 버튼을 활용하자고 요청했습니다. 홈 버튼의 화살표를 덜어내고, 글자와 버튼 형태로 동작을 구분하는 방향을 선택했습니다.</dd>
+              <dt>실제 수행 범위를 분명하게</dt>
+              <dd>Figma에서 직접 가능한 작업과 AI의 도움을 받은 웹 구현을 구분했습니다. 사용한 기술 목록이 독립적으로 구현할 수 있는 역량으로 읽히지 않도록 소개를 정리했습니다.</dd>
             </div>
             <div>
               <dt>작업과 경력의 위치를 구분</dt>

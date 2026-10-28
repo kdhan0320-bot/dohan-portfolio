@@ -696,3 +696,19 @@
   .case-page[data-project-slug="ott-service"] .case-assumption { margin-bottom: 32px; font-size: 17px; }
   .case-page[data-project-slug="ott-service"] .case-decision-check { grid-template-columns: 1fr; gap: 8px; margin-top: 0; }
 }
+
+/* Current image-first presentation and native screenshot detail crops. */
+.case-page .case-project-facts{padding:24px 0 36px}
+.case-page .case-project-facts .case-facts{margin-top:0}
+.case-page .case-figure--cropped .case-figure__surface{position:relative;aspect-ratio:var(--crop-ratio);padding:0}
+.case-page .case-figure--cropped .case-figure__surface>img{position:absolute;width:var(--crop-image-width);max-width:none;left:var(--crop-left);top:var(--crop-top);height:auto}
+.case-page .case-figure--portrait.case-figure--cropped{width:100%;max-width:var(--frame-width,390px);justify-self:center}
+.case-page .case-action,.works-page .works-card__foot a,.works-page .works-card__status{border-radius:2px}
+.case-page[data-project-slug="jobflow"] .case-cover .case-figure__surface{border-radius:2px;box-shadow:none}
+.case-page[data-project-slug="feedback-hub"] .case-cover .case-figure__surface{background:#e7e4ef}
+.works-intro h1{letter-spacing:-.055em}
+@media(max-width:760px){
+ .case-page .case-project-facts{padding:20px 0 26px}
+ .case-page[data-project-slug="jobflow"] .case-cover{max-width:390px}
+ .case-page[data-project-slug="jobflow"] .case-decision:has(picture) .case-figure{max-width:390px;margin-inline:auto}
+}

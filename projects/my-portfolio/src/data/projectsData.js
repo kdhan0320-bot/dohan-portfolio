@@ -8,18 +8,20 @@ import { fallbackProjects, FALLBACK_FILTER_TABS } from './projectsFallbackData';
 const BASE = import.meta.env.BASE_URL;
 
 const THUMB_MAP = {
-  gongjeongbom: `${BASE}detail/current/gijunseon-home.png`,
-  jobflow:      `${BASE}detail/current/galpirok-board.jpg`,
-  seolbiit:     `${BASE}detail/current/seolbigyeol-home.png`,
+  gongjeongbom: `${BASE}detail/current/gijunseon-cover-20261028.webp`,
+  jobflow:      `${BASE}detail/current/galpirok-overview-20261028.jpg`,
+  seolbiit:     `${BASE}detail/current/seolbigyeol-cover-20261028.webp`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-v34-home.jpg`,
-  'bus-arrival-app': `${BASE}detail/current/onjeongryu-home.png`,
-  brewstep: `${BASE}detail/current/soyobit-home.png`,
-  'feedback-hub': `${BASE}detail/current/goreunsiseon-home.jpg`,
+  'ott-service': `${BASE}detail/current/jansang-v37-home.jpg`,
+  'bus-arrival-app': `${BASE}detail/current/onjeongryu-cover-20261028.webp`,
+  brewstep: `${BASE}detail/current/soyobit-cover-20261028.webp`,
+  'feedback-hub': `${BASE}detail/current/goreunsiseon-20261028.jpg`,
 };
 
+const PROJECT_ORDER = ['seolbiit', 'ott-service', 'jobflow', 'feedback-hub', 'gongjeongbom', 'bus-arrival-app', 'brewstep'];
+const orderOf = (project) => PROJECT_ORDER.includes(project.id) ? PROJECT_ORDER.indexOf(project.id) : 99;
 export const ALL_PROJECTS = [...fallbackProjects]
-  .sort((a, b) => (a.sort_order ?? 99) - (b.sort_order ?? 99))
+  .sort((a, b) => orderOf(a) - orderOf(b))
   .map((p) => ({
     ...p,
     thumbnailUrl: THUMB_MAP[p.id] ?? p.thumbnailUrl ?? null,

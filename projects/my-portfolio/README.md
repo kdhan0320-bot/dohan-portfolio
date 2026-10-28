@@ -1,4 +1,51 @@
-# 김도한 | UX/UI 디자인 · 웹퍼블리싱 포트폴리오
+# 김도한 | 웹·UI 디자인 포트폴리오
+
+## 공통 포트폴리오 편집형 개선 — 2026-10-28
+
+현재 작업 기준은 이 절입니다. 아래의 기존 회차 기록은 당시의 배치와 검증 내용을 보존한 이력입니다.
+
+- 홈을 큰 디자인 부분 화면과 짧은 소개 → 대표 3개 → 본인의 방향 선택 → 추가 4개의 이미지 목록 → 연락 순서로 구성했습니다. 첫 화면의 작은 미리보기 3개를 하나의 큰 실제 Figma 화면으로 바꿨습니다.
+- 대표 순서는 설비결 → 잔상관 → 갈피록입니다. 추가 작업은 고른시선 → 기준선 → 온정류 → 소요빛이며, 전체 목록과 다음 작품 링크도 같은 순서입니다.
+- 공통 색상은 종이색 `#F6F5F1`, 본문 `#202C31`, 강조 `#315E70`입니다. 작품별 배경과 이미지 크기를 달리하고 잔상관은 어두운 영역으로 구분했습니다. 기존 SUIT Variable과 D 마크는 유지했습니다.
+- 현재 독립적으로 수정·설명 가능한 도구는 Figma라는 사용자 답변을 반영했습니다. 웹·UI 디자인과 웹퍼블리싱 학습, AI 협업 웹 제작을 구분했습니다. 제작 기술 목록은 독립 구현 역량의 증거로 표현하지 않습니다.
+- Figma 원본은 수정하지 않았습니다. 이번 웹 구성은 사용자가 승인한 점검 의견을 구체화한 구현안이며, 새 Figma 시안을 그대로 옮긴 결과는 아닙니다.
+
+### 현재 화면과 출처
+
+| 작품 | 소개에 사용하는 현재 자료 |
+| --- | --- |
+| 설비결 | Figma `GInxTqHo6Y87DEe3vuhmMw`, `336:229`, 1440×1080 |
+| 기준선 | Figma `3ZJ4TUGqBNAewsJYzheOWo`, `451:747`, 1440×2621 |
+| 온정류 | Figma `bzwp6FhsZaaenOA4ABIAFs`, `671:797`, 390×844 |
+| 소요빛 | Figma `cvfT9QazAFaXVAxZfeUdvr`, `1289:674`, 390×1114 |
+| 갈피록 | 공개 웹의 시작·오늘의 지원·면접 연습, 모바일 시작·면접 화면 |
+| 고른시선 | 현재 UI 비교 연습의 PC·모바일 화면. 이전 피드백 보드 소개를 목적·범위와 함께 갱신 |
+| 잔상관 | 현재 화면과 일치하는 기존 v37 캡처. 홈·목록·상세 연결을 통일 |
+
+새 원본은 `public/detail/current/*20261028.png` 또는 `.jpg`입니다. Figma 표지용 WebP는 동일 화면의 크기·형식 변환이며 원본 PNG를 보존합니다. 갈피록과 고른시선의 모바일 캡처는 390×844 CSS iframe 렌더링이며 실제 휴대폰 캡처가 아닙니다. 화면의 가상 날짜·수치는 원본 그대로입니다.
+
+![편집형 포트폴리오 첫 화면](review-preview.jpg)
+
+### 변경 파일
+
+- 홈 구성: `src/pages/HomePage.jsx`, `src/components/sections/HeroSection.jsx`, `heroSection.css`, `ProjectsSection.jsx`, `MoreWorksSection.jsx`, `DesignNotesSection.jsx`, `ContactSection.jsx`
+- 공통 표시: `src/index.css`, `src/theme.js`, `src/components/projects/ProjectCover.jsx`, `projectCovers.css`
+- 현재 내용·순서: `src/data/projectsData.js`, `projectsFallbackData.js`, `portfolioMeta.js`
+- 목록·상세·소개: `src/pages/ProjectsPage.jsx`, `ProjectDetailPage.jsx`, `portfolioEditorial.css`, `AboutPage.jsx`
+- 문서·메타·미리보기: `README.md`, `review-preview.jpg`, `index.html`, `src/components/layout/RouteEffects.jsx`, `vite.config.js`
+- 현재 화면 자산: `public/detail/current/*20261028*`
+
+### 검증과 남은 범위
+
+- 최종 `npm run lint` 통과(오류·경고 0), `npm run build` 성공, `git diff --check` 통과.
+- Chromium PC에서 상세 7개, 390px CSS iframe에서 상세 7개의 경로와 가로 넘침을 확인했습니다. 목록의 콘텐츠·학습 필터, 다음 작품 이동, 잔상관의 작품/메모 화면 전환, 홈 대표 작업 앵커의 포커스와 이동을 확인했습니다.
+- 홈의 360px·390px·820px CSS iframe 및 데스크톱 화면을 확인했습니다. 360px와 820px에서 SUIT 폰트 로딩과 가로 넘침을 확인했습니다. 스크롤바 때문에 문서의 clientWidth는 iframe 폭보다 15px 작습니다.
+- 상세 이미지 참조 32개가 실제 파일로 존재함을 확인했습니다. 이는 모든 외부 서비스 기능이나 사용자 과업의 검증을 뜻하지 않습니다.
+- 실제 휴대폰·Safari·스크린리더·사용자 조사·채용 성과·운영 계정 인증은 이번 검증 범위가 아닙니다.
+- 작업 브랜치: `codex/portfolio-editorial-20261028`, 기준 HEAD: `59d6b533ca92cd7f751a9ef70f39f676b73b6dde`. 구현과 검토를 완료한 기준입니다. 기존 main 작업 폴더는 변경하지 않았습니다.
+- 2026-10-29 사용자 승인에 따라 기존 GitHub Pages 배포 절차로 공개 반영합니다. 개별 작품의 서비스 코드, 패키지·lockfile, CI/CD, Figma 원본은 변경하지 않았습니다.
+
+---
 
 공개 주소: https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/
 
