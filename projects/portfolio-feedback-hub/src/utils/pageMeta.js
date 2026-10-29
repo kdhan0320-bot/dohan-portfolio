@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 export const PAGE_TITLES = {
-  home: '고른시선 | UI 디자인 비교 연습',
+  home: '고른시선 | 그림으로 살펴보는 UI 디자인 팁',
   exercises: '연습 모음 | 고른시선',
   practice: 'UI 디자인 비교 연습 | 고른시선',
   list: '리뷰 예제 | 고른시선',

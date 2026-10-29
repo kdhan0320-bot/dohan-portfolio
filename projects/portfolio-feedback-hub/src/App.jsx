@@ -5,11 +5,9 @@ import { useAuth } from './hooks/useAuth';
 import LoginPage from './pages/LoginPage';
 import PostListPage from './pages/PostListPage';
 import HomePage from './pages/HomePage';
-import GuidePage from './pages/GuidePage';
-import ExercisesPage from './pages/ExercisesPage';
-import PracticePage from './pages/PracticePage';
-import PracticeRecapPage from './pages/PracticeRecapPage';
-import { EXERCISES, getExercise } from './constants/exercises';
+import TipsPage from './pages/TipsPage';
+import TipDetailPage from './pages/TipDetailPage';
+import { TIPS, getTip } from './constants/tips';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
 import PostEditPage from './pages/PostEditPage';
@@ -49,13 +47,20 @@ const PublicRoute = ({ children }) => {
 
 const LegacyCompareRoute = () => {
   const [params] = useSearchParams();
-  const exercise = getExercise(params.get('sample')) ?? EXERCISES[0];
-  return <Navigate to={`/practice/${exercise.id}`} replace />;
+  const tip = getTip(params.get('sample')) ?? TIPS[0];
+  return <Navigate to={`/tips/${tip.id}`} replace />;
+};
+
+const LegacyPracticeRoute = () => {
+  const { id } = useParams();
+  const tip = getTip(id);
+  return tip ? <Navigate to={`/tips/${tip.id}`} replace /> : <NotFoundPage />;
 };
 
 const LegacyPostRoute = () => {
   const { id } = useParams();
-  return getExercise(id) ? <Navigate to={`/practice/${id}`} replace /> : <PostDetailPage />;
+  const tip = getTip(id);
+  return tip ? <Navigate to={`/tips/${tip.id}`} replace /> : <PostDetailPage />;
 };
 
 const focusMainContent = (event) => {
@@ -79,14 +84,16 @@ const AppRoutes = () => (
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
         <Route path="/signup" element={<Navigate to="/login" replace />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/exercises" element={<ExercisesPage />} />
-        <Route path="/practice/:id" element={<PracticePage />} />
-        <Route path="/recap" element={<PracticeRecapPage />} />
-        <Route path="/works" element={<Navigate to="/exercises" replace />} />
+        <Route path="/tips" element={<TipsPage />} />
+        <Route path="/tips/:id" element={<TipDetailPage />} />
+        <Route path="/exercises" element={<Navigate to="/tips" replace />} />
+        <Route path="/practice/:id" element={<LegacyPracticeRoute />} />
+        <Route path="/recap" element={<Navigate to="/tips" replace />} />
+        <Route path="/works" element={<Navigate to="/tips" replace />} />
         <Route path="/archive" element={<PostListPage />} />
-        <Route path="/guide" element={<GuidePage />} />
+        <Route path="/guide" element={<Navigate to="/tips" replace />} />
         <Route path="/compare" element={<LegacyCompareRoute />} />
-        <Route path="/challenges" element={<Navigate to="/exercises" replace />} />
+        <Route path="/challenges" element={<Navigate to="/tips" replace />} />
         <Route path="/posts/:id" element={<LegacyPostRoute />} />
         <Route path="/write" element={<PrivateRoute><PostWritePage /></PrivateRoute>} />
         <Route path="/posts/:id/edit" element={<PrivateRoute><PostEditPage /></PrivateRoute>} />
