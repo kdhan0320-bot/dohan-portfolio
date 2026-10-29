@@ -331,12 +331,12 @@ export default function InterviewPage() {
     <Tabs className="interview-scope-tabs" value={scopeKind} onChange={(_, value) => selectCompany(value)} aria-label="질문 범위">
       <Tab value="all" label="전체" disabled={open} /><Tab value="common" label="공통" disabled={open} /><Tab value="companies" label="회사별" disabled={open} />
     </Tabs>
-    <div className="interview-filter-fields">
-      <Field id="interview-company-scope" select size="small" label="회사" value={companyScoped ? companyScope : 'companies'} slotProps={{ select: { renderValue: () => scopeKind === 'common' ? '회사 연결 없음' : selectedCompany?.company_name || '전체 회사' } }} disabled={scopeKind !== 'companies' || companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
+    <div className={`interview-filter-fields${scopeKind !== 'companies' ? ' topic-only' : ''}`}>
+      {scopeKind === 'companies' && <Field id="interview-company-scope" select size="small" label="회사" value={companyScoped ? companyScope : 'companies'} slotProps={{ select: { renderValue: () => selectedCompany?.company_name || '전체 회사' } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
         <MenuItem value="companies">전체 회사</MenuItem>
         {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
         {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
-      </Field>
+      </Field>}
       <Field id="interview-topic" select size="small" label="주제" value={topic} disabled={pageLoading || Boolean(pageError) || open} onChange={event => { setTopic(event.target.value); setActiveId(null); }}>
         <MenuItem value="all">전체 주제</MenuItem>{topics.map(value => <MenuItem key={value} value={value}>{value}</MenuItem>)}<MenuItem value="none">주제 미지정</MenuItem>
       </Field>
@@ -380,7 +380,7 @@ export default function InterviewPage() {
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
           <span className="practice-company-label">
-            {!companyScoped && companyLabel(activeNote)}
+            <span className="practice-record-company">{companyLabel(activeNote)}</span>
             {activeNote.related_project && <span>{activeNote.related_project}</span>}
           </span>
           <IconButton aria-label="질문 관리" aria-haspopup="menu" aria-expanded={Boolean(menuAnchor)} onClick={event => setMenuAnchor(event.currentTarget)}><MoreHoriz /></IconButton>

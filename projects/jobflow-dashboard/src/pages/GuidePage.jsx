@@ -38,6 +38,10 @@ export default function GuidePage() {
         <Button component={Link} to={step.to} variant="outlined">{step.label}</Button>
       </li>)}
     </ol>
+    <dl className="guide-display-rules">
+      <div><dt>오늘의 회사</dt><dd>지원 전·면접 예정 회사와 준비가 남은 서류 전형을 모아요. 마감이 지난 지원 전 회사는 ‘지원 여부 확인’으로 따로 표시해요.</dd></div>
+      <div><dt>현황 달력</dt><dd>지원 전(관심·지원 예정) 회사의 공고 마감만 표시해요. 지원 후 기록은 회사 목록에서 확인해요.</dd></div>
+    </dl>
     <p className="guide-scope-note">{isGuest ? '가상 샘플을 수정하며 체험할 수 있어요. 새로고침하면 초기화됩니다.' : '지원 기록은 로그인한 계정에 저장됩니다.'}</p>
   </>;
 }

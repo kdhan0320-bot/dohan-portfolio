@@ -340,11 +340,18 @@ test('interview scope and topic filters combine without changing stored records'
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
   });
+  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope'), null, 'all questions need no disabled company control');
   page.find(n => n.type === 'Tabs').props.onChange(null, 'companies'); page.render();
   assert.doesNotMatch(page.text(), /공통 자기소개/);
   page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.onChange({ target: { value: '프로젝트' } }); page.render();
   assert.match(page.text(), /회사 A 경험/); assert.doesNotMatch(page.text(), /회사 B 소개/);
   page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value: 'b' } }); page.render();
   assert.match(page.text(), /회사 B 소개/); assert.doesNotMatch(page.text(), /회사 A 경험/);
+  page.find(n => n.type === 'Tabs').props.onChange(null, 'common'); page.render();
+  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope'), null);
+  assert.match(page.text(), /공통 자기소개/); assert.doesNotMatch(page.text(), /회사 B 소개/);
+  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.value, 'all');
+  page.find(n => n.type === 'Tabs').props.onChange(null, 'companies'); page.render();
+  assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
   assert.equal(notes.length, 3);
 });

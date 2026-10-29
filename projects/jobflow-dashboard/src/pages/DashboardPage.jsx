@@ -47,7 +47,7 @@ export default function DashboardPage() {
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!loading && !error && <>
       <section className="attention-section" aria-labelledby="attention-title">
-        <div className="overview-section-heading"><h2 id="attention-title">지금 챙길 회사</h2><div className="support-summary" aria-label="내 지원 현황">
+        <div className="overview-section-heading"><h2 id="attention-title">지금 챙길 회사</h2><p className="today-scope-note">지원 전 · 면접 예정 · 준비가 남은 서류 전형</p><div className="support-summary" aria-label="내 지원 현황">
         <Link to="/">전체 지원 <strong>{apps.applications.length}곳</strong></Link>
         <dl>{BOARD_COLUMNS.map(column => <div key={column.id}><dt><i style={{ background: column.color }} aria-hidden="true" />{column.label}</dt><dd>{apps.applications.filter(company => boardColumn(company.status) === column.id).length}</dd></div>)}{apps.applications.some(company => company.status === '보류') && <div><dt>보류</dt><dd>{apps.applications.filter(company => company.status === '보류').length}</dd></div>}</dl>
       </div></div>

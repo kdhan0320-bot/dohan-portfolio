@@ -90,6 +90,7 @@ export default function CalendarPage() {
   return <div className="calendar-page">
     <PageHeading art="folder" title="지원 관리" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" onClick={() => setCreating(true)} aria-haspopup="dialog" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <ApplicationsNav calendar />
+    <p className="calendar-scope-note">지원 전 회사의 공고 마감만 표시해요.</p>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
       <div className="calendar-layout">
