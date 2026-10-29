@@ -48,7 +48,7 @@ const ProjectsPage = () => {
           {projects.map((project, index) => <article className="works-card" key={project.id}>
             <Link className="works-card__link" to={`/projects/${projectSlug(project)}`}>
               <ProjectCover project={project} eager={index < 2} />
-              <div className="works-card__meta"><span>{project.categoryLabel || project.category}</span><span className="works-card__status">{project.is_figma_project ? '디자인 시안' : 'AI 협업 웹 제작'}</span></div>
+              <div className="works-card__meta"><span>{project.categoryLabel || project.category}</span><span className="works-card__status">{project.productionLabel || (project.is_figma_project ? '디자인 시안' : 'AI 협업 웹 제작')}</span></div>
               <div className="works-card__heading"><h2>{project.title}</h2><span className="works-card__detail-label">프로젝트 보기</span></div>
               <p className="works-card__description">{project.description}</p>
             </Link>

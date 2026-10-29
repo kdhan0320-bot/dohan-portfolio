@@ -8,7 +8,7 @@ import { fallbackProjects, FALLBACK_FILTER_TABS } from './projectsFallbackData';
 const BASE = import.meta.env.BASE_URL;
 
 const THUMB_MAP = {
-  gongjeongbom: `${BASE}detail/current/gijunseon-cover-20261028.webp`,
+  gongjeongbom: `${BASE}detail/current/gijunseon-web-20261029.jpg`,
   jobflow:      `${BASE}detail/current/galpirok-overview-20261028.jpg`,
   seolbiit:     `${BASE}detail/current/seolbigyeol-cover-20261028.webp`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
@@ -25,7 +25,7 @@ export const ALL_PROJECTS = [...fallbackProjects]
   .map((p) => ({
     ...p,
     thumbnailUrl: THUMB_MAP[p.id] ?? p.thumbnailUrl ?? null,
-    thumbnailAlt: `${p.title} 실제 ${p.is_figma_project ? 'Figma 디자인' : '웹'} 화면`,
+    thumbnailAlt: p.thumbnailAlt || `${p.title} 실제 ${p.is_figma_project ? 'Figma 디자인' : '웹'} 화면`,
     previewDevice: ['bus-arrival-app', 'brewstep'].includes(p.id) ? 'mobile' : 'desktop',
     detail: {
       overview:       p.overview,

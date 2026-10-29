@@ -13,7 +13,7 @@ const Navbar = () => {
   return <>
     <a className="skip-link" href="#main-content" onClick={skipToContent}>본문으로 건너뛰기</a>
     <header className="site-header"><div className="header-inner portfolio-shell">
-      <Link to="/" state={{ scrollTo: 'home' }} className="site-wordmark" aria-label="김도한 · 홈으로"><img className="wordmark-symbol" src={`${import.meta.env.BASE_URL}favicon.svg?v=3`} width="32" height="32" alt="" /><span>김도한<span className="wordmark-dot" aria-hidden="true">.</span></span><span className="wordmark-caption" aria-hidden="true">DESIGN · WEB</span></Link>
+      <Link to="/" state={{ scrollTo: 'home' }} className="site-wordmark" aria-label="김도한 · 홈으로"><img className="wordmark-symbol" src={`${import.meta.env.BASE_URL}favicon.svg?v=4`} width="32" height="32" alt="" /><span>김도한<span className="wordmark-dot" aria-hidden="true">.</span></span><span className="wordmark-caption" aria-hidden="true">SCREEN EDITING</span></Link>
       <nav aria-label="주요 메뉴" className="site-nav">
         <Link to="/projects" aria-current={isWork ? 'page' : undefined}>작업</Link>
         <Link to="/about" aria-current={location.pathname === '/about' ? 'page' : undefined}>소개</Link>

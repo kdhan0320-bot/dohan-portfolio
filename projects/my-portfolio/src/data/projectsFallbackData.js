@@ -12,7 +12,7 @@ export const fallbackProjects = [
     "id": "gongjeongbom",
     "slug": "gongjeongbom",
     "title": "기준선",
-    "description": "검사 사례와 도입 과정을 보여주는 B2B 비전 검사 웹 디자인",
+    "description": "검사 사례와 도입 과정을 보여주는 B2B 웹 디자인과 반응형 웹 구현",
     "category": "B2B 웹 디자인",
     "categories": [
       "more-work",
@@ -20,12 +20,8 @@ export const fallbackProjects = [
     ],
     "categoryLabel": "B2B 웹 디자인",
     "role": "정보 구조 · 웹 UI 디자인",
-    "tools": [
-      "Figma"
-    ],
-    "tech_stack": [
-      "Figma"
-    ],
+    "tools": ["Figma", "HTML", "CSS", "JavaScript"],
+    "tech_stack": ["Figma", "HTML", "CSS", "JavaScript"],
     "tags": [
       "B2B",
       "정보 구조",
@@ -35,28 +31,30 @@ export const fallbackProjects = [
     "thumbnail_url": null,
     "thumbnailUrl": null,
     "detail_url": null,
-    "liveUrl": null,
+    "liveUrl": "https://kdhan0320-bot.github.io/dohan-portfolio/gijunseon/",
     "demo_url": null,
     "github_url": null,
     "githubUrl": null,
     "prototypeUrl": null,
     "figmaPrototypeUrl": null,
-    "is_ai_project": false,
+    "is_ai_project": true,
     "is_figma_project": true,
+    "productionLabel": "Figma · AI 협업 웹",
+    "thumbnailAlt": "기준선의 현재 공개 웹 화면 — 검사 솔루션과 도입 절차 안내",
     "is_featured": false,
     "moreWorksPublished": true,
     "sort_order": 4,
     "status": "complete",
-    "overview": "제품의 작은 결함을 이미지로 확인하는 비전 검사 솔루션의 웹사이트 디자인입니다. 검사 사례에서 서비스의 용도를 이해하고 도입 과정과 문의로 이어지도록 구성했습니다.",
+    "overview": "Figma 디자인을 바탕으로 AI와 함께 구현한 가상 비전 검사 기업 사이트입니다. 검사 사례에서 적용 공정·도입 절차·상담 입력 시연으로 이어지는 반응형 웹을 구성했습니다.",
     "problem": "비전 검사에 익숙하지 않은 담당자에게 기술 용어만 나열하면 어떤 문제를 확인하는 서비스인지 전달하기 어렵습니다.",
     "goal": "검사 이미지와 적용 사례를 먼저 보여주고, 도입 과정과 다음 행동을 구분합니다.",
     "targetUser": "검사 솔루션의 적용 가능성을 살펴보는 생산·구매 담당자(가정)",
     "designPoint": "큰 산업 이미지와 결함 사례, 단계별 도입 설명으로 전문적인 인상과 정보 순서를 정리했습니다.",
-    "process": "제조·구매 경험에서 주제 선정 → 검사 사례와 정보 순서 정리 → Figma 화면 디자인",
-    "result": "검사 사례·도입 과정·문의 행동으로 이어지는 웹 화면을 Figma로 구성했습니다.",
+    "process": "제조·구매 경험에서 주제 선정 → Figma 화면 디자인 → AI 협업 웹 구현 → 화면 검토와 수정",
+    "result": "Figma 시안과 공개 웹을 연결했습니다. 홈·검사 예시·적용 공정·도입 절차·상담 입력 시연을 확인할 수 있습니다.",
     "lesson": "기술 서비스의 소개에서도 추상적인 설명보다 무엇을 확인하는지 보여주는 이미지가 우선입니다.",
-    "nextStep": "실제 제품 자료와 담당자 의견을 확인하고, 최신 디자인의 반응형 구현을 검토해야 합니다.",
-    "limitation": "현재 Figma 디자인을 소개하며 최신 디자인의 웹 구현은 포함하지 않습니다. 실제 검사·고객 실적·사용자 조사·성과 측정은 제공하지 않습니다.",
+    "nextStep": "실제 담당자 의견을 확인하고, 정보 탐색과 상담 준비 흐름을 검토할 필요가 있습니다.",
+    "limitation": "가상 기업의 포트폴리오용 웹사이트입니다. 상담은 브라우저 내 입력 검증 시연이며 실제 전송·메일·DB 저장은 없습니다. 실제 검사 정확도·고객 실적·사용자 조사 성과를 주장하지 않습니다.",
     "dataUsage": "검사 사례와 기업 설명은 포트폴리오용 시안이며 실제 납품·검사 정확도·고객 실적을 뜻하지 않습니다.",
     "aiContribution": "김도한은 요구사항과 개선 피드백, 방향 선택과 공개 판단을 맡았습니다. AI는 디자인 제안·검토, 화면 편집 또는 코드 작성·검사에 참여했습니다. 사용자 조사나 성과 측정으로 표현하지 않습니다.",
     "cardProblem": "검사 사례를 먼저 보여주어 기술 서비스의 용도를 설명합니다.",
@@ -64,14 +62,14 @@ export const fallbackProjects = [
       "정보 순서와 검사 사례 구성",
       "Figma 웹 UI 디자인"
     ],
-    "cardScope": "Figma 디자인",
-    "cardLimit": "현재 디자인 시안 · 실제 검사 서비스 미연동",
+    "cardScope": "Figma 디자인 · AI 협업 웹 구현",
+    "cardLimit": "가상 기업 사이트 · 실제 검사·상담 전송 미연동",
     "accentColor": "#A85338",
     "moreWorksTools": [
       "Figma"
     ],
     "figmaDesignUrl": "https://www.figma.com/design/3ZJ4TUGqBNAewsJYzheOWo?node-id=451-747",
-    "moreWorksStatus": "Figma 디자인"
+    "moreWorksStatus": "Figma · AI 협업 웹"
   },  /* ── 홈 대표 3개 ── */
   {
     id: 'figma-uiux',

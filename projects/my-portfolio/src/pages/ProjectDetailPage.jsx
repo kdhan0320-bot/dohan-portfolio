@@ -1,7 +1,5 @@
 import { useId, useState } from 'react';
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { ALL_PROJECTS } from '../data/projectsData';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
@@ -202,7 +200,7 @@ const ProjectDetailPage = () => {
   });
   const facts = [
     { label: '작업 분야', value: project.categoryLabel || ready.meta?.type },
-    { label: project.is_figma_project ? '디자인 도구' : '제작에 사용한 기술', value: (project.tools || []).join(' · ') || ready.meta?.tools },
+    { label: project.is_figma_project && !project.liveUrl ? '디자인 도구' : '제작에 사용한 도구·기술', value: (project.tools || []).join(' · ') || ready.meta?.tools },
     ...(ready.aiCollaboration || []).map((item) => ({
       label: item.label === '김도한' ? '김도한의 기여' : item.label,
       value: item.value,
@@ -214,11 +212,11 @@ const ProjectDetailPage = () => {
       <div className="portfolio-shell">
         <header className="case-intro">
           <button className="case-back" onClick={goBack} type="button">
-            <ArrowBackIcon aria-hidden="true" /> 작업으로 돌아가기
+             작업으로 돌아가기
           </button>
           <div className="case-intro__grid">
             <div>
-              <p className="case-eyebrow">{project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · AI 협업 웹 제작'}</p>
+              <p className="case-eyebrow">{project.productionLabel ? `개인 프로젝트 · ${project.productionLabel}` : (project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · AI 협업 웹 제작')}</p>
               <h1>{project.title}</h1>
             </div>
             <div className="case-intro__description">
@@ -366,10 +364,10 @@ const ProjectDetailPage = () => {
         </section>
 
         <footer className="case-footer">
-          <Link className="case-list-link" to="/projects"><ArrowBackIcon aria-hidden="true" />전체 작업</Link>
+          <Link className="case-list-link" to="/projects">전체 작업</Link>
           {nextProject && nextProject.id !== project.id && <Link className="case-next" to={`/projects/${projectSlug(nextProject)}`}>
             <span><small>다음 프로젝트</small><strong>{nextProject.title}</strong></span>
-            <ArrowForwardIcon aria-hidden="true" />
+            <span className="case-next-label">작업 보기</span>
           </Link>}
         </footer>
       </div>

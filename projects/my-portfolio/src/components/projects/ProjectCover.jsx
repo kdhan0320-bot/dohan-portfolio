@@ -4,7 +4,7 @@ const COVERS={
  seolbiit:{theme:'equipment',width:1440,height:1080},
  jobflow:{theme:'record',width:1363,height:936},
  'ott-service':{theme:'cinema',width:1425,height:950},
- gongjeongbom:{theme:'industry',width:1440,height:2621},
+ gongjeongbom:{theme:'industry',width:1363,height:936},
  'feedback-hub':{theme:'feedback',width:1348,height:926},
  'bus-arrival-app':{theme:'transit',width:390,height:844,mobile:true},
  brewstep:{theme:'cafe',width:390,height:1114,mobile:true},

@@ -9,7 +9,7 @@ const FEATURED = [
 ];
 const ProjectsSection = () => (
   <section className="home-work portfolio-shell" id="projects" aria-labelledby="selected-title">
-    <div className="section-heading"><div><p className="eyebrow">01 / SELECTED WORK</p><h2 id="selected-title">서로 다른 목적,<br className="mobile-break" /> 세 가지 화면.</h2></div><Link className="text-link" to="/projects">전체 작업 보기 <span aria-hidden="true">↗</span></Link></div>
+    <div className="section-heading"><div><p className="eyebrow">01 / SELECTED WORK</p><h2 id="selected-title">관찰에서 시작해,<br className="mobile-break" /> 화면으로 이어진 작업.</h2></div><Link className="text-link" to="/projects">전체 작업 보기</Link></div>
     <div className="featured-grid">
       {FEATURED.map((item,index) => {
         const project = ALL_PROJECTS.find(p=>p.id===item.id);
@@ -21,7 +21,7 @@ const ProjectsSection = () => (
             <p className="project-brief">{item.title}</p>
             <p className="project-summary">{item.summary}</p>
             <p className="project-focus">{item.note}</p>
-            <div className="project-caption-foot"><span className="project-status">{project.is_figma_project?'Figma 디자인':'AI 협업 웹 제작'}</span><Link className="text-link" to={`/projects/${project.slug||project.id}`}>작업 이야기 <span aria-hidden="true">↗</span></Link></div>
+            <div className="project-caption-foot"><span className="project-status">{project.is_figma_project?'Figma 디자인':'AI 협업 웹 제작'}</span><Link className="text-link" to={`/projects/${project.slug||project.id}`}>작업 이야기</Link></div>
           </div>
         </article>;
       })}

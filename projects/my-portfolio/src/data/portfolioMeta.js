@@ -33,7 +33,7 @@ function detail(id, image, decisions, scope, extra = {}) {
   return {
     imageFirst: true,
     meta: {
-      type: project.is_figma_project ? 'Figma 디자인' : '웹 구현',
+      type: project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : '웹 구현'),
       role: project.role,
       tools: project.tools.join(' · '),
       data: project.cardScope,
@@ -41,7 +41,7 @@ function detail(id, image, decisions, scope, extra = {}) {
     hero: {
       summary: project.overview,
       media: [image],
-      mediaLabel: project.is_figma_project ? '현재 Figma 디자인 · 정적 예시' : '실제 웹 화면 · 포트폴리오용 예시',
+      mediaLabel: project.is_figma_project && !project.liveUrl ? '현재 Figma 디자인 · 정적 예시' : '실제 웹 화면 · 포트폴리오용 예시',
     },
     context: { problem: project.problem, goal: project.goal },
     decisions,
@@ -163,16 +163,20 @@ export const PROJECT_DETAIL_READY = {
   ),
   gongjeongbom: detail(
     'gongjeongbom',
-    media('detail/current/gijunseon-20261028.png', '기준선 — 비전 검사 소개, 결함 사례와 도입 과정', '1440 / 2621'),
+    media('detail/current/gijunseon-web-20261029.jpg', '기준선 현재 공개 웹 — 산업용 비전 검사 솔루션 소개', '1363 / 936'),
     [
       evidence('무엇을 검사하는지 이미지로 설명합니다.', '산업 이미지 다음에 흠집·부품 누락·바코드 등 검사 사례를 배치했습니다.', '기술 용어만 읽기 전에 서비스가 다루는 문제를 볼 수 있도록 구성했습니다.'),
       evidence('사례에서 도입 과정으로 이어집니다.', '산업 이미지 다음에 제품·공정에 맞춘 솔루션 설명을 두고, 결함 사례·도입 검토·문의 순서로 구성했습니다.', '서비스의 용도를 이해한 뒤 진행 방법과 다음 행동을 찾도록 했습니다.'),
     ],
     {
-      actual: ['검사 사례와 도입 과정의 정보 구조', 'Figma 웹사이트 디자인'],
-      demoStatic: ['가상 서비스 소개와 검사 사례', '현재 Figma 화면'],
-      notIncluded: ['최신 디자인의 웹 구현', '실제 검사·납품 실적', '사용자 조사·성과 측정'],
+      actual: ['Figma 디자인과 HTML·CSS·JavaScript 웹 구현', '검사 예시·적용 공정·도입 절차·상담 화면', '반응형 구성과 브라우저 내 입력 검증'],
+      demoStatic: ['가상 기업 소개와 검사 예시 · AI 이미지 포함', '상담 입력·검사 선택 시연'],
+      notIncluded: ['실제 검사·납품 실적', '상담 전송·메일·DB 저장', '사용자 조사·성과 측정'],
     },
+    { aiCollaboration: [
+      { label: '김도한', value: '원본 Figma 작품·요구 범위 제시, 디자인 방향 선택, 수정 결과 확인' },
+      { label: 'AI 협업', value: 'HTML·CSS·JavaScript 작성, 반응형·접근성 보완, 도식 정리와 검수' },
+    ] },
   ),
   'feedback-hub': detail(
     'feedback-hub',

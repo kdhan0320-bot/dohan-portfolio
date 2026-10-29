@@ -1,7 +1,7 @@
-.project-cover{aspect-ratio:1.48;overflow:hidden;position:relative;background:#e2e9e9;border-radius:2px}
+.project-cover{aspect-ratio:1.48;overflow:hidden;position:relative;background:#e2e9e9;border-radius:18px}
 .project-cover__screens{width:100%;height:100%;position:relative;padding:28px}
-.project-cover__main{display:block;width:100%;height:auto;max-width:none;object-fit:cover;object-position:top;box-shadow:0 8px 28px #17283214;transition:transform 280ms ease}
-a:hover .project-cover__main,a:focus-visible .project-cover__main{transform:translateY(-5px)}
+.project-cover__main{display:block;width:100%;height:auto;max-width:none;object-fit:cover;object-position:top;box-shadow:0 8px 28px #17283214;transition:transform 550ms cubic-bezier(.22,.7,.25,1)}
+a:hover .project-cover__main,a:focus-visible .project-cover__main{transform:translateY(-3px)}
 .project-cover--equipment{background:#dde6e6}.project-cover--equipment .project-cover__screens{padding:30px}
 .project-cover--cinema{background:#202121}.project-cover--cinema .project-cover__screens{padding:0}.project-cover--cinema .project-cover__main{box-shadow:none}
 .project-cover--record{background:#e2e7ed}.project-cover--record .project-cover__screens{padding:28px 24px}
@@ -14,3 +14,8 @@ a:hover .project-cover__main,a:focus-visible .project-cover__main{transform:tran
 .project-cover--cafe .project-cover__main{width:46%}
 @media(max-width:599px){.project-cover__screens,.project-cover--equipment .project-cover__screens,.project-cover--record .project-cover__screens,.project-cover--feedback .project-cover__screens{padding:16px}.project-cover--cinema .project-cover__screens,.project-cover--industry .project-cover__screens{padding:0}.project-cover--mobile .project-cover__screens{padding:18px 0 0}}
 @media(prefers-reduced-motion:reduce){.project-cover__main{transition:none}}
+
+.more-project .project-cover__screens{padding:12px}
+.more-project .project-cover--cinema .project-cover__screens,.more-project .project-cover--industry .project-cover__screens{padding:0}
+.more-project .project-cover--mobile .project-cover__screens{padding:10px 0 0}
+.more-project .project-cover--mobile .project-cover__main{width:60%}
