@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Drawer, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuOutlined from '@mui/icons-material/MenuOutlined';
 import Close from '@mui/icons-material/Close';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Brand } from '../ui/Brand';
 import ActionFeedback from '../ui/ActionFeedback';
 import { useAuth } from '../../context/AuthContext';
@@ -16,9 +15,7 @@ const mainLinks = [
   { to: '/interview', label: '면접' }
 ];
 const secondaryLinks = [
-  { to: '/document-helper', label: '작성 요청문 도구' },
-  { to: '/guide', label: '이용 안내' },
-  { to: '/welcome', label: '서비스 소개' }
+  { to: '/document-helper', label: '작성 요청문 도구' }
 ];
 const activePath = (pathname, to) => {
   if (to === '/') return pathname === '/' || pathname.startsWith('/applications') || pathname === '/kanban' || pathname === '/calendar';
@@ -118,7 +115,7 @@ export default function SiteHeader({ publicMode = false }) {
         <Link className="site-brand-link" to={homePath} aria-label="갈피록 홈" onClick={event => visit(event, homePath)}><Brand /></Link>
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
         <div className="site-account-actions">
-          {hasWorkspace && <Button className="site-settings-button" color="inherit" endIcon={<ExpandMore />} aria-haspopup="menu" aria-expanded={Boolean(accountAnchor)} onClick={event => setAccountAnchor(event.currentTarget)}>{user ? '내 계정' : '기록장'}</Button>}
+          <IconButton className="site-settings-button" aria-label="도구 메뉴" aria-haspopup="menu" aria-expanded={Boolean(accountAnchor)} onClick={event => setAccountAnchor(event.currentTarget)}><MenuOutlined /></IconButton>
           {!user && <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>로그인</Button>}
           <IconButton className="site-menu-toggle" ref={menuButtonRef} aria-label="메뉴 열기" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'site-mobile-menu' : undefined} onClick={() => setMobileOpen(true)}><MenuOutlined /></IconButton>
         </div>
@@ -136,10 +133,7 @@ export default function SiteHeader({ publicMode = false }) {
     }}>
       <div className="site-mobile-heading"><span>{publicMode ? '메뉴' : '더 보기'}</span><IconButton ref={menuCloseRef} onClick={closeMenu} aria-label="메뉴 닫기"><Close /></IconButton></div>
       {publicMode && <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>}
-      {hasWorkspace && <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => menuLink(item, true))}</nav>}
-      {!user && <div className="site-mobile-account">
-        <Button variant="outlined" onClick={() => openAccount(true)} disabled={busy || loading}>로그인 / 가입</Button>
-      </div>}
+      <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => menuLink(item, true))}</nav>
     </Drawer>
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </>;

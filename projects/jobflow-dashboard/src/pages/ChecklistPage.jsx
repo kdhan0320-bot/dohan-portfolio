@@ -6,6 +6,7 @@ import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
+import TuneOutlined from '@mui/icons-material/TuneOutlined';
 import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
@@ -29,6 +30,7 @@ export default function ChecklistPage() {
   const companyMap = new Map(applications.map(company => [company.id, company]));
   const companyOptions = [...applications].sort((a, b) => a.company_name.localeCompare(b.company_name, 'ko'));
   const [tab, setTab] = useState('todo');
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const [completedHere, setCompletedHere] = useState([]);
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('서류');
@@ -67,7 +69,6 @@ export default function ChecklistPage() {
 
   useEffect(() => {
     setInputError('');
-    setFilter('전체');
     setCompletedHere([]);
   }, [companyScope]);
 
@@ -199,7 +200,7 @@ export default function ChecklistPage() {
     const index = filtered.findIndex(record => record.id === item.id);
     const nextId = tab !== 'done' ? item.id : (filtered[index + 1]?.id ?? filtered[index - 1]?.id);
     if (checked) setCompletedHere(ids => [...new Set([...ids, item.id])]);
-    const saved = await action(item.id, () => toggle(item.id, checked), checked ? '완료했어요. 다시 누르면 취소할 수 있어요.' : '완료 표시를 취소했어요.');
+    const saved = await action(item.id, () => toggle(item.id, checked), checked ? '완료했어요.' : '완료 표시를 취소했어요.');
     if (!saved) setCompletedHere(ids => ids.filter(id => id !== item.id));
     if (saved && keepFocus && (document.activeElement === document.body || document.activeElement === originalInput)) window.requestAnimationFrame(() => {
       const nextInput = nextId ? document.getElementById(`task-check-${nextId}`) : null;
@@ -258,16 +259,16 @@ export default function ChecklistPage() {
   }
 
   return <div className="checklist-page grouped-checklist">
-    <PageHeading art="check" title="준비" description="회사별 할 일을 확인하고 완료해요.">
+    <PageHeading art="check" title="준비" >
       <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
-    {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
+    {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. </Alert>}
     <LoadState loading={loading || companiesLoading} error={error || companiesError} retry={() => { refresh(); refreshCompanies(); }} />
     {!loading && !companiesLoading && !error && !companiesError && <>
       {missingCompany ? <Alert severity="warning" action={<Button color="inherit" onClick={() => setScope('all')}>전체 준비 보기</Button>}>선택한 회사를 찾을 수 없어요. 삭제되었거나 접근할 수 없는 회사입니다.</Alert> : <>
         <div className="preparation-controls">
           <div className="preparation-status-tabs">
-            <Tabs value={tab} onChange={(_, value) => { setTab(value); setCompletedHere([]); }} variant="fullWidth" aria-label="할 일 상태">
+            <Tabs value={tab} onChange={(_, value) => { setTab(value); setCompletedHere([]); }} aria-label="할 일 상태">
               {[
                 { value: 'todo', label: '남은 일', count: scopedItems.length - scopedDone },
                 { value: 'all', label: '전체', count: scopedItems.length },
@@ -275,7 +276,9 @@ export default function ChecklistPage() {
               ].map(status => <Tab key={status.value} id={`checklist-tab-${status.value}`} aria-controls={`checklist-panel-${status.value}`} value={status.value} label={`${status.label} ${status.count}`} />)}
             </Tabs>
           </div>
-          <div className="preparation-filter-options">
+          <Button className="preparation-filter-toggle" startIcon={<TuneOutlined />} aria-label={`필터${companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="preparation-filters" variant="outlined" onClick={() => setFiltersOpen(value => !value)}>필터{(companyScope !== 'all' || filter !== '전체') && <span className="filter-count" aria-hidden="true">{Number(companyScope !== 'all') + Number(filter !== '전체')}</span>}</Button>
+        </div>
+          <div id="preparation-filters" className="preparation-filter-options" hidden={!filtersOpen}>
             <div className="preparation-filter-fields">
               <Field label="회사" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
                 <MenuItem value="all">전체 회사 + 공통 준비</MenuItem><MenuItem value="common">공통 준비</MenuItem>
@@ -286,7 +289,6 @@ export default function ChecklistPage() {
               </Field>
             </div>
           </div>
-        </div>
         {(companyScope !== 'all' || filter !== '전체') && <div className="preparation-filter-summary"><span>{scopeLabel}{filter !== '전체' ? ` · ${filter}` : ''}</span><Button onClick={() => { setScope('all'); setFilter('전체'); }}>필터 해제</Button></div>}
         {['all', 'todo', 'done'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
           {tab === value && <div className="preparation-groups" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · 표시된 항목 ${filtered.length}개`}>

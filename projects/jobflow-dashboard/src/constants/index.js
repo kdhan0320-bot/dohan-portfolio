@@ -7,23 +7,23 @@ export const APPLICATION_STATUSES = [{
 }, {
   value: '지원 예정',
   label: '지원 예정',
-  color: '#615B6D',
-  bg: '#F3F2F5'
+  color: '#5940A0',
+  bg: '#EEE9F8'
 }, {
   value: '지원 완료',
   label: '지원 완료',
-  color: '#615B6D',
-  bg: '#F3F2F5'
+  color: '#5940A0',
+  bg: '#EEE9F8'
 }, {
   value: '서류 진행',
   label: '서류 진행',
-  color: '#615B6D',
-  bg: '#F3F2F5'
+  color: '#5940A0',
+  bg: '#EEE9F8'
 }, {
   value: '면접 예정',
   label: '면접 예정',
-  color: '#615B6D',
-  bg: '#F3F2F5'
+  color: '#216B60',
+  bg: '#E4F3ED'
 }, {
   value: '합격',
   label: '합격',

@@ -23,7 +23,7 @@ export default function ProductPreview({ onOpen }) {
     tabRefs.current[next]?.focus();
   }
   return <div className="application-preview" style={{ '--stage-ink': stage.color, '--stage-tint': stage.tint }}>
-    <div className="preview-toolbar"><h2>회사별 지원 기록</h2><span>샘플 · {DEMO_TODAY.replaceAll('-', '.')}</span></div>
+    <div className="preview-toolbar"><h2>회사별 지원 기록</h2></div>
     <div className="preview-stage-tabs" role="tablist" aria-label="샘플 지원 단계">
       {BOARD_COLUMNS.map((column, index) => <button key={column.id} type="button" role="tab" id={`preview-tab-${column.id}`} aria-controls={`preview-panel-${column.id}`} aria-selected={index === stageIndex} tabIndex={index === stageIndex ? 0 : -1} ref={element => { tabRefs.current[index] = element; }} onClick={() => setStageIndex(index)} onKeyDown={event => moveTab(event, index)} style={{ '--tab-ink': column.color, '--tab-tint': column.tint }}>
         <span>{column.label}</span>
@@ -43,17 +43,14 @@ export default function ProductPreview({ onOpen }) {
         </div>
         <div className="preview-record-body">
           <div className="preview-date-block">
-            <span>{before ? '지원 마감' : '지원한 날짜'}</span>
+            <div className="preview-date-label"><span>{before ? '지원 마감' : '지원한 날짜'}</span>{before && <b className="deadline-badge">{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}</div>
             <strong className="record-date"><span className="record-date-month">{month}.</span>{day}</strong>
-            {before && <b>{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}
           </div>
-          <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>등록한 준비 항목이 없어요.</p>}</div>
+          <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>남은 준비 없음</p>}</div>
         </div>
-        <p className="preview-record-memo"><span>기록 메모</span>{selected.memo}</p>
         <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
       </div>;
     })}
     </div>
-    <p className="preview-caption">단계를 선택해 회사 기록을 살펴보세요.</p>
   </div>;
 }

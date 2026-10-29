@@ -9,12 +9,14 @@ const StatusChip = ({ status, size = 'small' }) => {
     <Chip
       component="span"
       label={found.label}
+      className="application-status"
       size={size}
       sx={{
         color: found.color,
         bgcolor: found.bg,
-        fontWeight: 500,
-        border: `1px solid ${found.color}30`,
+        fontWeight: 650,
+        border: '0',
+        borderRadius: '6px',
         minHeight: 28,
       }}
     />

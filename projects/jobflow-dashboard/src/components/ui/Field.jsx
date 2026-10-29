@@ -3,7 +3,7 @@ import { Box, TextField } from '@mui/material';
 
 /** A persistent external label keeps Korean text clear of the input outline. */
 export default function Field({
-  id, label, required, helperText, className = '', sx, fullWidth,
+  id, label, required, helperText, className = '', sx, fullWidth, hideLabel = false,
   slotProps = {}, select = false, error, ...props
 }) {
   const generatedId = useId();
@@ -11,7 +11,7 @@ export default function Field({
   const labelId = `${inputId}-label`;
   return (
     <Box className={`form-field ${className}`} sx={{ minWidth: 0, ...(fullWidth ? { width: '100%' } : {}), ...sx }}>
-      <label id={labelId} htmlFor={inputId} className={`field-label ${error ? 'field-label-error' : ''}`}>
+      <label id={labelId} htmlFor={inputId} className={`${hideLabel ? 'sr-only' : 'field-label'} ${error ? 'field-label-error' : ''}`}>
         {label}{required && <span aria-hidden="true" className="field-required"> *</span>}
       </label>
       <TextField

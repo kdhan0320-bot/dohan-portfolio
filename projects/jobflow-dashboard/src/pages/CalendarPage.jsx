@@ -17,8 +17,9 @@ import { deadlineLabel } from '../utils/dates';
 import { Empty, LoadState, PageHeading } from '../components/ui/PageUI';
 
 export default function CalendarPage() {
-  const { applications, loading, error, refresh, update, remove } = useApplications();
+  const { applications, loading, error, refresh, add, update, remove } = useApplications();
   const checklist = useChecklist();
+  const [creating, setCreating] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const selected = applications.find(application => application.id === selectedId);
   const today = useToday();
@@ -87,7 +88,7 @@ export default function CalendarPage() {
     }, { replace: true });
   }
   return <div className="calendar-page">
-    <PageHeading art="folder" title="지원 관리" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/applications/new" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
+    <PageHeading art="folder" title="지원 관리" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" onClick={() => setCreating(true)} aria-haspopup="dialog" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
     <ApplicationsNav calendar />
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
@@ -117,6 +118,6 @@ export default function CalendarPage() {
       </div>
       {(undated > 0 || overdue > 0) && <div className="calendar-followup">{overdue > 0 && <span>지난 마감 · 지원 여부 확인 {overdue}곳</span>}{undated > 0 && <span>마감일 미등록 {undated}곳</span>}<Button component={Link} to="/?lane=before">지원 전 회사 확인</Button></div>}
     </>}
-    {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); checklist.refresh(); }} onSave={async payload => { await update(selected.id, payload); setSelectedId(null); checklist.refresh(); }} onStatusChange={status => update(selected.id, { status })} onDelete={async id => { await remove(id); setSelectedId(null); }} />}
+    {(creating || selected) && <ApplicationPanel key={creating ? 'new' : selected.id} application={selected} creating={creating} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setCreating(false); setSelectedId(null); checklist.refresh(); }} onSave={async payload => { if (creating) await add(payload); else await update(selected.id, payload); setCreating(false); setSelectedId(null); checklist.refresh(); }} onStatusChange={creating ? undefined : status => update(selected.id, { status })} onDelete={async id => { await remove(id); setSelectedId(null); }} />}
   </div>;
 }

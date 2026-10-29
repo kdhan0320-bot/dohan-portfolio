@@ -57,7 +57,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
     <Field id="company-quick-status" label="현재 상태" select size="small" value={application?.status || ''} disabled={busy || summaryBusy} onChange={event => changeStatus(event.target.value)}>
       {APPLICATION_STATUSES.map(item => <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>)}
     </Field>
-    <p className={statusFeedback?.error ? 'status-save-feedback is-error' : 'status-save-feedback'} role={statusFeedback?.error ? 'alert' : 'status'}>{busy ? '저장 중…' : statusFeedback?.message || '선택하면 바로 저장돼요.'}</p>
+    <p className={statusFeedback?.error ? 'status-save-feedback is-error' : 'status-save-feedback'} role={statusFeedback?.error ? 'alert' : 'status'}>{busy ? '저장 중…' : statusFeedback?.message || '\u00a0'}</p>
   </div>;
   function change(key, value) {
     changeDraft(key, value);
@@ -145,7 +145,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
       </div>}
       {!editing ? <>
         <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} disabled={busy} statusControl={statusControl} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
-        <div className="company-panel-footer"><Button onClick={close} disabled={busy || summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="outlined" disabled={busy || summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
+        <div className="company-panel-footer"><Button onClick={close} disabled={busy || summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="contained" disabled={busy || summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
       </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}

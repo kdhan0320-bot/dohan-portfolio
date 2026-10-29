@@ -82,7 +82,7 @@ export default function DocumentHelperPage() {
       <Field label="프로젝트 또는 주제" value={project} onChange={e => changeForm({ project: e.target.value })} />
       <Field label="실제로 한 일과 결과" value={experience} onChange={e => changeForm({ experience: e.target.value })} multiline minRows={4} placeholder="내 역할, 선택한 방법, 직접 확인한 결과를 적어주세요." />
       <Button type="submit" variant="contained">{resultCreated ? '입력 내용으로 다시 구성' : '요청문 구성하기'}</Button>
-      <p className="helper-note">AI 답변은 생성하지 않아요. 입력과 요청문은 화면을 이동해도 이 탭에서 유지되며, 새로고침·탭 종료 시 사라져요. 필요한 내용은 복사해 보관해주세요.</p>
+      <p className="helper-note">AI 답변은 생성하지 않아요. 새로고침·탭 종료 전 필요한 요청문을 복사해주세요.</p>
     </form>
     <section className="panel helper-output">
       <div className="panel-heading" style={{

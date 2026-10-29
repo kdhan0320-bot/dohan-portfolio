@@ -196,7 +196,7 @@ const SettingsPage = () => {
   };
   if (isGuest) {
     return <Box className="settings-page">
-      <PageHeading art="settings" title="설정" description="기록장과 계정을 관리해요." />
+      <PageHeading art="settings" title="설정" />
       <div className="settings-grid settings-sample-grid">
         <section className="panel settings-card" aria-labelledby="sample-settings-title">
           <div className="settings-summary">
@@ -209,7 +209,7 @@ const SettingsPage = () => {
           <div className="settings-sample-actions">
             <div className="settings-reset">
               <h3>샘플 기록 초기화</h3>
-              <p>초기화하면 수정한 샘플 기록이 처음 상태로 돌아가요. 현재 화면은 유지됩니다.</p>
+              <p>현재 화면에서 샘플 기록을 처음 상태로 되돌려요.</p>
               <Button variant="outlined" onClick={() => {
                 applicationDraftStore.clearSample();
                 resetDemo();
@@ -226,7 +226,7 @@ const SettingsPage = () => {
     </Box>;
   }
   return <Box className="settings-page">
-    <PageHeading art="settings" title="설정" description="기록장과 계정을 관리해요." />
+    <PageHeading art="settings" title="설정" />
     {profileLoading ? <Card className="settings-card" aria-busy="true">
       <CardContent>
         <Typography component="h2" variant="h6" sx={{ mb: 2 }}>프로필 불러오는 중</Typography>

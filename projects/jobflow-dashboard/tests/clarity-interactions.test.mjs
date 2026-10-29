@@ -327,3 +327,24 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
   assert.deepEqual(caretScrollPositions, [0, 120], 'later resizing must not reset the reading or editing position');
   assert.equal(answer.selectionStart, 80);
 });
+
+
+test('interview scope and topic filters combine without changing stored records', async () => {
+  const notes = [
+    { id: 'a', question: '공통 자기소개', related_project: '자기소개', application_id: null },
+    { id: 'b', question: '회사 A 경험', related_project: '프로젝트', application_id: 'a' },
+    { id: 'c', question: '회사 B 소개', related_project: '자기소개', application_id: 'b' },
+  ];
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: 'A' }, { id: 'b', company_name: 'B' }] }) },
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+  });
+  page.find(n => n.type === 'Tabs').props.onChange(null, 'companies'); page.render();
+  assert.doesNotMatch(page.text(), /공통 자기소개/);
+  page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.onChange({ target: { value: '프로젝트' } }); page.render();
+  assert.match(page.text(), /회사 A 경험/); assert.doesNotMatch(page.text(), /회사 B 소개/);
+  page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value: 'b' } }); page.render();
+  assert.match(page.text(), /회사 B 소개/); assert.doesNotMatch(page.text(), /회사 A 경험/);
+  assert.equal(notes.length, 3);
+});

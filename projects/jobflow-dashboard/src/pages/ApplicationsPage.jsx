@@ -1,6 +1,6 @@
 import ApplicationsNav from '../components/applications/ApplicationsNav';
 import { useState } from 'react';
-import { Link, Navigate, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Button, InputAdornment, Tab, Tabs, useMediaQuery } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Search from '@mui/icons-material/Search';
@@ -76,18 +76,17 @@ export default function ApplicationsPage() {
     const pending = boardColumn(a.status) === 'before';
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-haspopup="dialog">
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
-      {!checklist.loading && !checklist.error && <span className="job-tile-preparation">{(() => { const remaining = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return remaining.length ? `남은 준비 ${remaining.length}개 · ${remaining[0].title}` : checklist.items.some(item => item.application_id === a.id) ? '준비 항목 완료' : '등록한 준비 항목 없음'; })()}</span>}
+      {!checklist.loading && !checklist.error && <span className="job-tile-preparation">{(() => { const remaining = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return remaining.length ? `남은 준비 ${remaining.length}개 · ${remaining[0].title}` : checklist.items.some(item => item.application_id === a.id) ? '준비 완료' : '준비 미등록'; })()}</span>}
       <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
     </button>;
   }
-  if (creating) return <Navigate to="/applications/new" replace />;
   return <>
     <PageHeading art="folder" title="지원 관리" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
-      <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} component={Link} to="/applications/new"><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
+      <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })} aria-haspopup="dialog"><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
     <ApplicationsNav />
     <div className="board-toolbar">
-      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
+      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" hideLabel placeholder="회사·직무 검색" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
       <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
@@ -106,7 +105,6 @@ export default function ApplicationsPage() {
             </section>;
           })}
         </div>
-        <p className="board-instruction">회사를 선택해 전형 상태와 회사별 준비를 관리하세요.</p>
       </>}
       {(creating || selected) && <ApplicationPanel key={`${draftScope}:${creating ? 'new' : selected.id}`} draftScope={draftScope} application={creating ? null : selected} creating={creating} onClose={closePanel} onSave={save} onStatusChange={creating ? undefined : changeStatus} onDelete={deleteCompany} />}
       {params.get('company') && !selected && !creating && <div className="missing-company" role="status">이 회사 정보를 찾을 수 없어요.<Button onClick={closePanel}>닫기</Button></div>}
