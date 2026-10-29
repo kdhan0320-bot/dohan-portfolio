@@ -1,29 +1,33 @@
 import iris from '../assets/season-iris.webp';
+import sculpture from '../assets/perspective-sculpture.webp';
+import studio from '../assets/perspective-studio.webp';
+import TipsIcon from './TipsIcon';
 
 function Marker() { return <span className="tip-marker" aria-hidden="true">1</span>; }
 
 function TypeExample({ revised, annotate }) {
-  return <div className="tip-type-example">
+  return <div className="tip-type-example"><div className="tip-gallery-copy">
     <span className="tip-example-eyebrow">전시 소개</span>
     <div className="tip-title-slot"><span className={`tip-example-title${revised ? ' is-large' : ''}${annotate ? ' tip-outlined' : ''}`}>시선의<br />모양{annotate && <Marker />}</span></div>
     <p className="tip-example-description">일상에서 만나는<br />조형의 아름다움</p>
-  </div>;
+    <span className="tip-faux-link">전시 둘러보기</span>
+  </div><img className="tip-gallery-image" src={sculpture} alt="" width="720" height="960" /></div>;
 }
 
 function SpacingExample({ revised, annotate }) {
   return <div className={`tip-spacing-example${revised ? ' is-grouped' : ''}`}>
     <span className="tip-example-eyebrow">선택한 작업</span>
     <div className="tip-work-list">
-      <div className="tip-work-group"><span className="tip-work-title">산책 기록 앱</span><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
-      <div className="tip-work-group"><span className="tip-work-title">전시 예약 웹</span><span className="tip-work-caption">관람 시간을 예약하는 웹</span></div>
+      <div className="tip-work-group"><div className="tip-work-thumb tip-work-thumb-walk"><svg viewBox="0 0 60 60"><path d="M0 42 18 24 34 36 60 10M9 0 27 60M0 19 60 38" fill="none" stroke="#bbcdd6" strokeWidth="3" /><path d="m8 46 16-10 10 2 18-24" fill="none" stroke="#375f87" strokeWidth="3" /></svg></div><span className="tip-work-title">산책 기록 앱</span><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
+      <div className="tip-work-group"><img className="tip-work-thumb" src={studio} alt="" width="60" height="60" /><span className="tip-work-title">전시 예약 웹</span><span className="tip-work-caption">관람을 예약하는 웹</span></div>
       {annotate && <Marker />}
     </div>
   </div>;
 }
 
 function ActionExample({ revised, annotate }) {
-  return <div className="tip-action-example"><span className="tip-example-eyebrow">자연의 소리</span><span className="tip-track-name">숲의 아침</span><span className="tip-track-time">20분</span>
-    <div className="tip-player"><span className="tip-player-control"><span aria-hidden="true">‹</span>이전</span><span className={`tip-player-control tip-play${revised ? ' is-primary' : ''}${annotate ? ' tip-outlined' : ''}`}><span aria-hidden="true">▷</span>재생{annotate && <Marker />}</span><span className="tip-player-control"><span aria-hidden="true">›</span>다음</span></div>
+  return <div className="tip-action-example"><div className="tip-sound-cover"><svg viewBox="0 0 480 160" preserveAspectRatio="xMidYMid slice"><rect width="480" height="160" fill="#e3edf0" /><circle cx="355" cy="38" r="22" fill="#fafcfd" /><path d="M-20 160 87 33l107 127M109 160 229 13l134 147M263 160 386 44l114 116" fill="#b3cbd0" /><path d="M-20 160 111 88l147 72M161 160 296 76l184 84" fill="#7e9fa9" /><path d="M245 160q-32-42-14-67" fill="none" stroke="#e2edf1" strokeWidth="12" /></svg></div><span className="tip-track-name">숲의 아침</span><span className="tip-track-time">자연의 소리 · 20분</span><div className="tip-audio-progress"><span /></div>
+    <div className="tip-player"><span className="tip-player-control"><TipsIcon name="previous" />이전</span><span className={`tip-player-control tip-play${revised ? ' is-primary' : ''}${annotate ? ' tip-outlined' : ''}`}><TipsIcon name="play" />재생{annotate && <Marker />}</span><span className="tip-player-control"><TipsIcon name="next" />다음</span></div>
   </div>;
 }
 
@@ -38,18 +42,32 @@ function LabelsExample({ revised, annotate }) {
 }
 
 function InputExample({ revised, annotate }) {
-  return <div className="tip-input-example"><span className="tip-example-eyebrow">계정 만들기 · 입력 중</span><span className="tip-input-label">비밀번호</span><div className="tip-faux-input">••••••••</div><div className="tip-helper-slot">{revised && <span className={`tip-helper${annotate ? ' tip-outlined' : ''}`}>8자 이상 · 영문과 숫자{annotate && <Marker />}</span>}</div></div>;
+  return <div className="tip-input-example"><div className="tip-signup-title">내 작업 공간 만들기</div><span className="tip-example-eyebrow">계정 만들기 · 입력 중</span><span className="tip-email-label">이메일</span><div className="tip-faux-email">hello@example.com</div><span className="tip-input-label">비밀번호</span><div className="tip-faux-input">••••••••</div><div className="tip-helper-slot">{revised && <span className={`tip-helper${annotate ? ' tip-outlined' : ''}`}>8자 이상 · 영문과 숫자{annotate && <Marker />}</span>}</div><span className="tip-faux-submit">다음</span></div>;
 }
 
 const drawings = { type: TypeExample, spacing: SpacingExample, action: ActionExample, contrast: ContrastExample, labels: LabelsExample, input: InputExample };
+const screenNames = {
+  type: ['FORM & SPACE', '전시 안내'], spacing: ['STUDIO HAN', '선택한 작업'],
+  action: ['느린 파장', 'SOUND'], contrast: ['계절의 형태', 'COLLECTION'],
+  labels: ['가벼운 산책', '경로 안내'], input: ['작은 작업실', '01 / 02'],
+};
 
-export default function TipComparison({ tip, compact = false }) {
-  const Drawing = drawings[tip.kind];
-  return <div className={`tip-comparison tip-comparison-${tip.kind}${compact ? ' is-compact' : ''}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
+function ExampleScreen({ kind, revised = false, annotate = false }) {
+  const Drawing = drawings[kind];
+  return <div className={`tip-screen tip-screen-${kind}`}><div className="tip-screen-top"><span>{screenNames[kind][0]}</span><span>{screenNames[kind][1]}</span></div><Drawing revised={revised} annotate={annotate} /></div>;
+}
+
+export function TipPreview({ tip }) {
+  return <div className={`tip-preview tip-preview-${tip.kind}`} aria-hidden="true"><ExampleScreen kind={tip.kind} revised /></div>;
+}
+
+export default function TipComparison({ tip }) {
+  return <div className={`tip-comparison tip-comparison-${tip.kind}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
     <p className="tips-sr-only">{tip.description}</p>
     {[false, true].map(revised => <figure key={String(revised)} className={`tip-figure${revised ? ' is-revised' : ''}`}>
       <figcaption>{revised ? tip.after : tip.before}</figcaption>
-      <div className="tip-example" aria-hidden="true"><Drawing revised={revised} annotate={!compact && revised} /></div>
+      <div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised={revised} annotate={revised} /></div>
+      <div className="tip-figure-note">{revised ? <><span className="tip-note-line" aria-hidden="true" /><span className="tips-note-number" aria-hidden="true">1</span><span>{tip.visualNote}</span></> : <span>{tip.beforeNote}</span>}</div>
     </figure>)}
   </div>;
 }
