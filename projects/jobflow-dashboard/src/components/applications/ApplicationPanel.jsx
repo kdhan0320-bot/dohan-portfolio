@@ -13,7 +13,13 @@ import { APPLICATION_STATUSES, COMPANY_SIZE_OPTIONS, PRIORITY_OPTIONS } from '..
 import { applicationDraft, BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
 
-export default function ApplicationPanel({ application, creating, draftScope, onClose, onSave, onStatusChange, onDelete }) {
+function PanelSurface({ standalone, children, ...props }) {
+  return standalone
+    ? <section className="company-panel company-panel-standalone" aria-label="새 회사 등록">{children}</section>
+    : <Dialog {...props}>{children}</Dialog>;
+}
+
+export default function ApplicationPanel({ application, creating, standalone = false, draftScope, onClose, onSave, onStatusChange, onDelete }) {
   const fullScreen = useMediaQuery('(max-width: 599px)');
   const { form, change: changeDraft, clear: clearDraft, reset: resetDraft, acceptSavedFields, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [editing, setEditing] = useState(Boolean(creating));
@@ -109,7 +115,8 @@ export default function ApplicationPanel({ application, creating, draftScope, on
     return <Component id={`company-${key}`} label={label} value={form[key] ?? ''} disabled={busy} onChange={e => change(key, e.target.value)} error={Boolean(errors[key])} helperText={errors[key]} {...extra} />;
   };
   return <>
-    <Dialog
+    <PanelSurface
+      standalone={standalone}
       open
       onClose={close}
       aria-labelledby="company-panel-title"
@@ -132,10 +139,10 @@ export default function ApplicationPanel({ application, creating, draftScope, on
         },
       }}
     >
-      <div className="company-panel-head">
+      {!standalone && <div className="company-panel-head">
         <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
         <IconButton onClick={close} disabled={busy || summaryBusy} aria-label="회사 정보 닫기"><Close /></IconButton>
-      </div>
+      </div>}
       {!editing ? <>
         <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} disabled={busy} statusControl={statusControl} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
         <div className="company-panel-footer"><Button onClick={close} disabled={busy || summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="outlined" disabled={busy || summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
@@ -177,7 +184,7 @@ export default function ApplicationPanel({ application, creating, draftScope, on
         </div>
         <div className="company-panel-footer"><Button onClick={cancelEdit} disabled={busy}>{creating ? '취소' : '기록으로 돌아가기'}</Button><Button type="submit" variant="contained" disabled={busy}>{busy ? '저장 중…' : creating ? '등록하기' : '변경 저장'}</Button></div>
       </form>}
-    </Dialog>
+    </PanelSurface>
     <ConfirmDelete open={deleting} title={application?.company_name} description="준비 체크와 면접 질문은 남고, 회사 연결만 해제됩니다." busy={busy} onClose={() => setDeleting(false)} onConfirm={remove} />
     <Dialog open={confirmLeave} onClose={() => setConfirmLeave(false)} aria-labelledby="discard-title" aria-describedby="discard-description" maxWidth="xs" fullWidth>
       <DialogTitle id="discard-title">작성 내용을 저장하지 않았어요</DialogTitle>

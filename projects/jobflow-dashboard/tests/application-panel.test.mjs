@@ -96,7 +96,7 @@ function panelWith(application = null, options = {}) {
     feedback: () => find(node => node.type === 'p' && node.props.className?.includes('status-save-feedback'))?.props,
     closes: () => closes,
     close: () => find(node => node.type === 'IconButton' && node.props['aria-label'] === '회사 정보 닫기').props.onClick(),
-    escape: () => find(node => node.type === 'Dialog' && node.props['aria-labelledby'] === 'company-panel-title').props.onClose(),
+    escape: () => find(node => node.props?.['aria-labelledby'] === 'company-panel-title').props.onClose(),
     click: label => find(node => node.type === 'Button' && node.props.children === label).props.onClick(),
     edit: () => find(node => node.type === 'Button' && node.props.children === '회사 정보 수정').props.onClick(),
     hasSummary: () => Boolean(find(node => node.type === 'CompanySummary')),

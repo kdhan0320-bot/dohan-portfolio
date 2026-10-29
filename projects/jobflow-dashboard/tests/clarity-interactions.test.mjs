@@ -181,7 +181,7 @@ test('inline interview editing restores an unfinished answer after leaving and s
   };
   let page = await mount('InterviewPage', dependencies);
   assert.match(page.text(), /저장된 답변/);
-  await page.click('답변 수정');
+  await page.click('기록 수정');
   assert.equal(page.find(node => node.type === 'Dialog' && node.props.open), null);
   const answer = page.find(node => node.type === 'Field' && node.props.id === 'note-answer');
   answer.props.onChange({ target: { value: '아직 저장하지 않은 답변' } }); page.render();
@@ -196,7 +196,7 @@ test('inline interview editing restores an unfinished answer after leaving and s
   assert.equal(notes[0].answer, '아직 저장하지 않은 답변');
   assert.equal(store.read('sample', 'interview', 'question-1'), null);
   assert.match(page.text(), /아직 저장하지 않은 답변/);
-  await page.click('답변 수정');
+  await page.click('기록 수정');
   assert.equal(page.find(node => node.type === 'Feedback').props.feedback, null, 'an old saved toast must not cover newly opened editor actions');
   page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '' } }); page.render();
   await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
@@ -229,7 +229,7 @@ test('repeating an invalid interview save reopens and reveals the question every
       update: async () => { saves++; },
     }) },
   }, undefined, { getElementById: id => id === 'note-question' ? field : null });
-  await page.click('답변 수정');
+  await page.click('기록 수정');
   page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '' } });
   page.render();
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -237,7 +237,7 @@ test('repeating an invalid interview save reopens and reveals the question every
     await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} });
     page.render();
     assert.equal(detailsOpen, true, 'a collapsed field must reopen');
-    assert.equal(focused, attempt, 'focus must run on every invalid save');
+    assert.equal(focused, attempt + 1, 'opening and every invalid save must focus the question');
     assert.equal(revealed, attempt, 'the same error must still reveal its input');
   }
   assert.equal(saves, 0, 'invalid attempts must never save a record');
@@ -252,15 +252,14 @@ test('question management edits company details directly, preserves the answer, 
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes, update: async (id, payload) => { notes = [{ ...notes[0], ...payload }]; } }) },
   };
   let page = await mount('InterviewPage', dependencies);
-  page.find(node => node.type === 'MenuItem' && text(node) === '질문·회사 수정').props.onClick(); page.render();
-  page.find(node => node.type === 'Menu').props.slotProps.transition.onExited(); page.render();
-  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '질문·회사 정보 수정');
-  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer'), null);
+  await page.click('기록 수정');
+  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '면접 기록 수정');
+  assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer').props.value, '그대로 보존할 긴 답변');
   page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '새 질문' } }); page.render();
   page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.onChange({ target: { value: 'a2' } }); page.render();
   page = await mount('InterviewPage', dependencies);
   await page.click('이어서 작성');
-  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '질문·회사 정보 수정');
+  assert.equal(page.find(node => node.type === 'form').props['aria-label'], '면접 기록 수정');
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.value, 'a2');
   await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
   assert.equal(notes[0].question, '새 질문');
@@ -283,13 +282,13 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes: [{ id: 'q1', question: '자기소개', answer: '기존 답변', application_id: null }] }) },
     '../utils/textareaCaret': { revealTextareaCaret: () => caretScrollPositions.push(fields.scrollTop) },
-  }, undefined, { getElementById: id => id === 'note-answer' ? answer : null }, {
+  }, undefined, { activeElement: answer, getElementById: id => id === 'note-answer' ? answer : null }, {
     requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
     cancelAnimationFrame: id => frames.delete(id),
     getComputedStyle: () => ({ lineHeight: '27.2px' }),
     ResizeObserver: class { constructor(callback) { resized = callback; } observe() {} disconnect() {} },
   });
-  await page.click('답변 수정');
+  await page.click('기록 수정');
   flush();
   assert.deepEqual(caretScrollPositions, [], 'a padding-only transitional layout must not move the caret');
   fields.clientHeight = 217;

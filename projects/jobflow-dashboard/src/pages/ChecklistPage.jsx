@@ -1,6 +1,6 @@
 import Field from '../components/ui/Field';
 import { useEffect, useRef, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { Button, Menu, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
@@ -17,7 +17,6 @@ import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { preparationGroups } from '../utils/preparationGroups';
 import { shortDate } from '../utils/dates';
 import ActionFeedback from '../components/ui/ActionFeedback';
-import '../styles/company-checklist.css';
 
 export default function ChecklistPage() {
   const drafts = useRecordDraft('checklist');
@@ -259,7 +258,7 @@ export default function ChecklistPage() {
   }
 
   return <div className="checklist-page grouped-checklist">
-    <PageHeading art="check" title="준비 체크" description="회사별 할 일을 확인하고 완료해요.">
+    <PageHeading art="check" title="준비" description="회사별 할 일을 확인하고 완료해요.">
       <Button id="checklist-add-task" onClick={openAdd} variant="contained" startIcon={<Add />} disabled={loading || companiesLoading || Boolean(error || companiesError || busy) || missingCompany}>할 일 추가</Button>
     </PageHeading>
     {drafts.pending && !adding && !editing && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={loading || companiesLoading || Boolean(error || companiesError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 할 일이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
@@ -276,8 +275,7 @@ export default function ChecklistPage() {
               ].map(status => <Tab key={status.value} id={`checklist-tab-${status.value}`} aria-controls={`checklist-panel-${status.value}`} value={status.value} label={`${status.label} ${status.count}`} />)}
             </Tabs>
           </div>
-          <details className="preparation-filter-options">
-            <summary data-applied={companyScope !== 'all' || filter !== '전체'} aria-label={`목록 필터${companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}`}><span className="preparation-filter-full">목록 좁히기{companyScope !== 'all' || filter !== '전체' ? ' · 적용 중' : ''}</span><span className="preparation-filter-short">필터</span></summary>
+          <div className="preparation-filter-options">
             <div className="preparation-filter-fields">
               <Field label="회사" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
                 <MenuItem value="all">전체 회사 + 공통 준비</MenuItem><MenuItem value="common">공통 준비</MenuItem>
@@ -287,7 +285,7 @@ export default function ChecklistPage() {
                 {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
               </Field>
             </div>
-          </details>
+          </div>
         </div>
         {(companyScope !== 'all' || filter !== '전체') && <div className="preparation-filter-summary"><span>{scopeLabel}{filter !== '전체' ? ` · ${filter}` : ''}</span><Button onClick={() => { setScope('all'); setFilter('전체'); }}>필터 해제</Button></div>}
         {['all', 'todo', 'done'].map(value => <div key={value} id={`checklist-panel-${value}`} role="tabpanel" aria-labelledby={`checklist-tab-${value}`} hidden={tab !== value}>
@@ -305,7 +303,6 @@ export default function ChecklistPage() {
             {!filtered.length && <Empty title={tab === 'done' ? '아직 완료한 일이 없어요' : tab === 'todo' && scopedItems.length > 0 ? '이 목록의 준비를 모두 마쳤어요' : '이 조건에 맞는 할 일이 없어요'}>{filter !== '전체' ? <Button onClick={() => setFilter('전체')}>전체 분류 보기</Button> : <Button onClick={openAdd}>할 일 추가하기</Button>}</Empty>}
           </div>}
         </div>)}
-        <div className="checklist-secondary-tool"><Link to="/document-helper">작성 요청문 도구</Link></div>
       </>}
     </>}
     <Menu id="checklist-task-menu" className="checklist-task-menu" anchorEl={taskMenu?.anchor} open={Boolean(taskMenu)} onClose={() => setTaskMenu(null)} slotProps={{ list: { 'aria-labelledby': taskMenu ? `task-actions-${taskMenu.item.id}` : undefined }, transition: { onExited: finishTaskMenuClose } }}>
@@ -340,7 +337,7 @@ export default function ChecklistPage() {
             {CHECKLIST_CATEGORIES.map(c => <MenuItem value={c} key={c}>{c}</MenuItem>)}
           </Field>
         </div></DialogContent>
-        <DialogActions><Button disabled={Boolean(busy)} onClick={closeEdit}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>수정 저장</Button></DialogActions>
+        <DialogActions><Button disabled={Boolean(busy)} onClick={closeEdit}>취소</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>변경 저장</Button></DialogActions>
       </form>
     </Dialog>
     <Dialog open={Boolean(confirmDiscard)} onClose={() => setConfirmDiscard('')} aria-labelledby="discard-task-title" aria-describedby="discard-task-description" fullWidth maxWidth="xs">

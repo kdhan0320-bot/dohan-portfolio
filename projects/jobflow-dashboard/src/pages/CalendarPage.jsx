@@ -1,3 +1,4 @@
+import ApplicationsNav from '../components/applications/ApplicationsNav';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Button, IconButton, useMediaQuery } from '@mui/material';
@@ -14,7 +15,6 @@ import { useAuth } from '../context/AuthContext';
 import { agendaDeadlines, calendarFocusDate, calendarState, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
 import { deadlineLabel } from '../utils/dates';
 import { Empty, LoadState, PageHeading } from '../components/ui/PageUI';
-import '../styles/calendar-refinement.css';
 
 export default function CalendarPage() {
   const { applications, loading, error, refresh, update, remove } = useApplications();
@@ -31,9 +31,7 @@ export default function CalendarPage() {
   const [calendarExpanded, setCalendarExpanded] = useState(false);
   const compactCalendar = useMediaQuery('(max-width: 699px)');
   const calendarVisible = !compactCalendar || calendarExpanded;
-  const pageDescription = compactCalendar
-    ? `지원 전 회사${isGuest ? ` · 샘플 기준 ${today.replaceAll('-', '.')}` : '의 마감일을 확인해요.'}`
-    : '아직 지원하지 않은 회사의 마감일을 확인해요.';
+  const pageDescription = `전체 ${applications.length}곳 · 지원 중 ${applications.filter(company => ['지원 완료', '서류 진행', '면접 예정'].includes(company.status)).length}곳`;
   const agendaTitle = useRef(null);
   const pendingAgendaFocus = useRef(null);
   const [agendaFocusRequest, setAgendaFocusRequest] = useState(0);
@@ -89,7 +87,8 @@ export default function CalendarPage() {
     }, { replace: true });
   }
   return <div className="calendar-page">
-    <PageHeading art="calendar" title="마감 일정" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
+    <PageHeading art="folder" title="지원 관리" description={pageDescription}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/applications/new" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
+    <ApplicationsNav calendar />
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
       <div className="calendar-layout">

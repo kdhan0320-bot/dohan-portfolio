@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Alert, Button, CircularProgress, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { Link } from 'react-router-dom';
 import FolderOutlined from '@mui/icons-material/FolderOutlined';
@@ -61,11 +62,7 @@ export function Panel({
 export function CompanyMark({
   name
 }) {
-  const tones = ['blue', 'lavender', 'sage', 'sand'];
-  // A stable visual identifier; company colors do not indicate an application state.
-  const hash = [...(name || '가')].reduce((value, character) => Math.imul(value ^ character.codePointAt(0), 16777619) >>> 0, 2166136261);
-  const index = (hash >>> 16) % tones.length;
-  return <span className={`company-mark ${tones[index]}`} aria-hidden="true">
+  return <span className="company-mark" aria-hidden="true">
   {name?.slice(0, 1) || '회'}
 </span>;
 }
@@ -103,10 +100,12 @@ export function ConfirmDelete({
   onClose,
   onConfirm
 }) {
+  const [lastTitle, setLastTitle] = useState(title);
+  useEffect(() => { if (open) setLastTitle(title); }, [open, title]);
   return <Dialog open={open} aria-labelledby="delete-dialog-title" onClose={busy ? undefined : onClose} fullWidth maxWidth="xs">
   <DialogTitle id="delete-dialog-title">기록을 삭제할까요?</DialogTitle>
   <DialogContent>
-    <p>‘{title}’ 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
+    <p>‘{open ? title : lastTitle}’ 기록이 삭제됩니다. 이 작업은 되돌릴 수 없습니다.</p>
     {description && <p>{description}</p>}
   </DialogContent>
   <DialogActions>

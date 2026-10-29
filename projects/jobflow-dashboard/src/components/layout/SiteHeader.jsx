@@ -1,28 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Drawer, IconButton, Tooltip } from '@mui/material';
+import { Button, Drawer, IconButton, Menu, MenuItem } from '@mui/material';
 import MenuOutlined from '@mui/icons-material/MenuOutlined';
 import Close from '@mui/icons-material/Close';
-import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 import { Brand } from '../ui/Brand';
 import ActionFeedback from '../ui/ActionFeedback';
 import { useAuth } from '../../context/AuthContext';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 const mainLinks = [
-  { to: '/overview', label: '오늘의 지원', mobileLabel: '오늘' },
-  { to: '/', label: '지원 현황' },
-  { to: '/calendar', label: '마감 일정' },
-  { to: '/checklist', label: '준비 체크' },
-  { to: '/interview', label: '면접 연습' }
+  { to: '/overview', label: '오늘' },
+  { to: '/', label: '지원 관리' },
+  { to: '/checklist', label: '준비' },
+  { to: '/interview', label: '면접' }
 ];
 const secondaryLinks = [
+  { to: '/document-helper', label: '작성 요청문 도구' },
   { to: '/guide', label: '이용 안내' },
   { to: '/welcome', label: '서비스 소개' }
 ];
 const activePath = (pathname, to) => {
-  if (to === '/') return pathname === '/' || pathname.startsWith('/applications') || pathname === '/kanban';
-  if (to === '/checklist') return pathname === '/checklist' || pathname === '/document-helper';
+  if (to === '/') return pathname === '/' || pathname.startsWith('/applications') || pathname === '/kanban' || pathname === '/calendar';
+  if (to === '/checklist') return pathname === '/checklist';
   return pathname === to;
 };
 
@@ -30,6 +30,7 @@ export default function SiteHeader({ publicMode = false }) {
   const { user, isGuest, enterGuestMode, loading } = useAuth();
   const { pathname, search, state } = useLocation();
   const navigate = useNavigate();
+  const [accountAnchor, setAccountAnchor] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState(null);
@@ -117,8 +118,8 @@ export default function SiteHeader({ publicMode = false }) {
         <Link className="site-brand-link" to={homePath} aria-label="갈피록 홈" onClick={event => visit(event, homePath)}><Brand /></Link>
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
         <div className="site-account-actions">
-          {isGuest && <Tooltip title="샘플 설정"><IconButton className="site-settings-button" component={Link} to="/settings" aria-label="샘플 설정" aria-current={pathname === '/settings' ? 'page' : undefined} disabled={busy || loading} onClick={event => visit(event, '/settings')}><SettingsOutlined /></IconButton></Tooltip>}
-          <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>{user ? '내 계정' : '로그인'}</Button>
+          {hasWorkspace && <Button className="site-settings-button" color="inherit" endIcon={<ExpandMore />} aria-haspopup="menu" aria-expanded={Boolean(accountAnchor)} onClick={event => setAccountAnchor(event.currentTarget)}>{user ? '내 계정' : '기록장'}</Button>}
+          {!user && <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>로그인</Button>}
           <IconButton className="site-menu-toggle" ref={menuButtonRef} aria-label="메뉴 열기" aria-expanded={mobileOpen} aria-controls={mobileOpen ? 'site-mobile-menu' : undefined} onClick={() => setMobileOpen(true)}><MenuOutlined /></IconButton>
         </div>
       </div>
@@ -126,18 +127,19 @@ export default function SiteHeader({ publicMode = false }) {
     {!publicMode && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
       {mainLinks.map(item => menuLink(item, false, true))}
     </nav>}
+    <Menu anchorEl={accountAnchor} open={Boolean(accountAnchor)} onClose={() => setAccountAnchor(null)}>
+      {[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => <MenuItem key={item.to} component={Link} to={item.to} onClick={event => { setAccountAnchor(null); visit(event, item.to); }}>{item.label}</MenuItem>)}
+    </Menu>
     <Drawer anchor="top" open={mobileOpen} onClose={closeMenu} ModalProps={{ disableRestoreFocus: true }} slotProps={{
       paper: { className: 'site-mobile-drawer', id: 'site-mobile-menu', role: 'dialog', 'aria-modal': true, 'aria-label': publicMode ? '전체 메뉴' : '보조 메뉴' },
       transition: { onEntered: () => menuCloseRef.current?.focus(), onExited: finishDrawerClose }
     }}>
       <div className="site-mobile-heading"><span>{publicMode ? '메뉴' : '더 보기'}</span><IconButton ref={menuCloseRef} onClick={closeMenu} aria-label="메뉴 닫기"><Close /></IconButton></div>
       {publicMode && <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>}
-      {hasWorkspace && <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{secondaryLinks.map(item => menuLink(item, true))}</nav>}
-      <div className="site-mobile-account">
-        <p>{isGuest ? '샘플 변경은 새로고침하면 초기화돼요.' : !user ? '메뉴를 선택하면 가상 데이터로 체험해요.' : '내 계정에서 기록장 설정을 관리해요.'}</p>
-        {isGuest && <Button component={Link} to="/settings" variant="text" disabled={busy || loading} onClick={event => visit(event, '/settings', true)}>샘플 설정</Button>}
-        <Button variant="outlined" onClick={() => openAccount(true)} disabled={busy || loading}>{user ? '내 계정' : '로그인 / 가입'}</Button>
-      </div>
+      {hasWorkspace && <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => menuLink(item, true))}</nav>}
+      {!user && <div className="site-mobile-account">
+        <Button variant="outlined" onClick={() => openAccount(true)} disabled={busy || loading}>로그인 / 가입</Button>
+      </div>}
     </Drawer>
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </>;

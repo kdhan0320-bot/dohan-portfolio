@@ -2,23 +2,23 @@ import { createTheme } from '@mui/material/styles';
 export default createTheme({
   palette: {
     primary: {
-      main: '#3D6594',
-      dark: '#2D507B',
-      light: '#E7EFF8',
+      main: '#5940A0',
+      dark: '#45307F',
+      light: '#F1EDF9',
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#3D6594'
+      main: '#5940A0'
     },
     background: {
-      default: '#F6F7F8',
+      default: '#FAFAFB',
       paper: '#FFFFFF'
     },
     text: {
-      primary: '#292F35',
-      secondary: '#606973'
+      primary: '#29262F',
+      secondary: '#6E6976'
     },
-    divider: '#DCE1E5',
+    divider: '#E5E2E9',
     success: {
       main: '#326D61'
     },
@@ -29,7 +29,7 @@ export default createTheme({
       main: '#805E24'
     },
     info: {
-      main: '#3D6594'
+      main: '#5940A0'
     }
   },
   typography: {
@@ -91,7 +91,7 @@ export default createTheme({
         },
         outlined: {
           '&.MuiButton-colorPrimary': {
-            borderColor: '#A6B5C4'
+            borderColor: '#C8C2D4'
           }
         },
         startIcon: {
@@ -164,7 +164,7 @@ export default createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          border: '1px solid #DCE1E5'
+          border: '1px solid #E5E2E9'
         }
       }
     },
@@ -173,24 +173,24 @@ export default createTheme({
         root: {
           backgroundColor: '#FFFFFF',
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#3D6594'
+            borderColor: '#5940A0'
           }
         },
         notchedOutline: {
-          borderColor: '#A6AFB8'
+          borderColor: '#BDB7C8'
         }
       }
     },
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderColor: '#DCE1E5',
+          borderColor: '#E5E2E9',
           padding: '18px 20px'
         },
         head: {
           fontSize: 13,
-          color: '#606973',
-          backgroundColor: '#F6F7F8',
+          color: '#6E6976',
+          backgroundColor: '#FAFAFB',
           fontWeight: 500
         }
       }

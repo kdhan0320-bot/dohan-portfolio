@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
-import Add from '@mui/icons-material/Add';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
@@ -32,7 +31,7 @@ export default function DashboardPage() {
   const loading = apps.loading || check.loading;
   const error = apps.error || check.error;
   return <div className="overview-page company-first-overview concise-overview">
-    <PageHeading art="overview" title="오늘의 지원" description={dateText}><Button className="company-add-action" aria-label="지원할 회사 등록" component={Link} to="/?new=1" variant="contained" startIcon={<Add />}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button></PageHeading>
+    <PageHeading art="overview" title="오늘" description={dateText} />
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!loading && !error && <>
       <section className="attention-section" aria-labelledby="attention-title">
@@ -48,11 +47,11 @@ export default function DashboardPage() {
             <div className="today-next"><span>다음 준비{pending(tasks) > 0 && <small> · 남은 {pending(tasks)}개</small>}</span><p>{nextTask?.title || (tasks.length ? '등록한 준비를 모두 마쳤어요' : '준비할 일을 등록해보세요')}</p></div>
             <Button className="today-record-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span className="today-open-label">기록 보기</span><span aria-hidden="true">→</span></Button>
           </article>;
-        })}</div> : <Empty title={apps.applications.length ? '지금 챙길 회사가 없어요' : '첫 지원 회사를 등록해보세요'}><Button component={Link} to={apps.applications.length ? '/' : '/?new=1'}>{apps.applications.length ? '지원 현황 보기' : '회사 등록하기'}</Button></Empty>}
+        })}</div> : <Empty title={apps.applications.length ? '지금 챙길 회사가 없어요' : '첫 지원 회사를 등록해보세요'}><Button component={Link} to="/">지원 관리로 이동</Button></Empty>}
       </section>
       <section className="today-common" aria-labelledby="common-preparation-title"><div><h2 id="common-preparation-title">공통 준비 <span>남은 {pending(common)}개</span></h2><p>{nextCommon?.title || (common.length ? '공통 준비를 모두 마쳤어요' : '회사와 관계없이 챙길 일을 등록해보세요')}</p></div><Button component={Link} to="/checklist?company=common">준비 관리</Button></section>
       <div className="support-summary" aria-label="내 지원 현황">
-        <Link to="/">지원 현황 <strong>{apps.applications.length}곳</strong></Link>
+        <Link to="/">전체 지원 <strong>{apps.applications.length}곳</strong></Link>
         <dl>{BOARD_COLUMNS.map(column => <div key={column.id}><dt><i style={{ background: column.color }} aria-hidden="true" />{column.label}</dt><dd>{apps.applications.filter(company => boardColumn(company.status) === column.id).length}</dd></div>)}{apps.applications.some(company => company.status === '보류') && <div><dt>보류</dt><dd>{apps.applications.filter(company => company.status === '보류').length}</dd></div>}</dl>
       </div>
 

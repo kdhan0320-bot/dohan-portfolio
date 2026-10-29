@@ -2,28 +2,28 @@ export const DEMO_TODAY = '2026-09-27';
 export const APPLICATION_STATUSES = [{
   value: '관심',
   label: '관심',
-  color: '#426488',
-  bg: '#E9F1FA'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }, {
   value: '지원 예정',
   label: '지원 예정',
-  color: '#426488',
-  bg: '#E9F1FA'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }, {
   value: '지원 완료',
   label: '지원 완료',
-  color: '#6B5985',
-  bg: '#F0ECF6'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }, {
   value: '서류 진행',
   label: '서류 진행',
-  color: '#6B5985',
-  bg: '#F0ECF6'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }, {
   value: '면접 예정',
   label: '면접 예정',
-  color: '#805E24',
-  bg: '#FAF1DE'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }, {
   value: '합격',
   label: '합격',
@@ -37,8 +37,8 @@ export const APPLICATION_STATUSES = [{
 }, {
   value: '보류',
   label: '보류',
-  color: '#606973',
-  bg: '#EDF0F2'
+  color: '#615B6D',
+  bg: '#F3F2F5'
 }];
 export const PRIORITY_OPTIONS = [{
   value: '낮음',
@@ -70,18 +70,18 @@ export const IMPORTANCE_OPTIONS = [{
 export const CHECKLIST_CATEGORIES = ['포트폴리오', '서류', '면접', '지원', '기타'];
 export const PROMPT_TYPES = ['자기소개서', '면접 답변', '포트폴리오 설명', '지원동기'];
 export const NAV_ITEMS = [
-  { path: '/overview', label: '오늘의 지원', icon: 'home', match: 'exact' },
-  { path: '/', label: '지원 현황', icon: 'applications', match: 'exact' },
+  { path: '/overview', label: '오늘', icon: 'home', match: 'exact' },
+  { path: '/', label: '지원 관리', icon: 'applications', match: 'exact' },
   { path: '/calendar', label: '마감 일정', icon: 'calendar', match: 'exact' },
-  { path: '/checklist', label: '준비 체크', icon: 'checklist', match: 'exact' },
-  { path: '/interview', label: '면접 연습', icon: 'interview', match: 'exact' },
+  { path: '/checklist', label: '준비', icon: 'checklist', match: 'exact' },
+  { path: '/interview', label: '면접', icon: 'interview', match: 'exact' },
   { path: '/document-helper', label: '작성 요청문', icon: 'document-helper', match: 'exact' },
   { path: '/settings', label: '설정', icon: 'settings', match: 'exact' }
 ];
 export const getRouteTitle = pathname => {
   if (pathname === '/login') return '로그인';
   if (pathname === '/welcome') return '나의 입사지원 관리';
-  if (pathname === '/') return '지원 현황';
+  if (pathname === '/' || pathname === '/calendar') return '지원 관리';
   if (pathname === '/applications/new') return '지원 정보 추가';
   if (/^\/applications\/[^/]+\/edit$/.test(pathname)) return '지원 정보 수정';
   if (/^\/applications\/[^/]+$/.test(pathname)) return '지원 정보';
@@ -286,9 +286,9 @@ export const DEMO_INTERVIEW_NOTES = [{
 }, {
   id: 'in-2',
   application_id: null,
-  question: '본인의 강점은 무엇인가요?',
-  answer: '사용자 흐름을 정리하고 실무형 웹서비스 화면을 구현하는 능력이 강점입니다.',
-  related_project: '프로젝트 경험',
+  question: '협업 중 의견이 달랐을 때 어떻게 조율했나요?',
+  answer: '화면 구성에 대한 의견이 갈렸을 때, 먼저 사용자가 해야 할 일을 함께 정리했습니다. 각 안을 간단한 화면으로 만들어 비교한 뒤 필요한 단계를 줄이는 쪽을 선택했습니다. 다음에는 판단 기준을 작업 시작 전에 합의하려고 합니다.',
+  related_project: '협업 경험',
   importance: '높음',
   is_reviewed: false
 }, {

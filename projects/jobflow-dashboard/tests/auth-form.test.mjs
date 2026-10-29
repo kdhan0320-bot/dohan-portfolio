@@ -148,6 +148,7 @@ test('login and signup each expose one associated panel without duplicate inputs
 
 test('returning from login restores the originating sample route and company filter', async () => {
   const page = loginPage('/interview?company=demo-1');
-  await page.click('샘플로 돌아가기');
-  assert.deepEqual(page.destinations, ['/interview?company=demo-1']);
+  const back = find(page.tree(), node => node.type === 'Button' && node.props.children === '돌아가기')[0];
+  assert.equal(back.props.to, '/interview?company=demo-1');
+  assert.equal(find(page.tree(), node => node.type === 'Button' && node.props.children === '샘플로 돌아가기').length, 0);
 });

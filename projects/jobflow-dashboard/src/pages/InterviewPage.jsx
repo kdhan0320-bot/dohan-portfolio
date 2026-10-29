@@ -12,7 +12,6 @@ import useRecordDraft from '../hooks/useRecordDraft';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import { revealTextareaCaret } from '../utils/textareaCaret';
-import '../styles/company-interview.css';
 const INITIAL = {
   application_id: null,
   question: '',
@@ -51,7 +50,6 @@ export default function InterviewPage() {
   const pageError = error || companiesError;
   const [open, setOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [editSection, setEditSection] = useState('answer');
   const [draftId, setDraftId] = useState('new');
   const [form, setForm] = useState(INITIAL);
   const [originalForm, setOriginalForm] = useState(INITIAL);
@@ -65,7 +63,6 @@ export default function InterviewPage() {
   const [activeId, setActiveId] = useState(null);
   const practiceHeading = useRef(null);
   const pendingDelete = useRef(null);
-  const pendingEdit = useRef(null);
   const emptyResult = useRef(null);
   const pendingResultFocus = useRef(false);
   const [validationTarget, setValidationTarget] = useState(null);
@@ -109,9 +106,9 @@ export default function InterviewPage() {
   const activeHasAnswer = Boolean(activeNote?.answer?.trim());
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
   useEffect(() => {
-    if (!open || !editingId || editSection !== 'answer') return;
+    if (!open || !editingId) return;
     const answer = document.getElementById('note-answer');
-    answer?.focus({ preventScroll: true });
+    document.getElementById('note-question')?.focus({ preventScroll: true });
     const editor = answer?.closest('form');
     let frame;
     const fields = editor?.querySelector('.field-stack');
@@ -130,7 +127,7 @@ export default function InterviewPage() {
           fields.scrollTop = 0;
           opening = false;
         }
-        revealTextareaCaret(answer, fields);
+        if (document.activeElement === answer) revealTextareaCaret(answer, fields);
       });
     };
     revealActions();
@@ -147,7 +144,7 @@ export default function InterviewPage() {
       window.visualViewport?.removeEventListener('resize', revealActions);
       window.removeEventListener('resize', revealActions);
     };
-  }, [open, editingId, editSection]);
+  }, [open, editingId]);
   useEffect(() => {
     // Each failed submit is a new request, even when the error text is unchanged.
     // Open the details first, then reveal the field after React has laid out the error.
@@ -185,7 +182,7 @@ export default function InterviewPage() {
     const initial = { ...INITIAL, application_id: selectedCompany?.id || null };
     openEditor(null, recovered?.values || initial, recovered?.baseline || initial, Boolean(recovered));
   }
-  function startEdit(note, section = 'answer') {
+  function startEdit(note) {
     const draft = {
       ...INITIAL,
       ...note,
@@ -196,15 +193,13 @@ export default function InterviewPage() {
       importance: note.importance || '보통'
     };
     const recovered = drafts.read(note.id);
-    openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered), note.id, section);
+    openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered), note.id);
   }
-  function openEditor(id, values, baseline, recovered, draftKey = id || 'new', section) {
-    const nextSection = section || (id && ['question', 'application_id', 'related_project'].some(key => values[key] !== baseline[key]) ? 'details' : 'answer');
+  function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
     if (id) { setActiveId(id); if (companyScope !== 'all' && (values.application_id || 'common') !== companyScope) selectCompany(values.application_id || 'common'); }
     setDraftId(draftKey);
-    setEditSection(nextSection);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
-    setConfirmDiscard(false); setFormError(''); setValidationTarget(id && nextSection === 'details' ? { fieldId: 'note-question' } : null); setFeedback(null); setOpen(true);
+    setConfirmDiscard(false); setFormError(''); setValidationTarget(null); setFeedback(null); setOpen(true);
   }
   function resumeDraft() {
     const pending = drafts.pending;
@@ -236,7 +231,7 @@ export default function InterviewPage() {
   }
   function continueDraft() {
     setConfirmDiscard(false);
-    window.requestAnimationFrame(() => document.getElementById(editSection === 'details' ? 'note-question' : 'note-answer')?.focus({ preventScroll: true }));
+    window.requestAnimationFrame(() => document.getElementById('note-question')?.focus({ preventScroll: true }));
   }
   async function submit(e) {
     e.preventDefault();
@@ -306,32 +301,24 @@ export default function InterviewPage() {
     slotProps={{ input: editingId ? { inputComponent: 'textarea' } : {} }}
     value={form.answer} onChange={event => changeForm({ ...form, answer: event.target.value })} />;
   const questionField = <Field id="note-question" disabled={Boolean(busy)} label="질문" required value={form.question} onChange={event => changeForm({ ...form, question: event.target.value })} />;
-  const companyFields = <>
+  const companyFields = <div className="interview-record-context">
     <Field id="note-company" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)} select label="지원 회사" value={form.application_id || ''} slotProps={{ select: { displayEmpty: true } }} onChange={event => changeForm({ ...form, application_id: event.target.value || null })}>
       <MenuItem value="">공통 질문 · 회사 연결 안 함</MenuItem>
       {form.application_id && !companyMap.has(form.application_id) && <MenuItem value={form.application_id} disabled>연결한 회사 없음 · 다시 선택해주세요</MenuItem>}
       {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
     </Field>
     <Field label="관련 프로젝트 또는 주제 (선택)" disabled={Boolean(busy)} value={form.related_project} onChange={event => changeForm({ ...form, related_project: event.target.value })} />
-  </>;
+  </div>;
   const editorFields = <div className="field-stack">
     {!editingId && formError && <Alert severity="error">{formError}</Alert>}
     {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
-    {editingId && editSection === 'details' ? <>{questionField}{companyFields}</> : <>
-    {!editingId && questionField}
+    {questionField}
+    {companyFields}
     {answerField}
-    <details className="interview-question-details">
-      <summary>{editingId ? '질문·회사 정보' : '회사·추가 정보 (선택)'}</summary>
-      <div className="field-stack">
-        {editingId && questionField}
-        {companyFields}
-      </div>
-    </details>
-    </>}
   </div>;
   return <>
   <div className="interview-page">
-  <PageHeading art="chat" title="면접 연습" description="질문과 내 답변을 함께 읽고 다듬어요.">
+  <PageHeading art="chat" title="면접" description="질문과 내 답변을 함께 읽고 다듬어요.">
     <Button variant="contained" startIcon={<Add />} onClick={startNew} disabled={open || pageLoading || Boolean(pageError) || missingCompany}>질문 추가</Button>
   </PageHeading>
   {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. 현재 탭에서 이어서 작성할 수 있어요.</Alert>}
@@ -370,7 +357,7 @@ export default function InterviewPage() {
 
       </div>
       </div>
-      {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label={editSection === 'details' ? '질문·회사 정보 수정' : '면접 답변 작성'} onFocusCapture={event => {
+      {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label="면접 기록 수정" onFocusCapture={event => {
         if (event.target.closest('.inline-editor-actions')) return;
         const editor = event.currentTarget;
         window.requestAnimationFrame(() => { if (editor.contains(document.activeElement)) revealMobileEditor(editor); });
@@ -379,7 +366,7 @@ export default function InterviewPage() {
         // Keep the actions above the mobile navigation after that default action.
         if (event.target.tagName === 'TEXTAREA') revealMobileEditor(event.currentTarget);
       }}>
-        <h2>{editSection === 'details' ? '질문·회사 정보 수정' : originalForm.question}</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '변경 저장'}</Button></div>
+        <h2>면접 기록 수정</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '변경 저장'}</Button></div>
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
           <span className="practice-company-label">
@@ -389,7 +376,7 @@ export default function InterviewPage() {
           <IconButton aria-label="질문 관리" aria-haspopup="menu" aria-expanded={Boolean(menuAnchor)} onClick={event => setMenuAnchor(event.currentTarget)}><MoreHoriz /></IconButton>
         </div>
         <div className="practice-question"><h2 ref={practiceHeading} tabIndex={-1}>{activeNote.question}</h2></div>
-        <div className="practice-primary-action"><div className="practice-answer-label"><span>나의 답변</span><span className="practice-answer-state">{activeHasAnswer ? '작성됨' : '작성 전'}</span></div><Button variant="outlined" startIcon={<EditOutlined />} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}>{activeHasAnswer ? '답변 수정' : '답변 작성'}</Button></div>
+        <div className="practice-primary-action"><div className="practice-answer-label"><span>나의 답변</span><span className="practice-answer-state">{activeHasAnswer ? '작성됨' : '작성 전'}</span></div><Button variant="outlined" startIcon={<EditOutlined />} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}>기록 수정</Button></div>
         {activeHasAnswer && <div className="practice-answer" id={`answer-${activeNote.id}`}><p>{activeNote.answer}</p></div>}
         {!activeHasAnswer && <p className="practice-answer-placeholder">아직 작성한 답변이 없어요.</p>}
 
@@ -402,10 +389,8 @@ export default function InterviewPage() {
   </div>)}
   </div>
   <Menu anchorEl={menuAnchor} open={Boolean(menuAnchor)} onClose={() => setMenuAnchor(null)} slotProps={{ transition: { onExited: () => {
-    if (pendingEdit.current) { startEdit(pendingEdit.current, 'details'); pendingEdit.current = null; }
     if (pendingDelete.current) { setTarget(pendingDelete.current); pendingDelete.current = null; }
   } } }}>
-    <MenuItem onClick={() => { pendingEdit.current = activeNote; setMenuAnchor(null); }}><EditOutlined fontSize="small" />질문·회사 수정</MenuItem>
     <MenuItem onClick={() => { pendingDelete.current = activeNote; setMenuAnchor(null); }}><DeleteOutline fontSize="small" />질문 삭제</MenuItem>
   </Menu>
   <Dialog className="record-editor-dialog" aria-labelledby="note-dialog-title" open={open && !editingId} onClose={requestClose} slotProps={{ transition: { onEntered: focusEditorField } }} fullWidth maxWidth="sm">
@@ -416,7 +401,7 @@ export default function InterviewPage() {
       </DialogContent>
       <DialogActions>
         <Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button>
-        <Button type="submit" variant="contained" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{editingId ? '수정 저장' : '질문 저장'}</Button>
+        <Button type="submit" variant="contained" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{editingId ? '변경 저장' : '추가하기'}</Button>
       </DialogActions>
     </form>
   </Dialog>

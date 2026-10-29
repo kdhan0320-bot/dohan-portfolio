@@ -10,7 +10,6 @@ import { getAuthErrorMessage } from '../utils/authErrors';
 import { EMAIL_COOLDOWN_KEY, EMAIL_COOLDOWN_MS, emailCooldownSeconds } from '../utils/authRecovery';
 import { Brand } from '../components/ui/Brand';
 import { workspaceReturn } from '../utils/workspaceReturn';
-import '../styles/auth.css';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const readEmailCooldown = () => {
@@ -28,10 +27,11 @@ export default function LoginPage() {
   const [reveal, setReveal] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [needsConfirmation, setNeedsConfirmation] = useState(false);
   const [fields, setFields] = useState({});
   const [busy, setBusy] = useState(false);
   const [cooldown, setCooldown] = useState(readEmailCooldown);
-  const { authError, isGuest, signIn, signUp, enterGuestMode, requestPasswordReset, resendConfirmation } = useAuth();
+  const { authError, isGuest, signIn, signUp, requestPasswordReset, resendConfirmation } = useAuth();
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -104,6 +104,7 @@ export default function LoginPage() {
       } else {
         const result = await signUp(email.trim(), password, displayName.trim());
         if (result.requiresEmailConfirmation) {
+          setNeedsConfirmation(true);
           startCooldown();
           setTab(0);
           setPassword('');
@@ -111,6 +112,7 @@ export default function LoginPage() {
         } else navigate('/overview');
       }
     } catch (caught) {
+      if (caught.code === 'email_not_confirmed') setNeedsConfirmation(true);
       if (helpMode && caught.code?.includes('rate_limit')) startCooldown();
       setError(getAuthErrorMessage(caught));
     } finally {
@@ -118,30 +120,12 @@ export default function LoginPage() {
     }
   }
 
-  async function demo() {
-    if (busy) return;
-    setBusy(true);
-    setError('');
-    try {
-      await enterGuestMode();
-      navigate(isGuest ? workspaceReturn(searchParams.get('returnTo')) : '/overview');
-    } catch (caught) {
-      setError(getAuthErrorMessage(caught));
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : tab === 0 ? '내 지원 기록 열기' : '내 지원 기록 만들기';
+  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : tab === 0 ? '로그인' : '회원가입';
   return <main className="login-shell login-task-first">
     <section className="login-form-section" aria-labelledby="login-title">
       <div className="login-form-brand"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
-      <Button component={Link} to="/welcome" className="login-back">서비스 소개</Button>
+      <Button component={Link} to={isGuest ? workspaceReturn(searchParams.get('returnTo')) : '/welcome'} className="login-back">돌아가기</Button>
       <h1 id="login-title">{heading}</h1>
-      <div className="login-sample-entry">
-        <Button variant="outlined" fullWidth onClick={demo} disabled={busy}>{isGuest ? '샘플로 돌아가기' : '샘플 체험하기'}</Button>
-        {isGuest ? <p className="login-sample-policy">돌아가면 샘플 기록·초안이 유지돼요.<br /><span>계정 로그인 시 초기화되며, 계정으로 옮겨지지 않아요.</span></p> : <p>가입 없이 이용 · 새로고침하면 초기화</p>}
-      </div>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);
         setPassword('');
@@ -179,17 +163,9 @@ export default function LoginPage() {
       </div>)}
       {helpMode ? <Button className="auth-return" disabled={busy} onClick={() => changeMode(null)}>로그인으로 돌아가기</Button> : tab === 0 && <div className="auth-help-actions">
         <Button disabled={busy} onClick={() => changeMode('recovery')}>비밀번호를 잊었나요?</Button>
-        <Button disabled={busy} onClick={() => changeMode('confirmation')}>인증 이메일 다시 받기</Button>
+        {needsConfirmation && <Button disabled={busy} onClick={() => changeMode('confirmation')}>인증 이메일 다시 받기</Button>}
       </div>}
     </section>
-    <section className="login-story" aria-label="갈피록 소개">
-      <div className="login-brand-row"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
-      <div className="login-story-center">
-        <p className="login-purpose">개인 입사지원 관리</p>
-        <h2>어디에 지원했는지,<br />한눈에.</h2>
-        <p className="login-story-description">지원할 회사를 기록하고,<br />마감과 준비할 일을 이어서 관리해요.</p>
-      </div>
-      <a className="login-foot" href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a>
-    </section>
+
   </main>;
 }

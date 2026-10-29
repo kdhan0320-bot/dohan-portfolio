@@ -56,6 +56,7 @@ function calendarPage({ compact = true, query = '' } = {}) {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: DEMO_APPLICATIONS, loading: false, error: null }) },
     '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], loading: false, error: null, refresh: () => {} }) },
     '../components/applications/ApplicationPanel': 'company-panel',
+    '../components/applications/ApplicationsNav': 'applications-nav',
     '../hooks/useToday': { useToday: () => DEMO_TODAY },
     '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
     '../utils/calendar': calendar,

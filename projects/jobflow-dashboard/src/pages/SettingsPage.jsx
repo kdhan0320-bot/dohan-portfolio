@@ -220,14 +220,7 @@ const SettingsPage = () => {
             {exportControl}
           </div>
         </section>
-        <section className="panel settings-card settings-account" aria-labelledby="start-record-title">
-          <div className="settings-control-copy">
-            <h2 id="start-record-title">나만의 기록장</h2>
-            <p>로그인하고 내 지원 기록을 저장하세요.</p>
-            <p className="settings-note">체험 중 수정한 샘플은 옮겨지지 않아요.</p>
-          </div>
-          <Button variant="contained" onClick={() => navigate('/login?returnTo=%2Fsettings')}>내 기록 시작하기</Button>
-        </section>
+
       </div>
       {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
     </Box>;

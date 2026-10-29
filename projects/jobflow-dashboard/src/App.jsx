@@ -13,6 +13,7 @@ const WelcomePage = lazy(() => import('./pages/WelcomePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const CalendarPage = lazy(() => import('./pages/CalendarPage'));
 const ApplicationsPage = lazy(() => import('./pages/ApplicationsPage'));
+const ApplicationFormPage = lazy(() => import('./pages/ApplicationFormPage'));
 const ChecklistPage = lazy(() => import('./pages/ChecklistPage'));
 const InterviewPage = lazy(() => import('./pages/InterviewPage'));
 const DocumentHelperPage = lazy(() => import('./pages/DocumentHelperPage'));
@@ -65,7 +66,7 @@ const AppRoutes = () => {
     <Route path="overview" element={<DashboardPage />} />
     <Route path="calendar" element={<CalendarPage />} />
     <Route path="applications" element={<BoardAlias />} />
-    <Route path="applications/new" element={<BoardAlias creating />} />
+    <Route path="applications/new" element={<ApplicationFormPage />} />
     <Route path="applications/:id" element={<BoardAlias />} />
     <Route path="applications/:id/edit" element={<BoardAlias />} />
     <Route path="kanban" element={<BoardAlias />} />

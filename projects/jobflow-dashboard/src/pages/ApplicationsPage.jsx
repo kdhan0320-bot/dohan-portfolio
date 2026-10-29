@@ -1,5 +1,6 @@
+import ApplicationsNav from '../components/applications/ApplicationsNav';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import { Button, InputAdornment, Tab, Tabs, useMediaQuery } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Search from '@mui/icons-material/Search';
@@ -79,10 +80,12 @@ export default function ApplicationsPage() {
       <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
     </button>;
   }
+  if (creating) return <Navigate to="/applications/new" replace />;
   return <>
-    <PageHeading art="folder" title="지원 현황" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
-      <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })}><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
+    <PageHeading art="folder" title="지원 관리" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
+      <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} component={Link} to="/applications/new"><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
+    <ApplicationsNav />
     <div className="board-toolbar">
       <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" placeholder="회사나 직무를 찾아보세요" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
       <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>

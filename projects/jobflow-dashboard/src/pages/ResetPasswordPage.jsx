@@ -8,7 +8,6 @@ import { Brand } from '../components/ui/Brand';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { passwordValidation } from '../utils/authRecovery';
-import '../styles/auth.css';
 
 export default function ResetPasswordPage() {
   const { loading, recoveryReady, resetPassword, cancelRecovery } = useAuth();
