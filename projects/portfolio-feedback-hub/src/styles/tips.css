@@ -89,6 +89,7 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
 
 /* Full UI scenes retain identical geometry; only the explained property changes. */
 .tip-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; min-width: 0; }
+.tip-focus-caption { display: none; }
 .tip-figure { min-width: 0; display: flex; flex-direction: column; }
 .tip-figure figcaption { color: var(--tips-muted); font-size: 14px; line-height: 1.6; padding-bottom: 12px; }
 .tip-example { background: #fff; border: 1px solid #dce5ed; border-radius: 4px; flex: 1; min-width: 0; }
@@ -110,19 +111,17 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
 .tip-example-description { color: var(--tips-muted); font-size: 14px; line-height: 1.65; word-break: normal!important; }
 .tip-outlined { position: relative; outline: 1px solid #6589af; outline-offset: 6px; }
 .tip-marker { position: absolute; z-index: 1; top: -17px; right: -17px; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--tips-blue); color: #fff; font-size: 11px; line-height: 1; letter-spacing: 0; }
-.tip-work-list { position: relative; display: flex; flex-direction: column; gap: 16px; padding-right: 18px; margin-top: 22px; }
-.tip-work-group { display: flex; flex-direction: column; gap: 16px; position: relative; padding-left: 68px; }
+.tip-work-list { --tip-work-indent: 100px; position: relative; display: flex; flex-direction: column; margin-top: 22px; }
+.tip-work-group { display: flex; flex-direction: column; position: relative; padding-left: var(--tip-work-indent); }
 .tip-work-thumb { position: absolute; top: 0; left: 0; width: 52px; height: 52px; object-fit: cover; border-radius: 3px; background: #eaf1f5; }
 .tip-work-thumb svg { display: block; width: 100%; height: 100%; }
 .tip-work-title { font-size: 16px; line-height: 24px; font-weight: 500; }
 .tip-work-caption { font-size: 13px; line-height: 22px; color: var(--tips-muted); }
-.tip-work-caption::before { content: ''; position: absolute; top: 24px; right: -16px; width: 7px; height: 16px; border: solid #7098bb; border-width: 1px 0 1px 2px; }
-.tip-work-group + .tip-work-group::before { content: ''; position: absolute; bottom: 100%; right: -16px; height: 16px; width: 7px; border: solid #7098bb; border-width: 1px 0 1px 2px; }
-.is-grouped .tip-work-list { gap: 36px; }
-.is-grouped .tip-work-group { gap: 6px; }
-.is-grouped .tip-work-caption::before { height: 6px; }
-.is-grouped .tip-work-group + .tip-work-group::before { height: 36px; }
-.tip-work-list > .tip-marker { right: -7px; top: -14px; }
+.tip-gap { position: relative; display: block; flex-shrink: 0; }
+.tip-gap-between { margin-left: var(--tip-work-indent); }
+.tip-gap-rule { position: absolute; top: 0; bottom: 0; left: -40px; width: 6px; border: solid #6589af; border-width: 1px 0 1px 1px; }
+.tip-gap-value { position: absolute; left: -30px; top: 50%; transform: translateY(-50%); color: var(--tips-blue); font-size: 12px; line-height: 1; letter-spacing: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.tip-gap > .tip-marker { left: 12px; right: auto; top: calc(50% - 10px); }
 .tip-sound-cover { height: 108px; border-radius: 3px; overflow: hidden; }
 .tip-sound-cover svg { display: block; width: 100%; height: 100%; }
 .tip-track-name { display: block; font-size: 22px; line-height: 1.4; font-weight: 500; margin-top: 14px; }
@@ -168,9 +167,8 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
 .tip-preview .tip-example-description { font-size: 12px; }
 .tip-preview .tip-faux-link { margin-top: 16px; font-size: 11px; }
 .tip-preview .tip-spacing-example { padding: 20px 16px; }
-.tip-preview .tip-work-list { margin-top: 20px; padding-right: 0; }
-.tip-preview .tip-work-caption::before,.tip-preview .tip-work-group::before { display: none; }
-.tip-preview .tip-work-group { padding-left: 60px; }
+.tip-preview .tip-work-list { --tip-work-indent: 60px; margin-top: 20px; }
+.tip-preview .tip-gap > * { display: none; }
 .tip-preview .tip-work-thumb { width: 46px; height: 46px; }
 .tip-preview .tip-work-title { font-size: 15px; }
 .tip-preview .tip-work-caption { font-size: 12px; }
@@ -210,6 +208,10 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
   .tip-comparison { grid-template-columns: 1fr; gap: 24px; }
   .tip-type-example { min-height: 260px; }
   .tip-gallery-image { min-height: 212px; }
+  .tip-comparison-input .tip-focus-caption { display: block; color: var(--tips-muted); font-size: 13px; margin-bottom: -8px; }
+  .tip-comparison-input :is(.tip-signup-title,.tip-example-eyebrow,.tip-email-label,.tip-faux-email,.tip-faux-submit) { display: none; }
+  .tip-comparison-input .tip-input-example { padding-block: 18px 8px; }
+  .tip-comparison-input .tip-input-label { margin-top: 0; }
 }
 @media (max-width: 560px) {
   .tips-shell { width: calc(100% - 40px); }
@@ -240,6 +242,8 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
   .tips-explanation { padding: 20px 14px; }
   .tips-callout h2 { font-size: 20px; }
   .tips-callout dl { grid-template-columns: 1fr; margin-top: 18px; }
+  .tips-callout dl > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: baseline; }
+  .tips-callout dt { margin-bottom: 0; }
   .tips-apply { padding: 32px 0 12px; }
   .tips-apply h2 { font-size: 22px; }
   .tips-apply h3 { font-size: 16px; }
@@ -255,6 +259,10 @@ body:has(.tips-site) { min-width: 0; background: #fcfdff; }
   .tip-example-description { font-size: 13px; }
   .tip-example-eyebrow { font-size: 11px; }
   .tip-spacing-example,.tip-action-example,.tip-labels-example,.tip-input-example { padding: 22px; }
+  .tip-spacing-example .tip-work-list { --tip-work-indent: 84px; }
+  .tip-spacing-example .tip-work-thumb { width: 32px; height: 32px; }
+  .tip-preview .tip-work-list { --tip-work-indent: 60px; }
+  .tip-preview .tip-work-thumb { width: 46px; height: 46px; }
   .tip-player { gap: 20px; }
   .tip-photo-example { min-height: 240px; }
   .tip-map { height: 150px; }

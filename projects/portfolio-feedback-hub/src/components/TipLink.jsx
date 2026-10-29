@@ -7,7 +7,7 @@ export default function TipLink({ to, focusId, children, ...props }) {
   const openTip = event => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    navigate(to, { state: { routeReturn: { entryKey: location.key, focusId, scrollY: window.scrollY } } });
+    navigate(to, { state: { routeReturn: { entryKey: location.key, pathname: location.pathname, focusId, scrollY: window.scrollY } } });
   };
   return <Link {...props} to={to} data-route-focus-id={focusId} onClick={openTip}>{children}</Link>;
 }

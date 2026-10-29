@@ -14,13 +14,20 @@ function TypeExample({ revised, annotate }) {
   </div><img className="tip-gallery-image" src={sculpture} alt="" width="720" height="960" /></div>;
 }
 
+function GapMeasure({ size, between = false, annotate = false }) {
+  return <span className={`tip-gap${between ? ' tip-gap-between' : ''}`} style={{ height: size }}>
+    <i className="tip-gap-rule" /><span className="tip-gap-value">{size}px</span>{annotate && <Marker />}
+  </span>;
+}
+
 function SpacingExample({ revised, annotate }) {
+  const innerGap = revised ? 6 : 16;
   return <div className={`tip-spacing-example${revised ? ' is-grouped' : ''}`}>
     <span className="tip-example-eyebrow">선택한 작업</span>
     <div className="tip-work-list">
-      <div className="tip-work-group"><div className="tip-work-thumb tip-work-thumb-walk"><svg viewBox="0 0 60 60"><path d="M0 42 18 24 34 36 60 10M9 0 27 60M0 19 60 38" fill="none" stroke="#bbcdd6" strokeWidth="3" /><path d="m8 46 16-10 10 2 18-24" fill="none" stroke="#375f87" strokeWidth="3" /></svg></div><span className="tip-work-title">산책 기록 앱</span><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
-      <div className="tip-work-group"><img className="tip-work-thumb" src={studio} alt="" width="60" height="60" /><span className="tip-work-title">전시 예약 웹</span><span className="tip-work-caption">관람을 예약하는 웹</span></div>
-      {annotate && <Marker />}
+      <div className="tip-work-group"><div className="tip-work-thumb tip-work-thumb-walk"><svg viewBox="0 0 60 60"><path d="M0 42 18 24 34 36 60 10M9 0 27 60M0 19 60 38" fill="none" stroke="#bbcdd6" strokeWidth="3" /><path d="m8 46 16-10 10 2 18-24" fill="none" stroke="#375f87" strokeWidth="3" /></svg></div><span className="tip-work-title">산책 기록 앱</span><GapMeasure size={innerGap} /><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
+      <GapMeasure size={revised ? 36 : 16} between annotate={annotate} />
+      <div className="tip-work-group"><img className="tip-work-thumb" src={studio} alt="" width="60" height="60" /><span className="tip-work-title">전시 예약 웹</span><GapMeasure size={innerGap} /><span className="tip-work-caption">관람을 예약하는 웹</span></div>
     </div>
   </div>;
 }
@@ -64,6 +71,7 @@ export function TipPreview({ tip }) {
 export default function TipComparison({ tip }) {
   return <div className={`tip-comparison tip-comparison-${tip.kind}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
     <p className="tips-sr-only">{tip.description}</p>
+    {tip.kind === 'input' && <p className="tip-focus-caption">계정 만들기 화면 · 비밀번호 입력 부분</p>}
     {[false, true].map(revised => <figure key={String(revised)} className={`tip-figure${revised ? ' is-revised' : ''}`}>
       <figcaption>{revised ? tip.after : tip.before}</figcaption>
       <div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised={revised} annotate={revised} /></div>
