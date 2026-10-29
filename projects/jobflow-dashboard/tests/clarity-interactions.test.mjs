@@ -4,8 +4,8 @@ import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
 import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
-import { preparationGroups } from '../src/utils/preparationGroups.js';
-import { shortDate } from '../src/utils/dates.js';
+import { preparationGroups, todayCompanyGroups, beforeApplication } from '../src/utils/preparationGroups.js';
+import { shortDate, deadlineLabel } from '../src/utils/dates.js';
 import { revealTextareaCaret } from '../src/utils/textareaCaret.js';
 import * as constants from '../src/constants/index.js';
 import { BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
@@ -149,6 +149,32 @@ test('home record preview opens without navigating or starting a guest session',
   await page.click('샘플 체험하기');
   assert.equal(guestStarts, 1);
   assert.deepEqual(destinations, ['/overview']);
+});
+
+test('today review opens the same company and requires an explicit status change', async () => {
+  let applications = [{ id: 'past', company_name: '지난 마감 회사', status: '지원 예정', deadline: '2026-09-20' }];
+  const writes = [];
+  const page = await mount('DashboardPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications, update: async (id, patch) => { writes.push({ id, patch }); applications = applications.map(company => company.id === id ? { ...company, ...patch } : company); } }) },
+    '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], refresh() {} }) },
+    '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
+    '../hooks/useToday': { useToday: () => '2026-09-27' },
+    '../utils/calendar': { WEEKDAYS: ['월', '화', '수', '목', '금', '토', '일'] },
+    '../utils/preparationGroups': { todayCompanyGroups, beforeApplication },
+    '../utils/dates': { deadlineLabel },
+    '../components/applications/ApplicationPanel': 'ApplicationPanel',
+  });
+  assert.match(page.text(), /지원 여부 확인/);
+  assert.equal(writes.length, 0);
+  page.find(node => node.type === 'Button' && node.props['aria-label'] === '지난 마감 회사 회사 기록 보기').props.onClick(); page.render();
+  const dialog = () => page.find(node => node.type === 'ApplicationPanel');
+  assert.equal(dialog().props.application.id, 'past');
+  await dialog().props.onStatusChange('지원 완료'); page.render();
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].id, 'past');
+  assert.deepEqual({ ...writes[0].patch }, { status: '지원 완료' });
+  assert.equal(page.find(node => node.props?.id === 'review-title'), null);
+  assert.equal(dialog().props.application.status, '지원 완료', 'the open record stays available after leaving the review list');
 });
 
 test('completing a task keeps its checked row visible until the status filter changes', async () => {

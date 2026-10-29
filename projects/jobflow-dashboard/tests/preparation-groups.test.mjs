@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { attentionCompanies, preparationGroups } from '../src/utils/preparationGroups.js';
+import { attentionCompanies, preparationGroups, todayCompanyGroups } from '../src/utils/preparationGroups.js';
 import { workspaceReturn } from '../src/utils/workspaceReturn.js';
 
 const companies = [
@@ -19,7 +19,7 @@ const tasks = [
 test('company priority uses unsubmitted deadlines and leaves completed/rejected applications out of urgent deadlines', () => {
   assert.deepEqual(attentionCompanies(companies, tasks).map(item => item.id), ['first', 'later', 'interview']);
 });
-test('completing preparation neither removes nor reorders the company under the pointer', () => {
+test('completing preparation keeps pre-application and interview companies visible and preparation groups stable', () => {
   const completed = tasks.map(item => ({ ...item, is_done: true }));
   assert.deepEqual(attentionCompanies(companies, tasks), attentionCompanies(companies, completed));
   assert.deepEqual(preparationGroups(tasks, companies).map(item => item.id), preparationGroups(completed, companies).map(item => item.id));
@@ -27,6 +27,41 @@ test('completing preparation neither removes nor reorders the company under the 
 test('a newly registered company remains visible before a deadline or task has been entered', () => {
   const first = { id: 'new', company_name: '새 회사', status: '관심', deadline: null };
   assert.deepEqual(attentionCompanies([first], []), [first]);
+});
+
+test('expired unsubmitted applications require review; today deadlines remain actionable', () => {
+  const expired = { id: 'expired', company_name: '지난 마감', status: '지원 예정', deadline: '2026-09-26' };
+  const dueToday = { id: 'today', company_name: '오늘 마감', status: '관심', deadline: '2026-09-27' };
+  const input = [...companies, expired, dueToday];
+  const before = structuredClone(input);
+  const groups = todayCompanyGroups(input, tasks, '2026-09-27');
+  assert.deepEqual(groups.needsReview.map(item => item.id), ['expired']);
+  assert.deepEqual(groups.current.map(item => item.id), ['today', 'first', 'later', 'interview']);
+  assert.deepEqual(input, before, 'grouping never changes status or stored dates');
+});
+
+test('reference-date rollover moves a company to review without duplicating or losing it', () => {
+  const company = { id: 'day', company_name: '샘플 회사', status: '관심', deadline: '2026-09-27' };
+  assert.equal(todayCompanyGroups([company], [], '2026-09-27').current.length, 1);
+  const after = todayCompanyGroups([company], [], '2026-09-28');
+  assert.deepEqual(after.current, []);
+  assert.deepEqual(after.needsReview, [company]);
+  assert.deepEqual(todayCompanyGroups([{ ...company, status: '지원 완료' }], [], '2026-09-28'), { current: [], needsReview: [] });
+});
+
+test('submitted companies need unfinished tasks, but completion never removes pre-application or interview records', () => {
+  const submitted = { id: 'submitted', company_name: '서류 심사 중', status: '서류 진행' };
+  const submittedTask = { id: 'task', application_id: 'submitted', is_done: false };
+  assert.deepEqual(attentionCompanies([submitted], [submittedTask]), [submitted]);
+  assert.deepEqual(attentionCompanies([submitted], [{ ...submittedTask, is_done: true }]), []);
+  assert.deepEqual(attentionCompanies(companies, tasks.map(item => ({ ...item, is_done: true }))).map(item => item.id), ['first', 'later', 'interview']);
+});
+
+test('missing or invalid dates do not imply an expired deadline', () => {
+  const input = ['', null, '2026-02-31'].map((deadline, index) => ({ id: String(index), company_name: String(index), status: '관심', deadline }));
+  const groups = todayCompanyGroups(input, [], '2026-09-27');
+  assert.equal(groups.needsReview.length, 0);
+  assert.equal(groups.current.length, input.length);
 });
 test('all tasks appear once, with common and missing-company tasks kept distinguishable', () => {
   const items = [...tasks, { id: 'orphan', application_id: 'missing', is_done: false }];

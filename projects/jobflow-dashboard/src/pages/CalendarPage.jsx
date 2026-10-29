@@ -115,7 +115,7 @@ export default function CalendarPage() {
           </div>
         </section>
       </div>
-      {(undated > 0 || overdue > 0) && <div className="calendar-followup">{overdue > 0 && <span>마감이 지난 미지원 회사 {overdue}곳</span>}{undated > 0 && <span>마감일 미등록 {undated}곳</span>}<Button component={Link} to="/?lane=before">지원 전 회사 확인</Button></div>}
+      {(undated > 0 || overdue > 0) && <div className="calendar-followup">{overdue > 0 && <span>지난 마감 · 지원 여부 확인 {overdue}곳</span>}{undated > 0 && <span>마감일 미등록 {undated}곳</span>}<Button component={Link} to="/?lane=before">지원 전 회사 확인</Button></div>}
     </>}
     {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); checklist.refresh(); }} onSave={async payload => { await update(selected.id, payload); setSelectedId(null); checklist.refresh(); }} onStatusChange={status => update(selected.id, { status })} onDelete={async id => { await remove(id); setSelectedId(null); }} />}
   </div>;

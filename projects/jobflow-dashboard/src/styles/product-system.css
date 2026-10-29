@@ -75,7 +75,7 @@ h1, h2, h3, h4 { color: var(--ink); }
 .concise-overview .section-intro h2 { color: var(--ink); font-size: 20px; font-weight: 550; }
 .concise-overview .section-intro p { color: var(--muted); font-size: 14px; }
 .today-records { gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.company-first-overview .today-record { display: grid; grid-template-columns: minmax(190px, 1.1fr) 140px minmax(240px, 1.5fr) 112px; align-items: center; gap: 28px; margin: 0; padding: 26px 28px; background: #fff; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+.company-first-overview .today-record { display: grid; grid-template-columns: minmax(190px, 1.1fr) 140px minmax(240px, 1.5fr) 142px; align-items: center; gap: 28px; margin: 0; padding: 26px 28px; background: #fff; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
 .company-first-overview .today-record:last-child { border-bottom: 0; }
 .today-record::before, .today-record::after { content: none; }
 .company-first-overview .today-company { grid-column: 1; grid-row: 1; padding: 0; }
@@ -88,6 +88,11 @@ h1, h2, h3, h4 { color: var(--ink); }
 .company-first-overview .today-next { grid-column: 3; grid-row: 1; padding: 0; border: 0; }
 .today-next p { color: var(--ink); font-size: 16px; line-height: 1.65; }
 .today-next > span, .today-date > span { color: var(--muted); font-size: 13px; }
+.today-review { margin-top: 32px; }
+.today-review .section-intro h2 > span { margin-left: 8px; font-size: 14px; font-weight: 400; color: var(--muted); }
+.today-review .today-date b { color: var(--muted); background: #f1f0f3; }
+.today-empty-note { padding: 20px 24px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); font-size: 15px; }
+.summary-status-note { margin: 16px 0 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
 .company-first-overview .today-record-open { grid-column: 4; grid-row: 1; min-width: 0; gap: 8px; padding-inline: 10px; }
 .today-common { margin-top: 22px; padding: 22px 28px; background: #f6f5f8; border: 0; border-radius: 10px; }
 .today-common h2, .today-common p { color: var(--ink); }

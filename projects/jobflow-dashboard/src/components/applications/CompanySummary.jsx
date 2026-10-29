@@ -32,6 +32,7 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
     <section className="summary-schedule" aria-label="지원 일정">
       <h3>지원 일정</h3>
       <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <><SummaryDate value={application.deadline} />{pending && <span className="summary-deadline">{deadlineLabel(application.deadline, today)}</span>}</> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '아직 지원 전' : '미등록'}</dd></div></dl>
+      {pending && application.deadline && application.deadline < today && <p className="summary-status-note">마감이 지났어요. 지원했다면 현재 상태를 바꿔주세요.</p>}
     </section>
     <div className="summary-documents"><span>제출 서류</span><span>이력서 <b>{application.resume_submitted ? '제출 완료' : '미제출'}</b></span><span>포트폴리오 <b>{application.portfolio_submitted ? '제출 완료' : '미제출'}</b></span></div>
     <section className="summary-preparation" aria-label="이 회사의 준비할 일"><h3>준비할 일 <span>남은 {remaining}개</span></h3>

@@ -6,9 +6,9 @@ import { useAuth } from '../context/AuthContext';
 import { BOARD_COLUMNS } from '../utils/applicationBoard';
 
 const steps = [
-  { title: '회사 등록', description: '회사·직무·마감일을 입력해요.', kind: 'fields', to: '/applications/new', label: '회사 등록하기' },
-  { title: '전형 기록', description: '지원 전부터 결과까지 상태를 바꿔요.', kind: 'board', to: '/', label: '지원 관리 열기' },
-  { title: '회사별 준비', description: '회사에 할 일과 면접 메모를 연결해요.', kind: 'checks', to: '/checklist', label: '준비 열기' }
+  { title: '회사 등록', description: '회사별로 상태·마감·준비를 하나의 기록에 모아요.', kind: 'fields', to: '/applications/new', label: '회사 등록하기' },
+  { title: '전형 기록', description: '실제 지원 후 상태를 직접 바꿔요. 마감일이 지나도 자동으로 바뀌지 않아요.', kind: 'board', to: '/', label: '지원 관리 열기' },
+  { title: '회사별 준비', description: '준비를 체크해도 지원 완료가 되지는 않아요. 할 일과 전형 상태를 구분해 관리해요.', kind: 'checks', to: '/checklist', label: '준비 열기' }
 ];
 
 function GuideExample({ kind }) {

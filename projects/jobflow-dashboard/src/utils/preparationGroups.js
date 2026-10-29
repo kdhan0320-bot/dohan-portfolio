@@ -1,3 +1,5 @@
+import { validDate } from './calendar.js';
+
 const beforeApplication = company => ['관심', '지원 예정'].includes(company?.status);
 
 // Sort by the company's schedule, never by a changing checkbox state.
@@ -20,10 +22,22 @@ export function preparationGroups(items, companies) {
 }
 
 export function attentionCompanies(companies, tasks) {
-  const companyIds = new Set(tasks.map(item => item.application_id));
+  const companyIds = new Set(tasks.filter(item => !item.is_done).map(item => item.application_id));
   return companies.filter(company => !['합격', '불합격', '보류'].includes(company.status) &&
     (beforeApplication(company) || company.status === '면접 예정' || companyIds.has(company.id)))
     .sort(comparePreparationCompanies);
+}
+
+// Passing the reference date keeps sample and real-account rules identical.
+// A missed deadline requests a decision; it never changes application status.
+export function todayCompanyGroups(companies, tasks, today) {
+  const current = [];
+  const needsReview = [];
+  for (const company of attentionCompanies(companies, tasks)) {
+    const expired = beforeApplication(company) && validDate(company.deadline) && validDate(today) && company.deadline < today;
+    (expired ? needsReview : current).push(company);
+  }
+  return { current, needsReview };
 }
 
 export { beforeApplication };
