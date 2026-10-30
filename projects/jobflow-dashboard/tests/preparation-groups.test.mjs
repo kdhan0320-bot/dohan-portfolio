@@ -74,5 +74,10 @@ test('all tasks appear once, with common and missing-company tasks kept distingu
 test('sample return preserves local company filters and rejects external or auth destinations', () => {
   assert.equal(workspaceReturn('/checklist?company=demo-1'), '/checklist?company=demo-1');
   assert.equal(workspaceReturn('/settings'), '/settings');
-  for (const value of [null, 'https://example.com', '//example.com', '/\\example.com', '/login', '/welcome', '/reset-password', '/unknown']) assert.equal(workspaceReturn(value), '/overview');
+  assert.equal(workspaceReturn('/welcome'), '/welcome');
+  for (const value of [null, 'https://example.com', '//example.com', '/\\example.com', '/login', '/reset-password', '/unknown']) {
+    assert.equal(workspaceReturn(value), '/overview');
+    assert.equal(workspaceReturn(value, '/welcome'), '/welcome');
+  }
+  assert.equal(workspaceReturn(null, 'https://example.com'), '/overview');
 });

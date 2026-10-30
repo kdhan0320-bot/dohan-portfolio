@@ -6,6 +6,7 @@
   --focus: #675181; --mint: #e4efea; --mint-ink: #37675e;
   --record-wash: #e9eff4; --record-blue: #536b80; --record-rose: #925361;
   --record-lilac: #eae4f0; --record-edge: #b3a0c5;
+  --record-heading: #f6f3f8; --record-corners: 4px 12px 4px 4px;
   --galpi-date-ink: #675181;
 }
 body { background: #fff; color: var(--ink); line-height: 1.6; }
@@ -78,17 +79,17 @@ h1, h2, h3, h4 { color: var(--ink); }
 .concise-overview .section-intro h2 { color: var(--ink); font-size: 20px; font-weight: 550; }
 .concise-overview .section-intro p { color: var(--muted); font-size: 14px; }
 .today-records { gap: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.company-first-overview .today-record { display: grid; grid-template-columns: minmax(220px, 1fr) 120px minmax(230px, 1.2fr) 124px; align-items: center; gap: 24px; margin: 0; padding: 22px 26px; background: #fff; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+.company-first-overview .today-record { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(230px, 1.2fr) 120px 124px; align-items: center; gap: 24px; margin: 0; padding: 22px 26px; background: #fff; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
 .company-first-overview .today-record:last-child { border-bottom: 0; }
 .today-record::before, .today-record::after { content: none; }
 .company-first-overview .today-company { grid-column: 1; grid-row: 1; padding: 0; }
 .company-first-overview .today-company .record-stage { position: static; margin: 0; }
 .today-company h3 { font-size: 20px; color: var(--ink); margin: 5px 0 4px; line-height: 1.5; }
 .today-company p { color: var(--muted); }
-.company-first-overview .today-date { grid-column: 2; grid-row: 1; gap: 4px 8px; padding: 0; border: 0; }
+.company-first-overview .today-date { grid-column: 3; grid-row: 1; gap: 4px 8px; padding: 0; border: 0; }
 .today-date time { font-size: 23px; font-weight: 500; color: var(--ink); letter-spacing: -.02em; }
 .today-date b, .summary-deadline { display: inline-flex; align-items: center; padding: 2px 7px; font-size: 12px; line-height: 20px; border-radius: 4px; color: var(--ink-action); background: var(--action-tint); }
-.company-first-overview .today-next { grid-column: 3; grid-row: 1; padding: 0; border: 0; }
+.company-first-overview .today-next { grid-column: 2; grid-row: 1; padding: 0; border: 0; }
 .today-next p { color: var(--ink); font-size: 16px; line-height: 1.65; }
 .today-next > span, .today-date > span { color: var(--muted); font-size: 13px; }
 .today-review { margin-top: 32px; }
@@ -277,7 +278,7 @@ h1, h2, h3, h4 { color: var(--ink); }
   .workspace-with-topnav .workspace-main { width: calc(100% - 40px); padding: 28px 0 36px; }
   .site-footer .site-footer-inner { width: calc(100% - 40px); padding: 20px 0 84px; }
   .site-footer-public .site-footer-inner { padding-bottom: 24px; }
-  .company-first-overview .today-record { grid-template-columns: minmax(140px, 1fr) 110px minmax(160px,1fr); padding: 22px; gap: 16px; }
+  .company-first-overview .today-record { grid-template-columns: minmax(140px, 1fr) minmax(160px,1fr) 110px; padding: 22px; gap: 16px; }
   .company-first-overview .today-record-open { grid-column: 3; grid-row: 2; justify-self: end; }
   .preparation-controls { flex-wrap: wrap; gap: 16px; }
   .preparation-filter-options { max-width: none; }
@@ -605,10 +606,13 @@ h1, h2, h3, h4 { color: var(--ink); }
 /* The record header, compact date slip and ruled rows repeat across surfaces.
    Color identifies a role: lilac for the record, blue-gray for dates, mint for completion. */
 .galpi-product-stage { max-width: 880px; }
-.application-preview { border-radius: 12px; }
-.application-preview::before { inset: 18px 9px -9px; border-radius: 12px; background: #e5ecef; transform: rotate(-.55deg); }
-.preview-toolbar { padding: 20px 28px; gap: 12px 24px; background: var(--record-lilac); border-radius: 12px 12px 0 0; }
+.application-preview { border-radius: var(--record-corners); }
+.application-preview::before { inset: 18px 9px -7px; border-radius: var(--record-corners); background: #e5ecef; transform: rotate(-.35deg); }
+.preview-toolbar { padding: 20px 28px; gap: 12px 24px; background: var(--record-lilac); border-radius: 4px 12px 0 0; }
 .preview-toolbar h2 { margin: 0; color: var(--ink-action); font-size: 17px; font-weight: 600; }
+.preview-heading { min-width: 0; }
+.preview-sample-reference { margin: 4px 0 0; color: #655d70; font-size: 13px; line-height: 1.6; font-weight: 400; }
+.preview-sample-reference time { font-variant-numeric: tabular-nums; }
 .preview-stage-tabs { width: auto; padding: 0; gap: 4px; background: none; grid-template-columns: repeat(4, minmax(64px, auto)); }
 .preview-stage-tabs > button { padding: 8px 10px; min-height: 44px; font-size: 14px; }
 .preview-stage-tabs > button[aria-selected='true'] { color: var(--ink-action); font-weight: 700; }
@@ -620,7 +624,7 @@ h1, h2, h3, h4 { color: var(--ink); }
 .preview-record-heading p { margin-top: 5px; font-size: 14px; }
 .preview-records .preview-open-record { align-self: center; flex-shrink: 0; margin: 0; padding: 8px 0 8px 12px; }
 .preview-record-body { grid-template-columns: 188px minmax(0,1fr); align-items: stretch; gap: 28px; margin-top: 22px; padding: 20px 0 0; border-top: 1px solid var(--line); }
-.preview-date-block { display: flex; flex-direction: column; justify-content: center; padding: 16px 18px; border: 0; border-radius: 3px 12px 3px 3px; background: var(--record-wash); }
+.preview-date-block { display: flex; flex-direction: column; justify-content: center; padding: 16px 18px; border: 0; border-radius: var(--record-corners); background: var(--record-wash); }
 .preview-date-label { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 4px; min-height: 24px; }
 .preview-date-block .record-date { font-size: 38px; line-height: 1.2; margin-top: 4px; }
 .preview-preparation { padding: 0; display: flex; flex-direction: column; justify-content: center; }
@@ -630,18 +634,23 @@ h1, h2, h3, h4 { color: var(--ink); }
 .preview-preparation li { display: block; padding: 2px 0 4px; border-bottom: 1px solid #eeecf1; font-size: 15px; line-height: 1.6; }
 .preview-preparation li::before { content: none; }
 .preview-preparation > p { min-height: 60px; margin: 0; padding-top: 2px; font-size: 15px; }
-.job-tile { overflow: hidden; border-radius: 4px 12px 4px 4px; }
-.job-tile-heading { width: calc(100% + 36px); margin: -18px -18px 6px; padding: 18px; background: #f2eef5; border-bottom: 1px solid #e8e0ee; }
+.job-tile { overflow: hidden; border-radius: var(--record-corners); }
+.job-tile-heading { width: calc(100% + 36px); margin: -18px -18px 6px; padding: 18px; background: var(--record-heading); border-bottom: 1px solid var(--line); }
 .job-tile .company-mark, .summary-identity .company-mark { background: #ddd3e8; color: #675181; border-radius: 3px 8px 3px 3px; }
-.job-tile-bottom { border-top: 1px solid var(--line); padding-top: 14px; }
+.workspace-main .job-tile-preparation { border-top: 0; padding-top: 0; }
 .company-first-overview .today-company { border-left: 3px solid var(--record-edge); padding-left: 16px; }
-.company-first-overview .today-date { border-left: 0; border-radius: 3px 10px 3px 3px; background: var(--record-wash); padding: 10px 14px; }
-.summary-identity { padding: 16px; border-radius: 3px 12px 3px 3px; background: #f2eef5; }
-.company-summary .summary-schedule { background: var(--record-wash); border-radius: 3px 12px 3px 3px; }
-.grouped-checklist .preparation-group-heading { background: #f2eef5; border-bottom-color: #e8e0ee; }
-.workspace-main .interview-page .practice-navigation { padding: 12px 24px; margin: 0; background: var(--record-lilac); border-radius: 10px 10px 0 0; }
-.workspace-main .interview-page .practice-desk { overflow: hidden; border-radius: 10px; }
-.workspace-main .interview-page .practice-card { border-radius: 0 0 10px 10px; }
+.company-first-overview .today-date { border-left: 0; border-radius: var(--record-corners); background: var(--record-wash); padding: 10px 14px; }
+.today-company-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.today-company-meta .today-applied-date { color: var(--muted); font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.company-first-overview .today-record-followup .today-next { grid-column: 2 / 4; }
+.company-first-overview .today-record-followup .today-next p { font-weight: 500; }
+.summary-identity { padding: 16px; border-radius: var(--record-corners); background: var(--record-heading); }
+.company-summary .summary-schedule { background: var(--record-wash); border-radius: var(--record-corners); }
+.grouped-checklist .company-record { border-radius: var(--record-corners); }
+.grouped-checklist .preparation-group-heading { background: var(--record-heading); border-bottom-color: var(--line); border-radius: 4px 12px 0 0; }
+.workspace-main .interview-page .practice-navigation { padding: 12px 24px; margin: 0; background: var(--record-heading); border-bottom: 1px solid var(--line); border-radius: 4px 12px 0 0; }
+.workspace-main .interview-page .practice-desk { overflow: hidden; border-radius: var(--record-corners); }
+.workspace-main .interview-page .practice-card { border-radius: 0 0 4px 4px; }
 .interview-record-fields { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .interview-page { overflow-anchor: none; }
 .workspace-main .settings-sample-grid { max-width: 1040px; margin-inline: auto; }
@@ -677,7 +686,8 @@ h1, h2, h3, h4 { color: var(--ink); }
 @media (max-width:699px) {
  .galpi-product-stage { width: 100%; }
  .preview-toolbar { display: block; padding: 18px 20px 12px; }
- .preview-toolbar h2 { font-size: 16px; margin-bottom: 8px; }
+ .preview-toolbar h2 { font-size: 16px; margin-bottom: 0; }
+ .preview-heading { margin-bottom: 8px; }
  .preview-stage-tabs { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; margin-inline: -8px; }
  .preview-stage-tabs > button { padding: 8px 4px; font-size: 13px; }
  .preview-records > .preview-record { padding: 20px; }
@@ -696,6 +706,8 @@ h1, h2, h3, h4 { color: var(--ink); }
  .preview-preparation li { font-size: 14px; line-height: 1.6; }
  .job-tile-heading { width: calc(100% + 32px); margin: -16px -16px 6px; padding: 16px; }
  .company-first-overview .today-company { padding-left: 10px; }
+ .company-first-overview .today-record-followup .today-company { grid-column: 1 / -1; }
+ .company-first-overview .today-record-followup .today-next { grid-column: 1; grid-row: 2; }
  .company-first-overview .today-date { padding: 8px 10px; }
  .summary-identity { padding: 12px; }
  .workspace-main .interview-page .practice-navigation { padding: 12px 16px; }

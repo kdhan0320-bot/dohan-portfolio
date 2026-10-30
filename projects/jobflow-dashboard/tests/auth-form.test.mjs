@@ -17,7 +17,7 @@ function find(tree, predicate) {
 
 // Router search updates can commit after local state and an animation frame.
 // Attach new input refs before effects, as React does, without account requests.
-function loginPage(returnTo = null) {
+function loginPage(returnTo = null, isGuest = true) {
   const state = [];
   const effects = new Map();
   const pendingEffects = [];
@@ -61,7 +61,7 @@ function loginPage(returnTo = null) {
     'react-router-dom': { Link: 'Link', useNavigate: () => to => destinations.push(to), useSearchParams: () => [search, value => { pendingSearch = value; }] },
     '../components/ui/Field': 'Field',
     '../components/ui/Brand': { Brand: 'Brand' },
-    '../context/AuthContext': { useAuth: () => ({ isGuest: true, enterGuestMode: async () => {} }) },
+    '../context/AuthContext': { useAuth: () => ({ isGuest, enterGuestMode: async () => {} }) },
     '../lib/supabase': { isAuthConfigured: false },
     '../utils/authErrors': { getAuthErrorMessage: noOp },
     '../utils/workspaceReturn': { workspaceReturn },
@@ -151,4 +151,30 @@ test('returning from login restores the originating sample route and company fil
   const back = find(page.tree(), node => node.type === 'Button' && node.props.children === '돌아가기')[0];
   assert.equal(back.props.to, '/interview?company=demo-1');
   assert.equal(find(page.tree(), node => node.type === 'Button' && node.props.children === '샘플로 돌아가기').length, 0);
+});
+
+test('home and guide return destinations survive signup and recovery without requiring a sample session', () => {
+  for (const isGuest of [false, true]) {
+    for (const destination of ['/welcome', '/guide', '/checklist?company=demo-1']) {
+      const page = loginPage(destination, isGuest);
+      const back = () => find(page.tree(), node => node.type === 'Button' && node.props.children === '돌아가기')[0].props.to;
+      assert.equal(back(), destination);
+      page.selectTab(1);
+      assert.equal(back(), destination);
+      page.selectTab(0);
+      page.click('비밀번호를 잊었나요?');
+      page.finishRoute();
+      assert.equal(back(), destination);
+    }
+  }
+});
+
+test('direct and unsafe login entries use the correct internal fallback', () => {
+  for (const isGuest of [false, true]) {
+    for (const destination of [null, 'https://example.com', '//example.com', '/login', '/reset-password']) {
+      const page = loginPage(destination, isGuest);
+      const back = find(page.tree(), node => node.type === 'Button' && node.props.children === '돌아가기')[0];
+      assert.equal(back.props.to, isGuest ? '/overview' : '/welcome');
+    }
+  }
 });

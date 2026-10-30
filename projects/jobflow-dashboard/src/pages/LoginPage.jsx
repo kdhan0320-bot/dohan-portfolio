@@ -124,7 +124,7 @@ export default function LoginPage() {
   return <main className="login-shell login-task-first">
     <section className="login-form-section" aria-labelledby="login-title">
       <div className="login-form-brand"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
-      <Button component={Link} to={isGuest ? workspaceReturn(searchParams.get('returnTo')) : '/welcome'} className="login-back">돌아가기</Button>
+      <Button component={Link} to={workspaceReturn(searchParams.get('returnTo'), isGuest ? '/overview' : '/welcome')} className="login-back">돌아가기</Button>
       <h1 id="login-title">{heading}</h1>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);

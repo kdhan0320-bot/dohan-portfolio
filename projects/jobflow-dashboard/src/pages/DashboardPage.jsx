@@ -35,9 +35,9 @@ export default function DashboardPage() {
     const nextTask = tasks.find(item => !item.is_done);
     const upcoming = beforeApplication(company);
     const recordDate = upcoming ? company.deadline : company.applied_date;
-    return <article className="today-record" key={company.id}>
-      <div className="today-company"><div className="today-status-line"><RecordStage status={company.status} />{upcoming && company.deadline && <span className="deadline-badge">{review ? '마감 지남' : deadlineLabel(company.deadline, today)}</span>}</div><h3>{company.company_name}</h3><p>{company.position || '직무 미입력'}</p></div>
-      <div className="today-date"><span>{upcoming ? '지원 마감' : '지원한 날짜'}</span><time className={recordDate ? 'record-date' : undefined} dateTime={recordDate || undefined}>{recordDate ? <><span className="record-date-month">{Number(recordDate.slice(5, 7))}.</span>{Number(recordDate.slice(8, 10))}</> : '미등록'}</time></div>
+    return <article className={`today-record${upcoming ? '' : ' today-record-followup'}`} key={company.id}>
+      <div className="today-company"><div className="today-status-line"><RecordStage status={company.status} />{upcoming && company.deadline && <span className="deadline-badge">{review ? '마감 지남' : deadlineLabel(company.deadline, today)}</span>}</div><h3>{company.company_name}</h3><p className="today-company-meta"><span>{company.position || '직무 미입력'}</span>{!upcoming && <span className="today-applied-date">{recordDate ? <>지원 <time dateTime={recordDate}>{Number(recordDate.slice(5, 7))}.{Number(recordDate.slice(8, 10))}</time></> : '지원일 미등록'}</span>}</p></div>
+      {upcoming && <div className="today-date"><span>지원 마감</span><time className={recordDate ? 'record-date' : undefined} dateTime={recordDate || undefined}>{recordDate ? <><span className="record-date-month">{Number(recordDate.slice(5, 7))}.</span>{Number(recordDate.slice(8, 10))}</> : '미등록'}</time></div>}
       <div className="today-next"><span>{review ? '확인할 내용' : '남은 준비'}{!review && pending(tasks) > 0 && <small> · {pending(tasks)}개</small>}</span><p>{review ? '실제 지원 상태 확인' : nextTask?.title || (tasks.length ? '준비 완료' : '등록한 준비 없음')}</p></div>
       <Button className="today-record-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span className="today-open-label">{review ? '지원 여부 확인' : '기록 보기'}</span><span aria-hidden="true">→</span></Button>
     </article>;

@@ -23,7 +23,7 @@ export default function ProductPreview({ onOpen }) {
     tabRefs.current[next]?.focus();
   }
   return <div className="application-preview" style={{ '--stage-ink': stage.color, '--stage-tint': stage.tint }}>
-    <div className="preview-toolbar"><h2>회사별 지원 기록</h2>
+    <div className="preview-toolbar"><div className="preview-heading"><h2>회사별 지원 기록</h2><p className="preview-sample-reference">샘플 · <time dateTime={DEMO_TODAY}>{DEMO_TODAY.replaceAll('-', '.')}</time> 기준</p></div>
     <div className="preview-stage-tabs" role="tablist" aria-label="샘플 지원 단계">
       {BOARD_COLUMNS.map((column, index) => <button key={column.id} type="button" role="tab" id={`preview-tab-${column.id}`} aria-controls={`preview-panel-${column.id}`} aria-selected={index === stageIndex} tabIndex={index === stageIndex ? 0 : -1} ref={element => { tabRefs.current[index] = element; }} onClick={() => setStageIndex(index)} onKeyDown={event => moveTab(event, index)} style={{ '--tab-ink': column.color, '--tab-tint': column.tint }}>
         <span>{column.label}</span>
