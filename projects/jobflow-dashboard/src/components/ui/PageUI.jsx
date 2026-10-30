@@ -40,6 +40,7 @@ export function PageHeading({
   <div className="heading-actions">
     {children}
   </div>
+  <span className="diary-page-tab" aria-hidden="true" />
 </header>;
 }
 export function Panel({

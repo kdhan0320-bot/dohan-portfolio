@@ -23,7 +23,7 @@ const activePath = (pathname, to) => {
   return pathname === to;
 };
 
-export default function SiteHeader({ publicMode = false }) {
+export default function SiteHeader({ publicMode = false, diaryMode = false }) {
   const { user, isGuest, enterGuestMode, loading } = useAuth();
   const { pathname, search, state } = useLocation();
   const navigate = useNavigate();
@@ -107,13 +107,17 @@ export default function SiteHeader({ publicMode = false }) {
     aria-label={compact ? item.label : undefined}
     aria-current={activePath(pathname, item.to) ? 'page' : undefined}
     aria-disabled={busy || loading || undefined}
-    onClick={event => visit(event, item.to, fromDrawer)}>{compact ? (item.mobileLabel || item.label) : item.label}</Link>;
+    onClick={event => visit(event, item.to, fromDrawer)}>
+      {compact ? (item.mobileLabel || item.label) : item.label}
+    </Link>;
 
   return <>
     <header className={`site-header ${publicMode ? 'site-header-public' : ''}`}>
       <div className="site-header-inner">
         <Link className="site-brand-link" to={homePath} aria-label="갈피록 홈" onClick={event => visit(event, homePath)}><Brand /></Link>
+        {diaryMode && <p className="diary-sidebar-caption">입사지원 다이어리</p>}
         <nav className="site-primary-nav" aria-label="주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item))}</nav>
+        {diaryMode && <nav className="diary-utility-links" aria-label="보조 메뉴">{[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => menuLink(item))}</nav>}
         <div className="site-account-actions">
           <IconButton className="site-settings-button" aria-label="도구 메뉴" aria-haspopup="menu" aria-expanded={Boolean(accountAnchor)} onClick={event => setAccountAnchor(event.currentTarget)}><MenuOutlined /></IconButton>
           {!user && <Button className="site-account-button" variant="outlined" onClick={() => openAccount()} disabled={busy || loading}>로그인</Button>}
@@ -121,7 +125,7 @@ export default function SiteHeader({ publicMode = false }) {
         </div>
       </div>
     </header>
-    {!publicMode && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
+    {(!publicMode || diaryMode) && <nav className="site-mobile-tabbar" aria-label="주 메뉴" aria-busy={busy}>
       {mainLinks.map(item => menuLink(item, false, true))}
     </nav>}
     <Menu anchorEl={accountAnchor} open={Boolean(accountAnchor)} onClose={() => setAccountAnchor(null)}>
@@ -132,7 +136,7 @@ export default function SiteHeader({ publicMode = false }) {
       transition: { onEntered: () => menuCloseRef.current?.focus(), onExited: finishDrawerClose }
     }}>
       <div className="site-mobile-heading"><span>{publicMode ? '메뉴' : '더 보기'}</span><IconButton ref={menuCloseRef} onClick={closeMenu} aria-label="메뉴 닫기"><Close /></IconButton></div>
-      {publicMode && <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>}
+      {publicMode && !diaryMode && <nav className="site-mobile-nav" aria-label="모바일 주 메뉴" aria-busy={busy}>{mainLinks.map(item => menuLink(item, true))}</nav>}
       <nav className="site-mobile-secondary" aria-label="모바일 보조 메뉴">{[{ to: '/settings', label: '설정' }, ...secondaryLinks].map(item => menuLink(item, true))}</nav>
     </Drawer>
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

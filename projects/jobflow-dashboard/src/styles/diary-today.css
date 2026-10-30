@@ -1,0 +1,175 @@
+/* Diary shell and today's dated records. Shared by all workspace pages. */
+.diary-sidebar-caption, .diary-utility-links { display: none; }
+.diary-overview { color: var(--ink); }
+.diary-page-heading { position: relative; display: flex; align-items: center; gap: 28px; padding: 0 56px 28px 0; border-bottom: 2px solid var(--ink-action); }
+.diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; padding-right: 24px; border-right: 1px solid var(--line); color: var(--ink-action); font-variant-numeric: tabular-nums; }
+.diary-date-stamp > span { font-size: 13px; font-weight: 550; letter-spacing: .04em; white-space: nowrap; }
+.diary-date-stamp > strong { font-size: 52px; font-weight: 500; line-height: 1.15; letter-spacing: -.04em; }
+.diary-page-heading p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+.diary-page-heading h1 { margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -.04em; line-height: 1.4; }
+.diary-page-tab { position: absolute; right: 0; top: -48px; display: flex; justify-content: center; width: 38px; padding: 17px 8px 13px; background: var(--record-wash); border-bottom: 3px solid var(--record-edge); border-radius: 0 0 4px 4px; color: var(--record-blue); font-size: 13px; writing-mode: vertical-rl; letter-spacing: .18em; }
+.diary-support-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 32px; min-height: 76px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+.diary-support-summary > a { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: 14px; color: var(--ink); }
+.diary-support-summary > a strong { color: var(--ink-action); font-size: 18px; font-weight: 600; }
+.diary-support-summary dl { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 26px; margin: 0; padding-left: 32px; border-left: 1px solid var(--line); }
+.diary-support-summary dl > div { display: flex; align-items: baseline; gap: 10px; font-size: 14px; }
+.diary-support-summary dt { color: var(--muted); }
+.diary-support-summary dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.diary-section-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 20px; padding: 32px 0 20px; }
+.diary-section-heading h2 { margin: 0; font-size: 20px; line-height: 1.5; font-weight: 600; letter-spacing: -.025em; }
+.diary-section-heading h2 > span { margin-left: 10px; font-size: 14px; font-weight: 400; color: var(--muted); white-space: nowrap; }
+.diary-section-heading p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
+.diary-entries { border-top: 1px solid var(--line); }
+.diary-entry { display: grid; grid-template-columns: 96px minmax(180px, 1fr) minmax(190px, 1fr) 112px; align-items: center; gap: 24px; min-height: 154px; padding: 24px 0; border-bottom: 1px solid var(--line); }
+.diary-entry-date { align-self: stretch; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; border-radius: 3px 9px 3px 3px; background: var(--record-wash); color: var(--record-blue); padding: 12px 8px; min-height: 100px; font-variant-numeric: tabular-nums; }
+.diary-entry-date > span:first-child { font-size: 12px; }
+.diary-entry-date time { font-size: 27px; line-height: 1.25; font-weight: 550; letter-spacing: -.035em; }
+.diary-entry-date > strong { font-size: 20px; font-weight: 500; line-height: 1.4; }
+.diary-dday { font-size: 12px; line-height: 20px; font-weight: 600; }
+.diary-entry-followup .diary-entry-date { background: var(--record-heading); border: 1px solid var(--line); }
+.diary-entry-review .diary-entry-date { background: #f3e9ec; color: var(--record-rose); }
+.diary-entry-company, .diary-entry-next { min-width: 0; }
+.diary-company-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.diary-company-title h3 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.5; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.diary-entry-company > p { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; font-size: 14px; line-height: 1.65; color: var(--muted); }
+.diary-applied-date { white-space: nowrap; font-size: 13px; }
+.diary-entry-next > span { font-size: 13px; color: var(--muted); }
+.diary-entry-next small { font-size: inherit; }
+.diary-entry-next p { margin: 7px 0 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
+.diary-entry .diary-entry-open.MuiButton-root { justify-content: space-between; gap: 12px; padding-inline: 12px; color: var(--ink-action); white-space: nowrap; }
+.diary-entry-open > span:last-child, .diary-common .MuiButton-root > span { font-size: 19px; font-weight: 400; }
+.diary-entry .diary-entry-open:hover { background: var(--action-tint); }
+.diary-review .diary-section-heading h2 { color: var(--record-rose); }
+.diary-empty-note { margin: 0; padding: 32px 0; font-size: 15px; color: var(--muted); }
+.diary-common { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; padding: 22px 24px; border: 1px solid var(--line); border-left: 4px solid #aac6bd; border-radius: 3px 9px 3px 3px; background: #f6f9f7; }
+.diary-common h2 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.5; }
+.diary-common h2 > span { margin-left: 12px; color: var(--mint-ink); font-size: 13px; font-weight: 400; white-space: nowrap; }
+.diary-common p { margin: 8px 0 0; font-size: 15px; line-height: 1.6; }
+.diary-common .MuiButton-root { flex-shrink: 0; gap: 14px; }
+.diary-overview a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 3px; }
+
+@media (min-width: 1000px) {
+  body:has(.workspace-diary) { background: #edf0f0; }
+  #root:has(.workspace-diary) { display: flow-root; }
+  .workspace-with-topnav.workspace-diary { --diary-page-offset: max(var(--diary-inset), calc((100dvh - 1122px) / 2)); }
+  .workspace-with-topnav.workspace-diary { --diary-sidebar-width: 216px; --diary-inset: clamp(24px, 4vh, 56px); display: grid; grid-template-columns: var(--diary-sidebar-width) minmax(0, 1fr); grid-template-rows: 1fr auto; width: min(1600px, calc(100% - 64px)); min-height: min(1120px, calc(100dvh - 2 * var(--diary-inset))); margin: var(--diary-inset) auto; border: 1px solid #d6d3dd; border-radius: 12px 16px 5px 12px; background: linear-gradient(to right, var(--action-tint) var(--diary-sidebar-width), #fff var(--diary-sidebar-width)); box-shadow: 5px 5px 0 -1px #f8f9f9, 5px 5px 0 0 #d7dadd, 0 18px 52px #302d3809; }
+  .workspace-with-topnav.workspace-diary { margin-block: var(--diary-page-offset); }
+  .workspace-diary > .site-header { grid-column: 1; grid-row: 1 / -1; position: sticky; top: var(--diary-inset); align-self: start; height: min(1120px, calc(100dvh - 2 * var(--diary-inset))); min-height: 510px; background: transparent; z-index: 1100; }
+  .workspace-diary .site-header .site-header-inner { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0; width: 100%; height: 100%; min-height: 0; margin: 0; padding: 36px 0 28px 24px; }
+  .workspace-diary .site-brand-link { align-self: flex-start; margin-left: 12px; }
+  .workspace-diary .diary-sidebar-caption { display: block; margin: 14px 0 44px 12px; font-size: 13px; color: var(--muted); }
+  .workspace-diary .site-primary-nav { display: flex; flex-direction: column; align-items: stretch; gap: 8px; width: 100%; margin: 0; }
+  .workspace-diary .site-primary-nav a { justify-content: flex-start; gap: 18px; min-height: 56px; padding: 14px 22px; border: 1px solid transparent; border-right: 0; border-radius: 7px 0 0 7px; font-size: 16px; }
+  .workspace-diary .site-primary-nav a.is-current { color: var(--ink-action); background: #fff; border-color: #ded9e5; font-weight: 650; box-shadow: inset 3px 0 var(--ink-action); }
+  .workspace-diary .site-primary-nav a:hover { color: var(--ink-action); }
+  .workspace-diary .diary-utility-links { display: flex; flex-direction: column; gap: 2px; margin-top: auto; padding: 28px 24px 16px 12px; }
+  .workspace-diary .diary-utility-links a { display: flex; align-items: center; min-height: 44px; color: var(--muted); font-size: 14px; }
+  .workspace-diary .diary-utility-links a:hover { color: var(--ink-action); }
+  .workspace-diary .site-account-actions { margin: 0 24px 0 12px; padding-top: 20px; border-top: 1px solid #dbd5e3; }
+  .workspace-diary .site-account-actions .site-settings-button { display: none; }
+  .workspace-diary .site-account-actions .site-account-button { width: 100%; min-height: 40px; }
+  .workspace-diary > .workspace-content { grid-column: 2; grid-row: 1; min-width: 0; background: transparent; border-left: 1px solid #ded9e5; }
+  .workspace-with-topnav.workspace-diary .workspace-main { width: 100%; padding: 48px 52px 36px; margin: 0; background: transparent; scroll-margin-top: 24px; }
+  .workspace-diary .workspace-main :is(button, input, textarea, select, a) { scroll-margin-top: 24px; }
+  .workspace-diary > .site-footer { grid-column: 2; grid-row: 2; background: transparent; border-left: 1px solid #ded9e5; margin: 0; }
+  .workspace-diary .site-footer .site-footer-inner { width: auto; min-height: 72px; margin-inline: 52px; padding-block: 18px; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 8px 24px; }
+  .workspace-diary .site-footer nav { gap: 20px; }
+  .workspace-diary .site-footer nav a { font-size: 12px; }
+}
+
+@media (min-width: 1000px) and (max-width: 1399px) {
+  .workspace-with-topnav.workspace-diary { --diary-sidebar-width: 184px; width: calc(100% - 40px); }
+  .workspace-diary .site-header .site-header-inner { padding-left: 16px; }
+  .workspace-diary .site-primary-nav a { gap: 14px; padding-inline: 16px; }
+  .workspace-with-topnav.workspace-diary .workspace-main { padding-inline: 32px; }
+  .workspace-diary .site-footer .site-footer-inner { margin-inline: 32px; }
+  .diary-entry { grid-template-columns: 84px minmax(150px, 1fr) minmax(160px, 1fr) 100px; gap: 18px; }
+  .diary-company-title h3 { font-size: 18px; }
+}
+
+@media (min-width: 1000px) and (max-height: 760px) {
+  .workspace-with-topnav.workspace-diary { --diary-inset: 16px; }
+  .workspace-diary > .site-header { min-height: 0; overflow-y: auto; }
+  .workspace-diary .site-header .site-header-inner { padding-top: 26px; padding-bottom: 20px; }
+  .workspace-diary .diary-sidebar-caption { margin-bottom: 28px; }
+  .workspace-diary .site-primary-nav a { min-height: 48px; padding-block: 10px; }
+  .workspace-diary .diary-utility-links { padding-top: 20px; padding-bottom: 10px; }
+  .workspace-diary .site-account-actions { padding-top: 12px; }
+  .workspace-with-topnav.workspace-diary .workspace-main { padding-top: 28px; padding-bottom: 24px; }
+  .diary-page-heading { padding-bottom: 20px; }
+  .diary-date-stamp > strong { font-size: 42px; }
+  .diary-page-heading h1 { font-size: 28px; }
+  .diary-page-tab { top: -28px; }
+  .diary-support-summary { min-height: 64px; padding-block: 10px; }
+  .diary-section-heading { padding-top: 22px; padding-bottom: 14px; }
+  .diary-entry { min-height: 126px; padding-block: 16px; }
+  .diary-entry-date { min-height: 92px; padding-block: 8px; }
+  .diary-common { margin-top: 24px; padding-block: 18px; }
+}
+
+@media (max-width: 999px) {
+  .workspace-with-topnav.workspace-diary { background: #edf0f0; }
+  .workspace-with-topnav.workspace-diary > .workspace-content { padding: 0; background: transparent; }
+  .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 40px); margin: 24px auto 0; padding: 32px 28px; border: 1px solid #d6d3dd; border-radius: 4px 12px 4px 4px; background: #fff; box-shadow: 3px 3px 0 #e0e5e4; }
+  .diary-sidebar-caption, .diary-utility-links { display: none; }
+  .diary-page-tab { top: -32px; }
+  .diary-support-summary { gap: 8px 20px; }
+  .diary-support-summary dl { padding-left: 0; border-left: 0; gap: 12px 20px; }
+  .diary-entry { grid-template-columns: 84px minmax(0, 1fr) 100px; gap: 8px 20px; }
+  .diary-entry-date { grid-column: 1; grid-row: 1 / 3; }
+  .diary-entry-company { grid-column: 2 / -1; grid-row: 1; }
+  .diary-entry-next { grid-column: 2; grid-row: 2; }
+  .diary-entry .diary-entry-open { grid-column: 3; grid-row: 2; }
+  .workspace-diary > .site-footer { background: transparent; }
+  .workspace-diary .site-footer .site-footer-inner { width: calc(100% - 40px); padding-top: 22px; padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+  .workspace-diary .site-mobile-tabbar a.is-current { color: var(--ink-action); }
+}
+
+@media (max-width: 599px) {
+  .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
+  .diary-page-heading { gap: 16px; padding: 0 20px 20px 0; }
+  .diary-date-stamp { flex-basis: 64px; padding-right: 16px; }
+  .diary-date-stamp > span { font-size: 11px; letter-spacing: 0; }
+  .diary-date-stamp > strong { font-size: 40px; }
+  .diary-page-heading h1 { font-size: 23px; white-space: nowrap; }
+  .diary-page-heading p { font-size: 12px; margin-bottom: 5px; }
+  .diary-page-tab { top: -24px; right: 0; width: 20px; height: 34px; padding: 0; font-size: 0; }
+  .diary-support-summary { gap: 0; padding: 10px 0 16px; }
+  .diary-support-summary > a { min-height: 38px; width: 100%; gap: 10px; font-size: 13px; }
+  .diary-support-summary > a strong { font-size: 16px; }
+  .diary-support-summary dl { width: 100%; justify-content: space-between; gap: 6px; }
+  .diary-support-summary dl > div { gap: 5px; font-size: 12px; }
+  .diary-section-heading { gap: 6px; padding-top: 20px; padding-bottom: 14px; }
+  .diary-section-heading h2 { font-size: 18px; }
+  .diary-section-heading h2 > span { margin-left: 6px; font-size: 13px; }
+  .diary-section-heading p { font-size: 12px; }
+  .diary-entry { grid-template-columns: 64px minmax(0, 1fr); gap: 14px 16px; padding-block: 18px; }
+  .diary-entry-date { grid-column: 1; grid-row: 1; min-height: 86px; padding: 8px 4px; align-self: start; }
+  .diary-entry-date > span:first-child, .diary-dday { font-size: 11px; }
+  .diary-entry-date time { font-size: 23px; }
+  .diary-entry-date > strong { font-size: 18px; }
+  .diary-entry-company { grid-column: 2; grid-row: 1; align-self: center; }
+  .diary-company-title { gap: 6px; }
+  .diary-company-title h3 { width: 100%; font-size: 18px; }
+  .diary-entry-company > p { margin-top: 5px; font-size: 13px; }
+  .diary-entry-next { grid-column: 1 / -1; grid-row: 2; padding-right: 88px; }
+  .diary-entry-next > span { font-size: 12px; }
+  .diary-entry-next p { font-size: 14px; margin-top: 4px; }
+  .diary-entry .diary-entry-open.MuiButton-root { grid-column: 2; grid-row: 2; justify-self: end; align-self: end; min-height: 44px; gap: 8px; padding: 8px 0 8px 8px; font-size: 13px; }
+  .diary-entry-review .diary-entry-next { padding-right: 110px; }
+  .diary-common { flex-wrap: wrap; gap: 8px; margin-top: 24px; padding: 18px 14px; }
+  .diary-common h2 > span { margin-left: 8px; font-size: 12px; }
+  .diary-common p { font-size: 14px; }
+  .diary-common .MuiButton-root { margin-left: auto; padding-right: 0; font-size: 13px; }
+  .workspace-diary .site-footer .site-footer-inner { width: calc(100% - 40px); }
+}
+
+@media (max-width: 359px) {
+  .diary-page-heading { gap: 12px; padding-right: 12px; }
+  .diary-date-stamp { flex-basis: 56px; padding-right: 12px; }
+  .diary-page-heading h1 { font-size: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .workspace-diary *, .workspace-diary *::before, .workspace-diary *::after { scroll-behavior: auto; }
+}
