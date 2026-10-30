@@ -57,6 +57,12 @@ const RouteEffects = () => {
     const previousLocation = previousLocationRef.current;
     const isSamePath = previousLocation.pathname === location.pathname;
     const isInitialLocation = !hasHandledInitialLocationRef.current;
+    const isTipsIndex = location.pathname === '/' && new URLSearchParams(location.search).get('section') === 'tips';
+    const focusTipsIndex = () => {
+      const heading = document.getElementById('tip-list-title');
+      heading?.scrollIntoView({ block: 'start', behavior: 'instant' });
+      heading?.focus({ preventScroll: true });
+    };
     hasHandledInitialLocationRef.current = true;
     previousLocationRef.current = { pathname: location.pathname, entryKey };
 
@@ -101,11 +107,12 @@ const RouteEffects = () => {
         state.rafId = requestAnimationFrame(restoreScrollPosition);
       } else if (isInitialLocation) {
         window.scrollTo({ top: 0, behavior: 'instant' });
+        if (isTipsIndex) state.rafId = requestAnimationFrame(() => { if (!state.cancelled) focusTipsIndex(); });
       }
       return () => { state.cancelled = true; };
     }
 
-    if ((navigationType === 'PUSH' || navigationType === 'REPLACE') && !isSamePath) {
+    if ((navigationType === 'PUSH' || navigationType === 'REPLACE') && (!isSamePath || isTipsIndex)) {
       const routeReturn = location.state?.routeReturn;
       if (
         routeReturn &&
@@ -125,7 +132,8 @@ const RouteEffects = () => {
         const routeReady = Boolean(main?.querySelector('h1'));
 
         if (main && (routeReady || attempts >= MAX_FOCUS_FRAMES)) {
-          main.focus({ preventScroll: true });
+          if (isTipsIndex) focusTipsIndex();
+          else main.focus({ preventScroll: true });
           return;
         }
 
@@ -138,7 +146,7 @@ const RouteEffects = () => {
     }
 
     return undefined;
-  }, [entryKey, location.pathname, location.state, navigationType]);
+  }, [entryKey, location.pathname, location.search, location.state, navigationType]);
 
   return null;
 };

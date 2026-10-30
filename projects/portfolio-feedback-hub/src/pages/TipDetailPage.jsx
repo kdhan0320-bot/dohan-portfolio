@@ -5,6 +5,7 @@ import { TIPS, getTip } from '../constants/tips';
 import { usePageTitle } from '../utils/pageMeta';
 import NotFoundPage from './NotFoundPage';
 import TipsIcon from '../components/TipsIcon';
+import SightMark from '../components/SightMark';
 
 export default function TipDetailPage() {
   const { id } = useParams();
@@ -14,9 +15,9 @@ export default function TipDetailPage() {
   usePageTitle(tip ? `${tip.title} | 고른시선` : '팁을 찾을 수 없음 | 고른시선');
   if (!tip) return <NotFoundPage />;
   const index = TIPS.indexOf(tip);
-  const next = TIPS[index + 1];
-  const backPath = location.state?.routeReturn?.pathname === '/' ? '/' : '/tips';
-  const backLabel = backPath === '/' ? '홈으로 돌아가기' : '팁 모음으로 돌아가기';
+  const next = getTip(tip.related);
+  const backPath = location.state?.routeReturn?.pathname === '/' ? '/' : '/?section=tips';
+  const backLabel = '팁 목록으로 돌아가기';
   const returnToList = event => {
     if (location.state?.routeReturn && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) {
       event.preventDefault();
@@ -25,11 +26,15 @@ export default function TipDetailPage() {
   };
   return <TipsLayout><article className="tips-detail">
     <Link to={backPath} onClick={returnToList} className="tips-back"><TipsIcon name="left" />{backLabel}</Link>
-    <header className="tips-detail-heading"><p className="tips-eyebrow">{tip.topic} · {String(index + 1).padStart(2, '0')}</p><h1>{tip.title}</h1><p className="tips-lead">{tip.problem}</p><p className="tips-goal"><span>이 예제의 목표</span>{tip.goal}</p></header>
-    <section className="tips-explanation" aria-label="비교 그림과 바꾼 이유"><TipComparison tip={tip} /><div className="tips-callout"><h2><span className="tips-note-number" aria-hidden="true">1</span>{tip.rule}</h2><p>{tip.reason}</p><dl><div><dt>바꾼 것</dt><dd>{tip.changed}</dd></div><div><dt>같게 둔 것</dt><dd>{tip.kept}</dd></div></dl></div></section>
-    <section className="tips-apply" aria-labelledby="apply-title"><h2 id="apply-title">내 화면에는 이렇게 적용해 보세요</h2><ol>{tip.steps.map(([title, body]) => <li key={title}><h3>{title}</h3><p>{body}</p></li>)}</ol></section>
-    <aside className="tips-condition"><p className="tips-eyebrow">{tip.conditionLabel || '다른 선택이 필요한 때'}</p><h2>{tip.exceptionTitle}</h2><p>{tip.exception}</p></aside>
+    <header className="tips-detail-heading"><p className="tips-eyebrow">{tip.topic} · 시선 노트 {String(index + 1).padStart(2, '0')}</p><h1>{tip.title}</h1><p className="tips-problem"><span>핵심 문제</span>{tip.problem}</p></header>
+    <section className="tips-explanation" aria-labelledby="rule-title">
+      <div className="tips-rule"><SightMark /><div><p className="tips-eyebrow">고른 기준 · 설계 규칙</p><h2 id="rule-title">{tip.rule}</h2><p className="tips-goal"><span>이번 목표</span>{tip.goal}</p></div><span className="tips-rule-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></div>
+      <TipComparison tip={tip} />
+      <div className="tips-callout"><div><h3>왜 이렇게 바꿨을까요?</h3><p>{tip.reason}</p></div><dl><div><dt>바꾼 것</dt><dd>{tip.changed}</dd></div><div><dt>유지한 것</dt><dd>{tip.kept}</dd></div></dl></div>
+    </section>
+    <div className="tips-application"><section className="tips-apply" aria-labelledby="apply-title"><p className="tips-eyebrow">내 화면에 적용할 때</p><h2 id="apply-title">이 세 가지를 확인하세요.</h2><ol>{tip.checks.map(check => <li key={check}>{check}</li>)}</ol></section>
+    <aside className="tips-condition"><p className="tips-eyebrow">{tip.conditionLabel || '다른 선택이 필요한 때'}</p><h2>{tip.exceptionTitle}</h2><p>{tip.exception}</p></aside></div>
     <p className="tips-evidence-note">직접 만든 예제로 설명하는 설계 판단입니다. 실제 사용자 실험 결과는 아닙니다.<br />그림 속 조작은 설명용이며 실제 서비스 기능이 아닙니다.{tip.exampleNote && <><br />{tip.exampleNote}</>}</p>
-    <nav className="tips-detail-nav" aria-label="다른 팁"><Link to={backPath} onClick={returnToList} className="tips-text-link">{backLabel}</Link>{next ? <Link to={`/tips/${next.id}`} className="tips-next"><span>다음 팁 · {next.topic}</span><strong>{next.title}</strong><TipsIcon className="tips-arrow" /></Link> : <Link to="/" className="tips-next"><span>필요할 때 다시 살펴보세요</span><strong>고른시선 홈으로</strong><TipsIcon className="tips-arrow" /></Link>}</nav>
+    <nav className="tips-detail-nav" aria-label="다른 팁"><Link to={backPath} onClick={returnToList} className="tips-text-link">{backLabel}</Link><Link to={`/tips/${next.id}`} className="tips-next"><span>함께 살펴볼 팁 · {next.topic}</span><strong>{next.title}</strong><TipsIcon className="tips-arrow" /></Link></nav>
   </article></TipsLayout>;
 }

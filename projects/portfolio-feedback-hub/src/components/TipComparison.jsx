@@ -25,7 +25,7 @@ function SpacingExample({ revised, annotate }) {
   return <div className={`tip-spacing-example${revised ? ' is-grouped' : ''}`}>
     <span className="tip-example-eyebrow">선택한 작업</span>
     <div className="tip-work-list">
-      <div className="tip-work-group"><div className="tip-work-thumb tip-work-thumb-walk"><svg viewBox="0 0 60 60"><path d="M0 42 18 24 34 36 60 10M9 0 27 60M0 19 60 38" fill="none" stroke="#bbcdd6" strokeWidth="3" /><path d="m8 46 16-10 10 2 18-24" fill="none" stroke="#375f87" strokeWidth="3" /></svg></div><span className="tip-work-title">산책 기록 앱</span><GapMeasure size={innerGap} /><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
+      <div className="tip-work-group"><div className="tip-work-thumb tip-work-thumb-walk"><svg viewBox="0 0 60 60"><path d="M0 42 18 24 34 36 60 10M9 0 27 60M0 19 60 38" fill="none" stroke="#bbcdd6" strokeWidth="3" /><path d="m8 46 16-10 10 2 18-24" fill="none" stroke="#376f6a" strokeWidth="3" /></svg></div><span className="tip-work-title">산책 기록 앱</span><GapMeasure size={innerGap} /><span className="tip-work-caption">걸은 길을 모으는 앱</span></div>
       <GapMeasure size={revised ? 36 : 16} between annotate={annotate} />
       <div className="tip-work-group"><img className="tip-work-thumb" src={studio} alt="" width="60" height="60" /><span className="tip-work-title">전시 예약 웹</span><GapMeasure size={innerGap} /><span className="tip-work-caption">관람을 예약하는 웹</span></div>
     </div>
@@ -64,18 +64,24 @@ function ExampleScreen({ kind, revised = false, annotate = false }) {
   return <div className={`tip-screen tip-screen-${kind}`}><div className="tip-screen-top"><span>{screenNames[kind][0]}</span><span>{screenNames[kind][1]}</span></div><Drawing revised={revised} annotate={annotate} /></div>;
 }
 
-export function TipPreview({ tip }) {
-  return <div className={`tip-preview tip-preview-${tip.kind}`} aria-hidden="true"><ExampleScreen kind={tip.kind} revised /></div>;
+function FocusPair({ tip, annotate = true }) {
+  const Drawing = drawings[tip.kind];
+  return <div className={`tip-focus-pair tip-focus-${tip.kind}`}>
+    {[false, true].map(revised => <figure key={String(revised)} className={`tip-focus-figure${revised ? ' is-revised' : ''}`}>
+      <figcaption><span>{revised ? '바꾼 뒤' : '바꾸기 전'}</span><span>{revised ? tip.afterValue : tip.beforeValue}</span></figcaption>
+      <div className="tip-focus-drawing" aria-hidden="true"><Drawing revised={revised} annotate={revised && annotate} /></div>
+    </figure>)}
+  </div>;
 }
 
-export default function TipComparison({ tip }) {
-  return <div className={`tip-comparison tip-comparison-${tip.kind}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
+export function TipPreview({ tip }) {
+  return <div className={`tip-preview tip-preview-${tip.kind}`} aria-hidden="true"><FocusPair tip={tip} annotate={false} /></div>;
+}
+
+export default function TipComparison({ tip, compact = false }) {
+  return <div className={`tip-comparison tip-comparison-${tip.kind}${compact ? ' is-compact' : ''}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
     <p className="tips-sr-only">{tip.description}</p>
-    {tip.kind === 'input' && <p className="tip-focus-caption">계정 만들기 화면 · 비밀번호 입력 부분</p>}
-    {[false, true].map(revised => <figure key={String(revised)} className={`tip-figure${revised ? ' is-revised' : ''}`}>
-      <figcaption>{revised ? tip.after : tip.before}</figcaption>
-      <div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised={revised} annotate={revised} /></div>
-      <div className="tip-figure-note">{revised ? <><span className="tip-note-line" aria-hidden="true" /><span className="tips-note-number" aria-hidden="true">1</span><span>{tip.visualNote}</span></> : <span>{tip.beforeNote}</span>}</div>
-    </figure>)}
+    <div className="tip-focus"><FocusPair tip={tip} /><p className="tip-visual-note"><span className="tips-note-number" aria-hidden="true">1</span>{tip.visualNote}</p></div>
+    {!compact && <figure className="tip-context"><figcaption><span>화면 속에서는</span><span>바꾼 뒤 · 설명용 예시</span></figcaption><div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised annotate /></div><p>{tip.contextNote}</p></figure>}
   </div>;
 }
