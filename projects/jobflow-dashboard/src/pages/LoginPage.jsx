@@ -120,11 +120,13 @@ export default function LoginPage() {
     }
   }
 
-  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : tab === 0 ? '로그인' : '회원가입';
+  const heading = helpMode === 'recovery' ? '비밀번호 다시 설정' : helpMode === 'confirmation' ? '인증 이메일 다시 받기' : '내 지원 기록';
   return <main className="login-shell login-task-first">
     <section className="login-form-section" aria-labelledby="login-title">
-      <div className="login-form-brand"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
-      <Button component={Link} to={workspaceReturn(searchParams.get('returnTo'), isGuest ? '/overview' : '/welcome')} className="login-back">돌아가기</Button>
+      <div className="login-form-header">
+        <div className="login-form-brand"><Link to="/welcome" aria-label="갈피록 서비스 소개"><Brand /></Link></div>
+        <Button component={Link} to={workspaceReturn(searchParams.get('returnTo'), isGuest ? '/overview' : '/welcome')} className="login-back">돌아가기</Button>
+      </div>
       <h1 id="login-title">{heading}</h1>
       {helpMode ? <p className="auth-help-description">가입할 때 사용한 이메일을 입력해주세요.</p> : <Tabs value={tab} onChange={(_, value) => {
         setTab(value);
