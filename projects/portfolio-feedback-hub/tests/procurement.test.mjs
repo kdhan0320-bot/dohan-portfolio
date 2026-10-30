@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSamples, transition, validate, makeDemoDraft, SAMPLE_SOURCE, amount, similarRequests, orderMessage } from '../src/procurement/model.js';
+import { createSamples, transition, validate, makeDemoDraft, SAMPLE_SOURCE, amount, similarRequests, orderMessage, eventRevisionLabel } from '../src/procurement/model.js';
 
 const draft = () => createSamples(new Date('2026-10-30T12:00:00+09:00')).find(r => r.status === 'draft');
 test('request → manager → director → order enforces roles and sequence', () => {
@@ -26,17 +26,22 @@ test('revision requires reason, creates new submission and preserves prior data'
   assert.throws(() => transition(r, 'revise', 'manager', { reason: ' ' }));
   r = transition(r, 'revise', 'manager', { reason: '규격 확인' });
   assert.equal(r.revision, 2);
+  assert.equal(r.events.at(-1).revision, 1);
+  assert.equal(r.events.at(-1).nextRevision, 2);
+  assert.equal(eventRevisionLabel(r.events.at(-1)), '1차 검토 → 2차 작성');
   const previous = structuredClone(r.submissions[0]);
   r.items[0].spec = '새 규격';
   r = transition(r, 'submit', 'staff');
   assert.deepEqual(r.submissions[0], previous);
   assert.equal(r.submissions[1].items[0].spec, '새 규격');
   assert.equal(r.status, 'team');
+  assert.equal(eventRevisionLabel(r.events.at(-1)), '2차');
 });
 test('approved content changes require reapproval and order uses new approval snapshot', () => {
   let r = createSamples().find(r => r.status === 'approved');
   const oldAmount = amount(r.approvedSnapshot);
   r = transition(r, 'amend', 'staff');
+  assert.equal(eventRevisionLabel(r.events.at(-1)), '1차 검토 → 2차 작성');
   r.items[0].price = 1000;
   assert.equal(amount(r.approvedSnapshot), oldAmount);
   assert.throws(() => transition(r, 'order', 'staff', { reference: 'bypass' }));
@@ -85,4 +90,12 @@ test('duplicate suggestion excludes self and closed requests without changing st
   const matches = similarRequests(candidate, requests);
   assert.deepEqual(matches.map(r => r.id), ['PR-0108']);
   assert.equal(requests.find(r => r.id === 'PR-0108').status, 'team');
+});
+
+test('legacy revision history is readable without rewriting saved records', () => {
+  const old = { revision: 3, message: '보완 요청 · 규격 확인', actor: '팀장' };
+  const original = structuredClone(old);
+  assert.equal(eventRevisionLabel(old), '2차 검토 → 3차 작성');
+  assert.deepEqual(old, original);
+  assert.equal(eventRevisionLabel({ revision: 2, message: '반려 · 기존 물품 사용' }), '2차');
 });

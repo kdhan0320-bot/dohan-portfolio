@@ -69,7 +69,19 @@ export function makeDemoDraft(source) {
   const supplier = text.match(/(?:거래처|업체)\s*[:：]\s*([^\n,]+)/)?.[1]?.trim() || '';
   return { ...result, title: name ? `${name} 구매 요청` : '', department: '', purpose, needBy, supplier, items: [{ name, spec, quantity, price }] };
 }
-export const SAMPLE_SOURCE = '품목: 모니터\n규격: 27인치 QHD\n수량: 2대\n사유: 신규 입사자 2명의 업무 환경 구성\n단가: 280,000원\n거래처: 가람오피스 (가상 업체)';
+export const SAMPLE_SOURCE = '안녕하세요. 신규 입사자용 모니터 2대 구매를 요청드립니다.\n규격: 27인치 QHD\n개당 280,000원으로 안내받았습니다.\n거래처: 가람오피스 (가상 업체)\n사유: 신규 입사자 2명의 업무 환경 구성\n납기일은 확인 후 전달하겠습니다.';
+
+// Older demo records used the next revision on a revision-request event.
+// Interpret that label for display without replacing the user's saved records.
+export function eventRevisionLabel(event) {
+  const advances = event.action === 'revise' || event.action === 'amend';
+  const legacyAdvance = !event.action && /^(보완 요청 ·|승인 내용 변경 시작)/.test(event.message);
+  if (advances || legacyAdvance) {
+    const reviewed = legacyAdvance ? Math.max(1, event.revision - 1) : event.revision;
+    return `${reviewed}차 검토 → ${event.nextRevision || event.revision}차 작성`;
+  }
+  return `${event.revision}차`;
+}
 export function transition(request, action, role, payload = {}) {
   const now = payload.at || new Date().toISOString();
   const result = { ...request, updatedAt: now, events: [...request.events] };
@@ -106,7 +118,8 @@ export function transition(request, action, role, payload = {}) {
     result.order = { at: now, reference: payload.reference.trim(), simulated: true };
     message = `발주 기록 시연 · ${payload.reference.trim()} (실제 전송 없음)`;
   } else throw new Error('지원하지 않는 처리입니다.');
-  result.events.push({ at: now, actor: ROLES[role], message, revision: result.revision });
+  result.events.push({ at: now, actor: ROLES[role], message, action, revision: request.revision,
+    ...(result.revision !== request.revision ? { nextRevision: result.revision } : {}) });
   return result;
 }
 export function createSamples(now = new Date()) {

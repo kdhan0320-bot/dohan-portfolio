@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { createHashRouter, RouterProvider, Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { createHashRouter, RouterProvider, Link, Navigate, Route, Routes, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { WorkspaceProvider, useWorkspace } from './Workspace';
-import { ROLES, STATUS, amount, canEdit, canReview, day, money, nextAction, orderMessage, owner, similarRequests, timestamp } from './model';
+import { ROLES, STATUS, amount, canEdit, canReview, day, eventRevisionLabel, money, nextAction, orderMessage, owner, similarRequests, timestamp } from './model';
 import RequestEditor from './RequestEditor';
 import Icon from './Icons';
+import ApprovalLine from './ApprovalLine';
+
+function detailOrigin(location, request) {
+  const from = location.state?.from;
+  if (from && /^\/(requests|approvals|orders)(\?|$)/.test(from)) return { path: from, label: from.startsWith('/orders') ? '발주 준비' : from.startsWith('/approvals') ? '결재함' : '구매 요청' };
+  if (request && ['approved', 'ordered'].includes(request.status)) return { path: '/orders', label: '발주 준비' };
+  return { path: '/requests', label: '구매 요청' };
+}
 
 export function Badge({ status }) { return <span className={`badge ${STATUS[status].tone}`}><span/>{STATUS[status].label}</span>; }
 export function PageHead({ eyebrow, title, children, action }) {
@@ -26,11 +34,14 @@ function Modal({ title, children, onClose }) {
 }
 
 function Shell() {
-  const { role, setRole, storage, notice, setNotice, reset } = useWorkspace();
+  const { requests, role, setRole, storage, notice, setNotice, reset } = useWorkspace();
   const [confirmReset, setConfirmReset] = useState(false);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  const detailId = location.pathname.match(/^\/requests\/([^/]+)(?:\/edit)?$/)?.[1];
+  const detailRequest = requests.find(r => r.id === detailId);
+  const activePath = detailRequest ? detailOrigin(location, detailRequest).path.split('?')[0] : location.pathname;
   useEffect(() => {
     window.scrollTo({ top: 0 });
     const heading = document.querySelector('h1');
@@ -43,7 +54,7 @@ function Shell() {
     <aside className="sidebar">
       <Link to="/" className="brand" aria-label="구매 요청·결재 관리 업무 현황"><span className="brand-symbol" aria-hidden="true"><i/><i/><i/></span><span className="brand-name">구매 요청<span>결재 관리</span><small>DEMO WORKSPACE</small></span></Link>
       <p className="nav-label">WORKSPACE</p>
-      <nav aria-label="주 메뉴">{nav.map(([to, label, icon]) => <NavLink key={to} to={to} end={to === '/'}><Icon name={icon}/><span>{label}</span></NavLink>)}</nav>
+      <nav aria-label="주 메뉴">{nav.map(([to, label, icon]) => { const active = to === '/' ? activePath === '/' : activePath.startsWith(to); return <Link key={to} to={to} className={active ? 'active' : ''} aria-current={active ? 'page' : undefined}><Icon name={icon}/><span>{label}</span></Link>; })}</nav>
       <div className="sidebar-bottom"><div className="workspace-card"><span className="workspace-avatar">운</span><div>운영지원팀<small>샘플 업무 공간</small></div></div><Link className="about-link" to="/about"><Icon name="info" size={17}/>기획 의도·시연 안내</Link></div>
     </aside>
     <div className="workspace-main">
@@ -73,13 +84,13 @@ function Dashboard() {
     { label: '발주 기록', count: requests.filter(r => r.status === 'ordered').length, hint: '샘플 전체 기간', icon: 'check', url: '/orders?status=ordered' },
   ];
   return <>
-    <PageHead eyebrow="WORK OVERVIEW" title="업무 현황" action={role === 'staff' && <Link className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 요청 작성</Link>}>요청부터 발주까지, 다음 할 일을 놓치지 않도록.</PageHead>
+    <PageHead eyebrow="WORK OVERVIEW" title="업무 현황" action={role === 'staff' && <Link className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 요청 작성</Link>}>요청은 한 번 정리하고, 결재와 발주까지 이어갑니다.</PageHead>
 
-    <section className="stats-grid" aria-label="구매 현황">{stats.map(s => <Link to={s.url} key={s.label} className={`stat-card ${s.accent ? 'accent' : ''}`}><div className="stat-label">{s.label}<Icon name={s.icon} size={19}/></div><strong>{s.count}<small>건</small></strong><p>{s.hint}<Icon name="arrow" size={16}/></p></Link>)}</section>
+    <section className="stats-grid" aria-label="구매 현황">{stats.map(s => <Link to={s.url} key={s.label} className={`stat-card ${s.accent ? 'accent' : ''}`}><span className="stat-label">{s.label}</span><strong>{s.count}<small>건</small></strong><small className="stat-hint">{s.hint}</small></Link>)}</section>
     <div className="dashboard-grid"><section className="panel action-panel"><div className="panel-head"><div><h2>지금 처리할 요청 <span className="count">{personal.length}</span></h2><p>{ROLES[role]} 역할에서 할 수 있는 업무입니다.</p></div><Link className="subtle-link" to={role === 'staff' ? '/requests?status=action' : '/approvals'}>전체 보기<Icon name="arrow" size={16}/></Link></div>
       <div className="action-list">{personal.slice(0, 4).map(r => <Link to={`/requests/${r.id}`} key={r.id} className="action-row"><span className={`row-icon ${STATUS[r.status].tone}`}><Icon name={r.status === 'approved' ? 'box' : 'file'} size={21}/></span><div className="action-copy"><div className="row-topline"><span className="mono">{r.id}</span><Badge status={r.status}/></div><h3>{r.title || '제목 없는 요청'}</h3><p>{r.status === 'revision' ? r.reason : `${money(amount(r))} · 필요일 ${r.needBy ? day(r.needBy) : '미정'}`}</p></div><span className="row-action">{nextAction(r, role)}<Icon name="arrow" size={17}/></span></Link>)}{!personal.length && <Empty title="지금 처리할 요청이 없습니다."><p>다른 역할로 전환하면 다음 결재를 이어볼 수 있습니다.</p></Empty>}</div>
     </section><section className="panel waiting-panel"><div className="panel-head"><div><h2>결재 진행 중</h2><p>현재 확인할 사람과 대기 시작일</p></div></div><div className="waiting-list">{waiting.map(r => <Link to={`/requests/${r.id}`} key={r.id}><div className="row-topline"><span className="mono">{r.id}</span><span className="waiting-since">{day(r.updatedAt)}부터</span></div><h3>{r.title}</h3><div className="waiting-person"><span className="person-dot">{owner(r).slice(0, 1)}</span><span>{owner(r)} 확인 대기</span><Icon name="arrow" size={16}/></div></Link>)}{!waiting.length && <Empty title="진행 중인 결재가 없습니다."/>}</div><div className="quiet-note"><Icon name="info" size={17}/><span>승인 완료와 발주 완료를 구분합니다.<br/>승인된 요청은 ‘발주 준비’에서 이어가세요.</span></div></section></div>
-    <section className="overview-banner" aria-label="구매 업무 흐름"><div><span className="tiny-label">하나의 요청, 이어지는 업무</span><h2>구매의 흐름을 <br/>한 선으로 잇다.</h2><Link to="/about">이 업무 공간의 설계 기준<Icon name="arrow" size={16}/></Link></div><ol className="process-line">{[['01', '요청 정리', '구매 담당자'], ['02', '팀장 결재', '1차 확인'], ['03', '사장님 결재', '최종 승인'], ['04', '발주 기록', '구매 담당자']].map(([n, name, sub], i) => <li key={n}><span className={`process-node node-${i}`}>{i === 3 ? <Icon name="check" size={17}/> : n}</span><strong>{name}</strong><small>{sub}</small></li>)}</ol></section>
+    <section className="overview-banner" aria-label="구매 업무 흐름"><div><span className="tiny-label">실무 경험에서 정한 원칙</span><h2>다시 옮겨 적지 않도록.<br/>다음 담당자가 보이도록.</h2><Link to="/about">엑셀·메일·종이 결재를 연결한 이유<Icon name="arrow" size={16}/></Link></div><ApprovalLine/></section>
     <section className="demo-help"><div><span className="demo-pill">TRY IT</span><p><strong>직접 업무 흐름을 확인해 보세요.</strong> 요청 작성 → 상단 역할을 팀장·사장님으로 전환 → 승인 → 구매 담당자로 발주 기록</p></div><Link to="/about" className="subtle-link">시연 안내<Icon name="arrow" size={16}/></Link></section>
   </>;
 }
@@ -120,34 +131,34 @@ function RequestDetail() {
       const result = act(id, dialog, { reason, reference: reason });
       setDialog('');
       setNotice(dialog === 'approve' ? `${ROLES[role]} 승인 시연을 기록했습니다.` : dialog === 'order' ? '발주 시연 기록을 남겼습니다. 실제 메일은 보내지 않았습니다.' : '처리 내용을 이력에 기록했습니다.');
-      if (dialog === 'amend') navigate(`/requests/${result.id}/edit`);
+      if (dialog === 'amend') navigate(`/requests/${result.id}/edit`, { state: location.state });
     } catch (e) { setError(e.message); document.querySelector('dialog textarea')?.focus(); }
   };
   const titles = { approve: `${ROLES[role]} 승인을 기록할까요?`, revise: '어떤 내용을 보완해야 하나요?', reject: '반려 사유를 남겨 주세요.', amend: '승인된 요청의 내용을 변경할까요?', order: '발주 시연 기록을 남길까요?' };
-  const currentIndex = ['draft', 'revision', 'rejected'].includes(request.status) ? 0 : request.status === 'team' ? 1 : request.status === 'director' ? 2 : 3;
-  return <><Link className="back-link" to={location.state?.from || '/requests'}><Icon name="back" size={17}/>{location.state?.fromLabel || '구매 요청'}으로</Link>
-    <PageHead eyebrow={`${request.id} / ${request.revision}차 요청서`} title={request.title || '제목 없는 요청'} action={<Badge status={request.status}/>}>{request.department} · 작성 {day(request.createdAt)} · 최근 변경 {timestamp(request.updatedAt)}</PageHead>
-    <section className="detail-progress" aria-label="이 요청의 진행 단계">{['요청 정리', '팀장 결재', '사장님 결재', '발주 기록'].map((label, i) => <div key={label} className={`${i < currentIndex || ordered ? 'complete' : ''} ${i === currentIndex && !ordered ? 'current' : ''}`}><span>{i < currentIndex || ordered ? <Icon name="check" size={15}/> : `0${i + 1}`}</span><strong>{label}</strong><small>{i === currentIndex ? ordered ? '완료' : request.status === 'approved' ? '구매 담당자 처리 대기' : ['team', 'director'].includes(request.status) ? '확인 대기' : STATUS[request.status].label : i < currentIndex ? '완료' : '대기'}</small></div>)}</section>
+  const origin = detailOrigin(location, request);
+  return <><Link className="back-link" to={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</Link>
+    <PageHead eyebrow={`${request.id} / ${request.revision}차${['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 요청서'}`} title={request.title || '제목 없는 요청'} action={<Badge status={request.status}/>}>{request.department} · 최근 변경 {timestamp(request.updatedAt)}</PageHead>
+    <ApprovalLine request={request}/>
     {['revision', 'rejected'].includes(request.status) && <div className="reason-banner"><Icon name="info"/><div><strong>{request.status === 'revision' ? '보완 요청 사유' : '반려 사유'}</strong><p>{request.reason}</p></div></div>}
-    <div className="detail-grid"><div className="detail-content"><section className="panel"><div className="panel-head"><h2>구매 요청서</h2><span className="muted">{request.revision}차 · {request.status === 'draft' ? '작성 중' : '요청 내용'}</span></div><div className="panel-body"><dl className="request-facts"><div><dt>요청 부서</dt><dd>{request.department || '미입력'}</dd></div><div><dt>희망 납기일</dt><dd>{request.needBy || '미입력'}</dd></div><div className="full"><dt>검토 거래처</dt><dd>{request.supplier || '미입력'}</dd></div><div className="full"><dt>구매 사유</dt><dd>{request.purpose || '미입력'}</dd></div></dl><div className="item-table"><div className="item-head"><span>품목 / 규격</span><span>수량</span><span>단가</span><span>금액</span></div>{request.items.map((item, i) => <div className="item-row" key={i}><div><strong>{item.name || '품목 미입력'}</strong><small>{item.spec || '규격 미입력'}</small></div><span><small>수량 </small>{item.quantity || '—'}</span><span><small>단가 </small>{money(item.price)}</span><strong><small>금액 </small>{money(Number(item.quantity) * Number(item.price))}</strong></div>)}</div><div className="total-line"><span>총 요청 금액 <small>부가세 포함</small></span><strong>{money(amount(request))}</strong></div></div></section>
+    <div className="detail-grid"><div className="detail-content"><section className="panel"><div className="panel-head"><h2>구매 요청서</h2><span className="muted">{request.revision}차 · {['draft', 'revision'].includes(request.status) ? '작성 중' : '검토할 내용'}</span></div><div className="panel-body"><div className="item-table"><div className="item-head"><span>품목 / 규격</span><span>수량</span><span>단가</span><span>금액</span></div>{request.items.map((item, i) => <div className="item-row" key={i}><div><strong>{item.name || '품목 미입력'}</strong><small>{item.spec || '규격 미입력'}</small></div><span><small>수량 </small>{item.quantity || '—'}</span><span><small>단가 </small>{money(item.price)}</span><strong><small>금액 </small>{money(Number(item.quantity) * Number(item.price))}</strong></div>)}</div><div className="total-line"><span>총 요청 금액 <small>부가세 포함</small></span><strong>{money(amount(request))}</strong></div><dl className="request-facts"><div><dt>요청 부서</dt><dd>{request.department || '미입력'}</dd></div><div><dt>희망 납기일</dt><dd>{request.needBy || '미입력'}</dd></div><div className="full"><dt>검토 거래처</dt><dd>{request.supplier || '미입력'}</dd></div><div className="full"><dt>구매 사유</dt><dd>{request.purpose || '미입력'}</dd></div></dl></div></section>
     {duplicates.length > 0 && !ordered && <section className="duplicate-note"><Icon name="info"/><div><h3>같은 품목의 진행 중인 요청 {duplicates.length}건</h3><p>품목명이 같은 요청입니다. 규격·수량·사용 목적을 비교해 중복 여부를 확인하세요.</p>{duplicates.map(r => <Link key={r.id} to={`/requests/${r.id}`}>{r.id} · {r.title}<Icon name="arrow" size={16}/></Link>)}</div></section>}
     {request.source && <details className="panel source-details"><summary>입력 원문 확인<span>요청 내용의 근거</span></summary><pre>{request.source}</pre></details>}
     {(approved || ordered) && <section className="panel order-panel"><div className="panel-head"><div><h2>발주 문안</h2><p>최종 승인된 {request.approvedSnapshot?.revision}차 요청서를 기준으로 작성했습니다.</p></div><button className="button secondary compact" onClick={async () => { try { await navigator.clipboard.writeText(orderMessage(request)); setNotice('시연용 발주 문안을 복사했습니다.'); } catch { setNotice('복사 권한을 사용할 수 없습니다. 아래 문안을 직접 선택해 복사해 주세요.'); } }}><Icon name="copy" size={16}/>문안 복사</button></div><pre className="order-copy" tabIndex="0" aria-label="시연용 발주 문안">{orderMessage(request)}</pre><p className="panel-note">실제 메일은 전송하지 않습니다. 발주 기록도 이 브라우저에만 저장됩니다.</p></section>}
-    </div><aside className="detail-aside"><section className="panel next-panel"><div className="panel-head"><h2>다음 할 일</h2></div><div className="panel-body"><span className="tiny-label">현재 담당</span><h3>{owner(request)}</h3><p>{editable ? '내용을 확인하고 팀장 결재를 요청하세요.' : reviewable ? '품목·금액·구매 사유를 확인한 뒤 처리하세요.' : approved ? '승인된 내용으로 발주 문안을 확인하고 시연 기록을 남기세요.' : ordered ? '발주 시연 기록이 완료되었습니다.' : request.status === 'rejected' ? '반려된 요청입니다. 필요한 경우 새로운 요청을 작성하세요.' : `${owner(request)}의 확인을 기다리고 있습니다.`}</p>
-      {editable && <Link className="button primary block" to={`/requests/${id}/edit`}>{nextAction(request, role)}<Icon name="arrow" size={17}/></Link>}
+    <section className="panel next-panel"><div className="panel-head"><h2>다음 할 일</h2></div><div className="panel-body"><span className="tiny-label">현재 담당</span><h3>{owner(request)}</h3><p>{editable ? '내용을 확인하고 팀장 결재를 요청하세요.' : reviewable ? '품목·금액·구매 사유를 확인한 뒤 처리하세요.' : approved ? '승인된 내용으로 발주 문안을 확인하고 시연 기록을 남기세요.' : ordered ? '발주 시연 기록이 완료되었습니다.' : request.status === 'rejected' ? '반려된 요청입니다. 필요한 경우 새로운 요청을 작성하세요.' : `${owner(request)}의 확인을 기다리고 있습니다.`}</p>
+      {editable && <Link className="button primary block" to={`/requests/${id}/edit`} state={location.state}>{nextAction(request, role)}<Icon name="arrow" size={17}/></Link>}
       {reviewable && <><button className="button primary block" onClick={() => open('approve')}><Icon name="check" size={18}/>승인하기</button><div className="paired-buttons"><button className="button secondary" onClick={() => open('revise')}>보완 요청</button><button className="button secondary" onClick={() => open('reject')}>반려</button></div></>}
       {approved && role === 'staff' && <><button className="button primary block" onClick={() => open('order')}>발주 기록 남기기<Icon name="arrow" size={17}/></button><button className="text-button amend-button" onClick={() => open('amend')}>요청 내용 변경·재결재</button></>}
       {ordered && <div className="completed-note"><Icon name="check" size={19}/><span>{request.order.reference}<small>{timestamp(request.order.at)} · 실제 전송 없음</small></span></div>}
       {!editable && !reviewable && !ordered && request.status !== 'rejected' && owner(request) !== ROLES[role] && <p className="role-hint">상단 ‘시연 역할’을 {owner(request)}{owner(request) === '구매 담당자' ? '로' : '으로'} 바꾸면 다음 업무를 이어볼 수 있습니다.</p>}
-    </div></section><section className="panel history-panel"><div className="panel-head"><h2>처리 이력</h2><span className="muted">{request.events.length}개</span></div><ol>{[...request.events].reverse().map((event, i) => <li key={`${event.at}-${i}`}><span className="history-dot"/><div><div className="history-meta"><strong>{event.actor}</strong><span>{event.revision}차</span></div><p>{event.message}</p><time dateTime={event.at}>{timestamp(event.at)}</time></div></li>)}</ol></section>
+    </div></section></div><aside className="detail-aside"><section className="panel history-panel"><div className="panel-head"><h2>처리 이력</h2><span className="muted">{request.events.length}개</span></div><ol>{[...request.events].reverse().map((event, i) => <li key={`${event.at}-${i}`}><span className="history-dot"/><div><div className="history-meta"><strong>{event.actor}</strong><span>{eventRevisionLabel(event)}</span></div><p>{event.message}</p><time dateTime={event.at}>{timestamp(event.at)}</time></div></li>)}</ol></section>
     {request.submissions.length > 0 && <details className="panel snapshots"><summary>제출 기록 <span>{request.submissions.length}건</span></summary>{request.submissions.map((snapshot, i) => <div key={i}><strong>{snapshot.revision}차 제출 · {timestamp(snapshot.at)}</strong><p>{snapshot.title} · {money(amount(snapshot))}</p><small>{snapshot.items.map(item => `${item.name} (${item.spec}) ${item.quantity}개`).join(', ')}</small></div>)}</details>}
     </aside></div>
-    {dialog && <Modal title={titles[dialog]} onClose={() => setDialog('')}><p>{dialog === 'approve' ? `${request.title} · ${money(amount(request))}. ${role === 'manager' ? '승인 후 사장님 결재 단계로 넘어갑니다.' : '최종 승인 후 구매 담당자가 발주를 준비합니다.'}` : dialog === 'amend' ? '기존 승인 이력은 보관합니다. 수정한 내용은 팀장·사장님의 결재를 다시 받아야 발주할 수 있습니다.' : dialog === 'order' ? '메일을 실제로 보내지 않고 발주 준비를 마쳤다는 시연 기록만 남깁니다.' : '입력한 사유는 구매 담당자에게 표시되고 처리 이력에 남습니다.'}</p>{['revise', 'reject', 'order'].includes(dialog) && <label className="field">{dialog === 'order' ? '발주 기록 메모' : '사유'} <span className="required">필수</span><textarea autoFocus rows="3" value={reason} onChange={e => setReason(e.target.value)} placeholder={dialog === 'order' ? '예: 승인 내용과 납기일 확인 후 발주 문안 준비' : '수정하거나 확인할 내용을 구체적으로 적어 주세요.'} maxLength="500"/></label>}{error && <p className="form-error" role="alert">{error}</p>}<div className="dialog-actions"><button className="button secondary" onClick={() => setDialog('')}>취소</button><button className="button primary" onClick={execute}>{dialog === 'approve' ? '승인 기록' : dialog === 'amend' ? '내용 변경 시작' : dialog === 'order' ? '시연 기록 완료' : '사유 전달'}</button></div></Modal>}
+    {dialog && <Modal title={titles[dialog]} onClose={() => setDialog('')}><p>{dialog === 'approve' ? `${request.title} · ${money(amount(request))}. ${role === 'manager' ? '승인 후 사장님 결재 단계로 넘어갑니다.' : '최종 승인 후 구매 담당자가 발주를 준비합니다.'}` : dialog === 'amend' ? '기존 승인 이력은 보관합니다. 수정한 내용은 팀장·사장님의 결재를 다시 받아야 발주할 수 있습니다.' : dialog === 'order' ? '메일을 실제로 보내지 않고 발주 준비를 마쳤다는 시연 기록만 남깁니다.' : '입력한 사유는 구매 담당자에게 표시되고 처리 이력에 남습니다.'}</p>{['revise', 'reject', 'order'].includes(dialog) && <label className="field">{dialog === 'order' ? '발주 기록 메모' : '사유'} <span className="required">필수</span><textarea autoFocus rows="3" value={reason} onChange={e => { setReason(e.target.value); setError(''); }} placeholder={dialog === 'order' ? '예: 승인 내용과 납기일 확인 후 발주 문안 준비' : '수정하거나 확인할 내용을 구체적으로 적어 주세요.'} maxLength="500"/></label>}{error && <p className="form-error" role="alert">{error}</p>}<div className="dialog-actions"><button className="button secondary" onClick={() => setDialog('')}>취소</button><button className="button primary" onClick={execute}>{dialog === 'approve' ? '승인 기록' : dialog === 'amend' ? '내용 변경 시작' : dialog === 'order' ? '시연 기록 완료' : '사유 전달'}</button></div></Modal>}
   </>;
 }
 
 function About() {
-  return <><PageHead eyebrow="WHY THIS WORKSPACE" title="흩어진 구매 업무를 한 요청으로." >엑셀·메일·종이 결재로 이어졌던 실무 경험에서 출발했습니다.</PageHead><section className="about-intro panel"><span className="tiny-label">구매 담당자의 경험 → 화면의 규칙</span><h2>내용을 다시 옮겨 적고,<br/>어디까지 승인됐는지 묻던 일을 줄이기 위해.</h2><p>요청 내용을 직접 확인하고 결재 서류를 작성한 뒤, 팀장과 사장님의 승인을 받아 거래처에 발주를 전달했던 경험을 웹의 업무 흐름으로 재구성했습니다.</p><p>이 시연의 주 사용자는 그 과정을 이어주는 구매·총무 담당자입니다.</p></section><div className="about-rules">{[
+  return <><PageHead eyebrow="WHY THIS WORKSPACE" title="흩어진 구매 업무를 한 요청으로." >엑셀·메일·종이 결재로 이어졌던 실무 경험에서 출발했습니다.</PageHead><section className="about-intro panel"><span className="tiny-label">구매 담당자의 경험 → 화면의 규칙</span><h2>다시 적는 일은 줄이고,<br/>다음 담당자는 한눈에.</h2><p>요청 내용을 직접 확인하고 결재 서류를 작성한 뒤, 팀장과 사장님의 승인을 받아 거래처에 발주를 전달했던 경험을 웹의 업무 흐름으로 재구성했습니다.</p><p>이 시연의 주 사용자는 그 과정을 이어주는 구매·총무 담당자입니다.</p></section><div className="about-rules">{[
       ['01', '복잡한 요청 양식', '원문은 남기고, 입력은 한 번만.', '요청 문장을 초안으로 옮기고 빠진 값은 직접 확인합니다. 제출한 품목·금액은 결재와 발주 문안에 이어집니다.'],
       ['02', '보이지 않는 결재 현황', '현재 담당과 다음 행동을 함께.', '팀장·사장님 결재를 분리하고 이력을 남깁니다. 보완 사유를 전달하며, 승인 후 내용을 바꾸면 재결재합니다.'],
       ['03', '중복 구매 가능성', '같은 품목은 알려주고 판단은 사람에게.', '진행 중인 요청 중 품목명이 같은 기록을 보여줍니다. 규격과 용도가 다를 수 있어 자동으로 차단하지 않습니다.'],
