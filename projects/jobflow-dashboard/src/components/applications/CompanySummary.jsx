@@ -33,7 +33,12 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
       <h3 className="summary-schedule-heading">지원 일정 {pending && application.deadline && <span className="deadline-badge">{deadlineLabel(application.deadline, today)}</span>}</h3>
       <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <SummaryDate value={application.deadline} /> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '지원 전' : '미등록'}</dd></div></dl>
     </section>
-    <div className="summary-documents"><span>제출 서류</span><span>이력서 <b>{application.resume_submitted ? '제출 완료' : '미제출'}</b></span><span>포트폴리오 <b>{application.portfolio_submitted ? '제출 완료' : '미제출'}</b></span></div>
+    <section className="summary-documents" aria-label="제출 서류">
+      <h3>제출 서류</h3>
+      <dl>{[['이력서', application.resume_submitted], ['포트폴리오', application.portfolio_submitted]].map(([label, submitted]) => <div key={label}>
+        <dt>{label}</dt><dd className={`document-state${submitted ? ' is-submitted' : ''}`}><span aria-hidden="true">{submitted ? '✓' : '·'}</span>{submitted ? '제출 완료' : '미제출'}</dd>
+      </div>)}</dl>
+    </section>
     <section className="summary-preparation" aria-label="이 회사의 준비할 일"><h3>준비할 일 <span>남은 {remaining}개</span></h3>
       {companyTasks.length ? <div>{companyTasks.map(item => onToggle ? <PreparationItem key={item.id} item={item} onToggle={onToggle} disabled={Boolean(busy)} /> : <div key={item.id} className="summary-preview-task"><span className="summary-task-state">{item.is_done ? '완료' : '할 일'}</span><span>{item.title}</span></div>)}</div> : <p className="summary-empty">등록한 준비 항목이 없어요.</p>}
       {feedback && <p className={feedback.error ? 'summary-feedback' : 'sr-only'} role={feedback.error ? 'alert' : 'status'}>{feedback.message}</p>}

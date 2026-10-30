@@ -2,34 +2,34 @@ import { createTheme } from '@mui/material/styles';
 export default createTheme({
   palette: {
     primary: {
-      main: '#5940A0',
-      dark: '#45307F',
-      light: '#F1EDF9',
+      main: '#675181',
+      dark: '#514064',
+      light: '#F1EDF5',
       contrastText: '#FFFFFF'
     },
     secondary: {
-      main: '#5940A0'
+      main: '#675181'
     },
     background: {
       default: '#FAFAFB',
       paper: '#FFFFFF'
     },
     text: {
-      primary: '#29262F',
-      secondary: '#6E6976'
+      primary: '#302D38',
+      secondary: '#716C79'
     },
-    divider: '#E5E2E9',
+    divider: '#E1DFE7',
     success: {
-      main: '#326D61'
+      main: '#37675E'
     },
     error: {
-      main: '#A33F42'
+      main: '#925361'
     },
     warning: {
       main: '#805E24'
     },
     info: {
-      main: '#5940A0'
+      main: '#675181'
     }
   },
   typography: {
@@ -89,7 +89,9 @@ export default createTheme({
           borderRadius: 8,
           paddingInline: 16
         },
+        text: { '&:hover': { backgroundColor: 'transparent', fontWeight: 650 } },
         outlined: {
+          '&:hover': { backgroundColor: 'transparent', fontWeight: 650 },
           '&.MuiButton-colorPrimary': {
             borderColor: '#C8C2D4'
           }
@@ -164,7 +166,7 @@ export default createTheme({
       styleOverrides: {
         root: {
           boxShadow: 'none',
-          border: '1px solid #E5E2E9'
+          border: '1px solid #E1DFE7'
         }
       }
     },
@@ -173,7 +175,7 @@ export default createTheme({
         root: {
           backgroundColor: '#FFFFFF',
           '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#5940A0'
+            borderColor: '#675181'
           }
         },
         notchedOutline: {
@@ -184,18 +186,19 @@ export default createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderColor: '#E5E2E9',
+          borderColor: '#E1DFE7',
           padding: '18px 20px'
         },
         head: {
           fontSize: 13,
-          color: '#6E6976',
+          color: '#716C79',
           backgroundColor: '#FAFAFB',
           fontWeight: 500
         }
       }
     },
     MuiTab: {
+      defaultProps: { disableRipple: true },
       styleOverrides: {
         root: {
           textTransform: 'none',
@@ -205,9 +208,11 @@ export default createTheme({
       }
     },
     MuiCheckbox: {
+      defaultProps: { disableRipple: true },
       styleOverrides: {
         root: {
-          color: '#77838D'
+          color: '#77838D',
+          '&:hover': { backgroundColor: 'transparent' }
         }
       }
     }
