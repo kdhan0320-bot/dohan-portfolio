@@ -613,7 +613,7 @@ h1, h2, h3, h4 { color: var(--ink); }
 .preview-heading { min-width: 0; }
 .preview-sample-reference { margin: 4px 0 0; color: #655d70; font-size: 13px; line-height: 1.6; font-weight: 400; }
 .preview-sample-reference time { font-variant-numeric: tabular-nums; }
-.preview-stage-tabs { width: auto; padding: 0; gap: 4px; background: none; grid-template-columns: repeat(4, minmax(64px, auto)); }
+.preview-stage-tabs { width: auto; padding: 0; gap: 8px; background: none; grid-template-columns: repeat(4, 80px); }
 .preview-stage-tabs > button { padding: 8px 10px; min-height: 44px; font-size: 14px; }
 .preview-stage-tabs > button[aria-selected='true'] { color: var(--ink-action); font-weight: 700; }
 .preview-records { grid-template-rows: auto auto; }
@@ -695,11 +695,12 @@ h1, h2, h3, h4 { color: var(--ink); }
  .preview-company-title { gap: 8px 10px; }
  .preview-record-heading h3 { font-size: 21px; }
  .preview-records .preview-open-record { justify-self: start; margin: 0; padding: 4px 0; min-height: 36px; font-size: 13px; }
- .preview-record-body { grid-template-columns: 100px minmax(0,1fr); gap: 16px; margin-top: 12px; padding-top: 16px; }
- .preview-date-block { padding: 12px; justify-content: flex-start; }
- .preview-date-label { justify-content: flex-start; flex-direction: column; gap: 4px; font-size: 12px; min-height: 50px; }
- .preview-date-label .deadline-badge { align-self: flex-start; }
- .preview-date-block .record-date { font-size: 30px; }
+ .preview-record-body { grid-template-columns: minmax(0,1fr); align-content: start; gap: 16px; margin-top: 12px; padding-top: 16px; }
+ .preview-date-block { display: grid; grid-template-columns: minmax(0,1fr) 62px 42px; align-items: center; gap: 8px; padding: 12px; }
+ .preview-date-label { display: contents; font-size: 12px; }
+ .preview-date-label > span { grid-column: 1; grid-row: 1; }
+ .preview-date-label .deadline-badge { grid-column: 3; grid-row: 1; justify-self: end; align-self: center; }
+ .preview-date-block .record-date { grid-column: 2; grid-row: 1; margin: 0; font-size: 28px; line-height: 1.2; text-align: right; white-space: nowrap; }
  .preview-preparation { justify-content: flex-start; }
  .preview-preparation h4 { min-height: 0; margin: 0 0 8px; font-size: 13px; gap: 6px; }
  .preview-preparation ul { gap: 8px; }
