@@ -7,6 +7,8 @@ import PostListPage from './pages/PostListPage';
 import HomePage from './pages/HomePage';
 import TipsPage from './pages/TipsPage';
 import TipDetailPage from './pages/TipDetailPage';
+import CaseStudyPage from './pages/CaseStudyPage';
+import ChecklistPage from './pages/ChecklistPage';
 import { TIPS, getTip } from './constants/tips';
 import PostWritePage from './pages/PostWritePage';
 import PostDetailPage from './pages/PostDetailPage';
@@ -86,6 +88,8 @@ const AppRoutes = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/tips" element={<TipsPage />} />
         <Route path="/tips/:id" element={<TipDetailPage />} />
+        <Route path="/case-study" element={<CaseStudyPage />} />
+        <Route path="/checklist" element={<ChecklistPage />} />
         <Route path="/exercises" element={<Navigate to="/tips" replace />} />
         <Route path="/practice/:id" element={<LegacyPracticeRoute />} />
         <Route path="/recap" element={<Navigate to="/tips" replace />} />

@@ -14,13 +14,13 @@ export default function TipsLayout({ children }) {
   return <div className="tips-site">
     <header className="tips-header"><div className="tips-shell tips-header-inner">
       <Link className="tips-brand" to="/" onClick={revisit('/')} aria-label="고른시선 홈"><SightMark />고른시선</Link>
-      <nav aria-label="주 메뉴"><Link to="/?section=tips" onClick={event => {
+      <nav aria-label="주 메뉴"><Link to="/?section=tips" aria-current={pathname === '/' || pathname.startsWith('/tips') ? 'page' : undefined} onClick={event => {
         if (pathname !== '/' || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
         const heading = document.getElementById('tip-list-title');
         heading?.scrollIntoView({ block: 'start' });
         heading?.focus({ preventScroll: true });
-      }}>팁 찾기</Link></nav>
+      }}>디자인 팁</Link><Link to="/case-study" aria-current={pathname === '/case-study' ? 'page' : undefined} onClick={revisit('/case-study')}>한 화면 고치기</Link><Link to="/checklist" aria-current={pathname === '/checklist' ? 'page' : undefined} onClick={revisit('/checklist')}>화면 점검</Link></nav>
     </div></header>
     <div className="tips-shell tips-content">{children}</div>
     <footer className="tips-footer"><div className="tips-shell tips-footer-inner">

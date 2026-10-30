@@ -15,8 +15,10 @@ export default function TipDetailPage() {
   if (!tip) return <NotFoundPage />;
   const index = TIPS.indexOf(tip);
   const next = getTip(tip.related);
-  const backPath = location.state?.routeReturn?.pathname === '/' ? '/' : '/?section=tips';
-  const backLabel = '팁 목록으로 돌아가기';
+  const origin = location.state?.routeReturn?.pathname;
+  const returnLabels = { '/': '팁 목록으로 돌아가기', '/case-study': '한 화면 고치기로 돌아가기', '/checklist': '화면 점검으로 돌아가기' };
+  const backPath = returnLabels[origin] ? origin : '/?section=tips';
+  const backLabel = returnLabels[origin] || '팁 목록으로 돌아가기';
   const returnToList = event => {
     if (location.state?.routeReturn && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) {
       event.preventDefault();
@@ -29,11 +31,12 @@ export default function TipDetailPage() {
     <section className="tips-explanation" aria-labelledby="rule-title">
       <div className="tips-rule"><span className="tips-rule-label">고른 기준<span>설계 규칙</span></span><div><h2 id="rule-title">{tip.rule}</h2><p className="tips-goal"><span>이번 목표</span>{tip.goal}</p></div></div>
       <TipComparison tip={tip} />
-      <div className="tips-callout"><div><h3>왜 이렇게 바꿨을까요?</h3><p>{tip.reason}</p></div><dl><div><dt>바꾼 것</dt><dd>{tip.changed}</dd></div><div><dt>유지한 것</dt><dd>{tip.kept}</dd></div></dl></div>
+      <div className="tips-callout"><div><h3>이 판단의 이유</h3><p>{tip.reason}</p></div><dl><div><dt>같게 둔 조건</dt><dd>{tip.kept}</dd></div></dl></div>
     </section>
     <div className="tips-application"><section className="tips-apply" aria-labelledby="apply-title"><p className="tips-eyebrow">내 화면에 적용할 때</p><h2 id="apply-title">이 세 가지를 확인하세요.</h2><ol>{tip.checks.map(check => <li key={check}>{check}</li>)}</ol></section>
     <aside className="tips-condition"><p className="tips-eyebrow">{tip.conditionLabel || '다른 선택이 필요한 때'}</p><h2>{tip.exceptionTitle}</h2><p>{tip.exception}</p></aside></div>
-    <p className="tips-evidence-note">직접 만든 예제로 설명하는 설계 판단입니다. 실제 사용자 실험 결과는 아닙니다.<br />그림 속 조작은 설명용이며 실제 서비스 기능이 아닙니다.{tip.exampleNote && <><br />{tip.exampleNote}</>}</p>
+    <div className="tips-reading-links"><Link to="/case-study" className="tips-text-link">여러 기준을 한 화면에 적용하려면<TipsIcon /></Link><Link to="/checklist" className="tips-text-link">내 화면 점검하기<TipsIcon /></Link></div>
+    <p className="tips-evidence-note">직접 만든 설명용 예시이며, 그림 속 조작은 작동하지 않습니다. 효과를 측정한 사용자 실험은 아닙니다.{tip.exampleNote && <><br />{tip.exampleNote}</>}</p>
     <nav className="tips-detail-nav" aria-label="다른 팁"><Link to={backPath} onClick={returnToList} className="tips-text-link">{backLabel}</Link><Link to={`/tips/${next.id}`} className="tips-next"><span>함께 살펴볼 팁 · {next.topic}</span><strong>{next.title}</strong><TipsIcon className="tips-arrow" /></Link></nav>
   </article></TipsLayout>;
 }
