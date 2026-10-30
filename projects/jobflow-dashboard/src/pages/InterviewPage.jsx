@@ -317,8 +317,7 @@ export default function InterviewPage() {
   const editorFields = <div className="field-stack">
     {!editingId && formError && <Alert severity="error">{formError}</Alert>}
     {restored && <Alert severity="info">작성 내용을 복원했어요. 저장하면 반영됩니다.</Alert>}
-    {questionField}
-    {companyFields}
+    <div className="interview-record-fields">{questionField}{companyFields}</div>
     {answerField}
   </div>;
   return <>

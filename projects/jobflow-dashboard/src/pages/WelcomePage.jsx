@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Dialog, DialogContent, DialogActions, DialogTitle, IconButton } from '@mui/material';
 import Close from '@mui/icons-material/Close';
@@ -11,6 +11,7 @@ import { CompanySummary } from '../components/applications/CompanySummary';
 import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES, DEMO_TODAY } from '../constants';
 
 export default function WelcomePage() {
+  useLayoutEffect(() => { window.scrollTo(0, 0); }, []);
   const { user, isGuest, enterGuestMode, loading } = useAuth();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);

@@ -3,14 +3,15 @@
 :root {
   --ink: #302d38; --muted: #716c79; --line: #e1dfe7; --surface: #fff;
   --ink-action: #675181; --action-hover: #514064; --action-tint: #f1edf5;
-  --focus: #675181; --mint: #edf4f1; --mint-ink: #37675e;
-  --record-wash: #f1f4f7; --record-blue: #536b80; --record-rose: #925361;
+  --focus: #675181; --mint: #e4efea; --mint-ink: #37675e;
+  --record-wash: #e9eff4; --record-blue: #536b80; --record-rose: #925361;
+  --record-lilac: #eae4f0; --record-edge: #b3a0c5;
   --galpi-date-ink: #675181;
 }
 body { background: #fff; color: var(--ink); line-height: 1.6; }
 button, input, select, textarea { font-family: inherit; }
 h1, h2, h3, h4 { color: var(--ink); }
-.site-header { background: #f2eef5; border: 0; box-shadow: none; }
+.site-header { background: #eee8f3; border: 0; box-shadow: none; }
 .site-header .site-header-inner { width: min(1320px, calc(100% - 80px)); min-height: 88px; gap: 32px; }
 .site-primary-nav { margin-left: 48px; margin-right: auto; gap: 16px; }
 .site-primary-nav a { justify-content: center; min-width: 88px; padding: 12px; font-size: 16px; color: var(--muted); }
@@ -28,7 +29,7 @@ h1, h2, h3, h4 { color: var(--ink); }
 .workspace-with-topnav .workspace-content::after, .workspace-with-topnav .workspace-main::before, .workspace-with-topnav .workspace-main::after { content: none; }
 .workspace-with-topnav .workspace-main { width: min(1320px, calc(100% - 80px)); max-width: none; margin: 0 auto; padding: 40px 0 56px; border: 0; border-radius: 0; background: #fff; box-shadow: none; min-height: 0; overflow: visible; }
 .workspace-with-topnav .workspace-main .route-surface { width: 100%; padding: 0; }
-.workspace-with-topnav .workspace-main .route-surface .page-heading { min-height: 76px; margin: 0 0 28px; padding: 0; border: 0; gap: 20px; align-items: center; }
+.workspace-with-topnav .workspace-main .route-surface .page-heading { min-height: 76px; margin: 0 0 28px; padding: 0; border: 0; gap: 20px; align-items: flex-start; }
 .workspace-with-topnav .workspace-main .route-surface .page-heading .page-heading-copy { display: block; position: relative; padding-left: 38px; }
 .workspace-main .page-heading-title-row { gap: 0; }
 .workspace-main .page-heading h1 { font-size: 30px; line-height: 1.3; font-weight: 600; letter-spacing: -.035em; margin: 0; }
@@ -531,7 +532,7 @@ h1, h2, h3, h4 { color: var(--ink); }
 .company-first-overview .today-date { border-left: 2px solid #c4d1db; padding-left: 14px; }
 .company-first-overview .today-next p { margin-bottom: 0; }
 .today-company p { margin-bottom: 0; }
-.job-tile, .grouped-checklist .preparation-group-heading, .workspace-main .interview-page .practice-desk { background-image: linear-gradient(90deg, #b5a6c7 0 38px, #b9d0c9 38px 68px, transparent 68px); background-size: 100% 2px; background-position: left top; background-repeat: no-repeat; }
+.job-tile, .grouped-checklist .preparation-group-heading, .workspace-main .interview-page .practice-desk { background-image: none; }
 .job-tile:hover { box-shadow: none; border-color: #b7abc7; }
 .job-tile:hover .job-company { font-weight: 650; }
 .company-summary .summary-documents { margin-block: 24px; display: block; border: 0; background: transparent; padding: 0; border-radius: 0; }
@@ -556,12 +557,12 @@ h1, h2, h3, h4 { color: var(--ink); }
 .workspace-main .settings-sample-grid > .settings-card:not(.settings-account) { padding: 28px 32px; }
 .settings-sample-grid .settings-summary > div { display: flex; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 16px; }
 .settings-sample-grid .settings-status { margin: 0; }
-.settings-sample-actions > div { display: grid; grid-template-rows: auto 1fr auto auto; align-content: start; justify-items: start; }
+.settings-sample-actions > div { display: flex; flex-direction: column; align-items: flex-start; }
 .settings-sample-actions > div > p:not(.settings-reset-result) { min-height: 48px; margin-bottom: 16px; }
-.settings-sample-actions > div > .MuiButton-root { align-self: end; }
+.settings-sample-actions > div > .MuiButton-root { align-self: flex-start; }
 .settings-sample-grid .settings-summary h2 { font-size: 21px; }
 .settings-sample-grid .settings-reset-result { margin: 8px 0 0; min-height: 24px; }
-.settings-sample-actions .settings-export::after { content: ''; display: block; height: 32px; }
+.settings-sample-actions .settings-export::after { content: none; }
 @media (min-width: 1000px) and (max-height: 800px) {
  .workspace-with-topnav .workspace-main .route-surface .page-heading { min-height: 64px; margin-bottom: 18px; }
  .interview-page .interview-controls { margin-bottom: 16px; }
@@ -599,4 +600,104 @@ h1, h2, h3, h4 { color: var(--ink); }
  .settings-sample-grid .settings-sample-actions .settings-export { padding-top: 20px; }
  .company-summary .summary-schedule { padding: 16px; }
  .summary-documents dl { gap: 8px 20px; }
+}
+
+/* The record header, compact date slip and ruled rows repeat across surfaces.
+   Color identifies a role: lilac for the record, blue-gray for dates, mint for completion. */
+.galpi-product-stage { max-width: 880px; }
+.application-preview { border-radius: 12px; }
+.application-preview::before { inset: 18px 9px -9px; border-radius: 12px; background: #e5ecef; transform: rotate(-.55deg); }
+.preview-toolbar { padding: 20px 28px; gap: 12px 24px; background: var(--record-lilac); border-radius: 12px 12px 0 0; }
+.preview-toolbar h2 { margin: 0; color: var(--ink-action); font-size: 17px; font-weight: 600; }
+.preview-stage-tabs { width: auto; padding: 0; gap: 4px; background: none; grid-template-columns: repeat(4, minmax(64px, auto)); }
+.preview-stage-tabs > button { padding: 8px 10px; min-height: 44px; font-size: 14px; }
+.preview-stage-tabs > button[aria-selected='true'] { color: var(--ink-action); font-weight: 700; }
+.preview-records { grid-template-rows: auto auto; }
+.preview-records > .preview-record { grid-row: 1 / span 2; padding: 24px 28px 28px; }
+.preview-record-heading { gap: 16px; align-items: center; }
+.preview-company-title { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.preview-record-heading h3 { font-size: 24px; line-height: 1.4; margin: 0; }
+.preview-record-heading p { margin-top: 5px; font-size: 14px; }
+.preview-records .preview-open-record { align-self: center; flex-shrink: 0; margin: 0; padding: 8px 0 8px 12px; }
+.preview-record-body { grid-template-columns: 188px minmax(0,1fr); align-items: stretch; gap: 28px; margin-top: 22px; padding: 20px 0 0; border-top: 1px solid var(--line); }
+.preview-date-block { display: flex; flex-direction: column; justify-content: center; padding: 16px 18px; border: 0; border-radius: 3px 12px 3px 3px; background: var(--record-wash); }
+.preview-date-label { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 4px; min-height: 24px; }
+.preview-date-block .record-date { font-size: 38px; line-height: 1.2; margin-top: 4px; }
+.preview-preparation { padding: 0; display: flex; flex-direction: column; justify-content: center; }
+.preview-preparation h4 { display: flex; align-items: baseline; gap: 8px; margin: 0 0 8px; font-size: 14px; font-weight: 500; }
+.preview-preparation h4 span { color: var(--ink-action); font-weight: 650; }
+.preview-preparation ul { display: grid; grid-template-rows: repeat(2, minmax(28px, auto)); gap: 4px; margin: 0; padding: 0; list-style: none; }
+.preview-preparation li { display: block; padding: 2px 0 4px; border-bottom: 1px solid #eeecf1; font-size: 15px; line-height: 1.6; }
+.preview-preparation li::before { content: none; }
+.preview-preparation > p { min-height: 60px; margin: 0; padding-top: 2px; font-size: 15px; }
+.job-tile { overflow: hidden; border-radius: 4px 12px 4px 4px; }
+.job-tile-heading { width: calc(100% + 36px); margin: -18px -18px 6px; padding: 18px; background: #f2eef5; border-bottom: 1px solid #e8e0ee; }
+.job-tile .company-mark, .summary-identity .company-mark { background: #ddd3e8; color: #675181; border-radius: 3px 8px 3px 3px; }
+.job-tile-bottom { border-top: 1px solid var(--line); padding-top: 14px; }
+.company-first-overview .today-company { border-left: 3px solid var(--record-edge); padding-left: 16px; }
+.company-first-overview .today-date { border-left: 0; border-radius: 3px 10px 3px 3px; background: var(--record-wash); padding: 10px 14px; }
+.summary-identity { padding: 16px; border-radius: 3px 12px 3px 3px; background: #f2eef5; }
+.company-summary .summary-schedule { background: var(--record-wash); border-radius: 3px 12px 3px 3px; }
+.grouped-checklist .preparation-group-heading { background: #f2eef5; border-bottom-color: #e8e0ee; }
+.workspace-main .interview-page .practice-navigation { padding: 12px 24px; margin: 0; background: var(--record-lilac); border-radius: 10px 10px 0 0; }
+.workspace-main .interview-page .practice-desk { overflow: hidden; border-radius: 10px; }
+.workspace-main .interview-page .practice-card { border-radius: 0 0 10px 10px; }
+.interview-record-fields { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.interview-page { overflow-anchor: none; }
+.workspace-main .settings-sample-grid { max-width: 1040px; margin-inline: auto; }
+.settings-sample-grid .settings-summary { padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.settings-sample-grid .settings-sample-actions { border-top: 0; margin-top: 24px; padding-top: 0; }
+@media (min-width:1000px) {
+ .workspace-main .interview-page .inline-answer-editor > .field-stack { display: grid; grid-template-columns: minmax(220px,.8fr) minmax(0,1.2fr); gap: 24px; align-content: start; align-items: start; }
+ .inline-answer-editor .interview-record-context { grid-template-columns: minmax(0,1fr); gap: 16px; }
+ .inline-answer-editor .interview-record-fields { gap: 16px; }
+ .inline-answer-editor > .field-stack > .MuiAlert-root { grid-column: 1 / -1; }
+ .inline-answer-editor .interview-answer-field { min-width: 0; }
+}
+@media (min-width:1000px) and (max-height:800px) {
+ .welcome-product-first #welcome-content { padding-block: 24px 36px; }
+ .galpi-intro h1 { font-size: 32px; }
+ .galpi-eyebrow { margin-bottom: 8px; }
+ .galpi-intro-heading > p { margin-top: 8px; }
+ .galpi-intro-action { margin-top: 14px; }
+ .galpi-intro-action > small { margin-top: 8px; }
+ .welcome-product-first .galpi-intro { margin-bottom: 24px; }
+ .preview-toolbar { padding-block: 12px; }
+ .preview-records > .preview-record { padding-block: 18px 22px; }
+ .preview-record-body { margin-top: 16px; padding-top: 16px; }
+ .workspace-main .interview-page .inline-answer-editor { height: min(700px, calc(100dvh - 270px)); padding: 14px 20px 0; }
+ .workspace-main .inline-answer-editor > h2 { margin-bottom: 12px; font-size: 17px; }
+ .inline-answer-editor .interview-record-fields, .inline-answer-editor .interview-record-context { gap: 10px; }
+ .inline-answer-editor .interview-record-fields .field-label { font-size: 13px; line-height: 20px; margin-bottom: 4px; }
+ .inline-answer-editor .interview-record-fields .MuiInputBase-root { min-height: 44px; }
+ .inline-answer-editor .interview-record-fields .MuiInputBase-input { padding-block: 10px; font-size: 14px; line-height: 24px; }
+ .workspace-main .inline-answer-editor .inline-editor-actions { padding-block: 10px; }
+ .workspace-main .interview-page .practice-navigation { padding: 8px 20px; }
+}
+@media (max-width:699px) {
+ .galpi-product-stage { width: 100%; }
+ .preview-toolbar { display: block; padding: 18px 20px 12px; }
+ .preview-toolbar h2 { font-size: 16px; margin-bottom: 8px; }
+ .preview-stage-tabs { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; margin-inline: -8px; }
+ .preview-stage-tabs > button { padding: 8px 4px; font-size: 13px; }
+ .preview-records > .preview-record { padding: 20px; }
+ .preview-record-heading { display: grid; grid-template-columns: minmax(0,1fr); gap: 8px; }
+ .preview-company-title { gap: 8px 10px; }
+ .preview-record-heading h3 { font-size: 21px; }
+ .preview-records .preview-open-record { justify-self: start; margin: 0; padding: 4px 0; min-height: 36px; font-size: 13px; }
+ .preview-record-body { grid-template-columns: 100px minmax(0,1fr); gap: 16px; margin-top: 12px; padding-top: 16px; }
+ .preview-date-block { padding: 12px; justify-content: flex-start; }
+ .preview-date-label { justify-content: flex-start; flex-direction: column; gap: 4px; font-size: 12px; min-height: 50px; }
+ .preview-date-label .deadline-badge { align-self: flex-start; }
+ .preview-date-block .record-date { font-size: 30px; }
+ .preview-preparation { justify-content: flex-start; }
+ .preview-preparation h4 { min-height: 0; margin: 0 0 8px; font-size: 13px; gap: 6px; }
+ .preview-preparation ul { gap: 8px; }
+ .preview-preparation li { font-size: 14px; line-height: 1.6; }
+ .job-tile-heading { width: calc(100% + 32px); margin: -16px -16px 6px; padding: 16px; }
+ .company-first-overview .today-company { padding-left: 10px; }
+ .company-first-overview .today-date { padding: 8px 10px; }
+ .summary-identity { padding: 12px; }
+ .workspace-main .interview-page .practice-navigation { padding: 12px 16px; }
+ .workspace-main .settings-sample-grid { max-width: none; }
 }

@@ -127,8 +127,9 @@ test('company preparation keeps its company and draft across closing, failures a
   assert.equal(another.find(node => node.type === 'form'), null, 'another company does not inherit the draft');
 });
 
-test('home record preview opens without navigating or starting a guest session', async () => {
+test('home starts at the top once and preview opens without navigation or a guest session', async () => {
   const destinations = [];
+  const scrolls = [];
   let guestStarts = 0;
   const page = await mount('WelcomePage', {
     'react-router-dom': { useNavigate: () => to => destinations.push(to) },
@@ -138,7 +139,8 @@ test('home record preview opens without navigating or starting a guest session',
     '../components/ui/ProductPreview': 'Preview',
     '../components/applications/CompanySummary': { CompanySummary: 'CompanySummary' },
     '../utils/authErrors': { getAuthErrorMessage: error => error.message },
-  });
+  }, undefined, {}, { scrollTo: (...position) => scrolls.push(position) });
+  assert.deepEqual(scrolls, [[0, 0]], 'a fresh home visit does not retain a workspace scroll position');
   page.find(node => node.type === 'Preview').props.onOpen('demo-3'); page.render();
   assert.equal(page.find(node => node.type === 'Dialog').props.open, true);
   assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-3');
@@ -146,6 +148,7 @@ test('home record preview opens without navigating or starting a guest session',
   assert.equal(guestStarts, 0);
   await page.click('닫기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, false);
+  assert.equal(scrolls.length, 1, 'opening or closing the preview must not reset home scroll');
   await page.click('샘플 체험하기');
   assert.equal(guestStarts, 1);
   assert.deepEqual(destinations, ['/overview']);
