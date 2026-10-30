@@ -79,6 +79,20 @@ const RouteEffects = () => {
     };
     previousLocationRef.current = { pathname: location.pathname, entryKey };
 
+    // The current history entry retains its origin across a reload. Rehydrate
+    // that one return position without adding persistent browsing storage.
+    const routeReturn = location.state?.routeReturn;
+    if (
+      (navigationType !== 'POP' || !hasNavigatedRef.current) &&
+      routeReturn &&
+      typeof routeReturn.entryKey === 'string' &&
+      typeof routeReturn.focusId === 'string' &&
+      Number.isFinite(routeReturn.scrollY)
+    ) {
+      scrollMemory.set(routeReturn.entryKey, routeReturn.scrollY);
+      focusMemory.set(routeReturn.entryKey, routeReturn.focusId);
+    }
+
     if (navigationType === 'REPLACE' && isSamePath && previousLocation.entryKey !== entryKey) {
       const previousScrollPosition = scrollMemory.get(previousLocation.entryKey);
       scrollMemory.set(entryKey, previousScrollPosition ?? window.scrollY);
@@ -132,16 +146,6 @@ const RouteEffects = () => {
     }
 
     if ((navigationType === 'PUSH' || navigationType === 'REPLACE') && (!isSamePath || sectionTarget)) {
-      const routeReturn = location.state?.routeReturn;
-      if (
-        routeReturn &&
-        typeof routeReturn.entryKey === 'string' &&
-        typeof routeReturn.focusId === 'string' &&
-        Number.isFinite(routeReturn.scrollY)
-      ) {
-        scrollMemory.set(routeReturn.entryKey, routeReturn.scrollY);
-        focusMemory.set(routeReturn.entryKey, routeReturn.focusId);
-      }
       window.scrollTo({ top: 0, behavior: 'instant' });
 
       let attempts = 0;

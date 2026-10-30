@@ -29,10 +29,9 @@ export default function TipDetailPage() {
   };
   return <TipsLayout><article className={`tips-detail tips-tone-${tip.tone}`}>
     <Link to={backPath} onClick={returnToList} className="tips-back"><TipsIcon name="left" />{backLabel}</Link>
-    <header className="tips-detail-heading"><div className="tips-detail-meta"><span className="tips-list-number">{String(index + 1).padStart(2, '0')}</span><span>시선 노트 · {tip.topic}</span></div><h1>{tip.title}</h1><p className="tips-detail-purpose">{tip.goal}</p></header>
+    <header className="tips-detail-heading"><div className="tips-detail-meta"><span className="tips-list-number">{String(index + 1).padStart(2, '0')}</span><span>시선 노트 · {tip.topic}</span></div><h1>{tip.title}</h1></header>
     <section className="tips-explanation" aria-labelledby="rule-title">
-      <TipComparison tip={tip} />
-      <div className="tips-takeaway"><div><span className="tips-eyebrow">고른 기준</span><h2 id="rule-title">{tip.rule}</h2></div><p>{tip.reason}</p><p className="tips-kept"><span>그대로 둔 것</span>{tip.kept}</p></div>
+      <TipComparison tip={tip} summary={<table className="tip-facts"><caption className="tips-sr-only">이 비교의 목표와 조건</caption><tbody><tr><th scope="row">목표</th><td>{tip.goal}</td></tr><tr><th scope="row">변경</th><td>{tip.changed}</td></tr><tr><th scope="row">유지</th><td>{tip.kept}</td></tr></tbody></table>} />
     </section>
     <aside className="tips-short-condition"><h2>{tip.exceptionTitle}</h2><p>{tip.exception}</p></aside>
     <div className="tips-reading-links">{caseSection && <TipLink to={`/case-study?section=${caseSection}`} focusId={`tip-${tip.kind}-case`} className="tips-text-link">{tip.topic} 기준을 적용한 사례<TipsIcon /></TipLink>}<TipLink to={`/checklist?section=${tip.kind}`} focusId={`tip-${tip.kind}-check`} className="tips-text-link">내 화면의 {tip.topic} 점검<TipsIcon /></TipLink></div>
