@@ -1,6 +1,6 @@
 export const TIPS = [
   {
-    id: 'type-hierarchy', legacyId: 'sample-1', topic: '글자', kind: 'type',
+    id: 'type-hierarchy', legacyId: 'sample-1', topic: '글자', kind: 'type', tone: 'sage',
     title: '제목이 눈에 들어오지 않을 때',
     summary: '설명은 그대로 두고, 제목의 크기를 바꿔보세요.',
     cardRule: '읽는 순서를 크기로 구분하기', beforeValue: '16px', afterValue: '28px',
@@ -22,7 +22,7 @@ export const TIPS = [
     description: '같은 전시 소개에서 제목만 16px에서 28px로 커집니다. 설명의 크기와 시작 위치는 같습니다.',
   },
   {
-    id: 'group-spacing', legacyId: 'sample-8', topic: '간격', kind: 'spacing',
+    id: 'group-spacing', legacyId: 'sample-8', topic: '간격', kind: 'spacing', tone: 'sage',
     title: '관련 내용이 흩어져 보일 때',
     summary: '같은 내용은 가깝게, 다른 묶음은 멀리 두세요.',
     cardRule: '묶음 안은 가깝게, 묶음 사이는 넓게', beforeValue: '16 / 16', afterValue: '6 / 36',
@@ -44,7 +44,7 @@ export const TIPS = [
     description: '동일한 두 작업 목록을 비교합니다. 첫 예제는 모든 간격이 16px, 두 번째는 제목과 설명 사이 6px, 작업 사이 36px입니다. 글자 바로 옆의 세로 표시와 수치가 실제 빈 간격을 가리킵니다.',
   },
   {
-    id: 'primary-action', legacyId: 'sample-4', topic: '버튼', kind: 'action',
+    id: 'primary-action', legacyId: 'sample-4', topic: '버튼', kind: 'action', tone: 'blue',
     title: '눌러야 할 버튼이 모호할 때',
     summary: '지금 가장 중요한 행동 하나에 강조를 주세요.',
     cardRule: '가장 중요한 행동 하나에 강조 주기', beforeValue: '같은 강조', afterValue: '재생 강조',
@@ -66,7 +66,7 @@ export const TIPS = [
     description: '이전·재생·다음 조작의 크기와 위치는 같습니다. 두 번째 예제에서 재생 버튼만 짙은 청록색으로 채웁니다. 그림 속 버튼은 실제로 재생되지 않습니다.',
   },
   {
-    id: 'text-contrast', legacyId: 'sample-7', topic: '대비', kind: 'contrast',
+    id: 'text-contrast', legacyId: 'sample-7', topic: '대비', kind: 'contrast', tone: 'blue',
     title: '사진 위 글자가 흐려 보일 때',
     summary: '글자 뒤에 어두운 면을 더해 배경과 구분하세요.',
     cardRule: '사진보다 글자가 읽히도록 대비 주기', beforeValue: '원본 사진', afterValue: '어두운 면',
@@ -88,7 +88,7 @@ export const TIPS = [
     description: '같은 꽃 사진의 같은 위치에 흰 제목을 표시합니다. 두 번째 예제는 사진 위에 어두운 면을 덧대 제목과 배경을 구분합니다.',
   },
   {
-    id: 'clear-labels', legacyId: 'sample-12', topic: '안내', kind: 'labels',
+    id: 'clear-labels', legacyId: 'sample-12', topic: '안내', kind: 'labels', tone: 'lavender',
     title: '표시가 무엇을 뜻하는지 모를 때',
     summary: '색이나 기호 옆에 뜻을 짧게 적어주세요.',
     cardRule: '색과 기호에 짧은 뜻 붙이기', beforeValue: '선만 표시', afterValue: '뜻도 표시',
@@ -111,7 +111,7 @@ export const TIPS = [
     description: '두 지도는 같은 경로와 선을 보여줍니다. 두 번째 지도 아래에 같은 선 모양과 추천 산책 경로라는 범례를 추가합니다. 실제 위치 안내가 아닌 설명용 지도입니다.',
   },
   {
-    id: 'persistent-help', legacyId: 'sample-11', topic: '입력', kind: 'input',
+    id: 'persistent-help', legacyId: 'sample-11', topic: '입력', kind: 'input', tone: 'lavender',
     title: '입력 중에 조건을 잊어버릴 때',
     summary: '필요한 조건은 입력칸 밖에 계속 보여주세요.',
     cardRule: '입력 중에도 필요한 조건 남기기', beforeValue: '안내 없음', afterValue: '안내 유지',

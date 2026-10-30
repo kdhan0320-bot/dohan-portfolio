@@ -5,7 +5,6 @@ import { TIPS, getTip } from '../constants/tips';
 import { usePageTitle } from '../utils/pageMeta';
 import NotFoundPage from './NotFoundPage';
 import TipsIcon from '../components/TipsIcon';
-import SightMark from '../components/SightMark';
 
 export default function TipDetailPage() {
   const { id } = useParams();
@@ -24,11 +23,11 @@ export default function TipDetailPage() {
       navigate(-1);
     }
   };
-  return <TipsLayout><article className="tips-detail">
+  return <TipsLayout><article className={`tips-detail tips-tone-${tip.tone}`}>
     <Link to={backPath} onClick={returnToList} className="tips-back"><TipsIcon name="left" />{backLabel}</Link>
-    <header className="tips-detail-heading"><p className="tips-eyebrow">{tip.topic} · 시선 노트 {String(index + 1).padStart(2, '0')}</p><h1>{tip.title}</h1><p className="tips-problem"><span>핵심 문제</span>{tip.problem}</p></header>
+    <header className="tips-detail-heading"><div className="tips-detail-meta"><span className="tips-list-number">{String(index + 1).padStart(2, '0')}</span><span>시선 노트 · {tip.topic}</span></div><h1>{tip.title}</h1><p className="tips-problem"><span>핵심 문제</span>{tip.problem}</p></header>
     <section className="tips-explanation" aria-labelledby="rule-title">
-      <div className="tips-rule"><SightMark /><div><p className="tips-eyebrow">고른 기준 · 설계 규칙</p><h2 id="rule-title">{tip.rule}</h2><p className="tips-goal"><span>이번 목표</span>{tip.goal}</p></div><span className="tips-rule-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span></div>
+      <div className="tips-rule"><span className="tips-rule-label">고른 기준<span>설계 규칙</span></span><div><h2 id="rule-title">{tip.rule}</h2><p className="tips-goal"><span>이번 목표</span>{tip.goal}</p></div></div>
       <TipComparison tip={tip} />
       <div className="tips-callout"><div><h3>왜 이렇게 바꿨을까요?</h3><p>{tip.reason}</p></div><dl><div><dt>바꾼 것</dt><dd>{tip.changed}</dd></div><div><dt>유지한 것</dt><dd>{tip.kept}</dd></div></dl></div>
     </section>

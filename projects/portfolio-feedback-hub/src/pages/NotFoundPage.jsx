@@ -10,8 +10,8 @@ const NotFoundPage = () => {
     <TipsLayout>
       <section className="tips-empty" aria-labelledby="not-found-title">
           <h1 id="not-found-title">페이지를 찾을 수 없어요.</h1>
-          <p>주소를 확인하거나 팁 모음에서 필요한 내용을 찾아보세요.</p>
-          <Link className="tips-primary" to="/tips" replace>팁 모음 보기<TipsIcon /></Link>
+          <p>주소를 확인하거나 팁 목록에서 필요한 내용을 찾아보세요.</p>
+          <Link className="tips-primary" to="/?section=tips" replace>팁 목록으로 돌아가기<TipsIcon /></Link>
       </section>
     </TipsLayout>
   );

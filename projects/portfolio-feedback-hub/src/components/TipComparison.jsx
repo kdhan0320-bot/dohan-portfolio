@@ -49,7 +49,7 @@ function LabelsExample({ revised, annotate }) {
 }
 
 function InputExample({ revised, annotate }) {
-  return <div className="tip-input-example"><div className="tip-signup-title">내 작업 공간 만들기</div><span className="tip-example-eyebrow">계정 만들기 · 입력 중</span><span className="tip-email-label">이메일</span><div className="tip-faux-email">hello@example.com</div><span className="tip-input-label">비밀번호</span><div className="tip-faux-input">••••••••</div><div className="tip-helper-slot">{revised && <span className={`tip-helper${annotate ? ' tip-outlined' : ''}`}>8자 이상 · 영문과 숫자{annotate && <Marker />}</span>}</div><span className="tip-faux-submit">다음</span></div>;
+  return <div className="tip-input-example"><div className="tip-signup-title">내 작업 공간 만들기</div><span className="tip-example-eyebrow">계정 만들기 · 입력 중</span><span className="tip-email-label">이메일</span><div className="tip-faux-email">hello@example.com</div><span className="tip-input-label">비밀번호</span><div className="tip-faux-input">••••••••</div><div className="tip-helper-slot">{revised && <span className={`tip-helper${annotate ? ' tip-outlined' : ''}`}><span>8자 이상 ·</span>{' '}<span>영문과 숫자</span>{annotate && <Marker />}</span>}</div><span className="tip-faux-submit">다음</span></div>;
 }
 
 const drawings = { type: TypeExample, spacing: SpacingExample, action: ActionExample, contrast: ContrastExample, labels: LabelsExample, input: InputExample };

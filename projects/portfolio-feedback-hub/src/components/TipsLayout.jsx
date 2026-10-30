@@ -20,11 +20,11 @@ export default function TipsLayout({ children }) {
         const heading = document.getElementById('tip-list-title');
         heading?.scrollIntoView({ block: 'start' });
         heading?.focus({ preventScroll: true });
-      }}>팁 찾기 <span aria-hidden="true">06</span></Link></nav>
+      }}>팁 찾기</Link></nav>
     </div></header>
     <div className="tips-shell tips-content">{children}</div>
     <footer className="tips-footer"><div className="tips-shell tips-footer-inner">
-      <div><span className="tips-footer-brand">고른시선</span><p>화면의 차이를 보고, 만드는 기준을 알아가는 곳.</p></div>
+      <div><span className="tips-footer-brand"><SightMark />고른시선</span><p>화면의 차이를 보고, 만드는 기준을 알아가는 곳.</p></div>
       <span>직접 만든 예시로 설명합니다.<br />김도한 · UI 디자인 & 웹퍼블리싱</span>
     </div></footer>
   </div>;
