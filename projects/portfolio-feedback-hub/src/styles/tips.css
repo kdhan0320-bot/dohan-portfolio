@@ -69,6 +69,7 @@ body:has(.tips-site) { min-width: 0; background: #f7faf9; }
 .tips-problem > span { font-size:12px; flex-shrink:0; }
 .tips-rule { display:flex; align-items:flex-start; gap:14px; background:var(--tips-tint); padding:22px 24px; border-radius:6px; margin-bottom:24px; }
 .tips-rule > .tips-sight-mark { margin-top:4px; }
+.tips-rule > div { min-width:0; }
 .tips-rule h2 { font-size:24px; margin-top:4px; }
 .tips-rule-index { margin-left:auto; font-size:32px; font-weight:400; color:#6f8c81; line-height:1.2; font-variant-numeric:tabular-nums; }
 .tips-goal { font-size:14px; color:var(--tips-muted); margin-top:8px!important; }
@@ -325,7 +326,7 @@ body:has(.tips-site) { min-width: 0; background: #f7faf9; }
  .tips-problem > span { display:block; margin-bottom:6px; }
  .tips-rule { gap:8px; padding:18px 14px; margin-bottom:20px; }
  .tips-rule > .tips-sight-mark { width:24px; height:24px; flex-basis:24px; }
- .tips-rule h2 { font-size:20px; }
+ .tips-rule h2 { font-size:20px; max-width:12em; }
  .tips-goal { font-size:13px; }
  .tips-goal > span { display:block; margin-bottom:2px; }
  .tip-focus-pair { gap:12px; }
