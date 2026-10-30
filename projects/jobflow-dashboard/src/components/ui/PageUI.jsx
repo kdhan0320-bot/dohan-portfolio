@@ -9,6 +9,7 @@ import EditNoteOutlined from '@mui/icons-material/EditNoteOutlined';
 import SpaceDashboardOutlined from '@mui/icons-material/SpaceDashboardOutlined';
 import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import MenuBookOutlined from '@mui/icons-material/MenuBookOutlined';
+import DiaryBookmark from './DiaryBookmark';
 
 const headingIcons = {
   folder: FolderOutlined,
@@ -40,7 +41,7 @@ export function PageHeading({
   <div className="heading-actions">
     {children}
   </div>
-  <span className="diary-page-tab" aria-hidden="true" />
+  <DiaryBookmark label={{ folder: '지원', calendar: '지원', check: '준비', chat: '면접', write: '작성', guide: '안내', settings: '설정' }[art] || '기록'} tone={art === 'check' ? 'mint' : ['chat', 'write'].includes(art) ? 'purple' : 'blue'} />
 </header>;
 }
 export function Panel({

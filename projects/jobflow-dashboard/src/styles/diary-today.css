@@ -1,13 +1,18 @@
 /* Diary shell and today's dated records. Shared by all workspace pages. */
+body:has(.workspace-diary) { min-width: 0; }
 .diary-sidebar-caption, .diary-utility-links { display: none; }
 .diary-overview { color: var(--ink); }
-.diary-page-heading { position: relative; display: flex; align-items: center; gap: 28px; padding: 0 56px 28px 0; border-bottom: 2px solid var(--ink-action); }
-.diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; padding-right: 24px; border-right: 1px solid var(--line); color: var(--ink-action); font-variant-numeric: tabular-nums; }
+.diary-page-heading { position: relative; display: flex; align-items: center; gap: 28px; padding: 0 0 28px; border-bottom: 2px solid var(--ink-action); }
+.diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; padding: 0; border-right: 1px solid var(--line); color: var(--record-blue); font-variant-numeric: tabular-nums; }
 .diary-date-stamp > span { font-size: 13px; font-weight: 550; letter-spacing: .04em; white-space: nowrap; }
 .diary-date-stamp > strong { font-size: 52px; font-weight: 500; line-height: 1.15; letter-spacing: -.04em; }
 .diary-page-heading p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
 .diary-page-heading h1 { margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -.04em; line-height: 1.4; }
-.diary-page-tab { position: absolute; right: 0; top: -48px; display: flex; justify-content: center; width: 38px; padding: 17px 8px 13px; background: var(--record-wash); border-bottom: 3px solid var(--record-edge); border-radius: 0 0 4px 4px; color: var(--record-blue); font-size: 13px; writing-mode: vertical-rl; letter-spacing: .18em; }
+/* The marker sits in the paper's outer margin, independent of the action grid. */
+.diary-page-tab { --marker-fill: var(--record-wash); --marker-ink: var(--record-blue); position: absolute; right: -40px; top: -48px; display: flex; align-items: center; justify-content: center; width: 28px; height: 88px; padding: 12px 0 18px; background: var(--marker-fill); color: var(--marker-ink); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 92%, 0 100%); font-size: 12px; pointer-events: none; }
+.diary-page-tab > span { writing-mode: vertical-rl; text-orientation: upright; letter-spacing: .12em; }
+.diary-page-tab[data-tone='purple'] { --marker-fill: var(--record-lilac); --marker-ink: var(--ink-action); }
+.diary-page-tab[data-tone='mint'] { --marker-fill: var(--mint); --marker-ink: var(--mint-ink); }
 .diary-support-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 16px 32px; min-height: 76px; padding: 18px 0; border-bottom: 1px solid var(--line); }
 .diary-support-summary > a { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: 14px; color: var(--ink); }
 .diary-support-summary > a strong { color: var(--ink-action); font-size: 18px; font-weight: 600; }
@@ -41,7 +46,7 @@
 .diary-entry .diary-entry-open:hover { background: var(--action-tint); }
 .diary-review .diary-section-heading h2 { color: var(--record-rose); }
 .diary-empty-note { margin: 0; padding: 32px 0; font-size: 15px; color: var(--muted); }
-.diary-common { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; padding: 22px 24px; border: 1px solid var(--line); border-left: 4px solid #aac6bd; border-radius: 3px 9px 3px 3px; background: #f6f9f7; }
+.diary-common { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; padding: 22px 24px; border: 1px solid #cadbd3; border-left: 4px solid #8eafa2; border-radius: 3px 9px 3px 3px; background: #eef5f1; }
 .diary-common h2 { margin: 0; font-size: 16px; font-weight: 600; line-height: 1.5; }
 .diary-common h2 > span { margin-left: 12px; color: var(--mint-ink); font-size: 13px; font-weight: 400; white-space: nowrap; }
 .diary-common p { margin: 8px 0 0; font-size: 15px; line-height: 1.6; }
@@ -82,6 +87,8 @@
   .workspace-diary .site-header .site-header-inner { padding-left: 16px; }
   .workspace-diary .site-primary-nav a { gap: 14px; padding-inline: 16px; }
   .workspace-with-topnav.workspace-diary .workspace-main { padding-inline: 32px; }
+  .diary-page-tab { right: -25px; width: 20px; }
+  .diary-welcome #welcome-content > .diary-page-tab { right: 7px; }
   .workspace-diary .site-footer .site-footer-inner { margin-inline: 32px; }
   .diary-entry { grid-template-columns: 84px minmax(150px, 1fr) minmax(160px, 1fr) 100px; gap: 18px; }
   .diary-company-title h3 { font-size: 18px; }
@@ -112,7 +119,7 @@
   .workspace-with-topnav.workspace-diary > .workspace-content { padding: 0; background: transparent; }
   .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 40px); margin: 24px auto 0; padding: 32px 28px; border: 1px solid #d6d3dd; border-radius: 4px 12px 4px 4px; background: #fff; box-shadow: 3px 3px 0 #e0e5e4; }
   .diary-sidebar-caption, .diary-utility-links { display: none; }
-  .diary-page-tab { top: -32px; }
+  .diary-page-tab { top: -32px; right: -23px; width: 18px; height: 72px; font-size: 11px; }
   .diary-support-summary { gap: 8px 20px; }
   .diary-support-summary dl { padding-left: 0; border-left: 0; gap: 12px 20px; }
   .diary-entry { grid-template-columns: 84px minmax(0, 1fr) 100px; gap: 8px 20px; }
@@ -127,13 +134,14 @@
 
 @media (max-width: 599px) {
   .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
-  .diary-page-heading { gap: 16px; padding: 0 20px 20px 0; }
-  .diary-date-stamp { flex-basis: 64px; padding-right: 16px; }
+  .diary-page-heading { gap: 16px; padding: 0 0 20px; }
+  .diary-date-stamp { flex-basis: 64px; padding: 0; }
   .diary-date-stamp > span { font-size: 11px; letter-spacing: 0; }
   .diary-date-stamp > strong { font-size: 40px; }
   .diary-page-heading h1 { font-size: 23px; white-space: nowrap; }
   .diary-page-heading p { font-size: 12px; margin-bottom: 5px; }
-  .diary-page-tab { top: -24px; right: 0; width: 20px; height: 34px; padding: 0; font-size: 0; }
+  .diary-page-tab { top: -24px; right: -14px; width: 12px; height: 36px; padding: 0; }
+  .diary-page-tab > span { display: none; }
   .diary-support-summary { gap: 0; padding: 10px 0 16px; }
   .diary-support-summary > a { min-height: 38px; width: 100%; gap: 10px; font-size: 13px; }
   .diary-support-summary > a strong { font-size: 16px; }
@@ -165,8 +173,8 @@
 }
 
 @media (max-width: 359px) {
-  .diary-page-heading { gap: 12px; padding-right: 12px; }
-  .diary-date-stamp { flex-basis: 56px; padding-right: 12px; }
+  .diary-page-heading { gap: 12px; }
+  .diary-date-stamp { flex-basis: 56px; }
   .diary-page-heading h1 { font-size: 20px; }
 }
 

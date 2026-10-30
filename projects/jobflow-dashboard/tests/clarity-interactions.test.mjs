@@ -50,6 +50,7 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
     '../components/ui/PreparationItem': 'PreparationItem',
     '../components/ui/StatusChip': 'StatusChip',
     '../components/ui/RecordStage': 'RecordStage',
+    '../components/ui/DiaryBookmark': 'DiaryBookmark',
     '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
     '../utils/preparationGroups': { preparationGroups },
     '../utils/dates': { shortDate },

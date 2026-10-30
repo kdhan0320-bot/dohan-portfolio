@@ -5,6 +5,7 @@ import Close from '@mui/icons-material/Close';
 import SiteHeader from '../components/layout/SiteHeader';
 import SiteFooter from '../components/layout/SiteFooter';
 import ProductPreview from '../components/ui/ProductPreview';
+import DiaryBookmark from '../components/ui/DiaryBookmark';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { CompanySummary } from '../components/applications/CompanySummary';
@@ -32,6 +33,7 @@ export default function WelcomePage() {
     <SiteHeader publicMode diaryMode />
     <div className="workspace-content">
     <main className="workspace-main" id="welcome-content" tabIndex={-1}>
+      <DiaryBookmark label="갈피록" tone="purple" />
       <section className="galpi-intro" aria-labelledby="welcome-title">
         <div className="galpi-intro-heading">
           <span className="galpi-eyebrow">나의 입사지원 다이어리</span>
@@ -43,7 +45,6 @@ export default function WelcomePage() {
             <small>{user ? '내 계정에 저장된 기록' : '가입 없이 · 가상 데이터 체험'}</small>
             {error && <Alert severity="error">{error}</Alert>}
         </div>
-        <span className="diary-page-tab" aria-hidden="true">갈피록</span>
       </section>
       <section className="galpi-product-stage" aria-label="갈피록 지원 관리 미리보기">
         <ProductPreview onOpen={setPreviewId} />

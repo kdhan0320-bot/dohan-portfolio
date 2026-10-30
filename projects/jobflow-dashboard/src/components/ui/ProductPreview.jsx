@@ -38,16 +38,16 @@ export default function ProductPreview({ onOpen }) {
       const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
       const inactive = index !== stageIndex;
       return <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} aria-hidden={inactive || undefined} hidden={inactive} className="preview-record" tabIndex={inactive ? -1 : 0}>
-        <div className="preview-record-heading">
-          <div className="preview-company-identity"><div className="preview-company-title"><h3>{selected.company_name}</h3><RecordStage status={selected.status} /></div><p>{selected.position}</p></div>
-          <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
-        </div>
-        <div className="preview-record-body">
+        <div className="preview-record-summary">
+          <div className="preview-record-heading"><div className="preview-company-identity"><div className="preview-company-title"><h3>{selected.company_name}</h3><RecordStage status={selected.status} /></div><p>{selected.position}</p></div></div>
           <div className="preview-date-block">
             <div className="preview-date-label"><span>{before ? '지원 마감' : '지원한 날짜'}</span>{before && <b className="deadline-badge">{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}</div>
             <strong className="record-date"><span className="record-date-month">{month}.</span>{day}</strong>
           </div>
+        </div>
+        <div className="preview-record-body">
           <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>남은 준비 없음</p>}</div>
+          <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
         </div>
       </div>;
     })}

@@ -13,6 +13,7 @@ import { LoadState, Empty } from '../components/ui/PageUI';
 import RecordStage from '../components/ui/RecordStage';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import ApplicationPanel from '../components/applications/ApplicationPanel';
+import DiaryBookmark from '../components/ui/DiaryBookmark';
 
 export default function DashboardPage() {
   const apps = useApplications();
@@ -53,7 +54,7 @@ export default function DashboardPage() {
     <header className="diary-page-heading">
       <time className="diary-date-stamp" dateTime={today} aria-label={`${today.slice(0, 4)}년 ${dateText}`}><span>{today.slice(0, 7).replace('-', '.')}</span><strong>{Number(today.slice(8))}</strong></time>
       <div><p>{WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일{isGuest ? ' · 샘플 기준일' : ''}</p><h1>오늘의 지원 기록</h1></div>
-      <span className="diary-page-tab" aria-hidden="true">오늘</span>
+      <DiaryBookmark label="오늘" />
     </header>
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />
     {!loading && !error && <>

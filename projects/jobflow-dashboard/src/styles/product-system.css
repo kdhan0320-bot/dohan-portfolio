@@ -3,9 +3,9 @@
 :root {
   --ink: #302d38; --muted: #716c79; --line: #e1dfe7; --surface: #fff;
   --ink-action: #675181; --action-hover: #514064; --action-tint: #f1edf5;
-  --focus: #675181; --mint: #dcebe4; --mint-ink: #37675e;
-  --record-wash: #dce7ed; --record-blue: #3d5c6c; --record-rose: #925361;
-  --record-lilac: #eae4f0; --record-edge: #8ca5b0;
+  --focus: #675181; --mint: #dbeae2; --mint-ink: #37675e;
+  --record-wash: #d7e4ed; --record-blue: #3d5c6c; --record-rose: #925361;
+  --record-lilac: #e7dfee; --record-edge: #859eae;
   --record-heading: #f2f4f3; --record-corners: 4px 12px 4px 4px;
   --galpi-date-ink: #675181;
 }
