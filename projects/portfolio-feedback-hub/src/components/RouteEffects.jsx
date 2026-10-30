@@ -1,12 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { useLocation, useNavigationType } from 'react-router-dom';
+import { getRouteEntryKey } from '../utils/routeHistory';
 
 const scrollMemory = new Map();
 const focusMemory = new Map();
 const MAX_RESTORE_FRAMES = 300;
 const MAX_FOCUS_FRAMES = 24;
-
-const getEntryKey = (location) => location.key || `${location.pathname}${location.search}`;
+const sectionTargets = {
+  '/': { tips: 'tip-list-title' },
+  '/case-study': { type: 'case-type-title', spacing: 'case-spacing-title', action: 'case-action-title', mobile: 'case-mobile-title' },
+  '/checklist': Object.fromEntries(['type', 'spacing', 'action', 'contrast', 'labels', 'input', 'mobile', 'keyboard'].map(id => [id, `check-${id}-title`])),
+};
 
 const findFocusTarget = (focusId) => {
   if (!focusId) return null;
@@ -18,12 +22,12 @@ const RouteEffects = () => {
   const location = useLocation();
   const navigationType = useNavigationType();
   const transitionRef = useRef({ rafId: null, cancelled: false });
+  const hasNavigatedRef = useRef(false);
   const previousLocationRef = useRef({
     pathname: location.pathname,
-    entryKey: getEntryKey(location),
+    entryKey: getRouteEntryKey(location),
   });
-  const hasHandledInitialLocationRef = useRef(false);
-  const entryKey = getEntryKey(location);
+  const entryKey = getRouteEntryKey(location);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -56,14 +60,23 @@ const RouteEffects = () => {
 
     const previousLocation = previousLocationRef.current;
     const isSamePath = previousLocation.pathname === location.pathname;
-    const isInitialLocation = !hasHandledInitialLocationRef.current;
-    const isTipsIndex = location.pathname === '/' && new URLSearchParams(location.search).get('section') === 'tips';
-    const focusTipsIndex = () => {
-      const heading = document.getElementById('tip-list-title');
-      heading?.scrollIntoView({ block: 'start', behavior: 'instant' });
-      heading?.focus({ preventScroll: true });
+    if (!isSamePath || previousLocation.entryKey !== entryKey) hasNavigatedRef.current = true;
+    const section = new URLSearchParams(location.search).get('section');
+    const sectionTarget = sectionTargets[location.pathname]?.[section];
+    const focusSection = () => {
+      let attempts = 0;
+      const findSection = () => {
+        if (state.cancelled) return;
+        const heading = document.getElementById(sectionTarget);
+        if (heading) {
+          heading.scrollIntoView({ block: 'start', behavior: 'instant' });
+          heading.focus({ preventScroll: true });
+          return;
+        }
+        if (attempts++ < MAX_RESTORE_FRAMES) state.rafId = requestAnimationFrame(findSection);
+      };
+      state.rafId = requestAnimationFrame(findSection);
     };
-    hasHandledInitialLocationRef.current = true;
     previousLocationRef.current = { pathname: location.pathname, entryKey };
 
     if (navigationType === 'REPLACE' && isSamePath && previousLocation.entryKey !== entryKey) {
@@ -77,6 +90,12 @@ const RouteEffects = () => {
     }
 
     if (navigationType === 'POP') {
+      // Initial effects can run twice in development, recording a zero scroll
+      // position during cleanup. A shared section URL still takes precedence.
+      if (sectionTarget && !hasNavigatedRef.current) {
+        focusSection();
+        return () => { state.cancelled = true; };
+      }
       const savedPosition = scrollMemory.get(entryKey);
       const focusId = focusMemory.get(entryKey);
       if (savedPosition != null || focusId) {
@@ -105,14 +124,14 @@ const RouteEffects = () => {
           state.rafId = requestAnimationFrame(restoreScrollPosition);
         };
         state.rafId = requestAnimationFrame(restoreScrollPosition);
-      } else if (isInitialLocation) {
+      } else {
         window.scrollTo({ top: 0, behavior: 'instant' });
-        if (isTipsIndex) state.rafId = requestAnimationFrame(() => { if (!state.cancelled) focusTipsIndex(); });
+        if (sectionTarget) focusSection();
       }
       return () => { state.cancelled = true; };
     }
 
-    if ((navigationType === 'PUSH' || navigationType === 'REPLACE') && (!isSamePath || isTipsIndex)) {
+    if ((navigationType === 'PUSH' || navigationType === 'REPLACE') && (!isSamePath || sectionTarget)) {
       const routeReturn = location.state?.routeReturn;
       if (
         routeReturn &&
@@ -132,7 +151,7 @@ const RouteEffects = () => {
         const routeReady = Boolean(main?.querySelector('h1'));
 
         if (main && (routeReady || attempts >= MAX_FOCUS_FRAMES)) {
-          if (isTipsIndex) focusTipsIndex();
+          if (sectionTarget) focusSection();
           else main.focus({ preventScroll: true });
           return;
         }

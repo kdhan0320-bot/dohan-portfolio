@@ -14,9 +14,9 @@ function TypeExample({ revised, annotate }) {
   </div><img className="tip-gallery-image" src={sculpture} alt="" width="720" height="960" /></div>;
 }
 
-function GapMeasure({ size, between = false, annotate = false }) {
+export function GapMeasure({ size, between = false, annotate = false, measure = true }) {
   return <span className={`tip-gap${between ? ' tip-gap-between' : ''}`} style={{ height: size }}>
-    <i className="tip-gap-rule" /><span className="tip-gap-value">{size}px</span>{annotate && <Marker />}
+    {measure && <><i className="tip-gap-rule" /><span className="tip-gap-value">{size}px</span></>}{annotate && <Marker />}
   </span>;
 }
 
@@ -82,6 +82,6 @@ export default function TipComparison({ tip, compact = false }) {
   return <div className={`tip-comparison tip-comparison-${tip.kind}${compact ? ' is-compact' : ''}`} role="group" aria-label={`${tip.topic} 비교 그림`}>
     <p className="tips-sr-only">{tip.description}</p>
     <div className="tip-focus"><FocusPair tip={tip} /><p className="tip-visual-note"><span className="tips-note-number" aria-hidden="true">1</span>{tip.visualNote}</p></div>
-    {!compact && <figure className="tip-context"><figcaption><span>화면 속에서는</span><span>바꾼 뒤 · 설명용 예시</span></figcaption><div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised annotate /></div><p>{tip.contextNote}</p></figure>}
+    {!compact && <figure className="tip-context"><figcaption><span>화면 속에서는</span><span>바꾼 뒤 · 설명용 예시</span></figcaption><div className="tip-example" aria-hidden="true"><ExampleScreen kind={tip.kind} revised annotate /></div></figure>}
   </div>;
 }

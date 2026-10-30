@@ -30,11 +30,11 @@ export default function HomePage() {
         <TipLink className="tips-feature-link" to={`/tips/${tip.id}`} focusId="featured-tip">제목 크기를 바꾼 이유<TipsIcon /></TipLink>
       </div>
     </section>
-    <section className="tips-index" aria-labelledby="tip-list-title"><div className="tips-section-heading"><div><p className="tips-eyebrow">문제로 찾는 시선 노트</p><h2 id="tip-list-title" tabIndex={-1}>어떤 부분이 어색한가요?</h2></div><p>내 화면과 닮은 문제부터 살펴보세요.</p></div><TipList /></section>
+    <section className="tips-index" aria-labelledby="tip-list-title"><div className="tips-section-heading"><div><p className="tips-eyebrow">문제로 찾는 시선 노트</p><h2 id="tip-list-title" tabIndex={-1}>어떤 부분이 어색한가요?</h2></div></div><TipList /></section>
     <section className="tips-explore" aria-labelledby="explore-title"><div className="tips-section-heading"><div><p className="tips-eyebrow">내 화면으로 이어가기</p><h2 id="explore-title">기준을 알았다면, 적용해 볼 차례.</h2></div></div><div className="tips-explore-grid">
       <Link to="/case-study" className="tips-explore-card"><span className="tips-eyebrow">수정 순서가 막막할 때</span><h3>한 화면 고치기</h3><p>같은 전시 안내에서 제목, 정보, 버튼을 순서대로 고칩니다.</p><span className="tips-explore-action">적용 과정 살펴보기<TipsIcon /></span></Link>
       <Link to="/checklist" className="tips-explore-card"><span className="tips-eyebrow">공개 전 한 번 더 확인할 때</span><h3>화면 점검</h3><p>읽는 순서부터 작은 화면과 키보드 이동까지 짚어봅니다.</p><span className="tips-explore-action">여덟 가지 점검하기<TipsIcon /></span></Link>
     </div></section>
-    <aside className="tips-method"><div className="tips-method-mark"><SightMark /><span>고른시선의 관점</span></div><div><h2>하나를 바꾸고, 이유를 남깁니다.</h2><p>여러 요소가 한꺼번에 바뀌면 차이의 이유를 찾기 어렵습니다. 그래서 같은 내용에서 한 요소씩 비교합니다. 수치는 예시로, 선택은 화면의 목표와 함께 설명합니다.</p></div></aside>
+    <aside className="tips-method"><div className="tips-method-mark"><SightMark /><span>고른시선의 관점</span></div><div><h2>하나를 바꾸고, 이유를 남깁니다.</h2><p>같은 내용에서 한 요소를 바꾸고, 괄호와 간격선으로 그 차이를 짚습니다. 기준은 화면의 목표에 따라 달라질 수 있습니다.</p></div></aside>
   </TipsLayout>;
 }
