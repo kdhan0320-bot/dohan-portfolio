@@ -227,8 +227,9 @@
       number: "01",
       article: "faces",
       lens: "소리에서 대화로",
+      comparisonFocus: "소리 · 대화",
       sequence: ["파도의 기억", "숲의 호흡", "친구의 목소리", "새벽의 대화"],
-      previewDescription: "풍경에 머물다, 사람의 목소리로 돌아오기.",
+      previewDescription: "파도와 숲의 소리에서 친구와 식탁의 대화로 이어집니다.",
       previewImage: "assets/stills/tide.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
       accent: "#B6C4D8",
@@ -247,8 +248,9 @@
       number: "02",
       article: "running-time",
       lens: "마음을 건네는 방식",
+      comparisonFocus: "행동 · 관계",
       sequence: ["꺼내는 마음", "곁에 선 이웃", "못다 한 연주", "이어받는 바통"],
-      previewDescription: "말보다 먼저 마음을 전하는 작은 행동들.",
+      previewDescription: "편지와 연주, 이웃과 팀의 작은 행동에서 마음을 읽습니다.",
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
@@ -268,8 +270,9 @@
       number: "03",
       article: "enclosed-spaces",
       lens: "낯선 세계, 남겨진 선택",
+      comparisonFocus: "상상 · 선택",
       sequence: ["펼쳐진 일지", "기다리는 귀환", "접어 둔 소원", "도착한 신호"],
-      previewDescription: "세계가 낯설어질 때, 무엇을 지키고 싶은가.",
+      previewDescription: "낯선 공간과 사건 속에서 인물이 무엇을 지킬지 살펴봅니다.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
       accent: "#C5BFDD",
@@ -534,7 +537,7 @@
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
     link.style.setProperty("--collection-surface", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.comparisonFocus}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분 ${icon("arrow")}</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));

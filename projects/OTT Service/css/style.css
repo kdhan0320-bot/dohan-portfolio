@@ -1562,7 +1562,8 @@ dialog { max-width: none; }
 .film-art:focus-visible { outline-offset: -4px; }
 .poster-save:hover, .poster-save:focus-visible { background: #b6c4d813; color: var(--accent); }
 
-.home-events .section-heading { justify-content: flex-start; align-items: baseline; gap: 12px 24px; flex-wrap: wrap; }
+.home-events .section-heading { justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; }
+.home-events .section-heading > .text-link { flex: none; white-space: nowrap; }
 .events-label { max-width: none; text-align: left; color: var(--muted); }
 .event-grid { grid-template-columns: 1fr; gap: 20px; }
 .event-banner, .event-lead { min-height: 252px; grid-template-columns: 1fr; border-radius: 6px; background: #333d42; --event-accent: var(--summer-sage); }
@@ -1672,7 +1673,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .picker-button { min-width: 140px; padding-inline: 16px; }
   .home-films .film-foot { padding: 6px 8px; }
   .rail-pagination { width: min(100%,320px); gap: 16px; }
-  .home-events .section-heading { display: block; }
+  .home-events .section-heading { gap: 8px 14px; }
   .events-label { margin-top: 8px; }
   .event-banner, .event-banner:not(.event-lead) { min-height: 252px; }
   .event-copy, .event-lead .event-copy { width: 100%; padding: 24px; }
