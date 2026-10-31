@@ -278,7 +278,7 @@ test('repeating an invalid interview save reopens and reveals the question every
     await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} });
     page.render();
     assert.equal(detailsOpen, true, 'a collapsed field must reopen');
-    assert.equal(focused, attempt + 1, 'opening and every invalid save must focus the question');
+    assert.equal(focused, attempt, 'every invalid save must focus the question');
     assert.equal(revealed, attempt, 'the same error must still reveal its input');
   }
   assert.equal(saves, 0, 'invalid attempts must never save a record');
@@ -329,13 +329,17 @@ test('question management edits company details directly, preserves the answer, 
   let page = await mount('InterviewPage', dependencies);
   await page.click('기록 수정');
   assert.equal(page.find(node => node.type === 'form').props['aria-label'], '면접 기록 수정');
+  const summary = () => text(page.find(node => node.props?.className === 'inline-editor-summary'));
+  assert.equal(summary(), '첫 회사·지원한 이유는?');
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer').props.value, '그대로 보존할 긴 답변');
   page.find(node => node.type === 'Field' && node.props.id === 'note-question').props.onChange({ target: { value: '새 질문' } }); page.render();
   page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.onChange({ target: { value: 'a2' } }); page.render();
+  assert.equal(summary(), '둘째 회사·새 질문', 'the compact context follows unsaved edits, not the old record');
   page = await mount('InterviewPage', dependencies);
   await page.click('이어서 작성');
   assert.equal(page.find(node => node.type === 'form').props['aria-label'], '면접 기록 수정');
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-company').props.value, 'a2');
+  assert.equal(summary(), '둘째 회사·새 질문', 'resuming a draft restores its current question and company');
   await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
   assert.equal(notes[0].question, '새 질문');
   assert.equal(notes[0].application_id, 'a2');
@@ -348,9 +352,9 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
   let nextFrame = 0;
   let resized;
   const caretScrollPositions = [];
-  const fields = { clientHeight: 12, scrollTop: 41 };
-  const editor = { querySelector: selector => selector === '.field-stack' ? fields : { offsetHeight: 22 } };
-  const answer = { focus() {}, closest: () => editor, selectionStart: 0, selectionEnd: 0 };
+  const fields = { clientHeight: 12, scrollTop: 41, getBoundingClientRect: () => ({ top: 100 }) };
+  const editor = { querySelector: selector => selector === '.field-stack' ? fields : { offsetHeight: 22, getBoundingClientRect: () => ({ top: 300 }) } };
+  const answer = { focus() {}, setSelectionRange(start, end) { this.selectionStart = start; this.selectionEnd = end; }, closest: () => editor, selectionStart: 0, selectionEnd: 0 };
   const flush = () => { const pending = [...frames.values()]; frames.clear(); pending.forEach(fn => fn()); };
   const page = await mount('InterviewPage', {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
@@ -365,7 +369,7 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
       schedule();
       return { schedule, disconnect() {} };
     } },
-  }, undefined, { activeElement: {}, getElementById: id => id === 'note-answer' ? answer : null }, {
+  }, undefined, { activeElement: answer, getElementById: id => id === 'note-answer' ? answer : null }, {
     requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
     cancelAnimationFrame: id => frames.delete(id),
     getComputedStyle: () => ({ lineHeight: '27.2px' }),
@@ -375,12 +379,12 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
   assert.deepEqual(caretScrollPositions, [], 'a padding-only transitional layout must not move the caret');
   fields.clientHeight = 217;
   resized(); flush();
-  assert.deepEqual(caretScrollPositions, [0], 'the first usable layout must show the label and first line');
+  assert.deepEqual(caretScrollPositions, [237], 'the first usable layout must show the answer label and first line below the context fields');
   fields.scrollTop = 120;
   answer.selectionStart = answer.selectionEnd = 80;
   fields.clientHeight = 160;
   resized(); flush();
-  assert.deepEqual(caretScrollPositions, [0, 120], 'later resizing must not reset the reading or editing position');
+  assert.deepEqual(caretScrollPositions, [237, 120], 'later resizing must not reset the reading or editing position');
   assert.equal(answer.selectionStart, 80);
 });
 

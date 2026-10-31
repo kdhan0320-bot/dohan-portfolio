@@ -647,8 +647,8 @@ h1, h2, h3, h4 { color: var(--ink); }
  .company-first-overview .today-date { grid-column: 2; }
  .company-first-overview .today-next { grid-column: 3; }
  .company-first-overview .today-record-followup .today-next { grid-column: 3; }
- .workspace-main .interview-page .inline-answer-editor > .field-stack { display: grid; grid-template-columns: minmax(220px,.8fr) minmax(0,1.2fr); gap: 24px; align-content: start; align-items: start; }
- .inline-answer-editor .interview-record-context { grid-template-columns: minmax(0,1fr); gap: 16px; }
+ .workspace-main .interview-page .inline-answer-editor > .field-stack { display: grid; grid-template-columns: minmax(0,1fr); gap: 24px; align-content: start; align-items: start; }
+ .inline-answer-editor .interview-record-context { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
  .inline-answer-editor .interview-record-fields { gap: 16px; }
  .inline-answer-editor > .field-stack > .MuiAlert-root { grid-column: 1 / -1; }
  .inline-answer-editor .interview-answer-field { min-width: 0; }

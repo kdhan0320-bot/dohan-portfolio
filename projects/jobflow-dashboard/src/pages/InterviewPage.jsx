@@ -93,19 +93,23 @@ export default function InterviewPage() {
   useLayoutEffect(() => {
     if (!open || !editingId) return;
     const answer = answerInput.current;
-    document.getElementById('note-question')?.focus({ preventScroll: true });
     const editor = answer?.closest('form');
     const fields = editor?.querySelector('.field-stack');
     if (!answer || !fields) return;
+    answer.focus({ preventScroll: true });
+    answer.setSelectionRange(0, 0);
     let opening = true;
     const layout = observeTextareaLayout(answer, fields, () => {
       revealMobileEditor(editor);
-      // Opening starts at the question, but never overrides a user's new caret.
+      // Open at the answer's first line with its label, without overriding
+      // a selection the user has already moved while the layout settles.
       if (opening) {
         const label = editor.querySelector('#note-answer-label');
         const lineHeight = parseFloat(window.getComputedStyle(answer).lineHeight) || 28;
         if (fields.clientHeight < (label?.offsetHeight || 0) + lineHeight + 24) return false;
-        if (document.activeElement !== answer) fields.scrollTop = 0;
+        if (document.activeElement === answer && answer.selectionStart === 0 && answer.selectionEnd === 0 && label) {
+          fields.scrollTop += label.getBoundingClientRect().top - fields.getBoundingClientRect().top - 4;
+        }
         opening = false;
       }
     });
@@ -352,7 +356,18 @@ export default function InterviewPage() {
         const editor = event.currentTarget;
         window.requestAnimationFrame(() => { if (editor.contains(document.activeElement)) revealMobileEditor(editor); });
       }}>
-        <h2>면접 기록 수정</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '변경 저장'}</Button></div>
+        <h2>면접 기록 수정</h2>
+        <button type="button" className="inline-editor-summary" aria-label="질문·회사 정보 수정" aria-describedby="interview-editor-company interview-editor-question" title="질문·회사 정보 수정" disabled={Boolean(busy)} onClick={() => {
+          const question = document.getElementById('note-question');
+          question?.focus({ preventScroll: true });
+          question?.closest('.field-stack')?.scrollTo({ top: 0, behavior: 'instant' });
+        }}>
+          <span id="interview-editor-company" className="inline-editor-company" title={companyLabel(form)}>{companyLabel(form)}</span>
+          <span aria-hidden="true">·</span>
+          <span id="interview-editor-question" className="inline-editor-question" title={form.question.trim() || '질문 미입력'}>{form.question.trim() || '질문 미입력'}</span>
+          <EditOutlined aria-hidden="true" />
+        </button>
+        {formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '변경 저장'}</Button></div>
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
           <span className="practice-company-label">
