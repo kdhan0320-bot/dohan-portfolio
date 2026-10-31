@@ -140,6 +140,7 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "atlas",
+      posterArtwork: "assets/posters-v44/atlas.jpg",
       posterPath: "assets/frames-v36/atlas.webp",
       detailPosition: "center 4%",
       detailRatio: "1.25",
@@ -227,7 +228,7 @@
       article: "faces",
       lens: "소리에서 대화로",
       sequence: ["파도의 기억", "숲의 호흡", "친구의 목소리", "새벽의 대화"],
-      previewDescription: "파도와 숲에 귀를 기울인 뒤, 사람의 목소리로 돌아오는 네 편.",
+      previewDescription: "풍경에 머물다, 사람의 목소리로 돌아오기.",
       previewImage: "assets/stills/tide.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
       accent: "#B6C4D8",
@@ -247,7 +248,7 @@
       article: "running-time",
       lens: "마음을 건네는 방식",
       sequence: ["꺼내는 마음", "곁에 선 이웃", "못다 한 연주", "이어받는 바통"],
-      previewDescription: "편지와 도움, 연주와 계주. 말 대신 건네는 행동으로 관계를 읽는 네 편.",
+      previewDescription: "말보다 먼저 마음을 전하는 작은 행동들.",
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
@@ -268,7 +269,7 @@
       article: "enclosed-spaces",
       lens: "낯선 세계, 남겨진 선택",
       sequence: ["펼쳐진 일지", "기다리는 귀환", "접어 둔 소원", "도착한 신호"],
-      previewDescription: "일지를 펼치고, 귀환을 기다리고, 소원을 고르는 사람들. 세계보다 선택에 주목한 네 편.",
+      previewDescription: "세계가 낯설어질 때, 무엇을 지키고 싶은가.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
       accent: "#C5BFDD",
@@ -289,7 +290,7 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "기억을 꺼내는 파도와 숲의 소리에서, 친구와 이웃이 나누는 대화로 이어집니다. 사건의 속도보다 인물과 풍경에 머물고 싶을 때 고른 네 편입니다.",
+        "파도와 물소리로 시작해 친구와 식탁의 대화로 끝납니다. 조용함을 고립이 아닌 관계로 이어지는 순서로 골랐습니다.",
       ],
     },
     {
@@ -298,7 +299,7 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "18분의 편지에서 시작해 연주와 계주로 관계를 넓혀갑니다. 말로 다 하지 못한 마음을 무엇으로 건네는지, 서로 다른 행동을 나란히 보세요.",
+        "편지를 꺼내는 사적인 순간에서 이웃, 밴드, 팀으로 관계의 범위를 넓혔습니다. 마음이 행동으로 드러나는 순간을 따라가세요.",
       ],
     },
     {
@@ -307,12 +308,11 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "온실의 비밀에서 귀환과 마지막 소원, 미래의 신호로 이어집니다. 낯선 세계보다 그 안의 선택에 주목했습니다.",
+        "낯선 공간이 인물의 선택을 어떻게 바꾸는지에 주목했습니다. 비밀을 발견하는 이야기에서 신호에 답해야 하는 이야기로 이어집니다.",
       ],
     },
   ];
   const $ = (id) => document.getElementById(id);
-  const pickers = new Map();
   const storageKey = "jansang-cinema:saved:v1";
   const notesKey = "jansang-cinema:notes:v1";
   const libraryViewKey = "jansang-cinema:library-view:v1";
@@ -640,7 +640,7 @@
     $("homeEmpty").hidden = visible.length > 0;
     $("homeResultCount").textContent = `${visible.length}편`;
     $("homeDuration").value = state.homeDuration;
-    syncPickers();
+    syncHomeOptions(visible.length);
     document.querySelectorAll("[data-home-mood]").forEach((button) =>
       button.setAttribute(
         "aria-pressed",
@@ -979,7 +979,6 @@
     $("durationField").hidden = state.view !== "browse";
     $("durationFilter").value = state.duration;
     $("catalogSort").value = state.sort;
-    syncPickers();
     syncCatalogOptions();
     $("catalogTools").classList.toggle("library-tools", state.view === "saved");
     document
@@ -1061,7 +1060,7 @@
     else location.hash = hash;
   }
   function route() {
-    closePickers();
+    $("homeOptions").open = false;
     $("catalogOptions").open = false;
     stopRailMotion();
     dialogRouteVersion += 1;
@@ -1185,12 +1184,16 @@
     state.homeDuration = event.target.value;
     renderHome();
   });
-  $("homeReset").addEventListener("click", () => {
+  function resetHomeOptions() {
     state.homeMood = "all";
     state.homeDuration = "all";
     renderHome();
-    document.querySelector('[data-home-mood="all"]').focus();
+  }
+  $("homeReset").addEventListener("click", () => {
+    resetHomeOptions();
+    focusOptionsSummary($("homeOptions"));
   });
+  $("homeOptionsReset").addEventListener("click", resetHomeOptions);
   $("catalogSort").addEventListener("change", (event) => {
     if (!["recommended", "title", "short"].includes(event.target.value)) return;
     state.sort = event.target.value;
@@ -2046,93 +2049,7 @@
     $("main-content").focus();
     $("main-content").scrollIntoView({ block: "start" });
   });
-  function syncPickers() {
-    pickers.forEach(({ select, button, options, label }) => {
-      const selected = select.selectedOptions[0];
-      button.querySelector(".picker-value").textContent = selected?.textContent || "선택";
-      button.setAttribute("aria-label", `${label}: ${selected?.textContent || "선택"}`);
-      options.forEach(option => option.setAttribute("aria-selected", String(option.dataset.value === select.value)));
-    });
-  }
-  function closePickers(returnFocus = false) {
-    pickers.forEach(({ button, menu }) => {
-      if (menu.hidden) return;
-      menu.hidden = true;
-      button.setAttribute("aria-expanded", "false");
-      if (returnFocus) button.focus({ preventScroll: true });
-    });
-  }
-  function enhanceSelect(select) {
-    const label = select.labels?.[0]?.textContent.trim() || "영화 정렬";
-    const wrapper = document.createElement("div");
-    wrapper.className = "select-picker";
-    const button = document.createElement("button");
-    button.type = "button";
-    button.id = `${select.id}Button`;
-    button.className = "picker-button";
-    button.setAttribute("aria-haspopup", "listbox");
-    button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-controls", `${select.id}Menu`);
-    button.innerHTML = '<span class="picker-value"></span><svg class="icon picker-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
-    const menu = document.createElement("div");
-    menu.id = `${select.id}Menu`;
-    menu.className = "picker-menu";
-    menu.hidden = true;
-    menu.setAttribute("role", "listbox");
-    menu.setAttribute("aria-label", label);
-    const options = [...select.options].map(item => {
-      const option = document.createElement("button");
-      option.type = "button";
-      option.tabIndex = -1;
-      option.className = "picker-option";
-      option.dataset.value = item.value;
-      option.setAttribute("role", "option");
-      option.textContent = item.textContent;
-      option.addEventListener("click", () => {
-        select.value = item.value;
-        closePickers(true);
-        select.dispatchEvent(new Event("change", { bubbles: true }));
-        syncPickers();
-      });
-      menu.append(option);
-      return option;
-    });
-    const open = (last = false) => {
-      closePickers();
-      menu.hidden = false;
-      button.setAttribute("aria-expanded", "true");
-      (last ? options.at(-1) : options.find(option => option.dataset.value === select.value) || options[0]).focus();
-    };
-    button.addEventListener("click", () => menu.hidden ? open() : closePickers(true));
-    button.addEventListener("keydown", event => {
-      if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
-      event.preventDefault();
-      open(event.key === "ArrowUp");
-    });
-    menu.addEventListener("keydown", event => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closePickers(true);
-      } else if (event.key === "Tab") {
-        closePickers(true);
-      } else if (["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
-        event.preventDefault();
-        const current = options.indexOf(document.activeElement);
-        const index = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (current + (event.key === "ArrowDown" ? 1 : -1) + options.length) % options.length;
-        options[index].focus();
-      } else if (event.key.length === 1 && event.key !== " ") {
-        const option = options.find(item => item.textContent.startsWith(event.key));
-        if (option) { event.preventDefault(); option.focus(); }
-      }
-    });
-    select.after(wrapper);
-    wrapper.append(button, menu);
-    select.hidden = true;
-    select.labels?.[0]?.addEventListener("click", event => { event.preventDefault(); button.focus(); });
-    pickers.set(select.id, { select, button, menu, options, label });
-  }
-  enhanceSelect($("homeDuration"));
-  [$("durationFilter"), $("catalogSort")].forEach(select => {
+  [$("homeDuration"), $("durationFilter")].forEach(select => {
     const choices = document.querySelector(`[data-options-for="${select.id}"]`);
     [...select.options].forEach(option => {
       const label = document.createElement("label");
@@ -2164,13 +2081,34 @@
     $("catalogSelection").hidden = !selections.length;
     $("catalogOptionsActive").hidden = !selections.length;
   }
+  function focusOptionsSummary(options) {
+    const summary = options.querySelector("summary");
+    summary.focus({ preventScroll: true });
+    // Keep the returning control below the sticky header after the panel collapses.
+    requestAnimationFrame(() => {
+      if (document.activeElement !== summary) return;
+      const headerBottom = document.querySelector(".header").getBoundingClientRect().bottom;
+      const rect = summary.getBoundingClientRect();
+      if (rect.top < headerBottom + 12)
+        window.scrollBy({ top: rect.top - headerBottom - 12, behavior: "instant" });
+      else if (rect.bottom > window.innerHeight - 20)
+        summary.scrollIntoView({ block: "nearest", behavior: "instant" });
+    });
+  }
   const closeCatalogOptions = (focus = false) => {
     $("catalogOptions").open = false;
-    if (focus) $("catalogOptions").querySelector("summary").focus({ preventScroll: true });
+    if (focus) focusOptionsSummary($("catalogOptions"));
   };
   function fitCatalogOptions() {
     const options = $("catalogOptions");
     if (!options.open) return;
+    const panel = options.querySelector(".catalog-options-panel");
+    // On small screens the filter expands in the page, with one scroll surface.
+    if (matchMedia("(max-width: 600px)").matches && state.view === "browse") {
+      panel.style.maxHeight = "none";
+      options.dataset.position = "inline";
+      return;
+    }
     const rect = options.querySelector("summary").getBoundingClientRect();
     const viewport = window.visualViewport;
     const top = viewport?.offsetTop || 0;
@@ -2190,18 +2128,33 @@
     if (event.key === "Escape") { event.preventDefault(); closeCatalogOptions(true); }
   });
   document.addEventListener("pointerdown", event => {
-    if (!event.target.closest("#catalogOptions")) closeCatalogOptions();
+    if (getComputedStyle($("catalogOptions").querySelector(".catalog-options-panel")).position !== "static" &&
+      !event.target.closest("#catalogOptions")) closeCatalogOptions();
   });
   document.addEventListener("focusin", event => {
-    if (!event.target.closest("#catalogOptions")) closeCatalogOptions();
+    if (getComputedStyle($("catalogOptions").querySelector(".catalog-options-panel")).position !== "static" &&
+      !event.target.closest("#catalogOptions")) closeCatalogOptions();
   });
-  document.addEventListener("pointerdown", event => {
-    if (!event.target.closest(".select-picker")) closePickers();
+  function syncHomeOptions(count) {
+    const mood = document.querySelector(`[data-home-mood="${state.homeMood}"]`).textContent;
+    const duration = $("homeDuration").selectedOptions[0].textContent;
+    $("homeSelection").textContent = `${state.homeMood === "all" ? "전체 분위기" : mood} · ${duration}`;
+    $("homeOptionsActive").hidden = state.homeMood === "all" && state.homeDuration === "all";
+    $("homeOptionsDone").firstChild.textContent = `${count}편 보기`;
+    document.querySelectorAll('[name="homeDurationChoice"]').forEach(input => {
+      input.checked = input.value === state.homeDuration;
+    });
+  }
+  const closeHomeOptions = (focus = false) => {
+    $("homeOptions").open = false;
+    if (focus) focusOptionsSummary($("homeOptions"));
+  };
+  $("homeOptionsDone").addEventListener("click", () => closeHomeOptions(true));
+  $("homeOptions").addEventListener("keydown", event => {
+    if (event.key === "Escape") { event.preventDefault(); closeHomeOptions(true); }
   });
-  document.addEventListener("focusin", event => {
-    if (!event.target.closest(".select-picker")) closePickers();
-  });
-  syncPickers();
+  // In-flow panels close explicitly: collapsing on pointerdown would move the
+  // film underneath the pointer before its click can open the detail dialog.
   renderHome();
   route();
 })();

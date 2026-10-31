@@ -1,5 +1,41 @@
 # 잔상관 Asset Provenance
 
+## v44 종이 포스터 마감 · 별을 접는 아이 — 2026-10-31
+
+사용자가 요청한 종이 질감과 자연스러운 제목 구성을 기존 자체 생성 포스터에 적용했습니다. 내장 OpenAI `image_gen.imagegen` 편집을 두 차례 사용했으며 정확한 모델 버전은 제공되지 않았습니다. 기존 아이·마지막 종이·별·창가의 장면과 가상 줄거리를 유지하고, 제목의 각진 입체 면을 덜어 평면적인 글자로 정리했습니다. 직접 레터링·실제 촬영·AI 인상 제거·독점 권리를 주장하지 않습니다.
+
+- 입력: `assets/posters-v37/atlas.jpg`
+- 1차 생성 PNG: `exec-4e849909-546f-4e4f-b7c9-97f9caea2645.png`
+- 최종 생성 PNG: `exec-5b9f4e7a-34a3-4cf0-b53b-6882fdd4cb0d.png`
+- 배포 파일: `assets/posters-v44/atlas.jpg`, 1024×1536. Windows System.Drawing JPEG quality 90으로 형식만 변환했습니다.
+- 기존 포스터와 팝업 장면은 보존합니다. 참고 사이트의 포스터·브랜드·타 작가 작품은 입력하지 않았습니다.
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 입력 | 408937 | `d4ffbb0c6959aa4f6e0cfbf4504479a7d52bcfb86ef8de96e639e81a4ce72c73` |
+| 최종 PNG | 2957271 | `c6129abc15d2b13145e72121c75f039891d65273e775c09653b7882226c58ac5` |
+| 배포 JPEG | 441897 | `31cfdd2d5c4a128e160f923ac4c7af3621562254efa59c9af4d233e3bb78b85f` |
+
+### 1차 프롬프트
+
+```text
+Use case: style-transfer.
+Asset type: a finished 2:3 portrait movie poster for the original fictional animated short film "별을 접는 아이".
+Input image 1 is the edit target: the existing original poster. Keep the same young child seen from behind, tied dark hair, muted plum sweater, wooden table and window, folded paper stars, the last sheet in the child's hands, and quiet night outside. Keep the story and recognisable composition. Do not introduce other characters or objects.
+Refine the whole image toward a restrained illustrated poster printed on soft uncoated paper. Preserve the hand-painted character drawing; replace the overly crunchy uniform texture with delicate, uneven paper fibres, subtle ink absorption and visible gentle folds only on actual paper. Less amber rim light, more natural muted ink blue, plum, soft warm ivory. Keep the hands and last sheet readable. Avoid glossy 3D, photoreal skin and artificially distressed noise.
+Redesign the title so it is naturally part of the printed composition: readable, modestly irregular hand-drawn Korean lettering, ivory ink on the blue window sky, flat soft-edged strokes with a few subtle paper-cut details. Not extruded, faceted, bevelled or shiny letters. Preserve generous open space around the title and separation from the child's head.
+Exact Korean title only: "별을 접는 아이", arranged as "별을 접는" then "아이" with a balanced, gently offset layout. All Hangul spelling must be correct.
+Exact smaller English subtitle: "THE PAPER CONSTELLATION".
+Keep lettering inside a 7% safe margin. No other text, slogans, credits, awards, dates, logos, watermark or border. One complete poster, no mockup. Preserve the story of a child deciding whose wish to put into the last paper star.
+```
+
+### 최종 교정 프롬프트
+
+```text
+Edit the supplied poster. Preserve all character identity, story, framing, title wording and title placement. Make ONE focused art-direction correction: replace the highly faceted origami-like title strokes with FLAT, matte ivory hand-lettered ink. The Korean title must read exactly "별을 접는 아이"; keep "별을 접는" on line one, "아이" on line two, and smaller "THE PAPER CONSTELLATION" below. No triangular facets, bevels, extrusions, origami planes or metallic highlights anywhere inside the letter shapes. Use a soft, gently irregular brush/ink edge, print-like lettering absorbed into blue paper, natural and clear.
+Also soften the coarse all-over crumpled texture to subtle uncoated-paper grain while preserving actual folds on the paper held by the child and the paper stars. Keep the hands, plum sweater, window, single child, last sheet and night scene unchanged. The printed poster should feel tactile and illustrated rather than digitally embossed. No added text or logos. Finished 2:3 vertical poster.
+```
+
 ## v39 영화 편집 잡지 방향 · 느린 궤도 — 2026-10-26
 
 사용자가 선택한 “영화 편집 잡지 — 강한 이미지 배치와 편집 디자인” 방향에 따라, 다른 작품의 녹음 장면과 비슷했던 느린 궤도를 관측창·지구·귀환을 기다리는 기록원 중심으로 다시 구성했습니다. 내장 OpenAI `image_gen.imagegen` 편집을 사용했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다.
