@@ -53,7 +53,7 @@ export default function DashboardPage() {
   return <div className="diary-overview">
     <header className="diary-page-heading">
       <time className="diary-date-stamp" dateTime={today} aria-label={`${today.slice(0, 4)}년 ${dateText}`}><span>{today.slice(0, 7).replace('-', '.')}</span><strong>{Number(today.slice(8))}</strong></time>
-      <div><p>{WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일{isGuest ? ' · 샘플 기준일' : ''}</p><h1>오늘의 지원 기록</h1></div>
+      <div className="diary-heading-copy"><h1>오늘의 지원 기록</h1><p>{WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일{isGuest ? ' · 샘플 기준일' : ''}</p></div>
       <DiaryBookmark label="오늘" />
     </header>
     <LoadState loading={loading} error={error} retry={() => { apps.refresh(); check.refresh(); }} />

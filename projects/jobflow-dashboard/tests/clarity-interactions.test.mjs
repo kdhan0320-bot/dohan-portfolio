@@ -273,6 +273,40 @@ test('repeating an invalid interview save reopens and reveals the question every
   assert.equal(saves, 0, 'invalid attempts must never save a record');
 });
 
+test('interview validation clears only when its field is corrected, and keeps save failures visible', async () => {
+  let saves = 0;
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'company', company_name: '회사' }] }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({
+      notes: [{ id: 'q1', question: '기존 질문', answer: '기존 답변', application_id: null }],
+      update: async () => { saves++; throw new Error('저장 연결을 확인해주세요.'); },
+    }) },
+  });
+  const change = (id, value) => { page.find(n => n.type === 'Field' && n.props.id === id).props.onChange({ target: { value } }); page.render(); };
+  const submit = async () => { await page.find(n => n.type === 'form').props.onSubmit({ preventDefault() {} }); page.render(); };
+  await page.click('기록 수정');
+  change('note-question', '');
+  await submit();
+  change('note-answer', '답변만 바꿈');
+  assert.match(page.text(), /질문을 입력해주세요/);
+  change('note-question', '   ');
+  assert.match(page.text(), /질문을 입력해주세요/);
+  change('note-question', '수정한 질문');
+  assert.doesNotMatch(page.text(), /질문을 입력해주세요/);
+  change('note-company', 'missing');
+  await submit();
+  change('note-question', '질문을 다시 수정');
+  assert.match(page.text(), /지원 회사를 다시 선택해주세요/);
+  change('note-company', 'company');
+  assert.doesNotMatch(page.text(), /지원 회사를 다시 선택해주세요/);
+  assert.equal(saves, 0);
+  await submit();
+  change('note-question', '저장 재시도용 질문');
+  assert.match(page.text(), /저장 연결을 확인해주세요/, 'editing must not hide an unresolved save failure');
+  assert.equal(saves, 1);
+});
+
 test('question management edits company details directly, preserves the answer, and resumes its draft', async () => {
   const store = createRecordDraftStore();
   let notes = [{ id: 'q1', question: '지원한 이유는?', answer: '그대로 보존할 긴 답변', application_id: 'a1', related_project: '포트폴리오', importance: '보통', is_reviewed: false }];

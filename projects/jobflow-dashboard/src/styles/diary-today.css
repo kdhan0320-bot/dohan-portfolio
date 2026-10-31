@@ -3,10 +3,11 @@ body:has(.workspace-diary) { min-width: 0; }
 .diary-sidebar-caption, .diary-utility-links { display: none; }
 .diary-overview { color: var(--ink); }
 .diary-page-heading { position: relative; display: flex; align-items: center; gap: 28px; padding: 0 0 28px; border-bottom: 2px solid var(--ink-action); }
-.diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; padding: 0; border-right: 1px solid var(--line); color: var(--record-blue); font-variant-numeric: tabular-nums; }
-.diary-date-stamp > span { font-size: 13px; font-weight: 550; letter-spacing: .04em; white-space: nowrap; }
+.diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80px; padding: 0; border-right: 1px solid var(--line); color: var(--record-blue); font-variant-numeric: tabular-nums; }
+.diary-heading-copy { display: grid; grid-template-rows: auto minmax(24px, auto); align-content: center; gap: 4px; min-height: 80px; }
+.diary-date-stamp > span { font-size: 13px; line-height: 18px; font-weight: 550; letter-spacing: .04em; white-space: nowrap; }
 .diary-date-stamp > strong { font-size: 52px; font-weight: 500; line-height: 1.15; letter-spacing: -.04em; }
-.diary-page-heading p { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+.diary-page-heading p { margin: 0; color: var(--muted); font-size: 14px; line-height: 24px; }
 .diary-page-heading h1 { margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -.04em; line-height: 1.4; }
 /* The marker sits in the paper's outer margin, independent of the action grid. */
 .diary-page-tab { --marker-fill: var(--record-wash); --marker-ink: var(--record-blue); position: absolute; right: -40px; top: -48px; display: flex; align-items: center; justify-content: center; width: 28px; height: 88px; padding: 12px 0 18px; background: var(--marker-fill); color: var(--marker-ink); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 92%, 0 100%); font-size: 12px; pointer-events: none; }
@@ -111,6 +112,7 @@ body:has(.workspace-diary) { min-width: 0; }
   .workspace-diary .site-account-actions { padding-top: 12px; }
   .workspace-with-topnav.workspace-diary .workspace-main { padding-top: 28px; padding-bottom: 24px; }
   .diary-page-heading { padding-bottom: 20px; }
+  .diary-date-stamp, .diary-heading-copy { min-height: 68px; }
   .diary-date-stamp > strong { font-size: 42px; }
   .diary-page-heading h1 { font-size: 28px; }
   .diary-page-tab { top: -28px; }
@@ -122,6 +124,11 @@ body:has(.workspace-diary) { min-width: 0; }
 }
 
 @media (max-width: 999px) {
+  .diary-page-heading { gap: 20px; padding-bottom: 24px; }
+  .diary-date-stamp { flex-basis: 68px; }
+  .diary-date-stamp, .diary-heading-copy { min-height: 68px; }
+  .diary-date-stamp > strong { font-size: 42px; }
+  .diary-page-heading h1 { font-size: 28px; }
   .workspace-with-topnav.workspace-diary { background: #edf0f0; }
   .workspace-with-topnav.workspace-diary > .workspace-content { padding: 0; background: transparent; }
   .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 40px); margin: 24px auto 0; padding: 32px 28px; border: 1px solid #d6d3dd; border-radius: 4px 12px 4px 4px; background: #fff; box-shadow: 3px 3px 0 #e0e5e4; }
@@ -142,11 +149,12 @@ body:has(.workspace-diary) { min-width: 0; }
 @media (max-width: 599px) {
   .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
   .diary-page-heading { gap: 16px; padding: 0 0 20px; }
-  .diary-date-stamp { flex-basis: 64px; padding: 0; }
+  .diary-date-stamp { flex-basis: 64px; padding: 0; min-height: 64px; }
+  .diary-heading-copy { min-height: 64px; grid-template-rows: auto minmax(20px, auto); }
   .diary-date-stamp > span { font-size: 11px; letter-spacing: 0; }
   .diary-date-stamp > strong { font-size: 40px; }
   .diary-page-heading h1 { font-size: 23px; white-space: nowrap; }
-  .diary-page-heading p { font-size: 12px; margin-bottom: 5px; }
+  .diary-page-heading p { font-size: 12px; line-height: 20px; }
   .diary-page-tab { top: -24px; right: -14px; width: 12px; height: 36px; padding: 0; }
   .diary-page-tab > span { display: none; }
   .diary-support-summary { gap: 0; padding: 10px 0 16px; }

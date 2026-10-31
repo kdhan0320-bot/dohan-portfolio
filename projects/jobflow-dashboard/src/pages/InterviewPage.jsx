@@ -224,6 +224,11 @@ export default function InterviewPage() {
     // Persist synchronously before a browser Back action can unmount this page.
     drafts.write(draftId, next, originalForm);
     setForm(next);
+    const corrected = validationTarget?.fieldId === 'note-question'
+      ? Boolean(next.question.trim())
+      : validationTarget?.fieldId === 'note-company'
+        && (!next.application_id || companyMap.has(next.application_id));
+    if (corrected) { setFormError(''); setValidationTarget(null); }
   }
   function requestClose() {
     if (busy) return;
@@ -258,6 +263,7 @@ export default function InterviewPage() {
     }
     setBusy(editingId ? 'edit' : 'add');
     setFormError('');
+    setValidationTarget(null);
     try {
       const payload = {
         application_id: form.application_id || null,
@@ -334,13 +340,13 @@ export default function InterviewPage() {
   {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. </Alert>}
   <div className="interview-controls">
     <div className="interview-filter-bar">
-      <Button variant="outlined" startIcon={<TuneOutlined />} aria-label={`필터${filterCount ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="interview-filters" disabled={open} onClick={() => setFiltersOpen(value => !value)}>
-        필터{filterCount > 0 && <span className="filter-count" aria-hidden="true">{filterCount}</span>}
-      </Button>
       {filterCount > 0 && <div className="interview-filter-summary">
         <span>{scopeLabel}{topic !== 'all' ? ` · ${topic === 'none' ? '주제 미지정' : topic}` : ''}</span>
         <Button disabled={open} onClick={() => { selectCompany('all'); setTopic('all'); }}>필터 해제</Button>
       </div>}
+      <Button variant="outlined" startIcon={<TuneOutlined />} aria-label={`필터${filterCount ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="interview-filters" disabled={open} onClick={() => setFiltersOpen(value => !value)}>
+        필터{filterCount > 0 && <span className="filter-count" aria-hidden="true">{filterCount}</span>}
+      </Button>
     </div>
     <div id="interview-filters" className="interview-filter-fields" hidden={!filtersOpen}>
       <Field id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => scopeLabel } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>

@@ -5,8 +5,9 @@
   min-height: 110px; margin: 0 0 28px; padding: 0 0 28px;
   border: 0; border-bottom: 2px solid var(--ink-action); gap: 20px;
 }
-.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { position: relative; display: flex; flex: 1 1 auto; width: auto; min-width: 0; flex-direction: column; align-items: flex-start; justify-content: center; min-height: 80px; padding-left: 120px; }
-.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { margin-inline: 0; align-self: flex-start; text-align: left; }
+.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { position: relative; display: grid; flex: 1 1 auto; width: auto; min-width: 0; grid-template-rows: auto minmax(24px, auto); align-content: center; align-items: start; gap: 4px; min-height: 80px; padding-left: 120px; }
+.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { margin: 0; font-size: 14px; line-height: 24px; text-align: left; }
+.workspace-diary .workspace-main .page-heading-title-row { margin: 0; min-height: 0; }
 .workspace-diary .workspace-main .page-heading h1 { font-size: 32px; line-height: 1.4; font-weight: 600; }
 .workspace-diary .workspace-main .heading-icon { position: absolute; left: 0; top: 0; width: 92px; height: 80px; padding: 0; border-right: 1px solid var(--line); color: var(--ink-action); }
 .workspace-diary .workspace-main .heading-icon[data-kind='check'] { color: var(--mint-ink); }
@@ -22,13 +23,13 @@
 /* The welcome page is the opening spread. Its preview remains interactive. */
 .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { position: relative; display: block; width: 100%; min-height: 0; max-width: none; margin: 0; padding: 48px 52px 36px; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 .diary-welcome #welcome-content > .diary-page-tab { top: 0; right: 12px; }
-.diary-welcome .galpi-intro { position: relative; display: block; width: 100%; max-width: 1100px; margin: 0 auto 36px; padding: 12px 0 36px; border-bottom: 2px solid var(--ink-action); text-align: left; }
+.diary-welcome .galpi-intro { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 236px; align-items: end; gap: 32px; width: 100%; max-width: 1100px; margin: 0 auto 36px; padding: 12px 0 36px; border-bottom: 2px solid var(--ink-action); text-align: left; }
 .diary-welcome .galpi-intro-heading { margin: 0; max-width: none; text-align: left; }
 .diary-welcome .galpi-eyebrow { display: block; width: auto; padding: 0; margin: 0 0 16px; color: var(--ink-action); font-size: 14px; letter-spacing: .02em; text-align: left; background: transparent; }
 .diary-welcome .galpi-intro h1 { margin: 0; font-size: clamp(30px, 2.1vw, 42px); line-height: 1.4; letter-spacing: -.04em; }
 .diary-welcome .galpi-intro h1 em { display: inline; color: var(--ink); }
 .diary-welcome .galpi-intro-heading > p { margin: 16px 0 0; font-size: 16px; }
-.diary-welcome .galpi-intro-action { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin: 24px 0 0; text-align: left; }
+.diary-welcome .galpi-intro-action { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin: 0; text-align: center; }
 .diary-welcome .galpi-intro-action > .MuiButton-root { min-width: 236px; width: auto; min-height: 52px; padding: 12px 24px; font-size: 16px; }
 .diary-welcome .galpi-intro-action > small { display: block; margin: 0; font-size: 13px; }
 .diary-welcome .galpi-intro-action > .MuiAlert-root { flex-basis: 100%; }
@@ -89,12 +90,12 @@
 .workspace-diary .grouped-checklist .preparation-group-heading p { line-height: 1.7; }
 .workspace-diary .preparation-controls { margin: 0 0 20px; }
 .workspace-diary .interview-filter-fields { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
-.workspace-diary .interview-filter-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; }
-.workspace-diary .interview-filter-bar > .MuiButton-root { min-height: 44px; flex-shrink: 0; }
-.workspace-diary .interview-filter-summary { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; min-width: 0; font-size: 14px; color: var(--muted); }
+.workspace-diary .interview-filter-bar { display: flex; align-items: center; gap: 8px 16px; }
+.workspace-diary .interview-filter-bar > .MuiButton-root { min-height: 44px; flex-shrink: 0; margin-left: auto; }
+.workspace-diary .interview-filter-summary { display: flex; flex: 1 1 auto; align-items: center; flex-wrap: wrap; gap: 4px 12px; min-width: 0; font-size: 14px; color: var(--muted); }
 .workspace-diary .interview-filter-summary > span { overflow-wrap: anywhere; }
 .workspace-diary .interview-filter-summary > .MuiButton-root { min-height: 44px; flex-shrink: 0; }
-.workspace-diary #interview-filters { margin-top: 16px; }
+.workspace-diary #interview-filters { width: 100%; margin: 16px 0 0 auto; }
 .workspace-diary #interview-filters[hidden] { display: none; }
 .workspace-diary .interview-filter-fields .form-field { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
 .workspace-diary .interview-filter-fields .field-label { margin: 0; }
@@ -181,7 +182,7 @@
   .workspace-diary .workspace-main .page-heading h1 { font-size: 28px; }
   .workspace-diary .calendar-page .calendar-layout { grid-template-columns: minmax(0, 1fr); }
   .diary-welcome .galpi-intro { display: block; padding: 0 0 28px; margin-bottom: 28px; }
-  .diary-welcome .galpi-intro-action { margin-top: 24px; }
+  .diary-welcome .galpi-intro-action { max-width: 280px; margin-top: 24px; }
   .diary-welcome .preview-toolbar { flex-wrap: wrap; gap: 16px; }
   .workspace-diary .workspace-main .settings-grid { margin-top: 24px; }
   .workspace-diary .workspace-main .settings-card { padding: 24px; }
@@ -219,10 +220,10 @@
 @media (max-width: 599px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
   .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { gap: 12px; min-height: 82px; padding: 0 0 20px; margin-bottom: 22px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { padding-left: 0; min-height: 60px; }
+  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { padding-left: 0; min-height: 64px; grid-template-rows: auto minmax(20px, auto); }
   .workspace-diary .workspace-main .heading-icon { display: none; }
   .workspace-diary .workspace-main .page-heading h1 { font-size: 23px; white-space: nowrap; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { font-size: 12px; margin-top: 5px; }
+  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { font-size: 12px; line-height: 20px; }
   .workspace-diary .workspace-main .page-heading .heading-actions > .MuiButton-root { padding-inline: 10px; font-size: 13px; min-height: 44px; }
   .diary-welcome #welcome-content > .diary-page-tab { right: 4px; }
   .diary-welcome .galpi-intro { padding: 4px 0 24px; }
@@ -230,7 +231,7 @@
   .diary-welcome .galpi-intro h1 { font-size: 27px; }
   .diary-welcome .galpi-intro h1 em { display: block; }
   .diary-welcome .galpi-intro-heading > p { font-size: 14px; margin-top: 12px; }
-  .diary-welcome .galpi-intro-action { margin-top: 22px; gap: 10px; }
+  .diary-welcome .galpi-intro-action { max-width: none; margin-top: 22px; gap: 10px; }
   .diary-welcome .galpi-intro-action > .MuiButton-root { min-width: 0; width: 100%; min-height: 48px; font-size: 15px; }
   .diary-welcome .galpi-intro-action > small { width: 100%; text-align: center; font-size: 12px; }
   .workspace-diary #interview-filters { grid-template-columns: minmax(0, 1fr); }
