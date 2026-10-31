@@ -1,19 +1,21 @@
 /* One diary, with a consistent title line and a page for each kind of record. */
 .workspace-diary .workspace-main :is(.interview-page, .settings-page, .calendar-page, .checklist-page) { width: 100%; max-width: none; margin: 0; }
 .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading {
-  position: relative; display: flex; flex-wrap: nowrap; align-items: center; justify-content: space-between;
-  min-height: 110px; margin: 0 0 28px; padding: 0 0 28px;
-  border: 0; border-bottom: 2px solid var(--ink-action); gap: 20px;
+  position: relative; display: grid; grid-template-columns: 92px minmax(0, 1fr) auto;
+  grid-template-rows: minmax(var(--diary-title-row), auto) minmax(var(--diary-meta-row), auto); align-content: center; align-items: center;
+  min-height: calc(var(--diary-heading-height) + 30px); margin: 0 0 28px; padding: 0 0 28px;
+  border: 0; border-bottom: 2px solid var(--ink-action); gap: 4px 28px;
 }
-.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { position: relative; display: grid; flex: 1 1 auto; width: auto; min-width: 0; grid-template-rows: auto minmax(24px, auto); align-content: center; align-items: start; gap: 4px; min-height: 80px; padding-left: 120px; }
-.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { margin: 0; font-size: 14px; line-height: 24px; text-align: left; }
-.workspace-diary .workspace-main .page-heading-title-row { margin: 0; min-height: 0; }
-.workspace-diary .workspace-main .page-heading h1 { font-size: 32px; line-height: 1.4; font-weight: 600; }
-.workspace-diary .workspace-main .heading-icon { position: absolute; left: 0; top: 0; width: 92px; height: 80px; padding: 0; border-right: 1px solid var(--line); color: var(--ink-action); }
+/* The icon, title and action share the first row; optional copy uses the second. */
+.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { display: contents; }
+.workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { grid-column: 2; grid-row: 2; margin: 0; font-size: 14px; line-height: 24px; text-align: left; }
+.workspace-diary .workspace-main .page-heading-title-row { display: contents; }
+.workspace-diary .workspace-main .page-heading h1 { grid-column: 2; grid-row: 1; min-width: 0; margin: 0; font-size: 32px; line-height: 1.4; font-weight: 600; }
+.workspace-diary .workspace-main .heading-icon { position: static; grid-column: 1; grid-row: 1; width: 92px; height: 100%; padding: 0; border-right: 1px solid var(--line); color: var(--ink-action); }
 .workspace-diary .workspace-main .heading-icon[data-kind='check'] { color: var(--mint-ink); }
 .workspace-diary .workspace-main .heading-icon:is([data-kind='folder'], [data-kind='calendar'], [data-kind='settings'], [data-kind='guide']) { color: var(--record-blue); }
 .workspace-diary .workspace-main .heading-icon svg { width: 34px; height: 34px; }
-.workspace-diary .workspace-main .page-heading .heading-actions { flex: 0 0 auto; width: auto; padding: 0; margin: 0; align-self: center; }
+.workspace-diary .workspace-main .page-heading .heading-actions { grid-column: 3; grid-row: 1; width: auto; padding: 0; margin: 0; align-self: center; }
 .workspace-diary .workspace-main .page-heading .heading-actions > .MuiButton-root { width: auto; white-space: nowrap; }
 .workspace-diary .heading-actions .MuiButton-contained .MuiSvgIcon-root { color: inherit; }
 .workspace-diary .site-primary-nav a { text-align: left; }
@@ -158,9 +160,7 @@
 }
 @media (min-width: 1000px) and (max-height: 760px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: 28px; padding-bottom: 24px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { min-height: 90px; padding-bottom: 20px; margin-bottom: 20px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { min-height: 68px; }
-  .workspace-diary .workspace-main .heading-icon { height: 68px; }
+  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { min-height: calc(var(--diary-heading-height) + 22px); padding-bottom: 20px; margin-bottom: 20px; }
   .workspace-diary .workspace-main .page-heading h1 { font-size: 28px; }
   .diary-welcome .galpi-intro { padding-top: 0; padding-bottom: 24px; margin-bottom: 24px; }
   .diary-welcome .galpi-intro h1 { font-size: 30px; }
@@ -176,9 +176,8 @@
 @media (max-width: 999px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { width: calc(100% - 40px); margin: 24px auto 0; padding: 32px 28px; border: 1px solid #d6d3dd; border-radius: 4px 12px 4px 4px; background: #fff; box-shadow: 3px 3px 0 #e0e5e4; }
   .diary-welcome #welcome-content > .diary-page-tab { right: 5px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { min-height: 94px; padding-bottom: 24px; margin-bottom: 24px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { padding-left: 88px; min-height: 68px; }
-  .workspace-diary .workspace-main .heading-icon { width: 68px; height: 68px; padding: 0; }
+  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { grid-template-columns: 68px minmax(0, 1fr) auto; column-gap: 20px; min-height: calc(var(--diary-heading-height) + 26px); padding-bottom: 24px; margin-bottom: 24px; }
+  .workspace-diary .workspace-main .heading-icon { width: 68px; }
   .workspace-diary .workspace-main .page-heading h1 { font-size: 28px; }
   .workspace-diary .calendar-page .calendar-layout { grid-template-columns: minmax(0, 1fr); }
   .diary-welcome .galpi-intro { display: block; padding: 0 0 28px; margin-bottom: 28px; }
@@ -219,11 +218,12 @@
 }
 @media (max-width: 599px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { gap: 12px; min-height: 82px; padding: 0 0 20px; margin-bottom: 22px; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy { padding-left: 0; min-height: 64px; grid-template-rows: auto minmax(20px, auto); }
+  .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; min-height: calc(var(--diary-heading-height) + 22px); padding: 0 0 20px; margin-bottom: 22px; }
+  .workspace-diary .workspace-main .page-heading h1 { grid-column: 1; }
+  .workspace-diary .workspace-main .page-heading .heading-actions { grid-column: 2; }
   .workspace-diary .workspace-main .heading-icon { display: none; }
   .workspace-diary .workspace-main .page-heading h1 { font-size: 23px; white-space: nowrap; }
-  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { font-size: 12px; line-height: 20px; }
+  .workspace-with-topnav.workspace-diary .workspace-main .page-heading .page-heading-copy > p { grid-column: 1 / -1; font-size: 12px; line-height: 20px; }
   .workspace-diary .workspace-main .page-heading .heading-actions > .MuiButton-root { padding-inline: 10px; font-size: 13px; min-height: 44px; }
   .diary-welcome #welcome-content > .diary-page-tab { right: 4px; }
   .diary-welcome .galpi-intro { padding: 4px 0 24px; }

@@ -1,10 +1,11 @@
 /* Diary shell and today's dated records. Shared by all workspace pages. */
 body:has(.workspace-diary) { min-width: 0; }
+.workspace-diary { --diary-title-row: 44.8px; --diary-meta-row: 24px; --diary-heading-height: 80px; }
 .diary-sidebar-caption, .diary-utility-links { display: none; }
 .diary-overview { color: var(--ink); }
 .diary-page-heading { position: relative; display: flex; align-items: center; gap: 28px; padding: 0 0 28px; border-bottom: 2px solid var(--ink-action); }
 .diary-date-stamp { flex: 0 0 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80px; padding: 0; border-right: 1px solid var(--line); color: var(--record-blue); font-variant-numeric: tabular-nums; }
-.diary-heading-copy { display: grid; grid-template-rows: auto minmax(24px, auto); align-content: center; gap: 4px; min-height: 80px; }
+.diary-heading-copy { display: grid; grid-template-rows: minmax(var(--diary-title-row), auto) minmax(var(--diary-meta-row), auto); align-content: center; align-items: center; gap: 4px; min-height: var(--diary-heading-height); }
 .diary-date-stamp > span { font-size: 13px; line-height: 18px; font-weight: 550; letter-spacing: .04em; white-space: nowrap; }
 .diary-date-stamp > strong { font-size: 52px; font-weight: 500; line-height: 1.15; letter-spacing: -.04em; }
 .diary-page-heading p { margin: 0; color: var(--muted); font-size: 14px; line-height: 24px; }
@@ -103,6 +104,7 @@ body:has(.workspace-diary) { min-width: 0; }
 }
 
 @media (min-width: 1000px) and (max-height: 760px) {
+  .workspace-diary { --diary-title-row: 44px; --diary-heading-height: 72px; }
   .workspace-with-topnav.workspace-diary { --diary-inset: 16px; }
   .workspace-diary > .site-header { min-height: 0; overflow-y: auto; }
   .workspace-diary .site-header .site-header-inner { padding-top: 26px; padding-bottom: 20px; }
@@ -112,7 +114,7 @@ body:has(.workspace-diary) { min-width: 0; }
   .workspace-diary .site-account-actions { padding-top: 12px; }
   .workspace-with-topnav.workspace-diary .workspace-main { padding-top: 28px; padding-bottom: 24px; }
   .diary-page-heading { padding-bottom: 20px; }
-  .diary-date-stamp, .diary-heading-copy { min-height: 68px; }
+  .diary-date-stamp { min-height: var(--diary-heading-height); }
   .diary-date-stamp > strong { font-size: 42px; }
   .diary-page-heading h1 { font-size: 28px; }
   .diary-page-tab { top: -28px; }
@@ -124,9 +126,10 @@ body:has(.workspace-diary) { min-width: 0; }
 }
 
 @media (max-width: 999px) {
+  .workspace-diary { --diary-title-row: 44px; --diary-heading-height: 72px; }
   .diary-page-heading { gap: 20px; padding-bottom: 24px; }
   .diary-date-stamp { flex-basis: 68px; }
-  .diary-date-stamp, .diary-heading-copy { min-height: 68px; }
+  .diary-date-stamp { min-height: var(--diary-heading-height); }
   .diary-date-stamp > strong { font-size: 42px; }
   .diary-page-heading h1 { font-size: 28px; }
   .workspace-with-topnav.workspace-diary { background: #edf0f0; }
@@ -147,10 +150,10 @@ body:has(.workspace-diary) { min-width: 0; }
 }
 
 @media (max-width: 599px) {
+  .workspace-diary { --diary-meta-row: 20px; --diary-heading-height: 68px; }
   .workspace-with-topnav.workspace-diary .workspace-main { width: calc(100% - 24px); margin-top: 16px; padding: 24px 18px; }
   .diary-page-heading { gap: 16px; padding: 0 0 20px; }
-  .diary-date-stamp { flex-basis: 64px; padding: 0; min-height: 64px; }
-  .diary-heading-copy { min-height: 64px; grid-template-rows: auto minmax(20px, auto); }
+  .diary-date-stamp { flex-basis: 64px; padding: 0; min-height: var(--diary-heading-height); }
   .diary-date-stamp > span { font-size: 11px; letter-spacing: 0; }
   .diary-date-stamp > strong { font-size: 40px; }
   .diary-page-heading h1 { font-size: 23px; white-space: nowrap; }
