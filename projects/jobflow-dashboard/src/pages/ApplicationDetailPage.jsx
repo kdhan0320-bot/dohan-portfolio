@@ -8,6 +8,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button, MenuItem, FormControlLabel, Checkbox } from '@mui/material';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import OpenInNew from '@mui/icons-material/OpenInNew';
+import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import useApplications from '../hooks/useApplications';
 import { APPLICATION_STATUSES } from '../constants';
 import { isValidApplicationUrl } from '../utils/applicationPayload';
@@ -150,8 +151,8 @@ export default function ApplicationDetailPage() {
         <p className="muted" style={{
             margin: '10px 0 15px'
           }}>해야 할 일과 면접 답변을 정리해요.</p>
-        <Button component={Link} to="/checklist">준비할 일 ↗</Button>
-        <Button component={Link} to="/interview">면접 노트 ↗</Button>
+        <Button component={Link} to="/checklist" endIcon={<ArrowForwardRounded />}>준비할 일</Button>
+        <Button component={Link} to="/interview" endIcon={<ArrowForwardRounded />}>면접 노트</Button>
       </div>
       <Button color="error" onClick={() => setDeleting(true)} sx={{
           mt: 2

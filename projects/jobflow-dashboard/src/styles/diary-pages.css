@@ -91,11 +91,12 @@
 .workspace-diary .interview-page .question-queue { padding: 12px; background: #f6f7f6; border-radius: var(--record-corners); }
 .workspace-diary .interview-page .question-index { padding: 14px 12px; }
 .workspace-diary .interview-page .practice-navigation { background: var(--record-lilac); }
-.workspace-diary .interview-page .practice-card { padding: 24px; }
+/* The desk is one record sheet; the answer does not need a second card border. */
+.workspace-diary .workspace-main .interview-page .practice-card { padding: 24px; border: 0; border-radius: 0; box-shadow: none; }
 .workspace-diary .interview-page .practice-card:not(.inline-answer-editor) { min-height: 300px; }
 .workspace-diary .interview-page .practice-answer { margin-bottom: 0; }
 .workspace-diary .interview-page .practice-question h2 { font-size: 25px; }
-.workspace-diary .interview-page .practice-card.inline-answer-editor { padding-bottom: 0; }
+.workspace-diary .workspace-main .interview-page .practice-card.inline-answer-editor { padding-bottom: 0; }
 .workspace-diary .calendar-page .calendar-layout { grid-template-columns: minmax(0, 1.35fr) minmax(280px, .75fr); gap: 24px; }
 .workspace-diary .calendar-page .calendar-surface, .workspace-diary .calendar-page .calendar-agenda { border-radius: var(--record-corners); }
 .workspace-diary .calendar-page .calendar-layout .calendar-toolbar { background: var(--record-wash); }
@@ -170,7 +171,13 @@
 }
 @media (max-width: 699px) {
   .workspace-diary .interview-page .interview-workspace { grid-template-columns: minmax(0, 1fr); gap: 0; }
-  .workspace-diary .interview-page .practice-card { padding: 20px 16px; }
+  /* Keep the outer diary margin, and give its full content width to writing.
+     A reserved thin scrollbar prevents long answers from shifting the fields. */
+  .workspace-diary .workspace-main .interview-page .practice-card { padding: 20px 0; }
+  .workspace-diary .workspace-main .interview-page .practice-card.inline-answer-editor { padding: 16px 0 0; }
+  .workspace-diary .workspace-main .interview-page .inline-answer-editor > .field-stack { scrollbar-width: thin; }
+  .workspace-diary .inline-answer-editor .interview-answer-field .MuiInputBase-root { padding-inline: 12px; }
+  .workspace-diary .workspace-main .interview-page .practice-navigation { padding-inline: 0; background: transparent; border-radius: 0; }
   .workspace-diary .interview-page .practice-card:not(.inline-answer-editor) { min-height: 0; }
   .workspace-diary .interview-page .practice-question h2 { font-size: 21px; }
   .workspace-diary .workspace-main .job-lane { border: 0; padding: 0; min-height: 0; background: transparent; }

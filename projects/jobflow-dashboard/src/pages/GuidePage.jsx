@@ -41,7 +41,7 @@ export default function GuidePage() {
     </ol>
     <dl className="guide-display-rules">
       <div><dt>오늘의 회사</dt><dd>지원 전·면접 예정 회사와 준비가 남은 서류 전형을 모아요. 마감이 지난 지원 전 회사는 ‘지원 여부 확인’으로 따로 표시해요.</dd></div>
-      <div><dt>현황 달력</dt><dd>지원 전(관심·지원 예정) 회사의 공고 마감만 표시해요. 지원 후 기록은 회사 목록에서 확인해요.</dd></div>
+      <div><dt>지원 마감 달력</dt><dd>지원 전(관심·지원 예정) 회사의 공고 마감만 표시해요. 지원 후 기록은 회사 목록에서 확인해요.</dd></div>
     </dl>
     <p className="guide-scope-note">{isGuest ? `샘플 일정은 ${DEMO_TODAY.replaceAll('-', '.')} 기준입니다. 가상 기록은 새로고침하면 초기화됩니다.` : '지원 기록은 로그인한 계정에 저장됩니다.'}</p>
   </>;

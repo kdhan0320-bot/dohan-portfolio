@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Alert, Button, MenuItem } from '@mui/material';
 import Add from '@mui/icons-material/Add';
+import OpenInNew from '@mui/icons-material/OpenInNew';
 import Field from '../ui/Field';
 import useRecordDraft from '../../hooks/useRecordDraft';
 import { CHECKLIST_CATEGORIES } from '../../constants';
@@ -46,7 +47,7 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
     </section>
     {companyNotes.length > 0 && <section className="summary-questions"><h3>면접 질문 <span>{companyNotes.length}개</span></h3>{companyNotes.map(note => note.answer?.trim() ? <details className="summary-answer" key={note.id}><summary><span>{note.question}</span><small>답변 읽기</small></summary><p>{note.answer}</p></details> : <div className="summary-preview-task" key={note.id}><span>{note.question}</span><small>답변 준비 전</small></div>)}</section>}
     {application.memo && <section className="summary-memo"><h3>기록 메모</h3><p>{application.memo}</p></section>}
-    {application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer">채용 공고 보기 ↗</Button>}
+    {application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" endIcon={<OpenInNew />}>채용 공고 보기</Button>}
   </div>;
 }
 

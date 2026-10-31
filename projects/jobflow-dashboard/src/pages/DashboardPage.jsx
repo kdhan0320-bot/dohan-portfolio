@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
+import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
@@ -47,7 +48,7 @@ export default function DashboardPage() {
         <p>{company.position || '직무 미입력'}{!upcoming && <span className="diary-applied-date">{recordDate ? <>지원 <time dateTime={recordDate}>{Number(recordDate.slice(5, 7))}.{Number(recordDate.slice(8, 10))}</time></> : '지원일 미등록'}</span>}</p>
       </div>
       <div className="diary-entry-next"><span>{review ? '확인할 내용' : '남은 준비'}{!review && pending(tasks) > 0 && <small> · {pending(tasks)}개</small>}</span><p>{review ? '실제 지원 상태 확인' : nextTask?.title || (tasks.length ? '준비 완료' : '등록한 준비 없음')}</p></div>
-      <Button className="diary-entry-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span>{review ? '지원 여부 확인' : '기록 보기'}</span><span aria-hidden="true">↗</span></Button>
+      <Button className="diary-entry-open" disableRipple onClick={() => setSelectedId(company.id)} aria-haspopup="dialog" aria-label={`${company.company_name} 회사 기록 보기`}><span>{review ? '지원 여부 확인' : '기록 보기'}</span></Button>
     </article>;
   }
   return <div className="diary-overview">
@@ -70,7 +71,7 @@ export default function DashboardPage() {
         <div className="diary-section-heading"><h2 id="review-title">지원 여부 확인 <span>{needsReview.length}곳</span></h2></div>
         <div className="diary-entries">{needsReview.map(company => companyRow(company, true))}</div>
       </section>}
-      <section className="diary-common" aria-labelledby="common-preparation-title"><div><h2 id="common-preparation-title">공통 준비 <span>남은 {pending(common)}개</span></h2><p>{nextCommon?.title || (common.length ? '공통 준비를 모두 마쳤어요' : '회사와 관계없이 챙길 일을 등록해보세요')}</p></div><Button component={Link} to="/checklist?company=common">준비 관리 <span aria-hidden="true">↗</span></Button></section>
+      <section className="diary-common" aria-labelledby="common-preparation-title"><div><h2 id="common-preparation-title">공통 준비 <span>남은 {pending(common)}개</span></h2><p>{nextCommon?.title || (common.length ? '공통 준비를 모두 마쳤어요' : '회사와 관계없이 챙길 일을 등록해보세요')}</p></div><Button component={Link} to="/checklist?company=common" endIcon={<ArrowForwardRounded />}>준비 관리</Button></section>
     </>}
     {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); check.refresh(); }} onSave={async payload => { await apps.update(selected.id, payload); setSelectedId(null); check.refresh(); setFeedback({ message: '회사 정보를 저장했어요.' }); }} onStatusChange={status => apps.update(selected.id, { status })} onDelete={async id => { await apps.remove(id); setSelectedId(null); check.refresh(); setFeedback({ message: '회사를 삭제했어요.' }); }} />}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />

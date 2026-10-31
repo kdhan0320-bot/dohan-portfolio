@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
-import ArrowForwardRounded from '@mui/icons-material/ArrowForwardRounded';
 import RecordStage from './RecordStage';
 import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
@@ -47,7 +46,7 @@ export default function ProductPreview({ onOpen }) {
         </div>
         <div className="preview-record-body">
           <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>남은 준비 없음</p>}</div>
-          <Button variant="text" endIcon={<ArrowForwardRounded />} onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
+          <Button variant="text" onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
         </div>
       </div>;
     })}
