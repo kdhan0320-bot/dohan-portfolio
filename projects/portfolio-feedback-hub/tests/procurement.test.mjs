@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createSamples, transition, validate, makeDemoDraft, SAMPLE_SOURCE, amount, similarRequests, orderMessage, eventRevisionLabel } from '../src/procurement/model.js';
+import { revisionChanges } from '../src/procurement/revisions.js';
 
 const draft = () => createSamples(new Date('2026-10-30T12:00:00+09:00')).find(r => r.status === 'draft');
 test('request → manager → director → order enforces roles and sequence', () => {
@@ -98,4 +99,52 @@ test('legacy revision history is readable without rewriting saved records', () =
   assert.equal(eventRevisionLabel(old), '2차 검토 → 3차 작성');
   assert.deepEqual(old, original);
   assert.equal(eventRevisionLabel({ revision: 2, message: '반려 · 기존 물품 사용' }), '2차');
+});
+
+test('resubmission compares changed fields against the earlier revision and preserves records', () => {
+  let r = transition(transition(draft(), 'submit', 'staff'), 'revise', 'manager', { reason: '납기와 수량 확인' });
+  r.needBy = '2026-12-01';
+  r.supplier = '새 가상 업체';
+  r.purpose = '공용 공간 확장';
+  r.items[0].quantity = '5';
+  r.items[0].price = '40000';
+  r = transition(r, 'submit', 'staff');
+  const original = structuredClone(r);
+  const result = revisionChanges(r);
+  assert.equal(result.previous.revision, 1);
+  assert.deepEqual(result.changes.map(row => row.label), ['희망 납기일', '거래처', '구매 사유', '키보드 · 수량', '키보드 · 단가', '총 요청 금액']);
+  assert.deepEqual(result.changes.at(-1), { label: '총 요청 금액', before: '126,000원', after: '200,000원' });
+  assert.deepEqual(r, original);
+  r = transition(r, 'revise', 'manager', { reason: '규격 재확인' });
+  r.items[0].spec = '무선';
+  assert.equal(revisionChanges(r).previous.revision, 2);
+  assert.deepEqual(revisionChanges(r).changes, [{ label: '키보드 · 규격', before: '유선 · 한글 배열', after: '무선' }]);
+});
+
+test('item reordering and numeric input strings are not shown as changes', () => {
+  let r = draft();
+  r.items.push({ name: '마우스', spec: '무선', quantity: 2, price: 30000 });
+  r = transition(transition(r, 'submit', 'staff'), 'revise', 'manager', { reason: '확인' });
+  r.items.reverse();
+  r.items = r.items.map(item => ({ ...item, quantity: String(item.quantity), price: String(item.price) }));
+  assert.deepEqual(revisionChanges(r).changes, []);
+  r.items = r.items.filter(item => item.name !== '키보드');
+  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 제외', '총 요청 금액']);
+  r.items.push({ name: '모니터', spec: '27인치', quantity: 1, price: 280000 });
+  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 추가', '품목 제외', '총 요청 금액']);
+});
+
+test('unchanged duplicate-name items are paired before edited rows', () => {
+  let r = draft();
+  r.items.push({ ...r.items[0], quantity: 1 });
+  r = transition(transition(r, 'submit', 'staff'), 'revise', 'manager', { reason: '수량 확인' });
+  r.items.reverse();
+  r.items[1].quantity = 4;
+  assert.deepEqual(revisionChanges(r).changes[0], { label: '키보드 (2번) · 수량', before: '3개', after: '4개' });
+  assert.equal(revisionChanges(r).changes.length, 2);
+});
+
+test('first revisions and missing historical snapshots never invent a baseline', () => {
+  assert.deepEqual(revisionChanges(draft()), { previous: null, changes: [] });
+  assert.deepEqual(revisionChanges({ ...draft(), revision: 3 }), { previous: null, changes: [] });
 });
