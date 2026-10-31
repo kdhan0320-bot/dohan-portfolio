@@ -41,9 +41,15 @@ body:has(.workspace-diary) { min-width: 0; }
 .diary-entry-next > span { font-size: 13px; color: var(--muted); }
 .diary-entry-next small { font-size: inherit; }
 .diary-entry-next p { margin: 7px 0 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
-.diary-entry .diary-entry-open.MuiButton-root { justify-content: space-between; gap: 12px; padding-inline: 12px; color: var(--ink-action); white-space: nowrap; }
-.diary-entry-open > span:last-child, .diary-common .MuiButton-root > span { font-size: 19px; font-weight: 400; }
-.diary-entry .diary-entry-open:hover { background: var(--action-tint); }
+.diary-entry .diary-entry-open.MuiButton-root { justify-content: flex-end; padding-inline: 8px; color: var(--ink-action); white-space: nowrap; }
+.diary-overview :is(.diary-entry-open, .diary-common .MuiButton-root) { font-size: 14px; font-weight: 500; }
+.diary-overview :is(.diary-entry-open, .diary-common .MuiButton-root):hover { background: transparent; font-weight: 650; }
+/* Reserve both weights so hover does not move the label or its click target. */
+.diary-action-label { display: inline-block; }
+.diary-action-label::before, .diary-action-label::after { content: attr(data-label); display: block; height: 0; overflow: hidden; visibility: hidden; }
+.diary-action-label::before { font-weight: 500; }
+.diary-action-label::after { font-weight: 650; }
+.diary-overview :is(.diary-entry-open, .diary-common .MuiButton-root):focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 .diary-review .diary-section-heading h2 { color: var(--record-rose); }
 .diary-empty-note { margin: 0; padding: 32px 0; font-size: 15px; color: var(--muted); }
 .diary-common { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; padding: 22px 24px; border: 1px solid #cadbd3; border-left: 4px solid #8eafa2; border-radius: 3px 9px 3px 3px; background: #eef5f1; }
@@ -52,6 +58,7 @@ body:has(.workspace-diary) { min-width: 0; }
 .diary-common p { margin: 8px 0 0; font-size: 15px; line-height: 1.6; }
 .diary-common .MuiButton-root { flex-shrink: 0; gap: 14px; }
 .diary-overview a:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; border-radius: 3px; }
+.workspace-diary .site-footer nav { margin-inline-start: auto; }
 
 @media (min-width: 1000px) {
   body:has(.workspace-diary) { background: #edf0f0; }

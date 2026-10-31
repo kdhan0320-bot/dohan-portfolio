@@ -344,18 +344,47 @@ test('interview scope and topic filters combine without changing stored records'
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
   });
-  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope'), null, 'all questions need no disabled company control');
-  page.find(n => n.type === 'Tabs').props.onChange(null, 'companies'); page.render();
+  const selectScope = value => { page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value } }); page.render(); };
+  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.value, 'all');
+  selectScope('companies');
   assert.doesNotMatch(page.text(), /공통 자기소개/);
   page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.onChange({ target: { value: '프로젝트' } }); page.render();
   assert.match(page.text(), /회사 A 경험/); assert.doesNotMatch(page.text(), /회사 B 소개/);
   page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value: 'b' } }); page.render();
   assert.match(page.text(), /회사 B 소개/); assert.doesNotMatch(page.text(), /회사 A 경험/);
-  page.find(n => n.type === 'Tabs').props.onChange(null, 'common'); page.render();
-  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope'), null);
+  selectScope('common');
   assert.match(page.text(), /공통 자기소개/); assert.doesNotMatch(page.text(), /회사 B 소개/);
   assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.value, 'all');
-  page.find(n => n.type === 'Tabs').props.onChange(null, 'companies'); page.render();
+  selectScope('companies');
   assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
+  selectScope('all');
+  assert.match(page.text(), /공통 자기소개/); assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
   assert.equal(notes.length, 3);
+});
+
+test('editing preserves matching company and topic filters, but follows a record moved outside them', async () => {
+  const notes = [{ id: 'q1', question: '회사 질문', answer: '기존 답변', related_project: '협업', application_id: 'a' }];
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: 'A' }] }) },
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes, update: async (id, values) => Object.assign(notes.find(n => n.id === id), values) }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+  });
+  const scope = () => page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope');
+  const topic = () => page.find(n => n.type === 'Field' && n.props.id === 'interview-topic');
+  scope().props.onChange({ target: { value: 'companies' } }); page.render();
+  topic().props.onChange({ target: { value: '협업' } }); page.render();
+  await page.click('기록 수정');
+  assert.equal(scope().props.value, 'companies', 'opening an existing company record must not narrow the filter');
+  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
+  assert.equal(scope().props.value, 'companies', 'saving within the selected scope must keep that scope');
+  assert.equal(topic().props.value, '협업', 'saving an answer must keep the matching topic filter');
+  await page.click('기록 수정');
+  page.find(n => n.type === 'Field' && n.props.label === '관련 프로젝트 또는 주제 (선택)').props.onChange({ target: { value: '자기소개' } }); page.render();
+  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
+  assert.equal(topic().props.value, 'all', 'a changed topic must not hide the saved record');
+  await page.click('기록 수정');
+  page.find(n => n.type === 'Field' && n.props.id === 'note-company').props.onChange({ target: { value: '' } }); page.render();
+  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
+  assert.equal(scope().props.value, 'common', 'a record moved outside the filter stays visible after saving');
+  assert.equal(notes[0].application_id, null);
 });

@@ -1,7 +1,7 @@
 import Field from '../components/ui/Field';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Alert, Menu, Tabs, Tab } from '@mui/material';
+import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Alert, Menu } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
@@ -20,6 +20,7 @@ const INITIAL = {
   importance: '보통',
   is_reviewed: false
 };
+const SCOPE_LABELS = { all: '전체 질문', common: '공통 질문', companies: '모든 회사 질문' };
 function revealMobileEditor(editor) {
   if (!editor || !window.matchMedia?.('(max-width: 999px)')?.matches) return;
   if (document.documentElement?.hasAttribute('data-keyboard-open')) return;
@@ -45,7 +46,6 @@ export default function InterviewPage() {
   const companyMap = new Map(applications.map(company => [company.id, company]));
   const selectedCompany = companyMap.get(companyScope);
   const companyScoped = !['all', 'common', 'companies'].includes(companyScope);
-  const scopeKind = companyScope === 'all' || companyScope === 'common' ? companyScope : 'companies';
   const [topic, setTopic] = useState('all');
   const missingCompany = companyScoped && !selectedCompany;
   const pageLoading = loading || companiesLoading;
@@ -102,7 +102,8 @@ export default function InterviewPage() {
     });
     return () => window.cancelAnimationFrame(frame);
   }, [busy, notes, open, pageLoading]);
-  const scopedNotes = notes.filter(note => companyScope === 'all' || (companyScope === 'common' ? !note.application_id : companyScope === 'companies' ? Boolean(note.application_id) : note.application_id === companyScope));
+  const includesCompany = applicationId => companyScope === 'all' || (companyScope === 'common' ? !applicationId : companyScope === 'companies' ? Boolean(applicationId) : applicationId === companyScope);
+  const scopedNotes = notes.filter(note => includesCompany(note.application_id));
   const topics = [...new Set(scopedNotes.map(note => note.related_project?.trim()).filter(Boolean))];
   const filtered = scopedNotes.filter(note => topic === 'all' || (note.related_project?.trim() || 'none') === topic);
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
@@ -200,7 +201,7 @@ export default function InterviewPage() {
     openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered), note.id);
   }
   function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
-    if (id) { setActiveId(id); if (companyScope !== 'all' && (values.application_id || 'common') !== companyScope) selectCompany(values.application_id || 'common'); }
+    if (id) { setActiveId(id); if (!includesCompany(values.application_id)) selectCompany(values.application_id || 'common'); }
     setDraftId(draftKey);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
     setConfirmDiscard(false); setFormError(''); setValidationTarget(null); setFeedback(null); setOpen(true);
@@ -264,10 +265,10 @@ export default function InterviewPage() {
       await drafts.save(draftId, form, () => editingId ? update(editingId, payload) : add(payload));
       pendingResultFocus.current = true;
       setOpen(false);
-      setTopic('all');
+      if (topic !== 'all' && (payload.related_project || 'none') !== topic) setTopic('all');
       setForm(INITIAL);
       // Keep the saved question in view when its company changes while filtered.
-      if (companyScope !== 'all' && (payload.application_id || 'common') !== companyScope) selectCompany(payload.application_id || 'common');
+      if (!includesCompany(payload.application_id)) selectCompany(payload.application_id || 'common');
       if (editingId) {
         setActiveId(editingId);
       } else { setActiveId(null); }
@@ -327,15 +328,12 @@ export default function InterviewPage() {
   </PageHeading>
   {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. </Alert>}
   <div className="interview-controls">
-    <Tabs className="interview-scope-tabs" value={scopeKind} onChange={(_, value) => selectCompany(value)} aria-label="질문 범위">
-      <Tab value="all" label="전체" disabled={open} /><Tab value="common" label="공통" disabled={open} /><Tab value="companies" label="회사별" disabled={open} />
-    </Tabs>
-    <div className={`interview-filter-fields${scopeKind !== 'companies' ? ' topic-only' : ''}`}>
-      {scopeKind === 'companies' && <Field id="interview-company-scope" select size="small" label="회사" value={companyScoped ? companyScope : 'companies'} slotProps={{ select: { renderValue: () => selectedCompany?.company_name || '전체 회사' } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
-        <MenuItem value="companies">전체 회사</MenuItem>
+    <div className="interview-filter-fields">
+      <Field id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => SCOPE_LABELS[companyScope] || selectedCompany?.company_name || (companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사') } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
+        {Object.entries(SCOPE_LABELS).map(([value, label]) => <MenuItem key={value} value={value}>{label}</MenuItem>)}
         {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
         {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
-      </Field>}
+      </Field>
       <Field id="interview-topic" select size="small" label="주제" value={topic} disabled={pageLoading || Boolean(pageError) || open} onChange={event => { setTopic(event.target.value); setActiveId(null); }}>
         <MenuItem value="all">전체 주제</MenuItem>{topics.map(value => <MenuItem key={value} value={value}>{value}</MenuItem>)}<MenuItem value="none">주제 미지정</MenuItem>
       </Field>

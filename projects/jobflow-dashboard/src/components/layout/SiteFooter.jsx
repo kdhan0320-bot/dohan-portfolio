@@ -15,7 +15,7 @@ export default function SiteFooter({ publicMode = false }) {
   }
   return <><footer className={`site-footer${publicMode ? ' site-footer-public' : ''}`}>
     <div className="site-footer-inner">
-      <div>{isGuest && !publicMode ? <strong>샘플 체험 · 가상 데이터</strong> : <span>갈피록 · 김도한의 포트폴리오 프로젝트</span>}</div>
+      {isGuest && !publicMode && <div><strong>샘플 체험 · 가상 데이터</strong></div>}
       <nav aria-label="하단 안내"><Link to="/guide" onClick={openGuide}>이용 안내</Link><Link to="/welcome">서비스 소개</Link><a href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/">포트폴리오로 돌아가기</a></nav>
     </div>
   </footer><ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} /></>;
