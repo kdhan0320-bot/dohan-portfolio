@@ -63,10 +63,6 @@ body:has(.workspace-diary) { min-width: 0; }
 .workspace-diary .site-footer nav { margin-inline-start: auto; }
 
 @media (min-width: 1000px) {
-  /* Keep the title on the shared first row; its date context sits alongside it. */
-  .diary-heading-copy { grid-template-columns: max-content minmax(0, 1fr); column-gap: 20px; }
-  .diary-heading-copy h1 { grid-column: 1; grid-row: 1; }
-  .diary-heading-copy p { grid-column: 2; grid-row: 1; white-space: nowrap; }
   body:has(.workspace-diary) { background: #edf0f0; }
   #root:has(.workspace-diary) { display: flow-root; }
   .workspace-with-topnav.workspace-diary { --diary-page-offset: max(var(--diary-inset), calc((100dvh - 1122px) / 2)); }
