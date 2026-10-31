@@ -6,7 +6,7 @@ import { transform } from 'esbuild';
 import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
 import { preparationGroups, todayCompanyGroups, beforeApplication } from '../src/utils/preparationGroups.js';
 import { shortDate, deadlineLabel } from '../src/utils/dates.js';
-import { revealTextareaCaret } from '../src/utils/textareaCaret.js';
+import { revealTextareaCaret, observeTextareaLayout } from '../src/utils/textareaCaret.js';
 import * as constants from '../src/constants/index.js';
 import { BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
 
@@ -54,7 +54,7 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
     '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
     '../utils/preparationGroups': { preparationGroups },
     '../utils/dates': { shortDate },
-    '../utils/textareaCaret': { revealTextareaCaret },
+    '../utils/textareaCaret': { revealTextareaCaret, observeTextareaLayout },
     '../constants': constants,
     ...dependencies,
   };
@@ -71,7 +71,18 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
     },
   });
   function render() {
-    cursor = 0; effects = []; tree = module.exports.default(props); effects.forEach(effect => effect());
+    cursor = 0; effects = []; tree = module.exports.default(props);
+    // Attach explicitly supplied field nodes before layout effects, as React does.
+    if (documentOverrides.getElementById) {
+      const attach = node => {
+        if (Array.isArray(node)) { node.forEach(attach); return; }
+        if (!node || typeof node !== 'object') return;
+        if (node.props?.inputRef) node.props.inputRef.current = documentOverrides.getElementById(node.props.id);
+        attach(node.props?.children);
+      };
+      attach(tree);
+    }
+    effects.forEach(effect => effect());
   }
   function find(predicate, node = tree) {
     if (!node || typeof node !== 'object') return null;
@@ -345,12 +356,19 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes: [{ id: 'q1', question: '자기소개', answer: '기존 답변', application_id: null }] }) },
-    '../utils/textareaCaret': { revealTextareaCaret: () => caretScrollPositions.push(fields.scrollTop) },
-  }, undefined, { activeElement: answer, getElementById: id => id === 'note-answer' ? answer : null }, {
+    '../utils/textareaCaret': { observeTextareaLayout: (_input, _container, afterFit) => {
+      const schedule = () => {
+        frames.clear();
+        frames.set(++nextFrame, () => { if (afterFit() !== false) caretScrollPositions.push(fields.scrollTop); });
+      };
+      resized = schedule;
+      schedule();
+      return { schedule, disconnect() {} };
+    } },
+  }, undefined, { activeElement: {}, getElementById: id => id === 'note-answer' ? answer : null }, {
     requestAnimationFrame: fn => { frames.set(++nextFrame, fn); return nextFrame; },
     cancelAnimationFrame: id => frames.delete(id),
     getComputedStyle: () => ({ lineHeight: '27.2px' }),
-    ResizeObserver: class { constructor(callback) { resized = callback; } observe() {} disconnect() {} },
   });
   await page.click('기록 수정');
   flush();

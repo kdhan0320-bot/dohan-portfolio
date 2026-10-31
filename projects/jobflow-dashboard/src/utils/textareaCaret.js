@@ -28,3 +28,59 @@ export function revealTextareaCaret(input, container) {
     if (delta) container.scrollTop += delta;
   } finally { mirror.remove(); }
 }
+
+// Resize the answer before following its caret. Separate observers used to
+// restore an old pixel offset after the width had changed the line wrapping.
+export function observeTextareaLayout(input, container, afterFit = () => {}) {
+  const win = input.ownerDocument.defaultView;
+  let frame;
+  let settledFrame;
+  let fittedWidth = -1;
+  let fittedValue;
+  let observedWidth = input.clientWidth;
+  let observedHeight = container.clientHeight;
+  const sync = () => {
+    if (input.clientWidth !== fittedWidth || input.value !== fittedValue) {
+      const top = container.scrollTop;
+      input.style.height = 'auto';
+      input.style.height = `${input.scrollHeight}px`;
+      container.scrollTop = top;
+      fittedWidth = input.clientWidth;
+      fittedValue = input.value;
+    }
+    if (afterFit() === false) return;
+    revealTextareaCaret(input, container);
+  };
+  const schedule = () => {
+    win.cancelAnimationFrame(frame);
+    win.cancelAnimationFrame(settledFrame);
+    frame = win.requestAnimationFrame(() => {
+      sync();
+      // Native selection scrolling and viewport CSS can settle after this frame.
+      settledFrame = win.requestAnimationFrame(sync);
+    });
+  };
+  const sources = [
+    [input, 'input'], [input, 'select'], [input, 'keyup'], [input, 'focus'],
+    [win, 'resize'], [win.visualViewport, 'resize'], [win.visualViewport, 'scroll'],
+  ].filter(([source]) => source);
+  sources.forEach(([source, event]) => source.addEventListener(event, schedule));
+  const observer = win.ResizeObserver && new win.ResizeObserver(() => {
+    if (input.clientWidth === observedWidth && container.clientHeight === observedHeight) return;
+    observedWidth = input.clientWidth;
+    observedHeight = container.clientHeight;
+    schedule();
+  });
+  observer?.observe(input);
+  observer?.observe(container);
+  schedule();
+  return {
+    schedule,
+    disconnect() {
+      sources.forEach(([source, event]) => source.removeEventListener(event, schedule));
+      observer?.disconnect();
+      win.cancelAnimationFrame(frame);
+      win.cancelAnimationFrame(settledFrame);
+    },
+  };
+}

@@ -12,7 +12,7 @@ import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
 import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
-import { revealTextareaCaret } from '../utils/textareaCaret';
+import { observeTextareaLayout } from '../utils/textareaCaret';
 const INITIAL = {
   application_id: null,
   question: '',
@@ -73,30 +73,7 @@ export default function InterviewPage() {
   const pendingResultFocus = useRef(false);
   const [validationTarget, setValidationTarget] = useState(null);
   const answerInput = useRef(null);
-  useLayoutEffect(() => {
-    const input = answerInput.current;
-    if (!open || !editingId || !input) return;
-    const fields = input.closest('.field-stack');
-    let width = input.clientWidth;
-    const fitAnswer = () => {
-      const scrollTop = fields?.scrollTop || 0;
-      input.style.height = 'auto';
-      input.style.height = `${input.scrollHeight}px`;
-      if (fields) fields.scrollTop = scrollTop;
-      revealMobileEditor(input.closest('.inline-answer-editor'));
-    };
-    fitAnswer();
-    // Measure the visible input itself so its actual wrapping and height stay
-    // in sync when the available width changes.
-    const observer = window.ResizeObserver && new window.ResizeObserver(() => {
-      if (input.clientWidth !== width) {
-        width = input.clientWidth;
-        fitAnswer();
-      }
-    });
-    observer?.observe(input);
-    return () => observer?.disconnect();
-  }, [open, editingId, form.answer]);
+  const answerLayout = useRef(null);
   useEffect(() => {
     if (busy || pageLoading || !pendingResultFocus.current) return;
     pendingResultFocus.current = false;
@@ -113,46 +90,32 @@ export default function InterviewPage() {
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
   const activeHasAnswer = Boolean(activeNote?.answer?.trim());
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!open || !editingId) return;
-    const answer = document.getElementById('note-answer');
+    const answer = answerInput.current;
     document.getElementById('note-question')?.focus({ preventScroll: true });
     const editor = answer?.closest('form');
-    let frame;
     const fields = editor?.querySelector('.field-stack');
+    if (!answer || !fields) return;
     let opening = true;
-    const revealActions = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        revealMobileEditor(editor);
-        // The editor can briefly measure only its padding while styles and
-        // focus settle. Do not scroll against that provisional height. Start
-        // with the label and first line; later resizes follow the current caret.
-        if (opening && fields) {
-          const label = editor.querySelector('#note-answer-label');
-          const lineHeight = parseFloat(window.getComputedStyle(answer).lineHeight) || 28;
-          if (fields.clientHeight < (label?.offsetHeight || 0) + lineHeight + 24) return;
-          fields.scrollTop = 0;
-          opening = false;
-        }
-        if (document.activeElement === answer) revealTextareaCaret(answer, fields);
-      });
-    };
-    revealActions();
-    // A short answer can grow after opening. React only to a change in editor
-    // height, so typing within the bounded area does not keep moving the page.
-    const observer = window.ResizeObserver && new window.ResizeObserver(revealActions);
-    if (editor) observer?.observe(editor);
-    if (fields) observer?.observe(fields);
-    window.visualViewport?.addEventListener('resize', revealActions);
-    window.addEventListener('resize', revealActions);
+    const layout = observeTextareaLayout(answer, fields, () => {
+      revealMobileEditor(editor);
+      // Opening starts at the question, but never overrides a user's new caret.
+      if (opening) {
+        const label = editor.querySelector('#note-answer-label');
+        const lineHeight = parseFloat(window.getComputedStyle(answer).lineHeight) || 28;
+        if (fields.clientHeight < (label?.offsetHeight || 0) + lineHeight + 24) return false;
+        if (document.activeElement !== answer) fields.scrollTop = 0;
+        opening = false;
+      }
+    });
+    answerLayout.current = layout;
     return () => {
-      observer?.disconnect();
-      window.cancelAnimationFrame(frame);
-      window.visualViewport?.removeEventListener('resize', revealActions);
-      window.removeEventListener('resize', revealActions);
+      layout.disconnect();
+      answerLayout.current = null;
     };
   }, [open, editingId]);
+  useLayoutEffect(() => { answerLayout.current?.schedule(); }, [form.answer]);
   useEffect(() => {
     // Each failed submit is a new request, even when the error text is unchanged.
     // Open the details first, then reveal the field after React has laid out the error.
@@ -388,10 +351,6 @@ export default function InterviewPage() {
         if (event.target.closest('.inline-editor-actions')) return;
         const editor = event.currentTarget;
         window.requestAnimationFrame(() => { if (editor.contains(document.activeElement)) revealMobileEditor(editor); });
-      }} onKeyUp={event => {
-        // Native caret navigation can scroll the document as well as the fields.
-        // Keep the actions above the mobile navigation after that default action.
-        if (event.target.tagName === 'TEXTAREA') revealMobileEditor(event.currentTarget);
       }}>
         <h2>면접 기록 수정</h2>{formError && <Alert className="inline-editor-error" severity="error">{formError}</Alert>}{editorFields}<div className="inline-editor-actions"><Button disabled={Boolean(busy)} onClick={requestClose}>취소</Button><Button variant="contained" type="submit" disabled={Boolean(busy) || companiesLoading || Boolean(companiesError)}>{busy ? '저장 중…' : '변경 저장'}</Button></div>
       </form> : <article className="practice-card">

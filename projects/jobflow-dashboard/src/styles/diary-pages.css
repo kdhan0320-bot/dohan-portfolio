@@ -64,6 +64,18 @@
 .diary-welcome .preview-preparation li { padding-block: 12px; font-size: 16px; }
 .diary-welcome .preview-records .preview-open-record { align-self: flex-start; padding: 8px 0; min-height: 44px; }
 
+/* A small cut corner and the wordmark's short finishing stroke identify dates.
+   Keep the motif on record surfaces, away from controls and reading lines. */
+:is(.diary-welcome .preview-date-block, .diary-overview .diary-entry-date, .company-summary .summary-schedule) { position: relative; }
+:is(.diary-welcome .preview-date-block, .diary-overview .diary-entry-date, .company-summary .summary-schedule)::before {
+  content: ''; position: absolute; inset: auto auto 0 12px; width: 28px; height: 2px;
+  background: var(--record-edge); border-radius: 100% 0 100% 0; opacity: .85; pointer-events: none;
+}
+:is(.diary-welcome .preview-date-block, .diary-overview .diary-entry-date, .company-summary .summary-schedule)::after {
+  content: ''; position: absolute; top: 0; right: 0; width: 10px; height: 10px;
+  background: linear-gradient(45deg, transparent 48%, #fff 50%); pointer-events: none;
+}
+
 /* Company records stay in the existing four-stage board. */
 @media (min-width: 1800px) and (min-height: 1000px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { display: flex; flex-direction: column; justify-content: center; height: 100%; }
