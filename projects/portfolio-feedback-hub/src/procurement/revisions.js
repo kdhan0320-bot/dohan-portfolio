@@ -43,6 +43,6 @@ export function revisionChanges(request) {
   beforeItems.forEach((item, index) => {
     if (!used.has(index)) changes.push({ label: '품목 제외', before: itemSummary(item), after: '—' });
   });
-  if (amount(previous) !== amount(request)) changes.push({ label: '총 요청 금액', before: money(amount(previous)), after: money(amount(request)) });
+  if (amount(previous) !== amount(request)) changes.push({ label: '품의 합계', before: money(amount(previous)), after: money(amount(request)) });
   return { previous, changes };
 }

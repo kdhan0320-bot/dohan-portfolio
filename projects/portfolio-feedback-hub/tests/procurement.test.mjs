@@ -112,8 +112,8 @@ test('resubmission compares changed fields against the earlier revision and pres
   const original = structuredClone(r);
   const result = revisionChanges(r);
   assert.equal(result.previous.revision, 1);
-  assert.deepEqual(result.changes.map(row => row.label), ['희망 납기일', '거래처', '구매 사유', '키보드 · 수량', '키보드 · 단가', '총 요청 금액']);
-  assert.deepEqual(result.changes.at(-1), { label: '총 요청 금액', before: '126,000원', after: '200,000원' });
+  assert.deepEqual(result.changes.map(row => row.label), ['희망 납기일', '거래처', '구매 사유', '키보드 · 수량', '키보드 · 단가', '품의 합계']);
+  assert.deepEqual(result.changes.at(-1), { label: '품의 합계', before: '126,000원', after: '200,000원' });
   assert.deepEqual(r, original);
   r = transition(r, 'revise', 'manager', { reason: '규격 재확인' });
   r.items[0].spec = '무선';
@@ -129,9 +129,9 @@ test('item reordering and numeric input strings are not shown as changes', () =>
   r.items = r.items.map(item => ({ ...item, quantity: String(item.quantity), price: String(item.price) }));
   assert.deepEqual(revisionChanges(r).changes, []);
   r.items = r.items.filter(item => item.name !== '키보드');
-  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 제외', '총 요청 금액']);
+  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 제외', '품의 합계']);
   r.items.push({ name: '모니터', spec: '27인치', quantity: 1, price: 280000 });
-  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 추가', '품목 제외', '총 요청 금액']);
+  assert.deepEqual(revisionChanges(r).changes.map(row => row.label), ['품목 추가', '품목 제외', '품의 합계']);
 });
 
 test('unchanged duplicate-name items are paired before edited rows', () => {
@@ -185,7 +185,7 @@ test('revision demo exposes real differences and cannot bypass reapproval', () =
   assert.equal(amount(sample.approvedSnapshot), 192000);
   assert.equal(amount(sample), 288000);
   assert.equal(sample.submissions.length, 2);
-  assert.deepEqual(revisionChanges(sample).changes.map(c => c.label), ['구매 사유', '토너 · 수량', '총 요청 금액']);
+  assert.deepEqual(revisionChanges(sample).changes.map(c => c.label), ['구매 사유', '토너 · 수량', '품의 합계']);
   assert.throws(() => transition(sample, 'order', 'staff', { reference: 'skip' }));
 });
 

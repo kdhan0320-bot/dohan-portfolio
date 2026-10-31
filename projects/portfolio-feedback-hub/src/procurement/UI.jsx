@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icons';
 import { STATUS } from './model';
-import { workflowStatus, materialTotals, qty } from './inventory';
+import { workflowStatus, materialTotals, orderProgress, qty } from './inventory';
 import { listOrigin, rememberList } from './listNavigation';
 
 export function ListLink({ to, state, id, children, ...props }) {
@@ -25,7 +25,13 @@ export function Badge({ status }) { return <StateTag tone={STATUS[status].tone}>
 export function StateTag({ tone = 'gray', children }) { return <span className={`badge ${tone}`}><span/>{children}</span>; }
 export function WorkflowStatus({ data, request, quantity = true }) {
   const status = workflowStatus(data, request);
-  return <span className="workflow-status"><span className="workflow-tags"><StateTag tone={status.tone}>{status.label}</StateTag>{status.late && <span className="late-flag">입고 지연</span>}</span>{quantity && status.detail && <small>{status.detail}</small>}</span>;
+  return <span className="workflow-status"><span className="workflow-tags"><StateTag tone={status.tone}>{status.label}</StateTag>{status.late && <span className="late-flag">입고 지연</span>}</span>{quantity && status.detail && <small className="workflow-detail">{status.detail}</small>}</span>;
+}
+export function ReceiptProgress({ data, request }) {
+  if (request.status !== 'ordered') return null;
+  const progress = orderProgress(data, request);
+  const portion = progress.ordered ? Math.min(100, progress.received / progress.ordered * 100) : 0;
+  return <div className="receipt-progress" role="img" aria-label={`발주 ${qty(progress.ordered)} 중 입고 ${qty(progress.received)}, 미입고 ${qty(progress.remaining)}`}><span style={{ width: `${portion}%` }}/></div>;
 }
 export function StockLedger({ data, materialId }) {
   const totals = materialTotals(data, materialId);
