@@ -6,6 +6,7 @@ import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
+import TuneOutlined from '@mui/icons-material/TuneOutlined';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
@@ -47,6 +48,9 @@ export default function InterviewPage() {
   const selectedCompany = companyMap.get(companyScope);
   const companyScoped = !['all', 'common', 'companies'].includes(companyScope);
   const [topic, setTopic] = useState('all');
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filterCount = Number(companyScope !== 'all') + Number(topic !== 'all');
+  const scopeLabel = SCOPE_LABELS[companyScope] || selectedCompany?.company_name || (companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사');
   const missingCompany = companyScoped && !selectedCompany;
   const pageLoading = loading || companiesLoading;
   const pageError = error || companiesError;
@@ -201,6 +205,7 @@ export default function InterviewPage() {
     openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered), note.id);
   }
   function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
+    setFiltersOpen(false);
     if (id) { setActiveId(id); if (!includesCompany(values.application_id)) selectCompany(values.application_id || 'common'); }
     setDraftId(draftKey);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
@@ -328,8 +333,17 @@ export default function InterviewPage() {
   </PageHeading>
   {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. </Alert>}
   <div className="interview-controls">
-    <div className="interview-filter-fields">
-      <Field id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => SCOPE_LABELS[companyScope] || selectedCompany?.company_name || (companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사') } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
+    <div className="interview-filter-bar">
+      <Button variant="outlined" startIcon={<TuneOutlined />} aria-label={`필터${filterCount ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="interview-filters" disabled={open} onClick={() => setFiltersOpen(value => !value)}>
+        필터{filterCount > 0 && <span className="filter-count" aria-hidden="true">{filterCount}</span>}
+      </Button>
+      {filterCount > 0 && <div className="interview-filter-summary">
+        <span>{scopeLabel}{topic !== 'all' ? ` · ${topic === 'none' ? '주제 미지정' : topic}` : ''}</span>
+        <Button disabled={open} onClick={() => { selectCompany('all'); setTopic('all'); }}>필터 해제</Button>
+      </div>}
+    </div>
+    <div id="interview-filters" className="interview-filter-fields" hidden={!filtersOpen}>
+      <Field id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => scopeLabel } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
         {Object.entries(SCOPE_LABELS).map(([value, label]) => <MenuItem key={value} value={value}>{label}</MenuItem>)}
         {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
         {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}

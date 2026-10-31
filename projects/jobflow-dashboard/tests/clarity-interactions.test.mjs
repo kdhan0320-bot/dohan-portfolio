@@ -388,3 +388,39 @@ test('editing preserves matching company and topic filters, but follows a record
   assert.equal(scope().props.value, 'common', 'a record moved outside the filter stays visible after saving');
   assert.equal(notes[0].application_id, null);
 });
+
+test('one interview filter disclosure keeps selections when closed and clears both conditions together', async () => {
+  const notes = [
+    { id: 'a', question: '회사 질문', answer: '답변', related_project: '협업', application_id: 'a' },
+    { id: 'b', question: '공통 질문', related_project: '자기소개', application_id: null },
+  ];
+  const page = await mount('InterviewPage', {
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: '회사 A' }] }) },
+    '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
+  });
+  const panel = () => page.find(n => n.props?.id === 'interview-filters');
+  const toggle = () => page.find(n => n.props?.['aria-controls'] === 'interview-filters');
+  const field = id => page.find(n => n.type === 'Field' && n.props.id === id);
+  const toggleFilters = () => { toggle().props.onClick(); page.render(); };
+  assert.equal(panel().props.hidden, true);
+  assert.equal(toggle().props['aria-expanded'], false);
+  toggleFilters();
+  assert.equal(panel().props.hidden, false);
+  field('interview-company-scope').props.onChange({ target: { value: 'a' } }); page.render();
+  field('interview-topic').props.onChange({ target: { value: '협업' } }); page.render();
+  toggleFilters();
+  assert.equal(panel().props.hidden, true);
+  assert.equal(field('interview-topic').props.value, '협업');
+  assert.match(page.text(), /회사 A · 협업/);
+  toggleFilters();
+  await page.click('기록 수정');
+  assert.equal(panel().props.hidden, true, 'editing closes the filters without losing the selection');
+  assert.equal(toggle().props.disabled, true);
+  await page.click('취소');
+  await page.click('필터 해제');
+  assert.equal(field('interview-company-scope').props.value, 'all');
+  assert.equal(field('interview-topic').props.value, 'all');
+  assert.equal(page.find(n => n.props?.className === 'interview-filter-summary'), null);
+  assert.equal(notes.length, 2);
+});
