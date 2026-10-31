@@ -3,10 +3,47 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
+import { workflowStatus, comparisonLines, materialTotals } from '../src/procurement/inventory.js';
 
 const today = dateInput();
 const receipt = (quantity, extra = {}) => ({ date: today, lines: [{ index: 0, quantity }], ...extra });
 const issue = (quantity, extra = {}) => ({ materialId: 'MT-0001', date: today, quantity, department: '검증 부서', recipient: '가상 담당자', ...extra });
+
+test('receipt phase and overdue warning remain separate until the last receipt', () => {
+  let s = createERP();
+  const request = s.requests[0];
+  let status = workflowStatus(s, request, '2099-01-01');
+  assert.equal(status.label, '부분 입고'); assert.equal(status.late, true);
+  assert.equal(status.detail, '미입고 2 EA'); assert.equal(status.owner, '구매·자재 담당자');
+  assert.equal(workflowStatus(s, request, '2000-01-01').late, false);
+  s = receiveOrder(s, request.id, 'staff', receipt(2));
+  status = workflowStatus(s, s.requests[0], '2099-01-01');
+  assert.equal(status.label, '입고 완료'); assert.equal(status.late, false);
+  assert.equal(status.owner, '입고 확인 완료');
+  assert.equal(workflowStatus(s, s.requests[2]).label, '발주 대기');
+});
+
+test('duplicate preview preserves source item indices and distinguishes unplaced requests', () => {
+  const s = createERP(), request = structuredClone(s.requests[0]);
+  request.approvedSnapshot.items.unshift({ materialId: 'OTHER', quantity: 5 });
+  const state = { ...s, receipts: [{ requestId: request.id, lines: [{ index: 1, quantity: 2 }] }] };
+  const lines = comparisonLines(state, request, ['MT-0001']);
+  assert.equal(lines.length, 1); assert.equal(lines[0].index, 1);
+  assert.equal(lines[0].received, 2); assert.equal(lines[0].remaining, 3);
+  const revised = structuredClone(s.requests.at(-1)); revised.items[0].quantity = 9;
+  const unplaced = comparisonLines(s, revised, ['MT-0001'])[0];
+  assert.equal(unplaced.quantity, 9); assert.equal(unplaced.received, null); assert.equal(unplaced.remaining, null);
+});
+
+test('quantity ledger reconciles all receipts and issues without including unreceived orders', () => {
+  let s = createERP();
+  assert.deepEqual(materialTotals(s, 'MT-0001'), { received: 3, issued: 2, balance: 1 });
+  s = receiveOrder(s, 'PR-2001', 'staff', receipt(2));
+  s = issueMaterial(s, 'staff', issue(3));
+  assert.deepEqual(materialTotals(s, 'MT-0001'), { received: 5, issued: 5, balance: 0 });
+  assert.equal(materialTotals(s, 'MT-0001').balance, stock(s, 'MT-0001'));
+  assert.deepEqual(materialTotals(s, 'MT-0003'), { received: 0, issued: 0, balance: 0 });
+});
 test('sample balances distinguish received stock from outstanding purchase orders', () => {
   const s = createERP();
   assert.equal(stock(s, 'MT-0001'), 1); assert.equal(incoming(s, 'MT-0001'), 2);

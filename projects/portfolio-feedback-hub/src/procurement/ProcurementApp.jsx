@@ -6,9 +6,9 @@ import RequestEditor from './RequestEditor';
 import Icon from './Icons';
 import ApprovalLine from './ApprovalLine';
 import RevisionChanges from './RevisionChanges';
-import { PageHead, Empty, Modal, Badge } from './UI';
+import { PageHead, Empty, Modal, WorkflowStatus } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail, DocumentLinks } from './InventoryPages';
-import { duplicateRequests } from './inventory';
+import { duplicateRequests, workflowStatus } from './inventory';
 
 function detailOrigin(location) {
   const from = location.state?.from;
@@ -55,14 +55,14 @@ function Shell() {
 }
 
 function RequestList({ mode = 'requests' }) {
-  const { requests, role } = useWorkspace();
+  const { data, requests, role } = useWorkspace();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') || '';
   const defaultStatus = role !== 'staff' ? 'action' : 'all';
   const requestedStatus = params.get('status') || defaultStatus;
   const status = mode === 'approvals' && role === 'staff' && requestedStatus === 'action' ? 'all' : requestedStatus;
   const setParam = (key, value) => { const next = new URLSearchParams(params); value ? next.set(key, value) : next.delete(key); setParams(next, { replace: true }); };
-  const config = mode === 'approvals' ? { title: '결재함', eyebrow: 'APPROVAL INBOX', tabs: [['all', '전체'], ['team', '팀장 결재'], ['director', '사장님 결재']] } : mode === 'orders' ? { title: '발주 관리', eyebrow: 'ORDER HANDOFF', tabs: [['all', '전체'], ['approved', '발주 대기'], ['ordered', '발주 기록 완료']] } : { title: '구매·결재', eyebrow: 'PURCHASE REQUESTS', tabs: [['all', '전체'], ['action', '내 처리 대기'], ['waiting', '결재 진행'], ['approved', '발주 대기'], ['closed', '발주·종료']] };
+  const config = mode === 'approvals' ? { title: '결재함', eyebrow: 'APPROVAL INBOX', tabs: [['all', '전체'], ['team', '팀장 결재'], ['director', '사장님 결재']] } : mode === 'orders' ? { title: '발주 관리', eyebrow: 'ORDER HANDOFF', tabs: [['all', '전체'], ['approved', '발주 대기'], ['ordered', '발주 기록 완료']] } : { title: '구매·결재', eyebrow: 'PURCHASE REQUESTS', tabs: [['all', '전체'], ['action', '내 처리 대기'], ['waiting', '결재 진행'], ['approved', '발주 대기'], ['closed', '발주·반려']] };
   if (mode === 'approvals' && role !== 'staff') config.tabs.unshift(['action', '내 차례']);
   let base = requests.filter(r => mode === 'approvals' ? ['team', 'director'].includes(r.status) : mode === 'orders' ? ['approved', 'ordered'].includes(r.status) : true);
   const matches = (r, value) => value === 'all' || (value === 'action' ? (role === 'staff' ? ['draft', 'revision', 'approved'].includes(r.status) : canReview(r, role)) : value === 'waiting' ? ['team', 'director'].includes(r.status) : value === 'closed' ? ['ordered', 'rejected'].includes(r.status) : r.status === value);
@@ -71,7 +71,7 @@ function RequestList({ mode = 'requests' }) {
 
     <section className="panel requests-panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="상태 필터">{config.tabs.map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => setParam('status', key)}>{label}<span>{base.filter(r => matches(r, key)).length}</span></button>)}</div><label className="list-search"><Icon name="search" size={18}/><input aria-label="현재 목록 검색" placeholder="요청명·품목·번호 검색" value={query} onChange={e => setParam('q', e.target.value)}/>{query && <button className="icon-button" aria-label="검색어 지우기" onClick={() => setParam('q', '')}><Icon name="close" size={16}/></button>}</label></div>
     <div className="list-caption">{query && <span>검색 결과 <strong>{shown.length}</strong>건</span>}<span>금액은 부가세 포함</span></div>
-    <div className="request-table"><div className="table-heading" aria-hidden="true"><span>구매 요청</span><span>합계 금액</span><span>필요일</span><span>진행 상태</span><span>현재 담당</span><span/></div>{shown.map(r => <Link className="request-table-row" key={r.id} to={`/requests/${r.id}`} state={{ from: `${mode === 'requests' ? '/requests' : `/${mode}`}${params.size ? `?${params}` : ''}`, fromLabel: config.title }}><div className="request-title-cell"><span className="mono">{r.id} <span>· {r.department}</span></span><h2>{r.title || '제목 없는 요청'}</h2><small>{r.items.map(i => i.name || '미입력 품목').join(', ')}</small></div><span className="table-amount"><small>합계 </small>{money(amount(r))}</span><span className="table-date"><small>필요일 </small>{r.needBy ? day(r.needBy) : '미정'}</span><span className="table-status"><Badge status={r.status}/></span><span className="table-owner">{owner(r)}</span><Icon name="arrow" size={18}/></Link>)}</div>
+    <div className="request-table"><div className="table-heading" aria-hidden="true"><span>구매 요청</span><span>합계 금액</span><span>필요일</span><span>진행 상태</span><span>현재 담당</span><span/></div>{shown.map(r => <Link className="request-table-row" key={r.id} to={`/requests/${r.id}`} state={{ from: `${mode === 'requests' ? '/requests' : `/${mode}`}${params.size ? `?${params}` : ''}`, fromLabel: config.title }}><div className="request-title-cell"><span className="mono">{r.id} <span>· {r.department}</span></span><h2>{r.title || '제목 없는 요청'}</h2><small>{r.items.map(i => i.name || '미입력 품목').join(', ')}</small></div><span className="table-amount"><small>합계 </small>{money(amount(r))}</span><span className="table-date"><small>필요일 </small>{r.needBy ? day(r.needBy) : '미정'}</span><span className="table-status"><WorkflowStatus data={data} request={r}/></span><span className="table-owner">{workflowStatus(data, r).owner}</span><Icon name="arrow" size={18}/></Link>)}</div>
     {!shown.length && <Empty title={query ? '검색 결과가 없습니다.' : status === 'action' ? '지금 처리할 요청이 없습니다.' : '해당 상태의 요청이 없습니다.'}><p>검색어 또는 상태 필터를 바꿔 보세요.</p><button className="button secondary" onClick={() => setParams({ status: 'all' })}>전체 요청 보기</button></Empty>}</section></>;
 }
 
@@ -125,7 +125,7 @@ function RequestDetail() {
   return <><Link className="back-link" to={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</Link>
     <header className="request-document">
       <div className="document-heading">
-        <div className="document-register"><span className="document-number">{request.id}</span><span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 요청서'}</span><Badge status={request.status}/></div>
+        <div className="document-register"><span className="document-number">{request.id}</span><span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 요청서'}</span><WorkflowStatus data={data} request={request}/></div>
         <h1 tabIndex="-1">{request.title || '제목 없는 요청'}</h1>
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
       </div>

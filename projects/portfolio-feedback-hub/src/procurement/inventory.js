@@ -1,4 +1,4 @@
-import { dateInput, emptyRequest, transition, validate } from './model.js';
+import { dateInput, emptyRequest, transition, validate, STATUS, ROLES, owner } from './model.js';
 
 export const ERP_SAMPLE_ID = 'PR-2007';
 export const qty = n => `${Number(n || 0).toLocaleString('ko-KR')} EA`;
@@ -10,6 +10,28 @@ export function orderProgress(state, request) {
   const ordered = orderItems(request).reduce((n, i) => n + Number(i.quantity), 0);
   const received = orderItems(request).reduce((n, _, i) => n + receivedQuantity(state, request.id, i), 0);
   return { key: received >= ordered ? 'done' : received ? 'partial' : 'waiting', label: received >= ordered ? '입고 완료' : received ? '부분 입고' : '입고 대기', tone: received >= ordered ? 'green' : received ? 'amber' : 'blue', ordered, received, remaining: Math.max(0, ordered - received) };
+}
+// Keep receipt progress and lateness separate: an overdue order can be partly received.
+export function workflowStatus(state, request, today = dateInput()) {
+  if (request.status !== 'ordered') return { ...STATUS[request.status], owner: owner(request), detail: '', late: false };
+  const progress = orderProgress(state, request);
+  const expected = request.order?.expectedDate || request.needBy;
+  return { label: progress.label, tone: progress.tone, owner: progress.remaining ? ROLES.staff : '입고 확인 완료',
+    detail: progress.remaining ? `미입고 ${qty(progress.remaining)}` : `입고 ${qty(progress.received)}`,
+    late: Boolean(progress.remaining && expected && expected < today) };
+}
+export function comparisonLines(state, request, materialIds) {
+  const ordered = request.status === 'ordered';
+  return (ordered ? orderItems(request) : request.items).flatMap((item, index) => {
+    if (materialIds && !materialIds.includes(item.materialId)) return [];
+    const received = ordered ? receivedQuantity(state, request.id, index) : null;
+    return [{ ...item, index, received, remaining: ordered ? Math.max(0, Number(item.quantity) - received) : null }];
+  });
+}
+export function materialTotals(state, materialId) {
+  const received = state.receipts.reduce((sum, r) => sum + r.lines.filter(l => l.materialId === materialId).reduce((n, l) => n + l.quantity, 0), 0);
+  const issued = state.issues.filter(i => i.materialId === materialId).reduce((sum, i) => sum + i.quantity, 0);
+  return { received, issued, balance: received - issued };
 }
 export function stock(state, materialId, through = '9999-12-31') {
   const incoming = state.receipts.filter(r => r.date <= through).reduce((n, r) => n + r.lines.filter(l => l.materialId === materialId).reduce((sum, l) => sum + l.quantity, 0), 0);
