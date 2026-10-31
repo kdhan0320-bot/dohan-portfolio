@@ -1,5 +1,5 @@
 export const STORAGE_KEY = 'purchase-workspace-demo-v1';
-export const ROLES = { staff: '구매 담당자', manager: '팀장', director: '사장님' };
+export const ROLES = { staff: '구매·자재 담당자', manager: '팀장', director: '사장님' };
 export const REVISION_SAMPLE_ID = 'DEMO-02';
 export const STATUS = {
   draft: { label: '작성 중', tone: 'gray' },
@@ -7,7 +7,7 @@ export const STATUS = {
   team: { label: '팀장 결재', tone: 'blue' },
   director: { label: '사장님 결재', tone: 'blue' },
   approved: { label: '발주 대기', tone: 'green' },
-  ordered: { label: '발주 기록 완료', tone: 'gray' },
+  ordered: { label: '발주 등록', tone: 'gray' },
   rejected: { label: '반려', tone: 'rose' },
 };
 export const money = value => `${Number(value || 0).toLocaleString('ko-KR')}원`;
@@ -19,7 +19,7 @@ export function dateInput(value = new Date()) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }
 export function owner(request) {
-  return request.status === 'team' ? '팀장' : request.status === 'director' ? '사장님' : ['draft', 'revision', 'approved'].includes(request.status) ? '구매 담당자' : '처리 완료';
+  return request.status === 'team' ? '팀장' : request.status === 'director' ? '사장님' : ['draft', 'revision', 'approved'].includes(request.status) ? ROLES.staff : '처리 완료';
 }
 export const canReview = (request, role) => (request.status === 'team' && role === 'manager') || (request.status === 'director' && role === 'director');
 export const canEdit = (request, role) => role === 'staff' && ['draft', 'revision'].includes(request.status);
@@ -33,7 +33,7 @@ export function rejectionStep(request) {
   return event.actor === ROLES.director ? 2 : event.actor === ROLES.manager ? 1 : null;
 }
 export function approvalSteps(request) {
-  const labels = ['요청 정리', '팀장 결재', '사장님 결재', '발주 기록'];
+  const labels = ['요청 정리', '팀장 결재', '사장님 결재', '발주 등록'];
   if (!request) return labels.map(label => ({ label, state: '', detail: '' }));
   const rejected = request.status === 'rejected';
   const current = rejected ? rejectionStep(request) : ['draft', 'revision'].includes(request.status) ? 0 : request.status === 'team' ? 1 : request.status === 'director' ? 2 : 3;
@@ -50,7 +50,7 @@ export function nextAction(request, role) {
   return '내용 확인';
 }
 export function emptyRequest() {
-  return { title: '', department: '운영지원팀', purpose: '', needBy: '', supplier: '', source: '', items: [{ name: '', spec: '', quantity: '', price: '' }] };
+  return { title: '', department: '생산지원팀', purpose: '', needBy: '', supplier: '', supplierId: '', source: '', items: [{ materialId: '', name: '', spec: '', unit: 'EA', quantity: '', price: '' }] };
 }
 export function validate(request) {
   const errors = {};
@@ -82,7 +82,7 @@ export function makeDemoDraft(source) {
   result.source = text;
   const named = text.match(/(?:품목|물품)\s*[:：]\s*([^\n,]+)/);
   const name = named?.[1]?.trim() || ['모니터', '사무용 의자', '키보드', '케이블', '서류 보관함'].find(word => text.includes(word)) || '';
-  const quantity = text.match(/(?:수량\s*[:：]?\s*)?(\d+)\s*(?:대|개|세트|박스)/)?.[1] || '';
+  const quantity = text.match(/(?:수량\s*[:：]?\s*)?(\d+)\s*(?:EA|대|개|세트|박스)/i)?.[1] || '';
   const spec = text.match(/(?:규격)\s*[:：]\s*([^\n,]+)/)?.[1]?.trim() || text.match(/\d+\s*인치/)?.[0] || '';
   const price = text.match(/(?:단가|개당|대당)\s*[:：]?\s*([\d,]+)\s*원/)?.[1]?.replace(/,/g, '') || '';
   const needBy = text.match(/\d{4}-\d{2}-\d{2}/)?.[0] || '';
@@ -112,14 +112,14 @@ export function transition(request, action, role, payload = {}) {
     if (Object.keys(validate(request)).length) throw new Error('요청 정보의 필수 항목을 확인해 주세요.');
     result.status = 'team';
     result.submittedAt = now;
-    result.submissions = [...(request.submissions || []), { revision: request.revision, at: now, title: request.title, department: request.department, purpose: request.purpose, needBy: request.needBy, supplier: request.supplier, items: structuredClone(request.items) }];
+    result.submissions = [...(request.submissions || []), { revision: request.revision, at: now, title: request.title, department: request.department, purpose: request.purpose, needBy: request.needBy, supplier: request.supplier, supplierId: request.supplierId, items: structuredClone(request.items) }];
     message = `${request.revision}차 요청서 제출 · 팀장 결재 요청`;
   } else if (['approve', 'revise', 'reject'].includes(action)) {
     if (!canReview(request, role)) throw new Error('현재 결재 차례의 담당자만 처리할 수 있습니다.');
     if (action !== 'approve' && !payload.reason?.trim()) throw new Error('요청자가 확인할 사유를 입력해 주세요.');
     if (action === 'approve') {
       result.status = role === 'manager' ? 'director' : 'approved';
-      if (role === 'director') result.approvedSnapshot = { revision: request.revision, at: now, title: request.title, department: request.department, purpose: request.purpose, needBy: request.needBy, supplier: request.supplier, items: structuredClone(request.items) };
+      if (role === 'director') result.approvedSnapshot = { revision: request.revision, at: now, title: request.title, department: request.department, purpose: request.purpose, needBy: request.needBy, supplier: request.supplier, supplierId: request.supplierId, items: structuredClone(request.items) };
       message = role === 'manager' ? '팀장 승인 · 사장님 결재로 전달' : '최종 승인 · 발주 준비 가능';
     } else {
       result.status = action === 'revise' ? 'revision' : 'rejected';

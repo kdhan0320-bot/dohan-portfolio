@@ -4,7 +4,7 @@ const text = value => String(value ?? '').trim();
 const fields = [['title', '요청 제목'], ['department', '요청 부서'], ['needBy', '희망 납기일'], ['supplier', '거래처'], ['purpose', '구매 사유']];
 const itemFields = [['spec', '규격'], ['quantity', '수량'], ['price', '단가']];
 const itemValue = (item, key) => key === 'quantity' || key === 'price' ? Number(item[key] || 0) : text(item[key]);
-const itemSummary = item => `${item.name || '품목 미입력'} · ${item.spec || '규격 미입력'} · ${item.quantity || '—'}개 · 단가 ${money(item.price)}`;
+const itemSummary = item => `${item.name || '품목 미입력'} · ${item.spec || '규격 미입력'} · ${item.quantity || '—'}${item.unit ? ` ${item.unit}` : '개'} · 단가 ${money(item.price)}`;
 
 // Compare with the last earlier submission, never with this revision's own snapshot.
 // Saved records are read only; item names changing are represented as removal/addition.
@@ -36,7 +36,7 @@ export function revisionChanges(request) {
     const name = `${item.name || '품목 미입력'}${duplicateName ? ` (${index + 1}번)` : ''}`;
     itemFields.forEach(([key, label]) => {
       if (itemValue(old, key) === itemValue(item, key)) return;
-      const format = value => key === 'price' ? money(value) : key === 'quantity' ? `${value || '—'}개` : text(value) || '미입력';
+      const format = value => key === 'price' ? money(value) : key === 'quantity' ? `${value || '—'}${item.unit ? ` ${item.unit}` : '개'}` : text(value) || '미입력';
       changes.push({ label: `${name} · ${label}`, before: format(old[key]), after: format(item[key]) });
     });
   });
