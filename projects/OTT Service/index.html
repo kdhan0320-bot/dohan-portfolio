@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=bb0edf737002" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=a11cb52a04d9"></script>
+    <link href="css/style.css?v=c21927299443" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=b63941e4fdac"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -130,12 +130,12 @@
           </div>
         </section>
         <section aria-labelledby="homeFilmsTitle" class="home-films wrap section">
-          <div class="section-heading">
-            <h2 id="homeFilmsTitle">분위기로 찾기</h2>
-          </div>
           <div class="discovery-tools">
+            <div class="section-heading">
+              <h2 id="homeFilmsTitle">분위기로 찾기</h2>
+            </div>
             <details class="catalog-options home-options" id="homeOptions">
-              <summary><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>분위기·시간<span class="options-active" id="homeOptionsActive" hidden aria-hidden="true"></span></summary>
+              <summary aria-describedby="homeSelection"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg>분위기·시간<span class="options-active" id="homeOptionsActive" hidden aria-hidden="true"></span></summary>
               <div class="catalog-options-panel">
                 <fieldset><legend>분위기</legend><div class="mood-choices" role="group" aria-label="홈 영화 분위기">
               <button type="button" data-home-mood="all" aria-pressed="true">전체</button>
@@ -148,7 +148,7 @@
                 <div class="options-actions"><button class="text-link" id="homeOptionsReset" type="button">초기화</button><button class="text-link options-done" id="homeOptionsDone" type="button">12편 보기<svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg></button></div>
               </div>
             </details>
-            <p class="home-selection" id="homeSelection">전체 분위기 · 전체 시간</p>
+            <p class="sr-only" id="homeSelection">전체 분위기 · 전체 시간</p>
             <p class="home-result-count sr-only" id="homeResultCount" aria-live="polite" role="status"></p>
           </div>
           <div class="rail-shell">
@@ -384,8 +384,8 @@
           <p class="eyebrow" id="articleCategory"></p>
           <h2 id="articleTitle" tabindex="-1"></h2>
           <div class="article-sequence-heading"><h3 id="articleLens">장면의 연결</h3><p id="articleRuntime"></p></div>
+          <div id="articleBody" class="article-intro" role="note" aria-label="함께 고른 이유"></div>
           <div aria-label="기획전에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
-          <div id="articleBody" class="article-afterword" role="note" aria-label="함께 고른 이유"></div>
         </div>
       </div>
       </section>

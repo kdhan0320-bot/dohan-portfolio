@@ -1,5 +1,30 @@
 # 잔상관 Asset Provenance
 
+## v45 표면 질감 완화 · 별을 접는 아이 — 2026-10-31
+
+사용자가 과한 질감을 덜어 달라고 요청한 기존 자체 생성 포스터를 내장 OpenAI `image_gen.imagegen`으로 한 차례 편집했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다. 제목·구도·인물·색상·이야기를 유지하고, 머리카락·옷·목재의 반복적인 엠보싱/구겨짐 효과를 완화했습니다. 종이별과 아이가 든 종이의 접힌 선은 보존합니다. 손그림 제작·직접 레터링·AI 인상 제거·독점 권리를 주장하지 않습니다.
+
+- 입력: `assets/posters-v44/atlas.jpg`
+- 생성 PNG: `exec-80980e8f-1a3d-4c6f-a0c7-a4e203089cbb.png`
+- 배포 파일: `assets/posters-v45/atlas.jpg`, 1024×1536. Windows System.Drawing JPEG quality 90으로 형식만 변환했습니다.
+- 기존 포스터와 팝업 장면을 보존했습니다. 외부 영화 포스터·타 작가 작품은 입력하지 않았습니다.
+
+| 파일 | 바이트 | SHA-256 |
+|---|---:|---|
+| 입력 | 441897 | `31cfdd2d5c4a128e160f923ac4c7af3621562254efa59c9af4d233e3bb78b85f` |
+| 생성 PNG | 2569871 | `10ed23f0ca23e61199c18178e6fa052247ea73a452df0f9fd5c8ee0eb5de1a65` |
+| 배포 JPEG | 364174 | `521a6766aea34b7d8ecbf1d48d9775b53b6a67729bcf41ed27919fe382e35ae6` |
+
+### 최종 프롬프트
+
+```text
+Edit this exact existing poster, not a new composition. The only intended change is to remove the pervasive crinkled, embossed, faceted texture that currently makes the sky, wood, sweater and hair all look like crushed paper.
+Preserve the portrait 2:3 composition, the same one child seen from behind in a plum sweater, tied dark hair, pose and hands holding the last sheet, the wooden desk, two paper stars, the window framing, small distant house, star positions, the blue/plum/ivory color palette and the current title's position and size.
+Preserve the exact Korean lettering "별을 접는 아이" (first line "별을 접는", second line "아이") and the English subtitle "THE PAPER CONSTELLATION". Keep their readable, flat ivory brush-lettered shapes. No new text.
+Make a clearly visible material correction: erase the small polygonal bumps, cracked-paper mosaic, excessive sharpening and repeated wrinkled overlay across the entire illustration. The night sky should be calm broad smooth watercolor washes with a little tonal variation, NOT tessellated or granular. Hair should be soft dark ink masses with a few intentional strands, NOT densely etched or glossy. Sweater should read as matte fabric with broad simple painted folds and only restrained knitting indications, NOT scales or crumpled tissue. Wood should have a few directional painted grain strokes, not dense embossed ridges.
+Keep actual crease lines only in the sheet being held and the two folded paper stars. Across the printed poster allow only an extremely faint fine uncoated paper grain, nearly imperceptible at normal viewing size. This is not a blur filter: keep meaningful silhouettes, the title, hands, paper edges and object boundaries crisp, while removing artificial surface relief. Aim for a quiet hand-painted animated-film poster with differentiated materials. No photorealism, no 3D gloss, no over-smoothed plastic skin, no additional decorations, no mockup.
+```
+
 ## v44 종이 포스터 마감 · 별을 접는 아이 — 2026-10-31
 
 사용자가 요청한 종이 질감과 자연스러운 제목 구성을 기존 자체 생성 포스터에 적용했습니다. 내장 OpenAI `image_gen.imagegen` 편집을 두 차례 사용했으며 정확한 모델 버전은 제공되지 않았습니다. 기존 아이·마지막 종이·별·창가의 장면과 가상 줄거리를 유지하고, 제목의 각진 입체 면을 덜어 평면적인 글자로 정리했습니다. 직접 레터링·실제 촬영·AI 인상 제거·독점 권리를 주장하지 않습니다.

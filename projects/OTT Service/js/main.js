@@ -140,7 +140,7 @@
       mood: "wonder",
       moodText: "낯선 경이",
       image: "atlas",
-      posterArtwork: "assets/posters-v44/atlas.jpg",
+      posterArtwork: "assets/posters-v45/atlas.jpg",
       posterPath: "assets/frames-v36/atlas.webp",
       detailPosition: "center 4%",
       detailRatio: "1.25",
@@ -2140,7 +2140,7 @@
     const duration = $("homeDuration").selectedOptions[0].textContent;
     $("homeSelection").textContent = `${state.homeMood === "all" ? "전체 분위기" : mood} · ${duration}`;
     $("homeOptionsActive").hidden = state.homeMood === "all" && state.homeDuration === "all";
-    $("homeOptionsDone").firstChild.textContent = `${count}편 보기`;
+    $("homeOptionsDone").firstChild.textContent = count ? `${count}편 보기` : "선택 완료";
     document.querySelectorAll('[name="homeDurationChoice"]').forEach(input => {
       input.checked = input.value === state.homeDuration;
     });

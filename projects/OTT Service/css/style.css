@@ -1482,9 +1482,8 @@ dialog { max-width: none; }
 .theme-preview:is(:hover,:focus-visible) .sequence-frame:nth-child(4) .sequence-image::after { transition-delay: .12s; }
 .article-film-link:is(:hover,:focus-visible) .scene-index, .event-banner:is(:hover,:focus-visible) .scene-index { border-top-color: currentColor; border-left-color: currentColor; }
 .article-sequence-heading { margin-top: 14px; }
-.article-afterword { margin-top: 28px; padding-top: 18px; border-top: 1px solid #cbb79a30; }
-#articleBody.article-afterword { margin-top: 28px; }
-#articleBody.article-afterword p { margin-top: 0; }
+#articleBody.article-intro { margin: 16px 0 24px; }
+#articleBody.article-intro p { margin: 0; }
 @media (min-width: 1101px) {
   .library-reading .film-card:has(.film-note-preview[hidden]) .film-art { width: 64px; }
   .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(0,1fr) auto; align-self: center; align-items: center; }
@@ -1495,7 +1494,6 @@ dialog { max-width: none; }
   .cinema-view .article-content { padding-top: 20px; }
   .article-sequence-heading { gap: 4px 12px; margin-top: 12px; }
   .article-step { min-height: 3.2em; }
-  .article-afterword { padding-top: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sequence-image::after { transition: none !important; }
@@ -1623,7 +1621,6 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .cinema-context { color: var(--muted); }
 .article-step { color: var(--muted); }
 .article-step::after, .sequence-image::after { content: none; }
-.article-afterword { border-color: #b6c4d824; }
 .note-form textarea { background: #292b3080; }
 .note-undo-tray { background: var(--surface); border-color: #b6c4d844; }
 .note-draft-notice, .detail-content .note-undo-list { border-color: #b6c4d855; background: #b6c4d80b; }
@@ -1697,12 +1694,12 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .spotlight-caption > .icon { transition: none; }
 }
 
-/* v44: one discovery control, compact filters and predictable narrow cards. */
-.discovery-tools { display: grid; grid-template-columns: 148px minmax(0,1fr); gap: 12px 18px; align-items: start; }
-.home-options { display: block; grid-column: 1/-1; grid-row: 1; }
-.home-options > summary { width: max-content; }
-.home-options .catalog-options-panel { position: static; width: min(100%,480px); margin-top: 12px; max-height: none; overflow: visible; box-shadow: none; }
-.home-selection { grid-column: 2; grid-row: 1; padding-block: 10px; color: var(--muted); font-size: 14px; line-height: 1.6; word-break: keep-all; }
+/* v44–v45: one right-aligned discovery control and predictable narrow cards. */
+.discovery-tools { display: grid; grid-template-columns: minmax(0,1fr); align-items: start; }
+.home-films .discovery-tools > .section-heading { grid-area: 1/1; align-self: start; justify-self: start; min-height: 44px; max-width: calc(100% - 140px); margin: 0; pointer-events: none; }
+.home-options { display: block; grid-area: 1/1; min-width: 0; }
+.home-options > summary { width: max-content; margin-left: auto; }
+.home-options .catalog-options-panel { position: static; width: min(100%,480px); margin: 12px 0 0 auto; max-height: none; overflow: visible; box-shadow: none; }
 .catalog-options-panel fieldset { margin-bottom: 16px; }
 .mood-choices { grid-template-columns: repeat(3,minmax(0,1fr)); }
 .mood-choices button { justify-content: center; padding-inline: 8px; gap: 6px; white-space: nowrap; }
