@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createSamples, transition, validate, makeDemoDraft, SAMPLE_SOURCE, amount, similarRequests, orderMessage, eventRevisionLabel } from '../src/procurement/model.js';
+import { createSamples, transition, validate, makeDemoDraft, SAMPLE_SOURCE, amount, similarRequests, orderMessage, eventRevisionLabel, approvalSteps, rejectionStep, ensureRevisionSample, REVISION_SAMPLE_ID } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
 
 const draft = () => createSamples(new Date('2026-10-30T12:00:00+09:00')).find(r => r.status === 'draft');
@@ -147,4 +147,56 @@ test('unchanged duplicate-name items are paired before edited rows', () => {
 test('first revisions and missing historical snapshots never invent a baseline', () => {
   assert.deepEqual(revisionChanges(draft()), { previous: null, changes: [] });
   assert.deepEqual(revisionChanges({ ...draft(), revision: 3 }), { previous: null, changes: [] });
+});
+
+test('rejection stops at the actual manager or director, never at request drafting', () => {
+  const submitted = transition(draft(), 'submit', 'staff');
+  const managerRejected = transition(submitted, 'reject', 'manager', { reason: '기존 물품 사용' });
+  assert.equal(rejectionStep(managerRejected), 1);
+  assert.deepEqual(approvalSteps(managerRejected).map(s => s.detail), ['완료', '반려', '진행하지 않음', '진행하지 않음']);
+  const directorRejected = transition(transition(submitted, 'approve', 'manager'), 'reject', 'director', { reason: '구매 보류' });
+  assert.equal(rejectionStep(directorRejected), 2);
+  assert.deepEqual(approvalSteps(directorRejected).map(s => s.state), ['complete', 'complete', 'rejected', 'stopped']);
+  assert.equal(approvalSteps(directorRejected).some(s => s.state === 'current'), false);
+});
+
+test('legacy rejection actors are respected and missing history is not guessed', () => {
+  const r = { ...draft(), status: 'rejected', events: [{ revision: 1, actor: '사장님', message: '반려 · 예산 재검토' }] };
+  const original = structuredClone(r);
+  assert.equal(rejectionStep(r), 2);
+  assert.deepEqual(r, original);
+  assert.equal(rejectionStep({ ...r, events: [] }), null);
+  assert.equal(rejectionStep({ ...r, revision: 2 }), null);
+  assert.ok(approvalSteps({ ...r, events: [] }).every(s => s.detail === '진행 종료'));
+});
+
+test('new approval rounds restart while ordered requests have no pending steps', () => {
+  const samples = createSamples();
+  assert.ok(approvalSteps(samples.find(r => r.status === 'ordered')).every(s => s.detail === '완료'));
+  const changed = transition(samples.find(r => r.status === 'approved'), 'amend', 'staff');
+  assert.deepEqual(approvalSteps(changed).map(s => s.detail), ['작성 중', '대기', '대기', '대기']);
+});
+
+test('revision demo exposes real differences and cannot bypass reapproval', () => {
+  const sample = createSamples().find(r => r.id === REVISION_SAMPLE_ID);
+  assert.deepEqual(validate(sample), {});
+  assert.equal(sample.revision, 2);
+  assert.equal(sample.status, 'team');
+  assert.equal(amount(sample.approvedSnapshot), 192000);
+  assert.equal(amount(sample), 288000);
+  assert.equal(sample.submissions.length, 2);
+  assert.deepEqual(revisionChanges(sample).changes.map(c => c.label), ['구매 사유', '토너 · 수량', '총 요청 금액']);
+  assert.throws(() => transition(sample, 'order', 'staff', { reference: 'skip' }));
+});
+
+test('adding the example preserves saved requests and never resets a used example', () => {
+  const saved = [draft()];
+  const original = structuredClone(saved);
+  const upgraded = ensureRevisionSample(saved);
+  assert.deepEqual(saved, original);
+  assert.equal(upgraded[1], saved[0]);
+  upgraded[0] = transition(upgraded[0], 'approve', 'manager');
+  assert.equal(ensureRevisionSample(upgraded), upgraded);
+  assert.equal(upgraded[0].status, 'director');
+  assert.equal(upgraded.filter(r => r.id === REVISION_SAMPLE_ID).length, 1);
 });

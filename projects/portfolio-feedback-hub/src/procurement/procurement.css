@@ -3648,7 +3648,7 @@ h1,h2,h3 {
 }
 
 .brand-name {
-  font-size:17px;
+  font-size:26px;
   font-weight:550;
   letter-spacing:-.04em;
   line-height:1.4;
@@ -3659,8 +3659,8 @@ h1,h2,h3 {
 }
 
 .brand .brand-name small {
-  font-size:9px;
-  letter-spacing:.05em;
+  font-size:11px;
+  letter-spacing:0;
   margin-top:6px;
 }
 
@@ -3781,7 +3781,7 @@ main { padding-top: 28px; }
 .source-toggle { display: inline-flex; gap: 7px; align-items: center; flex-shrink: 0; font-size: 12px; color: #42648f; min-height: 44px; }
 .source-panel[open] .source-toggle svg { transform: rotate(-90deg); }
 .source-panel .panel-body { display: block; }
-.source-panel textarea { height: 235px; }
+.source-panel textarea { height: 168px; }
 .source-panel:not([open])>.panel-body, .source-panel:not([open])>.source-footer { display: none; }
 .field { font-size: 14px; }
 .field>label { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 0; }
@@ -3879,7 +3879,7 @@ main { padding-top: 28px; }
   .item-row>span:nth-child(2) { text-align: left; }
   .item-row>span:nth-child(3), .item-row>strong { text-align: right; }
   .total-line { margin-top: 18px; }
-  .source-panel textarea { height: 210px; font-size: 16px; }
+  .source-panel textarea { height: 128px; font-size: 16px; }
   .field input, .field textarea { font-size: 16px; }
   .draft-review { padding: 12px 20px; }
   .order-copy { font-size: 14px; }
@@ -3960,4 +3960,37 @@ main { padding-top: 28px; }
   .request-title-cell h2 { margin-top: 5px; }
   .request-title-cell .mono, .request-title-cell>small { font-size: 13px; }
   .workspace-footer .footer-actions { width: 100%; justify-content: space-between; }
+}
+
+/* Pumuiseon: the same document line marks decisions, including where work ends. */
+.approval-line .rejected .line-node { background: #f8eeec; color: #9b514b; border-color: #bd7870; }
+.approval-line .rejected .line-step, .approval-line .rejected small { color: #934c46; font-weight: 550; }
+.approval-line .rejected::before, .approval-line .stopped::before { background: none; border-top: 1px dashed #c8d0db; }
+.approval-line .stopped .line-node { background: #f3f5f7; border-color: #d4dbe4; color: #6b7585; }
+.approval-line .stopped .line-step, .approval-line .stopped small { color: #626e80; }
+.closed-panel { border-top-color: #9aa9bd; }
+.closed-panel .panel-body>h3 { margin-left: 0; }
+.overview-actions { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+.source-entry-tools { margin: 0 0 12px; }
+.source-entry-tools .sample-button { margin: 0; min-height: 44px; padding: 0 12px; gap: 8px; border: 1px solid #cad7e7; border-radius: 5px; background: #f5f8fc; font-size: 13px; }
+.source-entry-tools .sample-button:hover { background: #eaf0f8; }
+.source-panel .source-description { margin-bottom: 10px; }
+.source-panel .draft-button { margin-top: 12px; }
+.dialog-field-label { display: flex; align-items: baseline; gap: 4px; }
+@media(max-width:760px) {
+  .brand .brand-name { display: flex; align-items: center; gap: 14px; font-size: 23px; }
+  .brand .brand-name small { display: block; font-size: 11px; margin: 0; }
+}
+@media(max-width:580px) {
+  .overview-actions .button { padding-inline: 12px; min-height: 44px; font-size: 13px; }
+  .source-panel .panel-head { padding-block: 16px; }
+  .source-panel .panel-body { padding-top: 16px; }
+}
+
+.revision-panel h2 { scroll-margin-top: 24px; }
+.revision-panel h2:focus { outline: none; }
+
+@media(max-width:360px) {
+  .new-request-head .eyebrow { display: none; }
+  .source-panel textarea { height: 96px; }
 }

@@ -1,5 +1,6 @@
 export const STORAGE_KEY = 'purchase-workspace-demo-v1';
 export const ROLES = { staff: '구매 담당자', manager: '팀장', director: '사장님' };
+export const REVISION_SAMPLE_ID = 'DEMO-02';
 export const STATUS = {
   draft: { label: '작성 중', tone: 'gray' },
   revision: { label: '보완 필요', tone: 'rose' },
@@ -22,6 +23,26 @@ export function owner(request) {
 }
 export const canReview = (request, role) => (request.status === 'team' && role === 'manager') || (request.status === 'director' && role === 'director');
 export const canEdit = (request, role) => role === 'staff' && ['draft', 'revision'].includes(request.status);
+// Older saved records have the actor but no structured rejection stage.
+export function rejectionStep(request) {
+  const event = [...(request.events || [])].reverse().find(e =>
+    e.revision === request.revision && (e.action === 'reject' || (!e.action && e.message?.startsWith('반려 ·'))));
+  if (!event) return null;
+  if (event.stage === 'director') return 2;
+  if (event.stage === 'team') return 1;
+  return event.actor === ROLES.director ? 2 : event.actor === ROLES.manager ? 1 : null;
+}
+export function approvalSteps(request) {
+  const labels = ['요청 정리', '팀장 결재', '사장님 결재', '발주 기록'];
+  if (!request) return labels.map(label => ({ label, state: '', detail: '' }));
+  const rejected = request.status === 'rejected';
+  const current = rejected ? rejectionStep(request) : ['draft', 'revision'].includes(request.status) ? 0 : request.status === 'team' ? 1 : request.status === 'director' ? 2 : 3;
+  return labels.map((label, index) => {
+    if (request.status === 'ordered' || (current !== null && index < current)) return { label, state: 'complete', detail: '완료' };
+    if (rejected) return { label, state: index === current ? 'rejected' : 'stopped', detail: index === current ? '반려' : current === null ? '진행 종료' : '진행하지 않음' };
+    return { label, state: index === current ? 'current' : 'waiting', detail: index !== current ? '대기' : request.status === 'approved' ? '처리 대기' : ['team', 'director'].includes(request.status) ? '확인 대기' : STATUS[request.status].label };
+  });
+}
 export function nextAction(request, role) {
   if (canReview(request, role)) return '결재 검토';
   if (role === 'staff' && request.status === 'approved') return '발주 준비';
@@ -119,6 +140,7 @@ export function transition(request, action, role, payload = {}) {
     message = `발주 기록 시연 · ${payload.reference.trim()} (실제 전송 없음)`;
   } else throw new Error('지원하지 않는 처리입니다.');
   result.events.push({ at: now, actor: ROLES[role], message, action, revision: request.revision,
+    ...(action === 'reject' ? { stage: request.status } : {}),
     ...(result.revision !== request.revision ? { nextRevision: result.revision } : {}) });
   return result;
 }
@@ -134,7 +156,7 @@ export function createSamples(now = new Date()) {
     ['PR-0103', '소모품 보관함 추가', 'ordered', '서류 보관함', 'A4 · 3단', 2, 48000, '공용 소모품 정리', 6, 2, '나무오피스'],
     ['PR-0102', '예비 모니터 구매', 'rejected', '모니터', '24인치 FHD', 1, 180000, '공용 예비 장비 확보', 7, 7, '가람오피스'],
   ];
-  return samples.map(([id, title, status, name, spec, quantity, price, purpose, days, need, supplier]) => {
+  const requests = samples.map(([id, title, status, name, spec, quantity, price, purpose, days, need, supplier]) => {
     let req = { id, title, status: 'draft', department: '운영지원팀', purpose, needBy: future(need), supplier: `${supplier} (가상 업체)`, source: `품목: ${name}\n규격: ${spec}\n수량: ${quantity}개\n사유: ${purpose}`, items: [{ name, spec, quantity, price }], revision: 1, createdAt: ago(days + 2), updatedAt: ago(days), events: [{ at: ago(days + 2), actor: '구매 담당자', message: '샘플 요청서 작성', revision: 1 }], submissions: [] };
     if (status !== 'draft') req = transition(req, 'submit', 'staff', { at: ago(days + 1) });
     if (status === 'revision') req = transition(req, 'revise', 'manager', { at: ago(days), reason: '회의실 장비에 맞는 케이블 길이를 규격에 추가해 주세요.' });
@@ -144,6 +166,26 @@ export function createSamples(now = new Date()) {
     if (status === 'ordered') req = transition(req, 'order', 'staff', { at: ago(days - 0.5), reference: '샘플 발주 기록' });
     return req;
   });
+  return ensureRevisionSample(requests, now);
+}
+// Add one identifiable demo without resetting or replacing any saved request.
+export function ensureRevisionSample(requests, now = new Date()) {
+  if (requests.some(r => r.id === REVISION_SAMPLE_ID)) return requests;
+  const at = days => new Date(new Date(now).getTime() - days * 86400000).toISOString();
+  const purpose = '공용 프린터 4대의 토너 교체';
+  let request = { ...emptyRequest(), id: REVISION_SAMPLE_ID, title: '공용 프린터 토너 추가 구매', status: 'draft', revision: 1,
+    supplier: '한결사무 (가상 업체)', purpose, needBy: dateInput(new Date(new Date(now).getTime() + 7 * 86400000)),
+    source: `품목: 토너\n규격: 흑백 · 표준 용량\n수량: 4개\n단가: 48,000원\n거래처: 한결사무 (가상 업체)\n사유: ${purpose}`,
+    items: [{ name: '토너', spec: '흑백 · 표준 용량', quantity: 4, price: 48000 }],
+    createdAt: at(6), updatedAt: at(6), submissions: [], events: [{ at: at(6), actor: ROLES.staff, message: '재결재 비교용 샘플 작성', revision: 1 }] };
+  request = transition(request, 'submit', 'staff', { at: at(5) });
+  request = transition(request, 'approve', 'manager', { at: at(4.5) });
+  request = transition(request, 'approve', 'director', { at: at(4) });
+  request = transition(request, 'amend', 'staff', { at: at(2) });
+  request.items = [{ ...request.items[0], quantity: 6 }];
+  request.purpose = '프린터 2대 추가 설치에 따라 총 6대의 토너 교체';
+  request = transition(request, 'submit', 'staff', { at: at(1) });
+  return [request, ...requests];
 }
 export function orderMessage(request) {
   const approved = request.approvedSnapshot || request;

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
-import { STORAGE_KEY, ROLES, STATUS, canEdit, createSamples, transition } from './model';
+import { STORAGE_KEY, ROLES, STATUS, canEdit, createSamples, ensureRevisionSample, transition } from './model';
 
 const Context = createContext(null);
 function load() {
@@ -12,7 +12,7 @@ function load() {
       Number.isInteger(r.revision) && Array.isArray(r.events) && Array.isArray(r.submissions) && Array.isArray(r.items) && r.items.every(i => typeof i.name === 'string' && typeof i.spec === 'string'))) {
       return { requests: createSamples(), role: 'staff', storage: true, notice: '저장된 시연 자료를 읽을 수 없어 기본 샘플을 불러왔습니다.' };
     }
-    return { requests: value.requests, role: ROLES[value.role] ? value.role : 'staff', storage: true };
+    return { requests: ensureRevisionSample(value.requests), role: ROLES[value.role] ? value.role : 'staff', storage: true };
   } catch { return { requests: createSamples(), role: 'staff', storage: false, notice: '브라우저 저장을 사용할 수 없습니다. 새로고침하면 변경 내용이 사라집니다.' }; }
 }
 
