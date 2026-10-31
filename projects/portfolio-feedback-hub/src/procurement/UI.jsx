@@ -1,7 +1,25 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icons';
 import { STATUS } from './model';
 import { workflowStatus, materialTotals, qty } from './inventory';
+import { listOrigin, rememberList } from './listNavigation';
+
+export function ListLink({ to, state, id, children, ...props }) {
+  const location = useLocation(), navigate = useNavigate();
+  const open = event => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    const origin = { path: location.pathname + location.search, y: window.scrollY, focusId: id };
+    rememberList(location.key, origin);
+    navigate(to, { state: { ...state, listOrigin: origin } });
+  };
+  return <Link {...props} id={id} to={to} state={state} onClick={open}>{children}</Link>;
+}
+export function ListBackLink({ fallback, children }) {
+  const location = useLocation(), origin = listOrigin(location.state?.listOrigin, fallback);
+  return <Link className="back-link" to={origin.path} state={{ restoreList: origin }}>{children}</Link>;
+}
 
 export function Badge({ status }) { return <StateTag tone={STATUS[status].tone}>{STATUS[status].label}</StateTag>; }
 export function StateTag({ tone = 'gray', children }) { return <span className={`badge ${tone}`}><span/>{children}</span>; }

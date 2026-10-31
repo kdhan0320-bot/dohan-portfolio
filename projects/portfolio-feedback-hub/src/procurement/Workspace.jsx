@@ -67,8 +67,8 @@ export function WorkspaceProvider({ children }) {
   const changeRole = value => { live.current.role = value; setRole(value); };
   const receive = (id, payload) => update(receiveOrder(live.current.data, id, live.current.role, payload));
   const issue = payload => update(issueMaterial(live.current.data, live.current.role, payload));
-  const putMaterial = (form, id) => update(saveMaterial(live.current.data, live.current.role, form, id));
-  const putVendor = (form, id) => update(saveVendor(live.current.data, live.current.role, form, id));
+  const putMaterial = (form, id) => { const next = saveMaterial(live.current.data, live.current.role, form, id); update(next); return id ? next.materials.find(m => m.id === id) : next.materials.at(-1); };
+  const putVendor = (form, id) => { const next = saveVendor(live.current.data, live.current.role, form, id); update(next); return id ? next.vendors.find(v => v.id === id) : next.vendors.at(-1); };
   const reset = () => { update(createERP()); changeRole('staff'); setStorage(true); setNotice('부품 구매·입출고 샘플로 초기화했습니다.'); };
   return <Context.Provider value={{ ...data, data, role, setRole: changeRole, storage, notice, setNotice, save, act, receive, issue, putMaterial, putVendor, reset }}>{children}</Context.Provider>;
 }
