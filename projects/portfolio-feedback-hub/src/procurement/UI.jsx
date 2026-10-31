@@ -45,6 +45,16 @@ export function PageHead({ eyebrow, title, children, action }) {
   return <header className="page-head"><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h1 tabIndex="-1">{title}</h1>{children && <p className="page-description">{children}</p>}</div>{action}</header>;
 }
 export function Empty({ title = '표시할 기록이 없습니다.', children }) { return <div className="empty"><span className="empty-icon"><Icon name="file" size={28}/></span><h3>{title}</h3>{children}</div>; }
+// Keep an explicit date format while retaining the browser's calendar picker.
+export function DateInput({ label, value, onChange, onBlur, min, max, ...props }) {
+  const picker = useRef(null), text = useRef(null);
+  const normalize = value => /^\d{8}$/.test(value) ? `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6)}` : value;
+  const canPick = typeof HTMLInputElement !== 'undefined' && 'showPicker' in HTMLInputElement.prototype;
+  return <span className="date-input">
+    <input {...props} ref={text} type="text" aria-label={label} inputMode="numeric" autoComplete="off" placeholder="YYYY-MM-DD" maxLength={10} value={value} onChange={event => { const next = normalize(event.target.value); onChange(next === event.target.value ? event : { target: { value: next } }); }} onBlur={onBlur}/>
+    {canPick && <><button type="button" className="date-picker-trigger" aria-label={`${label} 달력 열기`} onClick={() => picker.current.showPicker()}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 11h18M7 15h3"/></svg></button><input ref={picker} className="date-picker-native" type="date" value={/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : ''} min={min} max={max} tabIndex={-1} aria-hidden="true" onChange={event => { onChange(event); text.current?.focus(); }}/></>}
+  </span>;
+}
 export function Modal({ title, children, onClose, className = '', focusClose = false }) {
   const ref = useRef(null);
   useLayoutEffect(() => {
