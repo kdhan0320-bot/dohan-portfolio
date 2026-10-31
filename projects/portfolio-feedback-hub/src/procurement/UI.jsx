@@ -16,6 +16,10 @@ export function ListLink({ to, state, id, children, ...props }) {
   };
   return <Link {...props} id={id} to={to} state={state} onClick={open}>{children}</Link>;
 }
+// Reserve the heavier label's size so hover does not change line wrapping.
+export function LinkLabel({ children }) {
+  return <span className="link-label" data-label={children}><span>{children}</span></span>;
+}
 export function ListBackLink({ fallback, children }) {
   const location = useLocation(), origin = listOrigin(location.state?.listOrigin, fallback);
   return <Link className="back-link" to={origin.path} state={{ restoreList: origin }}>{children}</Link>;

@@ -483,3 +483,122 @@
 @media(prefers-reduced-motion:reduce) {
   .erp-task-list>a,.erp-movement-list>a,.related-documents>a { transition:none; }
 }
+/* Flexible record columns, native full-row links and a document-shaped receipt view. */
+.link-label { display:inline-grid;max-width:100%;vertical-align:top; }
+.link-label::before { content:attr(data-label);grid-area:1/1;font-weight:650;visibility:hidden; }
+.link-label>span { grid-area:1/1;font-weight:500; }
+a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus-within) .link-label>span { font-weight:650; }
+.erp-table .cell-main>a,.record-link,.document-meta a,.material-meta a { text-decoration:none; }
+.record-link:is(:hover,:focus-visible),.document-meta a:is(:hover,:focus-visible),.material-meta a:is(:hover,:focus-visible) { color:#294e83; }
+.row-link-table tr { position:relative;isolation:isolate; }
+.row-link-table .row-link { position:static; }
+.row-link-table .row-link::after { content:"";position:absolute;inset:0;z-index:1;cursor:pointer; }
+.row-link-table tr:is(:hover,:focus-within) { background:#edf3f9; }
+.row-link-table .row-link:focus-visible { outline:0; }
+.row-link-table .row-link:focus-visible::after { outline:2px solid #4267a5;outline-offset:-3px; }
+.cell-dates small { white-space:nowrap; }
+.panel-head h2>small { margin-left:10px;font-size:13px;font-weight:400;color:#647185; }
+.purchase-list .table-heading small { display:block;font-size:12px;line-height:18px;color:#718094;font-weight:400; }
+.requests-panel .list-caption { padding:10px 24px;margin:0;justify-content:flex-start;gap:4px; }
+@media(min-width:1101px) {
+  .sidebar nav { gap:12px; }
+  .nav-label { margin-bottom:20px; }
+  .purchase-list .table-heading,.purchase-list .request-table-row { grid-template-columns:minmax(0,2.8fr) minmax(100px,1.1fr) minmax(70px,.8fr) minmax(180px,2fr) minmax(110px,1.2fr);gap:24px; }
+  .purchase-list .request-table-row { align-items:center; }
+  .purchase-list .table-amount,.purchase-list .table-date,.purchase-list .table-owner { padding:0; }
+  .purchase-list .workflow-status { flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 10px; }
+  .purchase-list .workflow-detail { white-space:nowrap; }
+  .order-list-table,.material-list-table,.vendor-list-table { table-layout:fixed; }
+  .order-list-table th:nth-child(1) { width:29%; }
+  .order-list-table th:nth-child(2) { width:19%; }
+  .order-list-table th:nth-child(3) { width:19%; }
+  .order-list-table th:nth-child(4) { width:17%; }
+  .order-list-table th:nth-child(5) { width:16%; }
+  .order-list-table td { vertical-align:middle; }
+  .order-list-table .workflow-tags { flex-wrap:wrap; }
+  .material-list-table th:nth-child(1) { width:40%; }
+  .material-list-table th:nth-child(2),.material-list-table th:nth-child(3) { width:17%; }
+  .material-list-table th:nth-child(4) { width:26%; }
+  .vendor-list-table th:nth-child(1) { width:34%; }
+  .vendor-list-table th:nth-child(2) { width:18%; }
+  .vendor-list-table th:nth-child(3) { width:32%; }
+  .vendor-list-table th:nth-child(4) { width:16%; }
+}
+@media(min-width:1600px) {
+  .order-list-table .cell-dates small { display:inline-block;margin:0 0 0 12px; }
+}
+.request-document .approval-line-caption { justify-content:space-between;padding:16px 28px 0; }
+.approval-line-caption h2 { font-size:14px;font-weight:550;line-height:22px; }
+.request-document .approval-line ol { grid-template-columns:repeat(5,minmax(0,1fr));padding:18px 28px 20px;gap:0; }
+.approval-line li { display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0; }
+.approval-line .line-node { flex:none;width:28px;height:28px;position:relative;z-index:1; }
+.approval-line li::before { top:14px;left:calc(50% + 14px);right:calc(-50% + 14px); }
+.approval-line .line-step { background:transparent;line-height:22px; }
+.approval-line small { background:transparent;max-width:100%;min-height:0;margin:0;line-height:20px; }
+.history-panel summary { display:flex;align-items:center;gap:12px;list-style:none;padding:20px 24px;cursor:pointer; }
+.history-panel summary::-webkit-details-marker { display:none; }
+.history-panel summary>span:first-child { flex:1;min-width:0; }
+.history-panel summary strong { display:block;font-size:16px;font-weight:550; }
+.history-panel summary small { display:block;font-size:13px;color:#657286;margin-top:5px; }
+.history-panel summary>span:last-child { font-size:13px;color:#657286;white-space:nowrap; }
+.history-panel summary::after { content:"보기";font-size:13px;color:#4267a5; }
+.history-panel[open] summary::after { content:"닫기"; }
+.history-panel[open] summary { border-bottom:1px solid var(--line); }
+.history-panel ol { padding-top:20px; }
+.voucher-panel { background:#edf1f6;border-color:#d5dfeb; }
+.voucher-panel .panel-head { background:transparent;border-bottom:0; }
+.voucher-list { display:grid;gap:16px;padding:0 20px 20px; }
+.order-voucher { display:block;position:relative;background:#fff;border:1px solid #d1dce8;border-left:3px solid #7188a7;border-radius:3px;box-shadow:0 3px 0 #e2e8f0;padding:18px 20px 0; }
+.order-voucher:is(:hover,:focus-visible) { background:#f9fbfe;border-color:#9cafc7; }
+.voucher-register { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.voucher-id { display:grid;gap:5px; }
+.voucher-id>small { font-size:11px;letter-spacing:.06em;color:#738197; }
+.voucher-id .mono { font-size:14px;letter-spacing:.04em;font-weight:550;color:#405c84; }
+.order-voucher h3 { margin:16px 0 0;font-size:16px;line-height:1.6;font-weight:550;word-break:keep-all;overflow-wrap:anywhere; }
+.voucher-vendor { margin:6px 0 16px;font-size:13px;color:#66758a; }
+.voucher-quantities { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border:1px solid #dce4ed;border-radius:3px;overflow:hidden; }
+.voucher-quantities>div { padding:12px 14px;border-right:1px solid #dce4ed; }
+.voucher-quantities>div:last-child { border:0;background:#edf3fa; }
+.voucher-quantities dt { font-size:12px;color:#65768d; }
+.voucher-quantities dd { margin:5px 0 0;font-size:24px;line-height:1.3;font-weight:500;font-variant-numeric:tabular-nums;color:#354d6b; }
+.voucher-quantities dd small { font-size:11px;font-weight:400;color:#758297;margin-left:5px; }
+.voucher-quantities>div:nth-child(2) dd { color:#52776e; }
+.voucher-dates { display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;border-top:1px dashed #c6d2e1;margin-top:18px;padding:12px 0;font-size:12px;line-height:20px;color:#60738c; }
+@media(max-width:1100px) {
+  .order-list-table tr { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .order-list-table .cell-status { grid-column:auto;align-self:start; }
+  .material-list-table .cell-vendor { grid-column:1/-1; }
+  .vendor-list-table .cell-contact { grid-column:1/-1;grid-row:3; }
+  .vendor-list-table .cell-count { grid-column:2;grid-row:2; }
+  .vendor-list-table .cell-contact small { font-size:14px; }
+  .purchase-list .table-amount>small,.purchase-list .table-date>small { display:block;font-size:12px;line-height:18px;margin:0 0 2px; }
+}
+@media(max-width:680px) {
+  .page-head { flex-direction:row;align-items:center;gap:10px;margin-bottom:16px; }
+  .page-head .eyebrow { display:none; }
+  .page-head>div { min-width:0; }
+  .page-head:has(>.button)>div { width:auto; }
+  .page-head h1 { font-size:24px;line-height:1.4; }
+  .page-head>.button { width:auto;margin:0;align-self:center;padding:10px 12px;flex-shrink:0;min-height:44px;font-size:13px; }
+  .page-head>.button svg { display:none; }
+  .list-toolbar { padding:12px 16px;gap:12px; }
+  .filter-tabs { gap:0 12px; }
+  .filter-tabs button { padding:6px 0; }
+  .request-document .approval-line-caption { padding:12px 14px 0;gap:8px; }
+  .request-document .approval-line ol { padding:16px 10px;gap:0; }
+  .approval-line .line-node { width:26px;height:26px; }
+  .approval-line li::before { top:13px;left:calc(50% + 13px);right:calc(-50% + 13px); }
+  .approval-line .line-step { font-size:13px;line-height:19px; }
+  .approval-line .line-step>span { display:block; }
+  .approval-line small { font-size:12px;line-height:18px; }
+  .history-panel summary { padding:16px;gap:10px; }
+  .history-panel summary strong { font-size:15px; }
+  .voucher-list { padding:0 12px 16px;gap:14px; }
+  .order-voucher { padding:14px 14px 0; }
+  .voucher-register { gap:8px;align-items:start; }
+  .voucher-register .workflow-tags { justify-content:flex-end; }
+  .voucher-quantities>div { padding:10px; }
+  .voucher-quantities dd { font-size:22px; }
+  .voucher-quantities dd small { display:block;margin:3px 0 0; }
+  .voucher-dates { margin-top:14px; }
+}

@@ -1,4 +1,4 @@
-import { dateInput, emptyRequest, transition, validate, STATUS, ROLES, owner } from './model.js';
+import { dateInput, emptyRequest, transition, validate, STATUS, ROLES, owner, approvalSteps } from './model.js';
 
 export const ERP_SAMPLE_ID = 'PR-2007';
 export const qty = n => `${Number(n || 0).toLocaleString('ko-KR')} EA`;
@@ -10,6 +10,18 @@ export function orderProgress(state, request) {
   const ordered = orderItems(request).reduce((n, i) => n + Number(i.quantity), 0);
   const received = orderItems(request).reduce((n, _, i) => n + receivedQuantity(state, request.id, i), 0);
   return { key: received >= ordered ? 'done' : received ? 'partial' : 'waiting', label: received >= ordered ? '입고 완료' : received ? '부분 입고' : '입고 대기', tone: received >= ordered ? 'green' : received ? 'amber' : 'blue', ordered, received, remaining: Math.max(0, ordered - received) };
+}
+// Receipt completion is request-specific. Issues belong to material stock, not a PO.
+export function purchaseSteps(state, request) {
+  const approval = approvalSteps(request).map((step, index) => ({ ...step, label: index === 0 ? '품의 작성' : step.label }));
+  const receipt = request.status === 'rejected'
+    ? { label: '입고 확인', state: 'stopped', detail: '진행하지 않음' }
+    : request.status !== 'ordered'
+      ? { label: '입고 확인', state: 'waiting', detail: '대기' }
+      : orderProgress(state, request).remaining > 0
+        ? { label: '입고 확인', state: 'current', detail: '수량 확인' }
+        : { label: '입고 확인', state: 'complete', detail: '완료' };
+  return [...approval, receipt];
 }
 // Keep receipt progress and lateness separate: an overdue order can be partly received.
 export function workflowStatus(state, request, today = dateInput()) {

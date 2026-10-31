@@ -3,11 +3,31 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
-import { workflowStatus, comparisonLines, materialTotals } from '../src/procurement/inventory.js';
+import { workflowStatus, comparisonLines, materialTotals, purchaseSteps } from '../src/procurement/inventory.js';
 
 const today = dateInput();
 const receipt = (quantity, extra = {}) => ({ date: today, lines: [{ index: 0, quantity }], ...extra });
 const issue = (quantity, extra = {}) => ({ materialId: 'MT-0001', date: today, quantity, department: '검증 부서', recipient: '가상 담당자', ...extra });
+
+test('purchase progress follows actual receipt completion independently of material issues', () => {
+  let s = createERP();
+  assert.deepEqual(purchaseSteps(s, s.requests[0]).map(step => step.state), ['complete', 'complete', 'complete', 'complete', 'current']);
+  s = receiveOrder(s, 'PR-2001', 'staff', receipt(2));
+  assert.ok(purchaseSteps(s, s.requests[0]).every(step => step.state === 'complete'));
+  s = issueMaterial(s, 'staff', issue(3));
+  assert.equal(stock(s, 'MT-0001'), 0);
+  assert.ok(purchaseSteps(s, s.requests[0]).every(step => step.state === 'complete'));
+});
+
+test('new approval rounds and rejection do not inherit completed future stages', () => {
+  const s = createERP();
+  const resubmitted = s.requests.find(request => request.revision === 2 && request.status === 'team');
+  assert.deepEqual(purchaseSteps(s, resubmitted).map(step => step.state), ['complete', 'current', 'waiting', 'waiting', 'waiting']);
+  const rejected = createSamples().find(request => request.status === 'rejected');
+  const steps = purchaseSteps(s, rejected);
+  assert.equal(steps.some(step => step.state === 'current'), false);
+  assert.equal(steps.at(-1).state, 'stopped');
+});
 
 test('receipt phase and overdue warning remain separate until the last receipt', () => {
   let s = createERP();
