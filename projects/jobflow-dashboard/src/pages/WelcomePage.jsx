@@ -41,7 +41,7 @@ export default function WelcomePage() {
           <p>회사마다 흩어진 마감과 준비를 한곳에.</p>
         </div>
         <div className="galpi-intro-action">
-            <small>{user ? '내 계정에 저장된 기록' : '가입 없이 · 가상 데이터 체험'}</small>
+            {user && <small>내 계정에 저장된 기록</small>}
             <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : '샘플 체험하기'}</Button>
             {error && <Alert severity="error">{error}</Alert>}
         </div>
