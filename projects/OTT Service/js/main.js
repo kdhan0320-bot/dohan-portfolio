@@ -230,7 +230,7 @@
       previewDescription: "파도와 숲에 귀를 기울인 뒤, 사람의 목소리로 돌아오는 네 편.",
       previewImage: "assets/stills/tide.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
-      accent: "#9CBFDF",
+      accent: "#B6C4D8",
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
@@ -251,7 +251,7 @@
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
-      accent: "#EDBA88",
+      accent: "#D4B6C4",
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
@@ -271,7 +271,7 @@
       previewDescription: "일지를 펼치고, 귀환을 기다리고, 소원을 고르는 사람들. 세계보다 선택에 주목한 네 편.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
-      accent: "#C3B6EC",
+      accent: "#C5BFDD",
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
@@ -533,10 +533,8 @@
     link.href = `#themes/${theme.id}`;
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
-    link.innerHTML = `<div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span> 장면의 연결 · ${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div></div><div class="theme-sequence">${theme.films.map((id, index) => {
-      const film = films.find(item => item.id === id);
-      return `<figure class="sequence-frame"><div class="sequence-image"><img src="${scenePath(film)}" alt="" width="800" height="600" loading="lazy" style="object-position:${film.sequencePosition || film.detailPosition || film.posterPosition || "center"}"></div><figcaption><span class="sequence-number scene-index">${String(index + 1).padStart(2, "0")}</span><span>${theme.sequence[index]}</span></figcaption></figure>`;
-    }).join("")}</div>`;
+    link.style.setProperty("--collection-surface", theme.accent);
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · ${themeMinutes(theme)}분 ${icon("arrow")}</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
@@ -749,8 +747,8 @@
         );
         if (mostVisible.visibleWidth > 0) visible = [mostVisible];
       }
-      const range = visible.length ? `${String(visible[0].index + 1).padStart(2, "0")}${visible.length > 1 ? `–${String(visible.at(-1).index + 1).padStart(2, "0")}` : ""}` : "00";
-      railStatus.innerHTML = `<span class="rail-current">${range}</span><span class="rail-divider" aria-hidden="true">/</span><span>${String(cards.length).padStart(2, "0")}</span>`;
+      const range = visible.length ? `${visible[0].index + 1}${visible.length > 1 ? `–${visible.at(-1).index + 1}` : ""}` : "0";
+      railStatus.innerHTML = `<span class="sr-only">보이는 작품 </span><span class="rail-current">${range}</span><span class="rail-divider" aria-hidden="true">/</span><span>${cards.length}편</span>`;
       railPosition.value = String(max ? Math.round(left / max * 100) : 0);
       railPosition.setAttribute("aria-valuetext", `전체 ${cards.length}편 중 ${visible.length ? visible[0].index + 1 : 0}번째부터 표시`);
       railPosition.disabled = max <= 2;
@@ -1238,7 +1236,7 @@
       .querySelector(
         state.view === "saved"
           ? '[data-library-filter="all"]'
-          : '[data-mood="all"]',
+          : '#searchInput',
       )
       .focus();
   });
@@ -2157,6 +2155,7 @@
     const saved = state.view === "saved";
     $("catalogOptionsLabel").textContent = saved ? "정렬" : "필터·정렬";
     const selections = [];
+    if (!saved && state.mood !== "all") selections.push(document.querySelector(`[data-mood="${state.mood}"]`).textContent);
     [$("durationFilter"), $("catalogSort")].forEach(select => {
       document.querySelectorAll(`[name="${select.id}Choice"]`).forEach(input => { input.checked = input.value === select.value; });
       if (select.id === "durationFilter" ? !saved && select.value !== "all" : select.value !== "recommended") selections.push(select.selectedOptions[0].textContent);
@@ -2169,6 +2168,23 @@
     $("catalogOptions").open = false;
     if (focus) $("catalogOptions").querySelector("summary").focus({ preventScroll: true });
   };
+  function fitCatalogOptions() {
+    const options = $("catalogOptions");
+    if (!options.open) return;
+    const rect = options.querySelector("summary").getBoundingClientRect();
+    const viewport = window.visualViewport;
+    const top = viewport?.offsetTop || 0;
+    const bottom = top + (viewport?.height || window.innerHeight);
+    const below = bottom - rect.bottom - 24;
+    const above = rect.top - top - 24;
+    const opensAbove = below < 240 && above > below;
+    options.dataset.position = opensAbove ? "above" : "below";
+    options.querySelector(".catalog-options-panel").style.maxHeight = `${Math.max(100, opensAbove ? above : below)}px`;
+  }
+  $("catalogOptions").addEventListener("toggle", fitCatalogOptions);
+  window.addEventListener("resize", fitCatalogOptions);
+  window.addEventListener("scroll", fitCatalogOptions, { passive: true });
+  window.visualViewport?.addEventListener("resize", fitCatalogOptions);
   $("catalogOptionsDone").addEventListener("click", () => closeCatalogOptions(true));
   $("catalogOptions").addEventListener("keydown", event => {
     if (event.key === "Escape") { event.preventDefault(); closeCatalogOptions(true); }
