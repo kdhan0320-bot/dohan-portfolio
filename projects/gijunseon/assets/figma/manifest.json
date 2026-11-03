@@ -1157,6 +1157,78 @@
       "width": "15.0607",
       "height": "13.0607",
       "viewBox": "0 0 15.0607 13.0607"
+    },
+    {
+      "context": "821:116",
+      "filename": "inspection-scratch-32.svg",
+      "bytes": 550,
+      "sha256": "f16bb54e118d46ce58f9bf51b693319d729b695fb206d80de7f92bd532ca7f4e",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:22",
+      "filename": "inspection-scratch-28.svg",
+      "bytes": 562,
+      "sha256": "2827a2211ea82190630abe25c263cce38ef972fbae9dc489fc979087619cfba7",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:27",
+      "filename": "inspection-scratch-24.svg",
+      "bytes": 553,
+      "sha256": "da6a7acdc6a51bcd53273c632b67d5f867a51529c95e426ce5d091f20ae55acf",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "821:124",
+      "filename": "inspection-missing-32.svg",
+      "bytes": 657,
+      "sha256": "89309ab6e03a619a5bff75e9836cfb35b2642b4fc2e92b1625b348584421b761",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:24",
+      "filename": "inspection-missing-28.svg",
+      "bytes": 725,
+      "sha256": "24e61b57364513894760bd8be326b153b9fc6b4f8173897f992d2ff81e977c7c",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:29",
+      "filename": "inspection-missing-24.svg",
+      "bytes": 691,
+      "sha256": "dfee7620b8698383de0bf1393bbcd4a568ecda0f84c2cf24d56643520432f56b",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "821:132",
+      "filename": "inspection-print-32.svg",
+      "bytes": 576,
+      "sha256": "2ae8b4133ee23ca62ccbcfb0b54bbb25179e99da18fbba8a57a02051b7a96e3d",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:26",
+      "filename": "inspection-print-28.svg",
+      "bytes": 603,
+      "sha256": "0ba3457651a488b6076614aed1e51353f4f6632f749564bd46e24cdf0950716c",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
+    },
+    {
+      "context": "1237:31",
+      "filename": "inspection-print-24.svg",
+      "bytes": 587,
+      "sha256": "331d23a39b98b88f628daf69892ef8e1fc502afbde971a03084042c209762abc",
+      "format": "SVG",
+      "note": "2026-11-03: latest Figma inspection symbol; original SVG preserved."
     }
   ],
   "fonts": [

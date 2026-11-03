@@ -79,6 +79,7 @@ function selectInspection(type, { updateHistory = false, announce = false } = {}
   });
   panel.setAttribute('aria-labelledby', `tab-${type}`);
   title.textContent = inspection.title;
+  document.querySelector('#inspection-type-icon').src = `assets/figma/inspection-${type}-24.svg`;
   document.title = `${inspection.title} · 기준선`;
   // 배너는 세로로 1.5배 크롭하므로 태블릿에서도 약 728px 이상의 원본 폭이 필요합니다.
   setResponsiveImage(banner, inspection.banner, '(max-width: 600px) 564px, (max-width: 700px) 800px, (max-width: 1440px) 728px, 50vw');

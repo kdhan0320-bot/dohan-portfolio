@@ -24,6 +24,9 @@
   background: #f0f0ec;
 }
 .inspection-hero-copy { position: relative; z-index: 1; }
+.inspection-eyebrow { display: flex; align-items: center; gap: 12px; }
+.inspection-type-icon { display: grid; place-items: center; width: 24px; height: 22px; flex: none; }
+.inspection-type-icon img { max-width: none; }
 .inspection-hero-image { position: absolute; inset: 0 0 0 50%; overflow: hidden; }
 .inspection-hero-image::after {
   content: "";

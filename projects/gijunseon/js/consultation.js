@@ -9,6 +9,7 @@ const form = document.querySelector('#consult-form');
 const inspectionOptions = [...document.querySelectorAll('[data-inspection-type]')];
 const inspectionDialog = document.querySelector('#consult-inspection-dialog');
 const changeButton = document.querySelector('#consult-change');
+const changePhoto = document.querySelector('#consult-change-photo');
 const privacyButton = document.querySelector('#consult-privacy-open');
 const completeDialog = document.querySelector('#consult-complete-dialog');
 const preparationDialog = document.querySelector('#preparation-dialog');
@@ -35,7 +36,8 @@ function sizeMarker() {
 function renderSelection(announce = false) {
   const inspection = inspections[selectedType];
   document.querySelector('#consult-selection-title').textContent = inspection.name;
-  changeButton.setAttribute('aria-label', `검사 유형 변경: ${inspection.name}`);
+  changeButton.setAttribute('aria-label', `검사 변경: ${inspection.name}`);
+  changePhoto.setAttribute('aria-label', `제품 사진으로 검사 변경: ${inspection.name}`);
   const productImage = document.querySelector('#consult-product-image');
   const productMark = document.querySelector('#consult-product-mark');
   setResponsiveImage(productImage, inspection.image, '(max-width: 560px) 150px, (max-width: 820px) 40vw, 400px');
@@ -118,9 +120,12 @@ function validateForm() {
   return errorCount === 0;
 }
 
-changeButton.addEventListener('click', () => {
-  openDialog(inspectionDialog, changeButton);
-  inspectionDialog.querySelector('[aria-pressed="true"]').focus();
+// 두 진입점은 같은 선택 상태를 사용하고, 닫으면 실제 누른 버튼으로 돌아갑니다.
+[changeButton, changePhoto].forEach(button => {
+  button.addEventListener('click', () => {
+    openDialog(inspectionDialog, button);
+    inspectionDialog.querySelector('[aria-pressed="true"]').focus();
+  });
 });
 
 inspectionOptions.forEach(option => {
@@ -206,6 +211,6 @@ renderSelection();
 new ResizeObserver(sizeMarker).observe(product);
 setupDialogs();
 // JavaScript 없이 보이는 버튼은 비활성 상태로 두고, 시연 준비가 끝나면 활성화합니다.
-[changeButton, privacyButton, document.querySelector('#consult-submit')].forEach(button => {
+[changeButton, changePhoto, privacyButton, document.querySelector('#consult-submit')].forEach(button => {
   button.disabled = false;
 });

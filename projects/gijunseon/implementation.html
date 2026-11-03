@@ -21,7 +21,7 @@
     <div class="document-intro">
       <p class="document-eyebrow">제출용 구현 설명</p>
       <h1>기준선 구현 노트</h1>
-      <p class="document-lead">산업용 비전 검사를 소개하는 가상 기업 사이트입니다. 기존 Figma 작품을 실제 HTML 요소와 반응형 웹으로 구현했습니다.</p>
+      <p class="document-lead">산업용 비전 검사 도입을 검토하는 사람이 검사 예시를 이해하고, 상담에 필요한 자료를 준비하도록 구성한 가상 기업 사이트입니다. Figma 디자인을 실제 HTML 요소와 반응형 웹으로 구현했습니다.</p>
       <div class="document-links">
         <a href="index.html">실행 화면 보기 <span aria-hidden="true">↗</span></a>
         <a href="https://www.figma.com/design/3ZJ4TUGqBNAewsJYzheOWo?node-id=451-747" target="_blank" rel="noreferrer">Figma 원본 <span class="sr-only">새 창</span><span aria-hidden="true">↗</span></a>
@@ -36,10 +36,21 @@
       <div><dt>기반</dt><dd>HTML · CSS · JavaScript<br>패키지 설치·빌드 없이 실행</dd></div>
     </dl>
 
+    <section class="document-section" aria-labelledby="implementation-decisions">
+      <h2 id="implementation-decisions">방문자의 질문에서 정한 설계 기준</h2>
+      <ol class="method-list">
+        <li><span class="method-number" aria-hidden="true">01</span><h3>무엇을 검사하나요?</h3><p>검사명만으로 결함을 이해하기 어렵다고 가정했습니다. 전체 제품과 같은 사진의 확대 화면을 함께 놓고, 색상에 더해 유형별 아이콘과 이름을 표시했습니다.</p></li>
+        <li><span class="method-number" aria-hidden="true">02</span><h3>어디에, 어떻게 도입하나요?</h3><p>제품의 생산 단계인 ‘적용 공정’과 도입 검토 순서인 ‘도입 절차’를 분리했습니다. 각 단계는 준비 자료·검토 핵심·정리할 내용의 같은 순서로 읽습니다.</p></li>
+        <li><span class="method-number" aria-hidden="true">03</span><h3>무엇을 준비하면 되나요?</h3><p>선택한 검사를 상담까지 이어 주고, 변경 버튼을 명시했습니다. 잘못 입력한 항목은 오류 목록에서 바로 찾아갈 수 있으며, 안내창을 확인해도 작성 중인 값은 유지합니다.</p></li>
+      </ol>
+      <p class="document-limit">위 문제는 프로젝트의 기획 가설입니다. 실제 제조업 담당자 인터뷰나 상담 전환율 측정으로 사용성 효과를 검증한 것은 아닙니다. 허구의 인증·고객 실적 대신 검사 예시와 준비 과정에 범위를 집중했습니다.</p>
+    </section>
+
     <section class="document-section document-roles" aria-labelledby="implementation-production">
       <h2 id="implementation-production">제작 역할</h2>
       <p><strong>본인</strong> — 원본 Figma 작품과 요구 범위를 제시하고, 디자인 방향과 수정 결과를 확인했습니다.</p>
-      <p><strong>AI 지원</strong> — 코드 작성, 반응형·접근성 보완, 도식 정리와 검수를 지원했습니다. 이 결과물만으로 본인의 독립적인 코딩 능력을 검증했다고 주장하지 않습니다.</p>
+      <p><strong>AI 지원</strong> — HTML·CSS·JavaScript 코드 작성과 반응형·키보드 조작 보완, 도식 정리, 검수를 지원했습니다. 이미지 일부에도 AI를 사용했습니다.</p>
+      <p><strong>역할 구분</strong> — 결과물의 기능 검사와 본인의 독립적인 구현 능력은 별개입니다. 직접 수정하며 익힌 범위는 실제 수행한 내용으로 설명합니다.</p>
     </section>
 
     <section class="document-section" aria-labelledby="implementation-methods">
@@ -48,19 +59,19 @@
         <li>
           <span class="method-number" aria-hidden="true">01</span>
           <h3>반응형과 사진 구성</h3>
-          <p>Grid·Flex로 화면 폭에 맞춰 배치와 메뉴를 바꿉니다. 사진 크기별 파일을 제공하고, 검사 표시와 확대 위치는 비율로 관리합니다.</p>
+          <p>PC의 좌우 배치를 모바일에서는 읽는 순서에 맞춰 쌓고, 좁은 화면의 버튼도 줄을 바꿉니다. Grid·Flex가 배치를 담당하며 검사 표시 좌표는 사진 크기에 대한 비율로 관리합니다.</p>
           <p class="document-path"><code>css/home.css</code> · <code>js/images.js</code></p>
         </li>
         <li>
           <span class="method-number" aria-hidden="true">02</span>
           <h3>이어지는 검사 선택</h3>
-          <p>탭·사진·설명·상담 항목이 같은 검사 데이터를 사용합니다. URL에 선택을 반영해 직접 진입과 뒤로가기도 지원합니다.</p>
+          <p>세 검사의 이름·사진·설명을 한 데이터 파일에서 읽습니다. URL의 type 값으로 현재 검사를 정해 새로고침·직접 진입·뒤로가기에서도 화면과 선택이 맞습니다.</p>
           <p class="document-path"><code>js/data.js</code> · <code>js/inspection.js</code></p>
         </li>
         <li>
           <span class="method-number" aria-hidden="true">03</span>
           <h3>키보드와 폼 안내</h3>
-          <p>탭 방향키, 보이는 초점, 안내창의 Escape·초점 복귀를 제공합니다. 폼 오류는 해당 입력칸으로 연결하고 검사 변경·개인정보 안내 중에도 입력을 유지합니다.</p>
+          <p>오류 테두리와 현재 키보드 위치를 나타내는 테두리를 따로 표시합니다. 오류 목록은 입력칸으로 연결되고, 안내창을 닫으면 열었던 버튼으로 돌아갑니다. 완료 안내를 닫을 때만 입력값과 오류 상태를 함께 초기화합니다.</p>
           <p class="document-path"><code>js/common.js</code> · <code>js/consultation.js</code></p>
         </li>
       </ol>
@@ -70,7 +81,7 @@
       <h2 id="implementation-validation">시연과 검증 범위</h2>
       <p class="document-demo">문의는 브라우저 안에서만 확인하는 시연입니다. 서버 전송·개인정보 저장·실제 상담 접수는 하지 않습니다.</p>
       <div id="implementation-verification" class="verification-note">
-        <p><strong>마감 검증 · 2026-10-21</strong><br>선생님 피드백이 반영된 Figma에 맞춰 메인 상담·푸터, PC 검사 설명, 도입 단계 배치와 상담 사진 선택을 수정했습니다. 주요 7화면을 320·390·768·1440px에서 확인하고 공정·상담은 1920·2552px에서도 확인했습니다. 네 폭에서 상담 오류·키보드 이동·완료 후 초기화를 검사했으며 메뉴·검사 선택·팝업·도입 단계 이동도 직접 확인했습니다. 상세 범위는 코드·실행 방법의 기록에서 확인할 수 있습니다.</p>
+        <p><strong>수정본 검증 · 2026-11-03</strong><br>최신 Figma의 검사 아이콘과 검사 변경 버튼을 반영했습니다. 로컬 수정본에서 메인·검사·상담·구현 설명을 320·390·768·1440px에서 렌더링했습니다. 네 폭에서 버튼·사진을 통한 검사 변경과 입력 유지, 초점 복귀, 빈 제출 오류, 키보드 오류 링크 이동, 완료 후 초기화를 확인했습니다. 390px에서는 검사 종류 전환·상담 연결·모바일 메뉴·도입 단계 이동도 확인했습니다.</p>
       </div>
       <p id="implementation-deployment" class="document-limit">긴 오류 문장의 불릿을 첫 줄에 맞추고, 축소된 검사 표시선의 두께를 보완했습니다. 오류 표시와 키보드 초점은 함께 보입니다. 검사 변경·개인정보 안내를 닫을 때는 입력을 유지하고, 시연 완료 안내를 닫으면 연락처·동의·오류를 초기화한 뒤 회사명으로 초점을 옮깁니다. 선택한 검사 종류는 유지합니다.</p>
       <p class="document-limit">실제 휴대전화·Safari·Firefox·스크린리더·외부망 로딩 속도는 미검증입니다. 실제 검사 정확도·인증·고객 실적을 주장하지 않습니다.</p>

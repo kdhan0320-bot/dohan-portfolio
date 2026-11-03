@@ -288,10 +288,17 @@
 }
 
 .card-caption h3 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 22px;
   line-height: 34px;
   letter-spacing: -.22px
 }
+
+/* Figma 원본의 선 굵기와 SVG 크기를 그대로 유지합니다. */
+.inspection-symbol { display: grid; place-items: center; width: 32px; height: 32px; flex: none; }
+.inspection-symbol img { max-width: none; }
 
 .card-caption .text-link {
   padding-inline: 0;
@@ -545,6 +552,13 @@
   }
 }
 
+/* 세 열을 유지하는 중간 폭에서는 설명 줄 수와 관계없이 링크·밑줄을 맞춥니다. */
+@media(min-width:601px) and (max-width:900px) {
+  .inspection-card { display: flex; flex-direction: column; }
+  .card-photo { flex-shrink: 0; }
+  .card-caption { flex: 1; grid-template-rows: auto 1fr auto; }
+}
+
 @media(max-width:600px) {
   .home-hero {
     min-height: 0
@@ -621,8 +635,10 @@
     gap: 8px
   }
   .card-caption h3 {
-    font-size: 22px
+    font-size: 22px;
+    gap: 10px
   }
+  .inspection-symbol { width: 28px; height: 28px; }
   .card-caption .text-link {
     grid-column: 2;
     grid-row: 1;

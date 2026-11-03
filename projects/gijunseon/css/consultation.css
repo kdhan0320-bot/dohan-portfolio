@@ -1,14 +1,15 @@
 body[data-page="consultation"] > main { display: flex; flex-direction: column; }
 /* 큰 화면의 여유 높이는 폼 위아래에 나눕니다. 입력칸 자체는 늘리지 않습니다. */
 .consult-layout { flex: 1 0 auto; display: grid; grid-template-columns: 448px minmax(0, 720px); align-items: start; align-content: center; gap: 64px; width: min(1232px, calc(100% - 64px)); margin: 48px auto 28px; }
-.consult-selection-card { padding: 24px 24px 28px; background: #f7f6f3; }
+.consult-selection-card { position: relative; padding: 24px 24px 28px; background: #f7f6f3; }
 .consult-small { margin: 0; color: #5c6265; font-size: 14px; line-height: 22px; }
-.consult-selection-heading { margin-top: 10px; }
+.consult-selection-heading { margin-top: 10px; padding-right: 116px; }
 .consult-selection h2, .consult-contact h2 { margin: 0; font-size: 26px; line-height: 38px; font-weight: 500; letter-spacing: -.02em; }
 .consult-selection h2 { font-weight: 400; letter-spacing: 0; }
-.consult-selection-hint { margin: 0; color: #5c6265; font-size: 14px; line-height: 24px; text-align: center; }
-.consult-selection-hint > span + span { display: none; }
-.consult-product { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; margin: 4px 0 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: 0 3px 10px rgb(36 39 41 / 13%); overflow: hidden; cursor: pointer; }
+.consult-change-label { position: absolute; top: 54px; right: 24px; display: inline-flex; align-items: center; gap: 4px; min-width: 104px; min-height: 44px; padding: 0; border: 0; border-radius: 4px; background: transparent; color: var(--action-hover); font-size: 14px; font-weight: 500; line-height: 22px; text-align: left; }
+.consult-change-label:hover { text-decoration: underline; text-underline-offset: 4px; }
+.consult-change-label:disabled { color: var(--secondary); cursor: not-allowed; }
+.consult-product { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; margin: 28px 0 0; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: 0 3px 10px rgb(36 39 41 / 13%); overflow: hidden; cursor: pointer; }
 .consult-product:focus-visible { outline: 3px solid #923a27; outline-offset: 3px; }
 .consult-product:disabled { cursor: not-allowed; }
 .consult-product > img:first-child { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -84,6 +85,8 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
   .consult-contact-heading { display: block; margin-bottom: 20px; }
   .consult-contact-heading > p { margin-top: 6px; }
   .consult-selection-card { padding: 20px; }
+  .consult-selection-heading { padding-right: 92px; }
+  .consult-change-label { right: 20px; top: 50px; min-width: 80px; }
   .consult-selection h2 { font-size: 24px; }
   .consult-consent-row { flex-wrap: wrap; gap: 0; }
   .consult-privacy-open { margin-left: 36px; min-height: 44px; justify-content: flex-start; }
@@ -93,11 +96,9 @@ body[data-page="consultation"] > main { display: flex; flex-direction: column; }
   .consult-layout { grid-template-columns: 1fr; max-width: 600px; margin-block: 32px 48px; gap: 32px; }
   .consult-selection-card { display: grid; grid-template-columns: minmax(0, 1fr) 43%; align-items: start; column-gap: 20px; padding-block: 16px; }
   .consult-selection-card > .consult-small { grid-column: 1; }
-  .consult-selection-heading { grid-column: 1; margin-top: 4px; }
+  .consult-selection-heading { grid-column: 1; margin-top: 4px; padding-right: 0; }
   .consult-selection h2 { font-weight: 500; }
-  .consult-selection-hint { grid-column: 1; display: grid; place-items: center; min-height: 44px; margin-top: 8px; font-size: 12px; }
-  .consult-selection-hint > span:first-child { display: none; }
-  .consult-selection-hint > span + span { display: inline; }
+  .consult-change-label { position: static; grid-column: 1; justify-self: start; min-width: 104px; margin-top: 0; }
   .consult-product { grid-column: 2; grid-row: 1 / 4; margin-top: 0; align-self: center; }
   .consult-contact-heading { display: flex; }
   .consult-contact-heading > p { margin-top: 0; }
