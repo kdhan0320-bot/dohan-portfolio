@@ -625,3 +625,33 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   .voucher-brief { display:flex;justify-content:space-between;gap:6px 12px;flex-wrap:wrap;margin-top:8px;font-size:13px;line-height:22px;color:#536680; }
   .voucher-brief strong { margin-left:4px;font-weight:550;color:#354d6b; }
 }
+
+/* Identifiers, dates and parties are working information in the ledger. */
+.workspace-main { --record-ink: #465a70; }
+.workspace-main .movement-date,
+.erp-movement-list .movement-party,
+.purchase-list .request-title-cell > .mono,
+.purchase-list .request-title-cell > .mono > .request-department,
+.erp-table .cell-main > .mono,
+.erp-table .cell-dates small,
+.erp-table .cell-wide small,
+.movement-history-table td:first-child,
+.movement-history-table td:last-child,
+.erp-row-top .mono,
+.related-documents .mono,
+.document-heading .document-meta,
+.history-panel time,
+.voucher-dates,
+.voucher-brief,
+.voucher-vendor {
+  color: var(--record-ink);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.movement-history-table td .record-link,
+.receipt-history-table td.mono,
+.movement-history-table td > .mono {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.movement-history-table .record-link { color: #365b87; }

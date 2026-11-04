@@ -6,6 +6,7 @@ import { dateInput, day, money, amount, canReview, nextAction } from './model';
 import { stock, incoming, qty, orderItems, orderId, orderProgress, receivedQuantity, materialHistory } from './inventory';
 import Icon from './Icons';
 import { MaterialForm, VendorForm } from './CatalogForms';
+import SensorSlip from './SensorSlip';
 
 function Search({ value, onChange, label, placeholder }) {
   return <label className="list-search"><Icon name="search" size={18}/><input value={value} onChange={e => onChange(e.target.value)} aria-label={label} placeholder={placeholder}/>{value && <button className="icon-button" onClick={() => onChange('')} aria-label="검색어 지우기"><Icon name="close" size={16}/></button>}</label>;
@@ -26,7 +27,8 @@ export function WorkOverview() {
   tasks.sort((a, b) => (rank[a.status] ?? 0) - (rank[b.status] ?? 0));
   const waiting = requests.filter(r => r.status === 'ordered' && orderProgress(data, r).remaining > 0).sort((a, b) => (a.order.expectedDate || a.needBy).localeCompare(b.order.expectedDate || b.needBy));
   const movements = materials.flatMap(m => materialHistory(data, m.id).map(event => ({ ...event, material: m }))).sort((a, b) => b.date.localeCompare(a.date) || (b.at || '').localeCompare(a.at || '') || b.id.localeCompare(a.id)).slice(0, 5);
-  return <><PageHead eyebrow="PURCHASE & MATERIALS" title="업무 현황">부품 구매부터 입고·지급까지</PageHead>
+  return <><PageHead eyebrow="구매·자재 관리" title="업무 현황">엑셀·메일로 품의를 정리하고 센서를 현장에 지급했던 경험을 살려, 주문량과 지금 쓸 수 있는 재고를 구분했습니다.</PageHead>
+    <SensorSlip data={data} materials={materials}/>
     <section className="erp-stats" aria-label="업무 요약">{[
       ['내 처리 대기', tasks.length, '건', '/requests?status=action'],
       ['발주 대기', requests.filter(r => r.status === 'approved').length, '건', '/orders?status=ready'],
