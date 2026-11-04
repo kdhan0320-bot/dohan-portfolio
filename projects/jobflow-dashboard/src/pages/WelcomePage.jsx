@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Alert, Button, Dialog, DialogContent, DialogActions, DialogTitle, IconButton } from '@mui/material';
 import Close from '@mui/icons-material/Close';
@@ -7,19 +7,34 @@ import SiteFooter from '../components/layout/SiteFooter';
 import ProductPreview from '../components/ui/ProductPreview';
 import { CompanyMark } from '../components/ui/PageUI';
 import DiaryBookmark from '../components/ui/DiaryBookmark';
-import { useAuth } from '../context/AuthContext';
+import { SampleRecordScope, useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
-import { CompanySummary } from '../components/applications/CompanySummary';
-import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES, DEMO_TODAY } from '../constants';
+import LiveCompanySummary, { CompanySummary } from '../components/applications/CompanySummary';
+import { DEMO_TODAY } from '../constants';
 
 export default function WelcomePage() {
   useLayoutEffect(() => { window.scrollTo(0, 0); }, []);
-  const { user, isGuest, enterGuestMode, loading } = useAuth();
+  const { user, isGuest, enterGuestMode, loading, demoApplications, demoItems, demoNotes } = useAuth();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [previewId, setPreviewId] = useState(null);
-  const preview = DEMO_APPLICATIONS.find(company => company.id === previewId);
+  const [practicing, setPracticing] = useState(false);
+  const [taskBusy, setTaskBusy] = useState(false);
+  const titleRef = useRef(null);
+  const preview = demoApplications.find(company => company.id === previewId);
+  const hasTasks = preview && demoItems.some(item => item.application_id === preview.id);
+  useLayoutEffect(() => {
+    if (practicing) titleRef.current?.focus({ preventScroll: true });
+  }, [practicing]);
+  function openPreview(id) {
+    setError('');
+    setPracticing(false);
+    setPreviewId(id);
+  }
+  function closePreview() {
+    if (!busy && !taskBusy) { setPreviewId(null); setError(''); }
+  }
   async function start() {
     if (busy || loading) return;
     setBusy(true); setError('');
@@ -44,27 +59,36 @@ export default function WelcomePage() {
         <div className="galpi-intro-action">
             {user && <small>내 계정에 저장된 기록</small>}
             <Button variant="contained" size="large" onClick={() => start()} disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : '샘플 체험하기'}</Button>
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && !preview && <Alert severity="error">{error}</Alert>}
         </div>
       </section>
       <section className="galpi-product-stage" aria-label="갈피록 지원 관리 미리보기">
-        <ProductPreview onOpen={setPreviewId} />
+        <ProductPreview applications={demoApplications} items={demoItems} onOpen={openPreview} />
       </section>
     </main>
     </div>
-    <Dialog open={Boolean(preview)} onClose={() => setPreviewId(null)} aria-labelledby="preview-company-title" fullWidth maxWidth="sm" className="company-summary-dialog">
+    <Dialog open={Boolean(preview)} onClose={closePreview} aria-labelledby="preview-company-title" aria-describedby="preview-mode" fullWidth maxWidth="sm" className="company-summary-dialog">
       <DialogTitle component="div" id="preview-company-header">
         <div>
-          <small className="summary-preview-label">가상 샘플 기록</small>
-          <h2 id="preview-company-title" className="company-record-title">
+          <small id="preview-mode" className="summary-preview-label">{practicing ? '샘플 체험 · 준비 체크' : '샘플 기록 미리보기'}</small>
+          <h2 id="preview-company-title" className="company-record-title" tabIndex={-1} ref={titleRef}>
             {preview && <CompanyMark name={preview.company_name} />}
             <span>{preview?.company_name}</span>
           </h2>
         </div>
-        <IconButton aria-label="회사 기록 닫기" onClick={() => setPreviewId(null)}><Close /></IconButton>
+        <IconButton aria-label="회사 기록 닫기" disabled={busy || taskBusy} onClick={closePreview}><Close /></IconButton>
       </DialogTitle>
-      <DialogContent>{preview && <CompanySummary application={preview} tasks={DEMO_CHECKLISTS} notes={DEMO_INTERVIEW_NOTES} today={DEMO_TODAY} />}</DialogContent>
-      <DialogActions><Button onClick={() => setPreviewId(null)}>닫기</Button></DialogActions>
+      <DialogContent key={practicing ? 'practice' : 'preview'}>
+        {preview && (practicing
+          ? <SampleRecordScope><LiveCompanySummary application={preview} preparationFirst startWithAdd={!hasTasks} onBusyChange={setTaskBusy} disabled={busy} /></SampleRecordScope>
+          : <CompanySummary application={preview} tasks={demoItems} notes={demoNotes} today={DEMO_TODAY} />)}
+        {error && <Alert severity="error">{error}</Alert>}
+      </DialogContent>
+      <DialogActions>
+        <Button disabled={busy || taskBusy} onClick={closePreview}>닫기</Button>
+        {!practicing && <Button variant="contained" onClick={() => setPracticing(true)}>{hasTasks ? '준비 체크 체험하기' : '할 일 추가 체험하기'}</Button>}
+        {practicing && !user && <Button variant="contained" disabled={busy || loading || taskBusy} onClick={start}>샘플 전체 보기</Button>}
+      </DialogActions>
     </Dialog>
     <SiteFooter publicMode />
   </div>;

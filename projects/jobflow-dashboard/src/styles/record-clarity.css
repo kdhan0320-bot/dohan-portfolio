@@ -69,6 +69,8 @@
   .company-summary-dialog .MuiDialog-paper { margin: 16px; width: calc(100% - 32px); max-height: calc(100dvh - 32px); }
   .company-summary-dialog .MuiDialogTitle-root { padding: 20px 18px 12px; font-size: 22px; }
   .company-summary-dialog .MuiDialogContent-root { padding: 8px 18px 18px; }
+  .company-summary-dialog .MuiDialogActions-root { flex-flow: row wrap; align-items: center; padding: 10px 18px max(14px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+  .company-summary-dialog .MuiDialogActions-root > .MuiButton-root { width: auto; min-height: 44px; }
   .summary-schedule { padding: 16px; }
   .summary-schedule dl { gap: 12px; }
   .summary-schedule dd { font-size: 18px; }

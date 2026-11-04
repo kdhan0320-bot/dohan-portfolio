@@ -18,10 +18,11 @@ function providerWith(auth) {
   const state = [];
   let cursor = 0;
   const storage = new Map();
+  let currentContext;
   const noOp = () => {};
   const react = {
     createContext: () => ({ Provider: 'provider' }),
-    useContext: noOp,
+    useContext: () => currentContext,
     useState: initial => {
       const index = cursor++;
       if (!(index in state)) state[index] = typeof initial === 'function' ? initial() : initial;
@@ -60,8 +61,26 @@ function providerWith(auth) {
     cursor = 0;
     return module.exports.AuthProvider({ children: null }).props.value;
   };
-  return { render, storage };
+  function sampleRecord(parent) {
+    currentContext = parent;
+    return module.exports.SampleRecordScope({ children: null }).props.value;
+  }
+  return { render, storage, sampleRecord };
 }
+
+test('company preview edits sample memory without switching a signed-in workspace', () => {
+  const account = { id: 'owner' };
+  const provider = providerWith({});
+  const signedIn = Object.freeze({ ...provider.render(), user: account, isGuest: false });
+  const scope = provider.sampleRecord(signedIn);
+  assert.equal(scope.user, null);
+  assert.equal(scope.isGuest, true);
+  scope.setDemoItems([{ id: 'sample-task', is_done: true }]);
+  assert.equal(provider.render().demoItems[0].is_done, true);
+  assert.equal(signedIn.user.id, account.id);
+  assert.equal(provider.render().isGuest, false);
+  assert.equal(provider.storage.has('jobflow-guest-mode'), false);
+});
 
 test('confirmation-pending signup keeps the current sample workspace', async () => {
   const provider = providerWith({ signUp: async () => ({ data: { user: { id: 'pending' }, session: null }, error: null }) });

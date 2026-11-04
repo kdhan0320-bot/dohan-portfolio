@@ -145,11 +145,14 @@ test('home starts at the top once and preview opens without navigation or a gues
   let guestStarts = 0;
   const page = await mount('WelcomePage', {
     'react-router-dom': { useNavigate: () => to => destinations.push(to) },
-    '../context/AuthContext': { useAuth: () => ({ enterGuestMode: async () => guestStarts++ }) },
+    '../context/AuthContext': { SampleRecordScope: 'SampleRecordScope', useAuth: () => ({
+      demoApplications: constants.DEMO_APPLICATIONS, demoItems: constants.DEMO_CHECKLISTS, demoNotes: constants.DEMO_INTERVIEW_NOTES,
+      enterGuestMode: async () => guestStarts++,
+    }) },
     '../components/layout/SiteHeader': 'Header',
     '../components/layout/SiteFooter': 'Footer',
     '../components/ui/ProductPreview': 'Preview',
-    '../components/applications/CompanySummary': { CompanySummary: 'CompanySummary' },
+    '../components/applications/CompanySummary': { __esModule: true, default: 'LiveCompanySummary', CompanySummary: 'CompanySummary' },
     '../utils/authErrors': { getAuthErrorMessage: error => error.message },
   }, undefined, {}, { scrollTo: (...position) => scrolls.push(position) });
   assert.deepEqual(scrolls, [[0, 0]], 'a fresh home visit does not retain a workspace scroll position');
@@ -158,8 +161,21 @@ test('home starts at the top once and preview opens without navigation or a gues
   assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-3');
   assert.deepEqual(destinations, []);
   assert.equal(guestStarts, 0);
+  await page.click('준비 체크 체험하기');
+  const practice = page.find(node => node.type === 'SampleRecordScope').props.children;
+  assert.equal(practice.type, 'LiveCompanySummary');
+  assert.equal(practice.props.application.id, 'demo-3');
+  assert.equal(practice.props.preparationFirst, true);
+  assert.equal(practice.props.startWithAdd, false);
+  assert.equal(guestStarts, 0, 'practicing must not switch the active account');
+  assert.deepEqual(destinations, []);
   await page.click('닫기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, false);
+  page.find(node => node.type === 'Preview').props.onOpen('demo-7'); page.render();
+  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-7');
+  await page.click('할 일 추가 체험하기');
+  assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.startWithAdd, true);
+  await page.click('닫기');
   assert.equal(scrolls.length, 1, 'opening or closing the preview must not reset home scroll');
   await page.click('샘플 체험하기');
   assert.equal(guestStarts, 1);

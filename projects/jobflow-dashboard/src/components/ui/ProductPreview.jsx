@@ -2,14 +2,14 @@ import { useRef, useState } from 'react';
 import { Button } from '@mui/material';
 import RecordStage from './RecordStage';
 import { CompanyMark } from './PageUI';
-import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
+import { DEMO_TODAY } from '../../constants';
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel, interviewDayLabel } from '../../utils/dates';
 
 const weekday = new Intl.DateTimeFormat('ko-KR', { weekday: 'long', timeZone: 'UTC' });
 
 // This preview uses the same fictional records as the editable sample.
-export default function ProductPreview({ onOpen }) {
+export default function ProductPreview({ applications, items, onOpen }) {
   const [stageIndex, setStageIndex] = useState(0);
   const tabRefs = useRef([]);
   const stage = BOARD_COLUMNS[stageIndex];
@@ -34,14 +34,19 @@ export default function ProductPreview({ onOpen }) {
     </div>
     <div className="preview-records">
     {BOARD_COLUMNS.map((column, index) => {
-      const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === column.id);
+      const selected = applications.find(row => boardColumn(row.status) === column.id);
+      const inactive = index !== stageIndex;
+      const panelProps = {
+        id: `preview-panel-${column.id}`, role: 'tabpanel', 'aria-labelledby': `preview-tab-${column.id}`,
+        'aria-hidden': inactive || undefined, hidden: inactive, className: 'preview-record', tabIndex: inactive ? -1 : 0,
+      };
+      if (!selected) return <div key={column.id} {...panelProps}><p>이 단계에 있는 샘플 회사가 없어요.</p></div>;
       const before = column.id === 'before';
       const interview = column.id === 'interview';
       const date = before ? selected.deadline : interview ? selected.interview_date : selected.applied_date;
       const [month, day] = shortDate(date).split('.');
-      const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
-      const inactive = index !== stageIndex;
-      return <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} aria-hidden={inactive || undefined} hidden={inactive} className="preview-record" tabIndex={inactive ? -1 : 0}>
+      const tasks = items.filter(item => item.application_id === selected.id && !item.is_done);
+      return <div key={column.id} {...panelProps}>
         <div className="preview-record-summary">
           <div className="preview-record-heading">
             <div className="preview-company-identity">
@@ -62,7 +67,7 @@ export default function ProductPreview({ onOpen }) {
         </div>
         <div className="preview-record-body">
           <div className="preview-preparation" aria-label="남은 준비"><h4>남은 준비 <span>{tasks.length}개</span></h4>{tasks.length ? <ul>{tasks.slice(0, 2).map(item => <li key={item.id}>{item.title}</li>)}</ul> : <p>남은 준비 없음</p>}</div>
-          <Button variant="text" onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">이 회사 기록 열기</Button>
+          <Button variant="text" onClick={() => onOpen(selected.id)} aria-haspopup="dialog" className="preview-open-record">회사 기록 미리보기</Button>
         </div>
       </div>;
     })}

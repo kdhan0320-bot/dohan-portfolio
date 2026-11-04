@@ -283,6 +283,15 @@ export const AuthProvider = ({
   {children}
 </AuthContext.Provider>;
 };
+// The embedded sample shares the demo workspace's memory, even during an account session.
+// Only sample data is available to the checklist and interview hooks inside this record.
+export function SampleRecordScope({ children }) {
+  const { demoItems, setDemoItems, demoNotes } = useAuth();
+  return <AuthContext.Provider value={{ isGuest: true, user: null, demoItems, setDemoItems, demoNotes }}>
+    {children}
+  </AuthContext.Provider>;
+}
+
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');

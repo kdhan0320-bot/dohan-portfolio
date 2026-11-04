@@ -62,7 +62,7 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
   </div>;
 }
 
-export default function LiveCompanySummary({ application, preparationFirst, onBusyChange, disabled = false, statusControl }) {
+export default function LiveCompanySummary({ application, preparationFirst, startWithAdd = false, onBusyChange, disabled = false, statusControl }) {
   const checklist = useChecklist();
   const interview = useInterviewNotes();
   const drafts = useRecordDraft('company-preparation');
@@ -72,7 +72,7 @@ export default function LiveCompanySummary({ application, preparationFirst, onBu
   const [feedback, setFeedback] = useState(null);
   const baseline = { title: '', category: application.status === '면접 예정' ? '면접' : '서류' };
   const recovered = drafts.read(application.id);
-  const [adding, setAdding] = useState(Boolean(recovered));
+  const [adding, setAdding] = useState(startWithAdd || Boolean(recovered));
   const [form, setForm] = useState(() => recovered?.values || baseline);
   const [inputError, setInputError] = useState('');
   const addButton = useRef(null);
