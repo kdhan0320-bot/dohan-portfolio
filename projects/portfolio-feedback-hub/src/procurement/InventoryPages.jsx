@@ -1,5 +1,6 @@
 import { useState, useSyncExternalStore } from 'react';
-import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { originReturn } from './listNavigation';
 import { useWorkspace } from './Workspace';
 import { PageHead, Empty, Modal, FormError, StateTag, Badge, WorkflowStatus, StockLedger, ListLink, ListBackLink, ReceiptProgress, LinkLabel, DateInput, DocumentNumber } from './UI';
 import { dateInput, day, money, amount, canEdit, canReview, nextAction } from './model';
@@ -128,7 +129,7 @@ export function WorkOverview() {
 
   const stats = [
     ['발주 대기', requests.filter(request => request.status === 'approved').length, '건', '/orders?status=ready'],
-    ['입고 확인', waiting.length, '건', '/orders?status=open'],
+    ['입고할 건', waiting.length, '건', '/orders?status=open'],
     ['보유 자재', materials.filter(material => stock(data, material.id) > 0).length, '종', '/materials?status=stock'],
   ];
   if (!compact) stats.unshift(['내 처리 대기', tasks.length, '건', '/requests?status=action']);
@@ -176,7 +177,7 @@ export function OrderList() {
     return inTab(r, status) && matches(query.trim(), r.title, `품의 ${r.id}`, r.supplier, issuedNumber && `발주 ${issuedNumber}`, ...r.items.map(i => i.name));
   });
   return <><PageHead eyebrow="PURCHASE ORDERS" title="발주·입고"/>
-    <section className="panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="발주 상태">{[['all', '전체'], ['ready', '발주 대기'], ['open', '입고 대기'], ['done', '입고 완료']].map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => set('status', key)}>{label}<span>{orders.filter(r => inTab(r, key)).length}</span></button>)}</div><Search value={query} onChange={v => set('q', v)} label="발주 검색" placeholder="문서번호·자재·업체 검색"/></div>
+    <section className="panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="발주 상태">{[['all', '전체'], ['ready', '발주 대기'], ['open', '입고할 건'], ['done', '입고 완료']].map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => set('status', key)}>{label}<span>{orders.filter(r => inTab(r, key)).length}</span></button>)}</div><Search value={query} onChange={v => set('q', v)} label="발주 검색" placeholder="문서번호·자재·업체 검색"/></div>
     <table className="erp-table order-list-table row-link-table"><thead><tr><th>발주 / 품의</th><th>업체</th><th>발주일 / 납기</th><th>입고 수량</th><th>상태</th></tr></thead><tbody>{shown.map(r => { const p = orderProgress(data, r); return <tr key={r.id}><td data-label="발주 / 품의" className="cell-main"><span className="mono"><DocumentNumber value={r.status === 'ordered' ? orderId(r) : r.id}/></span><ListLink className="row-link" id={`order-title-${r.id}`} to={`/orders/${r.id}`} state={{ orderFrom: `/orders?${params}` }}><LinkLabel>{r.title}</LinkLabel></ListLink></td><td data-label="업체">{r.supplier}</td><td data-label="발주일 / 납기" className="cell-dates">{r.order ? day(r.order.date || r.order.at) : '등록 전'}<small>{r.order ? '입고 예정' : '희망 납기'} {day(r.order?.expectedDate || r.needBy)}</small></td><td data-label="입고 수량" className="cell-quantity"><span>{r.status === 'ordered' ? <><strong>{p.received}</strong> / {p.ordered} EA</> : '발주 등록 전'}</span><ReceiptProgress data={data} request={r}/>{r.status === 'ordered' && p.remaining > 0 && <small>미입고 {qty(p.remaining)}</small>}</td><td data-label="상태" className="cell-status"><WorkflowStatus data={data} request={r} quantity={false}/></td></tr>; })}</tbody></table>
     {!shown.length && (
       <Empty title={query ? '검색된 발주가 없습니다.' : '이 목록에 표시할 발주가 없습니다.'}>
@@ -191,12 +192,20 @@ export function OrderList() {
 export function OrderDetail() {
   const { id } = useParams(), { data, requests, role, setRole } = useWorkspace();
   const location = useLocation();
+  const navigate = useNavigate();
   const backTo = /^\/orders(?:\?|$)/.test(location.state?.orderFrom || '') ? location.state.orderFrom : '/orders';
   const request = requests.find(r => r.id === id);
   const [dialog, setDialog] = useState('');
   if (!request || !['approved', 'ordered'].includes(request.status)) return <><PageHead title="발주 가능한 품의가 아닙니다."/><Link className="button secondary" to={request ? `/requests/${id}` : '/orders'}>품의 확인</Link></>;
   const p = orderProgress(data, request), items = orderItems(request), receipts = data.receipts.filter(r => r.requestId === id);
-  return <><ListBackLink fallback={backTo}><Icon name="back" size={17}/>발주·입고 목록</ListBackLink><header className="request-document"><div className="document-heading"><div className="document-register"><DocumentNumber value={request.status === 'approved' ? request.id : orderId(request)}/><span className="document-round">{request.revision}차 승인본</span><WorkflowStatus data={data} request={request}/></div><h1 tabIndex="-1">{request.title}</h1><p className="document-meta"><Link to={`/vendors/${request.supplierId}`}>{request.approvedSnapshot?.supplier || request.supplier}</Link><ListLink id={`order-source-${id}`} className="document-source" to={`/requests/${id}`}>원본 품의 {request.id}</ListLink></p></div></header>
+  const sourcePath = `/requests/${id}`;
+  const fromRequest = originReturn(location, navigate, sourcePath);
+  const sourceLink = fromRequest?.linkProps || { to: sourcePath };
+  const SourceLink = fromRequest ? Link : ListLink;
+  return <>{fromRequest
+    ? <Link className="back-link" {...sourceLink}><Icon name="back" size={17}/>품의 {request.id}로 돌아가기</Link>
+    : <ListBackLink fallback={backTo}><Icon name="back" size={17}/>발주·입고 목록</ListBackLink>}
+    <header className="request-document"><div className="document-heading"><div className="document-register"><DocumentNumber value={request.status === 'approved' ? request.id : orderId(request)}/><span className="document-round">{request.revision}차 승인본</span><WorkflowStatus data={data} request={request}/></div><h1 tabIndex="-1">{request.title}</h1><p className="document-meta"><Link to={`/vendors/${request.supplierId}`}>{request.approvedSnapshot?.supplier || request.supplier}</Link><SourceLink id={`order-source-${id}`} className="document-source" {...sourceLink}>원본 품의 {request.id}</SourceLink></p></div></header>
     <div className="order-work-grid"><section className="panel"><div className="panel-head"><h2>{request.order ? '발주 자재' : '발주할 자재'}</h2><span className="muted">단위 EA</span></div><table className="erp-table order-items"><thead><tr><th>자재 / 규격</th><th>{request.order ? '발주' : '승인 수량'}</th><th>입고</th><th>미입고</th></tr></thead><tbody>{items.map((item, i) => <tr key={i}><td className="cell-main"><Link to={`/materials/${item.materialId}`}><LinkLabel>{item.name}</LinkLabel></Link><small>{item.spec}</small></td><td data-label={request.order ? '발주' : '승인 수량'}>{item.quantity}</td><td data-label="입고">{request.order ? receivedQuantity(data, id, i) : '—'}</td><td data-label="미입고" className="number-accent">{request.order ? Number(item.quantity) - receivedQuantity(data, id, i) : '—'}</td></tr>)}</tbody></table><div className="order-facts"><div><span>승인 금액 · 부가세 포함</span><strong>{money(amount(request.approvedSnapshot || request))}</strong></div><div><span>발주일</span><strong>{request.order?.date || (request.order ? dateInput(request.order.at) : '등록 전')}</strong></div><div><span>{request.order ? '입고 예정일' : '희망 납기일'}</span><strong>{request.order?.expectedDate || request.needBy}</strong></div></div></section>
     <section className="panel order-task"><div className="panel-head"><h2>{request.status === 'approved' ? '발주 등록' : p.remaining ? '이번 입고 기록' : '입고 완료'}</h2></div><div className="panel-body">{role !== 'staff' ? <><p>구매·자재 담당자가 발주·입고를 기록합니다.</p><button className="button secondary block" onClick={() => setRole('staff')}>구매·자재 담당자로 전환</button></> : request.status === 'approved' ? <><p>업체에 주문한 뒤 발주일과 입고 예정일을 기록하세요.</p><button className="button primary block" onClick={() => setDialog('order')}>발주 등록</button></> : p.remaining ? <><ReceiptProgress data={data} request={request}/><div className="remaining-number"><span>남은 입고</span><strong>{qty(p.remaining)}</strong></div><button className="button primary block" onClick={() => setDialog('receipt')}>입고 수량 기록<Icon name="plus" size={17}/></button><small>받은 수량만 재고에 반영됩니다.</small></> : <><p>발주한 자재를 모두 받았습니다.</p><Link className="button secondary block" to={`/materials/${items[0].materialId}`}>보유 수량·지급 보기</Link></>}</div></section></div>
     <section className="panel erp-recent"><div className="panel-head"><h2>입고 이력 <small>{receipts.length}건</small></h2></div><table className="erp-table receipt-history-table"><thead><tr><th>입고일</th><th>기록번호</th><th>받은 자재</th><th>메모</th></tr></thead><tbody>{[...receipts].reverse().map(r => <tr key={r.id}><td data-label="입고일">{r.date}</td><td data-label="기록번호" className="mono">{r.id}</td><td className="cell-main">{r.lines.map(l => <Link key={l.index} to={`/materials/${l.materialId}`}>{items[l.index]?.name} · {qty(l.quantity)}</Link>)}</td><td data-label="메모">{r.note || '—'}</td></tr>)}</tbody></table>{!receipts.length && <Empty title="아직 입고 기록이 없습니다."/>}</section>

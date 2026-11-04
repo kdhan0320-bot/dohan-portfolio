@@ -136,6 +136,7 @@ function RequestDetail() {
   const orderPath = `/orders/${id}`;
   const fromOrder = (approved || ordered) && originReturn(location, navigate, orderPath);
   const orderLink = fromOrder?.linkProps || { to: orderPath };
+  const OrderLink = fromOrder ? Link : ListLink;
   // The editor's immediate parent is now this detail. Keep the eventual home position.
   const editorState = location.state?.listOrigin?.path === '/'
     ? { ...location.state, listOrigin: listOrigin(location.state.listOrigin, '/') }
@@ -169,7 +170,9 @@ function RequestDetail() {
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
         {(approved || ordered) && <div className="linked-order-status">
-          <span>연결 발주 {ordered && <strong>{orderId(request)}</strong>}</span>
+          {ordered
+            ? <OrderLink id={`linked-order-${id}`} className="linked-order-link" {...orderLink}>연결 발주 <strong>{orderId(request)}</strong></OrderLink>
+            : <span>연결 발주</span>}
           {ordered ? <WorkflowStatus data={data} request={request}/> : <span>등록 전</span>}
         </div>}
       </div>
@@ -183,9 +186,9 @@ function RequestDetail() {
     <section className={`panel next-panel${closed ? ' closed-panel' : ''}`}><div className="panel-head"><h2 ref={nextHeading} tabIndex="-1">{ordered ? '발주·입고' : closed ? STATUS[request.status].label : handoff ? `${owner(request)} ${approved ? '발주 대기' : ['draft', 'revision'].includes(request.status) ? '작성 대기' : '확인 대기'}` : reviewable ? '결재 처리' : approved ? '발주 준비' : '작성 이어가기'}</h2>{reviewable && <span className="current-demo-role">시연 역할 · {ROLES[role]}</span>}</div><div className="panel-body">{!handoff && !ordered && <p>{editable ? '내용을 확인한 뒤 결재를 요청하세요.' : reviewable ? '품목·금액·구매 사유를 확인한 뒤 결정하세요.' : approved ? '최종 승인본으로 발주일과 입고 예정일을 기록하세요.' : '이 요청은 종료되었습니다. 다시 구매하려면 새 품의를 작성하세요.'}</p>}
       {editable && <Link className="button primary block" to={`/requests/${id}/edit`} state={editorState}>{nextAction(request, role)}</Link>}
       {reviewable && <><button className="button primary block" onClick={() => open('approve')}><Icon name="check" size={18}/>승인하기</button><div className="paired-buttons"><button className="button secondary" onClick={() => open('revise')}>보완 요청</button><button className="button secondary" onClick={() => open('reject')}>반려</button></div></>}
-      {approved && role === 'staff' && <><Link className="button primary block" {...orderLink}>발주 준비</Link><button className="text-button amend-button" onClick={() => open('amend')}>품의 내용 변경·재결재</button></>}
+      {approved && role === 'staff' && <><OrderLink id={`order-action-${id}`} className="button primary block" {...orderLink}>발주 준비</OrderLink><button className="text-button amend-button" onClick={() => open('amend')}>품의 내용 변경·재결재</button></>}
       {request.status === 'rejected' && role === 'staff' && <Link className="button secondary" to="/requests/new">새 구매 품의 작성</Link>}
-      {ordered && <Link className="button primary block" {...orderLink}>입고 수량·기록 보기</Link>}
+      {ordered && <OrderLink id={`order-action-${id}`} className="button primary block" {...orderLink}>입고 수량·기록 보기</OrderLink>}
       {handoff && <div className="role-handoff"><button className="button secondary block" onClick={() => { setRole(followingRole); setNotice(`${ROLES[followingRole]} 역할로 전환했습니다. 요청 내용은 그대로 유지됩니다.`); focusNext(); }}>{ROLES[followingRole]} 역할로 이어보기</button></div>}
     </div></section></div><aside className="detail-aside"><details className="panel history-panel"><summary><span><strong>처리 이력</strong><small>결재·변경 기록</small></span><span>{request.events.length}건</span></summary><ol>{[...request.events].reverse().map((event, i) => <li key={`${event.at}-${i}`}><span className="history-record" aria-hidden="true"><Icon name={event.message.includes('반려') ? 'close' : 'check'} size={13}/></span><div><div className="history-meta"><strong>{event.actor}</strong><span>{eventRevisionLabel(event)}</span></div><p>{event.message}</p><time dateTime={event.at}>{timestamp(event.at)}</time></div></li>)}</ol></details>
     {request.submissions.some(snapshot => snapshot.revision < request.revision) && <details className="panel snapshots"><summary>이전 제출본 보기 <span>{request.submissions.filter(snapshot => snapshot.revision < request.revision).length}건</span></summary>{request.submissions.filter(snapshot => snapshot.revision < request.revision).map((snapshot, i) => <div key={i}><strong>{snapshot.revision}차 제출 · {timestamp(snapshot.at)}</strong><p>{snapshot.title} · {money(amount(snapshot))}</p><small>{snapshot.items.map(item => `${item.name} (${item.spec}) ${item.quantity} ${item.unit || '개'}`).join(', ')}</small></div>)}</details>}

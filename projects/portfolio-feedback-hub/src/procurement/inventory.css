@@ -387,13 +387,23 @@
   color: #4a5c70;
   font-size: 14px;
 }
-.linked-order-status > span:first-child, .linked-order-status .workflow-status {
+.linked-order-link, .linked-order-status .workflow-status {
   display: inline-flex;
   flex-flow: row wrap;
   align-items: center;
   gap: 6px 10px;
 }
-.linked-order-status strong { color: #344e6a; font-weight: 550; }
+.linked-order-link {
+  min-height: 44px;
+  color: #345789;
+  text-decoration: none;
+}
+.linked-order-link strong {
+  font-weight: 550;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.linked-order-link:is(:hover, :focus-visible) { color: #213f6c; }
 #movement-history { scroll-margin-top: 24px; overflow-wrap: anywhere; }
 #movement-history:focus-visible { outline: 2px solid #4267a5; outline-offset: 4px; border-radius: 2px; }
 #movement-history + span { white-space: nowrap; }
