@@ -1,5 +1,5 @@
 import { ListLink, StockLedger } from './UI';
-import { incoming, materialHistory, orderItems, qty } from './inventory';
+import { findSensorExample, incoming, materialHistory, orderItems, qty } from './inventory';
 import { day } from './model';
 import './sensorSlip.css';
 
@@ -28,6 +28,7 @@ export default function SensorSlip({ data, materials }) {
   const material = materials.find(item => /포토\s*센서|광전\s*센서/.test(item.name));
   if (!material) return null;
 
+  const example = findSensorExample(data, material.id);
   const ordered = data.requests
     .filter(request => request.status === 'ordered')
     .flatMap(orderItems)
@@ -38,6 +39,10 @@ export default function SensorSlip({ data, materials }) {
 
   return (
     <section className="sensor-slip" aria-labelledby="sensor-slip-title">
+      {example && <ListLink id="home-sensor-example" className="sensor-slip-example" to={`/requests/${example.id}`}>
+        <span>포토센서 5개의 품의부터 <span className="sensor-slip-case-end">현장 지급까지</span></span>
+        <strong>대표 품의 보기</strong>
+      </ListLink>}
       <div className="sensor-slip-plate">
         <div className="sensor-slip-identity">
           <span className="sensor-slip-label">자재 입출고 전표</span>

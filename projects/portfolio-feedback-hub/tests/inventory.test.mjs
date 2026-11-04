@@ -3,9 +3,20 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
-import { workflowStatus, comparisonLines, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
+import { workflowStatus, comparisonLines, findSensorExample, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
 
 const today = dateInput();
+
+test('the home case link targets only the seeded five-sensor order for the displayed material', () => {
+  const data = createERP();
+  const sample = findSensorExample(data, 'MT-0001');
+  assert.equal(sample.id, 'PR-2001');
+  assert.equal(findSensorExample(data, 'MT-0002'), null);
+  assert.equal(findSensorExample({ ...data, requests: [] }, 'MT-0001'), null);
+  assert.equal(findSensorExample({ ...data, receipts: [] }, 'MT-0001'), null);
+  sample.approvedSnapshot.items[0].quantity = 7;
+  assert.equal(findSensorExample(data, 'MT-0001'), null);
+});
 
 test('the five-sensor example keeps the same quantity rationale in the request, submission and approval', () => {
   const fresh = createERP();

@@ -15,6 +15,35 @@
   background: #fff;
   box-shadow: 0 2px 0 #e1e7ef;
 }
+.sensor-slip-example {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 16px;
+  min-height: 44px;
+  padding: 8px 24px;
+  border-radius: 7px 7px 0 0;
+  border-bottom: 1px solid #c9d5e1;
+  background: #eef3f8;
+  color: var(--slip-ink);
+  font-size: 15px;
+  line-height: 1.5;
+  word-break: keep-all;
+  text-decoration: none;
+}
+.sensor-slip-case-end { display: inline-block; }
+.sensor-slip-example strong {
+  flex-shrink: 0;
+  color: #345789;
+  font-size: 14px;
+  font-weight: 550;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.sensor-slip-example:hover { background: #e6eef5; }
+.sensor-slip-example:focus-visible { outline: 2px solid #4267a5; outline-offset: -3px; }
+.sensor-slip-example + .sensor-slip-plate { border-top-left-radius: 0; border-top-right-radius: 0; }
 .sensor-slip-plate {
   display: flex;
   align-items: center;
@@ -104,6 +133,7 @@
   .sensor-slip-body { padding-inline: 16px; }
 }
 @media (max-width: 680px) {
+  .sensor-slip-example { padding-inline: 16px; gap: 12px; }
   .sensor-slip { grid-template-columns: minmax(0, 1fr); margin-bottom: 16px; }
   .sensor-slip-plate { flex-wrap: nowrap; padding: 12px 16px; border: 0; border-radius: 7px 7px 0 0; }
   .sensor-slip-plate h2 { display: inline; margin: 0 8px 0 0; font-size: 22px; }
