@@ -10,7 +10,8 @@ import ApprovalLine from './ApprovalLine';
 import RevisionChanges from './RevisionChanges';
 import { PageHead, Empty, Modal, StateTag, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail } from './InventoryPages';
-import { duplicateRequests, orderId, workflowStatus } from './inventory';
+import { duplicateRequests, findSensorExample, orderId, workflowStatus } from './inventory';
+import useCompactViewport from './useCompactViewport';
 
 function detailOrigin(location) {
   const from = location.state?.from;
@@ -104,6 +105,7 @@ function RequestList({ mode = 'requests' }) {
 
 function RequestDetail() {
   const { id } = useParams();
+  const compact = useCompactViewport();
   const { data, requests, role, setRole, act, setNotice } = useWorkspace();
   const request = requests.find(r => r.id === id);
   const [dialog, setDialog] = useState('');
@@ -157,6 +159,11 @@ function RequestDetail() {
   };
   const titles = { approve: `${ROLES[role]} 승인을 기록할까요?`, revise: '어떤 내용을 보완해야 하나요?', reject: '반려 사유를 남겨 주세요.', amend: '승인된 요청의 내용을 변경할까요?', order: '발주 시연 기록을 남길까요?' };
   const origin = detailOrigin(location);
+  const reasonFirst = compact && findSensorExample(data)?.id === id;
+  const purchaseReason = <dl className="purchase-reason">
+    <dt>{reasonFirst ? '5개가 필요한 이유' : '구매 사유'}</dt>
+    <dd>{request.purpose || '미입력'}</dd>
+  </dl>;
   return <>{fromOrder
     ? <Link className="back-link" {...orderLink}><Icon name="back" size={17}/>{ordered ? `발주 ${orderId(request)}로 돌아가기` : '발주 준비로 돌아가기'}</Link>
     : <ListBackLink fallback={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</ListBackLink>}
@@ -168,6 +175,7 @@ function RequestDetail() {
           {approved || ordered ? <StateTag tone="green">최종 승인</StateTag> : <WorkflowStatus data={data} request={request}/>}
         </div>
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
+        {reasonFirst && purchaseReason}
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
         {(approved || ordered) && <div className="linked-order-status">
           {ordered
@@ -181,7 +189,7 @@ function RequestDetail() {
     {['revision', 'rejected'].includes(request.status) && <div className="reason-banner"><Icon name="info"/><div><strong>{request.status === 'revision' ? '보완 요청 사유' : '반려 사유'}</strong><p>{request.reason}</p></div></div>}
     <div className="detail-grid"><div className="detail-content"><section className="panel"><div className="panel-head"><h2>구매 내용</h2>{request.events[0]?.message === '샘플 요청서 작성' && <span className="muted">샘플 품의</span>}</div>
       <div className="panel-body">
-        <dl className="purchase-reason"><dt>구매 사유</dt><dd>{request.purpose || '미입력'}</dd></dl>
+        {!reasonFirst && purchaseReason}
         <div className="item-table"><div className="item-head"><span>품목 / 규격</span><span>수량</span><span>단가</span><span>금액</span></div>{request.items.map((item, i) => <div className="item-row" key={i}><div><strong>{item.materialId ? <Link className="record-link" to={`/materials/${item.materialId}`}><LinkLabel>{item.name}</LinkLabel></Link> : item.name || '품목 미입력'}</strong><small>{item.spec || '규격 미입력'}</small></div><span><small>수량 </small>{item.quantity || '—'} EA</span><span><small>단가 </small>{money(item.price)}</span><strong><small>금액 </small>{money(Number(item.quantity) * Number(item.price))}</strong></div>)}</div><div className="total-line"><span>품의 합계 <small>부가세 포함</small></span><strong>{money(amount(request))}</strong></div><dl className="request-facts"><div><dt>요청 부서</dt><dd>{request.department || '미입력'}</dd></div><div><dt>희망 납기일</dt><dd>{request.needBy || '미입력'}</dd></div><div className="full"><dt>검토 거래처</dt><dd>{request.supplier || '미입력'}</dd></div></dl></div></section>
     <RevisionChanges request={request}/>
     {duplicates.length > 0 && !closed && <section className="duplicate-note"><Icon name="info"/><div><h3>같은 자재의 진행 중인 품의 {duplicates.length}건</h3><p>같은 자재코드의 품의입니다. 미입고 수량과 사용 목적을 확인하세요.</p>{duplicates.map(r => <button type="button" className="text-button duplicate-review" key={r.id} onClick={() => setComparison({ type: 'request', id: r.id })}>품의 {r.id} · {r.title}</button>)}</div></section>}

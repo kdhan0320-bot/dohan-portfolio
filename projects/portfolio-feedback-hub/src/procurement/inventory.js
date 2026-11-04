@@ -165,7 +165,7 @@ const sensorExample = {
   purpose: '포장 라인 점검에서 센서 2개의 감지 불량을 확인했습니다. 바로 교체할 2개와 다음 정비 때 교체할 3개를 합쳐 총 5개가 필요합니다.',
 };
 
-export function findSensorExample(data, materialId) {
+export function findSensorExample(data, materialId = 'MT-0001') {
   const request = data.requests.find(r => r.id === sensorExample.id);
   if (request?.status !== 'ordered' || request.title !== sensorExample.title) return null;
   const items = orderItems(request);
@@ -214,7 +214,7 @@ export function createERP(now = new Date()) {
 }
 // The original demo receipt distinguishes this fixture from imported documents with the same ID.
 function refreshSensorExample(saved) {
-  const request = findSensorExample(saved, 'MT-0001');
+  const request = findSensorExample(saved);
   if (!request || request.purpose !== sensorExample.title
     || request.order?.reference !== '샘플 발주' || request.submissions?.length !== 1) return saved;
 

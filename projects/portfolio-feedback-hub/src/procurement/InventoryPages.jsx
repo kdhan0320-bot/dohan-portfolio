@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { originReturn } from './listNavigation';
 import { useWorkspace } from './Workspace';
@@ -8,6 +8,7 @@ import { stock, incoming, qty, orderItems, ledgerMaterials, orderId, orderProgre
 import Icon from './Icons';
 import { MaterialForm, VendorForm } from './CatalogForms';
 import SensorSlip from './SensorSlip';
+import useCompactViewport from './useCompactViewport';
 
 function Search({ value, onChange, label, placeholder }) {
   return <label className="list-search"><Icon name="search" size={18}/><input value={value} onChange={e => onChange(e.target.value)} aria-label={label} placeholder={placeholder}/>{value && <button className="icon-button" onClick={() => onChange('')} aria-label="검색어 지우기"><Icon name="close" size={16}/></button>}</label>;
@@ -21,17 +22,6 @@ const matches = (query, ...values) => values.join(' ').toLowerCase().includes(qu
 const staffButton = (role, action) => role === 'staff' ? action : <span className="muted role-readonly">조회 중 · 시연 역할 {role === 'manager' ? '팀장' : '사장님'}</span>;
 function Field({ label, children, optional }) { return <label className="field"><span>{label}{optional && <small className="optional">선택</small>}</span>{children}</label>; }
 function Actions({ onClose, children }) { return <div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>취소</button><button className="button primary" type="submit">{children}</button></div>; }
-const compactHomeQuery = '(max-width: 680px)';
-
-function subscribeToHomeWidth(notify) {
-  const query = window.matchMedia(compactHomeQuery);
-  query.addEventListener('change', notify);
-  return () => query.removeEventListener('change', notify);
-}
-
-function isCompactHome() {
-  return window.matchMedia(compactHomeQuery).matches;
-}
 
 function HomeTaskQueue({ tasks, role, compact }) {
   const preview = tasks.slice(0, compact ? 1 : 4);
@@ -108,7 +98,7 @@ function HomeReceipts({ waiting, data }) {
 
 export function WorkOverview() {
   const { data, requests, role, materials } = useWorkspace();
-  const compact = useSyncExternalStore(subscribeToHomeWidth, isCompactHome);
+  const compact = useCompactViewport();
   const tasks = requests.filter(request => role === 'staff'
     ? ['draft', 'revision', 'approved'].includes(request.status)
     : canReview(request, role));
