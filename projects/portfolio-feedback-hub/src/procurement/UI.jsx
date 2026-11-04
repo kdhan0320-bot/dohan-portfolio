@@ -52,9 +52,15 @@ export function ReceiptProgress({ data, request }) {
   const portion = progress.ordered ? Math.min(100, progress.received / progress.ordered * 100) : 0;
   return <div className="receipt-progress" role="img" aria-label={`발주 ${qty(progress.ordered)} 중 입고 ${qty(progress.received)}, 미입고 ${qty(progress.remaining)}`}><span style={{ width: `${portion}%` }}/></div>;
 }
-export function StockLedger({ data, materialId }) {
+export function StockLedger({ data, materialId, receivedLabel = '누적 입고', issuedLabel = '누적 지급' }) {
   const totals = materialTotals(data, materialId);
-  return <div className="stock-ledger" role="group" aria-label="보유 수량 계산"><div><span><i aria-hidden="true"/>누적 입고</span><strong>{qty(totals.received)}</strong></div><span className="ledger-operator" aria-hidden="true">−</span><div><span><i aria-hidden="true"/>누적 지급</span><strong>{qty(totals.issued)}</strong></div><span className="ledger-operator" aria-hidden="true">=</span><div className="ledger-balance"><span><i aria-hidden="true"/>현재 보유</span><strong>{qty(totals.balance)}</strong></div></div>;
+  return <div className="stock-ledger" role="group" aria-label="보유 수량 계산">
+    <div><span><i aria-hidden="true"/>{receivedLabel}</span><strong>{qty(totals.received)}</strong></div>
+    <span className="ledger-operator" aria-hidden="true">−</span>
+    <div><span><i aria-hidden="true"/>{issuedLabel}</span><strong>{qty(totals.issued)}</strong></div>
+    <span className="ledger-operator" aria-hidden="true">=</span>
+    <div className="ledger-balance"><span><i aria-hidden="true"/>현재 보유</span><strong>{qty(totals.balance)}</strong></div>
+  </div>;
 }
 
 export function MaterialLedgerLinks({ materials, requestId }) {

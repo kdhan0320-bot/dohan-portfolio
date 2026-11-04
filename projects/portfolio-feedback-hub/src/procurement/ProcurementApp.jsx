@@ -84,6 +84,7 @@ function Shell() {
 
 function RequestList({ mode = 'requests' }) {
   const { data, requests, role } = useWorkspace();
+  const compact = useCompactViewport();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') || '';
   const defaultStatus = role !== 'staff' ? 'action' : 'all';
@@ -95,9 +96,25 @@ function RequestList({ mode = 'requests' }) {
   let base = requests.filter(r => mode === 'approvals' ? ['team', 'director'].includes(r.status) : mode === 'orders' ? ['approved', 'ordered'].includes(r.status) : true);
   const matches = (r, value) => value === 'all' || (value === 'action' ? (role === 'staff' ? ['draft', 'revision', 'approved'].includes(r.status) : canReview(r, role)) : value === 'waiting' ? ['team', 'director'].includes(r.status) : value === 'closed' ? ['ordered', 'rejected'].includes(r.status) : r.status === value);
   const shown = base.filter(r => matches(r, status) && `${r.title} 품의 ${r.id} ${r.items.map(i => i.name).join(' ')} ${r.supplier}`.toLowerCase().includes(query.trim().toLowerCase()));
+  const filters = config.tabs.map(([key, label]) => ({ key, label, count: base.filter(r => matches(r, key)).length }));
   return <><PageHead register={mode === 'requests' ? 'purchase' : undefined} eyebrow={mode === 'requests' ? '구매 품의 대장' : config.eyebrow} title={config.title} action={role === 'staff' && <ListLink id="new-purchase-request" className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 품의 작성</ListLink>}/>
 
-    <section className="panel requests-panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="상태 필터">{config.tabs.map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => setParam('status', key)}>{label}<span>{base.filter(r => matches(r, key)).length}</span></button>)}</div><label className="list-search"><Icon name="search" size={18}/><input aria-label="현재 목록 검색" placeholder="품의명·자재·번호 검색" value={query} onChange={e => setParam('q', e.target.value)}/>{query && <button className="icon-button" aria-label="검색어 지우기" onClick={() => setParam('q', '')}><Icon name="close" size={16}/></button>}</label></div>
+    <section className="panel requests-panel"><div className="list-toolbar">
+      {compact && mode === 'requests' ? (
+        <label className="request-status-filter">품의 상태
+          <select value={status} onChange={event => setParam('status', event.target.value)}>
+            {!filters.some(filter => filter.key === status) && <option value={status}>{STATUS[status]?.label || '지정된 상태'}</option>}
+            {filters.map(({ key, label, count }) => <option key={key} value={key}>{label} · {count}건</option>)}
+          </select>
+        </label>
+      ) : (
+        <div className="filter-tabs" aria-label="상태 필터">{filters.map(({ key, label, count }) =>
+          <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key}
+            onClick={() => setParam('status', key)}>{label}<span>{count}</span></button>
+        )}</div>
+      )}
+      <label className="list-search"><Icon name="search" size={18}/><input aria-label="현재 목록 검색" placeholder="품의명·자재·번호 검색" value={query} onChange={e => setParam('q', e.target.value)}/>{query && <button className="icon-button" aria-label="검색어 지우기" onClick={() => setParam('q', '')}><Icon name="close" size={16}/></button>}</label>
+    </div>
     {query && <div className="list-caption">검색 결과 <strong>{shown.length}</strong>건</div>}
     <div className="request-table purchase-list"><div className="table-heading" aria-hidden="true"><span>구매 품의</span><span>합계 금액 <small>부가세 포함</small></span><span>필요일</span><span>진행 상태</span><span>현재 담당</span></div>{shown.map(r => <ListLink id={`request-${r.id}`} className="request-table-row" key={r.id} to={`/requests/${r.id}`} state={{ from: `${mode === 'requests' ? '/requests' : `/${mode}`}${params.size ? `?${params}` : ''}`, fromLabel: config.title }}><div className="request-title-cell"><span className="mono"><DocumentNumber value={r.id}/> <span className="request-department">{r.department}</span></span><h2><LinkLabel>{r.title || '제목 없는 품의'}</LinkLabel></h2><small>{r.items.map(i => i.name || '미입력 품목').join(', ')}</small></div><span className="table-amount"><small>합계 · 부가세 포함 </small>{money(amount(r))}</span><span className="table-date"><small>필요일 </small>{r.needBy ? day(r.needBy) : '미정'}</span><span className="table-status"><WorkflowStatus data={data} request={r}/></span><span className="table-owner">{r.status === 'rejected' || workflowStatus(data, r).owner === '입고 확인 완료' ? '—' : workflowStatus(data, r).owner}</span></ListLink>)}</div>
     {!shown.length && <Empty title={query ? '검색 결과가 없습니다.' : status === 'action' ? '지금 처리할 품의가 없습니다.' : '해당 상태의 품의가 없습니다.'}><p>검색어 또는 상태 필터를 바꿔 보세요.</p><button className="button secondary" onClick={() => setParams({ status: 'all' })}>전체 품의 보기</button></Empty>}</section></>;

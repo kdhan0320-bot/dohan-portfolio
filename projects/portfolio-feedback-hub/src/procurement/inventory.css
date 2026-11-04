@@ -673,6 +673,26 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   .list-toolbar { padding:12px 16px;gap:12px; }
   .filter-tabs { gap:0 12px; }
   .filter-tabs button { padding:6px 0; }
+  .request-status-filter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #43566e;
+    font-size: 14px;
+  }
+  .request-status-filter select {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 6px 10px;
+    border: 1px solid #a3b4c6;
+    border-radius: 4px;
+    background-color: white;
+    color: #294e73;
+    font: inherit;
+    font-size: 16px;
+  }
   .request-document .approval-line-caption { padding:12px 14px 0;gap:8px; }
   .request-document .approval-line ol { padding:16px 10px;gap:0; }
   .approval-line .line-node { width:26px;height:26px; }

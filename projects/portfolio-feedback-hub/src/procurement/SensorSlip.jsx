@@ -54,9 +54,9 @@ export default function SensorSlip({ data, materials }) {
       <div className="sensor-slip-body">
         <div className="sensor-slip-order">
           <span>누적 발주 <strong>{qty(ordered)}</strong></span>
-          <span>미입고 <strong>{qty(outstanding)}</strong></span>
+          <span className="sensor-slip-outstanding">앞으로 받을 수량 <strong>{qty(outstanding)}</strong></span>
         </div>
-        <StockLedger data={data} materialId={material.id}/>
+        <StockLedger data={data} materialId={material.id} receivedLabel="받은 수량" issuedLabel="현장에 준 수량"/>
         <div className="sensor-slip-foot">
           {lastIssue ? (
             <dl className="sensor-slip-issue">

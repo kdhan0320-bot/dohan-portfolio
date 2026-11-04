@@ -99,6 +99,12 @@
   color: #4d6075;
 }
 .sensor-slip-order strong { font-weight: 550; margin-left: 3px; color: var(--slip-ink); }
+.sensor-slip-outstanding {
+  padding: 2px 8px;
+  border: 1px dashed #91a4b9;
+  border-radius: 3px;
+  background: #f4f7fa;
+}
 .sensor-slip .stock-ledger { margin: 12px 0; }
 .sensor-slip .stock-ledger > div > span { font-size: 14px; color: #485c72; }
 .sensor-slip .stock-ledger strong { margin-top: 5px; font-size: 27px; line-height: 1.25; color: var(--slip-ink); }
@@ -140,12 +146,17 @@
   .sensor-slip-label { display: flex; margin-bottom: 4px; }
   .sensor-sketch { width: 79px; }
   .sensor-slip-body { padding: 10px 16px 2px; }
-  .sensor-slip .stock-ledger { margin-block: 10px; }
+  .sensor-slip .stock-ledger {
+    margin-block: 10px;
+    grid-template-columns: minmax(0, 1fr) 8px minmax(0, 1.55fr) 8px minmax(0, 1fr);
+    gap: 4px;
+  }
   .sensor-slip .stock-ledger strong { font-size: 21px; }
   .sensor-slip .stock-ledger > div > span { gap: 4px; }
   .sensor-slip-issue { flex: 1 1 auto; grid-template-columns: auto minmax(0, 1fr) auto; }
   .sensor-slip-foot a { margin-inline-start: auto; }
 }
 @media (max-width: 360px) {
+  .sensor-slip-order { column-gap: 10px; }
   .sensor-slip-foot, .sensor-slip-issue { column-gap: 6px; }
 }
