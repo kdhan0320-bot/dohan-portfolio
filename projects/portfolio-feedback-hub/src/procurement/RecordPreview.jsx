@@ -15,7 +15,7 @@ export default function RecordPreview({ record, materialIds, onClose, mode = 'wr
   const close = <div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>{mode === 'review' ? '검토로 돌아가기' : '작성으로 돌아가기'}</button></div>;
   return <Modal title={request ? '진행 중인 구매 확인' : '보유·미입고 확인'} className="record-preview" focusClose onClose={onClose}>
     <p className="preview-context">{mode === 'review' ? '검토 중인 품의와 위치는 그대로 유지됩니다.' : '작성 중인 내용은 그대로 유지됩니다.'}</p>
-    {request && <><div className="preview-heading"><span className="mono">{request.id} · {request.revision}차</span><h3>{request.title}</h3><WorkflowStatus data={data} request={request} quantity={false}/></div>
+    {request && <><div className="preview-heading"><span className="mono">품의 {request.id} · {request.revision}차</span><h3>{request.title}</h3><WorkflowStatus data={data} request={request} quantity={false}/></div>
       <div className="preview-materials">{comparisonLines(data, request, materialIds).map(item => <section key={item.index}><h4>{item.name}</h4><p>{item.spec}</p><ComparisonQuantities item={item} ordered={request.status === 'ordered'}/></section>)}</div>
       <dl className="preview-facts"><div><dt>구매 업체</dt><dd>{request.supplier}</dd></div><div><dt>요청 부서</dt><dd>{request.department}</dd></div><div><dt>{request.status === 'ordered' ? '입고 예정일' : '희망 납기일'}</dt><dd>{request.order?.expectedDate || request.needBy}</dd></div><div><dt>품의 전체 금액</dt><dd>{money(amount(request))}</dd></div><div className="full"><dt>구매 사유</dt><dd>{request.purpose}</dd></div></dl>
     </>}

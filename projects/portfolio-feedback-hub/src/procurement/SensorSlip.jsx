@@ -54,10 +54,11 @@ export default function SensorSlip({ data, materials }) {
         <StockLedger data={data} materialId={material.id}/>
         <div className="sensor-slip-foot">
           {lastIssue ? (
-            <p>
-              <span>최근 지급 <time dateTime={lastIssue.date}>{day(lastIssue.date)}</time></span>
-              <span>{lastIssue.department} <span className="sensor-slip-reference">{lastIssue.id}</span></span>
-            </p>
+            <dl className="sensor-slip-issue">
+              <div><dt>최근 지급일</dt><dd><time dateTime={lastIssue.date}>{day(lastIssue.date)}</time></dd></div>
+              <div><dt>받은 부서</dt><dd>{lastIssue.department || '미기록'}</dd></div>
+              <div><dt>기록번호</dt><dd className="sensor-slip-reference">{lastIssue.id}</dd></div>
+            </dl>
           ) : <p>아직 지급 기록이 없습니다.</p>}
           <ListLink id="home-sensor-history" to={`/materials/${material.id}`} aria-label={`${material.name} 입출고 이력 보기`}>이력 보기</ListLink>
         </div>

@@ -3,9 +3,21 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
-import { workflowStatus, comparisonLines, materialTotals, purchaseSteps } from '../src/procurement/inventory.js';
+import { workflowStatus, comparisonLines, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
 
 const today = dateInput();
+
+test('an order number exists only after registration and remains readable on older orders', () => {
+  const data = createERP();
+  const ready = data.requests.find(request => request.status === 'approved');
+  assert.equal(orderId(ready), '');
+  const updated = placeOrder(data, ready.id, 'staff', { date: today, expectedDate: today });
+  const ordered = updated.requests.find(request => request.id === ready.id);
+  assert.equal(orderId(ordered), 'PO-2003');
+  assert.equal(orderId({ ...ordered, order: { date: today } }), 'PO-2003');
+  assert.equal(orderId({ ...ordered, order: { id: 'PO-0917' } }), 'PO-0917');
+});
+
 const receipt = (quantity, extra = {}) => ({ date: today, lines: [{ index: 0, quantity }], ...extra });
 const issue = (quantity, extra = {}) => ({ materialId: 'MT-0001', date: today, quantity, department: '검증 부서', recipient: '가상 담당자', ...extra });
 

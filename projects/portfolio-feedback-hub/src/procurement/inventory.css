@@ -680,7 +680,7 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 .ledger-number {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 5px;
   vertical-align: middle;
   white-space: nowrap;
   color: #344e6a;
@@ -714,7 +714,6 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   opacity: .65;
 }
 .ledger-number[data-series="PO"] .ledger-series { background: #3b5875; border-color: #3b5875; color: white; }
-.ledger-number .sr-only { user-select: none; }
 @media (min-width: 1101px) {
   .purchase-list .table-heading, .order-list-table thead th {
     background-color: #edf2f7;

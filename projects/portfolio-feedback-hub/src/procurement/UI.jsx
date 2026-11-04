@@ -33,9 +33,8 @@ export function DocumentNumber({ value }) {
   if (prefix !== 'PR' && prefix !== 'PO') return <span>{value}</span>;
   return (
     <span className="ledger-number" data-series={prefix}>
-      <span className="sr-only">{value}</span>
-      <span className="ledger-series" aria-hidden="true">{prefix}</span>
-      <span aria-hidden="true">{value.slice(prefix.length)}</span>
+      <span className="ledger-series">{prefix === 'PR' ? '품의' : '발주'}</span>{' '}
+      <span>{value}</span>
     </span>
   );
 }

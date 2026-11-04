@@ -2,7 +2,7 @@ import { dateInput, emptyRequest, transition, validate, STATUS, ROLES, owner, ap
 
 export const ERP_SAMPLE_ID = 'PR-2007';
 export const qty = n => `${Number(n || 0).toLocaleString('ko-KR')} EA`;
-export const orderId = r => r.order?.id || `PO-${r.id.replace(/^PR-/, '')}`;
+export const orderId = r => r.status === 'ordered' ? (r.order?.id || `PO-${r.id.replace(/^PR-/, '')}`) : '';
 export const orderItems = r => r.approvedSnapshot?.items || r.items;
 export const receivedQuantity = (state, requestId, index) => state.receipts.filter(r => r.requestId === requestId).reduce((n, r) => n + r.lines.filter(l => l.index === index).reduce((sum, l) => sum + l.quantity, 0), 0);
 export function orderProgress(state, request) {
@@ -94,7 +94,7 @@ export function placeOrder(state, requestId, role, payload) {
   if (payload.date < dateInput(request.approvedSnapshot.at)) throw new Error('발주일은 최종 승인일보다 빠를 수 없습니다.');
   if (!validDay(payload.expectedDate) || payload.expectedDate < payload.date) throw new Error('입고 예정일은 발주일 이후로 선택해 주세요.');
   const next = transition(request, 'order', role, { reference: payload.note?.trim() || '승인본으로 발주 등록' });
-  next.order = { ...next.order, id: orderId(request), date: payload.date, expectedDate: payload.expectedDate };
+  next.order = { ...next.order, id: orderId(next), date: payload.date, expectedDate: payload.expectedDate };
   return { ...state, requests: state.requests.map(r => r.id === requestId ? next : r) };
 }
 export function receiveOrder(state, requestId, role, payload) {
