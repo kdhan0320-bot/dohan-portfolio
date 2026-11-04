@@ -60,7 +60,7 @@ export default function SensorSlip({ data, materials }) {
               <div><dt>기록번호</dt><dd className="sensor-slip-reference">{lastIssue.id}</dd></div>
             </dl>
           ) : <p>아직 지급 기록이 없습니다.</p>}
-          <ListLink id="home-sensor-history" to={`/materials/${material.id}`} aria-label={`${material.name} 입출고 이력 보기`}>이력 보기</ListLink>
+          <ListLink id="home-sensor-history" to={`/materials/${material.id}#movement-history`} aria-label={`${material.name} 입출고 이력 보기`}>이력 보기</ListLink>
         </div>
       </div>
     </section>

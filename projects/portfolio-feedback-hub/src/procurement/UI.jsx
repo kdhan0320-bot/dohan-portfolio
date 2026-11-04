@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icons';
 import { STATUS } from './model';
 import { workflowStatus, materialTotals, orderProgress, qty } from './inventory';
-import { homeReturn, listOrigin, plainClick, rememberList } from './listNavigation';
+import { originReturn, listOrigin, plainClick, rememberList } from './listNavigation';
 
 export function ListLink({ to, state, id, children, ...props }) {
   const location = useLocation(), navigate = useNavigate();
@@ -22,7 +22,7 @@ export function LinkLabel({ children }) {
 }
 export function ListBackLink({ fallback, children }) {
   const location = useLocation(), navigate = useNavigate();
-  const home = homeReturn(location, navigate);
+  const home = originReturn(location, navigate, '/');
   if (home) return <Link className="back-link" {...home.linkProps}><Icon name="back" size={17}/>업무 현황으로</Link>;
   const origin = listOrigin(location.state?.listOrigin, fallback);
   return <Link className="back-link" to={origin.path} state={{ restoreList: origin }}>{children}</Link>;

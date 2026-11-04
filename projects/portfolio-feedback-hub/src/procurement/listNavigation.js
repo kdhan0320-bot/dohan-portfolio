@@ -14,21 +14,20 @@ export function listOrigin(value, fallback) {
   return { path: value.path, y: Number.isFinite(value.y) ? Math.max(0, value.y) : 0, focusId: typeof value.focusId === 'string' ? value.focusId : '' };
 }
 
-// Only pop history when this exact screen was opened by the home link.
-// After an intermediate screen, use the recorded home position instead.
-export function homeReturn(location, navigate) {
+// Pop only for a direct visit so the origin keeps its own filters and parent entry.
+export function originReturn(location, navigate, path) {
   const source = location.state?.listOrigin;
-  if (source?.path !== '/') return null;
+  if (source?.path !== path) return null;
 
-  const origin = listOrigin(source, '/');
+  const origin = listOrigin(source, path);
   const state = { restoreList: origin };
-  const direct = Boolean(source.key && source.target === location.pathname + location.search);
+  const direct = Boolean(source.key && source.target === location.pathname + location.search + (location.hash || ''));
   function go() {
     if (direct) {
       rememberList(source.key, origin);
       navigate(-1);
     } else {
-      navigate('/', { replace: true, state });
+      navigate(path, { replace: true, state });
     }
   }
   function onClick(event) {
@@ -36,5 +35,5 @@ export function homeReturn(location, navigate) {
     event.preventDefault();
     go();
   }
-  return { direct, go, linkProps: { to: '/', replace: true, state, onClick } };
+  return { direct, go, linkProps: { to: path, replace: true, state, onClick } };
 }

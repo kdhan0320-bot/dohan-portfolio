@@ -375,6 +375,28 @@
 .document-register .workflow-status { flex-direction:row;align-items:center;flex-wrap:wrap;gap:8px 12px; }
 .document-register .document-round { font-size:14px;line-height:26px; }
 .document-register .workflow-detail { font-size:14px;line-height:26px; }
+.request-document .document-register > .badge { margin-left: 0; }
+.linked-order-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  border-top: 1px solid #dce4ed;
+  margin-top: 14px;
+  padding-top: 12px;
+  color: #4a5c70;
+  font-size: 14px;
+}
+.linked-order-status > span:first-child, .linked-order-status .workflow-status {
+  display: inline-flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+.linked-order-status strong { color: #344e6a; font-weight: 550; }
+#movement-history { scroll-margin-top: 24px; overflow-wrap: anywhere; }
+#movement-history:focus-visible { outline: 2px solid #4267a5; outline-offset: 4px; border-radius: 2px; }
+#movement-history + span { white-space: nowrap; }
 .document-meta { display:flex;flex-wrap:wrap;align-items:center;gap:10px 24px; }
 .document-source { margin-left:auto; }
 .document-meta a,.record-link,.material-meta a { text-decoration:underline;text-decoration-color:#bac9dc;text-underline-offset:4px; }

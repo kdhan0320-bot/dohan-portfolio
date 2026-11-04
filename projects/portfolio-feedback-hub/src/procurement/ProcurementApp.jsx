@@ -4,13 +4,13 @@ import { WorkspaceProvider, useWorkspace } from './Workspace';
 import { ROLES, STATUS, amount, canEdit, canReview, day, eventRevisionLabel, money, nextAction, owner, timestamp } from './model';
 import RequestEditor from './RequestEditor';
 import RecordPreview from './RecordPreview';
-import { listOrigin, savedListPosition } from './listNavigation';
+import { listOrigin, originReturn, savedListPosition } from './listNavigation';
 import Icon from './Icons';
 import ApprovalLine from './ApprovalLine';
 import RevisionChanges from './RevisionChanges';
-import { PageHead, Empty, Modal, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
+import { PageHead, Empty, Modal, StateTag, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail } from './InventoryPages';
-import { duplicateRequests, workflowStatus } from './inventory';
+import { duplicateRequests, orderId, workflowStatus } from './inventory';
 
 function detailOrigin(location) {
   const from = location.state?.from;
@@ -30,9 +30,10 @@ function Shell() {
   useLayoutEffect(() => {
     const heading = document.querySelector('h1');
     document.title = `${heading?.textContent || '업무 현황'} · 품의선`;
-    const changed = previousPath.current !== location.pathname;
-    previousPath.current = location.pathname;
-    const restore = location.state?.restoreList || (navigationType === 'POP' && savedListPosition(location.key));
+    const path = location.pathname + location.hash;
+    const changed = previousPath.current !== path;
+    previousPath.current = path;
+    const restore = (navigationType === 'POP' && savedListPosition(location.key)) || location.state?.restoreList;
     if (restore?.path === location.pathname + location.search) {
       const frame = requestAnimationFrame(() => {
         const previous = document.getElementById(restore.focusId);
@@ -48,11 +49,15 @@ function Shell() {
       });
       return () => cancelAnimationFrame(frame);
     }
-    if (changed || navigationType === 'PUSH') {
+    const section = location.hash === '#movement-history' && document.getElementById('movement-history');
+    if (section) {
+      section.focus({ preventScroll: true });
+      section.scrollIntoView({ block: 'start', behavior: 'instant' });
+    } else if (changed || navigationType === 'PUSH') {
       window.scrollTo({ top: 0, behavior: 'instant' });
       heading?.focus({ preventScroll: true });
     }
-  }, [location.key, location.pathname, location.search, location.state, navigationType]);
+  }, [location.key, location.pathname, location.search, location.hash, location.state, navigationType]);
   const nav = [['/requests', '구매·결재', 'approval'], ['/orders', '발주·입고', 'box'], ['/materials', '자재·지급', 'grid'], ['/vendors', '업체 관리', 'building']];
   return <div className="workspace-shell">
     <a className="skip-link" href="#main-content" onClick={e => { e.preventDefault(); document.getElementById('main-content').focus(); }}>본문으로 이동</a>
@@ -128,10 +133,13 @@ function RequestDetail() {
   if (!request) return <><PageHead eyebrow="REQUEST NOT FOUND" title="품의를 찾을 수 없습니다."/><Link className="button primary" to="/requests">구매·결재로</Link></>;
   const editable = canEdit(request, role), reviewable = canReview(request, role), approved = request.status === 'approved', ordered = request.status === 'ordered';
   const closed = ordered || request.status === 'rejected';
+  const orderPath = `/orders/${id}`;
+  const fromOrder = (approved || ordered) && originReturn(location, navigate, orderPath);
+  const orderLink = fromOrder?.linkProps || { to: orderPath };
   // The editor's immediate parent is now this detail. Keep the eventual home position.
   const editorState = location.state?.listOrigin?.path === '/'
     ? { ...location.state, listOrigin: listOrigin(location.state.listOrigin, '/') }
-    : location.state;
+    : fromOrder ? null : location.state;
   const duplicates = duplicateRequests(data, request);
   const followingRole = Object.keys(ROLES).find(key => ROLES[key] === owner(request));
   const handoff = followingRole && followingRole !== role;
@@ -147,13 +155,23 @@ function RequestDetail() {
     } catch (e) { setError(e.message); document.querySelector('dialog textarea')?.focus(); }
   };
   const titles = { approve: `${ROLES[role]} 승인을 기록할까요?`, revise: '어떤 내용을 보완해야 하나요?', reject: '반려 사유를 남겨 주세요.', amend: '승인된 요청의 내용을 변경할까요?', order: '발주 시연 기록을 남길까요?' };
-  const origin = detailOrigin(location, request);
-  return <><ListBackLink fallback={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</ListBackLink>
+  const origin = detailOrigin(location);
+  return <>{fromOrder
+    ? <Link className="back-link" {...orderLink}><Icon name="back" size={17}/>{ordered ? `발주 ${orderId(request)}로 돌아가기` : '발주 준비로 돌아가기'}</Link>
+    : <ListBackLink fallback={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</ListBackLink>}
     <header className="request-document">
       <div className="document-heading">
-        <div className="document-register"><DocumentNumber value={request.id}/><span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 품의서'}</span><WorkflowStatus data={data} request={request}/></div>
+        <div className="document-register">
+          <DocumentNumber value={request.id}/>
+          <span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 품의서'}</span>
+          {approved || ordered ? <StateTag tone="green">최종 승인</StateTag> : <WorkflowStatus data={data} request={request}/>}
+        </div>
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
+        {(approved || ordered) && <div className="linked-order-status">
+          <span>연결 발주 {ordered && <strong>{orderId(request)}</strong>}</span>
+          {ordered ? <WorkflowStatus data={data} request={request}/> : <span>등록 전</span>}
+        </div>}
       </div>
       <ApprovalLine data={data} request={request}/>
     </header>
@@ -165,9 +183,9 @@ function RequestDetail() {
     <section className={`panel next-panel${closed ? ' closed-panel' : ''}`}><div className="panel-head"><h2 ref={nextHeading} tabIndex="-1">{ordered ? '발주·입고' : closed ? STATUS[request.status].label : handoff ? `${owner(request)} ${approved ? '발주 대기' : ['draft', 'revision'].includes(request.status) ? '작성 대기' : '확인 대기'}` : reviewable ? '결재 처리' : approved ? '발주 준비' : '작성 이어가기'}</h2>{reviewable && <span className="current-demo-role">시연 역할 · {ROLES[role]}</span>}</div><div className="panel-body">{!handoff && !ordered && <p>{editable ? '내용을 확인한 뒤 결재를 요청하세요.' : reviewable ? '품목·금액·구매 사유를 확인한 뒤 결정하세요.' : approved ? '최종 승인본으로 발주일과 입고 예정일을 기록하세요.' : '이 요청은 종료되었습니다. 다시 구매하려면 새 품의를 작성하세요.'}</p>}
       {editable && <Link className="button primary block" to={`/requests/${id}/edit`} state={editorState}>{nextAction(request, role)}</Link>}
       {reviewable && <><button className="button primary block" onClick={() => open('approve')}><Icon name="check" size={18}/>승인하기</button><div className="paired-buttons"><button className="button secondary" onClick={() => open('revise')}>보완 요청</button><button className="button secondary" onClick={() => open('reject')}>반려</button></div></>}
-      {approved && role === 'staff' && <><Link className="button primary block" to={`/orders/${id}`}>발주 준비</Link><button className="text-button amend-button" onClick={() => open('amend')}>품의 내용 변경·재결재</button></>}
+      {approved && role === 'staff' && <><Link className="button primary block" {...orderLink}>발주 준비</Link><button className="text-button amend-button" onClick={() => open('amend')}>품의 내용 변경·재결재</button></>}
       {request.status === 'rejected' && role === 'staff' && <Link className="button secondary" to="/requests/new">새 구매 품의 작성</Link>}
-      {ordered && <Link className="button primary block" to={`/orders/${id}`}>입고 수량·기록 보기</Link>}
+      {ordered && <Link className="button primary block" {...orderLink}>입고 수량·기록 보기</Link>}
       {handoff && <div className="role-handoff"><button className="button secondary block" onClick={() => { setRole(followingRole); setNotice(`${ROLES[followingRole]} 역할로 전환했습니다. 요청 내용은 그대로 유지됩니다.`); focusNext(); }}>{ROLES[followingRole]} 역할로 이어보기</button></div>}
     </div></section></div><aside className="detail-aside"><details className="panel history-panel"><summary><span><strong>처리 이력</strong><small>결재·변경 기록</small></span><span>{request.events.length}건</span></summary><ol>{[...request.events].reverse().map((event, i) => <li key={`${event.at}-${i}`}><span className="history-record" aria-hidden="true"><Icon name={event.message.includes('반려') ? 'close' : 'check'} size={13}/></span><div><div className="history-meta"><strong>{event.actor}</strong><span>{eventRevisionLabel(event)}</span></div><p>{event.message}</p><time dateTime={event.at}>{timestamp(event.at)}</time></div></li>)}</ol></details>
     {request.submissions.some(snapshot => snapshot.revision < request.revision) && <details className="panel snapshots"><summary>이전 제출본 보기 <span>{request.submissions.filter(snapshot => snapshot.revision < request.revision).length}건</span></summary>{request.submissions.filter(snapshot => snapshot.revision < request.revision).map((snapshot, i) => <div key={i}><strong>{snapshot.revision}차 제출 · {timestamp(snapshot.at)}</strong><p>{snapshot.title} · {money(amount(snapshot))}</p><small>{snapshot.items.map(item => `${item.name} (${item.spec}) ${item.quantity} ${item.unit || '개'}`).join(', ')}</small></div>)}</details>}

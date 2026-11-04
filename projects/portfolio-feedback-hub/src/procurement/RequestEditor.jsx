@@ -8,7 +8,7 @@ import RevisionChanges from './RevisionChanges';
 import RecordPreview, { ComparisonQuantities } from './RecordPreview';
 import { PageHead, FormError, DateInput } from './UI';
 import { MaterialForm, VendorForm } from './CatalogForms';
-import { homeReturn, listOrigin } from './listNavigation';
+import { originReturn, listOrigin } from './listNavigation';
 
 const SAMPLE = '품목: 포토센서\n규격: 확산 반사형 · NPN · DC 24V\n수량: 2EA\n단가: 48,000원\n거래처: 한결센서 (가상)\n사유: 포장 라인 센서 교체';
 const blankItem = () => ({ materialId: '', name: '', spec: '', unit: 'EA', quantity: '', price: '' });
@@ -21,7 +21,7 @@ function Editor({ id }) {
   const { data, requests, materials, vendors, role, save, act, setNotice } = useWorkspace();
   const location = useLocation(), navigate = useNavigate();
   const returnList = listOrigin(location.state?.listOrigin, '/requests');
-  const home = homeReturn(location, navigate);
+  const home = originReturn(location, navigate, '/');
   const returnToHome = Boolean(id && home?.direct);
   const exitLink = returnToHome ? home.linkProps : {
     to: id ? `/requests/${id}` : returnList.path,
