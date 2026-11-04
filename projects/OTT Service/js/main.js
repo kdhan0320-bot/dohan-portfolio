@@ -228,7 +228,7 @@
       article: "faces",
       lens: "소리에서 대화로",
       comparisonFocus: "소리 · 대화",
-      sequence: ["파도의 기억", "숲의 호흡", "친구의 목소리", "새벽의 대화"],
+      pairCaptions: ["파도에서 물길로", "목소리에서 대화로"],
       previewDescription: "파도와 숲의 소리에서 친구와 식탁의 대화로 이어집니다.",
       previewImage: "assets/stills/tide.webp",
       imageAlt: "젖은 잎과 돌 사이로 흐르는 숲의 작은 물길",
@@ -236,10 +236,10 @@
       descriptionLines: ["파도와 숲의 소리, 재회와 새벽의 대화."],
       films: ["tide", "forest", "bluehour", "nocturne"],
       filmNotes: {
-        tide: "아버지가 남긴 소리에서 기억을 꺼내는 이야기",
-        forest: "대사보다 물과 숲의 소리에 머무는 21분",
-        bluehour: "옛 친구와 다시 나란히 보내는 오후",
-        nocturne: "낯선 손님과 주인이 식탁에서 시작하는 대화",
+        tide: "아버지가 남긴 녹음 속 파도 소리.",
+        forest: "그 여운을 숲의 물길이 이어받습니다.",
+        bluehour: "오후의 바닷가, 다시 나란히 선 두 친구.",
+        nocturne: "새벽의 식탁, 처음 마주 앉은 두 사람.",
       },
     },
     {
@@ -249,7 +249,7 @@
       article: "running-time",
       lens: "마음을 건네는 방식",
       comparisonFocus: "행동 · 관계",
-      sequence: ["꺼내는 마음", "곁에 선 이웃", "못다 한 연주", "이어받는 바통"],
+      pairCaptions: ["우연히 마주친 사이", "마지막에 건네는 마음"],
       previewDescription: "편지와 연주, 이웃과 팀의 작은 행동에서 마음을 읽습니다.",
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
@@ -258,10 +258,10 @@
       descriptionLines: ["편지와 연주, 멈춘 엘리베이터와 마지막 계주."],
       films: ["letters", "windows", "rooftop", "relay"],
       filmNotes: {
-        letters: "서랍 속 편지로 두 친구의 여름을 되짚기",
-        windows: "멈춘 엘리베이터에서 처음 마주한 이웃",
-        rooftop: "마지막 연주로 못다 한 말을 전하는 밴드",
-        relay: "기록보다 동료를 돌아보는 마지막 계주",
+        letters: "서랍 속 편지가 지난여름의 친구를 불러옵니다.",
+        windows: "멈춘 승강기가 낯선 이웃을 마주 보게 합니다.",
+        rooftop: "한 사람에게 건네는 마지막 연주.",
+        relay: "동료의 손에 건네는 마지막 바통.",
       },
     },
     {
@@ -271,7 +271,7 @@
       article: "enclosed-spaces",
       lens: "낯선 세계, 남겨진 선택",
       comparisonFocus: "상상 · 선택",
-      sequence: ["펼쳐진 일지", "기다리는 귀환", "접어 둔 소원", "도착한 신호"],
+      pairCaptions: ["남겨진 기록", "응답을 기다리는 신호"],
       previewDescription: "낯선 공간과 사건 속에서 인물이 무엇을 지킬지 살펴봅니다.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
@@ -279,10 +279,10 @@
       descriptionLines: ["온실의 비밀, 우주 메시지·종이별·미래의 신호."],
       films: ["greenhouse", "orbit", "atlas", "signal"],
       filmNotes: {
-        greenhouse: "사라진 관리자의 일지가 여는 비밀",
-        orbit: "지구를 바라보는 기록원에게 도착한 마지막 메시지",
-        atlas: "마지막 종이에 담을 소원을 고르는 아이",
-        signal: "자기 목소리로 도착한 미래의 구조 요청",
+        greenhouse: "빈 온실에 남은 관리자의 일지.",
+        orbit: "우주 기지에 도착한 마지막 메시지.",
+        atlas: "마지막 종이에 누구의 소원을 담을까.",
+        signal: "미래의 내가 보낸 구조 요청에 어떻게 답할까.",
       },
     },
   ];
@@ -1677,6 +1677,51 @@
     openDialog($("detailDialog"), trigger, $("detailTitle"), { returnToArticle });
     resizeNoteText();
   }
+  function makeSceneButton(film, note, index) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "article-film-link";
+    button.dataset.detail = film.id;
+    if (index === 0) button.id = "articleFilmLink";
+    button.setAttribute("aria-label", `${film.title} 작품 보기 · ${film.genre} · ${film.minutes}분`);
+    button.setAttribute("aria-describedby", `scene-note-${film.id}`);
+    button.innerHTML = `
+      <img src="${scenePath(film)}" alt="" width="240" height="180" loading="lazy">
+      <span class="article-film-title">${film.title}</span>
+      <span class="article-film-meta">${film.genre} · ${film.minutes}분</span>
+      <span class="article-film-note" id="scene-note-${film.id}"></span>`;
+    button.querySelector("img").style.objectPosition =
+      film.sequencePosition || film.detailPosition || film.posterPosition || "center";
+    button.querySelector(".article-film-note").textContent = note;
+    return button;
+  }
+
+  function renderScenePairs(relatedFilms, theme) {
+    const pairs = document.createDocumentFragment();
+    for (let start = 0; start < relatedFilms.length; start += 2) {
+      const filmsInPair = relatedFilms.slice(start, start + 2);
+      const pair = document.createElement("section");
+      pair.className = "scene-pair";
+      const heading = document.createElement("h4");
+      heading.id = `scene-pair-${start}`;
+      heading.className = "article-step";
+      pair.setAttribute("aria-labelledby", heading.id);
+      const range = document.createElement("span");
+      range.className = "article-film-number scene-index";
+      range.textContent = filmsInPair.map((_, i) => String(start + i + 1).padStart(2, "0")).join("–");
+      heading.append(range, theme?.pairCaptions[start / 2] || "함께 보는 장면");
+
+      const shots = document.createElement("div");
+      shots.className = "scene-pair-shots";
+      filmsInPair.forEach((film, offset) => {
+        shots.append(makeSceneButton(film, theme?.filmNotes[film.id] || "작품 보기", start + offset));
+      });
+      pair.append(heading, shots);
+      pairs.append(pair);
+    }
+    $("articleFilmLinks").replaceChildren(pairs);
+  }
+
   function showArticle(id, trigger) {
     const article = articles.find((item) => item.id === id);
     if (!article) return;
@@ -1701,16 +1746,7 @@
       films.find((item) => item.id === id),
     );
     $("articleRuntime").textContent = `${relatedFilms.length}편 · 총 ${relatedFilms.reduce((total, item) => total + item.minutes, 0)}분`;
-    $("articleFilmLinks").replaceChildren(...relatedFilms.map((relatedFilm, index) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "article-film-link";
-      button.dataset.detail = relatedFilm.id;
-      if (index === 0) button.id = "articleFilmLink";
-      button.setAttribute("aria-label", `${relatedFilm.title} 작품 보기 · ${relatedFilm.genre} · ${relatedFilm.minutes}분`);
-      button.innerHTML = `<span class="article-step"><span class="article-film-number scene-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>${theme?.sequence[index] || "작품 살펴보기"}</span><img src="${scenePath(relatedFilm)}" alt="" width="240" height="180" loading="lazy" style="object-position:${relatedFilm.sequencePosition || relatedFilm.detailPosition || relatedFilm.posterPosition || "center"}"><span class="article-film-title">${relatedFilm.title}</span><span class="article-film-meta">${relatedFilm.genre} · ${relatedFilm.minutes}분</span><span class="article-film-note">${theme?.filmNotes[relatedFilm.id] || "작품 보기"}</span>`;
-      return button;
-    }));
+    renderScenePairs(relatedFilms, theme);
     openDialog($("articleDialog"), trigger, $("articleTitle"));
   }
   function focusNote() {
@@ -2139,10 +2175,16 @@
       !event.target.closest("#catalogOptions")) closeCatalogOptions();
   });
   function syncHomeOptions(count) {
-    const mood = document.querySelector(`[data-home-mood="${state.homeMood}"]`).textContent;
-    const duration = $("homeDuration").selectedOptions[0].textContent;
-    $("homeSelection").textContent = `${state.homeMood === "all" ? "전체 분위기" : mood} · ${duration}`;
-    $("homeOptionsActive").hidden = state.homeMood === "all" && state.homeDuration === "all";
+    const selected = [];
+    if (state.homeMood !== "all") {
+      selected.push(document.querySelector(`[data-home-mood="${state.homeMood}"]`).textContent);
+    }
+    if (state.homeDuration !== "all") {
+      selected.push($("homeDuration").selectedOptions[0].textContent);
+    }
+    $("homeSelection").textContent = selected.join(" · ");
+    $("homeSelection").hidden = selected.length === 0;
+    $("homeOptionsActive").hidden = selected.length === 0;
     $("homeOptionsDone").firstChild.textContent = count ? `${count}편 보기` : "선택 완료";
     document.querySelectorAll('[name="homeDurationChoice"]').forEach(input => {
       input.checked = input.value === state.homeDuration;
