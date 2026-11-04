@@ -140,7 +140,13 @@ export default function ApplicationPanel({ application, creating, standalone = f
       }}
     >
       {!standalone && <div className="company-panel-head">
-        <div><span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span><h2 id="company-panel-title">{creating ? '지원할 회사 등록' : application.company_name}</h2></div>
+        <div>
+          <span className="panel-caption">{creating ? '새 지원 정보' : '지원 정보'}</span>
+          <h2 id="company-panel-title" className={creating ? undefined : 'company-record-title'}>
+            {!creating && <CompanyMark name={application.company_name} />}
+            <span>{creating ? '지원할 회사 등록' : application.company_name}</span>
+          </h2>
+        </div>
         <IconButton onClick={close} disabled={busy || summaryBusy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>}
       {!editing ? <>
@@ -150,7 +156,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
           {restored && <Alert severity="info">저장하지 않은 입력을 복원했어요.</Alert>}
-          {!creating && <div className="company-panel-identity"><CompanyMark name={application.company_name} /><span>{application.position || '직무 미입력'}</span>{application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" size="small" endIcon={<OpenInNew fontSize="small" />}>채용 공고</Button>}</div>}
+          {!creating && <div className="company-panel-identity"><span>{application.position || '직무 미입력'}</span>{application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" size="small" endIcon={<OpenInNew fontSize="small" />}>채용 공고</Button>}</div>}
           {creating ? <>
             {field('company_name', '회사 이름', { required: true, inputRef: companyInput, autoFocus: true, placeholder: '회사 이름' })}
             {field('position', '지원 직무', { placeholder: '예: UX/UI 디자이너' })}

@@ -9,7 +9,7 @@ import PreparationItem from '../ui/PreparationItem';
 import useChecklist from '../../hooks/useChecklist';
 import useInterviewNotes from '../../hooks/useInterviewNotes';
 import { useToday } from '../../hooks/useToday';
-import { CompanyMark, LoadState } from '../ui/PageUI';
+import { LoadState } from '../ui/PageUI';
 import StatusChip from '../ui/StatusChip';
 import { shortDate, deadlineLabel } from '../../utils/dates';
 import { isValidApplicationUrl } from '../../utils/applicationPayload';
@@ -29,7 +29,7 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
   const pending = ['관심', '지원 예정'].includes(application.status);
   const stage = BOARD_COLUMNS.find(column => column.id === boardColumn(application.status));
   return <div className="company-summary" style={{ '--summary-ink': stage?.color || '#687783', '--summary-tint': stage?.tint || '#EDF1F4' }}>
-    <div className="summary-identity"><CompanyMark name={application.company_name} /><div><p>{application.position || '직무 미입력'}</p><small>{[application.location, application.company_size].filter(Boolean).join(' · ')}</small></div>{statusControl || <StatusChip status={application.status} />}</div>
+    <div className="summary-identity"><div><p>{application.position || '직무 미입력'}</p><small>{[application.location, application.company_size].filter(Boolean).join(' · ')}</small></div>{statusControl || <StatusChip status={application.status} />}</div>
     <section className="summary-schedule" aria-label="지원 일정">
       <h3 className="summary-schedule-heading">지원 일정 {pending && application.deadline && <span className="deadline-badge">{deadlineLabel(application.deadline, today)}</span>}</h3>
       <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <SummaryDate value={application.deadline} /> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '지원 전' : '미등록'}</dd></div></dl>

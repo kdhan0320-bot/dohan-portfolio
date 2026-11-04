@@ -85,7 +85,7 @@
 .workspace-diary .job-tile { padding: 16px; border-radius: 3px 8px 3px 3px; }
 .workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
 /* Follow one company's index from the board to its preparation sheet and detail. */
-:is(.workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .company-summary .summary-identity) .company-mark {
+:is(.workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .company-record-title) .company-mark {
   display: inline-grid;
   flex: 0 0 var(--index-width, 32px);
   width: var(--index-width, 32px);
@@ -180,6 +180,11 @@
 /* Retain dialog scrolling, validation and fixed action areas. */
 .MuiDialog-paper.company-panel, .company-summary-dialog .MuiDialog-paper, .record-editor-dialog .MuiDialog-paper { border: 1px solid #d6d3dd; }
 .company-panel .company-panel-head, .company-summary-dialog .MuiDialogTitle-root, .record-editor-dialog .MuiDialogTitle-root { background: #f6f7f6; }
+.company-record-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.company-record-title > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.company-summary-dialog .MuiDialogTitle-root > div { min-width: 0; }
+.company-summary-dialog .company-record-title { margin: 0; font: inherit; }
+.company-panel-head > button, .company-summary-dialog .MuiDialogTitle-root > button { flex-shrink: 0; }
 .company-summary .summary-identity { border-left: 0; }
 
 @media (min-width: 1000px) and (max-width: 1399px) {

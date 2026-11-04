@@ -137,6 +137,19 @@ body:has(.workspace-diary) { min-width: 0; }
   .diary-common .MuiButton-root { margin-top: 8px; padding-inline: 0; }
 }
 
+/* Wide sheets have room for both indexes beside the company list. Moving
+   the totals inward leaves the record action attached to the company title. */
+@media (min-width: 1600px) {
+  .diary-workday {
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, .7fr) minmax(0, .8fr);
+    grid-template-rows: auto;
+    grid-template-areas: "records totals common";
+    column-gap: 32px;
+  }
+  .diary-workday .diary-common { padding-top: 0; }
+  .diary-common h2 { min-height: 30px; align-items: center; padding: 0; border: 0; }
+}
+
 @media (min-width: 1000px) and (max-height: 760px) {
   .workspace-diary { --diary-title-row: 44px; --diary-heading-height: 72px; --diary-heading-top: 8px; --diary-heading-bottom: 12px; }
   .workspace-with-topnav.workspace-diary { --diary-inset: 16px; }

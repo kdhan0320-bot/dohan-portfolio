@@ -5,6 +5,7 @@ import Close from '@mui/icons-material/Close';
 import SiteHeader from '../components/layout/SiteHeader';
 import SiteFooter from '../components/layout/SiteFooter';
 import ProductPreview from '../components/ui/ProductPreview';
+import { CompanyMark } from '../components/ui/PageUI';
 import DiaryBookmark from '../components/ui/DiaryBookmark';
 import { useAuth } from '../context/AuthContext';
 import { getAuthErrorMessage } from '../utils/authErrors';
@@ -52,7 +53,16 @@ export default function WelcomePage() {
     </main>
     </div>
     <Dialog open={Boolean(preview)} onClose={() => setPreviewId(null)} aria-labelledby="preview-company-title" fullWidth maxWidth="sm" className="company-summary-dialog">
-      <DialogTitle id="preview-company-title"><span><small className="summary-preview-label">가상 샘플 기록</small>{preview?.company_name}</span><IconButton aria-label="회사 기록 닫기" onClick={() => setPreviewId(null)}><Close /></IconButton></DialogTitle>
+      <DialogTitle component="div" id="preview-company-header">
+        <div>
+          <small className="summary-preview-label">가상 샘플 기록</small>
+          <h2 id="preview-company-title" className="company-record-title">
+            {preview && <CompanyMark name={preview.company_name} />}
+            <span>{preview?.company_name}</span>
+          </h2>
+        </div>
+        <IconButton aria-label="회사 기록 닫기" onClick={() => setPreviewId(null)}><Close /></IconButton>
+      </DialogTitle>
       <DialogContent>{preview && <CompanySummary application={preview} tasks={DEMO_CHECKLISTS} notes={DEMO_INTERVIEW_NOTES} today={DEMO_TODAY} />}</DialogContent>
       <DialogActions><Button onClick={() => setPreviewId(null)}>닫기</Button></DialogActions>
     </Dialog>
