@@ -358,12 +358,6 @@ export default function InterviewPage() {
       </ol>
     </nav>
     <section className="practice-desk" aria-label="면접 질문 연습">
-      <div className="practice-navigation">
-      <div className="practice-pagination">
-        <span aria-live="polite">질문 <strong>{activeIndex + 1}</strong> / {filtered.length}</span>
-
-      </div>
-      </div>
       {open && editingId ? <form className="practice-card inline-answer-editor" onSubmit={submit} noValidate aria-label="면접 기록 수정" onFocusCapture={event => {
         if (event.target.closest('.inline-editor-actions')) return;
         const editor = event.currentTarget;
@@ -389,6 +383,9 @@ export default function InterviewPage() {
               <span>{companyLabel(activeNote)}</span>
             </span>
             {activeNote.related_project && <span>{activeNote.related_project}</span>}
+          </span>
+          <span className="practice-folio" aria-live="polite" aria-atomic="true">
+            질문 <strong>{String(activeIndex + 1).padStart(2, '0')}</strong> / {String(filtered.length).padStart(2, '0')}
           </span>
           <IconButton aria-label="질문 관리" aria-haspopup="menu" aria-expanded={Boolean(menuAnchor)} onClick={event => setMenuAnchor(event.currentTarget)}><MoreHoriz /></IconButton>
         </div>

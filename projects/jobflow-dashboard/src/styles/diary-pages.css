@@ -49,7 +49,10 @@
 .diary-welcome .preview-records > .preview-record { grid-row: 1; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: auto; gap: 32px; padding: 32px; min-height: 300px; border: 1px solid #cbd4d7; border-top: 3px solid var(--record-edge); border-radius: var(--record-corners); background: #fff; }
 .diary-welcome .preview-record-summary { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-width: 0; }
 .diary-welcome .preview-record-heading { padding: 0; }
-.diary-welcome .preview-company-identity { margin: 0; padding: 0; border: 0; }
+.diary-welcome .preview-company-identity {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px;
+  min-width: 0; margin: 0; padding: 0; border: 0;
+}
 .diary-welcome .preview-company-identity::before, .diary-welcome .preview-company-identity::after { content: none; }
 .diary-welcome .preview-record-heading h3 { font-size: 26px; }
 .diary-welcome .preview-record-body { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; margin: 0; padding: 0 0 0 32px; border: 0; border-left: 1px solid var(--line); min-width: 0; }
@@ -71,9 +74,14 @@
   background: linear-gradient(45deg, transparent 48%, #fff 50%); pointer-events: none;
 }
 
-/* The opening spread fits its single sample record; work pages retain their longer sheets. */
+/* Keep the binding anchored between pages. The sheet can grow below it for long records. */
 @media (min-width: 1600px) and (min-height: 900px) {
-  .workspace-with-topnav.workspace-diary.diary-welcome { --diary-max-height: 900px; }
+  .workspace-with-topnav.workspace-diary { --diary-max-height: 900px; }
+  .workspace-diary .board-view-tools {
+    display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 22px;
+  }
+  .workspace-diary .board-view-tools :is(.applications-view-nav, .board-toolbar) { margin: 0; }
+  .workspace-diary .board-view-tools .board-search { width: clamp(232px, 18vw, 340px); }
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: clamp(64px, 12vh, 172px); }
   .diary-welcome .site-footer .site-footer-inner {
     width: min(1100px, calc(100% - 104px)); margin-inline: auto;
@@ -102,7 +110,7 @@
 .workspace-diary .job-tile { padding: 16px; border-radius: 3px 8px 3px 3px; }
 .workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
 /* Follow one company's index from the board to its preparation sheet and detail. */
-:is(.workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .workspace-diary .practice-record-company, .company-record-title) .company-mark {
+:is(.diary-welcome .preview-company-identity, .workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .workspace-diary .practice-record-company, .company-record-title) .company-mark {
   display: inline-grid;
   flex: 0 0 var(--index-width, 32px);
   width: var(--index-width, 32px);
@@ -174,7 +182,11 @@
 .workspace-diary .interview-page .interview-workspace { grid-template-columns: minmax(220px, .32fr) minmax(0, .68fr); gap: 28px; }
 .workspace-diary .interview-page .question-queue { padding: 12px; background: #f6f7f6; border-radius: var(--record-corners); }
 .workspace-diary .interview-page .question-index { padding: 14px 12px; }
-.workspace-diary .interview-page .practice-navigation { background: var(--record-lilac); }
+.practice-folio {
+  flex: 0 0 auto; align-self: center; white-space: nowrap;
+  color: var(--muted); font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.practice-folio strong { color: var(--ink-action); font-weight: 600; }
 .workspace-diary .practice-card-meta .practice-company-label { align-items: center; }
 .workspace-diary .practice-record-company {
   display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-width: 0;
@@ -287,7 +299,7 @@
   .workspace-diary .workspace-main .interview-page .practice-card.inline-answer-editor { padding: 16px 0 0; }
   .workspace-diary .workspace-main .interview-page .inline-answer-editor > .field-stack { scrollbar-width: thin; }
   .workspace-diary .inline-answer-editor .interview-answer-field .MuiInputBase-root { padding-inline: 12px; }
-  .workspace-diary .workspace-main .interview-page .practice-navigation { display: none; }
+  .practice-folio { display: none; }
   .workspace-diary .interview-filter-bar { flex-wrap: wrap; }
   .workspace-diary .interview-filter-summary { flex-basis: 100%; }
   .workspace-diary .interview-filter-bar .mobile-question-select { flex: 1; max-width: 14rem; min-width: 0; }
@@ -307,6 +319,16 @@
   .diary-welcome .preview-records { grid-template-rows: auto auto; }
   .diary-welcome .preview-records > .preview-record { grid-row: 1 / span 2; grid-template-columns: minmax(0, 1fr); grid-template-rows: subgrid; padding: 20px; min-height: 0; gap: 20px; }
   .diary-welcome .preview-record-summary { gap: 18px; }
+  .diary-welcome .preview-company-identity { gap: 8px; }
+  .diary-welcome .preview-company-identity .company-mark { --index-width: 26px; height: 30px; }
+  .diary-welcome .preview-company-copy {
+    display: grid; grid-template-columns: minmax(0, auto) auto; align-items: center;
+    justify-content: start; gap: 5px 8px;
+  }
+  .diary-welcome .preview-company-title { display: contents; }
+  .diary-welcome .preview-company-title h3 { grid-column: 1 / -1; }
+  .diary-welcome .preview-company-copy p { grid-row: 2; grid-column: 1; margin: 0; }
+  .diary-welcome .preview-company-title .record-stage { grid-row: 2; grid-column: 2; }
   .diary-welcome .preview-record-heading h3 { font-size: 21px; }
   .diary-welcome .preview-record-body { gap: 12px; margin: 0; padding: 18px 0 0; border-left: 0; border-top: 1px solid var(--line); }
   .diary-welcome .preview-date-block { min-height: 70px; padding: 12px 16px; }

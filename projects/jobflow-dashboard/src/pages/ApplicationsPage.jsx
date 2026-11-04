@@ -94,11 +94,13 @@ export default function ApplicationsPage() {
     <PageHeading art="folder" title="지원 관리" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
       <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })} aria-haspopup="dialog"><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
-    {!mobile && <ApplicationsNav />}
-    <div className="board-toolbar">
-      <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" hideLabel placeholder="회사·직무 검색" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
-      <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
-      {mobile && <Link className="board-calendar-link" to="/calendar" aria-label="지원 마감 달력">마감 달력</Link>}
+    <div className="board-view-tools">
+      {!mobile && <ApplicationsNav />}
+      <div className="board-toolbar">
+        <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" hideLabel placeholder="회사·직무 검색" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
+        <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
+        {mobile && <Link className="board-calendar-link" to="/calendar" aria-label="지원 마감 달력">마감 달력</Link>}
+      </div>
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
