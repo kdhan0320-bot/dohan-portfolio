@@ -38,7 +38,7 @@ export default function WelcomePage() {
       <section className="galpi-intro" aria-labelledby="welcome-title">
         <div className="galpi-intro-heading">
           <span className="galpi-eyebrow">나의 입사지원 다이어리</span>
-          <h1 id="welcome-title">입사지원 현황과 <em>마감일을 한눈에.</em></h1>
+          <h1 id="welcome-title">입사지원 현황과 <em><span>마감일</span>을 한눈에.</em></h1>
           <p>회사마다 흩어진 마감과 준비를 한곳에.</p>
         </div>
         <div className="galpi-intro-action">

@@ -28,9 +28,11 @@
 .diary-welcome #welcome-content > .diary-page-tab { top: 0; right: 12px; }
 .diary-welcome .galpi-intro { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 236px; align-items: end; gap: 32px; width: 100%; max-width: 1100px; margin: 0 auto 36px; padding: 12px 0 36px; border-bottom: 2px solid var(--ink-action); text-align: left; }
 .diary-welcome .galpi-intro-heading { margin: 0; max-width: none; text-align: left; }
-.diary-welcome .galpi-eyebrow { display: block; width: auto; padding: 0; margin: 0 0 16px; color: var(--ink-action); font-size: 14px; letter-spacing: .02em; text-align: left; background: transparent; }
+.diary-welcome .galpi-eyebrow { display: flex; align-items: center; justify-content: flex-start; gap: 8px; width: auto; padding: 0; margin: 0 0 16px; color: var(--ink-action); font-size: 14px; letter-spacing: .02em; text-align: left; background: transparent; }
+.diary-welcome .galpi-eyebrow::before { content: ''; width: 8px; height: 15px; background: var(--ink-action); }
 .diary-welcome .galpi-intro h1 { margin: 0; font-size: clamp(30px, 2.1vw, 42px); line-height: 1.4; letter-spacing: -.04em; }
 .diary-welcome .galpi-intro h1 em { display: inline; color: var(--ink); }
+.diary-welcome .galpi-intro h1 em > span { color: var(--record-blue); }
 .diary-welcome .galpi-intro-heading > p { margin: 16px 0 0; font-size: 16px; }
 .diary-welcome .galpi-intro-action { display: flex; flex-direction: column; align-items: stretch; gap: 12px; margin: 0; text-align: center; }
 .diary-welcome .galpi-intro-action > .MuiButton-root { min-width: 236px; width: auto; min-height: 52px; padding: 12px 24px; font-size: 16px; }
@@ -39,15 +41,25 @@
 .diary-welcome .galpi-product-stage { width: 100%; max-width: 1100px; margin: 0 auto; }
 .diary-welcome .application-preview { width: 100%; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .diary-welcome .application-preview::before, .diary-welcome .application-preview::after { content: none; }
-.diary-welcome .preview-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 0 20px; background: transparent; border: 0; }
+.diary-welcome .preview-toolbar { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 0; background: transparent; border: 0; }
 .diary-welcome .preview-heading, .diary-welcome .preview-toolbar h2 { margin: 0; }
-.diary-welcome .preview-toolbar h2 { font-size: 20px; font-weight: 600; }
-.diary-welcome .preview-stage-tabs { width: auto; grid-template-columns: repeat(4, minmax(88px, 1fr)); margin: 0; }
+.diary-welcome .preview-toolbar h2 { padding-bottom: 12px; font-size: 20px; font-weight: 600; }
+.diary-welcome .preview-stage-tabs {
+  width: auto; grid-template-columns: repeat(4, minmax(88px, 1fr)); gap: 4px;
+  margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent;
+}
+.diary-welcome .preview-stage-tabs > button {
+  border: 1px solid var(--line); border-bottom: 0; border-radius: 4px 10px 0 0;
+  background: #f7f6f8;
+}
+.diary-welcome .preview-stage-tabs > button[aria-selected='true'] { background: var(--ink-action); border-color: var(--ink-action); }
+.diary-welcome .preview-stage-tabs > button:focus-visible { outline-offset: -4px; }
+.diary-welcome .preview-stage-tabs > button[aria-selected='true']:focus-visible { outline-color: white; }
 .diary-welcome .preview-records { grid-template-rows: auto; margin: 0; border: 0; border-radius: 0; background: transparent; }
 .diary-welcome .preview-records::before, .diary-welcome .preview-records::after { content: none; }
 /* Overlaid panels retain the tallest record, so switching stages does not move the page. */
 .diary-welcome .preview-records > .preview-record { grid-row: 1; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); grid-template-rows: auto; gap: 32px; padding: 32px; min-height: 300px; border: 1px solid #cbd4d7; border-top: 3px solid var(--record-edge); border-radius: var(--record-corners); background: #fff; }
-.diary-welcome .preview-record-summary { display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-width: 0; }
+.diary-welcome .preview-record-summary { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; min-width: 0; }
 .diary-welcome .preview-record-heading { padding: 0; }
 .diary-welcome .preview-company-identity {
   display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: 10px;
@@ -56,10 +68,22 @@
 .diary-welcome .preview-company-identity::before, .diary-welcome .preview-company-identity::after { content: none; }
 .diary-welcome .preview-record-heading h3 { font-size: 26px; }
 .diary-welcome .preview-record-body { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; margin: 0; padding: 0 0 0 32px; border: 0; border-left: 1px solid var(--line); min-width: 0; }
-.diary-welcome .preview-date-block { display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 16px; min-height: 90px; padding: 18px 20px; background: var(--record-wash); border-radius: var(--record-corners); box-shadow: none; }
-.diary-welcome .preview-date-label { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 8px; margin: 0; }
+.diary-welcome .preview-date-block {
+  display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.3fr); align-items: stretch;
+  width: min(100%, 288px); min-height: 76px; padding: 0; gap: 0; background: var(--record-wash);
+  border-radius: var(--record-corners); box-shadow: none;
+}
+.diary-welcome .preview-date-label {
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  gap: 4px; margin: 0; padding: 8px clamp(8px, 1vw, 16px); border-right: 1px dashed var(--record-edge);
+}
 .diary-welcome .preview-date-label .deadline-badge { margin: 0; }
-.diary-welcome .preview-date-block .record-date { margin: 0; font-size: 40px; white-space: nowrap; }
+.diary-welcome .preview-date-value {
+  display: flex; align-items: baseline; justify-content: center; align-self: center;
+  gap: 5px; white-space: nowrap; color: var(--record-blue);
+}
+.diary-welcome .preview-date-value small { font-size: 13px; }
+.diary-welcome .preview-date-block .record-date { margin: 0; font-size: 38px; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .diary-welcome .preview-preparation { justify-content: flex-start; }
 .diary-welcome .preview-preparation h4 { font-size: 15px; color: var(--mint-ink); margin-bottom: 12px; }
 .diary-welcome .preview-preparation h4 span { color: var(--mint-ink); padding: 1px 8px; border-radius: 4px; background: var(--mint); }
@@ -94,7 +118,7 @@
     gap: 28px; min-height: 0; padding: 24px 28px;
   }
   .diary-welcome .preview-record-summary { justify-content: flex-start; gap: 18px; }
-  .diary-welcome .preview-date-block { min-height: 72px; padding-block: 10px; }
+  .diary-welcome .preview-date-block { min-height: 72px; }
   .diary-welcome .preview-record-body { gap: 8px; padding-left: 28px; }
   .diary-welcome .preview-preparation h4 { margin-bottom: 6px; }
   .diary-welcome .preview-preparation ul { min-height: 0; grid-template-rows: repeat(2, minmax(36px, auto)); }
@@ -125,6 +149,10 @@
 }
 .workspace-diary :is(.job-tile, .grouped-checklist .company-record) {
   box-shadow: 2px 2px 0 -1px #fff, 2px 2px 0 var(--line);
+}
+.diary-welcome .preview-company-identity .company-mark {
+  --index-width: 42px; height: 46px; background: var(--record-blue); color: #fff;
+  font-size: 20px; font-weight: 550;
 }
 .workspace-diary .job-tile .job-company { font-size: 16px; }
 .workspace-diary .job-tile .job-tile-bottom { width: 100%; margin: 0; padding: 12px 0 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
@@ -314,13 +342,14 @@
   .workspace-diary .settings-sample-grid .settings-sample-actions { gap: 24px; }
   .workspace-diary .settings-sample-actions .settings-export { padding: 24px 0 0; }
   .workspace-diary .settings-sample-actions .MuiButton-root { margin-top: 16px; }
-  .diary-welcome .preview-toolbar { display: grid; grid-template-columns: minmax(0, 1fr); padding-bottom: 18px; }
+  .diary-welcome .preview-toolbar { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .diary-welcome .preview-toolbar h2 { padding-bottom: 0; }
   .diary-welcome .preview-stage-tabs { width: 100%; grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .diary-welcome .preview-records { grid-template-rows: auto auto; }
   .diary-welcome .preview-records > .preview-record { grid-row: 1 / span 2; grid-template-columns: minmax(0, 1fr); grid-template-rows: subgrid; padding: 20px; min-height: 0; gap: 20px; }
   .diary-welcome .preview-record-summary { gap: 18px; }
   .diary-welcome .preview-company-identity { gap: 8px; }
-  .diary-welcome .preview-company-identity .company-mark { --index-width: 26px; height: 30px; }
+  .diary-welcome .preview-company-identity .company-mark { --index-width: 30px; height: 34px; font-size: 16px; }
   .diary-welcome .preview-company-copy {
     display: grid; grid-template-columns: minmax(0, auto) auto; align-items: center;
     justify-content: start; gap: 5px 8px;
@@ -331,7 +360,7 @@
   .diary-welcome .preview-company-title .record-stage { grid-row: 2; grid-column: 2; }
   .diary-welcome .preview-record-heading h3 { font-size: 21px; }
   .diary-welcome .preview-record-body { gap: 12px; margin: 0; padding: 18px 0 0; border-left: 0; border-top: 1px solid var(--line); }
-  .diary-welcome .preview-date-block { min-height: 70px; padding: 12px 16px; }
+  .diary-welcome .preview-date-block { min-height: 64px; }
   .diary-welcome .preview-date-block .record-date { font-size: 32px; }
   .diary-welcome .preview-preparation ul { min-height: 84px; grid-template-rows: repeat(2, minmax(42px, auto)); }
   .diary-welcome .preview-preparation li { font-size: 14px; padding-block: 8px; }

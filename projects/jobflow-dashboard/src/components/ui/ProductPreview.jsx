@@ -6,6 +6,8 @@ import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants'
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel, interviewDayLabel } from '../../utils/dates';
 
+const weekday = new Intl.DateTimeFormat('ko-KR', { weekday: 'long', timeZone: 'UTC' });
+
 // This preview uses the same fictional records as the editable sample.
 export default function ProductPreview({ onOpen }) {
   const [stageIndex, setStageIndex] = useState(0);
@@ -52,7 +54,10 @@ export default function ProductPreview({ onOpen }) {
           </div>
           <div className="preview-date-block">
             <div className="preview-date-label"><span>{before ? '지원 마감' : interview ? '면접일' : '지원한 날짜'}</span>{date && (before || interview) && <b className="deadline-badge">{interview ? interviewDayLabel(date, DEMO_TODAY) : deadlineLabel(date, DEMO_TODAY)}</b>}</div>
-            <strong className="record-date">{date ? <><span className="record-date-month">{month}.</span>{day}</> : '미정'}</strong>
+            {date ? <time className="preview-date-value" dateTime={date}>
+              <strong className="record-date"><span className="record-date-month">{month}.</span>{day}</strong>
+              <small>{weekday.format(new Date(date))}</small>
+            </time> : <strong className="preview-date-value">미정</strong>}
           </div>
         </div>
         <div className="preview-record-body">
