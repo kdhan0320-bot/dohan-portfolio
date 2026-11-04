@@ -1164,7 +1164,7 @@ main {
   font-size:12px;
 }
 
-.request-title-cell .mono>span {
+.request-title-cell .mono>.request-department {
   font-family:inherit;
   letter-spacing:0;
   color:#5f6979;
@@ -4041,8 +4041,6 @@ main { padding-top: 28px; }
 .request-document { margin-bottom: 24px; border: 1px solid #cbd7e6; border-radius: 8px; background: #fff; overflow: hidden; }
 .document-heading { position: relative; padding: 24px 28px; border-left: 4px solid var(--blue); }
 .document-register { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 18px; }
-.document-number { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 550; color: #375b90; font-variant-numeric: tabular-nums; letter-spacing: .035em; }
-.document-number::before { content: ""; width: 8px; height: 8px; border: 1px solid #6d8eb9; border-radius: 2px; background: #edf2f8; }
 .document-round { font-size: 13px; padding-left: 14px; border-left: 1px solid #cbd7e6; color: #596675; }
 .document-register>.badge { margin-left: auto; }
 .document-heading h1 { font-size: 28px; font-weight: 600; line-height: 1.4; letter-spacing: -.04em; overflow-wrap: anywhere; }
@@ -4076,7 +4074,6 @@ main { padding-top: 28px; }
   .document-heading { padding: 18px 14px; }
   .document-heading h1 { font-size: 23px; }
   .document-register { gap: 8px; }
-  .document-number { font-size: 13px; gap: 7px; }
   .document-round { font-size: 12px; padding-left: 8px; }
   .approval-line small { min-height: 36px; }
 }

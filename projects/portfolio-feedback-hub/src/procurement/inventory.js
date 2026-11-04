@@ -54,7 +54,7 @@ export function incoming(state, materialId) {
 }
 export function materialHistory(state, materialId) {
   return [
-    ...state.receipts.flatMap(r => r.lines.filter(l => l.materialId === materialId).map(l => ({ id: r.id, date: r.date, at: r.at, type: '입고', quantity: l.quantity, party: r.vendorName, requestId: r.requestId, note: r.note }))),
+    ...state.receipts.flatMap(r => r.lines.filter(l => l.materialId === materialId).map(l => ({ id: r.id, lineIndex: l.index, date: r.date, at: r.at, type: '입고', quantity: l.quantity, party: r.vendorName, requestId: r.requestId, note: r.note }))),
     ...state.issues.filter(i => i.materialId === materialId).map(i => ({ ...i, type: '지급', party: `${i.department} · ${i.recipient}`, quantity: -i.quantity })),
   ].sort((a, b) => b.date.localeCompare(a.date) || (b.at || '').localeCompare(a.at || '') || b.id.localeCompare(a.id));
 }

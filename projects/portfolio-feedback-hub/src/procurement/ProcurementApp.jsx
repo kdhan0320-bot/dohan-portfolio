@@ -4,11 +4,11 @@ import { WorkspaceProvider, useWorkspace } from './Workspace';
 import { ROLES, STATUS, amount, canEdit, canReview, day, eventRevisionLabel, money, nextAction, owner, timestamp } from './model';
 import RequestEditor from './RequestEditor';
 import RecordPreview from './RecordPreview';
-import { savedListPosition } from './listNavigation';
+import { listOrigin, savedListPosition } from './listNavigation';
 import Icon from './Icons';
 import ApprovalLine from './ApprovalLine';
 import RevisionChanges from './RevisionChanges';
-import { PageHead, Empty, Modal, WorkflowStatus, ListLink, ListBackLink, LinkLabel } from './UI';
+import { PageHead, Empty, Modal, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail } from './InventoryPages';
 import { duplicateRequests, workflowStatus } from './inventory';
 
@@ -35,8 +35,16 @@ function Shell() {
     const restore = location.state?.restoreList || (navigationType === 'POP' && savedListPosition(location.key));
     if (restore?.path === location.pathname + location.search) {
       const frame = requestAnimationFrame(() => {
-        (document.getElementById(restore.focusId) || heading)?.focus({ preventScroll: true });
-        window.scrollTo({ top: restore.y || 0, behavior: 'instant' });
+        const previous = document.getElementById(restore.focusId);
+        const finishedTask = !previous && restore.path === '/' && restore.focusId?.startsWith('home-task-');
+        if (finishedTask) {
+          const next = document.querySelector('.erp-task-list a') || document.getElementById('home-tasks-title');
+          next?.focus({ preventScroll: true });
+          next?.scrollIntoView({ block: 'nearest', behavior: 'instant' });
+        } else {
+          (previous || heading)?.focus({ preventScroll: true });
+          window.scrollTo({ top: restore.y || 0, behavior: 'instant' });
+        }
       });
       return () => cancelAnimationFrame(frame);
     }
@@ -85,7 +93,7 @@ function RequestList({ mode = 'requests' }) {
 
     <section className="panel requests-panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="상태 필터">{config.tabs.map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => setParam('status', key)}>{label}<span>{base.filter(r => matches(r, key)).length}</span></button>)}</div><label className="list-search"><Icon name="search" size={18}/><input aria-label="현재 목록 검색" placeholder="품의명·자재·번호 검색" value={query} onChange={e => setParam('q', e.target.value)}/>{query && <button className="icon-button" aria-label="검색어 지우기" onClick={() => setParam('q', '')}><Icon name="close" size={16}/></button>}</label></div>
     {query && <div className="list-caption">검색 결과 <strong>{shown.length}</strong>건</div>}
-    <div className="request-table purchase-list"><div className="table-heading" aria-hidden="true"><span>구매 품의</span><span>합계 금액 <small>부가세 포함</small></span><span>필요일</span><span>진행 상태</span><span>현재 담당</span></div>{shown.map(r => <ListLink id={`request-${r.id}`} className="request-table-row" key={r.id} to={`/requests/${r.id}`} state={{ from: `${mode === 'requests' ? '/requests' : `/${mode}`}${params.size ? `?${params}` : ''}`, fromLabel: config.title }}><div className="request-title-cell"><span className="mono">{r.id} <span className="request-department">{r.department}</span></span><h2><LinkLabel>{r.title || '제목 없는 품의'}</LinkLabel></h2><small>{r.items.map(i => i.name || '미입력 품목').join(', ')}</small></div><span className="table-amount"><small>합계 · 부가세 포함 </small>{money(amount(r))}</span><span className="table-date"><small>필요일 </small>{r.needBy ? day(r.needBy) : '미정'}</span><span className="table-status"><WorkflowStatus data={data} request={r}/></span><span className="table-owner">{r.status === 'rejected' || workflowStatus(data, r).owner === '입고 확인 완료' ? '—' : workflowStatus(data, r).owner}</span></ListLink>)}</div>
+    <div className="request-table purchase-list"><div className="table-heading" aria-hidden="true"><span>구매 품의</span><span>합계 금액 <small>부가세 포함</small></span><span>필요일</span><span>진행 상태</span><span>현재 담당</span></div>{shown.map(r => <ListLink id={`request-${r.id}`} className="request-table-row" key={r.id} to={`/requests/${r.id}`} state={{ from: `${mode === 'requests' ? '/requests' : `/${mode}`}${params.size ? `?${params}` : ''}`, fromLabel: config.title }}><div className="request-title-cell"><span className="mono"><DocumentNumber value={r.id}/> <span className="request-department">{r.department}</span></span><h2><LinkLabel>{r.title || '제목 없는 품의'}</LinkLabel></h2><small>{r.items.map(i => i.name || '미입력 품목').join(', ')}</small></div><span className="table-amount"><small>합계 · 부가세 포함 </small>{money(amount(r))}</span><span className="table-date"><small>필요일 </small>{r.needBy ? day(r.needBy) : '미정'}</span><span className="table-status"><WorkflowStatus data={data} request={r}/></span><span className="table-owner">{r.status === 'rejected' || workflowStatus(data, r).owner === '입고 확인 완료' ? '—' : workflowStatus(data, r).owner}</span></ListLink>)}</div>
     {!shown.length && <Empty title={query ? '검색 결과가 없습니다.' : status === 'action' ? '지금 처리할 품의가 없습니다.' : '해당 상태의 품의가 없습니다.'}><p>검색어 또는 상태 필터를 바꿔 보세요.</p><button className="button secondary" onClick={() => setParams({ status: 'all' })}>전체 품의 보기</button></Empty>}</section></>;
 }
 
@@ -120,6 +128,10 @@ function RequestDetail() {
   if (!request) return <><PageHead eyebrow="REQUEST NOT FOUND" title="품의를 찾을 수 없습니다."/><Link className="button primary" to="/requests">구매·결재로</Link></>;
   const editable = canEdit(request, role), reviewable = canReview(request, role), approved = request.status === 'approved', ordered = request.status === 'ordered';
   const closed = ordered || request.status === 'rejected';
+  // The editor's immediate parent is now this detail. Keep the eventual home position.
+  const editorState = location.state?.listOrigin?.path === '/'
+    ? { ...location.state, listOrigin: listOrigin(location.state.listOrigin, '/') }
+    : location.state;
   const duplicates = duplicateRequests(data, request);
   const followingRole = Object.keys(ROLES).find(key => ROLES[key] === owner(request));
   const handoff = followingRole && followingRole !== role;
@@ -129,7 +141,7 @@ function RequestDetail() {
       const result = act(id, dialog, { reason, reference: reason });
       setDialog('');
       setNotice(dialog === 'approve' ? `${ROLES[role]} 승인 시연을 기록했습니다.` : dialog === 'order' ? '발주 시연 기록을 남겼습니다. 실제 메일은 보내지 않았습니다.' : dialog === 'revise' ? '보완을 요청했습니다. 구매 담당자가 수정 후 다시 제출할 수 있습니다.' : dialog === 'reject' ? '반려로 요청을 종료했습니다. 사유는 처리 이력에 남겼습니다.' : '처리 내용을 이력에 기록했습니다.');
-      if (dialog === 'amend') navigate(`/requests/${result.id}/edit`, { state: location.state });
+      if (dialog === 'amend') navigate(`/requests/${result.id}/edit`, { state: editorState });
       else if (dialog === 'approve' && role === 'director') focusNext();
       else focusNext();
     } catch (e) { setError(e.message); document.querySelector('dialog textarea')?.focus(); }
@@ -139,7 +151,7 @@ function RequestDetail() {
   return <><ListBackLink fallback={origin.path}><Icon name="back" size={17}/>{origin.label} 목록</ListBackLink>
     <header className="request-document">
       <div className="document-heading">
-        <div className="document-register"><span className="document-number">{request.id}</span><span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 품의서'}</span><WorkflowStatus data={data} request={request}/></div>
+        <div className="document-register"><DocumentNumber value={request.id}/><span className="document-round">{request.revision}차{['draft', 'revision'].includes(request.status) ? ' 작성 중' : ' 품의서'}</span><WorkflowStatus data={data} request={request}/></div>
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
       </div>
@@ -151,7 +163,7 @@ function RequestDetail() {
     {duplicates.length > 0 && !closed && <section className="duplicate-note"><Icon name="info"/><div><h3>같은 자재의 진행 중인 품의 {duplicates.length}건</h3><p>같은 자재코드의 품의입니다. 미입고 수량과 사용 목적을 확인하세요.</p>{duplicates.map(r => <button type="button" className="text-button duplicate-review" key={r.id} onClick={() => setComparison({ type: 'request', id: r.id })}>{r.id} · {r.title}</button>)}</div></section>}
     {request.source && <details className="panel source-details"><summary>입력 원문 확인</summary><pre>{request.source}</pre></details>}
     <section className={`panel next-panel${closed ? ' closed-panel' : ''}`}><div className="panel-head"><h2 ref={nextHeading} tabIndex="-1">{ordered ? '발주·입고' : closed ? STATUS[request.status].label : handoff ? `${owner(request)} ${approved ? '발주 대기' : ['draft', 'revision'].includes(request.status) ? '작성 대기' : '확인 대기'}` : reviewable ? '결재 처리' : approved ? '발주 준비' : '작성 이어가기'}</h2>{reviewable && <span className="current-demo-role">시연 역할 · {ROLES[role]}</span>}</div><div className="panel-body">{!handoff && !ordered && <p>{editable ? '내용을 확인한 뒤 결재를 요청하세요.' : reviewable ? '품목·금액·구매 사유를 확인한 뒤 결정하세요.' : approved ? '최종 승인본으로 발주일과 입고 예정일을 기록하세요.' : '이 요청은 종료되었습니다. 다시 구매하려면 새 품의를 작성하세요.'}</p>}
-      {editable && <Link className="button primary block" to={`/requests/${id}/edit`} state={location.state}>{nextAction(request, role)}</Link>}
+      {editable && <Link className="button primary block" to={`/requests/${id}/edit`} state={editorState}>{nextAction(request, role)}</Link>}
       {reviewable && <><button className="button primary block" onClick={() => open('approve')}><Icon name="check" size={18}/>승인하기</button><div className="paired-buttons"><button className="button secondary" onClick={() => open('revise')}>보완 요청</button><button className="button secondary" onClick={() => open('reject')}>반려</button></div></>}
       {approved && role === 'staff' && <><Link className="button primary block" to={`/orders/${id}`}>발주 준비</Link><button className="text-button amend-button" onClick={() => open('amend')}>품의 내용 변경·재결재</button></>}
       {request.status === 'rejected' && role === 'staff' && <Link className="button secondary" to="/requests/new">새 구매 품의 작성</Link>}

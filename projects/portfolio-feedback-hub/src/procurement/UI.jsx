@@ -3,14 +3,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icons';
 import { STATUS } from './model';
 import { workflowStatus, materialTotals, orderProgress, qty } from './inventory';
-import { listOrigin, rememberList } from './listNavigation';
+import { homeReturn, listOrigin, plainClick, rememberList } from './listNavigation';
 
 export function ListLink({ to, state, id, children, ...props }) {
   const location = useLocation(), navigate = useNavigate();
   const open = event => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!plainClick(event)) return;
     event.preventDefault();
-    const origin = { path: location.pathname + location.search, y: window.scrollY, focusId: id };
+    const origin = { path: location.pathname + location.search, key: location.key, target: to, y: window.scrollY, focusId: id };
     rememberList(location.key, origin);
     navigate(to, { state: { ...state, listOrigin: origin } });
   };
@@ -21,8 +21,23 @@ export function LinkLabel({ children }) {
   return <span className="link-label" data-label={children}><span>{children}</span></span>;
 }
 export function ListBackLink({ fallback, children }) {
-  const location = useLocation(), origin = listOrigin(location.state?.listOrigin, fallback);
+  const location = useLocation(), navigate = useNavigate();
+  const home = homeReturn(location, navigate);
+  if (home) return <Link className="back-link" {...home.linkProps}><Icon name="back" size={17}/>업무 현황으로</Link>;
+  const origin = listOrigin(location.state?.listOrigin, fallback);
   return <Link className="back-link" to={origin.path} state={{ restoreList: origin }}>{children}</Link>;
+}
+
+export function DocumentNumber({ value }) {
+  const prefix = value.split('-')[0];
+  if (prefix !== 'PR' && prefix !== 'PO') return <span>{value}</span>;
+  return (
+    <span className="ledger-number" data-series={prefix}>
+      <span className="sr-only">{value}</span>
+      <span className="ledger-series" aria-hidden="true">{prefix}</span>
+      <span aria-hidden="true">{value.slice(prefix.length)}</span>
+    </span>
+  );
 }
 
 export function Badge({ status }) { return <StateTag tone={STATUS[status].tone}>{STATUS[status].label}</StateTag>; }

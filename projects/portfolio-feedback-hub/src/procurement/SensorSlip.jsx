@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { StockLedger } from './UI';
+import { ListLink, StockLedger } from './UI';
 import { incoming, materialHistory, orderItems, qty } from './inventory';
 import { day } from './model';
 import './sensorSlip.css';
@@ -60,7 +59,7 @@ export default function SensorSlip({ data, materials }) {
               <span>{lastIssue.department} <span className="sensor-slip-reference">{lastIssue.id}</span></span>
             </p>
           ) : <p>아직 지급 기록이 없습니다.</p>}
-          <Link to={`/materials/${material.id}`} aria-label={`${material.name} 입출고 이력 보기`}>이력 보기</Link>
+          <ListLink id="home-sensor-history" to={`/materials/${material.id}`} aria-label={`${material.name} 입출고 이력 보기`}>이력 보기</ListLink>
         </div>
       </div>
     </section>
