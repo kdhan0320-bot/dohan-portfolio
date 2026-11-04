@@ -10,7 +10,7 @@ import TuneOutlined from '@mui/icons-material/TuneOutlined';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
-import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
+import { PageHeading, LoadState, Empty, ConfirmDelete, CompanyMark } from '../components/ui/PageUI';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import { observeTextareaLayout } from '../utils/textareaCaret';
 const INITIAL = {
@@ -89,6 +89,7 @@ export default function InterviewPage() {
   const filtered = scopedNotes.filter(note => topic === 'all' || (note.related_project?.trim() || 'none') === topic);
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
   const activeHasAnswer = Boolean(activeNote?.answer?.trim());
+  const activeCompany = companyMap.get(activeNote?.application_id);
   const activeIndex = filtered.findIndex(n => n.id === activeNote?.id);
   useLayoutEffect(() => {
     if (!open || !editingId) return;
@@ -173,7 +174,13 @@ export default function InterviewPage() {
   }
   function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
     setFiltersOpen(false);
-    if (id) { setActiveId(id); if (!includesCompany(values.application_id)) selectCompany(values.application_id || 'common'); }
+    if (id) {
+      // The list filters the saved record, even when its draft has a different company or topic.
+      const record = notes.find(note => note.id === id);
+      if (record && !includesCompany(record.application_id)) selectCompany(record.application_id || 'common');
+      else if (record && topic !== 'all' && (record.related_project?.trim() || 'none') !== topic) setTopic('all');
+      setActiveId(id);
+    }
     setDraftId(draftKey);
     setEditingId(id); setForm(values); setOriginalForm(baseline); setRestored(recovered);
     setConfirmDiscard(false); setFormError(''); setValidationTarget(null); setFeedback(null); setOpen(true);
@@ -311,6 +318,15 @@ export default function InterviewPage() {
         <span>{scopeLabel}{topic !== 'all' ? ` · ${topic === 'none' ? '주제 미지정' : topic}` : ''}</span>
         <Button disabled={open} onClick={() => { selectCompany('all'); setTopic('all'); }}>필터 해제</Button>
       </div>}
+      {!pageLoading && !pageError && !missingCompany && filtered.length > 1 && <Field
+        className="mobile-question-select" id="interview-question-select" label="질문 목록" hideLabel select size="small"
+        value={activeNote.id} disabled={open} onChange={event => setActiveId(event.target.value)}
+        slotProps={{ select: {
+          SelectDisplayProps: { 'aria-describedby': open ? undefined : 'practice-question-title' },
+          renderValue: () => <span className="question-picker-caption">질문 목록 <small>{activeIndex + 1} / {filtered.length}</small></span>,
+        } }}>
+        {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {!companyScoped ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
+      </Field>}
       <Button variant="outlined" startIcon={<TuneOutlined />} aria-label={`필터${filterCount ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="interview-filters" disabled={open} onClick={() => setFiltersOpen(value => !value)}>
         필터{filterCount > 0 && <span className="filter-count" aria-hidden="true">{filterCount}</span>}
       </Button>
@@ -343,9 +359,6 @@ export default function InterviewPage() {
     </nav>
     <section className="practice-desk" aria-label="면접 질문 연습">
       <div className="practice-navigation">
-      <Field className="mobile-question-select" id="interview-question-select" label="연습할 질문" select size="small" value={activeNote.id} disabled={open} onChange={event => setActiveId(event.target.value)} slotProps={{ select: { renderValue: () => `${activeIndex + 1}. ${activeNote.question}` } }}>
-        {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {!companyScoped ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
-      </Field>
       <div className="practice-pagination">
         <span aria-live="polite">질문 <strong>{activeIndex + 1}</strong> / {filtered.length}</span>
 
@@ -371,15 +384,17 @@ export default function InterviewPage() {
       </form> : <article className="practice-card">
         <div className="practice-card-meta">
           <span className="practice-company-label">
-            <span className="practice-record-company">{companyLabel(activeNote)}</span>
+            <span className="practice-record-company">
+              {activeCompany && <CompanyMark name={activeCompany.company_name} />}
+              <span>{companyLabel(activeNote)}</span>
+            </span>
             {activeNote.related_project && <span>{activeNote.related_project}</span>}
           </span>
           <IconButton aria-label="질문 관리" aria-haspopup="menu" aria-expanded={Boolean(menuAnchor)} onClick={event => setMenuAnchor(event.currentTarget)}><MoreHoriz /></IconButton>
         </div>
-        <div className="practice-question"><h2 ref={practiceHeading} tabIndex={-1}>{activeNote.question}</h2></div>
-        <div className="practice-primary-action"><div className="practice-answer-label"><span>나의 답변</span><span className={`practice-answer-state${activeHasAnswer ? ' is-written' : ''}`}>{activeHasAnswer ? '작성 완료' : '미작성'}</span></div><Button variant="outlined" startIcon={<EditOutlined />} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}>기록 수정</Button></div>
+        <div className="practice-question"><h2 id="practice-question-title" ref={practiceHeading} tabIndex={-1}>{activeNote.question}</h2></div>
+        <div className="practice-primary-action"><div className="practice-answer-label"><span>나의 답변</span><span className={`practice-answer-state${activeHasAnswer ? ' is-written' : ''}`}>{activeHasAnswer ? '작성 완료' : '미작성'}</span></div><Button variant="outlined" startIcon={<EditOutlined />} disabled={Boolean(busy)} onClick={() => startEdit(activeNote)}>{activeHasAnswer ? '기록 수정' : '답변 작성'}</Button></div>
         {activeHasAnswer && <div className="practice-answer" id={`answer-${activeNote.id}`}><p>{activeNote.answer}</p></div>}
-        {!activeHasAnswer && <p className="practice-answer-placeholder">아직 작성한 답변이 없어요.</p>}
 
       </article>}
     </section>

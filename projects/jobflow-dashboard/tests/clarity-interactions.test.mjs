@@ -234,7 +234,7 @@ test('preparation sheets follow the company stage and never substitute a deadlin
 
 test('inline interview editing restores an unfinished answer after leaving and saves without an editor dialog', async () => {
   const store = createRecordDraftStore();
-  let notes = [{ id: 'question-1', question: '지원한 이유는?', answer: '저장된 답변', application_id: null, related_project: '', importance: '보통', is_reviewed: false }];
+  let notes = [{ id: 'question-1', question: '지원한 이유는?', answer: '저장된 답변', application_id: null, related_project: '지원동기', importance: '보통', is_reviewed: false }];
   let fail = false;
   const dependencies = {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [] }) },
@@ -248,7 +248,10 @@ test('inline interview editing restores an unfinished answer after leaving and s
   const answer = page.find(node => node.type === 'Field' && node.props.id === 'note-answer');
   answer.props.onChange({ target: { value: '아직 저장하지 않은 답변' } }); page.render();
   page = await mount('InterviewPage', dependencies);
+  page.find(node => node.props?.id === 'interview-topic').props.onChange({ target: { value: 'none' } }); page.render();
+  assert.ok(page.find(node => node.props?.['aria-label'] === '면접 질문 목록 결과'));
   await page.click('이어서 작성');
+  assert.ok(page.find(node => node.type === 'form' && node.props['aria-label'] === '면접 기록 수정'));
   assert.equal(page.find(node => node.type === 'Field' && node.props.id === 'note-answer').props.value, '아직 저장하지 않은 답변');
   fail = true;
   await page.find(node => node.type === 'form').props.onSubmit({ preventDefault() {} }); page.render();
