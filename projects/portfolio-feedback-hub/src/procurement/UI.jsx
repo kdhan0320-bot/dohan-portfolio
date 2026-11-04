@@ -55,6 +55,23 @@ export function StockLedger({ data, materialId }) {
   const totals = materialTotals(data, materialId);
   return <div className="stock-ledger" role="group" aria-label="보유 수량 계산"><div><span><i aria-hidden="true"/>누적 입고</span><strong>{qty(totals.received)}</strong></div><span className="ledger-operator" aria-hidden="true">−</span><div><span><i aria-hidden="true"/>누적 지급</span><strong>{qty(totals.issued)}</strong></div><span className="ledger-operator" aria-hidden="true">=</span><div className="ledger-balance"><span><i aria-hidden="true"/>현재 보유</span><strong>{qty(totals.balance)}</strong></div></div>;
 }
+
+export function MaterialLedgerLinks({ materials, requestId }) {
+  if (!materials.length) return null;
+  return <div className="ledger-handoff">
+    <div>
+      <h3>현장 지급</h3>
+      <p>입고는 발주별로 기록하고, 지급한 수량은 같은 자재의 전체 재고에서 뺍니다.</p>
+    </div>
+    <div className="ledger-destinations">
+      {materials.map(material => (
+        <ListLink key={material.id} id={`ledger-${requestId}-${material.id}`} to={`/materials/${material.id}#movement-history`}>
+          {material.name}{materials.length > 1 && ` (${material.code})`} 장부 보기
+        </ListLink>
+      ))}
+    </div>
+  </div>;
+}
 export function PageHead({ eyebrow, title, children, action }) {
   return <header className="page-head"><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h1 tabIndex="-1">{title}</h1>{children && <p className="page-description">{children}</p>}</div>{action}</header>;
 }

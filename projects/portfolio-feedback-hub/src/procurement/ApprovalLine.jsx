@@ -1,13 +1,14 @@
 import Icon from './Icons';
 import { owner, ROLES, rejectionStep } from './model';
-import { purchaseSteps } from './inventory';
+import { ledgerMaterials, purchaseSteps } from './inventory';
+import { MaterialLedgerLinks } from './UI';
 
 export default function ApprovalLine({ data, request }) {
   const steps = purchaseSteps(data, request);
   const current = steps.find(step => step.state === 'current');
   const currentOwner = request.status === 'ordered' ? ROLES.staff : owner(request);
-  return <section className="approval-line with-request" aria-label="업무 진행">
-    <div className="approval-line-caption"><h2>업무 진행</h2>
+  return <section className="approval-line with-request" aria-label="구매·입고 진행">
+    <div className="approval-line-caption"><h2>구매·입고 진행</h2>
       {current && <span className="line-owner">현재 담당 <strong>{currentOwner}</strong></span>}
       {request.status === 'rejected' && rejectionStep(request) === null && <span className="line-owner">반려 단계 기록 없음</span>}
     </div>
@@ -16,5 +17,6 @@ export default function ApprovalLine({ data, request }) {
       <span className="line-step">{label.split(' ').map((word, i) => <span key={word}>{i > 0 ? ' ' : ''}{word}</span>)}</span>
       <small title={detail}>{state === 'stopped' ? '중단' : detail}</small>
     </li>)}</ol>
+    <MaterialLedgerLinks materials={ledgerMaterials(data, request)} requestId={request.id}/>
   </section>;
 }

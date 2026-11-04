@@ -3,9 +3,19 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
-import { workflowStatus, comparisonLines, findSensorExample, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
+import { workflowStatus, comparisonLines, findSensorExample, ledgerMaterials, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
 
 const today = dateInput();
+
+test('ledger destinations follow registered materials in the ordered snapshot, one per material', () => {
+  const data = createERP();
+  const order = data.requests.find(r => r.id === 'PR-2001');
+  const [sensor] = order.approvedSnapshot.items;
+  const snapshot = { ...order.approvedSnapshot, items: [sensor, sensor, { materialId: 'MT-0002' }, { materialId: 'missing' }] };
+  assert.deepEqual(ledgerMaterials(data, { ...order, approvedSnapshot: snapshot }).map(m => m.id), ['MT-0001', 'MT-0002']);
+  assert.deepEqual(ledgerMaterials(data, { ...order, status: 'approved' }), []);
+  assert.deepEqual(ledgerMaterials(data, { ...order, approvedSnapshot: null }).map(m => m.id), ['MT-0001']);
+});
 
 test('the home case link targets only the seeded five-sensor order for the displayed material', () => {
   const data = createERP();

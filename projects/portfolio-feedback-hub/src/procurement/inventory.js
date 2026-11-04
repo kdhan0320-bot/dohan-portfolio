@@ -4,6 +4,12 @@ export const ERP_SAMPLE_ID = 'PR-2007';
 export const qty = n => `${Number(n || 0).toLocaleString('ko-KR')} EA`;
 export const orderId = r => r.status === 'ordered' ? (r.order?.id || `PO-${r.id.replace(/^PR-/, '')}`) : '';
 export const orderItems = r => r.approvedSnapshot?.items || r.items;
+
+export function ledgerMaterials(state, request) {
+  if (request.status !== 'ordered') return [];
+  const ids = new Set(orderItems(request).map(item => item.materialId));
+  return state.materials.filter(material => ids.has(material.id));
+}
 export const receivedQuantity = (state, requestId, index) => state.receipts.filter(r => r.requestId === requestId).reduce((n, r) => n + r.lines.filter(l => l.index === index).reduce((sum, l) => sum + l.quantity, 0), 0);
 export function orderProgress(state, request) {
   if (request.status === 'approved') return { key: 'ready', label: '발주 대기', tone: 'blue', ordered: 0, received: 0, remaining: 0 };
