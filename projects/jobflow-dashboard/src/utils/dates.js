@@ -8,3 +8,10 @@ export function deadlineLabel(date, today) {
 export function shortDate(date) {
   return date ? `${Number(date.slice(5, 7))}.${Number(date.slice(8, 10))}` : '—';
 }
+
+export function interviewDayLabel(date, today) {
+  const days = daysUntil(date, today);
+  if (days === null) return '';
+  if (days === 0) return '오늘 면접';
+  return days < 0 ? `${-days}일 전` : `D−${days}`;
+}

@@ -18,8 +18,8 @@ test('partial, impossible and trailing input is rejected instead of being discar
   }
 });
 
-test('saving validates both dates at the payload boundary while retaining optional empty dates', () => {
-  for (const field of ['deadline', 'applied_date']) {
+test('saving validates application and interview dates while retaining optional empty dates', () => {
+  for (const field of ['deadline', 'applied_date', 'interview_date']) {
     assert.throws(() => buildApplicationPayload({ [field]: '2026-10' }), /연·월·일/);
     assert.throws(() => buildApplicationPayload({ [field]: '2026-02-29' }), /실제 달력/);
     assert.deepEqual(buildApplicationPayload({ [field]: '20260929' }), { [field]: '2026-09-29' });

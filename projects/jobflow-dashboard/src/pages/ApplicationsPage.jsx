@@ -85,7 +85,7 @@ export default function ApplicationsPage() {
         {pending && a.deadline && <span className={a.deadline < today ? 'job-deadline overdue' : 'job-deadline'}>
           <time dateTime={a.deadline}>{shortDate(a.deadline)}</time> 마감 · {deadlineLabel(a.deadline, today)}
         </span>}
-        {!pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
+        {a.status === '면접 예정' ? <span className="job-date">{a.interview_date ? <><time dateTime={a.interview_date}>{shortDate(a.interview_date)}</time> 면접</> : '면접일 미정'}</span> : !pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
       </span>
       {preparation && <span className="job-tile-preparation">{preparation}</span>}
     </button>;

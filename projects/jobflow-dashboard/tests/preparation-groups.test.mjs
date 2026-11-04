@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { attentionCompanies, preparationGroups, todayCompanyGroups } from '../src/utils/preparationGroups.js';
 import { workspaceReturn } from '../src/utils/workspaceReturn.js';
+import { interviewDayLabel } from '../src/utils/dates.js';
 
 const companies = [
   { id: 'interview', company_name: '면접 회사', status: '면접 예정', deadline: '2026-09-01' },
@@ -62,6 +63,16 @@ test('missing or invalid dates do not imply an expired deadline', () => {
   const groups = todayCompanyGroups(input, [], '2026-09-27');
   assert.equal(groups.needsReview.length, 0);
   assert.equal(groups.current.length, input.length);
+});
+
+test('today places a scheduled interview by its own date without changing its stage', () => {
+  const interview = { ...companies[0], interview_date: '2026-09-30' };
+  const read = today => todayCompanyGroups([interview, ...companies.slice(1)], tasks, today);
+  assert.deepEqual(read('2026-09-27').current.map(row => row.id), ['first', 'interview', 'later']);
+  assert.deepEqual(read('2026-10-01').needsReview.map(row => row.id), ['first']);
+  for (const [date, label] of [[null, ''], ['2026-09-26', '1일 전'], ['2026-09-27', '오늘 면접'], ['2026-10-01', 'D−4']]) {
+    assert.equal(interviewDayLabel(date, '2026-09-27'), label);
+  }
 });
 test('all tasks appear once, with common and missing-company tasks kept distinguishable', () => {
   const items = [...tasks, { id: 'orphan', application_id: 'missing', is_done: false }];

@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
 import { createRecordDraftStore } from '../src/utils/recordDraftStore.js';
 import { preparationGroups, todayCompanyGroups, beforeApplication } from '../src/utils/preparationGroups.js';
-import { shortDate, deadlineLabel } from '../src/utils/dates.js';
+import { shortDate, deadlineLabel, interviewDayLabel } from '../src/utils/dates.js';
 import { revealTextareaCaret, observeTextareaLayout } from '../src/utils/textareaCaret.js';
 import * as constants from '../src/constants/index.js';
 import { BOARD_COLUMNS, boardColumn } from '../src/utils/applicationBoard.js';
@@ -53,7 +53,7 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
     '../components/ui/DiaryBookmark': 'DiaryBookmark',
     '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
     '../utils/preparationGroups': { preparationGroups },
-    '../utils/dates': { shortDate },
+    '../utils/dates': { shortDate, deadlineLabel, interviewDayLabel },
     '../utils/textareaCaret': { revealTextareaCaret, observeTextareaLayout },
     '../constants': constants,
     ...dependencies,
@@ -176,7 +176,6 @@ test('today review opens the same company and requires an explicit status change
     '../hooks/useToday': { useToday: () => '2026-09-27' },
     '../utils/calendar': { WEEKDAYS: ['월', '화', '수', '목', '금', '토', '일'] },
     '../utils/preparationGroups': { todayCompanyGroups, beforeApplication },
-    '../utils/dates': { deadlineLabel },
     '../components/applications/ApplicationPanel': 'ApplicationPanel',
   });
   assert.match(page.text(), /지원 여부 확인/);
@@ -224,6 +223,10 @@ test('preparation sheets follow the company stage and never substitute a deadlin
   company.status = '면접 예정';
   page.render();
   assert.equal(date().props.dateTime, company.applied_date);
+  company.interview_date = '2026-10-01';
+  page.render();
+  assert.equal(date().props.dateTime, company.interview_date);
+  company.interview_date = null;
   company.applied_date = null;
   page.render();
   assert.equal(date(), null);

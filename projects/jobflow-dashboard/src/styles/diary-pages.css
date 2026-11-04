@@ -73,8 +73,21 @@
 
 /* Company records stay in the existing four-stage board. */
 @media (min-width: 1800px) and (min-height: 1000px) {
-  .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: clamp(100px, 12vh, 190px); }
   .diary-welcome .galpi-intro { width: 100%; }
+}
+
+@media (min-width: 1600px) {
+  .diary-welcome .preview-records > .preview-record {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 28px; min-height: 0; padding: 24px 28px;
+  }
+  .diary-welcome .preview-record-summary { justify-content: flex-start; gap: 18px; }
+  .diary-welcome .preview-date-block { min-height: 72px; padding-block: 10px; }
+  .diary-welcome .preview-record-body { gap: 8px; padding-left: 28px; }
+  .diary-welcome .preview-preparation h4 { margin-bottom: 6px; }
+  .diary-welcome .preview-preparation ul { min-height: 0; grid-template-rows: repeat(2, minmax(36px, auto)); }
+  .diary-welcome .preview-preparation li { padding-block: 6px; }
 }
 
 .workspace-diary .workspace-main .job-board { gap: 16px; padding-top: 0; }
@@ -186,6 +199,9 @@
 .company-summary-dialog .company-record-title { margin: 0; font: inherit; }
 .company-panel-head > button, .company-summary-dialog .MuiDialogTitle-root > button { flex-shrink: 0; }
 .company-summary .summary-identity { border-left: 0; }
+.company-summary .summary-schedule dl:has(> div:nth-child(3)) {
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+}
 
 @media (min-width: 1000px) and (max-width: 1399px) {
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-inline: 32px; }

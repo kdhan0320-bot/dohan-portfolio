@@ -16,6 +16,6 @@ export function parseDateInput(value) {
 }
 
 export function applicationDateErrors(form) {
-  return Object.fromEntries(['deadline', 'applied_date']
+  return Object.fromEntries(['deadline', 'applied_date', 'interview_date']
     .map(key => [key, parseDateInput(form[key]).error]).filter(([, error]) => error));
 }

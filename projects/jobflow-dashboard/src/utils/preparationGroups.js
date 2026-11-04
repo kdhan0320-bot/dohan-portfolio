@@ -37,6 +37,9 @@ export function todayCompanyGroups(companies, tasks, today) {
     const expired = beforeApplication(company) && validDate(company.deadline) && validDate(today) && company.deadline < today;
     (expired ? needsReview : current).push(company);
   }
+  // Interleave interview appointments with application deadlines on the daily page.
+  const nextDate = company => beforeApplication(company) ? company.deadline : company.status === '면접 예정' ? company.interview_date : null;
+  current.sort((a, b) => (nextDate(a) || '9999').localeCompare(nextDate(b) || '9999'));
   return { current, needsReview };
 }
 

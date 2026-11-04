@@ -27,7 +27,7 @@ export function boardRows(applications, query = '') {
 }
 export function applicationDraft(row) {
   return {
-    company_name: '', position: '', status: '관심', deadline: '', applied_date: '',
+    company_name: '', position: '', status: '관심', deadline: '', applied_date: '', interview_date: '',
     job_url: '', memo: '', location: '', company_size: '', priority: '보통',
     resume_submitted: false, portfolio_submitted: false,
     ...row,

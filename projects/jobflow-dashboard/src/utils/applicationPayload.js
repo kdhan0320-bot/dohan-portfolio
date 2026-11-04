@@ -7,6 +7,7 @@ export const APPLICATION_MUTABLE_FIELDS = Object.freeze([
   'company_size',
   'status',
   'applied_date',
+  'interview_date',
   'deadline',
   'priority',
   'job_url',
@@ -15,7 +16,7 @@ export const APPLICATION_MUTABLE_FIELDS = Object.freeze([
   'resume_submitted',
 ]);
 
-const DATE_FIELDS = new Set(['applied_date', 'deadline']);
+const DATE_LABELS = new Map([['applied_date', '지원한 날짜'], ['deadline', '공고 마감일'], ['interview_date', '면접일']]);
 const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 
 export const isValidApplicationUrl = (value) => {
@@ -49,9 +50,9 @@ export const buildApplicationPayload = (input = {}) => (
     const value = input[field];
     if (field === 'job_url') {
       payload[field] = normalizeApplicationUrl(value);
-    } else if (DATE_FIELDS.has(field)) {
+    } else if (DATE_LABELS.has(field)) {
       const parsed = parseDateInput(value);
-      if (parsed.error) throw new TypeError(`${field === 'deadline' ? '공고 마감일' : '지원한 날짜'}: ${parsed.error}`);
+      if (parsed.error) throw new TypeError(`${DATE_LABELS.get(field)}: ${parsed.error}`);
       payload[field] = parsed.value || null;
     } else {
       payload[field] = typeof value === 'string' ? value.trim() : value;

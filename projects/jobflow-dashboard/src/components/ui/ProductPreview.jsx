@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import RecordStage from './RecordStage';
 import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_TODAY } from '../../constants';
 import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
-import { shortDate, deadlineLabel } from '../../utils/dates';
+import { shortDate, deadlineLabel, interviewDayLabel } from '../../utils/dates';
 
 // This preview uses the same fictional records as the editable sample.
 export default function ProductPreview({ onOpen }) {
@@ -33,15 +33,17 @@ export default function ProductPreview({ onOpen }) {
     {BOARD_COLUMNS.map((column, index) => {
       const selected = DEMO_APPLICATIONS.find(row => boardColumn(row.status) === column.id);
       const before = column.id === 'before';
-      const [month, day] = shortDate(before ? selected.deadline : selected.applied_date).split('.');
+      const interview = column.id === 'interview';
+      const date = before ? selected.deadline : interview ? selected.interview_date : selected.applied_date;
+      const [month, day] = shortDate(date).split('.');
       const tasks = DEMO_CHECKLISTS.filter(item => item.application_id === selected.id && !item.is_done);
       const inactive = index !== stageIndex;
       return <div key={column.id} id={`preview-panel-${column.id}`} role="tabpanel" aria-labelledby={`preview-tab-${column.id}`} aria-hidden={inactive || undefined} hidden={inactive} className="preview-record" tabIndex={inactive ? -1 : 0}>
         <div className="preview-record-summary">
           <div className="preview-record-heading"><div className="preview-company-identity"><div className="preview-company-title"><h3>{selected.company_name}</h3><RecordStage status={selected.status} /></div><p>{selected.position}</p></div></div>
           <div className="preview-date-block">
-            <div className="preview-date-label"><span>{before ? '지원 마감' : '지원한 날짜'}</span>{before && <b className="deadline-badge">{deadlineLabel(selected.deadline, DEMO_TODAY)}</b>}</div>
-            <strong className="record-date"><span className="record-date-month">{month}.</span>{day}</strong>
+            <div className="preview-date-label"><span>{before ? '지원 마감' : interview ? '면접일' : '지원한 날짜'}</span>{date && (before || interview) && <b className="deadline-badge">{interview ? interviewDayLabel(date, DEMO_TODAY) : deadlineLabel(date, DEMO_TODAY)}</b>}</div>
+            <strong className="record-date">{date ? <><span className="record-date-month">{month}.</span>{day}</> : '미정'}</strong>
           </div>
         </div>
         <div className="preview-record-body">

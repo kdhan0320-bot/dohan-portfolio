@@ -3,7 +3,7 @@ const EXPORT_DATE_FORMAT = new Intl.DateTimeFormat('en', {
   timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
 });
 const EXPORT_FIELDS = {
-  applications: 'id,company_name,position,status,job_url,deadline,applied_date,location,company_size,priority,resume_submitted,portfolio_submitted,memo,created_at,updated_at',
+  applications: 'id,company_name,position,status,job_url,deadline,applied_date,interview_date,location,company_size,priority,resume_submitted,portfolio_submitted,memo,created_at,updated_at',
   portfolio_checklists: 'id,application_id,title,category,is_done,sort_order,created_at,updated_at',
   interview_notes: 'id,application_id,question,answer,related_project,importance,is_reviewed,created_at,updated_at',
 };

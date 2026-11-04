@@ -299,7 +299,8 @@ export default function ChecklistPage() {
             {groups.map(group => {
               const allGroupItems = scopedItems.filter(item => (item.application_id || 'common') === group.id);
               const before = boardColumn(group.company?.status) === 'before';
-              const recordDate = before ? group.company?.deadline : group.company?.applied_date;
+              const interviewDate = group.company?.status === '면접 예정' && group.company.interview_date;
+              const recordDate = before ? group.company?.deadline : interviewDate || group.company?.applied_date;
               const doneCount = allGroupItems.filter(item => item.is_done).length;
               const row = item => <PreparationItem key={item.id} item={item} onToggle={toggleTask} disabled={Boolean(busy)} inputId={`task-check-${item.id}`} recent={completedHere.includes(item.id)} showCategory>
                 <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>
@@ -312,7 +313,7 @@ export default function ChecklistPage() {
                   </div>
                   {group.company && <RecordStage status={group.company.status} />}
                   <p>
-                    {recordDate && <span>{before ? '공고 마감' : '지원일'} <time dateTime={recordDate}>{shortDate(recordDate)}</time></span>}
+                    {recordDate && <span>{before ? '공고 마감' : interviewDate ? '면접일' : '지원일'} <time dateTime={recordDate}>{shortDate(recordDate)}</time></span>}
                     <span>남은 일 {allGroupItems.length - doneCount}개</span>
                     <span>완료 {doneCount}개</span>
                   </p>

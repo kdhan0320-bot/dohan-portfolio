@@ -98,6 +98,7 @@ export const DEMO_APPLICATIONS = [{
   company_size: '스타트업',
   status: '면접 예정',
   applied_date: '2026-09-10',
+  interview_date: '2026-09-30',
   deadline: '2026-10-05',
   priority: '높음',
   portfolio_submitted: true,

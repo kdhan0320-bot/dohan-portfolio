@@ -5,7 +5,7 @@ import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useAuth } from '../context/AuthContext';
 import { useToday } from '../hooks/useToday';
-import { deadlineLabel } from '../utils/dates';
+import { deadlineLabel, interviewDayLabel, shortDate } from '../utils/dates';
 import { WEEKDAYS } from '../utils/calendar';
 import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { todayCompanyGroups, beforeApplication } from '../utils/preparationGroups';
@@ -36,16 +36,18 @@ export default function DashboardPage() {
     const remaining = tasks.filter(item => !item.is_done);
     const nextTask = remaining[0];
     const upcoming = beforeApplication(company);
-    const recordDate = upcoming ? company.deadline : company.applied_date;
+    const interview = company.status === '면접 예정';
+    const scheduleDate = upcoming ? company.deadline : company.interview_date;
     return <article className={`diary-entry${review ? ' diary-entry-review' : ''}${upcoming ? '' : ' diary-entry-followup'}`} key={company.id}>
       <div className="diary-entry-date">
-        <span>{upcoming ? '지원 마감' : '전형 진행'}</span>
-        {upcoming ? <time dateTime={recordDate || undefined}>{recordDate ? `${Number(recordDate.slice(5, 7))}.${Number(recordDate.slice(8, 10))}` : '미등록'}</time> : <strong>{company.status === '면접 예정' ? '면접' : '서류'}</strong>}
+        <span>{upcoming ? '지원 마감' : interview ? '면접일' : '전형 진행'}</span>
+        {(upcoming || interview) && scheduleDate ? <time dateTime={scheduleDate}>{shortDate(scheduleDate)}</time> : <strong>{upcoming ? '미등록' : interview ? '미정' : '서류'}</strong>}
+        {interview && scheduleDate && <span className="diary-dday">{interviewDayLabel(scheduleDate, today)}</span>}
         {upcoming && company.deadline && <span className="diary-dday">{review ? '마감 지남' : deadlineLabel(company.deadline, today)}</span>}
       </div>
       <div className="diary-entry-company">
         <div className="diary-company-title"><h3>{company.company_name}</h3><RecordStage status={company.status} /></div>
-        <p>{company.position || '직무 미입력'}{!upcoming && <span className="diary-applied-date">{recordDate ? <>지원 <time dateTime={recordDate}>{Number(recordDate.slice(5, 7))}.{Number(recordDate.slice(8, 10))}</time></> : '지원일 미등록'}</span>}</p>
+        <p>{company.position || '직무 미입력'}{!upcoming && <span className="diary-applied-date">{company.applied_date ? <>지원 <time dateTime={company.applied_date}>{shortDate(company.applied_date)}</time></> : '지원일 미등록'}</span>}</p>
       </div>
       <div className={`diary-entry-next${!review && !nextTask ? ' is-quiet' : ''}`}>
         {(review || nextTask) && <span>{review ? '확인할 내용' : '다음 준비'}</span>}
@@ -80,7 +82,7 @@ export default function DashboardPage() {
       </div>
       <section className="diary-common" aria-labelledby="common-preparation-title"><div><h2 id="common-preparation-title">공통 준비 <span>남은 {pending(common)}개</span></h2><p>{nextCommon?.title || (common.length ? '공통 준비를 모두 마쳤어요' : '회사와 관계없이 챙길 일을 등록해보세요')}</p></div><Button component={Link} to="/checklist?company=common" disableRipple><span className="diary-action-label" data-label="준비 관리">준비 관리</span></Button></section>
     </div>}
-    {selected && <ApplicationPanel key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); check.refresh(); }} onSave={async payload => { await apps.update(selected.id, payload); setSelectedId(null); check.refresh(); setFeedback({ message: '회사 정보를 저장했어요.' }); }} onStatusChange={status => apps.update(selected.id, { status })} onDelete={async id => { await apps.remove(id); setSelectedId(null); check.refresh(); setFeedback({ message: '회사를 삭제했어요.' }); }} />}
+    {selected && <ApplicationPanel fromToday={!needsReview.some(company => company.id === selected.id)} key={selected.id} application={selected} creating={false} draftScope={isGuest ? 'sample' : `user:${user.id}`} onClose={() => { setSelectedId(null); check.refresh(); }} onSave={async payload => { await apps.update(selected.id, payload); setSelectedId(null); check.refresh(); setFeedback({ message: '회사 정보를 저장했어요.' }); }} onStatusChange={status => apps.update(selected.id, { status })} onDelete={async id => { await apps.remove(id); setSelectedId(null); check.refresh(); setFeedback({ message: '회사를 삭제했어요.' }); }} />}
     <ActionFeedback feedback={feedback} onClose={() => setFeedback(null)} />
   </div>;
 }

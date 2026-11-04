@@ -22,17 +22,32 @@ function SummaryDate({ value }) {
 
 // The same readable record is used in the home preview and the working dialog.
 // Preview data stays independent of the signed-in user's workspace.
-export function CompanySummary({ application, tasks = [], notes = [], today, onToggle, busy = '', feedback, preparationEditor, statusControl }) {
+export function CompanySummary({ application, tasks = [], notes = [], today, onToggle, busy = '', feedback, preparationEditor, statusControl, preparationFirst = false }) {
   const companyTasks = tasks.filter(item => item.application_id === application.id);
+  // Keep the tapped row in place until the record is closed and reopened.
+  const [doneOnOpen] = useState(() => new Set(companyTasks.filter(item => item.is_done).map(item => item.id)));
+  if (preparationFirst) companyTasks.sort((a, b) => Number(doneOnOpen.has(a.id)) - Number(doneOnOpen.has(b.id)));
   const companyNotes = notes.filter(item => item.application_id === application.id);
   const remaining = companyTasks.filter(item => !item.is_done).length;
   const pending = ['관심', '지원 예정'].includes(application.status);
   const stage = BOARD_COLUMNS.find(column => column.id === boardColumn(application.status));
+  const preparation = (
+    <section className="summary-preparation" aria-label="이 회사의 준비할 일"><h3>준비할 일 <span>남은 {remaining}개</span></h3>
+      {companyTasks.length ? <div>{companyTasks.map(item => onToggle ? <PreparationItem key={item.id} item={item} onToggle={onToggle} disabled={Boolean(busy)} /> : <div key={item.id} className="summary-preview-task"><span className="summary-task-state">{item.is_done ? '완료' : '할 일'}</span><span>{item.title}</span></div>)}</div> : <p className="summary-empty">등록한 준비 항목이 없어요.</p>}
+      {feedback && <p className={feedback.error ? 'summary-feedback' : 'sr-only'} role={feedback.error ? 'alert' : 'status'}>{feedback.message}</p>}
+      {preparationEditor}
+    </section>
+  );
   return <div className="company-summary" style={{ '--summary-ink': stage?.color || '#687783', '--summary-tint': stage?.tint || '#EDF1F4' }}>
+    {preparationFirst && preparation}
     <div className="summary-identity"><div><p>{application.position || '직무 미입력'}</p><small>{[application.location, application.company_size].filter(Boolean).join(' · ')}</small></div>{statusControl || <StatusChip status={application.status} />}</div>
     <section className="summary-schedule" aria-label="지원 일정">
       <h3 className="summary-schedule-heading">지원 일정 {pending && application.deadline && <span className="deadline-badge">{deadlineLabel(application.deadline, today)}</span>}</h3>
-      <dl><div><dt>공고 마감</dt><dd>{application.deadline ? <SummaryDate value={application.deadline} /> : '미등록'}</dd></div><div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '지원 전' : '미등록'}</dd></div></dl>
+      <dl>
+        {(application.status === '면접 예정' || application.interview_date) && <div><dt>면접일</dt><dd>{application.interview_date ? <SummaryDate value={application.interview_date} /> : '미정'}</dd></div>}
+        <div><dt>공고 마감</dt><dd>{application.deadline ? <SummaryDate value={application.deadline} /> : '미등록'}</dd></div>
+        <div><dt>지원한 날짜</dt><dd>{application.applied_date ? <SummaryDate value={application.applied_date} /> : pending ? '지원 전' : '미등록'}</dd></div>
+      </dl>
     </section>
     <section className="summary-documents" aria-label="제출 서류">
       <h3>제출 서류</h3>
@@ -40,18 +55,14 @@ export function CompanySummary({ application, tasks = [], notes = [], today, onT
         <dt>{label}</dt><dd className={`document-state${submitted ? ' is-submitted' : ''}`}><span aria-hidden="true">{submitted ? '✓' : '·'}</span>{submitted ? '제출 완료' : '미제출'}</dd>
       </div>)}</dl>
     </section>
-    <section className="summary-preparation" aria-label="이 회사의 준비할 일"><h3>준비할 일 <span>남은 {remaining}개</span></h3>
-      {companyTasks.length ? <div>{companyTasks.map(item => onToggle ? <PreparationItem key={item.id} item={item} onToggle={onToggle} disabled={Boolean(busy)} /> : <div key={item.id} className="summary-preview-task"><span className="summary-task-state">{item.is_done ? '완료' : '할 일'}</span><span>{item.title}</span></div>)}</div> : <p className="summary-empty">등록한 준비 항목이 없어요.</p>}
-      {feedback && <p className={feedback.error ? 'summary-feedback' : 'sr-only'} role={feedback.error ? 'alert' : 'status'}>{feedback.message}</p>}
-      {preparationEditor}
-    </section>
+    {!preparationFirst && preparation}
     {companyNotes.length > 0 && <section className="summary-questions"><h3>면접 질문 <span>{companyNotes.length}개</span></h3>{companyNotes.map(note => note.answer?.trim() ? <details className="summary-answer" key={note.id}><summary><span>{note.question}</span><small>답변 읽기</small></summary><p>{note.answer}</p></details> : <div className="summary-preview-task" key={note.id}><span>{note.question}</span><small>답변 준비 전</small></div>)}</section>}
     {application.memo && <section className="summary-memo"><h3>기록 메모</h3><p>{application.memo}</p></section>}
     {application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" endIcon={<OpenInNew />}>채용 공고 보기</Button>}
   </div>;
 }
 
-export default function LiveCompanySummary({ application, onBusyChange, disabled = false, statusControl }) {
+export default function LiveCompanySummary({ application, preparationFirst, onBusyChange, disabled = false, statusControl }) {
   const checklist = useChecklist();
   const interview = useInterviewNotes();
   const drafts = useRecordDraft('company-preparation');
@@ -103,7 +114,7 @@ export default function LiveCompanySummary({ application, onBusyChange, disabled
   }
   return <>
     <LoadState loading={checklist.loading || interview.loading} error={checklist.error || interview.error} retry={() => { checklist.refresh(); interview.refresh(); }} />
-    {!checklist.loading && !interview.loading && !checklist.error && !interview.error && <CompanySummary application={application} statusControl={statusControl} tasks={checklist.items} notes={interview.notes} today={today} onToggle={toggle} busy={busy} feedback={feedback} preparationEditor={adding ? <form className="company-task-entry" onSubmit={addTask} noValidate>
+    {!checklist.loading && !interview.loading && !checklist.error && !interview.error && <CompanySummary application={application} preparationFirst={preparationFirst} statusControl={statusControl} tasks={checklist.items} notes={interview.notes} today={today} onToggle={toggle} busy={busy} feedback={feedback} preparationEditor={adding ? <form className="company-task-entry" onSubmit={addTask} noValidate>
       <Field id="company-task-title" label="준비할 일" value={form.title} onChange={event => change('title', event.target.value)} inputRef={titleInput} autoFocus={!recovered} required disabled={Boolean(busy)} error={Boolean(inputError)} helperText={inputError} />
       <div className="company-task-entry-actions"><Field label="분류" select size="small" value={form.category} onChange={event => change('category', event.target.value)} disabled={Boolean(busy)}>{CHECKLIST_CATEGORIES.map(value => <MenuItem key={value} value={value}>{value}</MenuItem>)}</Field><Button onClick={fold} disabled={Boolean(busy)}>접기</Button><Button type="submit" variant="contained" disabled={Boolean(busy)}>{busy === 'add' ? '추가 중…' : '추가'}</Button></div>
     </form> : <Button ref={addButton} className="company-task-add" startIcon={<Add />} onClick={() => setAdding(true)} disabled={Boolean(busy)}>{recovered ? '작성 이어가기' : '할 일 추가'}</Button>} />}

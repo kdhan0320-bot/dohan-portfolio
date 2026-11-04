@@ -19,8 +19,9 @@ function PanelSurface({ standalone, children, ...props }) {
     : <Dialog {...props}>{children}</Dialog>;
 }
 
-export default function ApplicationPanel({ application, creating, standalone = false, draftScope, onClose, onSave, onStatusChange, onDelete }) {
+export default function ApplicationPanel({ application, creating, standalone = false, fromToday = false, draftScope, onClose, onSave, onStatusChange, onDelete }) {
   const fullScreen = useMediaQuery('(max-width: 599px)');
+  const shortDesktop = useMediaQuery('(min-width: 1000px) and (max-height: 760px)');
   const { form, change: changeDraft, clear: clearDraft, reset: resetDraft, acceptSavedFields, dirty, restored } = useApplicationDraft({ scope: draftScope, recordId: creating ? 'new' : application.id, initial: applicationDraft(application) });
   const [editing, setEditing] = useState(Boolean(creating));
   const [busy, setBusy] = useState(false);
@@ -96,7 +97,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
     setErrors(invalid);
     if (Object.keys(invalid).length) {
       if (invalid.job_url || invalid.applied_date || (!creating && invalid.company_name)) setExtraOpen(true);
-      const firstInvalid = ['company_name', 'deadline', 'job_url', 'applied_date'].find(key => invalid[key]);
+      const firstInvalid = ['company_name', 'interview_date', 'deadline', 'job_url', 'applied_date'].find(key => invalid[key]);
       window.requestAnimationFrame(() => document.getElementById(`company-${firstInvalid}`)?.focus());
       return;
     }
@@ -150,7 +151,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
         <IconButton onClick={close} disabled={busy || summaryBusy} aria-label="회사 정보 닫기"><Close /></IconButton>
       </div>}
       {!editing ? <>
-        <div className="company-panel-body"><LiveCompanySummary application={application} onBusyChange={setSummaryBusy} disabled={busy} statusControl={statusControl} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
+        <div className="company-panel-body"><LiveCompanySummary application={application} preparationFirst={fromToday && shortDesktop} onBusyChange={setSummaryBusy} disabled={busy} statusControl={statusControl} />{restored && <Alert severity="info">저장하지 않은 수정 내용이 있어요. 회사 정보 수정에서 이어서 작성할 수 있어요.</Alert>}</div>
         <div className="company-panel-footer"><Button onClick={close} disabled={busy || summaryBusy}>닫기</Button><Button ref={summaryEditButton} variant="contained" disabled={busy || summaryBusy} onClick={() => setEditing(true)}>회사 정보 수정</Button></div>
       </> : <form onSubmit={save} noValidate className="company-panel-form">
         <div className="company-panel-body">
@@ -168,6 +169,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
               {lane === 'paused' && <small>보류함에 표시됩니다</small>}
             </div>}
           </div>
+          {(form.status === '면접 예정' || form.interview_date) && field('interview_date', '면접일 (선택)', { type: 'date' })}
           {field('deadline', '공고 마감일 (선택)', { type: 'date' })}
           {!creating && <div className="panel-documents">
             <FormControlLabel control={<Checkbox checked={Boolean(form.resume_submitted)} onChange={e => change('resume_submitted', e.target.checked)} disabled={busy} />} label="이력서 제출" />
