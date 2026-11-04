@@ -9,6 +9,17 @@ export const BOARD_COLUMNS = [
 export function boardColumn(status) {
   return status === '보류' ? 'paused' : BOARD_COLUMNS.find(column => column.statuses.includes(status))?.id;
 }
+
+export function boardPreparation(stage, items) {
+  if (stage === 'result' || stage === 'paused') return '';
+  const remaining = items.filter(item => !item.is_done);
+  if (remaining.length) {
+    const more = remaining.length > 1 ? ` 외 ${remaining.length - 1}개` : '';
+    return `다음 준비 · ${remaining[0].title}${more}`;
+  }
+  if (items.length) return '준비 완료';
+  return stage === 'before' ? '준비 미등록' : '';
+}
 export function boardRows(applications, query = '') {
   const search = query.trim().toLocaleLowerCase('ko');
   return applications.filter(row => [row.company_name, row.position].filter(Boolean).join(' ').toLocaleLowerCase('ko').includes(search))

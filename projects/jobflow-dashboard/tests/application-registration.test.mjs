@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
-import { boardColumn, BOARD_COLUMNS, boardRows } from '../src/utils/applicationBoard.js';
+import { boardColumn, BOARD_COLUMNS, boardPreparation, boardRows } from '../src/utils/applicationBoard.js';
 
 const source = await readFile(new URL('../src/pages/ApplicationsPage.jsx', import.meta.url), 'utf8');
 const { code } = await transform(source, { loader: 'jsx', format: 'cjs', jsx: 'automatic' });
@@ -27,7 +27,7 @@ function registration(add, auth = { isGuest: true }) {
     '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], refresh() {} }) },
     '../hooks/useToday': { useToday: () => '2026-09-27' },
     '../utils/dates': { shortDate() {}, deadlineLabel() {} },
-    '../utils/applicationBoard': { boardColumn, BOARD_COLUMNS, boardRows },
+    '../utils/applicationBoard': { boardColumn, BOARD_COLUMNS, boardPreparation, boardRows },
   };
   const module = { exports: {} };
   vm.runInNewContext(code, { module, exports: module.exports, URLSearchParams,
@@ -44,6 +44,15 @@ function registration(add, auth = { isGuest: true }) {
   }
   return { panel: find(module.exports.default()), destinations };
 }
+
+test('company cards use the current stage without dropping saved tasks on return to an active stage', () => {
+  const tasks = [{ title: '이력서', is_done: true }, { title: '포트폴리오', is_done: false }, { title: '발표 연습', is_done: false }];
+  for (const status of ['합격', '불합격', '보류']) assert.equal(boardPreparation(boardColumn(status), tasks), '');
+  assert.equal(boardPreparation(boardColumn('면접 예정'), tasks), '다음 준비 · 포트폴리오 외 1개');
+  assert.equal(boardPreparation('documents', []), '');
+  assert.equal(boardPreparation('before', []), '준비 미등록');
+  assert.equal(boardPreparation('interview', [tasks[0]]), '준비 완료');
+});
 
 test('new company opens in a dialog and saving reveals its matching stage', async () => {
   for (const status of ['관심', '서류 진행', '면접 예정', '합격', '보류']) {

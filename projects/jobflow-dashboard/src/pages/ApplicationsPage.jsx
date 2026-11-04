@@ -10,7 +10,7 @@ import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import { useToday } from '../hooks/useToday';
 import { deadlineLabel, shortDate } from '../utils/dates';
-import { BOARD_COLUMNS, boardColumn, boardRows } from '../utils/applicationBoard';
+import { BOARD_COLUMNS, boardColumn, boardPreparation, boardRows } from '../utils/applicationBoard';
 import { PageHeading, CompanyMark, LoadState, Empty } from '../components/ui/PageUI';
 import Field from '../components/ui/Field';
 import StatusChip from '../components/ui/StatusChip';
@@ -73,11 +73,21 @@ export default function ApplicationsPage() {
     changeParams({ view: destination === 'paused' ? 'paused' : null, lane: destination === 'paused' ? null : destination }, true);
   }
   function card(a) {
-    const pending = boardColumn(a.status) === 'before';
+    const stage = boardColumn(a.status);
+    const pending = stage === 'before';
+    const preparation = !checklist.loading && !checklist.error
+      ? boardPreparation(stage, checklist.items.filter(item => item.application_id === a.id))
+      : '';
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-haspopup="dialog">
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
-      {!checklist.loading && !checklist.error && <span className="job-tile-preparation">{(() => { const remaining = checklist.items.filter(item => item.application_id === a.id && !item.is_done); return remaining.length ? `남은 준비 ${remaining.length}개 · ${remaining[0].title}` : checklist.items.some(item => item.application_id === a.id) ? '준비 완료' : '준비 미등록'; })()}</span>}
-      <span className="job-tile-bottom"><StatusChip status={a.status} />{pending && a.deadline && <span className={Date.parse(a.deadline) < Date.parse(today) ? 'job-deadline overdue' : 'job-deadline'}>{shortDate(a.deadline)} 마감 · {deadlineLabel(a.deadline, today)}</span>}{!pending && a.applied_date && <span className="job-date">{shortDate(a.applied_date)} 지원</span>}</span>
+      <span className="job-tile-bottom">
+        <StatusChip status={a.status} />
+        {pending && a.deadline && <span className={a.deadline < today ? 'job-deadline overdue' : 'job-deadline'}>
+          <time dateTime={a.deadline}>{shortDate(a.deadline)}</time> 마감 · {deadlineLabel(a.deadline, today)}
+        </span>}
+        {!pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
+      </span>
+      {preparation && <span className="job-tile-preparation">{preparation}</span>}
     </button>;
   }
   return <>
@@ -91,7 +101,7 @@ export default function ApplicationsPage() {
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
-      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>검색어 ‘{query.trim()}’에 해당하는 회사·직무가 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>지원 현황으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
+      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>검색어 ‘{query.trim()}’에 해당하는 회사·직무가 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>회사 목록으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
         <Tabs className="mobile-board-tabs" value={lane} onChange={(_,value) => changeParams({ lane: value }, true)} variant="fullWidth" aria-label="전형 단계">
           {BOARD_COLUMNS.map(c => <Tab key={c.id} id={`lane-tab-${c.id}`} aria-controls={`lane-${c.id}`} value={c.id} label={<span>{c.label}<b>{filtered.filter(a => boardColumn(a.status) === c.id).length}곳</b></span>} />)}
         </Tabs>

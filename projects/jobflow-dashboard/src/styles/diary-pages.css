@@ -88,11 +88,11 @@
 .workspace-diary .job-lane-heading h2 { font-size: 16px; }
 .workspace-diary .job-lane-cards { gap: 14px; }
 .workspace-diary .job-tile { padding: 16px; border-radius: 3px 8px 3px 3px; }
-.workspace-diary .job-tile-heading { width: auto; margin: 0 0 12px; padding: 0 0 12px; background: transparent; border-bottom: 1px solid var(--line); }
+.workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
 .workspace-diary .job-tile .company-mark { width: 30px; height: 34px; border-radius: 3px 7px 3px 3px; }
 .workspace-diary .job-tile .job-company { font-size: 16px; }
-.workspace-diary .job-tile-bottom { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.workspace-diary .job-tile-preparation { overflow-wrap: anywhere; }
+.workspace-diary .job-tile .job-tile-bottom { width: 100%; margin: 0; padding: 12px 0 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.workspace-diary .job-tile .job-tile-preparation { width: 100%; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
 .workspace-diary .applications-view-nav { margin-bottom: 20px; gap: 12px; }
 .workspace-diary .applications-view-nav a { border: 1px solid transparent; }
 .workspace-diary .applications-view-nav a[aria-current] { background: var(--action-tint); border-color: #ded7e6; }
@@ -177,7 +177,6 @@
   .workspace-diary .job-tile-heading { gap: 8px; }
   .workspace-diary .job-tile .job-company { font-size: 15px; }
   .workspace-diary .job-tile .company-mark { display: none; }
-  .workspace-diary .job-tile-preparation { font-size: 13px; }
   .workspace-diary .interview-page .interview-workspace { grid-template-columns: 220px minmax(0, 1fr); gap: 20px; }
   .diary-welcome .preview-stage-tabs { grid-template-columns: repeat(4, minmax(74px, 1fr)); }
 }

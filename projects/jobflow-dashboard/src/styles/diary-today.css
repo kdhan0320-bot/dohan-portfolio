@@ -35,13 +35,14 @@ body:has(.workspace-diary) { min-width: 0; }
 .diary-dday { font-size: 12px; line-height: 20px; font-weight: 600; }
 .diary-entry-followup .diary-entry-date { background: var(--record-heading); border: 1px solid var(--line); }
 .diary-entry-review .diary-entry-date { background: #f3e9ec; color: var(--record-rose); }
-.diary-entry-company, .diary-entry-next { min-width: 0; }
+.diary-entry-company, .diary-entry-next { min-width: 0; overflow-wrap: anywhere; }
 .diary-company-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 .diary-company-title h3 { margin: 0; font-size: 20px; font-weight: 600; line-height: 1.5; letter-spacing: -.025em; overflow-wrap: anywhere; }
 .diary-entry-company > p { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; font-size: 14px; line-height: 1.65; color: var(--muted); }
 .diary-applied-date { white-space: nowrap; font-size: 13px; }
 .diary-entry-next > span { font-size: 13px; color: var(--muted); }
-.diary-entry-next small { font-size: inherit; }
+.diary-entry-next small { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.diary-entry-next.is-quiet p { color: var(--muted); font-size: 14px; }
 .diary-entry-next p { margin: 7px 0 0; font-size: 16px; line-height: 1.65; overflow-wrap: anywhere; }
 .diary-entry .diary-entry-open.MuiButton-root { justify-content: flex-end; padding-inline: 8px; color: var(--ink-action); white-space: nowrap; }
 .diary-overview :is(.diary-entry-open, .diary-common .MuiButton-root) { font-size: 14px; font-weight: 500; }
@@ -63,6 +64,14 @@ body:has(.workspace-diary) { min-width: 0; }
 .workspace-diary .site-footer nav { margin-inline-start: auto; }
 
 @media (min-width: 1000px) {
+  .diary-entry { grid-template-columns: var(--entry-date-width, 96px) minmax(0, 1fr) auto; grid-template-areas: "date company open" "date next open"; gap: 6px 24px; }
+  .diary-entry-date { grid-area: date; }
+  .diary-entry-company { grid-area: company; align-self: end; }
+  .diary-entry-company > p { margin-top: 2px; }
+  .diary-entry-next { grid-area: next; align-self: start; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
+  .diary-entry-next > span { color: var(--record-blue); font-size: 14px; font-weight: 500; }
+  .diary-entry-next p { min-width: 0; margin: 0; }
+  .diary-entry-open { grid-area: open; }
   body:has(.workspace-diary) { background: #edf0f0; }
   #root:has(.workspace-diary) { display: flow-root; }
   .workspace-with-topnav.workspace-diary { --diary-page-offset: max(var(--diary-inset), calc((100dvh - 1122px) / 2)); }
@@ -99,8 +108,31 @@ body:has(.workspace-diary) { min-width: 0; }
   .diary-page-tab { right: -25px; width: 20px; }
   .diary-welcome #welcome-content > .diary-page-tab { right: 7px; }
   .workspace-diary .site-footer .site-footer-inner { margin-inline: 32px; }
-  .diary-entry { grid-template-columns: 84px minmax(150px, 1fr) minmax(160px, 1fr) 100px; gap: 18px; }
+  .diary-entry { --entry-date-width: 84px; column-gap: 18px; }
   .diary-company-title h3 { font-size: 18px; }
+}
+
+/* Use the diary's side margin for the index when both columns fit. */
+@media (min-width: 1200px) {
+  .diary-workday {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(208px, 18vw, 272px);
+    grid-template-rows: auto 1fr;
+    grid-template-areas: "records totals" "records common";
+    align-items: start;
+    column-gap: clamp(24px, 3vw, 44px);
+    margin-top: 28px;
+  }
+  .diary-company-records { grid-area: records; min-width: 0; }
+  .diary-company-records .diary-attention .diary-section-heading { align-items: start; flex-direction: column; gap: 4px; padding-top: 0; }
+  .diary-workday .diary-support-summary { grid-area: totals; display: block; padding: 0 0 16px 20px; border: 0; border-left: 1px solid var(--line); }
+  .diary-support-summary > a { display: flex; justify-content: space-between; min-height: 30px; font-size: 16px; font-weight: 550; }
+  .diary-support-summary dl { display: grid; gap: 8px; padding: 14px 0 0; border: 0; }
+  .diary-support-summary dl > div { justify-content: space-between; }
+  .diary-workday .diary-common { grid-area: common; display: block; margin-top: 0; padding: 18px 0 0 20px; border: 0; border-left: 1px solid var(--line); border-radius: 0; background: transparent; }
+  .diary-common h2 { display: flex; align-items: baseline; justify-content: space-between; color: var(--mint-ink); border-top: 1px solid var(--line); padding-top: 16px; }
+  .diary-common p { overflow-wrap: anywhere; }
+  .diary-common .MuiButton-root { margin-top: 8px; padding-inline: 0; }
 }
 
 @media (min-width: 1000px) and (max-height: 760px) {
