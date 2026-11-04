@@ -112,6 +112,18 @@
   }
 }
 
+@media (min-width: 1000px) {
+  .diary-welcome .galpi-intro {
+    grid-template-columns: fit-content(52%) minmax(0, 1fr); align-items: center;
+    column-gap: 24px; row-gap: 0;
+  }
+  .diary-welcome .galpi-intro-heading { display: contents; }
+  .diary-welcome .galpi-intro :is(.galpi-eyebrow, h1) { grid-column: 1 / -1; }
+  .diary-welcome .galpi-intro h1 { margin-bottom: 16px; }
+  .diary-welcome .galpi-intro-heading > p { margin: 0; }
+  .diary-welcome .galpi-intro-action { justify-self: start; max-width: 100%; }
+  .diary-welcome .galpi-intro-action > .MuiButton-root { min-width: 188px; }
+}
 @media (min-width: 1600px) {
   .diary-welcome .preview-records > .preview-record {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -131,7 +143,7 @@
 .workspace-diary .job-lane-heading { min-height: 58px; padding: 16px 4px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
 .workspace-diary .job-lane-heading h2 { font-size: 16px; }
 .workspace-diary .job-lane-cards { gap: 14px; }
-.workspace-diary .job-tile { padding: 16px; border-radius: 3px 8px 3px 3px; }
+.workspace-diary .job-tile { --tile-inset: 16px; padding: var(--tile-inset); border-radius: 3px 8px 3px 3px; }
 .workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
 /* Follow one company's index from the board to its preparation sheet and detail. */
 :is(.diary-welcome .preview-company-identity, .workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .workspace-diary .practice-record-company, .company-record-title) .company-mark {
@@ -154,8 +166,26 @@
   --index-width: 42px; height: 46px; background: var(--record-blue); color: #fff;
   font-size: 20px; font-weight: 550;
 }
+.workspace-diary .job-tile-heading .company-mark {
+  margin-inline-start: calc(-1 * var(--tile-inset));
+  flex-basis: calc(var(--index-width, 32px) + var(--tile-inset));
+  width: calc(var(--index-width, 32px) + var(--tile-inset));
+  padding-inline-start: var(--tile-inset); border-radius: 0 2px 2px 0;
+}
 .workspace-diary .job-tile .job-company { font-size: 16px; }
 .workspace-diary .job-tile .job-tile-bottom { width: 100%; margin: 0; padding: 12px 0 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.workspace-diary .job-tile .job-date time { color: var(--ink); font-variant-numeric: tabular-nums; }
+.workspace-diary .job-tile .board-schedule {
+  display: inline-flex; align-items: baseline; gap: 5px; max-width: 100%;
+  color: var(--record-blue); font-variant-numeric: tabular-nums;
+}
+.workspace-diary .job-tile .board-schedule time {
+  padding: 2px 7px; background: var(--record-wash); color: inherit;
+  clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%);
+  font-size: 14px; line-height: 20px; font-weight: 600;
+}
+.workspace-diary .job-tile .board-schedule.overdue { color: var(--record-rose); }
+.workspace-diary .job-tile .board-schedule.overdue time { background: #f2e7e9; }
 .workspace-diary .job-tile .job-tile-preparation { width: 100%; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
 .workspace-diary .applications-view-nav { margin-bottom: 20px; gap: 12px; }
 .workspace-diary .applications-view-nav a { border: 1px solid transparent; }
@@ -283,7 +313,7 @@
   .diary-welcome #welcome-content > .diary-page-tab { right: 7px; }
   .workspace-diary .workspace-main .job-board { gap: 10px; }
   .workspace-diary .workspace-main .job-lane { padding-inline: 8px; }
-  .workspace-diary .job-tile { padding: 12px; }
+  .workspace-diary .job-tile { --tile-inset: 12px; }
   .workspace-diary .job-tile-heading { gap: 8px; }
   .workspace-diary .job-tile .job-company { font-size: 15px; }
   .workspace-diary .job-tile { --index-width: 26px; }
@@ -295,9 +325,10 @@
   .workspace-with-topnav.workspace-diary .workspace-main .route-surface .page-heading { margin-bottom: 20px; }
   .workspace-diary .workspace-main .page-heading h1 { font-size: 28px; }
   .diary-welcome .galpi-intro { padding-top: 0; padding-bottom: 24px; margin-bottom: 24px; }
-  .diary-welcome .galpi-intro h1 { font-size: 30px; }
+  .diary-welcome .galpi-intro h1 { font-size: 30px; margin-bottom: 6px; }
   .diary-welcome .galpi-eyebrow { margin-bottom: 8px; }
-  .diary-welcome .galpi-intro-heading > p { margin-top: 8px; font-size: 14px; }
+  .diary-welcome .galpi-intro-heading > p { font-size: 14px; }
+  .diary-welcome .galpi-intro-action > .MuiButton-root { min-height: 44px; padding-block: 8px; }
   .diary-welcome .preview-records > .preview-record { min-height: 250px; padding: 24px; }
   .diary-welcome .preview-record-summary { gap: 20px; }
   .workspace-diary .workspace-main .settings-grid { margin-top: 24px; }
@@ -336,7 +367,6 @@
   .workspace-diary .interview-page .practice-card:not(.inline-answer-editor) { min-height: 0; }
   .workspace-diary .interview-page .practice-question h2 { font-size: 21px; }
   .workspace-diary .workspace-main .job-lane { border: 0; padding: 0; min-height: 0; background: transparent; }
-  .workspace-diary .job-tile { padding: 16px; }
   .workspace-diary .grouped-checklist .preparation-group-heading { padding: 16px; }
   .workspace-diary .workspace-main .settings-card, .workspace-diary .workspace-main .settings-sample-grid > .settings-card:not(.settings-account) { padding: 20px; }
   .workspace-diary .settings-sample-grid .settings-sample-actions { gap: 24px; }

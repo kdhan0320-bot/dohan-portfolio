@@ -82,10 +82,11 @@ export default function ApplicationsPage() {
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
       <span className="job-tile-bottom">
         <StatusChip status={a.status} />
-        {pending && a.deadline && <span className={a.deadline < today ? 'job-deadline overdue' : 'job-deadline'}>
-          <time dateTime={a.deadline}>{shortDate(a.deadline)}</time> 마감 · {deadlineLabel(a.deadline, today)}
+        {pending && a.deadline && <span className={`job-deadline board-schedule${a.deadline < today ? ' overdue' : ''}`}>
+          <time dateTime={a.deadline}>{shortDate(a.deadline)}</time>{' '}
+          <span>{a.deadline > today && '마감 · '}{deadlineLabel(a.deadline, today)}</span>
         </span>}
-        {a.status === '면접 예정' ? <span className="job-date">{a.interview_date ? <><time dateTime={a.interview_date}>{shortDate(a.interview_date)}</time> 면접</> : '면접일 미정'}</span> : !pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
+        {a.status === '면접 예정' ? <span className="job-date board-schedule">{a.interview_date ? <><time dateTime={a.interview_date}>{shortDate(a.interview_date)}</time> 면접</> : '면접일 미정'}</span> : !pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
       </span>
       {preparation && <span className="job-tile-preparation">{preparation}</span>}
     </button>;
