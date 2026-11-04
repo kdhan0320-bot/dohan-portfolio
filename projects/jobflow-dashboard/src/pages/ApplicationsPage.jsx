@@ -1,6 +1,6 @@
 import ApplicationsNav from '../components/applications/ApplicationsNav';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { Button, InputAdornment, Tab, Tabs, useMediaQuery } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import Search from '@mui/icons-material/Search';
@@ -94,14 +94,15 @@ export default function ApplicationsPage() {
     <PageHeading art="folder" title="지원 관리" description={`전체 ${applications.length}곳 · 지원 중 ${activeCount}곳`}>
       <Button id="board-add-company" className="company-add-action" aria-label="지원할 회사 등록" variant="contained" startIcon={<Add />} onClick={() => changeParams({ new: '1', company: null })} aria-haspopup="dialog"><span className="full-action-label">지원할 회사 등록</span><span className="compact-action-label">회사 등록</span></Button>
     </PageHeading>
-    <ApplicationsNav />
+    {!mobile && <ApplicationsNav />}
     <div className="board-toolbar">
       <Field id="board-company-search" className="board-search" size="small" label="회사·직무 검색" hideLabel placeholder="회사·직무 검색" value={query} onChange={e => searchCompanies(e.target.value)} slotProps={{ input: { startAdornment: <InputAdornment position="start"><Search fontSize="small" /></InputAdornment>, endAdornment: query ? <InputAdornment position="end"><Button className="search-clear" onClick={clearSearch} aria-label="검색어 지우기"><Close fontSize="small" /></Button></InputAdornment> : undefined } }} />
       <Button className="paused-toggle" startIcon={<Pause fontSize="small" />} variant={paused ? 'contained' : 'text'} aria-pressed={paused} onClick={() => changeParams({ view: paused ? null : 'paused' }, true)}>보류함 {pausedCount}</Button>
+      {mobile && <Link className="board-calendar-link" to="/calendar" aria-label="지원 마감 달력">마감 달력</Link>}
     </div>
     <LoadState loading={loading} error={error} retry={refresh} />
     {!loading && !error && <>
-      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>검색어 ‘{query.trim()}’에 해당하는 회사·직무가 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>회사 목록으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
+      {noSearchResults ? <section className="board-no-results" aria-live="polite"><Empty title="검색 결과가 없어요"><p>‘{query.trim()}’ 검색 결과가 {paused ? '보류함' : '회사 목록'}에 없어요.</p><Button variant="outlined" onClick={clearSearch}>검색어 지우기</Button></Empty></section> : paused ? <section className="paused-board" aria-labelledby="paused-title"><div className="paused-heading"><h2 id="paused-title">잠시 보류한 회사</h2><Button onClick={() => changeParams({ view: null }, true)}>회사 목록으로</Button></div><div className="paused-cards">{filtered.filter(a => a.status === '보류').map(card)}</div>{!filtered.some(a => a.status === '보류') && <Empty title="보류한 회사가 없어요" />}</section> : <>
         <Tabs className="mobile-board-tabs" value={lane} onChange={(_,value) => changeParams({ lane: value }, true)} variant="fullWidth" aria-label="전형 단계">
           {BOARD_COLUMNS.map(c => <Tab key={c.id} id={`lane-tab-${c.id}`} aria-controls={`lane-${c.id}`} value={c.id} label={<span>{c.label}<b>{filtered.filter(a => boardColumn(a.status) === c.id).length}곳</b></span>} />)}
         </Tabs>
@@ -111,7 +112,10 @@ export default function ApplicationsPage() {
             return <section className={`job-lane ${lane === column.id ? 'mobile-selected' : ''}`} id={`lane-${column.id}`} key={column.id} role={mobile ? 'tabpanel' : undefined} aria-labelledby={mobile ? `lane-tab-${column.id}` : `lane-title-${column.id}`} style={{ '--lane-color': column.color, '--lane-tint': column.tint }}>
               {!mobile && <header className="job-lane-heading"><h2 id={`lane-title-${column.id}`}>{column.label}</h2><span className="lane-count">{rows.length}곳</span></header>}
               <div className="job-lane-cards">{rows.map(card)}</div>
-              {!rows.length && <div className="job-lane-empty" aria-label="회사 없음"><span aria-hidden="true">—</span>{column.id === 'before' && <p>{query ? '이 단계에는 검색 결과가 없어요' : '지원할 회사를 등록해보세요'}</p>}</div>}
+              {!rows.length && <div className="job-lane-empty" aria-label="회사 없음">
+                <span aria-hidden="true">—</span>
+                {(mobile || column.id === 'before') && <p>{query.trim() ? '이 단계에는 검색 결과가 없어요' : column.id === 'before' ? '지원할 회사를 등록해보세요' : `${column.label} 단계의 회사가 없어요`}</p>}
+              </div>}
             </section>;
           })}
         </div>

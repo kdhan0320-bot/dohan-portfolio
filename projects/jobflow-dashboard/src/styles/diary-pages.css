@@ -71,10 +71,13 @@
   background: linear-gradient(45deg, transparent 48%, #fff 50%); pointer-events: none;
 }
 
-/* Company records stay in the existing four-stage board. */
-@media (min-width: 1800px) and (min-height: 1000px) {
-  .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: clamp(100px, 12vh, 190px); }
-  .diary-welcome .galpi-intro { width: 100%; }
+/* The opening spread fits its single sample record; work pages retain their longer sheets. */
+@media (min-width: 1600px) and (min-height: 900px) {
+  .workspace-with-topnav.workspace-diary.diary-welcome { --diary-max-height: 900px; }
+  .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: clamp(64px, 12vh, 172px); }
+  .diary-welcome .site-footer .site-footer-inner {
+    width: min(1100px, calc(100% - 104px)); margin-inline: auto;
+  }
 }
 
 @media (min-width: 1600px) {
@@ -90,6 +93,7 @@
   .diary-welcome .preview-preparation li { padding-block: 6px; }
 }
 
+/* Company records stay in the existing four-stage board. */
 .workspace-diary .workspace-main .job-board { gap: 16px; padding-top: 0; }
 .workspace-diary .workspace-main .job-lane { min-height: 350px; padding: 0 12px 16px; border: 1px solid var(--line); border-radius: var(--record-corners); background: #f7f8f7; }
 .workspace-diary .job-lane-heading { min-height: 58px; padding: 16px 4px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
@@ -121,6 +125,32 @@
 .workspace-diary .applications-view-nav a { border: 1px solid transparent; }
 .workspace-diary .applications-view-nav a[aria-current] { background: var(--action-tint); border-color: #ded7e6; }
 .workspace-diary .board-toolbar { gap: 20px; }
+@media (max-width: 699px) {
+  .workspace-diary .workspace-main .board-toolbar {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center; gap: 6px; margin-bottom: 6px;
+  }
+  .workspace-diary .board-toolbar .board-search { width: 100%; min-width: 0; }
+  .workspace-diary .board-toolbar .MuiInputBase-root { padding-inline: 10px; min-height: 44px; }
+  .workspace-diary .board-search .MuiInputBase-root:has(.search-clear) { padding-right: 0; }
+  .workspace-diary .board-search .search-clear.MuiButton-root { width: 44px; min-width: 44px; height: 44px; padding: 0; }
+  .workspace-diary .board-toolbar .paused-toggle, .workspace-diary .board-calendar-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin: 0; min-width: 44px; min-height: 44px; padding-inline: 6px;
+    white-space: nowrap; font-size: 13px;
+  }
+  .workspace-diary .board-calendar-link { color: var(--ink-action); border-radius: 5px; }
+  .workspace-diary .board-calendar-link:hover { font-weight: 650; }
+  .workspace-diary .board-calendar-link:focus-visible { outline: 2px solid var(--focus); }
+  .workspace-diary .workspace-main .mobile-board-tabs { min-height: 44px; margin-bottom: 6px; }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root { min-height: 44px; padding: 4px 2px; }
+}
+@media (min-width: 375px) and (max-width: 699px) {
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root > span { flex-direction: row; gap: 4px; }
+}
+@media (max-width: 374px) {
+  .workspace-diary .board-search .MuiInputAdornment-positionStart { display: none; }
+}
 
 /* Preparation groups and interview pages use the same quiet paper edge. */
 .workspace-diary .grouped-checklist .preparation-groups { gap: 24px; }
