@@ -271,7 +271,7 @@
       article: "enclosed-spaces",
       lens: "낯선 세계, 남겨진 선택",
       comparisonFocus: "상상 · 선택",
-      pairCaptions: ["남겨진 기록", "응답을 기다리는 신호"],
+      pairCaptions: ["남겨진 기록을 읽다", "소원과 요청에 답하다"],
       previewDescription: "낯선 공간과 사건 속에서 인물이 무엇을 지킬지 살펴봅니다.",
       previewImage: "assets/frames-v35/greenhouse.webp",
       imageAlt: "관측창 너머 지구를 바라보며 귀환을 기다리는 기록원",
@@ -311,7 +311,7 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "낯선 공간이 인물의 선택을 어떻게 바꾸는지에 주목했습니다. 비밀을 발견하는 이야기에서 신호에 답해야 하는 이야기로 이어집니다.",
+        "일지와 메시지를 읽는 두 사람에서, 소원과 구조 요청에 응답할 두 사람으로 시선을 옮깁니다.",
       ],
     },
   ];
@@ -527,6 +527,30 @@
     } else if (context !== "theme") article.append(makeDraftLink(film));
     return article;
   }
+  function makeSingleHomeCard(film) {
+    const card = makeCard(film, "home");
+    card.classList.add("single-result");
+    const trigger = card.querySelector(".film-art");
+    const poster = trigger.querySelector("img");
+    const picture = document.createElement("picture");
+    const scene = document.createElement("source");
+    scene.media = "(min-width: 801px)";
+    scene.srcset = scenePath(film);
+    picture.append(scene, poster);
+    picture.style.setProperty("--result-position", film.sequencePosition || film.detailPosition || "center");
+
+    const copy = document.createElement("span");
+    copy.className = "single-copy";
+    copy.innerHTML = `
+      <span class="single-conditions" aria-hidden="true"></span>
+      <span class="single-title">${film.title}</span>
+      <span class="single-meta">${film.genre} · ${film.minutes}분</span>
+      <span class="single-story">${film.description}</span>
+      <span class="single-open">작품 보기 ${icon("arrow")}</span>`;
+    trigger.replaceChildren(picture, copy);
+    return card;
+  }
+
   function renderThemes() {
     updateSaveButtons();
   }
@@ -637,7 +661,10 @@
         (state.homeMood === "all" || film.mood === state.homeMood) &&
         matchesDuration(film, state.homeDuration),
     );
-    filmRail.replaceChildren(...visible.map((film) => makeCard(film, "home")));
+    const cards = visible.length === 1
+      ? [makeSingleHomeCard(visible[0])]
+      : visible.map((film) => makeCard(film, "home"));
+    filmRail.replaceChildren(...cards);
     filmRail.hidden = visible.length === 0;
     filmRail.closest(".rail-shell").hidden = visible.length === 0;
     $("homeEmpty").hidden = visible.length > 0;
@@ -2182,7 +2209,10 @@
     if (state.homeDuration !== "all") {
       selected.push($("homeDuration").selectedOptions[0].textContent);
     }
-    $("homeSelection").textContent = selected.join(" · ");
+    const selection = selected.join(" · ");
+    $("homeSelection").textContent = selection;
+    const singleConditions = filmRail.querySelector(".single-conditions");
+    if (singleConditions) singleConditions.textContent = selection;
     $("homeSelection").hidden = selected.length === 0;
     $("homeOptionsActive").hidden = selected.length === 0;
     $("homeOptionsDone").firstChild.textContent = count ? `${count}편 보기` : "선택 완료";
