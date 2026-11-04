@@ -1,5 +1,5 @@
 /* The plate identifies the part. The adjoining ledger uses its actual stock. */
-.page-head:has(+ .sensor-slip) .page-description {
+.page-head:has(+ .sensor-slip, + .home-task-queue) .page-description {
   color: #465a70;
   font-size: 16px;
   line-height: 1.6;

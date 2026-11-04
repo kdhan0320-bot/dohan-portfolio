@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import { Link, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { useWorkspace } from './Workspace';
 import { PageHead, Empty, Modal, FormError, StateTag, Badge, WorkflowStatus, StockLedger, ListLink, ListBackLink, ReceiptProgress, LinkLabel, DateInput } from './UI';
-import { dateInput, day, money, amount, canReview, nextAction } from './model';
+import { dateInput, day, money, amount, canEdit, canReview, nextAction } from './model';
 import { stock, incoming, qty, orderItems, orderId, orderProgress, receivedQuantity, materialHistory } from './inventory';
 import Icon from './Icons';
 import { MaterialForm, VendorForm } from './CatalogForms';
@@ -20,25 +20,151 @@ const matches = (query, ...values) => values.join(' ').toLowerCase().includes(qu
 const staffButton = (role, action) => role === 'staff' ? action : <span className="muted role-readonly">조회 중 · 시연 역할 {role === 'manager' ? '팀장' : '사장님'}</span>;
 function Field({ label, children, optional }) { return <label className="field"><span>{label}{optional && <small className="optional">선택</small>}</span>{children}</label>; }
 function Actions({ onClose, children }) { return <div className="dialog-actions"><button type="button" className="button secondary" onClick={onClose}>취소</button><button className="button primary" type="submit">{children}</button></div>; }
+const compactHomeQuery = '(max-width: 680px)';
+
+function subscribeToHomeWidth(notify) {
+  const query = window.matchMedia(compactHomeQuery);
+  query.addEventListener('change', notify);
+  return () => query.removeEventListener('change', notify);
+}
+
+function isCompactHome() {
+  return window.matchMedia(compactHomeQuery).matches;
+}
+
+function HomeTaskQueue({ tasks, role, compact }) {
+  const preview = tasks.slice(0, compact ? 1 : 4);
+
+  return (
+    <section className={compact ? 'panel home-task-queue compact-task' : 'panel home-task-queue'} aria-labelledby="home-tasks-title">
+      <div className="panel-head">
+        <h2 id="home-tasks-title">지금 처리할 품의</h2>
+        {tasks.length > 0 && (
+          <ListLink id="home-all-tasks" className="subtle-link" to="/requests?status=action" aria-label={`처리할 품의 전체 ${tasks.length}건 보기`}>
+            전체 {tasks.length}건 보기
+          </ListLink>
+        )}
+      </div>
+      <div className="erp-task-list">
+        {preview.map(request => {
+          let to = `/requests/${request.id}`;
+          if (canEdit(request, role)) to += '/edit';
+          if (request.status === 'approved') to = `/orders/${request.id}`;
+
+          return (
+            <ListLink key={request.id} id={`home-task-${request.id}`} to={to}>
+              <div className="erp-row-top">
+                <span className="mono">{request.id}</span>
+                <Badge status={request.status}/>
+              </div>
+              <h3>{request.title || '제목 없는 품의'}</h3>
+              <div className="erp-row-bottom">
+                {!compact && <span>{request.status === 'revision' ? request.reason : money(amount(request))}</span>}
+                <strong>{nextAction(request, role)}</strong>
+              </div>
+            </ListLink>
+          );
+        })}
+        {!tasks.length && <p className="home-queue-empty">지금 처리할 품의가 없습니다.</p>}
+      </div>
+    </section>
+  );
+}
+
+function HomeReceipts({ waiting, data }) {
+  return (
+    <section className="panel home-receipts" aria-labelledby="home-receipts-title">
+      <div className="panel-head">
+        <h2 id="home-receipts-title">입고 확인할 발주</h2>
+        {waiting.length > 0 && (
+          <ListLink id="home-all-receipts" className="subtle-link" to="/orders?status=open" aria-label={`입고 확인할 발주 전체 ${waiting.length}건 보기`}>
+            전체 {waiting.length}건 보기
+          </ListLink>
+        )}
+      </div>
+      <div className="receipt-agenda">
+        {waiting.slice(0, 4).map(({ request, due, remaining }) => (
+          <ListLink key={request.id} className="receipt-agenda-row" id={`home-receipt-${request.id}`} to={`/orders/${request.id}`}>
+            <div className="receipt-agenda-date">
+              <span>{request.order?.expectedDate ? '입고 예정' : '희망 납기'}</span>
+              {due ? <time dateTime={due}>{day(due)}</time> : <strong>미정</strong>}
+            </div>
+            <div className="receipt-agenda-info">
+              <div className="receipt-agenda-id">
+                <span className="mono">{orderId(request)}</span>
+                <WorkflowStatus data={data} request={request} quantity={false}/>
+              </div>
+              <h3>{request.title}</h3>
+              <p><span>{request.supplier}</span><strong>미입고 {qty(remaining)}</strong></p>
+            </div>
+          </ListLink>
+        ))}
+        {!waiting.length && <p className="home-queue-empty">미입고 발주가 없습니다.</p>}
+      </div>
+    </section>
+  );
+}
+
 export function WorkOverview() {
   const { data, requests, role, materials } = useWorkspace();
-  const tasks = requests.filter(r => role === 'staff' ? ['draft', 'revision', 'approved'].includes(r.status) : canReview(r, role));
+  const compact = useSyncExternalStore(subscribeToHomeWidth, isCompactHome);
+  const tasks = requests.filter(request => role === 'staff'
+    ? ['draft', 'revision', 'approved'].includes(request.status)
+    : canReview(request, role));
   const rank = { revision: 0, approved: 1, draft: 2 };
   tasks.sort((a, b) => (rank[a.status] ?? 0) - (rank[b.status] ?? 0));
-  const waiting = requests.filter(r => r.status === 'ordered' && orderProgress(data, r).remaining > 0).sort((a, b) => (a.order.expectedDate || a.needBy).localeCompare(b.order.expectedDate || b.needBy));
-  const movements = materials.flatMap(m => materialHistory(data, m.id).map(event => ({ ...event, material: m }))).sort((a, b) => b.date.localeCompare(a.date) || (b.at || '').localeCompare(a.at || '') || b.id.localeCompare(a.id)).slice(0, 5);
-  return <><PageHead eyebrow="구매·자재 관리" title="업무 현황">엑셀·메일로 품의를 정리하고 센서를 현장에 지급했던 경험을 살려, 주문량과 지금 쓸 수 있는 재고를 구분했습니다.</PageHead>
-    <SensorSlip data={data} materials={materials}/>
-    <section className="erp-stats" aria-label="업무 요약">{[
-      ['내 처리 대기', tasks.length, '건', '/requests?status=action'],
-      ['발주 대기', requests.filter(r => r.status === 'approved').length, '건', '/orders?status=ready'],
-      ['입고 확인', waiting.length, '건', '/orders?status=open'],
-      ['보유 자재', materials.filter(m => stock(data, m.id) > 0).length, '종', '/materials?status=stock'],
-    ].map(([label, count, unit, to]) => <Link key={label} to={to}><span>{label}</span><strong>{count}<small>{unit}</small></strong></Link>)}</section>
-    <div className="erp-overview-grid"><section className="panel"><div className="panel-head"><h2>지금 처리할 품의 <small>{tasks.length}</small></h2><Link className="subtle-link" to="/requests?status=action">전체 보기</Link></div><div className="erp-task-list">{tasks.slice(0, 4).map(r => <Link key={r.id} to={r.status === 'approved' ? `/orders/${r.id}` : `/requests/${r.id}`}><div className="erp-row-top"><span className="mono">{r.id}</span><Badge status={r.status}/></div><h3>{r.title || '제목 없는 품의'}</h3><div className="erp-row-bottom"><span>{r.status === 'revision' ? r.reason : money(amount(r))}</span><strong>{nextAction(r, role)}</strong></div></Link>)}{!tasks.length && <Empty title="지금 처리할 품의가 없습니다."/>}</div></section>
-    <section className="panel voucher-panel"><div className="panel-head"><h2>입고 확인 대기</h2><Link className="subtle-link" to="/orders?status=open">전체 보기</Link></div><div className="voucher-list">{waiting.slice(0, 4).map((r, index) => { const progress = orderProgress(data, r), expected = r.order.expectedDate || r.needBy; return <Link className={`order-voucher${index > 0 ? ' order-voucher--summary' : ''}`} to={`/orders/${r.id}`} key={r.id}><div className="voucher-register"><span className="voucher-id"><small>발주 전표</small><span className="mono">{orderId(r)}</span></span><WorkflowStatus data={data} request={r} quantity={false}/></div><h3>{r.title}</h3><p className="voucher-vendor">{r.supplier}</p><dl className="voucher-quantities">{[['발주', progress.ordered], ['입고', progress.received], ['미입고', progress.remaining]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value.toLocaleString('ko-KR')}<small>EA</small></dd></div>)}</dl><div className="voucher-dates"><span>발주 {day(r.order.date || r.order.at)}</span><span>입고 예정 {day(expected)}</span></div>{index > 0 && <div className="voucher-brief"><span>미입고 <strong>{qty(progress.remaining)}</strong></span><span>입고 예정 <time dateTime={expected}>{day(expected)}</time></span></div>}</Link>; })}{!waiting.length && <Empty title="미입고 발주가 없습니다."/>}</div></section>
-    <section className="panel erp-recent"><div className="panel-head"><h2>최근 입고·지급</h2><Link className="subtle-link" to="/materials">자재 보기</Link></div><div className="erp-movement-list">{movements.map((m, i) => <Link to={`/materials/${m.material.id}`} key={`${m.id}-${i}`}><span className={`movement-sign ${m.quantity > 0 ? 'in' : 'out'}`}>{m.type}</span><strong className="movement-name">{m.material.name}</strong><span className="movement-quantity">{m.quantity > 0 ? '+' : '−'}{qty(Math.abs(m.quantity))}</span><small className="movement-party">{m.party}</small><time className="movement-date" dateTime={m.date}>{day(m.date)}</time></Link>)}</div>{!movements.length && <Empty title="아직 입고·지급 기록이 없습니다."/>}</section></div>
-  </>;
+
+  const waiting = requests.filter(request => request.status === 'ordered')
+    .map(request => ({
+      request,
+      due: request.order?.expectedDate || request.needBy,
+      remaining: orderProgress(data, request).remaining,
+    }))
+    .filter(entry => entry.remaining > 0)
+    .sort((a, b) => (a.due || '9999-12-31').localeCompare(b.due || '9999-12-31'));
+  const movements = materials.flatMap(material =>
+    materialHistory(data, material.id).map(event => ({ ...event, material }))
+  ).sort((a, b) => b.date.localeCompare(a.date) || (b.at || '').localeCompare(a.at || '') || b.id.localeCompare(a.id)).slice(0, 5);
+
+  const stats = [
+    ['발주 대기', requests.filter(request => request.status === 'approved').length, '건', '/orders?status=ready'],
+    ['입고 확인', waiting.length, '건', '/orders?status=open'],
+    ['보유 자재', materials.filter(material => stock(data, material.id) > 0).length, '종', '/materials?status=stock'],
+  ];
+  if (!compact) stats.unshift(['내 처리 대기', tasks.length, '건', '/requests?status=action']);
+  const taskQueue = <HomeTaskQueue tasks={tasks} role={role} compact={compact}/>;
+
+  return (
+    <>
+      <PageHead eyebrow="구매·자재 관리" title="업무 현황">엑셀·메일로 품의를 정리하고 센서를 현장에 지급했던 경험을 살려, 주문량과 지금 쓸 수 있는 재고를 구분했습니다.</PageHead>
+      {compact && taskQueue}
+      <SensorSlip data={data} materials={materials}/>
+      <section className="erp-stats" aria-label="업무 요약">
+        {stats.map(([label, count, unit, to]) => (
+          <Link key={label} to={to}><span>{label}</span><strong>{count}<small>{unit}</small></strong></Link>
+        ))}
+      </section>
+      <div className="erp-overview-grid">
+        {!compact && taskQueue}
+        <HomeReceipts waiting={waiting} data={data}/>
+        <section className="panel erp-recent">
+          <div className="panel-head"><h2>최근 입고·지급</h2><Link className="subtle-link" to="/materials">자재 보기</Link></div>
+          <div className="erp-movement-list">
+            {movements.map((movement, index) => (
+              <Link to={`/materials/${movement.material.id}`} key={`${movement.id}-${index}`}>
+                <span className={`movement-sign ${movement.quantity > 0 ? 'in' : 'out'}`}>{movement.type}</span>
+                <strong className="movement-name">{movement.material.name}</strong>
+                <span className="movement-quantity">{movement.quantity > 0 ? '+' : '−'}{qty(Math.abs(movement.quantity))}</span>
+                <small className="movement-party">{movement.party}</small>
+                <time className="movement-date" dateTime={movement.date}>{day(movement.date)}</time>
+              </Link>
+            ))}
+          </div>
+          {!movements.length && <Empty title="아직 입고·지급 기록이 없습니다."/>}
+        </section>
+      </div>
+    </>
+  );
 }
 export function OrderList() {
   const { data, requests } = useWorkspace();
@@ -48,7 +174,16 @@ export function OrderList() {
   const shown = orders.filter(r => inTab(r, status) && matches(query, r.title, r.id, r.supplier, orderId(r), ...r.items.map(i => i.name)));
   return <><PageHead eyebrow="PURCHASE ORDERS" title="발주·입고"/>
     <section className="panel"><div className="list-toolbar"><div className="filter-tabs" aria-label="발주 상태">{[['all', '전체'], ['ready', '발주 대기'], ['open', '입고 대기'], ['done', '입고 완료']].map(([key, label]) => <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key} onClick={() => set('status', key)}>{label}<span>{orders.filter(r => inTab(r, key)).length}</span></button>)}</div><Search value={query} onChange={v => set('q', v)} label="발주 검색" placeholder="발주번호·자재·업체 검색"/></div>
-    <table className="erp-table order-list-table row-link-table"><thead><tr><th>발주 / 품의</th><th>업체</th><th>발주일 / 납기</th><th>입고 수량</th><th>상태</th></tr></thead><tbody>{shown.map(r => { const p = orderProgress(data, r); return <tr key={r.id}><td data-label="발주 / 품의" className="cell-main"><span className="mono">{r.status === 'ordered' ? orderId(r) : r.id}</span><ListLink className="row-link" id={`order-title-${r.id}`} to={`/orders/${r.id}`} state={{ orderFrom: `/orders?${params}` }}><LinkLabel>{r.title}</LinkLabel></ListLink></td><td data-label="업체">{r.supplier}</td><td data-label="발주일 / 납기" className="cell-dates">{r.order ? day(r.order.date || r.order.at) : '등록 전'}<small>{r.order ? '입고 예정' : '희망 납기'} {day(r.order?.expectedDate || r.needBy)}</small></td><td data-label="입고 수량" className="cell-quantity"><span>{r.status === 'ordered' ? <><strong>{p.received}</strong> / {p.ordered} EA</> : '발주 등록 전'}</span><ReceiptProgress data={data} request={r}/>{r.status === 'ordered' && p.remaining > 0 && <small>미입고 {qty(p.remaining)}</small>}</td><td data-label="상태" className="cell-status"><WorkflowStatus data={data} request={r} quantity={false}/></td></tr>; })}</tbody></table>{!shown.length && <Empty title="조건에 맞는 발주가 없습니다."><button className="button secondary" onClick={() => { set('q', ''); }}>검색어 지우기</button></Empty>}</section></>;
+    <table className="erp-table order-list-table row-link-table"><thead><tr><th>발주 / 품의</th><th>업체</th><th>발주일 / 납기</th><th>입고 수량</th><th>상태</th></tr></thead><tbody>{shown.map(r => { const p = orderProgress(data, r); return <tr key={r.id}><td data-label="발주 / 품의" className="cell-main"><span className="mono">{r.status === 'ordered' ? orderId(r) : r.id}</span><ListLink className="row-link" id={`order-title-${r.id}`} to={`/orders/${r.id}`} state={{ orderFrom: `/orders?${params}` }}><LinkLabel>{r.title}</LinkLabel></ListLink></td><td data-label="업체">{r.supplier}</td><td data-label="발주일 / 납기" className="cell-dates">{r.order ? day(r.order.date || r.order.at) : '등록 전'}<small>{r.order ? '입고 예정' : '희망 납기'} {day(r.order?.expectedDate || r.needBy)}</small></td><td data-label="입고 수량" className="cell-quantity"><span>{r.status === 'ordered' ? <><strong>{p.received}</strong> / {p.ordered} EA</> : '발주 등록 전'}</span><ReceiptProgress data={data} request={r}/>{r.status === 'ordered' && p.remaining > 0 && <small>미입고 {qty(p.remaining)}</small>}</td><td data-label="상태" className="cell-status"><WorkflowStatus data={data} request={r} quantity={false}/></td></tr>; })}</tbody></table>
+    {!shown.length && (
+      <Empty title={query ? '검색된 발주가 없습니다.' : '이 목록에 표시할 발주가 없습니다.'}>
+        {query && <button className="button secondary" onClick={() => set('q', '')}>검색어 지우기</button>}
+        {!query && status !== 'all' && orders.length > 0 && (
+          <button className="button secondary" onClick={() => set('status', '')}>전체 발주 보기</button>
+        )}
+      </Empty>
+    )}
+    </section></>;
 }
 export function OrderDetail() {
   const { id } = useParams(), { data, requests, role, setRole } = useWorkspace();
