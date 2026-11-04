@@ -174,6 +174,19 @@ export function findSensorExample(data, materialId = 'MT-0001') {
   return seeded ? request : null;
 }
 
+// Issues are attributable to this example only while it is the sole source of the material.
+export function sensorIssueCaption(data, example) {
+  const [item] = orderItems(example);
+  const { issued } = materialTotals(data, item.materialId);
+  if (!issued) return '아직 현장 지급 전';
+  const count = issued.toLocaleString('ko-KR');
+  const pooled = data.receipts.some(receipt => receipt.requestId !== example.id
+    && receipt.lines.some(line => line.materialId === item.materialId && line.quantity > 0));
+  if (pooled) return `전체 재고에서 ${count}개 지급`;
+  if (issued === Number(item.quantity)) return `${count}개 모두 현장 지급`;
+  return `그중 ${count}개만 현장 지급`;
+}
+
 export function createERP(now = new Date()) {
   const at = offset => new Date(new Date(now).getTime() + offset * 86400000).toISOString();
   const on = offset => dateInput(at(offset));

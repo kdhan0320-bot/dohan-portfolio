@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createERP, stock, incoming, orderProgress, placeOrder, receiveOrder, issueMaterial, saveMaterial, saveVendor, migrateWorkspace, duplicateRequests, validateCatalogRequest } from '../src/procurement/inventory.js';
 import { createSamples, dateInput } from '../src/procurement/model.js';
 import { revisionChanges } from '../src/procurement/revisions.js';
-import { workflowStatus, comparisonLines, findSensorExample, ledgerMaterials, materialTotals, orderId, purchaseSteps } from '../src/procurement/inventory.js';
+import { workflowStatus, comparisonLines, findSensorExample, ledgerMaterials, materialTotals, orderId, purchaseSteps, sensorIssueCaption } from '../src/procurement/inventory.js';
 
 const today = dateInput();
 
@@ -26,6 +26,24 @@ test('the home case link targets only the seeded five-sensor order for the displ
   assert.equal(findSensorExample({ ...data, receipts: [] }, 'MT-0001'), null);
   sample.approvedSnapshot.items[0].quantity = 7;
   assert.equal(findSensorExample(data, 'MT-0001'), null);
+});
+
+test('the home title distinguishes partial, full and pooled sensor issues', () => {
+  const data = createERP();
+  const example = findSensorExample(data);
+  const sensorIssue = data.issues.find(issue => issue.materialId === 'MT-0001');
+  assert.equal(sensorIssueCaption(data, example), '그중 2개만 현장 지급');
+  assert.equal(sensorIssueCaption({ ...data, issues: [] }, example), '아직 현장 지급 전');
+
+  const received = receiveOrder(data, example.id, 'staff', {
+    date: today, lines: [{ index: 0, quantity: 2 }], token: 'receive-last-two',
+  });
+  assert.equal(sensorIssueCaption(received, example), '그중 2개만 현장 지급');
+  const issued = issueMaterial(received, 'staff', { ...sensorIssue, date: today, quantity: 3, token: 'issue-last-three' });
+  assert.equal(sensorIssueCaption(issued, example), '5개 모두 현장 지급');
+
+  const otherReceipt = { requestId: 'PR-OTHER', lines: [{ materialId: 'MT-0001', quantity: 1 }] };
+  assert.equal(sensorIssueCaption({ ...data, receipts: [...data.receipts, otherReceipt] }, example), '전체 재고에서 2개 지급');
 });
 
 test('the five-sensor example keeps the same quantity rationale in the request, submission and approval', () => {
