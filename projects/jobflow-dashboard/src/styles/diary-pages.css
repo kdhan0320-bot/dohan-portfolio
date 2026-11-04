@@ -84,7 +84,23 @@
 .workspace-diary .job-lane-cards { gap: 14px; }
 .workspace-diary .job-tile { padding: 16px; border-radius: 3px 8px 3px 3px; }
 .workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
-.workspace-diary .job-tile .company-mark { width: 30px; height: 34px; border-radius: 3px 7px 3px 3px; }
+/* Follow one company's index from the board to its preparation sheet and detail. */
+:is(.workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .company-summary .summary-identity) .company-mark {
+  display: inline-grid;
+  flex: 0 0 var(--index-width, 32px);
+  width: var(--index-width, 32px);
+  height: 36px;
+  border: 0;
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
+  background: var(--record-wash);
+  color: var(--record-blue);
+  font-size: 15px;
+  font-weight: 550;
+}
+.workspace-diary :is(.job-tile, .grouped-checklist .company-record) {
+  box-shadow: 2px 2px 0 -1px #fff, 2px 2px 0 var(--line);
+}
 .workspace-diary .job-tile .job-company { font-size: 16px; }
 .workspace-diary .job-tile .job-tile-bottom { width: 100%; margin: 0; padding: 12px 0 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .workspace-diary .job-tile .job-tile-preparation { width: 100%; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
@@ -95,10 +111,13 @@
 
 /* Preparation groups and interview pages use the same quiet paper edge. */
 .workspace-diary .grouped-checklist .preparation-groups { gap: 24px; }
-.workspace-diary .grouped-checklist .preparation-group-heading { border-left: 0; border-radius: 3px 8px 0 0; background: var(--record-heading); padding: 20px 22px; }
+.preparation-group-identity { display: flex; align-items: center; min-width: 0; gap: 10px; }
+.workspace-diary .grouped-checklist .preparation-group-heading { align-items: center; border-left: 0; border-radius: 3px 8px 0 0; background: var(--record-heading); padding: 20px 22px; }
 .workspace-diary .grouped-checklist .preparation-group-common .preparation-group-heading { background: var(--mint); }
 .workspace-diary .grouped-checklist .preparation-group-heading p { line-height: 1.7; }
 .workspace-diary .preparation-controls { margin: 0 0 20px; }
+.workspace-diary .preparation-filter-summary > span { min-width: 0; overflow-wrap: anywhere; }
+.workspace-diary .preparation-filter-summary > .MuiButton-root { flex-shrink: 0; white-space: nowrap; }
 .workspace-diary .interview-filter-fields { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); }
 .workspace-diary .interview-filter-bar { display: flex; align-items: center; gap: 8px 16px; }
 .workspace-diary .interview-filter-bar > .MuiButton-root { min-height: 44px; flex-shrink: 0; margin-left: auto; }
@@ -171,7 +190,7 @@
   .workspace-diary .job-tile { padding: 12px; }
   .workspace-diary .job-tile-heading { gap: 8px; }
   .workspace-diary .job-tile .job-company { font-size: 15px; }
-  .workspace-diary .job-tile .company-mark { display: none; }
+  .workspace-diary .job-tile { --index-width: 26px; }
   .workspace-diary .interview-page .interview-workspace { grid-template-columns: 220px minmax(0, 1fr); gap: 20px; }
   .diary-welcome .preview-stage-tabs { grid-template-columns: repeat(4, minmax(74px, 1fr)); }
 }

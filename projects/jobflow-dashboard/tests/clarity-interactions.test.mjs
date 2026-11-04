@@ -211,6 +211,24 @@ test('completing a task keeps its checked row visible until the status filter ch
   assert.equal(checkbox(), null);
 });
 
+test('preparation sheets follow the company stage and never substitute a deadline for a missing application date', async () => {
+  const company = { id: 'c', company_name: '샘플 회사', status: '지원 예정', deadline: '2026-10-05', applied_date: '2026-09-10' };
+  const items = [{ id: 't', title: '서류 확인', category: '서류', is_done: false, application_id: company.id }];
+  const page = await mount('ChecklistPage', {
+    '../hooks/useChecklist': { __esModule: true, default: () => ({ items }) },
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [company] }) },
+    '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'checklist'),
+  });
+  const date = () => page.find(node => node.type === 'time');
+  assert.equal(date().props.dateTime, company.deadline);
+  company.status = '면접 예정';
+  page.render();
+  assert.equal(date().props.dateTime, company.applied_date);
+  company.applied_date = null;
+  page.render();
+  assert.equal(date(), null);
+});
+
 test('inline interview editing restores an unfinished answer after leaving and saves without an editor dialog', async () => {
   const store = createRecordDraftStore();
   let notes = [{ id: 'question-1', question: '지원한 이유는?', answer: '저장된 답변', application_id: null, related_project: '', importance: '보통', is_reviewed: false }];

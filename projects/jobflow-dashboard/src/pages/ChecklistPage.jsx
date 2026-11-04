@@ -11,13 +11,17 @@ import useChecklist from '../hooks/useChecklist';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
 import { CHECKLIST_CATEGORIES } from '../constants';
-import { PageHeading, LoadState, Empty, ConfirmDelete } from '../components/ui/PageUI';
+import { PageHeading, LoadState, Empty, ConfirmDelete, CompanyMark } from '../components/ui/PageUI';
 import PreparationItem from '../components/ui/PreparationItem';
 import RecordStage from '../components/ui/RecordStage';
 import { BOARD_COLUMNS, boardColumn } from '../utils/applicationBoard';
 import { preparationGroups } from '../utils/preparationGroups';
 import { shortDate } from '../utils/dates';
 import ActionFeedback from '../components/ui/ActionFeedback';
+
+// Release the menu overlay as soon as a filter is chosen so the next tap
+// can reach the filtered list or the mobile navigation.
+const filterSelectSlots = { select: { MenuProps: { transitionDuration: 0 } } };
 
 export default function ChecklistPage() {
   const drafts = useRecordDraft('checklist');
@@ -280,11 +284,11 @@ export default function ChecklistPage() {
         </div>
           <div id="preparation-filters" className="preparation-filter-options" hidden={!filtersOpen}>
             <div className="preparation-filter-fields">
-              <Field label="회사" select size="small" value={companyScope} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
+              <Field label="회사" select size="small" value={companyScope} slotProps={filterSelectSlots} onChange={e => setScope(e.target.value)} disabled={Boolean(busy)}>
                 <MenuItem value="all">전체 회사 + 공통 준비</MenuItem><MenuItem value="common">공통 준비</MenuItem>
                 {companyOptions.map(company => <MenuItem className="checklist-company-option" key={company.id} value={company.id}>{companyLabel(company.id)}</MenuItem>)}
               </Field>
-              <Field label="분류" select size="small" value={filter} onChange={event => { setFilter(event.target.value); setCompletedHere([]); }}>
+              <Field label="분류" select size="small" value={filter} slotProps={filterSelectSlots} onChange={event => { setFilter(event.target.value); setCompletedHere([]); }}>
                 {['전체', ...CHECKLIST_CATEGORIES].map(value => <MenuItem key={value} value={value}>{value === '전체' ? '전체 분류' : value}</MenuItem>)}
               </Field>
             </div>
@@ -294,11 +298,25 @@ export default function ChecklistPage() {
           {tab === value && <div className="preparation-groups" ref={taskListRef} role="region" tabIndex={-1} aria-label={`${scopeLabel} · ${filter} · 표시된 항목 ${filtered.length}개`}>
             {groups.map(group => {
               const allGroupItems = scopedItems.filter(item => (item.application_id || 'common') === group.id);
+              const before = boardColumn(group.company?.status) === 'before';
+              const recordDate = before ? group.company?.deadline : group.company?.applied_date;
+              const doneCount = allGroupItems.filter(item => item.is_done).length;
               const row = item => <PreparationItem key={item.id} item={item} onToggle={toggleTask} disabled={Boolean(busy)} inputId={`task-check-${item.id}`} recent={completedHere.includes(item.id)} showCategory>
                 <IconButton id={`task-actions-${item.id}`} aria-label={`${item.title} 관리`} aria-haspopup="menu" aria-expanded={taskMenu?.item.id === item.id ? true : undefined} aria-controls={taskMenu?.item.id === item.id ? 'checklist-task-menu' : undefined} disabled={Boolean(busy)} onClick={event => setTaskMenu({ anchor: event.currentTarget, item })}><MoreHoriz fontSize="small" /></IconButton>
               </PreparationItem>;
               return <section className={`preparation-group company-record${group.id === 'common' ? ' preparation-group-common' : ''}`} key={group.id} aria-label={`${group.title} 할 일`} style={{ '--record-accent': BOARD_COLUMNS.find(column => column.id === boardColumn(group.company?.status))?.color || '#688b77' }}>
-                <header className="preparation-group-heading"><h2>{group.title}</h2>{group.company && <RecordStage status={group.company.status} />}<p>{group.company?.deadline && <span>공고 마감 {shortDate(group.company.deadline)}</span>}<span>남은 일 {allGroupItems.filter(item => !item.is_done).length}개</span><span>완료 {allGroupItems.filter(item => item.is_done).length}개</span></p></header>
+                <header className="preparation-group-heading">
+                  <div className="preparation-group-identity">
+                    {group.company && <CompanyMark name={group.title} />}
+                    <h2>{group.title}</h2>
+                  </div>
+                  {group.company && <RecordStage status={group.company.status} />}
+                  <p>
+                    {recordDate && <span>{before ? '공고 마감' : '지원일'} <time dateTime={recordDate}>{shortDate(recordDate)}</time></span>}
+                    <span>남은 일 {allGroupItems.length - doneCount}개</span>
+                    <span>완료 {doneCount}개</span>
+                  </p>
+                </header>
                 <div className="preparation-group-items">{group.items.map(row)}</div>
               </section>;
             })}
