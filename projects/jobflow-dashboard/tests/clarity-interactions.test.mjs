@@ -43,7 +43,7 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
   const modules = {
     react, 'react/jsx-runtime': { jsx, jsxs: jsx, Fragment: 'fragment' },
     '@mui/material': Object.fromEntries(names.map(name => [name, name])),
-    'react-router-dom': { Link: 'Link', useSearchParams: () => [params, value => { params = new URLSearchParams(typeof value === 'function' ? value(params) : value); }] },
+    'react-router-dom': { Link: 'Link', useLocation: () => ({}), useSearchParams: () => [params, value => { params = new URLSearchParams(typeof value === 'function' ? value(params) : value); }] },
     '../components/ui/Field': 'Field',
     '../components/ui/PageUI': Object.fromEntries(['PageHeading', 'LoadState', 'Empty', 'ConfirmDelete', 'CompanyMark'].map(name => [name, name])),
     '../components/ui/ActionFeedback': 'Feedback',
@@ -52,7 +52,7 @@ async function mount(page, dependencies, props, documentOverrides = {}, windowOv
     '../components/ui/RecordStage': 'RecordStage',
     '../components/ui/DiaryBookmark': 'DiaryBookmark',
     '../utils/applicationBoard': { BOARD_COLUMNS, boardColumn },
-    '../utils/preparationGroups': { preparationGroups },
+    '../utils/preparationGroups': { preparationGroups, todayCompanyGroups },
     '../utils/dates': { shortDate, deadlineLabel, interviewDayLabel },
     '../utils/textareaCaret': { revealTextareaCaret, observeTextareaLayout },
     '../constants': constants,
@@ -139,14 +139,15 @@ test('company preparation keeps its company and draft across closing, failures a
   assert.equal(another.find(node => node.type === 'form'), null, 'another company does not inherit the draft');
 });
 
-test('home starts at the top once and preview opens without navigation or a guest session', async () => {
+test('home previews the selected stage, then opens that company on Today or its full preparation list', async () => {
   const destinations = [];
   const scrolls = [];
   let guestStarts = 0;
+  const sampleItems = [...constants.DEMO_CHECKLISTS];
   const page = await mount('WelcomePage', {
-    'react-router-dom': { useNavigate: () => to => destinations.push(to) },
+    'react-router-dom': { useNavigate: () => (to, options) => destinations.push([to, options.state?.sampleCompanyId]) },
     '../context/AuthContext': { SampleRecordScope: 'SampleRecordScope', useAuth: () => ({
-      demoApplications: constants.DEMO_APPLICATIONS, demoItems: constants.DEMO_CHECKLISTS, demoNotes: constants.DEMO_INTERVIEW_NOTES,
+      demoApplications: constants.DEMO_APPLICATIONS, demoItems: sampleItems, demoNotes: constants.DEMO_INTERVIEW_NOTES,
       enterGuestMode: async () => guestStarts++,
     }) },
     '../components/layout/SiteHeader': 'Header',
@@ -156,7 +157,7 @@ test('home starts at the top once and preview opens without navigation or a gues
     '../utils/authErrors': { getAuthErrorMessage: error => error.message },
   }, undefined, {}, { scrollTo: (...position) => scrolls.push(position) });
   assert.deepEqual(scrolls, [[0, 0]], 'a fresh home visit does not retain a workspace scroll position');
-  page.find(node => node.type === 'Preview').props.onOpen('demo-3'); page.render();
+  await page.click('샘플 기록 체험하기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, true);
   assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-3');
   assert.deepEqual(destinations, []);
@@ -171,15 +172,24 @@ test('home starts at the top once and preview opens without navigation or a gues
   assert.deepEqual(destinations, []);
   await page.click('닫기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, false);
-  page.find(node => node.type === 'Preview').props.onOpen('demo-7'); page.render();
+  page.find(node => node.type === 'Preview').props.onStageChange(2); page.render();
+  await page.click('샘플 기록 체험하기');
+  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-1');
+  await page.click('준비 체크 체험하기');
+  await page.click('오늘에서 다음 준비 보기');
+  await page.click('닫기');
+  page.find(node => node.type === 'Preview').props.onStageChange(3); page.render();
+  await page.click('샘플 기록 체험하기');
   assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-7');
   await page.click('할 일 추가 체험하기');
   assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.startWithAdd, true);
-  await page.click('닫기');
+  assert.doesNotMatch(page.text(), /이 회사의 준비 보기/);
+  sampleItems.push({ application_id: 'demo-7', title: '결과 회고', is_done: true });
+  page.render();
+  await page.click('이 회사의 준비 보기');
   assert.equal(scrolls.length, 1, 'opening or closing the preview must not reset home scroll');
-  await page.click('샘플 체험하기');
-  assert.equal(guestStarts, 1);
-  assert.deepEqual(destinations, ['/overview']);
+  assert.equal(guestStarts, 2);
+  assert.deepEqual(destinations, [['/overview', 'demo-1'], ['/checklist?company=demo-7', 'demo-7']]);
 });
 
 test('today review opens the same company and requires an explicit status change', async () => {

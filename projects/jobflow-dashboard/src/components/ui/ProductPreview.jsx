@@ -1,16 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Button } from '@mui/material';
 import RecordStage from './RecordStage';
 import { CompanyMark } from './PageUI';
 import { DEMO_TODAY } from '../../constants';
-import { BOARD_COLUMNS, boardColumn } from '../../utils/applicationBoard';
+import { BOARD_COLUMNS } from '../../utils/applicationBoard';
 import { shortDate, deadlineLabel, interviewDayLabel } from '../../utils/dates';
 
 const weekday = new Intl.DateTimeFormat('ko-KR', { weekday: 'long', timeZone: 'UTC' });
 
 // This preview uses the same fictional records as the editable sample.
-export default function ProductPreview({ applications, items, onOpen }) {
-  const [stageIndex, setStageIndex] = useState(0);
+export default function ProductPreview({ stageCompanies, items, stageIndex, onStageChange, onOpen }) {
   const tabRefs = useRef([]);
   const stage = BOARD_COLUMNS[stageIndex];
   function moveTab(event, index) {
@@ -21,20 +20,20 @@ export default function ProductPreview({ applications, items, onOpen }) {
     else if (event.key === 'End') next = BOARD_COLUMNS.length - 1;
     else return;
     event.preventDefault();
-    setStageIndex(next);
+    onStageChange(next);
     tabRefs.current[next]?.focus();
   }
   return <div className="application-preview" style={{ '--stage-ink': stage.color, '--stage-tint': stage.tint }}>
     <div className="preview-toolbar"><div className="preview-heading"><h2>회사별 지원 기록</h2></div>
     <div className="preview-stage-tabs" role="tablist" aria-label="샘플 지원 단계">
-      {BOARD_COLUMNS.map((column, index) => <button key={column.id} type="button" role="tab" id={`preview-tab-${column.id}`} aria-controls={`preview-panel-${column.id}`} aria-selected={index === stageIndex} tabIndex={index === stageIndex ? 0 : -1} ref={element => { tabRefs.current[index] = element; }} onClick={() => setStageIndex(index)} onKeyDown={event => moveTab(event, index)} style={{ '--tab-ink': column.color, '--tab-tint': column.tint }}>
+      {BOARD_COLUMNS.map((column, index) => <button key={column.id} type="button" role="tab" id={`preview-tab-${column.id}`} aria-controls={`preview-panel-${column.id}`} aria-selected={index === stageIndex} tabIndex={index === stageIndex ? 0 : -1} ref={element => { tabRefs.current[index] = element; }} onClick={() => onStageChange(index)} onKeyDown={event => moveTab(event, index)} style={{ '--tab-ink': column.color, '--tab-tint': column.tint }}>
         <span className="preview-tab-label" data-label={column.label}><span className="preview-tab-measure" aria-hidden="true">{column.label}</span><span>{column.label}</span></span>
       </button>)}
     </div>
     </div>
     <div className="preview-records">
     {BOARD_COLUMNS.map((column, index) => {
-      const selected = applications.find(row => boardColumn(row.status) === column.id);
+      const selected = stageCompanies[index];
       const inactive = index !== stageIndex;
       const panelProps = {
         id: `preview-panel-${column.id}`, role: 'tabpanel', 'aria-labelledby': `preview-tab-${column.id}`,

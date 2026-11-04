@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
@@ -19,6 +19,9 @@ export default function DashboardPage() {
   const apps = useApplications();
   const check = useChecklist();
   const { isGuest, user } = useAuth();
+  const { state } = useLocation();
+  const sampleCompanyId = isGuest ? state?.sampleCompanyId : null;
+  const sampleRow = useRef(null);
   const today = useToday();
   const [feedback, setFeedback] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
@@ -31,6 +34,14 @@ export default function DashboardPage() {
   const dateText = `${Number(today.slice(5, 7))}월 ${Number(today.slice(8))}일 ${WEEKDAYS[(date.getUTCDay() + 6) % 7]}요일${isGuest ? ' · 샘플 기준일' : ''}`;
   const loading = apps.loading || check.loading;
   const error = apps.error || check.error;
+  useEffect(() => {
+    if (!sampleCompanyId || loading || error || !sampleRow.current) return;
+    const frame = window.requestAnimationFrame(() => {
+      sampleRow.current?.focus({ preventScroll: true });
+      sampleRow.current?.scrollIntoView({ block: 'nearest' });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [sampleCompanyId, loading, error]);
   function companyRow(company, review = false) {
     const tasks = check.items.filter(item => item.application_id === company.id);
     const remaining = tasks.filter(item => !item.is_done);
@@ -38,7 +49,10 @@ export default function DashboardPage() {
     const upcoming = beforeApplication(company);
     const interview = company.status === '면접 예정';
     const scheduleDate = upcoming ? company.deadline : company.interview_date;
-    return <article className={`diary-entry${review ? ' diary-entry-review' : ''}${upcoming ? '' : ' diary-entry-followup'}`} key={company.id}>
+    const fromSample = company.id === sampleCompanyId;
+    return <article className={`diary-entry${review ? ' diary-entry-review' : ''}${upcoming ? '' : ' diary-entry-followup'}`} key={company.id}
+      ref={fromSample ? sampleRow : undefined} tabIndex={fromSample ? -1 : undefined}
+      aria-labelledby={`today-name-${company.id}`} aria-describedby={fromSample ? `today-next-${company.id}` : undefined}>
       <div className="diary-entry-date">
         <span>{upcoming ? '지원 마감' : interview ? '면접일' : '전형 진행'}</span>
         {(upcoming || interview) && scheduleDate ? <time dateTime={scheduleDate}>{shortDate(scheduleDate)}</time> : <strong>{upcoming ? '미등록' : interview ? '미정' : '서류'}</strong>}
@@ -46,10 +60,10 @@ export default function DashboardPage() {
         {upcoming && company.deadline && <span className="diary-dday">{review ? '마감 지남' : deadlineLabel(company.deadline, today)}</span>}
       </div>
       <div className="diary-entry-company">
-        <div className="diary-company-title"><h3>{company.company_name}</h3><RecordStage status={company.status} /></div>
+        <div className="diary-company-title"><h3 id={`today-name-${company.id}`}>{company.company_name}</h3><RecordStage status={company.status} /></div>
         <p>{company.position || '직무 미입력'}{!upcoming && <span className="diary-applied-date">{company.applied_date ? <>지원 <time dateTime={company.applied_date}>{shortDate(company.applied_date)}</time></> : '지원일 미등록'}</span>}</p>
       </div>
-      <div className={`diary-entry-next${!review && !nextTask ? ' is-quiet' : ''}`}>
+      <div id={`today-next-${company.id}`} className={`diary-entry-next${!review && !nextTask ? ' is-quiet' : ''}`}>
         {(review || nextTask) && <span>{review ? '확인할 내용' : '다음 준비'}</span>}
         <p>{review ? '실제 지원 상태 확인' : nextTask?.title || (tasks.length ? '준비 완료' : '등록한 준비 없음')}
           {!review && remaining.length > 1 && <small> 외 {remaining.length - 1}개</small>}

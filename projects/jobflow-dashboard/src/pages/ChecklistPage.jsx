@@ -1,6 +1,6 @@
 import Field from '../components/ui/Field';
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { Button, Menu, MenuItem, Tabs, Tab, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Alert } from '@mui/material';
 import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
@@ -29,11 +29,12 @@ export default function ChecklistPage() {
   const { applications, loading: companiesLoading, error: companiesError, refresh: refreshCompanies } = useApplications();
   const [searchParams, setSearchParams] = useSearchParams();
   const companyScope = searchParams.get('company') || 'all';
+  const { state } = useLocation();
   const selectedCompany = applications.find(company => company.id === companyScope);
   const missingCompany = companyScope !== 'all' && companyScope !== 'common' && !selectedCompany;
   const companyMap = new Map(applications.map(company => [company.id, company]));
   const companyOptions = [...applications].sort((a, b) => a.company_name.localeCompare(b.company_name, 'ko'));
-  const [tab, setTab] = useState('todo');
+  const [tab, setTab] = useState(state?.sampleCompanyId === companyScope ? 'all' : 'todo');
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [completedHere, setCompletedHere] = useState([]);
   const [title, setTitle] = useState('');

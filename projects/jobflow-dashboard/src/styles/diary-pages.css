@@ -359,7 +359,14 @@
   .diary-welcome .preview-company-copy p { grid-row: 2; grid-column: 1; margin: 0; }
   .diary-welcome .preview-company-title .record-stage { grid-row: 2; grid-column: 2; }
   .diary-welcome .preview-record-heading h3 { font-size: 21px; }
-  .diary-welcome .preview-record-body { gap: 12px; margin: 0; padding: 18px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .diary-welcome .preview-record-body {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+    gap: 4px 12px; margin: 0; padding: 18px 0 0; border-left: 0; border-top: 1px solid var(--line);
+  }
+  .diary-welcome .preview-preparation { display: contents; }
+  .diary-welcome .preview-preparation h4 { grid-area: 1 / 1; margin: 0; }
+  .diary-welcome .preview-preparation > :is(ul, p) { grid-area: 2 / 1 / auto / -1; }
+  .diary-welcome .preview-record-body .preview-open-record { grid-area: 1 / 2; align-self: center; }
   .diary-welcome .preview-date-block { min-height: 64px; }
   .diary-welcome .preview-date-block .record-date { font-size: 32px; }
   .diary-welcome .preview-preparation ul { min-height: 84px; grid-template-rows: repeat(2, minmax(42px, auto)); }
