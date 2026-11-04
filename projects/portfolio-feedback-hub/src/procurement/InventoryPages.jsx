@@ -254,9 +254,38 @@ function IssueForm({ material, onClose }) {
   return <Modal title={`${material.name} 지급 기록`} onClose={onClose}><p className="dialog-context">{material.code} · 보유 {qty(stock(data, material.id))}</p><form noValidate onSubmit={submit}><div className="form-grid"><Field label="지급일"><DateInput label="지급일" max={dateInput()} value={form.date} onChange={e => set('date', e.target.value)} required/></Field><Field label="지급 수량 (EA)"><input type="number" inputMode="numeric" min="1" max={stock(data, material.id)} value={form.quantity} onChange={e => set('quantity', e.target.value)} required/></Field><Field label="부서·사용처"><input maxLength="80" placeholder="예: 설비보전팀" value={form.department} onChange={e => set('department', e.target.value)} required/></Field><Field label="받는 사람"><input maxLength="80" placeholder="가상 담당자" value={form.recipient} onChange={e => set('recipient', e.target.value)} required/></Field><div className="full"><Field label="지급 메모" optional><textarea rows="2" maxLength="300" value={form.note} onChange={e => set('note', e.target.value)}/></Field></div></div><FormError>{error}</FormError><Actions onClose={onClose}>지급 확정</Actions></form></Modal>;
 }
 export function VendorList() {
-  const { vendors, requests, role } = useWorkspace(), { query, set } = useFilters(), [adding, setAdding] = useState(false);
-  const shown = vendors.filter(v => matches(query, v.name, v.contact, v.note));
-  return <><PageHead eyebrow="SUPPLIERS" title="업체 관리" action={staffButton(role, <button className="button primary" onClick={() => setAdding(true)}><Icon name="plus" size={17}/>업체 등록</button>)}/><section className="panel"><div className="list-toolbar"><span className="muted">등록 업체 {vendors.length}곳</span><Search value={query} onChange={v => set('q', v)} label="업체 검색" placeholder="업체명·담당자·취급 자재 검색"/></div><table className="erp-table vendor-list-table row-link-table"><thead><tr><th>업체</th><th>담당자</th><th>연락처</th><th>연결 품의</th></tr></thead><tbody>{shown.map(v => <tr key={v.id}><td className="cell-main"><span className="mono">{v.id}</span><ListLink className="row-link" id={`vendor-title-${v.id}`} to={`/vendors/${v.id}`}><LinkLabel>{v.name}</LinkLabel></ListLink><small>{v.note}</small></td><td data-label="담당자">{v.contact || '—'}</td><td data-label="연락처" className="cell-contact">{v.phone || '전화 미등록'}<small>{v.email || '이메일 미등록'}</small></td><td data-label="연결 품의" className="cell-count">{requests.filter(r => r.supplierId === v.id).length}건</td></tr>)}</tbody></table>{!shown.length && <Empty title="검색된 업체가 없습니다."/>}</section>{adding && <VendorForm onClose={() => setAdding(false)}/>}</>;
+  const { vendors, requests, materials, role } = useWorkspace();
+  const { query, set } = useFilters();
+  const [adding, setAdding] = useState(false);
+  const term = query.trim();
+  const shown = vendors.filter(vendor => matches(term, '업체 ' + vendor.id, vendor.name, vendor.contact, vendor.note)
+    || materials.some(material => material.vendorId === vendor.id && matches(term, material.code, material.name)));
+
+  return <>
+    <PageHead register="vendor" eyebrow="거래처 등록 대장" title="업체 관리" action={staffButton(role,
+      <button className="button primary" onClick={() => setAdding(true)}><Icon name="plus" size={17}/>업체 등록</button>)}/>
+    <section className="panel">
+      <div className="list-toolbar">
+        <span className="muted">{term ? `검색 결과 ${shown.length}곳` : `등록 업체 ${vendors.length}곳`}</span>
+        <Search value={query} onChange={v => set('q', v)} label="업체 검색" placeholder="업체명·코드·담당자·자재 검색"/>
+      </div>
+      <table className="erp-table vendor-list-table row-link-table">
+        <thead><tr><th>업체</th><th>담당자</th><th>연락처</th><th>연결 품의</th></tr></thead>
+        <tbody>{shown.map(v => <tr key={v.id}>
+          <td className="cell-main">
+            <span className="mono"><DocumentNumber value={v.id}/></span>
+            <ListLink className="row-link" id={`vendor-title-${v.id}`} to={`/vendors/${v.id}`}><LinkLabel>{v.name}</LinkLabel></ListLink>
+            <small>{v.note}</small>
+          </td>
+          <td data-label="담당자">{v.contact || '—'}</td>
+          <td data-label="연락처" className="cell-contact">{v.phone || '전화 미등록'}<small>{v.email || '이메일 미등록'}</small></td>
+          <td data-label="연결 품의" className="cell-count">{requests.filter(r => r.supplierId === v.id).length}건</td>
+        </tr>)}</tbody>
+      </table>
+      {!shown.length && <Empty title="검색된 업체가 없습니다."/>}
+    </section>
+    {adding && <VendorForm onClose={() => setAdding(false)}/>}
+  </>;
 }
 export function VendorDetail() {
   const { id } = useParams(), { vendors, requests, materials, data, role } = useWorkspace(), [editing, setEditing] = useState(false);

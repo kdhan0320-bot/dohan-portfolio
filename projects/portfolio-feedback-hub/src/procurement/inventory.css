@@ -772,8 +772,49 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   opacity: .65;
 }
 .ledger-number[data-series="PO"] .ledger-series { background: #3b5875; border-color: #3b5875; color: white; }
+.ledger-number[data-series="VN"] .ledger-series {
+  color: #325657;
+  background: #edf4f2;
+  border-color: #8da9a6;
+  border-radius: 7px 2px 2px 7px;
+  padding-inline: 8px 5px;
+}
+.ledger-number[data-series="VN"] .ledger-series::after {
+  inset: 50% auto auto 3px;
+  width: 2px;
+  height: 2px;
+  transform: translateY(-50%);
+  background: currentColor;
+  border: 0;
+  border-radius: 50%;
+}
+.register-head > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+}
+.register-mark {
+  display: block;
+  grid-area: 1 / 1 / span 2;
+  width: 72px;
+  height: 54px;
+  color: #eef4f9;
+  background-color: #304a66;
+  background-image: linear-gradient(90deg, #ffffff0c 1px, transparent 1px), linear-gradient(#ffffff0c 1px, transparent 1px);
+  background-size: 12px 12px;
+  border-radius: 3px;
+}
+.register-ink { stroke: #a9e1d4; }
+.register-head .eyebrow { grid-column: 2; align-self: end; margin: 0; letter-spacing: .04em; }
+.register-head h1 { grid-column: 2; align-self: start; }
+@media (max-width: 680px) {
+  .register-head > div { column-gap: 8px; }
+  .register-mark { width: 44px; height: 40px; grid-row: 1; }
+  .register-head h1 { align-self: center; }
+}
 @media (min-width: 1101px) {
-  .purchase-list .table-heading, .order-list-table thead th {
+  .purchase-list .table-heading, .order-list-table thead th, .vendor-list-table thead th {
     background-color: #edf2f7;
     background-image: linear-gradient(90deg, #6d89a40c 1px, transparent 1px), linear-gradient(#6d89a409 1px, transparent 1px);
     background-size: 16px 16px;

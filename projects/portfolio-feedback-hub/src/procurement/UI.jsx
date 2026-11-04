@@ -30,10 +30,11 @@ export function ListBackLink({ fallback, children }) {
 
 export function DocumentNumber({ value }) {
   const prefix = value.split('-')[0];
-  if (prefix !== 'PR' && prefix !== 'PO') return <span>{value}</span>;
+  const series = { PR: '품의', PO: '발주', VN: '업체' }[prefix];
+  if (!series) return <span>{value}</span>;
   return (
     <span className="ledger-number" data-series={prefix}>
-      <span className="ledger-series">{prefix === 'PR' ? '품의' : '발주'}</span>{' '}
+      <span className="ledger-series">{series}</span>{' '}
       <span>{value}</span>
     </span>
   );
@@ -72,8 +73,30 @@ export function MaterialLedgerLinks({ materials, requestId }) {
     </div>
   </div>;
 }
-export function PageHead({ eyebrow, title, children, action }) {
-  return <header className="page-head"><div>{eyebrow && <p className="eyebrow">{eyebrow}</p>}<h1 tabIndex="-1">{title}</h1>{children && <p className="page-description">{children}</p>}</div>{action}</header>;
+function RegisterMark({ kind }) {
+  return <svg className="register-mark" viewBox="0 0 72 54" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      {kind === 'purchase' ? <>
+        <path d="M19 10h27l8 8v24H19zM46 10v9h8M15 16v30h33"/>
+        <path d="M25 18h12M25 25h20M25 32h9"/>
+        <path className="register-ink" d="m39 33 4 4 9-10"/>
+      </> : <>
+        <path d="m14 22 16-8 17 8-17 9zM14 22v13l16 8 11-5M30 31v12M22 18l16 8"/>
+        <path className="register-ink" d="M41 23h12l7 7-12 12-8-8z"/>
+        <circle cx="46" cy="28" r="1.7"/>
+      </>}
+    </g>
+  </svg>;
+}
+export function PageHead({ eyebrow, title, children, action, register }) {
+  return <header className={register ? 'page-head register-head' : 'page-head'}>
+    <div>{register && <RegisterMark kind={register}/>}
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
+      <h1 tabIndex="-1">{title}</h1>
+      {children && <p className="page-description">{children}</p>}
+    </div>
+    {action}
+  </header>;
 }
 export function Empty({ title = '표시할 기록이 없습니다.', children }) { return <div className="empty"><span className="empty-icon"><Icon name="file" size={28}/></span><h3>{title}</h3>{children}</div>; }
 // Keep an explicit date format while retaining the browser's calendar picker.
