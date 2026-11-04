@@ -153,6 +153,12 @@ export function saveMaterial(state, role, form, id) {
   const record = { id: id || nextId('MT', state.materials), code, name: clean(form.name), spec: clean(form.spec), unit: 'EA', vendorId: form.vendorId, price: Number(form.price) };
   return { ...state, materials: id ? state.materials.map(m => m.id === id ? record : m) : [...state.materials, record] };
 }
+const sensorExample = {
+  id: 'PR-2001',
+  title: '포장 라인 포토센서 교체',
+  purpose: '포장 라인 점검에서 센서 2개의 감지 불량을 확인했습니다. 바로 교체할 2개와 다음 정비 때 교체할 3개를 합쳐 총 5개가 필요합니다.',
+};
+
 export function createERP(now = new Date()) {
   const at = offset => new Date(new Date(now).getTime() + offset * 86400000).toISOString();
   const on = offset => dateInput(at(offset));
@@ -166,7 +172,7 @@ export function createERP(now = new Date()) {
     { id: 'MT-0004', code: 'SW-LM-01', name: '리미트 스위치', spec: '롤러 레버형 · IP67', unit: 'EA', vendorId: 'VN-0002', price: 18000 },
   ] };
   const rows = [
-    ['PR-2001', 0, 5, 'ordered', '포장 라인 포토센서 교체', -8],
+    [sensorExample.id, 0, 5, 'ordered', sensorExample.title, -8, sensorExample.purpose],
     ['PR-2002', 1, 8, 'ordered', '조립 라인 근접센서 확보', -7],
     ['PR-2003', 2, 6, 'approved', '제어반 릴레이 교체', -4],
     ['PR-2004', 3, 2, 'revision', '검사 장비 스위치 교체', -3],
@@ -174,9 +180,9 @@ export function createERP(now = new Date()) {
     ['PR-2006', 2, 3, 'draft', '정기 정비용 릴레이', -1],
     [ERP_SAMPLE_ID, 0, 2, 'team', '추가 설비 포토센서 구매', -6],
   ];
-  state.requests = rows.map(([id, index, quantity, status, title, offset]) => {
+  state.requests = rows.map(([id, index, quantity, status, title, offset, purpose = title]) => {
     const m = state.materials[index], vendor = state.vendors.find(v => v.id === m.vendorId);
-    let r = { ...emptyRequest(), id, title, department: '생산지원팀', purpose: title, supplier: vendor.name, supplierId: vendor.id, needBy: on(3), source: '', items: [{ materialId: m.id, name: m.name, spec: m.spec, unit: 'EA', quantity, price: m.price }], status: 'draft', revision: 1, createdAt: at(offset), updatedAt: at(offset), events: [{ at: at(offset), actor: '구매 담당자', message: '샘플 요청서 작성', revision: 1 }], submissions: [] };
+    let r = { ...emptyRequest(), id, title, department: '생산지원팀', purpose, supplier: vendor.name, supplierId: vendor.id, needBy: on(3), source: '', items: [{ materialId: m.id, name: m.name, spec: m.spec, unit: 'EA', quantity, price: m.price }], status: 'draft', revision: 1, createdAt: at(offset), updatedAt: at(offset), events: [{ at: at(offset), actor: '구매 담당자', message: '샘플 요청서 작성', revision: 1 }], submissions: [] };
     if (status !== 'draft') r = transition(r, 'submit', 'staff', { at: at(offset) });
     if (status === 'revision') r = transition(r, 'revise', 'manager', { reason: '설치 위치와 필요한 수량을 사유에 추가해 주세요.', at: at(offset + 1) });
     if (['director', 'approved', 'ordered'].includes(status) || id === ERP_SAMPLE_ID) r = transition(r, 'approve', 'manager', { at: at(offset + 1) });
@@ -191,7 +197,27 @@ export function createERP(now = new Date()) {
   state = issueMaterial(state, 'staff', { materialId: 'MT-0002', quantity: 1, date: on(-1), department: '생산1팀', recipient: '담당자 B (가상)', note: '조립 설비 지급', token: 'seed-issue-2' });
   return state;
 }
-// Preserve all old request fields and histories; only add catalog links and ERP data.
+// The original demo receipt distinguishes this fixture from imported documents with the same ID.
+function refreshSensorExample(saved) {
+  const request = saved.requests.find(r => r.id === sensorExample.id);
+  if (request?.status !== 'ordered' || request.purpose !== sensorExample.title
+    || request.order?.reference !== '샘플 발주' || request.submissions?.length !== 1
+    || !saved.receipts.some(r => r.requestId === request.id && r.token === 'seed-receipt-1')) return saved;
+
+  const documents = [request, request.submissions[0], request.approvedSnapshot];
+  const isOriginal = documents.every(doc => doc?.revision === 1 && doc.title === sensorExample.title
+    && doc.purpose === sensorExample.title && doc.items?.length === 1
+    && doc.items[0]?.materialId === 'MT-0001' && doc.items[0].quantity === 5);
+  if (!isOriginal) return saved;
+
+  const updated = {
+    ...request, purpose: sensorExample.purpose,
+    submissions: [{ ...request.submissions[0], purpose: sensorExample.purpose }],
+    approvedSnapshot: { ...request.approvedSnapshot, purpose: sensorExample.purpose },
+  };
+  return { ...saved, requests: saved.requests.map(r => r === request ? updated : r) };
+}
+
 export function migrateWorkspace(saved, now = new Date()) {
   if (saved?.version === 2) {
     const arrays = ['requests', 'materials', 'vendors', 'receipts', 'issues'];
@@ -200,7 +226,7 @@ export function migrateWorkspace(saved, now = new Date()) {
       || !saved.vendors.every(v => typeof v.name === 'string')
       || !saved.receipts.every(r => validDay(r.date) && Array.isArray(r.lines) && r.lines.every(l => Number.isInteger(l.index) && positive(l.quantity) && saved.materials.some(m => m.id === l.materialId)) && saved.requests.some(q => q.id === r.requestId))
       || !saved.issues.every(i => validDay(i.date) && positive(i.quantity) && saved.materials.some(m => m.id === i.materialId))) throw new Error('저장된 자재·입출고 자료의 형식을 확인할 수 없습니다.');
-    return saved;
+    return refreshSensorExample(saved);
   }
   const state = createERP(now);
   if (saved?.version !== 1 || !Array.isArray(saved.requests)) return state;

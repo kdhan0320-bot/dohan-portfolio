@@ -3763,6 +3763,9 @@ main { padding-top: 28px; }
 .table-owner { font-size: 13px; }
 .table-heading { border-radius: 0; border-top: 1px solid #cbd6e2; background: #f1f4f7; }
 .request-facts { margin: 20px 0 0; padding-top: 18px; border-top: 1px solid var(--line); gap: 17px 24px; }
+.purchase-reason { margin: 0 0 18px; }
+.purchase-reason dt { color: #4d6075; font-size: 14px; }
+.purchase-reason dd { margin: 4px 0 0; max-width: 64ch; color: #293442; font-size: 15px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; white-space: pre-line; }
 .request-facts dd { font-size: 14px; color: #293442; line-height: 1.65; }
 .item-row { font-size: 14px; color: #354962; }
 .item-row>div strong { color: #293442; font-weight: 550; }

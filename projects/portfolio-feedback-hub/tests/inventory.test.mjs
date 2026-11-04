@@ -7,6 +7,34 @@ import { workflowStatus, comparisonLines, materialTotals, orderId, purchaseSteps
 
 const today = dateInput();
 
+test('the five-sensor example keeps the same quantity rationale in the request, submission and approval', () => {
+  const fresh = createERP();
+  const request = fresh.requests.find(r => r.id === 'PR-2001');
+  assert.match(request.purpose, /바로 교체할 2개와 다음 정비 때 교체할 3개/);
+  assert.equal(request.items[0].quantity, 5);
+  assert.equal(request.approvedSnapshot.purpose, request.purpose);
+  assert.equal(request.submissions[0].purpose, request.purpose);
+
+  const old = structuredClone(fresh);
+  const legacy = old.requests.find(r => r.id === request.id);
+  for (const doc of [legacy, legacy.approvedSnapshot, ...legacy.submissions]) doc.purpose = doc.title;
+  const upgraded = migrateWorkspace(old);
+  assert.deepEqual(upgraded, fresh);
+  assert.equal(migrateWorkspace(upgraded), upgraded);
+  assert.equal(legacy.purpose, legacy.title);
+
+  for (const doc of [legacy, legacy.approvedSnapshot, legacy.submissions[0]]) {
+    doc.purpose = '별도로 기록한 구매 사유';
+    assert.equal(migrateWorkspace(old), old);
+    doc.purpose = doc.title;
+  }
+  legacy.items[0].quantity = 8;
+  assert.equal(migrateWorkspace(old), old);
+  legacy.items[0].quantity = 5;
+  old.receipts.find(r => r.requestId === request.id).token = 'user-receipt';
+  assert.equal(migrateWorkspace(old), old);
+});
+
 test('an order number exists only after registration and remains readable on older orders', () => {
   const data = createERP();
   const ready = data.requests.find(request => request.status === 'approved');
