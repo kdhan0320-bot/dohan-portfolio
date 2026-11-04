@@ -1700,6 +1700,20 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .home-films .discovery-tools > .section-heading { grid-area: 1/1; align-self: start; justify-self: start; min-height: 44px; max-width: calc(100% - 140px); margin: 0; pointer-events: none; }
 .home-options { display: block; grid-area: 1/1; min-width: 0; }
 .home-options > summary { width: max-content; margin-left: auto; }
+.home-selection { grid-column: 1; justify-self: end; margin-top: 5px; color: var(--accent); font-size: 14px; line-height: 1.5; word-break: keep-all; }
+.home-options[open] + .home-selection { display: none; }
+.article-films { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.scene-pair { min-width: 0; }
+.scene-pair .article-step { min-height: 24px; gap: 10px; margin: 0 0 10px; color: var(--collection-surface); font-weight: 400; }
+.scene-pair .article-step::after { content: ""; display: block; height: 4px; border: solid currentColor; border-width: 1px 1px 0 0; background: none; opacity: .3; }
+.scene-pair .scene-index { padding-inline: 5px; }
+.scene-pair-shots { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; align-items: start; }
+.scene-pair-shots .article-film-link { min-width: 0; }
+.scene-pair-shots .article-film-link:first-child:not(:only-child) > img { border-radius: 4px 0 0 4px; }
+.scene-pair-shots .article-film-link:last-child:not(:only-child) > img { border-radius: 0 4px 4px 0; }
+@media (max-width: 800px) {
+  .article-films { grid-template-columns: 1fr; gap: 24px; }
+}
 .home-options .catalog-options-panel { position: static; width: min(100%,480px); margin: 12px 0 0 auto; max-height: none; overflow: visible; box-shadow: none; }
 .catalog-options-panel fieldset { margin-bottom: 16px; }
 .mood-choices { grid-template-columns: repeat(3,minmax(0,1fr)); }
@@ -1731,7 +1745,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .home-films .film-caption { display: contents; }
   .home-films .film-card-meta, body[data-view="browse"] .film-card-meta { display: contents; }
   .home-films .film-card-meta > span, body[data-view="browse"] .film-card-meta > span { white-space: nowrap; }
-  body[data-view="browse"] .film-card-title { grid-column: 1/-1; min-height: 3em; margin-bottom: 4px; word-break: keep-all; }
+  body[data-view="browse"] .film-card-title { grid-column: 1/-1; margin-bottom: 4px; word-break: keep-all; }
   body[data-view="browse"] .film-card-meta > span:first-child { grid-column: 1/-1; grid-row: 2; }
   body[data-view="browse"] .film-card-meta > span:last-child { grid-column: 1; grid-row: 3; }
   body[data-view="browse"] .poster-save { grid-column: 2; grid-row: 3; }
