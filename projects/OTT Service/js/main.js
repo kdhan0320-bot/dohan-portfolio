@@ -31,6 +31,11 @@
       image: "letters",
       posterPath: "assets/frames-v31/letters.webp",
       stillPath: "assets/frames-v31/letters.webp",
+      resultPreview: {
+        image: "assets/stills/letters.webp",
+        position: "center 72%",
+        note: "햇빛이 닿은 봉투 한 장. 말없이 남겨 둔 물건으로 마음을 전하는 영화입니다.",
+      },
       posterPosition: "55% center",
       position: "58% center",
       detailPosition: "55% center",
@@ -194,6 +199,11 @@
       moodText: "함께하는 용기",
       image: "relay",
       posterPath: "assets/frames-v33/relay.webp",
+      resultPreview: {
+        image: "assets/relay-bench.jpg",
+        position: "center",
+        note: "결승선보다 바통을 건네는 손에 눈길이 가는 스포츠 영화입니다.",
+      },
       position: "center center",
       posterPosition: "center center",
       detailPosition: "center 20%",
@@ -535,9 +545,9 @@
     const picture = document.createElement("picture");
     const scene = document.createElement("source");
     scene.media = "(min-width: 801px)";
-    scene.srcset = scenePath(film);
+    scene.srcset = film.resultPreview?.image || posterPath(film);
     picture.append(scene, poster);
-    picture.style.setProperty("--result-position", film.sequencePosition || film.detailPosition || "center");
+    picture.style.setProperty("--result-position", film.resultPreview?.position || "center");
 
     const copy = document.createElement("span");
     copy.className = "single-copy";
@@ -545,9 +555,10 @@
       <span class="single-conditions" aria-hidden="true"></span>
       <span class="single-title">${film.title}</span>
       <span class="single-meta">${film.genre} · ${film.minutes}분</span>
-      <span class="single-story">${film.description}</span>
+      <span class="single-story" id="preview-${film.id}">${film.resultPreview?.note || film.moodText}</span>
       <span class="single-open">작품 보기 ${icon("arrow")}</span>`;
     trigger.replaceChildren(picture, copy);
+    trigger.setAttribute("aria-describedby", `preview-${film.id}`);
     return card;
   }
 
