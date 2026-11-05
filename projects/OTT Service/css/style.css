@@ -1811,6 +1811,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 .cover-lead { grid-area: lead; }
 .cover-companion { grid-area: companion; }
+.cover-line-narrow { display: none; }
 .cover-connection {
   grid-area: connection;
   display: flex;
@@ -1898,19 +1899,41 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .home-films { margin-top: 18px; }
 }
 @media (max-width: 600px) {
-  .cover-connection { padding-inline: 20px; }
-  .cover-spread .discovery-copy { width: calc(100% - 40px); }
-  .cover-spread .spotlight-caption { padding: 8px 12px 10px; }
-  .cover-spread .spotlight-film {
-    width: 100%;
-    display: grid;
-    grid-template-columns: minmax(0,1fr) auto;
-    grid-template-areas: "label time" "title title";
-    gap: 0 4px;
+  .cover-spread {
+    grid-template-areas: "lead companion" "connection connection" "copy copy";
+    column-gap: 2px;
   }
-  .cover-spread .spotlight-film > .spotlight-label { grid-area: label; gap: 4px; }
-  .cover-spread .spotlight-meta { grid-area: time; align-self: center; }
-  .cover-spread .spotlight-title { grid-area: title; }
+  .cover-connection {
+    justify-content: flex-start;
+    gap: 9px;
+    padding: 10px 20px;
+    background: var(--surface);
+    text-align: left;
+  }
+  .cover-connection::before { flex: 0 0 16px; }
+  .cover-connection::after { content: none; }
+  .cover-line-wide { display: none; }
+  .cover-line-narrow { display: inline; }
+  .cover-spread .discovery-copy { width: calc(100% - 40px); }
+  .cover-spread .hero-film-trigger { justify-content: flex-end; min-height: clamp(186px,56vw,280px); }
+  .cover-spread .hero-film-trigger > img { position: absolute; height: 100%; }
+  .cover-lead > img { object-position: 90% center; }
+  .cover-spread .hero-film-trigger::after {
+    inset: 0;
+    height: auto;
+    background: linear-gradient(to top,#191b20f5 0%,#191b20bf 17%,transparent 47%);
+  }
+  .cover-spread .spotlight-caption {
+    flex: none;
+    z-index: 1;
+    padding: 8px 12px 10px;
+    color: #f3f1ed;
+  }
+  .cover-spread .spotlight-film { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+  .cover-spread .spotlight-film > .spotlight-label { display: none; }
+  .cover-spread .spotlight-title { white-space: normal; word-break: keep-all; }
+  .cover-spread .spotlight-meta { display: flex; flex-wrap: wrap; gap: 6px; }
+  .cover-spread .spotlight-genre { display: inline; }
   .cover-spread .spotlight-meta span { margin-left: 0; }
   .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 76px minmax(0,1fr); gap: 0 12px; padding: 14px; }
   .library-reading .film-note-badge { margin-top: 12px; }
@@ -1924,7 +1947,6 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .scene-pair-caption { display: none; }
 /* Keep the diptych intact and give its two notes one shared caption width. */
 @media (max-width: 360px) {
-  .cover-spread .spotlight-label .scene-index { display: none; }
   .scene-pair-shots { align-items: stretch; gap: 6px; }
   .scene-pair-shots .article-film-link { padding: 0; }
   .scene-pair-shots .article-film-link > img {

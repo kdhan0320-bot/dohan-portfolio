@@ -1,5 +1,16 @@
 # 잔상관 Asset Provenance
 
+## v59 별을 접는 아이의 마지막 종이 (2026-11-05)
+
+기존 AI 장면 `atlas-still-v57.webp`를 입력해 내장 OpenAI 이미지 편집 도구로 다시 구성했습니다. 아이의 어깨 너머에서 종이 모서리를 쥔 손이 보이도록 했습니다. 작품 포스터는 기존 `posters-v45/atlas.jpg`를 사용합니다.
+
+- 생성 원본 `exec-ce181929-0607-4102-828d-7aeb34dca863.png`에서 같은 구도로 상세용 `atlas-still-v59.webp`(1448×1086)와 기획전용 `scene-previews/atlas-v59.webp`(768×576)를 인코딩했습니다. 초기 표시용 80×60 이미지도 이 원본에서 만들었습니다.
+- 사용한 편집 프롬프트
+
+```text
+Edit the supplied landscape still for the fictional animated short 별을 접는 아이. Keep this room, the child's faded burgundy cuff, worn desk, one previously made small folded paper star, open wooden window and deep blue night with a pinprick star. Reframe as an observed instant from slightly behind the child at desk height, in restrained 2D hand-painted animation, landscape 4:3, no lettering. The essential action is close: the cuff is pushed back unevenly and a child's thumb and index finger gently hold the buckled corner of the LAST sheet, an abandoned fold almost opening under its own weight. The hand and paper must touch believably; natural anatomy, no extra fingers. Existing folded star sits off to one side, resting on an edge, not facing a lens. Let offscreen light graze part of the sheet and leave some wood and cuff in soft shadow; restrained cool light from window, muted warm tones, night and paper readable even as a thumbnail. Give the shot a lived-in, unposed composition, with no added props, sparkling effects, decorative grain, lettering, or glossy render. Use quiet economical painted shapes and preserve the story's intimacy.
+```
+
 ## v57 별을 접는 아이, 멈춘 손 (2026-11-05)
 
 기존 AI 장면 `atlas-still-v50.jpg`를 참고해 내장 OpenAI 이미지 생성 도구로 같은 방의 다음 장면을 편집했습니다. 아이의 자주색 소매와 나무 책상, 남색 밤하늘을 유지하고, 마지막 종이를 다시 펼친 뒤 멈춘 손과 접힌 자국을 중심에 두도록 요청했습니다. 기존 포스터 그림은 그대로 사용합니다.
