@@ -1818,6 +1818,17 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .cover-kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; }
 .cover-spread .spotlight-caption { inset: auto 24px 24px auto; gap: 14px; }
 .cover-companion .spotlight-caption { left: 24px; justify-content: space-between; }
+.cover-spread .spotlight-film > .spotlight-label { display: flex; align-items: center; gap: 8px; }
+.cover-spread .scene-index { border-top-color: #b6c4d855; border-left-color: #b6c4d855; }
+.hero-film-trigger:focus-visible .spotlight-title,
+.theme-preview:focus-visible h3,
+.article-film-link:focus-visible .article-film-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
+@media (hover: hover) and (pointer: fine) {
+  .hero-film-trigger:hover .spotlight-title,
+  .theme-preview:hover h3,
+  .article-film-link:hover .article-film-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
+  .hero-film-trigger:hover .scene-index { border-top-color: currentColor; border-left-color: currentColor; }
+}
 @media (min-width: 801px) and (max-width: 1100px) {
   .cover-spread { grid-template-columns: minmax(0,1.9fr) minmax(0,1fr); }
   .cover-spread .spotlight-film { grid-template-columns: 1fr; }
