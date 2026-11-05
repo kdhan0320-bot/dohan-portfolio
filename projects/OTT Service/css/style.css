@@ -1324,8 +1324,7 @@ body[data-view="browse"] #filmGrid .film-art { aspect-ratio: 2/3; }
   .theme-preview, .theme-preview:first-child { display: grid; grid-template-columns: 1.35fr 1fr; gap: 28px; align-items: center; }
   .theme-preview-image, .theme-preview:first-child .theme-preview-image { aspect-ratio: 1.6; }
   .theme-preview-copy, .theme-preview:first-child .theme-preview-copy { padding: 0; }
-  .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 112px minmax(0,1fr); max-width: 840px; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) { grid-template-columns: 80px minmax(0,1fr); }
+  .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 80px minmax(0,1fr); max-width: 840px; }
   .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { margin-top: 8px; }
 }
 @media (max-width: 800px) {
@@ -1486,9 +1485,9 @@ dialog { max-width: none; }
 #articleBody.article-intro p { margin: 0; }
 @media (min-width: 1101px) {
   .library-reading .film-card:has(.film-note-preview[hidden]) .film-art { width: 64px; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(0,1fr) auto; align-self: center; align-items: center; }
+  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(180px,240px) minmax(0,1fr); align-self: center; align-items: center; }
   .library-reading .film-card:has(.film-note-preview[hidden]) .film-foot { grid-row: 1; width: 100%; max-width: 240px; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-end; margin-top: 0; }
+  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-start; margin-top: 0; }
 }
 @media (max-width: 600px) {
   .cinema-view .article-content { padding-top: 20px; }
@@ -1609,6 +1608,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .theme-preview, .theme-preview:first-child { display: flex; flex-direction: column; gap: 0; background: var(--surface); border-radius: 6px; overflow: hidden; }
 .theme-preview-image, .theme-preview:first-child .theme-preview-image { position: relative; display: block; width: 100%; aspect-ratio: 1.5; min-height: 0; overflow: hidden; border-radius: 0; }
 .theme-preview-image > img { width: 100%; height: 100%; object-fit: cover; transition: none; transform: none; }
+.theme-preview .theme-preview-image.theme-preview-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 4px; background: var(--bg); }
 .theme-preview:hover .theme-preview-image > img { transform: none; filter: none; }
 .theme-preview-copy, .theme-preview:first-child .theme-preview-copy { display: flex; flex-direction: column; flex: 1; padding: 24px; }
 .theme-lens { margin-bottom: 12px; color: var(--collection-surface); }
@@ -1635,6 +1635,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .footer-bottom { margin-top: 0; padding-top: 0; border: 0; color: var(--muted); }
 .footer-bottom p:last-child { text-align: left; }
 @media (max-width: 1100px) {
+  .saved-view .catalog:has(.library-reading) :is(.catalog-tools,.results-bar), .film-grid.library-reading { max-width: 840px; }
   .theme-overview { grid-template-columns: 1fr; }
   .theme-preview, .theme-preview:first-child { display: grid; grid-template-columns: 1.15fr 1fr; align-items: stretch; }
   .theme-preview-image, .theme-preview:first-child .theme-preview-image { height: 100%; aspect-ratio: 1.5; }
@@ -1790,6 +1791,9 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .home-films .film-card-meta > span:first-child { grid-column: 1/-1; grid-row: 1; }
   .home-films .film-card-meta > span:last-child { grid-column: 1; grid-row: 2; }
   .home-films .poster-save { grid-column: 2; grid-row: 2; }
+  .home-films .single-result { max-width: 240px; }
+  .home-films .single-result .film-card-meta { display: flex; grid-column: 1; grid-row: 1; min-height: 44px; }
+  .home-films .single-result .poster-save { grid-row: 1; }
 }
 
 /* The two cover frames follow the afternoon-to-dawn sequence in 파란 숨 고르기. */

@@ -572,7 +572,11 @@
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
     link.style.setProperty("--collection-surface", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.comparisonFocus}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div>`;
+    // Preview the beginning and ending of the same sequence shown in the exhibition.
+    const bookends = [theme.films[0], theme.films[theme.films.length - 1]]
+      .map(id => films.find(film => film.id === id));
+    const scenes = bookends.map(film => `<img src="${scenePath(film)}" alt="" width="1200" height="750" loading="lazy" style="object-position:${film.detailPosition || "center"}">`).join("");
+    link.innerHTML = `<div class="theme-preview-image theme-preview-pair">${scenes}</div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
