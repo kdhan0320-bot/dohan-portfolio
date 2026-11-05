@@ -176,5 +176,12 @@
 @media(max-width:599px){.case-opening-facts{margin-bottom:30px}.case-cover{margin-bottom:20px}.case-jumps{margin-top:18px}}
 
 .case-question { color: var(--accent); font-size: clamp(21px, 2vw, 29px); line-height: 1.45; font-weight: 650; letter-spacing: -.035em; margin-bottom: 12px; }
+.case-question-receipt { display: none; }
+@media (max-width: 760px) {
+  [data-project-slug="feedback-hub"] .case-intro__grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .case-question-receipt { display: block; max-width: 460px; margin: 16px 0 22px; }
+  .case-question-receipt img { display: block; width: 100%; height: auto; border: 1px solid var(--line); }
+  .case-question-receipt figcaption { margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+}
 .case-opening-facts { margin-top: 0; margin-bottom: 24px; }
 .case-cover { margin-bottom: 48px; }

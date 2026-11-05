@@ -8,7 +8,7 @@ const relatedWork = [
     slug: 'seolbiit',
     title: '설비결',
     type: '설비 점검 · 업무 관리',
-    image: 'detail/current/seolbigyeol-20261105.png',
+    image: 'detail/current/seolbigyeol-overview-2x.webp',
     alt: '설비결의 설비 점검 현황과 요청을 보여주는 실제 디자인 화면',
   },
   {

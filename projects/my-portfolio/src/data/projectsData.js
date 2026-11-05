@@ -6,13 +6,19 @@
 import { fallbackProjects, FALLBACK_FILTER_TABS } from './projectsFallbackData';
 
 const BASE = import.meta.env.BASE_URL;
+export const PROCUREMENT_RECEIPT = {
+  src: `${BASE}detail/current/pumuiseon-opening-slip.png`,
+  alt: '포토센서 예시 전표. 누적 발주 5개, 미입고 2개. 입고 3개에서 지급 2개를 뺀 현재 보유량은 1개.',
+  width: 1044,
+  height: 591,
+};
 
 const THUMB_MAP = {
   gongjeongbom: `${BASE}detail/current/gijunseon-home-20261105.jpg`,
   jobflow:      `${BASE}detail/current/galpirok-home-20261105.jpg`,
-  seolbiit:     `${BASE}detail/current/seolbigyeol-20261105.png`,
+  seolbiit:     `${BASE}detail/current/seolbigyeol-overview-2x.webp`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-frame-home.jpg`,
+  'ott-service': `${BASE}detail/current/jansang-v58-home.jpg`,
   'bus-arrival-app': `${BASE}detail/current/onjeongryu-20261105.png`,
   brewstep: `${BASE}detail/current/soyobit-20261105.png`,
   'feedback-hub': `${BASE}detail/current/pumuiseon-home-20261105.jpg`,

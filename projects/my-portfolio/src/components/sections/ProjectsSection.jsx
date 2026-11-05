@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FEATURED_CASES } from '../../data/projectsData';
+import { FEATURED_CASES, PROCUREMENT_RECEIPT } from '../../data/projectsData';
 import './selectedWorks.css';
 
 const media = `${import.meta.env.BASE_URL}detail/current/`;
@@ -57,8 +57,7 @@ export default function ProjectsSection() {
         <CaseCopy item={receipt} />
         <figure className="receipt-proof">
           <Link to="/projects/feedback-hub" className="slip-board" aria-label="품의선 전표의 설계 과정 보기">
-            <span className="slip-print"><img id="sample-receipt" src={media + 'pumuiseon-opening-slip.png'}
-              width="1044" height="591" alt="포토센서 예시 전표. 누적 발주 5개, 미입고 2개. 입고 3개에서 지급 2개를 뺀 현재 보유량은 1개." /></span>
+            <span className="slip-print"><img id="sample-receipt" {...PROCUREMENT_RECEIPT} /></span>
           </Link>
           <figcaption>품의선 웹에서 발췌한 자재 입출고 전표 <span>예시 데이터</span></figcaption>
         </figure>
@@ -66,9 +65,8 @@ export default function ProjectsSection() {
       <div className="companion-cases">
         <article className="companion-case">
           <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
-            <svg viewBox="45 276 558 370" aria-hidden="true" focusable="false">
-              <image href={media + 'seolbigyeol-20261105.png'} width="1024" height="768" />
-            </svg>
+            <img src={media + 'seolbigyeol-assignment-2x.webp'} width="1568" height="1040"
+              loading="lazy" alt="냉각수 펌프의 증상, 담당자와 완료 기한을 모은 배정 대기 요청" />
           </Link>
           <CaseCopy item={maintenance} />
         </article>

@@ -84,15 +84,17 @@ function FoldedSheet() {
     <figure className="fold-art">
       <button ref={button} type="button" className="fold-cover" onClick={openReceipt}
         onFocus={() => { if (!cancel.current) setOpened(false); }}
-        aria-label="접힌 작업 도면 펼쳐서 품의선 전표 보기" aria-controls="receipt-feature">
+        aria-label="표지 펼치기 · 품의선 전표 보기" aria-controls="receipt-feature">
         <span className="fold-frame" data-open={opened}>
           <img ref={photo} className="fold-image" src={`${import.meta.env.BASE_URL}folded-sheet.jpg`}
             width="1536" height="1024" alt="" />
           <canvas ref={canvas} className="fold-canvas" aria-hidden="true" />
         </span>
-        <span className="fold-caption">
-          <span className="fold-title">접힌 작업 도면</span>
-          <span className="fold-handle">펼쳐서 전표 보기 <span aria-hidden="true">↘</span></span>
+        <span className="fold-handle">
+          표지 펼치기
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M4 8.5 9 6l6 3 5-2.5v10L15 19l-6-3-5 2.5zM9 6v10m6-7v10"/>
+          </svg>
         </span>
       </button>
     </figure>
@@ -107,15 +109,15 @@ export default function HeroSection() {
           <p className="fold-role">웹·UI 디자인 <span aria-hidden="true">/</span> 웹퍼블리싱</p>
           <h1 id="home-title">김도한</h1>
         </div>
+        <FoldedSheet />
         <div className="fold-intro">
           <p className="fold-description">구매·총무와 생산 현장에서 익힌<br className="fold-break" /> 일의 순서를 화면으로 옮깁니다.</p>
           <div className="fold-actions">
-            <button type="button" className="fold-primary" onClick={() => scrollToSection('projects')}>대표 작업 바로 보기 <span aria-hidden="true">↓</span></button>
+            <button type="button" className="text-link fold-shortcut" onClick={() => scrollToSection('projects')}>대표 작업 바로 보기 <span aria-hidden="true">↓</span></button>
             <Link className="text-link" to="/about">소개 보기</Link>
           </div>
           <p className="fold-scope">Figma 직접 편집 · AI 협업 웹 제작</p>
         </div>
-        <FoldedSheet />
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
-import { ALL_PROJECTS, FEATURED_CASES } from '../data/projectsData';
+import { ALL_PROJECTS, FEATURED_CASES, PROCUREMENT_RECEIPT } from '../data/projectsData';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
 import { scrollToSection } from '../hooks/useScrollNav';
@@ -79,7 +79,28 @@ const ProjectDetailPage = () => {
   return <article className="case-page" data-page-id="project-detail" data-project-slug={slug}><div className="portfolio-shell">
     <header className="case-intro">
       <div className="case-register"><button className="case-back" onClick={goBack} type="button">작업으로 돌아가기</button><span>PROJECT / {String(index+1).padStart(2,'0')}</span></div>
-      <div className="case-intro__grid"><div><p className="case-eyebrow">{project.categoryLabel}</p><h1>{project.title}</h1><p className="case-production">{project.productionLabel || (project.is_figma_project?'Figma 디자인':'AI 협업 웹 제작')}</p></div><div>{featuredCase && <p className="case-question">{featuredCase.question}</p>}<p className="case-lead">{ready.hero?.summary||project.description}</p><div className="case-actions" aria-label="프로젝트 바로 보기"><ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction><ExternalAction href={figmaUrl} primary={!project.liveUrl}>Figma 디자인 보기</ExternalAction><ExternalAction href={project.githubUrl}>코드 보기</ExternalAction></div></div></div>
+      <div className="case-intro__grid">
+        <div>
+          <p className="case-eyebrow">{project.categoryLabel}</p>
+          <h1>{project.title}</h1>
+          <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>
+        </div>
+        <div>
+          {featuredCase && <p className="case-question">{featuredCase.question}</p>}
+          {slug === 'feedback-hub' && (
+            <figure className="case-question-receipt">
+              <img {...PROCUREMENT_RECEIPT} />
+              <figcaption>품의선의 자재 입출고 전표 · 예시 데이터</figcaption>
+            </figure>
+          )}
+          <p className="case-lead">{ready.hero?.summary || project.description}</p>
+          <div className="case-actions" aria-label="프로젝트 바로 보기">
+            <ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction>
+            <ExternalAction href={figmaUrl} primary={!project.liveUrl}>Figma 디자인 보기</ExternalAction>
+            <ExternalAction href={project.githubUrl}>코드 보기</ExternalAction>
+          </div>
+        </div>
+      </div>
 
       <nav className="case-jumps" aria-label="프로젝트 상세 구간"><button type="button" onClick={() => scrollToSection('case-context')}><span>01</span>출발점</button><button type="button" onClick={() => scrollToSection('case-decisions')}><span>02</span>화면의 선택</button><button type="button" onClick={() => scrollToSection('case-scope')}><span>03</span>제작 범위</button></nav>
     </header>

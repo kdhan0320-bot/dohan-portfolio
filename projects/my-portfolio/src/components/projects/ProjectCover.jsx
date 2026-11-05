@@ -1,7 +1,7 @@
 import './projectCovers.css';
 const BASE=import.meta.env.BASE_URL;
 const COVERS={
- seolbiit:{theme:'equipment',width:1024,height:768},
+ seolbiit:{theme:'equipment',width:2880,height:2160},
  jobflow:{theme:'record',width:1363,height:936},
  'ott-service':{theme:'cinema',width:1348,height:926},
  gongjeongbom:{theme:'industry',width:1363,height:936},

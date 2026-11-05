@@ -32,7 +32,7 @@
 .companion-case { min-width: 0; padding-top: 20px; }
 .companion-case .case-brief { padding: 20px 0 8px; }
 .request-board { display: grid; place-items: center; aspect-ratio: 1.85; background: #e1e7e4; overflow: hidden; }
-.request-board svg { display: block; width: 100%; height: 100%; max-height: 100%; }
+.request-board img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .scene-editor { position: relative; background: #202729; color: #fff; }
 .scene-frame { position: relative; overflow: hidden; aspect-ratio: 1.85; }
 .scene-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .38s ease; }

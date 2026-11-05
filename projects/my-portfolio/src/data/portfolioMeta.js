@@ -59,6 +59,10 @@ function detail(id, image, decisions, scope, extra = {}) {
   };
 }
 
+const cinemaHome = media('detail/current/jansang-v58-home.jpg', '잔상관 홈 — 나란히 선 두 친구와 마주 앉은 두 사람의 영화 장면', '1348 / 926', {
+  mobile: { src: 'detail/current/jansang-v58-mobile.jpg', aspectRatio: '375 / 780', label: '잔상관 모바일 홈 · 두 장면과 각 작품의 상영 시간' },
+});
+
 export const PROJECT_DETAIL_READY = {
   jobflow: detail(
     'jobflow',
@@ -82,10 +86,10 @@ export const PROJECT_DETAIL_READY = {
   ),
   seolbiit: detail(
     'seolbiit',
-    media('detail/current/seolbigyeol-20261105.png', '설비결 작업 현황 — 배정 대기, 검토 대기와 진행 중 정비', '1024 / 768'),
+    media('detail/current/seolbigyeol-overview-2x.webp', '설비결 작업 현황 — 배정 대기, 검토 대기와 진행 중 정비', '2880 / 2160'),
     [
       evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),
-      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-20261105.png', '설비결의 배정 대기 요청과 담당자 배정 확대', '1024 / 768', { crop: { x: 45, y: 276, width: 558, height: 370 } })),
+      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결의 배정 대기 요청과 담당자 배정 확대', '1568 / 1040', { original: 'detail/current/seolbigyeol-overview-2x.webp' })),
       evidence('검토와 진행 중인 작업을 구분.', '검토 대기 보고는 조치 내용·재확인 결과와 검토 버튼을 함께 두고, 진행 중인 정비는 별도 영역에 배치했습니다.', '보고를 확인해야 하는 작업과 아직 정비 중인 작업을 구분하려는 설계입니다.'),
     ],
     { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
@@ -99,16 +103,16 @@ export const PROJECT_DETAIL_READY = {
   ),
   'ott-service': detail(
     'ott-service',
-    media('detail/current/jansang-frame-home.jpg', '잔상관 홈 — 나란히 선 오후와 마주 앉은 새벽, 이어지는 두 영화 장면', '1348 / 926', { mobile: { src: 'detail/current/jansang-frame-mobile.jpg', aspectRatio: '375 / 780', label: '잔상관 현재 모바일 첫 화면 · 390px iframe' } }),
+    cinemaHome,
     [
-      evidence('오후와 새벽, 두 장면으로 시작하기.', '자전거를 세운 두 친구의 오후와 식탁을 사이에 둔 새벽의 대화를 함께 배치했습니다. 각 장면에는 작품명·장르·시간을 붙였습니다.', '분위기를 느끼는 이미지가 실제 작품 선택으로 이어지도록 했습니다.', media('detail/current/jansang-frame-home.jpg', '표지의 두 영화 장면과 작품명·러닝타임', '1348 / 926', { crop: { x: 0, y: 87, width: 1334, height: 470 } })),
-      { title: '같은 작품도, 다른 관점으로 발견하기.', layout: 'wide', summary: '소리·관계·선택이라는 관점으로 세 기획전을 나눴습니다. 기획전 한 편마다 시작과 끝의 장면을 나란히 보여줍니다. 세 가지 기획전의 관점과 총 상영 시간을 한눈에 비교할 수 있습니다.', media: media('detail/current/jansang-frame-curation.jpg', '잔상관 큐레이션 — 세 기획전의 이미지와 관점, 총 러닝타임', '1348 / 926'), mediaLabel: '현재 공개 웹 · 큐레이션 세 가지' },
+      evidence('오후와 새벽, 두 장면으로 시작하기.', '다시 만난 친구와 처음 만난 손님의 장면을 나란히 놓았습니다. 모바일에서도 두 작품의 제목과 상영 시간을 한 번에 볼 수 있습니다.', '장면을 누르면 그 작품의 상세가 열립니다. 제목을 알고 있다면 상단 ‘영화 찾기’에서 전체 12편을 검색할 수 있습니다.', media(cinemaHome.src, '표지에 나란히 놓인 두 장면과 작품별 상영 시간', cinemaHome.aspectRatio, { crop: { x: 0, y: 130, width: 1333, height: 364 } })),
+      { title: '같은 작품도, 다른 관점으로 발견하기.', layout: 'wide', summary: '‘파란 숨 고르기’, ‘마음을 건네는 방식’, ‘상상 바깥으로’는 각각 네 편을 묶은 기획전입니다. 시작과 끝의 장면, 네 편을 모두 보는 데 걸리는 시간을 함께 보여줍니다.', media: media('detail/current/jansang-v58-curation.jpg', '잔상관의 세 기획전과 기획전별 총 상영 시간', '1348 / 926'), mediaLabel: '잔상관 공개 웹 · 기획전 세 편' },
       evidence('마음에 남은 이유는 보관함으로.', '작품 상세에서 찜과 관심 메모로 이어지고, 보관함에서 작품을 훑거나 메모를 읽도록 구성했습니다.', '다시 찾을 작품과 그 작품을 고른 이유를 함께 남기는 흐름입니다.'),
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
     { presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
       context: { summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.' },
-      hero: { summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.', media: [media('detail/current/jansang-frame-home.jpg', '잔상관 2026.11.05 공개 홈의 두 장면과 작품 목록', '1348 / 926', { mobile: { src: 'detail/current/jansang-frame-mobile.jpg', aspectRatio: '375 / 780', label: '잔상관 현재 모바일 첫 화면 · 390px iframe' } })], mediaLabel: '2026.11.05 공개 웹 · 가상 작품과 AI 생성 이미지' },
+      hero: { summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: '잔상관 공개 웹 · 가상 작품과 AI 생성 이미지' },
       aiCollaboration: [
         { label: '김도한', value: '참고 사례 선택, 이미지·가독성·자연스러운 흐름 개선 요청, 시각 방향 피드백과 공개 판단' },
         { label: 'AI 협업', value: '두 장면의 선정·카피·배치, 가상 영화 이미지 제작, 디자인·코드 작성과 검사' },

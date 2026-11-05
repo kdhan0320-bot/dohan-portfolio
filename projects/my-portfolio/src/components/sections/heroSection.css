@@ -48,40 +48,38 @@
   gap: 8px 24px;
   margin-top: 32px;
 }
-.fold-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 20px;
-  min-height: 48px;
+.fold-shortcut {
+  gap: 8px;
   border: 0;
-  border-radius: 2px;
-  padding: 12px 18px;
-  background: var(--navy);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 650;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
   cursor: pointer;
 }
-.fold-primary:hover { background: #3c566d; }
 .fold-scope { margin-top: 16px; color: var(--muted); font-size: 14px; line-height: 1.5; }
 
 .fold-art { grid-area: art; min-width: 0; margin: 0; }
 .fold-cover {
-  display: block; width: 100%; padding: 0; border: 0; border-radius: 0;
-  color: #f7f8f5; background: #253544; text-align: left; cursor: pointer;
+  position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 0;
+  background: #dfe3e0; text-align: left; cursor: pointer;
 }
 .fold-frame { position: relative; display: block; width: 100%; overflow: hidden; aspect-ratio: 3 / 2; background: #dfe3e0; }
 .fold-image { display: block; width: 100%; height: auto; }
 .fold-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
 .fold-frame[data-open="true"] .fold-canvas { visibility: visible; }
-.fold-caption {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 0 20px; min-height: 52px; border-top: 1px solid #dce2e438;
+.fold-handle {
+  position: absolute; right: 0; bottom: 0;
+  display: inline-flex; align-items: center; gap: 16px; min-height: 52px;
+  padding: 0 20px 0 32px; color: white; background: #243848;
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+  font-size: 16px; line-height: 1.4; font-weight: 650;
+  transition: background .18s ease, opacity .15s ease;
 }
-.fold-title { font-size: 13px; font-weight: 500; color: #c9d3d7; }
-.fold-handle { display: inline-flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 640; }
-.fold-handle > span { display: grid; place-items: center; border: 1px solid #91a4b0; height: 25px; width: 25px; font-size: 17px; line-height: 1; }
-.fold-cover:hover .fold-handle > span, .fold-cover:focus-visible .fold-handle > span { color: #26343e; background: #d8e3e8; }
+.fold-handle::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 12px; height: 12px; background: #8195a4;
+}
+.fold-cover:is(:hover,:focus-visible) .fold-handle { background: #364f63; }
+.fold-frame[data-open="true"] + .fold-handle { opacity: 0; }
 ::view-transition-group(unfolded-slip) {
   animation-duration: 380ms;
   animation-timing-function: cubic-bezier(.25, .75, .2, 1);
@@ -106,8 +104,11 @@
     padding-block: 24px 32px;
   }
   .fold-heading h1 { margin-top: 6px; font-size: clamp(60px, 13vw, 88px); }
-  .fold-caption { padding-inline: 12px; min-height: 48px; }
+  .fold-handle { min-height: 44px; gap: 10px; padding: 0 14px 0 24px; font-size: 15px; }
   .fold-actions { margin-top: 16px; }
   .fold-description { margin: 0; font-size: 18px; }
   .fold-scope { margin-top: 10px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fold-handle { transition: none; }
 }
