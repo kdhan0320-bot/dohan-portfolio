@@ -58,8 +58,8 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-v64-cover-1440.webp', '바닷가의 두 친구와 새벽 식탁의 두 사람을 나란히 놓은 잔상관 표지', '2850 / 958', {
-  mobile: { src: 'detail/current/jansang-v63-cover-390.webp', aspectRatio: '780 / 710', label: '모바일 표지 · 두 장면 아래에서 이어지는 한 문장' },
+const cinemaHome = media('detail/current/jansang-bluehour-cover-1440.webp', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '2850 / 952', {
+  mobile: { src: 'detail/current/jansang-bluehour-cover-390.webp', aspectRatio: '780 / 630', label: '모바일 홈 표지 · 파란 오후' },
 });
 const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
   mobile: { src: 'detail/current/jansang-v63-exhibit-390.webp', aspectRatio: '688 / 622', label: '모바일 기획전 발췌 · 마지막 두 작품' },
@@ -115,34 +115,34 @@ export const PROJECT_DETAIL_READY = {
     cinemaHome,
     [
       {
-        title: '다시 만난 친구와 처음 만난 손님.',
+        title: '‘파란 오후’ 한 편으로 여는 홈',
         evidence: [
-          { label: '김도한의 판단', text: '오른쪽 영화가 별도 배너처럼 보였습니다. 첫 화면에서 두 장면이 한 쌍으로 읽히도록 수정해 달라고 요청했습니다.' },
-          { label: '화면에 반영', text: '다시 이어지는 대화와 처음 시작되는 대화를 짝지었습니다. PC에서는 두 장면의 경계에서, 모바일에서는 이미지 아래에서 한 문장으로 이어집니다.' },
+          { label: '김도한의 판단', text: '두 영화를 나란히 놓으니 오른쪽 장면이 별도 배너처럼 보였습니다. 처음 들어온 사람이 한 편에 집중할 수 있도록 ‘파란 오후’를 단독 표지로 골랐습니다.' },
+          { label: '기획전에 남긴 이유', text: '기획전에서는 두 작품을 왜 함께 골랐는지 설명할 자리가 있습니다. 영화 잡지처럼 두 장면을 나란히 싣고 짧은 글로 연결하는 방식은 이곳에 남겼습니다.' },
         ],
       },
-      { title: '우연한 만남에서 먼저 건네는 마음으로.', layout: 'wide', summary: '‘마음을 건네는 방식’의 앞 두 편에서는 오래된 편지와 멈춘 승강기가 사람을 이어줍니다. 다음 두 편에서는 한 사람이 누군가를 위해 연주하고, 다른 한 사람이 동료에게 바통을 건넵니다.', media: cinemaExhibition, mediaLabel: '기획전 발췌 · 마음을 건네는 방식' },
+      { title: '연주와 바통을 함께 보는 이유', layout: 'wide', summary: '‘마음을 건네는 방식’의 마지막 두 편을 묶은 말은 ‘마지막에 건네는 마음’입니다. ‘옥상의 작은 밴드’에서는 연주로, ‘마지막 바통’에서는 동료에게 내미는 손으로 마음을 전합니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
       {
-        title: '한 편을 고른 뒤, 내 메모까지.',
-        summary: '줄거리 아래에서 찜하거나 메모를 남기면 같은 영화의 보관함 카드로 바로 이동합니다. 한 편만 담았을 때는 검색 도구를 접어 제목과 메모가 먼저 보입니다.',
+        title: '한 편을 고른 뒤, 내 메모까지',
+        summary: '‘별을 접는 아이’를 찜하면 상세에서 그 작품의 보관함 카드로 바로 갈 수 있습니다. 카드에서는 포스터와 내가 남긴 메모를 함께 읽습니다.',
         sequence: [
-          media('detail/current/jansang-detail-saved.webp', '별을 접는 아이 상세에서 찜한 상태와 보관함에서 보기 링크', '1922 / 1008', {
+          media('detail/current/jansang-atlas-saved-1440.webp', '‘별을 접는 아이’를 찜한 뒤 표시되는 ‘보관함에서 보기’ 링크', '1922 / 1008', {
             label: '작품 상세 · 찜한 뒤',
-            mobile: { src: 'detail/current/jansang-detail-saved-mobile.webp', aspectRatio: '698 / 772', label: '모바일 작품 상세 · 찜한 뒤' },
+            mobile: { src: 'detail/current/jansang-atlas-saved-390.webp', aspectRatio: '728 / 772', label: '모바일 작품 상세 발췌 · 찜한 뒤' },
           }),
           media('detail/current/jansang-v63-library-390.webp', '같은 영화 카드 아래에 표시된 저장 메모', '780 / 842', {
-            label: '내 보관함 · 같은 영화에 남긴 예시 메모', frameWidth: 390,
+            label: '모바일 보관함 · 같은 영화에 남긴 예시 메모', frameWidth: 390,
           }),
         ],
       },
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
-    { imageFirst: true, creditsOnCover: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
-      context: { summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.' },
-      hero: { summary: '분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남은 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: 'PC 표지 · 가상 작품과 AI 생성 이미지' },
+    { imageFirst: true, creditsOnCover: true, presentation: 'focused-decisions', decisionsTitle: '표지에서 기획전, 보관함까지',
+      context: { summary: '잠깐 볼 영화를 찾을 때 제목보다 원하는 분위기와 남은 시간을 먼저 떠올리는 상황에서 출발했습니다.', goal: '모바일에서도 영화 장면이 먼저 보이고, 바로 아래에서 분위기와 시간을 골라 다른 작품을 찾을 수 있게 했습니다.' },
+      hero: { summary: '분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남은 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: 'PC 홈 표지 · 파란 오후' },
       aiCollaboration: [
-        { label: '김도한', value: '영화 편집 잡지 방향 선택, 모바일 표지 검토' },
-        { label: 'AI 협업', value: '장면 선정·카피·이미지 제작, 화면 설계·구현·검사' },
+        { label: '김도한', value: '편집 방향 선택·단독 표지 결정·모바일 검토' },
+        { label: 'AI 협업', value: '장면 선정·글·이미지 제작, UI 설계·구현·검사' },
       ],
       scopeSummary: [
         { title: '콘텐츠와 저장 방식', text: '가상 작품과 AI 생성 이미지로 영화 발견부터 보관까지 구현했습니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },
