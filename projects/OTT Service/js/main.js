@@ -153,10 +153,10 @@
       moodText: "낯선 경이",
       image: "atlas",
       posterArtwork: "assets/posters-v45/atlas.jpg",
-      posterPath: "assets/atlas-still-v59.webp",
-      previewPath: "assets/scene-previews/atlas-v59.webp",
+      posterPath: "assets/atlas-still-v61.webp",
+      previewPath: "assets/scene-previews/atlas-v61.webp",
       sceneAlt: "아이의 어깨 너머로, 손끝에 들린 종이 모서리와 창가에 놓인 종이별이 보인다.",
-      previewBase: "UklGRnIBAABXRUJQVlA4IGYBAABQCwCdASpQADwAPtVYo0woJSMlMzasAQAaiUAYoZUV/8F4hb17Z5DoYCGFks4We67Pwc2NKpMNRL8dD6LIXwdmDhh2P62Ya6bPdxrhaDxx0CuCY/9NOYM9IhUjhZ6XUGx5oAAA/vXg/dGcxX1X4H8yV7JUcq09vFs7itUl1vfmovFznrkU2214OBWdz9o7X2tUiHtyRMuDR5EszSu55qtajLDWcUmaCC7b9EnKeLlHiNr7xUbjLS3QIiXY6iud1DnruJ/kxhhOuWmwwEwN//SgUZ3+ipGVQJUoG1g3QihoP7FWvz7P0GICju1w+jro7CbYQy5ZvWBBwl6BuE3pWEIic4pPPPW2/98/3IoOio59/tQE/USNBeMV1Ei2knJvJYIR7Zhxwi78dI7nZNaPwfPP0a8elvOOUv51GgbnvbUR2xtGPysHO0g2/PNnecJAw8IV08jOnNBdxukIYLx7crJGHW7sljAA",
+      previewBase: "UklGRlwBAABXRUJQVlA4IFABAABwCwCdASpQADwAPtVWoUwoJKMoNNdraQAaiUAY5QPd/8GAOeXJdLJtcsUXQ+7sRXnd7dO12cx/w5VEz/kV29hnovMCxgpmlfOqZB9tePrWvNgR5jsiD3fBqP+hIzRmYtvIgLwAAP72uU+IGjoBx0u4eZUNnEesfkyjyvCRXCHvGvZE3Sj1X4NMFD3tHUHSVnUFX7awXVWZ0GNOhZWmEtm8IutK4fDLYwoxTg+qepaXv+Rl3fS/ItdfzuuIFWYcCSbOWNvpaZPgmrfvRkrRTZIicVmsjefZR58STJs25fJvgTBW6T97mhgp9zRGA58c7IFNgu0/qvkJgsCtv0WEiXYqCbICEhW+IlQSApnYgxM2ZGF7qFZWLEtIa707e9DlQfzwvAeR/zK7kWuf/2rn2AH9KnfpgQTSBT4zKp+QgO0pGpPSvSLRiAxLH5YSP/dRsAA=",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:

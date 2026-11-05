@@ -1,5 +1,16 @@
 # 잔상관 Asset Provenance
 
+## v61 별을 접는 아이의 종이와 빛 (2026-11-05)
+
+내장 OpenAI 이미지 편집 도구에 기존 장면 `atlas-still-v59.webp`를 입력해 손끝에 들린 마지막 종이의 접힌 선과 빛을 조정했습니다. 원본 그림에서 아이와 창, 밤하늘의 별과 책상 위에 놓인 종이별의 위치를 참고했습니다. 작품 포스터는 `posters-v45/atlas.jpg`입니다.
+
+- 생성 결과 `exec-bb184b2e-b1c4-46dc-87d4-8e42efc775d1.png`에서 같은 구도로 상세용 `atlas-still-v61.webp`(1448×1086, 43,330바이트), 기획전용 `scene-previews/atlas-v61.webp`(768×576, 11,200바이트), 초기 표시용 80×60 이미지를 인코딩했습니다.
+- 편집에 사용한 프롬프트
+
+```text
+Precise local edit to the supplied 4:3 frame from an original fictional 2D animated short. Retain the identical over-the-shoulder framing, child's dark hair, hand gently pinching the same paper corner, burgundy cuff, wooden desk, small completed star at the right and single star outside the blue night window. Alter ONLY the unfinished sheet and the way light meets it and the nearby fingertips/desk. A thin, used, partly unfolded sheet: remove the perfect radial pinwheel of triangles at its center. One soft off-center main hinge from previous folding, a second faint partial diagonal and a gently lifted edge are enough. Some of each crease almost disappears as the paper relaxes. Natural tension at the lifted corner, a soft contact shadow where the rest rests on wood. Use muted diffuse warm room light from the left that falls off gently through the scene, with slight cool reflected light on the raised plane. The sheet reads as matte ivory paper; no bright triangular spotlight, no luminous paper, no hard vignette. Preserve composition, quiet painted animation style, overall brightness, muted palette, star silhouettes, original body proportions and room. No text, logos, new props, crumpled texture, decorative noise or extra fingers.
+```
+
 ## v59 별을 접는 아이의 마지막 종이 (2026-11-05)
 
 기존 AI 장면 `atlas-still-v57.webp`를 입력해 내장 OpenAI 이미지 편집 도구로 다시 구성했습니다. 아이의 어깨 너머에서 종이 모서리를 쥔 손이 보이도록 했습니다. 작품 포스터는 기존 `posters-v45/atlas.jpg`를 사용합니다.
