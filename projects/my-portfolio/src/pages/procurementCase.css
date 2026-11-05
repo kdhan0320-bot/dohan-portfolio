@@ -1,0 +1,67 @@
+.procurement-case { padding: 24px 0 clamp(40px, 5vw, 72px); }
+.procurement-layout {
+  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+  grid-template-areas: "heading story" "credits story"; grid-template-rows: auto 1fr;
+  gap: 38px clamp(36px, 6vw, 112px); margin-top: 32px;
+}
+.procurement-heading { grid-area: heading; }
+.procurement-heading h1 { margin: 10px 0 20px; font-size: clamp(56px, 6vw, 88px); line-height: 1.1; letter-spacing: -.065em; }
+.procurement-heading > p:last-child { font-size: clamp(17px, 1.6vw, 22px); line-height: 1.6; letter-spacing: -.025em; }
+.procurement-credits { grid-area: credits; align-self: start; border-top: 1px solid var(--line); padding-top: 20px; }
+.procurement-credits h2, .receipt-ledger h3 { font-size: 19px; line-height: 1.5; letter-spacing: -.035em; }
+.procurement-case .procurement-credits dl { margin-top: 16px; display: grid; gap: 14px; }
+.procurement-credits dl > div { display: grid; grid-template-columns: 56px 1fr; gap: 12px; font-size: 14px; line-height: 1.75; }
+.procurement-credits dt { font-weight: 650; color: var(--accent); }
+.procurement-scope { margin-top: 20px; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.procurement-credits .case-actions { align-items: center; gap: 20px; }
+.procurement-case .case-action--primary { color: #fff; }
+.receipt-story { grid-area: story; min-width: 0; }
+.receipt-story > h2 { margin: 0 0 20px; font-size: clamp(21px, 2.15vw, 33px); line-height: 1.35; letter-spacing: -.055em; }
+.receipt-sheet { margin: 0; border: 1px solid #bac5cd; background: #fff; }
+.receipt-plate { position: relative; }
+.receipt-plate img { display: block; width: 100%; height: auto; }
+.receipt-trace { position: absolute; inset: 0; pointer-events: none; }
+/* Coordinates refer to the quantity cells in the published 1044 × 591 slip. */
+.receipt-trace i {
+  position: absolute; top: 68%; bottom: 5.8%;
+  background: #568bb724; border-bottom: 3px solid #355c7b;
+  animation: receipt-underline .76s cubic-bezier(.2,.65,.3,1) both;
+}
+.trace-in { left: 3.6%; width: 23.5%; }
+.receipt-trace .trace-out { left: 28.2%; width: 32.5%; animation-delay: .72s; }
+.receipt-trace .trace-balance { left: 68.4%; width: 27%; animation-delay: 1.44s; --trace-end: 1; }
+@keyframes receipt-underline {
+  0% { clip-path: inset(0 100% 0 0); opacity: 0; }
+  28% { opacity: 1; } 58%, 85% { clip-path: inset(0); opacity: 1; }
+  100% { clip-path: inset(0); opacity: var(--trace-end, 0); }
+}
+.receipt-sheet figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; padding: 0 16px; border-top: 1px solid #d5dfe5; color: var(--muted); font-size: 13px; }
+.receipt-sheet button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 0; padding: 0; font: inherit; font-weight: 650; color: var(--accent); background: none; cursor: pointer; }
+.receipt-sheet button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.receipt-ledger { position: relative; margin-top: 26px; padding: 16px 0 0; border-top: 1px solid #91a3af; }
+.receipt-ledger::before { content: ''; position: absolute; right: 18%; bottom: 100%; width: 1px; height: 26px; background: #91a3af; }
+.receipt-ledger[data-arrived="true"]::before { animation: ledger-connect .38s ease-out both; transform-origin: top; }
+@keyframes ledger-connect { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.receipt-ledger ol { padding: 0; margin: 12px 0 2px; list-style: none; }
+.receipt-ledger li { display: grid; grid-template-columns: 3.2em 1fr 6em auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.receipt-ledger time,.ledger-record { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.ledger-event { display: flex; align-items: baseline; gap: 10px; font-size: 15px; }
+.ledger-event span { color: var(--muted); font-size: 13px; }
+.receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--navy); }
+.receipt-ledger .text-link, .procurement-credits .text-link { gap: 6px; text-decoration: underline; }
+@media (max-width: 799px) {
+  .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
+  .procurement-heading h1 { margin: 6px 0 8px; }
+  .procurement-heading > p:last-child { font-size: 16px; }
+  .procurement-heading br { display: none; }
+  .receipt-story > h2 { margin-bottom: 12px; }
+}
+@media (max-width: 420px) {
+  .receipt-sheet figcaption { padding: 4px 10px; gap: 0 8px; font-size: 12px; }
+  .receipt-ledger li { grid-template-columns: auto 1fr auto auto; gap: 8px; }
+  .ledger-event { gap: 6px; }.ledger-event span,.ledger-record { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .receipt-trace, .receipt-ledger[data-arrived="true"]::before { animation: none; }
+  .receipt-trace { display: none; }
+}

@@ -140,20 +140,17 @@ export const PROJECT_DETAIL_READY = {
       { label: 'AI 협업', value: 'HTML·CSS·JavaScript 작성, 반응형·접근성 보완, 도식 정리와 검수' },
     ] },
   ),
-  'feedback-hub': detail(
-    'feedback-hub',
-    media('detail/current/pumuiseon-home-20261105.jpg', '품의선 업무 현황 — 자재 전표와 현재 보유 수량, 처리할 품의', '1348 / 926', { mobile: { src: 'detail/current/pumuiseon-mobile-20261105.jpg', aspectRatio: '375 / 780', label: '품의선 현재 모바일 첫 화면 · 390px iframe' } }),
-    [
-      evidence('발주한 5개가 재고 5개는 아니니까.', '받은 수량 3개, 현장에 준 수량 2개, 현재 보유 1개를 한 전표에 표시했습니다. 아직 받지 않은 2개는 별도로 구분합니다.', '발주량과 실제 보유량을 혼동하지 않고, 수량의 근거를 읽도록 했습니다.', media('detail/current/pumuiseon-home-20261105.jpg', '품의선 입출고 전표 — 발주·미입고·입고·지급·현재 보유 구분', '1348 / 926', { crop: { x: 265, y: 209, width: 1028, height: 244 } })),
-      { title: '하나의 자재에서, 기록이 이어지게.', layout: 'wide', summary: '자재의 현재 보유량 아래에 입고·지급 이력과 관련 구매 품의를 연결했습니다. 처리일·수량·업체 또는 받은 사람을 같은 행에서 읽고, 연결된 발주 기록으로 이동합니다.', media: media('detail/current/pumuiseon-history-20261105.jpg', '포토센서 상세 — 현재 보유 수량, 입고·지급 이력과 관련 품의', '1348 / 926'), mediaLabel: '실제 공개 화면 · 가상 자재·업체·담당자' },
-      evidence('역할에 따라 다음 처리를 구분하기.', '구매·자재 담당자, 팀장, 사장님을 시연 역할로 구분하고 품의·결재·발주·입고·지급 순서를 연결했습니다.', '종이 결재서와 메일로 처리하던 업무의 순서가 화면에서도 이어지도록 구성했습니다.'),
+  'feedback-hub': {
+    aiCollaboration: [
+      { label: '김도한', value: '엑셀·메일로 구매 요청을 정리하고 종이 결재서를 올리던 경험을 바탕으로, 발주·입고·지급의 처리 순서를 요구사항으로 전달했습니다.' },
+      { label: 'AI 협업', value: '시연 구조와 화면을 제안하고 코드를 작성·검사했습니다.' },
     ],
-    { actual: ['품의·결재·발주·입고·지급의 시연 흐름', '자재별 이력과 업체 관리', '브라우저 localStorage 저장'], demoStatic: ['가상 자재·업체·문서·담당자', '브라우저에서 바꾸는 시연 역할'], notIncluded: ['실제 인증·결재 서버·메일 전송', '업체 발주·AI 호출·DB 동기화', '업무 효율 수치·실사용 검증'] },
-    { decisionsTitle: '실제 업무의 구분을 화면에 남기기.', aiCollaboration: [
-      { label: '김도한', value: '실제 구매·자재 업무 경험과 처리 순서 제공, 요구사항·개선 피드백·방향 선택' },
-      { label: 'AI 협업', value: '업무 시연 구조·화면·그래픽 제안, 코드 작성·수정과 검사' },
-    ] },
-  ),
+    history: [
+      { date: '2026-11-02', type: '입고', amount: '+3개', party: '한결센서', record: 'RC-0001' },
+      { date: '2026-11-04', type: '지급', amount: '−2개', party: '설비보전팀', record: 'IS-0001' },
+    ],
+    historyPath: '#/materials/MT-0001#movement-history',
+  },
   'bus-arrival': detail(
     'bus-arrival-app',
     media('detail/current/onjeongryu-20261105.png', '온정류 — 즐겨찾는 노선의 방향과 도착 시간', '390 / 844', { frameWidth: 390 }),
