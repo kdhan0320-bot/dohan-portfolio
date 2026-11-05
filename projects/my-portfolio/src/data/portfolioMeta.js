@@ -28,7 +28,7 @@ const evidence = (title, choice, reason, detailMedia, comparison) => ({
   ...(detailMedia ? { media: detailMedia } : {}),
   ...(comparison ? { comparison } : {}),
 });
-function detail(id, image, decisions, scope, extra = {}) {
+function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   const project = fallbackProjects.find((item) => item.id === id);
   return {
     openingFacts: true,
@@ -50,7 +50,7 @@ function detail(id, image, decisions, scope, extra = {}) {
     scopeLabels: { actual: '제작 범위', demoStatic: '예시와 데이터', notIncluded: '포함하지 않은 범위' },
     scope,
     aiCollaboration: [
-      { label: '김도한', value: '주제·요구사항 · 개선 피드백 · 방향 선택 · 공개 판단' },
+      { label: '김도한', value: contribution || '주제·요구사항 · 개선 피드백 · 방향 선택 · 공개 판단' },
       { label: 'AI 협업', value: project.is_figma_project ? '디자인 제안 · 화면 편집 · 검토' : '디자인 제안 · 그래픽 제작 · 코드 작성·검사' },
     ],
     resultLimit: { done: project.result, limit: project.limitation },
@@ -175,7 +175,7 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['정적 노선·방향·도착 예시', 'Figma 화면 시안'],
       notIncluded: ['실시간 버스 API·차량 위치', 'Push·계정·앱 코드', '실제 운행 안내·사용성 검증'],
     },
-    { responsiveNotApplicable: true },
+    { responsiveNotApplicable: true, contribution: '버스 도착 정보의 요구사항을 제시했습니다.' },
   ),
   brewstep: detail(
     'brewstep',
@@ -189,6 +189,6 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['음료·가격·프로모션 예시', '현재 Figma 화면 시안'],
       notIncluded: ['실제 주문·결제·재고', '최신 버전의 완성된 결제 흐름', '앱 코드·사용자 조사'],
     },
-    { responsiveNotApplicable: true },
+    { responsiveNotApplicable: true, contribution: '카페 모바일 시안의 방향을 선택했습니다.' },
   ),
 };
