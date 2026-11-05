@@ -1497,10 +1497,10 @@ dialog { max-width: none; }
 #articleBody.article-intro { margin: 16px 0 24px; }
 #articleBody.article-intro p { margin: 0; }
 @media (min-width: 1101px) {
-  .library-reading .film-card:has(.film-note-preview[hidden]) .film-art { width: 64px; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(180px,240px) minmax(0,1fr); align-self: center; align-items: center; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) .film-foot { grid-row: 1; width: 100%; max-width: 240px; }
-  .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-start; margin-top: 0; }
+  .catalog:not(.catalog--single) .library-reading .film-card:has(.film-note-preview[hidden]) .film-art { width: 64px; }
+  .catalog:not(.catalog--single) .library-reading .film-card:has(.film-note-preview[hidden]) .saved-copy { grid-template-columns: minmax(180px,240px) minmax(0,1fr); align-self: center; align-items: center; }
+  .catalog:not(.catalog--single) .library-reading .film-card:has(.film-note-preview[hidden]) .film-foot { grid-row: 1; width: 100%; max-width: 240px; }
+  .catalog:not(.catalog--single) .library-reading .film-card:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-start; margin-top: 0; }
 }
 @media (max-width: 600px) {
   .cinema-view .article-content { padding-top: 20px; }
@@ -1921,7 +1921,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 
 .scene-pair-caption { display: none; }
-.saved-view .page-heading:has(#libraryToolsToggle:not([hidden])) {
+.catalog--single .page-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1929,12 +1929,24 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 #libraryToolsToggle .icon { width: 16px; height: 16px; }
 #libraryToolsToggle[aria-expanded="true"] .icon { transform: rotate(180deg); }
-.saved-view .catalog:has(#libraryToolsToggle:not([hidden])) .results-bar {
+.saved-view .catalog--single .results-bar {
   grid-column: 1/-1;
   min-height: 0;
   margin-block: 0 14px;
 }
 .saved-view .catalog:has(#libraryToolsToggle[aria-expanded="true"]:not([hidden])) .results-bar { margin-top: 12px; }
+@media (min-width: 801px) {
+  .catalog--single { max-width: 44rem; }
+  .catalog--single .library-reading .film-card {
+    grid-template-columns: 104px minmax(0, 1fr);
+    column-gap: 24px;
+    padding: 20px 24px;
+  }
+  .catalog--single .library-reading .saved-copy { display: block; align-self: center; min-width: 0; }
+  .catalog--single .library-reading .film-note-badge { margin-top: 12px; }
+  .catalog--single .library-reading .film-note-preview { margin-top: 4px; }
+  .catalog--single .library-reading .saved-actions { margin-top: 4px; }
+}
 @media (max-width: 600px) {
   #articleCategory, #articleLens { display: none; }
   .article-content h2 { margin-top: 0; }

@@ -1023,6 +1023,7 @@
     const emptyLibrary = state.view === "saved" && libraryCount === 0;
     const singleLibrary = state.view === "saved" && libraryCount === 1;
     const toolsToggle = $("libraryToolsToggle");
+    toolsToggle.closest(".catalog").classList.toggle("catalog--single", singleLibrary);
     if (singleLibrary && toolsToggle.hidden) {
       const usingTools = Boolean(state.query || state.libraryFilter !== "all" || controlsHadFocus);
       toolsToggle.setAttribute("aria-expanded", String(usingTools));
@@ -1338,8 +1339,10 @@
     else $("searchInput").focus();
   });
   $("emptyAction").addEventListener("click", () => {
-    if ($("emptyAction").dataset.action === "browse") navigate("browse");
-    else {
+    if ($("emptyAction").dataset.action === "browse") {
+      catalogFilters.browse = { ...defaultCatalogFilters };
+      navigate("browse");
+    } else {
       resetFilters();
       ($("catalogTools").hidden ? $("libraryToolsToggle") : $("searchInput")).focus();
     }
