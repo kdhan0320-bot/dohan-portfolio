@@ -1,0 +1,280 @@
+{
+  "routes": [
+    {
+      "viewport": 320,
+      "route": "/",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "복잡한 기록을,명확한 화면으로.",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "작업 모음07",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/about",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "화면 밖의 경험,디자인의 출발점.",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 1440,
+      "route": "/",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "복잡한 기록을,명확한 화면으로.",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "작업 모음07",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/about",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "화면 밖의 경험,디자인의 출발점.",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/feedback-hub",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "품의선",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/ott-service",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "잔상관",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/jobflow",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "갈피록",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/seolbiit",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "설비결",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/gongjeongbom",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "기준선",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/bus-arrival",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "온정류",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 320,
+      "route": "/projects/brewstep",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "소요빛",
+      "scrollWidth": 305,
+      "width": 305
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/feedback-hub",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "품의선",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/ott-service",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "잔상관",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/jobflow",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "갈피록",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/seolbiit",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "설비결",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/gongjeongbom",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "기준선",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/bus-arrival",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "온정류",
+      "scrollWidth": 1425,
+      "width": 1425
+    },
+    {
+      "viewport": 1440,
+      "route": "/projects/brewstep",
+      "brokenLoadedImages": 0,
+      "h1Count": 1,
+      "heading": "소요빛",
+      "scrollWidth": 1425,
+      "width": 1425
+    }
+  ],
+  "widths": [
+    {
+      "viewport": 390,
+      "scrollWidth": 375,
+      "width": 375
+    },
+    {
+      "viewport": 768,
+      "scrollWidth": 753,
+      "width": 753
+    },
+    {
+      "viewport": 1024,
+      "scrollWidth": 1009,
+      "width": 1009
+    },
+    {
+      "viewport": 2560,
+      "scrollWidth": 2545,
+      "width": 2545
+    },
+    {
+      "viewport": 3840,
+      "scrollWidth": 3825,
+      "width": 3825
+    }
+  ],
+  "filters": [
+    {
+      "name": "업무·관리",
+      "titles": [
+        "품의선",
+        "갈피록",
+        "설비결",
+        "기준선"
+      ]
+    },
+    {
+      "name": "생활 서비스",
+      "titles": [
+        "온정류",
+        "소요빛"
+      ]
+    },
+    {
+      "name": "콘텐츠 탐색",
+      "titles": [
+        "잔상관"
+      ]
+    },
+    {
+      "name": "전체 작업",
+      "titles": [
+        "품의선",
+        "잔상관",
+        "갈피록",
+        "설비결",
+        "기준선",
+        "온정류",
+        "소요빛"
+      ]
+    }
+  ],
+  "keyboardSteps": [
+    {
+      "expected": 0,
+      "actual": "0",
+      "pressed": [
+        "true",
+        "false",
+        "false"
+      ],
+      "transition": "0.95s, 0.7s"
+    },
+    {
+      "expected": 1,
+      "actual": "1",
+      "pressed": [
+        "false",
+        "true",
+        "false"
+      ],
+      "transition": "0.95s, 0.7s"
+    },
+    {
+      "expected": 2,
+      "actual": "2",
+      "pressed": [
+        "false",
+        "false",
+        "true"
+      ],
+      "transition": "0.95s, 0.7s"
+    }
+  ],
+  "scope": "Chromium CSS iframe checks; not physical-device, Safari or OS reduced-motion verification"
+}

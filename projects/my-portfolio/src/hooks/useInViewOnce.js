@@ -12,6 +12,11 @@ const useInViewOnce = (threshold = 0.25) => {
     const el = ref.current;
     if (!el) return;
 
+    if (!('IntersectionObserver' in window)) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

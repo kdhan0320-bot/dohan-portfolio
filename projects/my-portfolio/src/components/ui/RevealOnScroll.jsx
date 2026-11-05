@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 import useInViewOnce from '../../hooks/useInViewOnce';
 
@@ -21,11 +21,18 @@ const RevealOnScroll = ({
   threshold = 0.08,
   sx: sxProp,
 }) => {
-  const skipAnimation = useRef(
+  const [skipAnimation, setSkipAnimation] = useState(
     typeof window !== 'undefined'
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
       : false,
   );
+  const [focused, setFocused] = useState(false);
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setSkipAnimation(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
   // window.__PORTFOLIO_REVIEW_MODE__ 또는 기존 data-review-mode 속성 중 하나만
   // true여도 review 캡처로 판단한다(HeroSection.jsx와 동일한 이유).
   const isReviewCapture = useRef(
@@ -33,7 +40,7 @@ const RevealOnScroll = ({
       (typeof document !== 'undefined' && document.documentElement?.getAttribute('data-review-mode') === 'true'),
   );
   const [ref, isVisible] = useInViewOnce(threshold);
-  const show = skipAnimation.current || isReviewCapture.current || isVisible;
+  const show = skipAnimation || isReviewCapture.current || isVisible || focused;
 
   const mobileY = Math.round(y * 0.6);
   const effectiveDuration = isReviewCapture.current ? 0 : duration;
@@ -41,13 +48,14 @@ const RevealOnScroll = ({
   return (
     <Box
       ref={ref}
+      onFocusCapture={() => setFocused(true)}
       sx={[
         {
           opacity: show ? 1 : 0,
           transform: show
             ? 'translateY(0)'
             : { xs: `translateY(${mobileY}px)`, md: `translateY(${y}px)` },
-          transition: (skipAnimation.current || isReviewCapture.current)
+          transition: (skipAnimation || isReviewCapture.current)
             ? 'none'
             : `opacity ${effectiveDuration}s ease-out ${delay}s, transform ${effectiveDuration}s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
           willChange: show ? 'auto' : 'opacity, transform',
