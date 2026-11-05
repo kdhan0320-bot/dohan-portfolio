@@ -1,5 +1,22 @@
 # 잔상관 Asset Provenance
 
+## v62 별을 접는 아이의 손끝 (2026-11-05)
+
+기존 장면 `atlas-still-v61.webp`를 바탕으로 내장 OpenAI 이미지 편집 도구로 두 시안을 생성했습니다. 첫 번째는 엄지와 종이 모서리의 변화가 작아서, PC와 모바일 팝업에서 손가락의 윤곽과 모서리의 눌림이 보이는 두 번째를 선택했습니다. 화면의 포스터는 `posters-v45/atlas.jpg`를 사용합니다.
+
+- 채택한 원본 `exec-0a1db9a9-3994-4ead-b3dc-2d241e024165.png`를 상세용 `atlas-still-v62.webp`(1448×1086, 42,370바이트), 기획전용 `scene-previews/atlas-v62.webp`(768×576, 11,286바이트)와 내장 80×60 미리보기로 인코딩했습니다.
+- 첫 번째 시안의 프롬프트
+
+```text
+Precise local edit of this 4:3 quiet 2D animated film still. Keep the camera framing, hand pose and size, background, burgundy sleeve, the folded star to the right, single star in night sky, subdued warm side-light and blue window. Only refine the tiny area where the child pinches the last uncreased corner between thumb and forefinger and the nearest paper surface. A slight compression in the thumb pad against the edge, tiny contact shadow and uneven pressure at the tip, a subtly turned ivory edge and a short fading crease; let the contact feel observed rather than a perfectly smooth illustration. Mostly calm matte paper with two sparse, almost imperceptible paint strokes along the turning edge; soft broad folds, no grain overlay or deep wrinkles. Keep the beautiful dim mood and readable silhouettes at small mobile size. Retain an economical hand-painted animation style, no text, no extra props or fingers, no glowing paper or added texture on the whole image.
+```
+
+- 채택한 시안의 프롬프트
+
+```text
+4:3 animation still, localized repaint in a quiet limited-animation technique. Retain the exact wide composition, child from behind in burgundy at left, wood desk, one completed paper star at right and one little star outside the dark-blue window. Keep the warm dim light. REDRAW the hand and the last paper sheet, giving them a tangible, unposed gesture visible in a thumbnail. Thumb pad rests ON the edge, the index tip curls just UNDER it, other fingers relaxed and uneven; just a slight pinch, naturally short nails. The thin ordinary origami paper sags on its weight; a short cockled edge at the pinched point and a subtle dent under the thumb, clear narrow cast shadow beneath the raised corner. Use an economical animation pencil contour, locally broken in the light at the finger joints, and small distinct matte color shapes at fingertip contact instead of a uniform gradient. An imperfect crease that fades away; broadly quiet paper surface; no grain filter, dirt, stippling, crinkled newspaper, exaggerated knuckles, extra fingers, bright halos, new objects, letters, cropping or change of camera angle. The essential gesture is a young person hesitating just before making one last fold.
+```
+
 ## v61 별을 접는 아이의 종이와 빛 (2026-11-05)
 
 내장 OpenAI 이미지 편집 도구에 기존 장면 `atlas-still-v59.webp`를 입력해 손끝에 들린 마지막 종이의 접힌 선과 빛을 조정했습니다. 원본 그림에서 아이와 창, 밤하늘의 별과 책상 위에 놓인 종이별의 위치를 참고했습니다. 작품 포스터는 `posters-v45/atlas.jpg`입니다.

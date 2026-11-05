@@ -153,10 +153,10 @@
       moodText: "낯선 경이",
       image: "atlas",
       posterArtwork: "assets/posters-v45/atlas.jpg",
-      posterPath: "assets/atlas-still-v61.webp",
-      previewPath: "assets/scene-previews/atlas-v61.webp",
+      posterPath: "assets/atlas-still-v62.webp",
+      previewPath: "assets/scene-previews/atlas-v62.webp",
       sceneAlt: "아이의 어깨 너머로, 손끝에 들린 종이 모서리와 창가에 놓인 종이별이 보인다.",
-      previewBase: "UklGRlwBAABXRUJQVlA4IFABAABwCwCdASpQADwAPtVWoUwoJKMoNNdraQAaiUAY5QPd/8GAOeXJdLJtcsUXQ+7sRXnd7dO12cx/w5VEz/kV29hnovMCxgpmlfOqZB9tePrWvNgR5jsiD3fBqP+hIzRmYtvIgLwAAP72uU+IGjoBx0u4eZUNnEesfkyjyvCRXCHvGvZE3Sj1X4NMFD3tHUHSVnUFX7awXVWZ0GNOhZWmEtm8IutK4fDLYwoxTg+qepaXv+Rl3fS/ItdfzuuIFWYcCSbOWNvpaZPgmrfvRkrRTZIicVmsjefZR58STJs25fJvgTBW6T97mhgp9zRGA58c7IFNgu0/qvkJgsCtv0WEiXYqCbICEhW+IlQSApnYgxM2ZGF7qFZWLEtIa707e9DlQfzwvAeR/zK7kWuf/2rn2AH9KnfpgQTSBT4zKp+QgO0pGpPSvSLRiAxLH5YSP/dRsAA=",
+      previewBase: "UklGRnIBAABXRUJQVlA4IGYBAACwCwCdASpQADwAPtVYoUyoJSMiNNdraQAaiUAYIgGxsU/4L0QXcb79XP8YEeyaOdBH1oAecRd3otKcdoxxjbK+zGxz/JRs9W7EGhGlWt3XFo3eEDx2ELBRvFB+s9Ox5512KLX8w0AA/vZmt2cU6saw0IA5LLYEPYBbHtPfyMMiMhDaIJhwtuMbPD2Cvm3zkAPrOSKn14E4dLEtpAdCrg+p2w2TKfXhVm01a6t4VYBgxelZ2AMOqzY4dp4Apn8tDuQzkYxz3mcmyNdTRhgBRlSWNNxzFPfma6CzX2yLA7K73MOQa/zvA2mRcsSm+MjulBNyg4CBgItrC8ZAzN8LdjO3pbz9ZhH2btxCZNgF8bFS1LDCnL60ZZ2RrtLdYLpOuufPbWslQqPEGMKE37Cq/mXwn7vXo+0Z/4GXtj+p50fKkgIsnhfIhNEkjv3CL9Yw6RMlwgJUQabDu36nkQQbN7cooDpsAAAA",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:
@@ -317,7 +317,7 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "앞의 두 편에서는 파도와 숲의 물소리를 듣습니다. 뒤의 두 편에서는 그 자리를 친구와 손님의 목소리가 채웁니다.",
+        "파도와 숲의 물소리가 잦아들면, 친구와 손님의 목소리가 들립니다.",
       ],
     },
     {
@@ -326,7 +326,7 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "앞의 두 편은 우연히 가까워진 사이를, 뒤의 두 편은 먼저 손을 내미는 사람을 따라갑니다.",
+        "우연히 마주친 두 사람에서, 먼저 손을 내미는 두 사람으로 이어집니다.",
       ],
     },
     {
@@ -335,7 +335,7 @@
       title: "익숙한 세계 바깥의 신호",
       film: "greenhouse",
       paragraphs: [
-        "일지와 메시지를 읽는 두 사람에서, 소원과 구조 요청에 응답할 두 사람으로 시선을 옮깁니다.",
+        "남겨진 기록을 읽는 두 사람에 이어, 소원과 구조 요청에 답할 두 사람을 만납니다.",
       ],
     },
   ];
@@ -998,7 +998,7 @@
   }
   function render({ preserveFocus = false } = {}) {
     const controlsHadFocus = preserveFocus && document.activeElement.closest(
-      "#libraryFilters, #catalogTools, #catalogOptions, #resultsBar",
+      "#libraryToolsToggle, #libraryFilters, #catalogTools, #catalogOptions, #resultsBar",
     );
     const focused =
       preserveFocus && $("filmGrid").contains(document.activeElement)
@@ -1011,8 +1011,16 @@
     const focusedNote = focused?.hasAttribute("data-open-note");
     const focusedDraft = focused?.hasAttribute("data-open-draft");
     const visible = orderedFilms.filter(matches);
-    const emptyLibrary =
-      state.view === "saved" && !films.some((film) => inLibrary(film.id));
+    const libraryCount = films.filter((film) => inLibrary(film.id)).length;
+    const emptyLibrary = state.view === "saved" && libraryCount === 0;
+    const singleLibrary = state.view === "saved" && libraryCount === 1;
+    const toolsToggle = $("libraryToolsToggle");
+    if (singleLibrary && toolsToggle.hidden) {
+      const usingTools = Boolean(state.query || state.libraryFilter !== "all" || controlsHadFocus);
+      toolsToggle.setAttribute("aria-expanded", String(usingTools));
+    }
+    toolsToggle.hidden = !singleLibrary;
+    const showTools = !emptyLibrary && (!singleLibrary || toolsToggle.getAttribute("aria-expanded") === "true");
     if (state.sort === "title")
       visible.sort((a, b) => a.title.localeCompare(b.title, "ko"));
     if (state.sort === "short")
@@ -1031,7 +1039,6 @@
       saved: "찜한 영화",
       noted: "메모 있는 영화",
     };
-    const libraryCount = films.filter((film) => inLibrary(film.id)).length;
     $("resultCount").textContent = state.view === "saved" && state.query.trim()
       ? `검색 결과 ${visible.length}편 · 보관함 ${libraryCount}편`
       : `${state.view === "saved" ? libraryLabels[state.libraryFilter] : filtered ? "검색 결과" : "전체"} ${visible.length}편`;
@@ -1039,9 +1046,9 @@
     $("searchLabel").textContent = state.view === "saved"
       ? "보관함 영화 제목, 장르, 분위기, 키워드와 저장한 메모 검색"
       : "영화 제목, 장르, 분위기, 키워드 검색";
-    $("libraryFilters").hidden = state.view !== "saved" || emptyLibrary;
-    $("catalogTools").hidden = emptyLibrary;
-    $("catalogOptions").hidden = emptyLibrary;
+    $("libraryFilters").hidden = state.view !== "saved" || !showTools;
+    $("catalogTools").hidden = !showTools;
+    $("catalogOptions").hidden = emptyLibrary || singleLibrary;
     $("resultsBar").hidden = emptyLibrary;
     $("libraryView").hidden = state.view !== "saved" || emptyLibrary;
     $("libraryView").querySelectorAll("[data-library-view]").forEach((button) =>
@@ -1062,7 +1069,8 @@
           String(button.dataset.libraryFilter === state.libraryFilter),
         ),
       );
-    $("resetFilters").hidden = visible.length === 0 || (!filtered && state.sort === "recommended");
+    $("resetFilters").hidden = visible.length === 0 || (!filtered && (singleLibrary || state.sort === "recommended"));
+    if (singleLibrary) $("catalogSelection").hidden = true;
     $("clearSearch").hidden = !state.query;
     document
       .querySelectorAll("[data-mood]")
@@ -1110,6 +1118,8 @@
       replacement.focus({ preventScroll: true });
     } else if (emptyLibrary && controlsHadFocus) {
       $("emptyAction").focus({ preventScroll: true });
+    } else if (controlsHadFocus && controlsHadFocus.closest("[hidden]")) {
+      (singleLibrary ? toolsToggle : $("searchInput")).focus({ preventScroll: true });
     }
   }
   function resetFilters() {
@@ -1264,6 +1274,11 @@
     state.sort = event.target.value;
     render();
   });
+  $("libraryToolsToggle").addEventListener("click", (event) => {
+    const toggle = event.currentTarget;
+    toggle.setAttribute("aria-expanded", String(toggle.getAttribute("aria-expanded") !== "true"));
+    render();
+  });
   $("libraryView").addEventListener("click", (event) => {
     const button = event.target.closest("[data-library-view]");
     if (state.view !== "saved" || !button ||
@@ -1300,19 +1315,15 @@
   );
   $("resetFilters").addEventListener("click", () => {
     resetFilters();
-    document
-      .querySelector(
-        state.view === "saved"
-          ? '[data-library-filter="all"]'
-          : '#searchInput',
-      )
-      .focus();
+    if (!$("libraryToolsToggle").hidden) $("libraryToolsToggle").focus();
+    else if (state.view === "saved") document.querySelector('[data-library-filter="all"]').focus();
+    else $("searchInput").focus();
   });
   $("emptyAction").addEventListener("click", () => {
     if ($("emptyAction").dataset.action === "browse") navigate("browse");
     else {
       resetFilters();
-      $("searchInput").focus();
+      ($("catalogTools").hidden ? $("libraryToolsToggle") : $("searchInput")).focus();
     }
   });
   const dialogContexts = new Map();
@@ -1459,6 +1470,7 @@
       host.dataset.view = view.id;
       host.setAttribute("aria-labelledby", heading.id);
       $("detailSave").hidden = view.id !== "detailDialog";
+      $("articleRuntime").hidden = view.id !== "articleDialog";
       $("cinemaBack").hidden = !returnToArticle;
       $("cinemaContext").hidden = Boolean(returnToArticle);
       $("cinemaContext").textContent = view.id === "articleDialog" ? "테마 기획전" : "작품 살펴보기";
@@ -1766,7 +1778,7 @@
       const filmsInPair = relatedFilms.slice(start, start + 2);
       const pair = document.createElement("section");
       pair.className = "scene-pair";
-      const heading = document.createElement("h4");
+      const heading = document.createElement("h3");
       heading.id = `scene-pair-${start}`;
       heading.className = "article-step";
       pair.setAttribute("aria-labelledby", heading.id);
