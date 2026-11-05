@@ -23,19 +23,41 @@
 .assignment-preview .assignment-action {
   display: flex; justify-content: space-between; align-items: center; gap: 8px;
   min-height: 48px; padding: 8px 16px; border-radius: 6px;
-  background: #225db3; color: white; font-size: 16px; font-weight: 650; cursor: pointer;
+  background: #225db3; color: white; font-size: 16px; font-weight: 650; text-decoration: none;
 }
 .assignment-preview .assignment-action:hover { background: #194d98; }
 .assignment-action:focus-visible { outline: 2px solid #163c73; outline-offset: 3px; }
-.assignment-action::-webkit-details-marker { display: none; }
 .assignment-destination { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; }
-.assignment-chevron { width: 7px; height: 7px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); }
-.assignment-example[open] .assignment-chevron { transform: rotate(225deg); }
-.assignment-example .when-open, .assignment-example[open] .when-closed { display: none; }
-.assignment-example[open] .when-open { display: inline; }
-.assignment-next { margin: 16px 0 0; }
-.assignment-next figcaption { margin-bottom: 8px; color: var(--muted); font-size: 13px; }
-.assignment-next img { display: block; width: 100%; max-width: 600px; height: auto; border: 1px solid #dce0e3; border-radius: 6px; }
+.assignee-picker h2 {
+  margin: 0 0 12px; padding-bottom: 12px; border-bottom: 1px solid #dce0e3;
+  font-size: 24px; font-weight: 680; line-height: 1.25; letter-spacing: -.04em;
+}
+.assignee-picker .assignment-equipment img { width: 72px; aspect-ratio: 96 / 84; }
+.assignee-options { display: grid; gap: 8px; min-width: 0; margin: 14px 0; padding: 0; border: 0; }
+.assignee-options legend { padding: 0 0 6px; color: #525b62; font-size: 14px; }
+.assignee-options label {
+  box-sizing: border-box; display: grid; grid-template-columns: 20px minmax(3em, auto) 1fr;
+  align-items: center; gap: 12px; min-height: 52px; padding: 8px 14px;
+  border: 1px solid #cdd4d9; border-radius: 8px; cursor: pointer;
+}
+.assignee-options label:has(:checked) { border-color: #225db3; background: #f3f4f5; }
+.assignee-options label:has(:focus-visible) { outline: 2px solid #163c73; outline-offset: 2px; }
+.assignee-options input {
+  appearance: none; width: 20px; height: 20px; margin: 0; border: 0; cursor: pointer;
+  background: url('/detail/current/seolbi-radio-off.svg') center no-repeat;
+  transition-property: none;
+}
+.assignee-options input:checked {
+  background-image: url('/detail/current/seolbi-radio-on-dot.svg'), url('/detail/current/seolbi-radio-on-ring.svg');
+}
+.assignee-options strong { font-size: 18px; font-weight: 650; }
+.assignee-options label span { color: #525b62; font-size: 16px; }
+.assignee-due { display: flex; align-items: baseline; gap: 16px; color: #525b62; font-size: 14px; }
+.assignee-due time { color: #30343a; font-size: 16px; font-variant-numeric: tabular-nums; }
+@media (forced-colors: active) {
+  .assignee-options input, .assignee-options input:checked { appearance: auto; background: none; }
+  .assignee-options label:has(:checked) { border-color: Highlight; }
+}
 .assignment-preview > figcaption {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
   gap: 0 8px; padding-top: 2px; color: var(--muted); font-size: 13px; line-height: 1.5;

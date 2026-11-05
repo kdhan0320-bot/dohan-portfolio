@@ -78,11 +78,18 @@ const AboutPage = () => (
         <dl className="about-decisions">
           <div>
             <dt>김도한</dt>
-            <dd>품의선의 발주·입고·지급 순서를 요구사항으로 정리했습니다. 잔상관에서는 참고 사례를 고르고 이미지와 글의 가독성을 검토했습니다. Figma 화면을 직접 편집하며 웹퍼블리싱을 배우고 있습니다.</dd>
+            <dd>
+              <ul className="about-project-roles">
+                <li><Link to="/projects/feedback-hub">품의선</Link><span>발주·입고·지급 순서를 요구사항으로 정리했습니다.</span></li>
+                <li><Link to="/projects/seolbiit">설비결</Link><span>설비 점검 주제와 요구사항을 제시하고, 어떤 작업 상태를 먼저 보여줄지 의견을 냈습니다.</span></li>
+                <li><Link to="/projects/ott-service">잔상관</Link><span>참고 사례를 고르고 이미지와 글의 가독성을 검토했습니다.</span></li>
+              </ul>
+              <p>Figma 화면을 직접 편집하며 웹퍼블리싱을 배우고 있습니다.</p>
+            </dd>
           </div>
           <div>
             <dt>AI 협업</dt>
-            <dd>화면 구성과 시각 시안을 제안하고, 웹 작품의 코드를 작성하고 검사했습니다.</dd>
+            <dd>설비결의 Figma 화면 구성을 제안하고 편집·검토했습니다. 웹 작품에서는 시각 시안을 제안하고 코드를 작성·검사했습니다.</dd>
           </div>
         </dl>
       </section>

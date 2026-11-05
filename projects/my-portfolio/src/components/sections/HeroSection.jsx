@@ -106,7 +106,7 @@ export default function HeroSection() {
     <section id="home" className="portfolio-hero" aria-labelledby="home-title">
       <div className="portfolio-shell fold-layout">
         <div className="fold-heading" data-hero-reveal>
-          <p className="fold-role">웹·UI 디자인 <span aria-hidden="true">/</span> 웹퍼블리싱</p>
+          <p className="fold-role">웹·UI 디자인 <span>신입 지원</span></p>
           <h1 id="home-title">김도한</h1>
         </div>
         <FoldedSheet />

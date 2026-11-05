@@ -71,7 +71,7 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
   ));
   const cover = <div className="case-cover">
-    {project.id === 'seolbiit' ? <AssignmentPreview>{figures}</AssignmentPreview> : figures}
+    {project.id === 'seolbiit' ? <AssignmentPreview showPicker>{figures}</AssignmentPreview> : figures}
   </div>;
   const title = (
     <div className="case-title">

@@ -19,11 +19,11 @@
   gap: 8px;
   margin: 0;
   color: var(--ink);
-  font-size: clamp(15px, 1.15vw, 18px);
+  font-size: clamp(20px, 1.7vw, 26px);
   font-weight: 660;
   letter-spacing: -.025em;
 }
-.fold-role span { color: #758796; font-weight: 400; }
+.fold-role span { color: var(--muted); font-size: 14px; font-weight: 500; }
 .fold-heading h1 {
   margin: 16px 0 0 -.045em;
   color: var(--ink);
