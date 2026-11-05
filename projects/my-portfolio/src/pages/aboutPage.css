@@ -117,20 +117,10 @@
 
 .about-jobs { display: grid; gap: 28px; }
 .about-job + .about-job { padding-top: 28px; border-top: 1px solid var(--line); }
-.about-job__category { color: var(--accent); font-size: 13px; font-weight: 600; line-height: 1.6; }
-.about-job h3 { margin-top: 6px; font-size: 25px; font-weight: 650; line-height: 1.45; letter-spacing: -.035em; }
-.about-job__role {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 14px;
-  margin-top: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.7;
-}
-.about-job__role > span { color: var(--muted); font-size: 14px; font-weight: 500; }
-.about-job > p:last-child { margin-top: 7px; color: var(--muted); font-size: 16px; line-height: 1.85; }
+.about-job h3 { margin: 0; font-size: 25px; font-weight: 670; line-height: 1.4; letter-spacing: -.035em; }
+.about-job .about-job__company { margin: 6px 0 12px; color: var(--muted); font-size: 15px; line-height: 1.6; }
+.about-job p { font-size: 16px; line-height: 1.8; }
+.about-job .text-link { margin-top: 4px; }
 
 .about-review__label {
   margin-bottom: 22px;

@@ -1,43 +1,82 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FEATURED_CASES } from '../../data/projectsData';
-import ProjectCover from '../projects/ProjectCover';
-import RevealOnScroll from '../ui/RevealOnScroll';
+import './selectedWorks.css';
 
-// The phone layout puts the sensor and all three stock counts in one excerpt.
-const ReceiptCover = () => (
-  <div className="project-cover selected-receipt">
-    <div className="receipt-window">
-      <img src={`${import.meta.env.BASE_URL}detail/current/pumuiseon-mobile-20261105.jpg`}
-        width="375" height="780" alt="품의선의 포토센서 전표. 누적 발주 5개, 입고 3개, 지급 2개, 현재 보유 1개." />
-    </div>
-  </div>
-);
+const media = `${import.meta.env.BASE_URL}detail/current/`;
+const receipt = FEATURED_CASES.find(item => item.project.id === 'feedback-hub');
+const maintenance = FEATURED_CASES.find(item => item.project.id === 'seolbiit');
+const cinema = FEATURED_CASES.find(item => item.project.id === 'ott-service');
 
-const ProjectsSection = () => (
-  <section className="home-work portfolio-shell" id="projects" aria-labelledby="selected-title">
-    <div className="section-heading">
-      <h2 id="selected-title">대표 작업</h2>
-      <Link className="text-link" to="/projects">전체 작업 보기</Link>
+function CaseCopy({ item }) {
+  const { project, question, choice, scope } = item;
+  return (
+    <div className="case-brief">
+      <p className="case-category">{project.categoryLabel}</p>
+      <h3>{project.title}</h3>
+      <p className="case-prompt">{question}</p>
+      <p className="case-reason">{choice}</p>
+      <Link className="case-read" to={`/projects/${project.slug || project.id}`} aria-label={`${project.title} 설계 과정 보기`}>
+        설계 과정 보기 <span aria-hidden="true">→</span>
+      </Link>
+      <p className="case-credit">{scope}</p>
     </div>
-    <div className="selected-grid">
-      {FEATURED_CASES.map(({ project, question, choice, image, imageAlt, scope }) => (
-        <RevealOnScroll key={project.id} sx={{ minWidth: 0 }}>
-          <article className="selected-case">
-            <Link className="selected-case-link" aria-label={`${project.title} 설계 과정 보기`} to={`/projects/${project.slug || project.id}`}>
-              {project.id === 'feedback-hub'
-                ? <ReceiptCover />
-                : <ProjectCover project={project} image={image} imageAlt={imageAlt} />}
-              <div className="selected-meta"><h3>{project.title}</h3><span>{project.categoryLabel}</span></div>
-              <p className="selected-question">{question}</p>
-              <p className="selected-choice">{choice}</p>
-              <span className="selected-action">설계 과정 보기<span className="visually-hidden"> · {project.title}</span></span>
-            </Link>
-            <p className="selected-scope">{scope}</p>
-          </article>
-        </RevealOnScroll>
-      ))}
-    </div>
-  </section>
-);
+  );
+}
 
-export default ProjectsSection;
+const scenes = [
+  { title: '파란 오후', info: '애니메이션 · 28분', src: 'bluehour-scene.webp', alt: '바다가 보이는 길에 자전거를 세운 두 친구' },
+  { title: '새벽 두 시의 식탁', info: '드라마 · 23분', src: 'nocturne-scene.webp', alt: '늦은 식당에서 마주 앉은 손님과 주인' },
+];
+
+function CinemaScenes() {
+  const [selected, setSelected] = useState(0);
+  return (
+    <div className="scene-editor">
+      <div className="scene-frame">
+        {scenes.map((scene, i) => <img key={scene.src} src={media + scene.src} loading="lazy"
+          className={selected === i ? 'active' : ''} alt={selected === i ? scene.alt : ''} aria-hidden={selected !== i} />)}
+        <p className="scene-caption" aria-live="polite">{scenes[selected].title} <span>{scenes[selected].info}</span></p>
+      </div>
+      <div className="scene-choices" role="group" aria-label="잔상관 영화 장면 선택">
+        {scenes.map((scene, i) => <button key={scene.title} type="button" aria-pressed={i === selected}
+          onClick={() => setSelected(i)}>{scene.title}</button>)}
+      </div>
+    </div>
+  );
+}
+
+export default function ProjectsSection() {
+  return (
+    <section className="work-edition portfolio-shell" id="projects" aria-labelledby="selected-title">
+      <div className="section-heading">
+        <h2 id="selected-title">대표 작업</h2>
+        <Link className="text-link" to="/projects">전체 작업 보기</Link>
+      </div>
+      <article id="receipt-feature" className="lead-case" aria-label="품의선 · 자재 입출고 전표" tabIndex="-1">
+        <CaseCopy item={receipt} />
+        <figure className="receipt-proof">
+          <Link to="/projects/feedback-hub" className="slip-board" aria-label="품의선 전표의 설계 과정 보기">
+            <span className="slip-print"><img id="sample-receipt" src={media + 'pumuiseon-opening-slip.png'}
+              width="1044" height="591" alt="포토센서 예시 전표. 누적 발주 5개, 미입고 2개. 입고 3개에서 지급 2개를 뺀 현재 보유량은 1개." /></span>
+          </Link>
+          <figcaption>품의선 웹에서 발췌한 자재 입출고 전표 <span>예시 데이터</span></figcaption>
+        </figure>
+      </article>
+      <div className="companion-cases">
+        <article className="companion-case">
+          <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
+            <svg viewBox="45 276 558 370" aria-hidden="true" focusable="false">
+              <image href={media + 'seolbigyeol-20261105.png'} width="1024" height="768" />
+            </svg>
+          </Link>
+          <CaseCopy item={maintenance} />
+        </article>
+        <article className="companion-case">
+          <CinemaScenes />
+          <CaseCopy item={cinema} />
+        </article>
+      </div>
+    </section>
+  );
+}

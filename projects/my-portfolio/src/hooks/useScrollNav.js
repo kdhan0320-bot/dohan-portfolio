@@ -167,7 +167,7 @@ export const useActiveSection = (pathname) => {
 };
 
 // ── 4. 섹션으로 스크롤 유틸 ──────────────────────────────────────────
-export const scrollToSection = (sectionId) => {
+export const scrollToSection = (sectionId, { instant = false } = {}) => {
   const el = document.getElementById(sectionId);
   if (!el) return;
 
@@ -177,5 +177,5 @@ export const scrollToSection = (sectionId) => {
   const HEADER_OFFSET = 84;
   const top = el.getBoundingClientRect().top + window.pageYOffset - HEADER_OFFSET;
 
-  window.scrollTo({ top, behavior: reducedMotion ? 'instant' : 'smooth' });
+  window.scrollTo({ top, behavior: reducedMotion || instant ? 'instant' : 'smooth' });
 };

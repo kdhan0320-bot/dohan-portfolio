@@ -31,7 +31,7 @@ const AboutPage = () => (
         <div className="about-intro__copy">
           <p className="about-intro__role">웹·UI 디자인 <span>신입 지원</span></p>
           <p>사무와 생산 현장에서 일한 경험을 바탕으로, 복잡한 정보 속에서 필요한 내용을 찾고 다음 행동을 판단하는 화면에 관심을 두고 있습니다.</p>
-          <p>현재 AI 없이 직접 수정하고 설명할 수 있는 도구는 Figma입니다. 웹퍼블리싱은 학습 중이며, 웹 구현은 AI와 함께 제작했습니다.</p>
+          <p>Figma 화면을 직접 편집하며 웹퍼블리싱을 배우고 있습니다. 웹 작업은 AI와 함께 구현했습니다.</p>
         </div>
       </header>
 
@@ -65,16 +65,16 @@ const AboutPage = () => (
         </div>
         <div className="about-jobs">
           <article className="about-job">
-            <p className="about-job__category">사무 업무</p>
-            <h3>청림엔지니어링</h3>
-            <p className="about-job__role">구매 · 회계 · 총무</p>
-            <p>구매·발주, 공장 구매품 관리와 거래처 대응을 맡았습니다. 견적·문서관리와 현장 지원 업무도 경험했습니다.</p>
+            <h3>구매·회계·총무</h3>
+            <p className="about-job__company">청림엔지니어링</p>
+
+            <p>공장 구매품 발주와 거래처 대응, 견적·문서 관리를 맡았습니다. 이때 경험한 발주·입고·지급 순서를 품의선의 설계에 반영했습니다.</p>
+            <Link className="text-link" to="/projects/feedback-hub">품의선 설계 과정 보기</Link>
           </article>
           <article className="about-job">
-            <p className="about-job__category">생산 현장</p>
-            <h3>현대자동차</h3>
-            <p className="about-job__role">생산 현장 업무 <span>계약직</span></p>
-            <p>계약직으로 생산 현장 업무를 경험했습니다.</p>
+            <h3>생산 현장 업무</h3>
+            <p className="about-job__company">현대자동차 <span>· 계약직</span></p>
+
           </article>
         </div>
       </section>
@@ -82,9 +82,9 @@ const AboutPage = () => (
       <section className="about-block about-making" aria-labelledby="about-making-title">
         <div className="about-block__heading"><p className="eyebrow">03 / 제작과 협업</p><h2 id="about-making-title">직접 하는 일과,<br />함께 만드는 일.</h2><p>사용한 기술과 독립적으로 수행할 수 있는 역량을 구분합니다. 구체적인 기여와 시연 범위는 각 작품에서 설명합니다.</p></div>
         <div className="about-review"><p className="about-review__label">현재의 작업 범위</p><dl className="about-decisions">
-          <div><dt>직접 수정·설명 — Figma</dt><dd>현재 AI 도움 없이 직접 수정하고 설명할 수 있는 도구는 Figma입니다. 모든 작품의 디자인을 혼자 제작했다는 의미는 아니며, 화면 편집과 AI 협업 범위를 작품별로 구분합니다.</dd></div>
+          <div><dt>직접 수정·설명 — Figma</dt><dd>Figma 화면을 직접 편집하고 수정한 내용을 설명할 수 있습니다.</dd></div>
           <div><dt>경험과 판단 — 주제·요구사항·피드백</dt><dd>품의선에는 실제 구매·자재 업무의 순서를 제공했습니다. 잔상관에는 참고 사례와 이미지 중심의 방향을 제시하고, 가독성과 자연스러운 흐름을 반복해서 검토했습니다.</dd></div>
-          <div><dt>학습과 협업 — 웹퍼블리싱</dt><dd>웹퍼블리싱은 학습 중입니다. 웹의 구체적인 디자인 제안·코드 작성·기능 검사에는 AI의 도움을 받았습니다. 프로젝트에 사용된 기술 목록을 독립 구현 능력으로 제시하지 않습니다.</dd></div>
+          <div><dt>학습과 협업 — 웹퍼블리싱</dt><dd>웹 프로젝트에서 요구사항을 정리하고 수정 방향을 선택했습니다. AI는 화면 제안·코드 작성·기능 검사를 맡았습니다.</dd></div>
         </dl><div className="about-review__roles"><p><strong>김도한</strong><span>주제와 요구사항 · 개선 피드백 · 방향 선택</span></p><p><strong>AI 협업</strong><span>화면 제안·편집 · 코드 작성 · 검사</span></p></div></div>
       </section>
 

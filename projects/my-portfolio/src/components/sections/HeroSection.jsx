@@ -1,54 +1,100 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { scrollToSection } from '../../hooks/useScrollNav';
+import { playPaperUnfold } from './playPaperUnfold';
 import './heroSection.css';
 
-const coverImage = `${import.meta.env.BASE_URL}folded-sheet.jpg`;
-
 function FoldedSheet() {
-  const [ready, setReady] = useState(false);
-  const [playback, setPlayback] = useState(0);
+  const canvas = useRef(null);
+  const photo = useRef(null);
+  const button = useRef(null);
+  const cancel = useRef(null);
+  const [opened, setOpened] = useState(false);
 
-  function handleLoad() {
-    setReady(true);
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        document.documentElement.dataset.reviewMode !== 'true') {
-      setPlayback(1);
+  useEffect(() => () => cancel.current?.(), []);
+
+  function openReceipt() {
+    if (cancel.current) return;
+    const receipt = document.getElementById('sample-receipt');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Browsing and keyboard focus never depend on canvas or an image download.
+    if (reduced.matches || !photo.current?.naturalWidth || !receipt?.naturalWidth) {
+      scrollToSection('receipt-feature');
+      return;
     }
+    const controller = new AbortController();
+    const options = { signal: controller.signal, passive: true };
+    let stopDrawing;
+    function stop() {
+      controller.abort();
+      stopDrawing?.();
+      cancel.current = null;
+      setOpened(false);
+    }
+    function finish() {
+      controller.abort();
+      const source = canvas.current?.parentElement;
+      const target = receipt.closest('.slip-board');
+      if (!document.startViewTransition || !source || !target || reduced.matches) {
+        cancel.current = null;
+        scrollToSection('receipt-feature');
+        return;
+      }
+      // Carry the flattened print to its real place on the page. A normal
+      // smooth scroll above serves browsers without shared-element transitions.
+      source.style.viewTransitionName = 'unfolded-slip';
+      const transition = document.startViewTransition(() => {
+        source.style.viewTransitionName = '';
+        if (!target.isConnected) return;
+        target.style.viewTransitionName = 'unfolded-slip';
+        scrollToSection('receipt-feature', { instant: true });
+      });
+      cancel.current = () => transition.skipTransition();
+      transition.finished.finally(() => {
+        source.style.viewTransitionName = '';
+        target.style.viewTransitionName = '';
+        cancel.current = null;
+        setOpened(false);
+      });
+    }
+    cancel.current = stop;
+    window.addEventListener('wheel', stop, options);
+    window.addEventListener('touchmove', stop, options);
+    window.addEventListener('keydown', e => {
+      if (['Escape','Tab','PageDown','PageUp','Home','End','ArrowDown','ArrowUp'].includes(e.key)) stop();
+    }, options);
+    document.addEventListener('focusin', e => {
+      if (e.target !== button.current) stop();
+    }, options);
+    reduced.addEventListener('change', () => { stop(); scrollToSection('receipt-feature'); }, options);
+    setOpened(true);
+    stopDrawing = playPaperUnfold(canvas.current, photo.current, receipt, finish);
   }
+
+  useEffect(() => {
+    if (!opened) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && !cancel.current) setOpened(false);
+    });
+    observer.observe(button.current);
+    return () => observer.disconnect();
+  }, [opened]);
 
   return (
     <figure className="fold-art">
-      <div className="fold-frame">
-        <img
-          className="fold-image"
-          src={coverImage}
-          width="1536" height="1024"
-          alt="푸른 원과 가는 선들이 인쇄된 종이 한 장이 세 면으로 접혀 있다."
-          onLoad={handleLoad}
-        />
-        {playback > 0 && (
-          <div key={playback} className="fold-light" aria-hidden="true">
-            <i className="fold-light-back" />
-            <i className="fold-light-middle" />
-            <i className="fold-light-front" />
-          </div>
-        )}
-      </div>
-      <figcaption className="fold-caption">
-        <span className="fold-title">접힌 작업 도면</span>
-        <button
-          type="button"
-          className="fold-replay"
-          disabled={!ready}
-          onClick={() => setPlayback(count => count + 1)}
-        >
-          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12">
-            <path fill="currentColor" d="M3 1.5 10 6l-7 4.5z" />
-          </svg>
-          도입 모션 재생
-        </button>
-      </figcaption>
+      <button ref={button} type="button" className="fold-cover" onClick={openReceipt}
+        onFocus={() => { if (!cancel.current) setOpened(false); }}
+        aria-label="접힌 작업 도면 펼쳐서 품의선 전표 보기" aria-controls="receipt-feature">
+        <span className="fold-frame" data-open={opened}>
+          <img ref={photo} className="fold-image" src={`${import.meta.env.BASE_URL}folded-sheet.jpg`}
+            width="1536" height="1024" alt="" />
+          <canvas ref={canvas} className="fold-canvas" aria-hidden="true" />
+        </span>
+        <span className="fold-caption">
+          <span className="fold-title">접힌 작업 도면</span>
+          <span className="fold-handle">펼쳐서 전표 보기 <span aria-hidden="true">↘</span></span>
+        </span>
+      </button>
     </figure>
   );
 }
@@ -62,16 +108,9 @@ export default function HeroSection() {
           <h1 id="home-title">김도한</h1>
         </div>
         <div className="fold-intro">
-          <p className="fold-description">
-            구매·총무와 생산 현장에서 익힌<br className="fold-break" /> 일의 순서를 화면으로 옮깁니다.
-          </p>
+          <p className="fold-description">구매·총무와 생산 현장에서 익힌<br className="fold-break" /> 일의 순서를 화면으로 옮깁니다.</p>
           <div className="fold-actions">
-            <button type="button" className="fold-primary" onClick={() => scrollToSection('projects')}>
-              대표 작업 보기
-              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4">
-                <path d="M8 1.5v12m-5-5 5 5 5-5" />
-              </svg>
-            </button>
+            <button type="button" className="fold-primary" onClick={() => scrollToSection('projects')}>대표 작업 바로 보기 <span aria-hidden="true">↓</span></button>
             <Link className="text-link" to="/about">소개 보기</Link>
           </div>
           <p className="fold-scope">Figma 직접 편집 · AI 협업 웹 제작</p>
