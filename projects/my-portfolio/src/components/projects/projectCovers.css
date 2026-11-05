@@ -1,3 +1,13 @@
 .project-cover{--cover-bg:#edf0f5;position:relative;display:flex;align-items:start;justify-content:center;aspect-ratio:1.5;background:var(--cover-bg);padding:26px;overflow:hidden;border-radius:9px;isolation:isolate}.project-cover__screens{width:100%;transition:transform .6s var(--ease);border-radius:5px;box-shadow:0 12px 30px #1c243218;overflow:hidden}.project-cover__main{display:block;width:100%;height:auto;object-fit:contain;object-position:top}.project-cover--feedback{--cover-bg:#e2e8f1}.project-cover--record{--cover-bg:#eeeaf6}.project-cover--cinema{--cover-bg:#222a37}.project-cover--industry{--cover-bg:#e6eaf0}.project-cover--transit{--cover-bg:#e9f1ed}.project-cover--cafe{--cover-bg:#f2ece7}.project-cover--equipment{--cover-bg:#e7eeed}.project-cover--mobile{padding:24px;align-items:start}.project-cover--mobile .project-cover__screens{width:43%;max-width:200px;min-width:115px;border:4px solid #fff;border-radius:15px;box-shadow:0 12px 25px #17253115}.home-project--feedback-hub .project-cover{padding:0;aspect-ratio:1.25;background:transparent;border-radius:6px}.home-project--feedback-hub .project-cover__screens{box-shadow:none}.home-project--ott-service .project-cover{padding:32px 26px;aspect-ratio:1.6}.home-project--jobflow .project-cover{aspect-ratio:1.45}.more-project-link .project-cover{padding:17px;aspect-ratio:1.05}.more-project-link .project-cover--mobile .project-cover__screens{width:70%;min-width:0}.home-project-cover:hover .project-cover__screens,.home-project-cover:focus-visible .project-cover__screens,.more-project-link:hover .project-cover__screens,.works-card__link:hover .project-cover__screens{transform:translateY(-4px)}
 @media(max-width:899px){.home-project--feedback-hub .project-cover{aspect-ratio:1.65}.more-project-link .project-cover{aspect-ratio:1.4}.more-project-link .project-cover--mobile .project-cover__screens{width:50%}}
 @media(max-width:599px){.project-cover{padding:18px}.home-project--feedback-hub .project-cover{aspect-ratio:1.2}.home-project--ott-service .project-cover{padding:21px 18px;aspect-ratio:1.4}.home-project--jobflow .project-cover{aspect-ratio:1.4}.more-project-link .project-cover{aspect-ratio:.9;padding:12px}.more-project-link .project-cover--mobile .project-cover__screens{width:90%;border-width:3px;border-radius:10px}.project-cover--mobile .project-cover__screens{min-width:110px}}
+
+.selected-case-link .project-cover {
+  aspect-ratio: 1.65;
+  padding: clamp(16px, 1.7vw, 24px) clamp(16px, 1.7vw, 24px) 0;
+  border-radius: 6px;
+}
+.selected-case-link .project-cover__screens { border-radius: 4px 4px 0 0; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .selected-case-link:hover .project-cover__screens { transform: translateY(-3px); }
+}

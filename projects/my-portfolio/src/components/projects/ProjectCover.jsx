@@ -3,7 +3,7 @@ const BASE=import.meta.env.BASE_URL;
 const COVERS={
  seolbiit:{theme:'equipment',width:1024,height:768},
  jobflow:{theme:'record',width:1363,height:936},
- 'ott-service':{theme:'cinema',width:1425,height:950},
+ 'ott-service':{theme:'cinema',width:1348,height:926},
  gongjeongbom:{theme:'industry',width:1363,height:936},
  'feedback-hub':{theme:'feedback',width:1348,height:926},
  'bus-arrival-app':{theme:'transit',width:390,height:844,mobile:true},

@@ -33,7 +33,7 @@ const ProjectsPage = () => {
       <div className="portfolio-shell">
         <header className="works-intro">
           <div><p className="case-eyebrow">PROJECTS</p><h1>작업 모음<span>{String(PUBLIC_PROJECTS.length).padStart(2, '0')}</span></h1></div>
-          <p>업무와 일상 속 정보를 어떻게 정리했는지,<br />각 프로젝트의 화면과 선택을 살펴보세요.</p>
+          <p>업무 관리부터 영화 탐색까지, 주제별로 살펴보세요.<br />각 작업에서 맡은 역할과 실제 화면을 함께 소개합니다.</p>
         </header>
 
         <div className="works-filter" role="group" aria-label="프로젝트 주제로 필터">

@@ -5,10 +5,10 @@ import { createTheme } from '@mui/material/styles';
 export const FONT_SANS = '"SUIT Variable", "SUIT", sans-serif';
 export const FONT_MONO = FONT_SANS;
 export const HUMAN_SIGNAL = {
-  inkNavy: '#20242C', deepHarbor: '#202838', warmPaper: '#F6F7F9',
-  paperDeep: '#DCE0E8', softWhite: '#FFFFFF', inkText: '#20242C',
-  burntOrange: '#4356B8', brightOrange: '#4356B8', brightOrangeOnDark: '#EDF0F7',
-  mutedSage: '#B8C5DD', steelMist: '#EDF0F7', deepSage: '#606775', mutedInk: '#606775',
+  inkNavy: '#242b33', deepHarbor: '#202e40', warmPaper: '#f5f6f8',
+  paperDeep: '#d5dde2', softWhite: '#FFFFFF', inkText: '#242b33',
+  burntOrange: '#4d657c', brightOrange: '#4d657c', brightOrangeOnDark: '#e7ecef',
+  mutedSage: '#b8c7d0', steelMist: '#e7ecef', deepSage: '#53616d', mutedInk: '#53616d',
 };
 export const ULTRAWIDE_CONTENT_MAX_WIDTH = 1280;
 export const HOME_WIDE_MAX_WIDTH = 1376;
@@ -16,17 +16,17 @@ export const HOME_PROJECT_MAX_WIDTH = 1280;
 export const HOME_READING_MAX_WIDTH = 680;
 export const QHD_DECORATION_MIN_WIDTH = 2480;
 export const SECTION_SIGNAL_TONES = {
-  light: { indexColor: '#20242C', indexOpacity: .18, labelColor: '#4356B8', circleStroke: '#DCE0E8', lineStroke: '#DCE0E8', fragmentBg: '#EDF0F7', fragmentBorder: '#DCE0E8' },
-  dark: { indexColor: '#FFFFFF', indexOpacity: .24, labelColor: '#EDF0F7', circleStroke: '#606775', lineStroke: '#606775', fragmentBg: '#202838', fragmentBorder: '#606775' },
+  light: { indexColor: '#242b33', indexOpacity: .18, labelColor: '#4d657c', circleStroke: '#d5dde2', lineStroke: '#d5dde2', fragmentBg: '#e7ecef', fragmentBorder: '#d5dde2' },
+  dark: { indexColor: '#FFFFFF', indexOpacity: .24, labelColor: '#e7ecef', circleStroke: '#53616d', lineStroke: '#53616d', fragmentBg: '#202e40', fragmentBorder: '#53616d' },
 };
 export const getDesignTokens = () => ({
   palette: {
     mode: 'light',
-    primary: { main: '#4356B8', contrastText: '#FFFFFF' },
-    secondary: { main: '#20242C', contrastText: '#FFFFFF' },
-    background: { default: '#F6F7F9', paper: '#FFFFFF' },
-    text: { primary: '#20242C', secondary: '#606775' },
-    divider: '#DCE0E8',
+    primary: { main: '#4d657c', contrastText: '#FFFFFF' },
+    secondary: { main: '#242b33', contrastText: '#FFFFFF' },
+    background: { default: '#f5f6f8', paper: '#FFFFFF' },
+    text: { primary: '#242b33', secondary: '#53616d' },
+    divider: '#d5dde2',
   },
   typography: {
     fontFamily: FONT_SANS,

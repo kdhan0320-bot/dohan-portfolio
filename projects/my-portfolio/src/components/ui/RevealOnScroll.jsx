@@ -16,8 +16,8 @@ import useInViewOnce from '../../hooks/useInViewOnce';
 const RevealOnScroll = ({
   children,
   delay = 0,
-  y = 20,
-  duration = 0.55,
+  y = 12,
+  duration = 0.3,
   threshold = 0.08,
   sx: sxProp,
 }) => {
@@ -42,7 +42,7 @@ const RevealOnScroll = ({
   const [ref, isVisible] = useInViewOnce(threshold);
   const show = skipAnimation || isReviewCapture.current || isVisible || focused;
 
-  const mobileY = Math.round(y * 0.6);
+  const mobileY = Math.min(10, y);
   const effectiveDuration = isReviewCapture.current ? 0 : duration;
 
   return (
