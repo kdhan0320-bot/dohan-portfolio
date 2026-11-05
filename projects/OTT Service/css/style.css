@@ -1415,7 +1415,7 @@ dialog { max-width: none; }
 .theme-preview:hover .sequence-image img { filter: brightness(1.06); }
 .sequence-frame figcaption { display: flex; align-items: baseline; gap: 10px; margin-top: 10px; font-size: 14px; line-height: 1.6; }
 .sequence-number { flex: none; color: var(--collection-surface); font-size: 13px; font-variant-numeric: tabular-nums; }
-/* One native dialog keeps the backdrop, toolbar and outer frame stationary. */
+/* Film details and the curatorial note share the same dialog and toolbar. */
 .cinema-dialog { --cinema-height: min(720px,calc(100dvh - 64px)); width: min(960px,calc(100% - 64px)); height: var(--cinema-height); max-height: none; margin: auto; overflow: clip; background: #222322; }
 .cinema-dialog[open] { display: flex; flex-direction: column; }
 .cinema-dialog[data-scrolled]::before { content: none; }
@@ -1433,6 +1433,14 @@ dialog { max-width: none; }
 .cinema-view .detail-content h2 { padding-right: 0; }
 .cinema-view .detail-content:has(.note-disclosure[open]) { align-self: start; }
 .cinema-view .article-content { padding: 32px; }
+@media (min-width: 801px) {
+  .cinema-dialog[data-view="detailDialog"]:not(:has(.note-disclosure[open])) {
+    --cinema-height: min(504px,calc(100dvh - 64px));
+  }
+}
+@media (min-width: 801px) and (prefers-reduced-motion: no-preference) {
+  .cinema-dialog, .cinema-view .detail-visual { transition: height .18s ease-out; }
+}
 .article-step { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; color: #d0c9bb; font-size: 14px; line-height: 1.6; }
 .article-film-title { word-break: keep-all; }
 @media (max-width: 1100px) {
