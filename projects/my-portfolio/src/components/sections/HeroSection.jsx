@@ -1,46 +1,73 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { scrollToSection } from '../../hooks/useScrollNav';
 import './heroSection.css';
 
-const HeroSection = () => (
-  <section id="home" className="portfolio-hero" aria-labelledby="home-title">
-    <div className="portfolio-shell hero-layout">
-      <div className="hero-copy" data-hero-reveal>
-        <p className="hero-byline">김도한 <span>웹·UI 디자인</span></p>
-        <h1 id="home-title">구매 현장의 기준을<br /><em>화면에 담습니다.</em></h1>
-        <p className="hero-description">구매·총무와 생산 현장에서 일했습니다.<br />그때 마주친 질문을 바탕으로, 일하는 사람이 다음 행동을 판단할 수 있는 화면을 설계합니다.</p>
-        <div className="hero-actions">
-          <Link className="portfolio-button portfolio-button--primary" to="/projects/feedback-hub">품의선 설계 과정 보기</Link>
-          <Link className="text-link" to="/projects">전체 작업 보기</Link>
-        </div>
-        <p className="hero-scope">Figma 직접 편집 <span aria-hidden="true">/</span> AI 협업 웹 제작</p>
-      </div>
-
-      <figure className="stock-sheet" aria-labelledby="stock-question">
-        <figcaption className="stock-caption">
-          <strong>품의선</strong><span>구매·자재 관리 웹</span>
-        </figcaption>
-        <div className="stock-reading">
-          <div>
-            <p className="stock-question" id="stock-question">5개를 발주했다면,<br />지금 쓸 수 있는 수량은?</p>
-            <p className="stock-answer"><strong>1</strong><span>개</span><span className="stock-result-label">현재 재고</span></p>
-          </div>
-          <dl className="stock-ledger">
-            <div><dt>입고</dt><dd>3개</dd></div>
-            <div><dt>지급</dt><dd>−2개</dd></div>
-            <div><dt>미입고</dt><dd>2개</dd></div>
-          </dl>
-        </div>
-        <div className="stock-exhibit">
-          <div className="stock-crop">
-            <img src={`${import.meta.env.BASE_URL}detail/current/pumuiseon-home-20261105.jpg`}
-              alt="포토센서 입출고 전표. 받은 수량, 지급 수량, 현재 보유량을 나란히 표시한 품의선 화면."
-              width="1348" height="926" fetchPriority="high" />
-          </div>
-          <p>포토센서 입출고 전표 <span>실제 화면 · 예시 데이터</span></p>
-        </div>
-      </figure>
-    </div>
-  </section>
+// The three faces share the same baseline, like the ruled edges of stacked forms.
+const DigeutMark = () => (
+  <svg className="intro-glyph" viewBox="0 0 496 324" aria-hidden="true" focusable="false">
+    <g className="intro-guides" fill="none" stroke="currentColor" strokeWidth="1">
+      <path d="M18 58h460M18 243h460M74 18v282M375 18v282" strokeDasharray="2 6" />
+      <path d="M13 58h10m-5-5v10m455 180h10m-5-5v10" />
+    </g>
+    <g className="intro-sheet intro-sheet--back">
+      <path d="M104 34h301v39H145v142h260v41H104z" fill="#d2dde4" stroke="#a1b2be" />
+      <path d="M111 42h286m-286 0v205h286" fill="none" stroke="#f7f9fa" />
+    </g>
+    <g className="intro-sheet intro-sheet--middle">
+      <path d="M89 46h301v40H130v141h260v41H89z" fill="#9bafbe" stroke="#879dad" />
+      <path d="M96 54h287m-287 0v206h287" fill="none" stroke="#d4dfe5" />
+    </g>
+    <g className="intro-sheet intro-sheet--top">
+      <path d="M74 58h301v40H115z" fill="#638198" />
+      <path d="M74 58h301" stroke="#8199aa" />
+    </g>
+    <g className="intro-sheet intro-sheet--spine">
+      <path d="m74 58 41 40v141l-41 41z" fill="#4b667a" />
+      <path d="M81 76v187" fill="none" stroke="#6d879a" />
+    </g>
+    <g className="intro-sheet intro-sheet--foot">
+      <path d="m74 280 41-41h260v41z" fill="#577387" />
+      <path d="M86 274h282" fill="none" stroke="#849dad" />
+    </g>
+    <g className="intro-sheet intro-sheet--rules" fill="none">
+      <path d="M145 144h302m-302 32h262m-262 32h223" stroke="#a7b8c4" />
+      <path d="M145 140v8m302-8v8" stroke="#788f9e" />
+    </g>
+  </svg>
 );
+
+const HeroSection = () => {
+  const [playback, setPlayback] = useState(0);
+
+  return (
+    <section id="home" className="portfolio-hero" aria-labelledby="home-title">
+      <div className="portfolio-shell intro-layout">
+        <div className="intro-heading" data-hero-reveal>
+          <p className="intro-role">웹디자인 · 웹퍼블리싱 포트폴리오</p>
+          <h1 id="home-title">김도한</h1>
+        </div>
+        <div className="intro-details">
+          <p className="intro-description">구매·총무와 생산 현장에서 배운 업무의 순서를<br className="intro-break" /> 일하는 사람의 화면에 담습니다.</p>
+          <div className="intro-actions">
+            <button className="portfolio-button portfolio-button--primary" type="button" onClick={() => scrollToSection('projects')}>대표 작업 보기</button>
+            <Link className="text-link" to="/about">소개 보기</Link>
+          </div>
+          <p className="intro-scope">Figma 직접 편집 · AI 협업 웹 제작</p>
+        </div>
+        <figure className="intro-art">
+          <DigeutMark key={playback} />
+          <figcaption className="intro-art-caption">
+            <span>도한의 ‘ㄷ’과 전표의 괘선</span>
+            <button className="intro-replay" type="button" onClick={() => setPlayback(n => n + 1)} aria-label="도입 모션 다시 보기">
+              <svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M4 8a6.5 6.5 0 1 1 .4 5M4 3v5h5" /></svg>
+              <span>다시 보기</span>
+            </button>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+};
 
 export default HeroSection;

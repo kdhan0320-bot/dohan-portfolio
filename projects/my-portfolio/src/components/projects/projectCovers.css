@@ -11,3 +11,25 @@
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
   .selected-case-link:hover .project-cover__screens { transform: translateY(-3px); }
 }
+
+.selected-case-link .selected-receipt {
+  align-items: center;
+  padding: 16px;
+  background: #e1e8ed;
+}
+.receipt-window {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 348 / 198;
+  overflow: hidden;
+  border: 1px solid #c2cdd5;
+  border-radius: 4px;
+}
+.receipt-window img {
+  position: absolute;
+  width: 107.76%; /* 375px source, cropped to the 348px-wide receipt */
+  max-width: none;
+  height: auto;
+  left: -6.03%;
+  top: -270.2%;
+}

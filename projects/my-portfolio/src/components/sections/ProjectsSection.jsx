@@ -3,6 +3,16 @@ import { FEATURED_CASES } from '../../data/projectsData';
 import ProjectCover from '../projects/ProjectCover';
 import RevealOnScroll from '../ui/RevealOnScroll';
 
+// The phone layout puts the sensor and all three stock counts in one excerpt.
+const ReceiptCover = () => (
+  <div className="project-cover selected-receipt">
+    <div className="receipt-window">
+      <img src={`${import.meta.env.BASE_URL}detail/current/pumuiseon-mobile-20261105.jpg`}
+        width="375" height="780" alt="품의선의 포토센서 전표. 누적 발주 5개, 입고 3개, 지급 2개, 현재 보유 1개." />
+    </div>
+  </div>
+);
+
 const ProjectsSection = () => (
   <section className="home-work portfolio-shell" id="projects" aria-labelledby="selected-title">
     <div className="section-heading">
@@ -14,7 +24,9 @@ const ProjectsSection = () => (
         <RevealOnScroll key={project.id} sx={{ minWidth: 0 }}>
           <article className="selected-case">
             <Link className="selected-case-link" aria-label={`${project.title} 설계 과정 보기`} to={`/projects/${project.slug || project.id}`}>
-              <ProjectCover project={project} image={image} imageAlt={imageAlt} />
+              {project.id === 'feedback-hub'
+                ? <ReceiptCover />
+                : <ProjectCover project={project} image={image} imageAlt={imageAlt} />}
               <div className="selected-meta"><h3>{project.title}</h3><span>{project.categoryLabel}</span></div>
               <p className="selected-question">{question}</p>
               <p className="selected-choice">{choice}</p>

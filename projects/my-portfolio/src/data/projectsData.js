@@ -47,10 +47,8 @@ export const FILTER_TABS = FALLBACK_FILTER_TABS;
 // The same question introduces the work on the homepage and its case study.
 const CASE_NOTES = {
   'feedback-hub': {
-    question: '이 재고는 어떤 기록에서 나왔을까?',
-    choice: '자재 하나를 고르면 입고·지급 이력과 관련 구매 품의를 함께 볼 수 있게 했습니다.',
-    image: 'detail/current/pumuiseon-history-20261105.jpg',
-    imageAlt: '품의선의 포토센서 상세 화면. 자재 수량과 연결된 입출고 이력.',
+    question: '5개를 발주했는데, 왜 재고는 1개일까?',
+    choice: '예시 전표에서 입고한 3개와 지급한 2개를 나란히 보여줍니다. 아직 받지 않은 2개는 현재 재고와 구분했습니다.',
     scope: 'AI 협업 웹 제작 · 브라우저 저장 시연',
   },
   seolbiit: {
