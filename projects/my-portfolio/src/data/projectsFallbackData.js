@@ -279,7 +279,7 @@ export const fallbackProjects = [
     "figmaDesignUrl": "https://www.figma.com/design/bzwp6FhsZaaenOA4ABIAFs?node-id=671-797"
   },
   /* ── React Dashboard ── */
-  {
+    {
     "id": "jobflow",
     "title": "갈피록",
     "description": "지원할 회사를 직접 등록하고 현황·마감·준비할 일을 정리하는 개인 입사지원 관리 서비스",
@@ -315,22 +315,22 @@ export const fallbackProjects = [
     "demo_url": "https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/",
     "github_url": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/jobflow-dashboard",
     "githubUrl": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/jobflow-dashboard",
-    "is_ai_project": false,
+    "is_ai_project": true,
     "is_figma_project": false,
     "is_featured": true,
-    "sort_order": 1,
+    "sort_order": 2,
     "status": "complete",
     "overview": "회사별 지원 현황과 마감, 준비할 일·면접 질문을 정리하는 개인 입사지원 관리 웹앱입니다.",
     "problem": "여러 회사에 지원할 때 회사별 진행 상태, 가까운 마감과 준비할 일이 흩어지기 쉽습니다.",
     "goal": "오늘 할 일과 회사별 상태를 빠르게 확인하고 필요한 기록만 펼치는 구조를 만드는 것이 목표였습니다.",
     "targetUser": "여러 회사의 지원 현황과 준비 작업을 함께 관리하는 취업 준비생",
-    "designPoint": "회사 등록·전형 상태·마감·준비 항목을 하나의 지원 기록으로 연결합니다. 갈피·폴더는 기록의 구분에 사용하고, 큰 화면과 모바일 모두 실제 회사와 다음 조작이 먼저 읽히도록 구성합니다.",
+    "designPoint": "회사 이니셜의 색인, 지원 단계 탭, 날짜 표식을 하나의 기록으로 묶습니다. 회사명·직무·마감·다음 준비를 가까이 배치했습니다.",
     "process": "직접 회사를 관리하는 서비스로 목적 설정 → 큰 화면·가독성·모바일 문제에 대한 피드백 → 기록 중심의 방향과 수정 우선순위 선택 → AI의 화면 제안·구현·샘플 검사 → 공개 판단",
     "result": "오늘의 지원, 전형별 회사 관리, 지원 마감일 달력, 준비 체크, 면접 질문·답변, 작성 요청문 만들기를 구현했습니다. 샘플 편집은 브라우저 메모리에서만 유지됩니다.",
     "lesson": "상단 쏠림은 빈 공간을 늘리는 것만으로 해결되지 않았습니다. 읽는 폭·실제 정보량·다음 조작을 함께 보고, 갈피·폴더 장식의 반복을 조절할 필요가 있었습니다.",
     "nextStep": "현재 버전의 실제 계정·DB 저장과 모바일 실기기 동작을 추가 검증하고, 사용자 관찰로 작업 흐름을 점검할 필요가 있습니다.",
     "aiContribution": "김도한은 서비스 목적과 우선순위, 가독성·모바일 개선 요청, 방향 선택, 샘플·코드 검증 범위와 공개를 결정했습니다. AI는 디자인 제안, 코드 작성·수정, 검사 실행과 화면 캡처를 맡았습니다. 서비스의 작성 요청문 만들기는 로컬 템플릿이며 AI·LLM을 호출하지 않습니다.",
-    "limitation": "면접 일정 등록·실시간 알림·외부 채용 API·통계·드래그 이동·제품 내 AI 문장 생성은 제공하지 않습니다. 실제 계정의 인증·DB 저장 유지, 모바일 실기기, 사용자 조사·채용 성과는 검증하지 않았습니다.",
+    "limitation": "실시간 알림·외부 채용 API·제품 내 AI 문장 생성은 제공하지 않습니다. 실제 계정의 인증·DB 저장 유지, 모바일 실기기, 사용자 조사·채용 성과는 이번 개편에서 검증하지 않았습니다.",
     "dataUsage": "가상 샘플은 2026년 9월 27일 기준이며 브라우저 메모리에서 추가·수정·삭제할 수 있습니다. 새로고침 또는 샘플 초기화 시 복원되며 서버에 저장되지 않습니다. Supabase Auth와 사용자별 저장 코드는 있지만 이번에는 실제 계정으로 검증하지 않았습니다. 작성 요청문 만들기는 로컬 템플릿 기능입니다.",
     "cardProblem": "흩어진 지원 회사와 마감, 준비 작업을 함께 확인하는 흐름을 구성했습니다.",
     "cardRole": [
@@ -339,15 +339,16 @@ export const fallbackProjects = [
     ],
     "cardScope": "웹앱 · 편집 가능한 샘플",
     "cardLimit": "샘플은 새로고침 시 초기화됩니다. 실제 계정의 인증·저장 유지와 모바일 실기기는 미검증입니다.",
-    "accentColor": "#3D6594"
-  },  {
+    "accentColor": "#3D6594",
+    "productionLabel": "AI 협업 웹 제작"
+  },    {
     "id": "seolbiit",
     "slug": "seolbiit",
     "title": "설비결",
     "description": "설비 점검과 정비 작업의 우선순위를 정리하는 운영 UI",
     "category": "설비 점검 운영 UI",
     "categories": [
-      "featured",
+      "more-work",
       "figma"
     ],
     "categoryLabel": "설비 점검 운영 UI",
@@ -375,9 +376,9 @@ export const fallbackProjects = [
     "figmaPrototypeUrl": null,
     "is_ai_project": false,
     "is_figma_project": true,
-    "is_featured": true,
-    "moreWorksPublished": false,
-    "sort_order": 2,
+    "is_featured": false,
+    "moreWorksPublished": true,
+    "sort_order": 3,
     "status": "complete",
     "overview": "설비 점검과 정비 작업을 확인하는 운영 화면 디자인입니다. 작업 현황에서 상태와 우선 작업을 살펴보고 상세 기록으로 이어지도록 구성했습니다.",
     "problem": "설비 상태와 작업 기록, 담당 정보가 흩어져 있으면 지금 확인하거나 배정할 작업을 구분하기 어렵습니다.",
@@ -465,17 +466,17 @@ export const fallbackProjects = [
     "cardLimit": "현재 메뉴 탐색 시안 · 실제 주문·결제 미구현",
     "accentColor": "#456D95",
     "figmaDesignUrl": "https://www.figma.com/design/cvfT9QazAFaXVAxZfeUdvr?node-id=1289-674"
-  },{
+  },  {
     "id": "feedback-hub",
     "slug": "feedback-hub",
-    "title": "고른시선",
-    "description": "같은 A/B 화면을 목적에 맞게 고르고 이유를 확인하는 UI 디자인 비교 연습",
-    "category": "UI 디자인 비교 연습",
+    "title": "품의선",
+    "description": "실제 구매·자재 업무 경험을 바탕으로 품의부터 입고·지급까지 연결한 관리 웹앱",
+    "category": "구매·자재 관리 웹앱",
     "categories": [
-      "more-work",
+      "featured",
       "react"
     ],
-    "categoryLabel": "UI 디자인 비교 연습",
+    "categoryLabel": "구매·자재 관리 웹앱",
     "role": "목적·요구사항 · 개선 피드백 · AI 협업",
     "tools": [
       "React",
@@ -491,9 +492,9 @@ export const fallbackProjects = [
       "MUI"
     ],
     "tags": [
-      "UI 비교",
-      "정보 위계",
-      "학습 경험"
+      "구매 품의",
+      "입출고",
+      "업무 흐름"
     ],
     "gradient": "linear-gradient(135deg, #1E3A5F 0%, #2563EB 60%, #0D9488 100%)",
     "thumbnail_url": null,
@@ -505,31 +506,33 @@ export const fallbackProjects = [
     "githubUrl": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/projects/portfolio-feedback-hub",
     "is_ai_project": true,
     "is_figma_project": false,
-    "is_featured": false,
-    "moreWorksPublished": true,
-    "moreWorksStatus": "웹 · 비교 연습",
-    "sort_order": 5,
+    "is_featured": true,
+    "moreWorksPublished": false,
+    "moreWorksStatus": "웹 · 업무 시연",
+    "sort_order": 0,
     "status": "complete",
-    "overview": "UI 입문자를 위한 6가지 A/B 비교 연습입니다. 목표에 맞는 화면을 선택하고, 무엇을 유지하고 바꿨는지 설명과 함께 확인합니다.",
-    "problem": "화면이 예쁘다는 인상만으로는 어떤 목적에 더 적합한 디자인인지 설명하기 어렵습니다.",
-    "goal": "같은 두 화면에서도 목적이 달라지면 선택이 달라질 수 있음을 비교와 해설로 보여줍니다.",
-    "targetUser": "UI 디자인의 선택 이유를 연습하는 입문자(가정)",
-    "designPoint": "고정된 A/B 화면과 비교 목표를 분리했습니다. 선택 뒤 유지한 요소·달라진 요소·추천 이유와 한계를 보여줍니다.",
-    "process": "비교 연습의 목적 설정 → AI와 예제·설명 구성 → 화면 피드백 → 모바일 비교와 선택 흐름 점검",
-    "result": "6가지 고정 A/B 예제, 목표별 선택·해설, 모바일 화면 전환과 선택 메모를 제공합니다.",
-    "lesson": "더 나은 화면의 기준은 시각적인 취향과 함께 사용자의 목적을 살펴야 합니다.",
-    "nextStep": "입문자가 실제로 선택 이유를 이해하는지 관찰하고 설명을 검토할 필요가 있습니다.",
-    "aiContribution": "김도한은 요구사항과 개선 피드백, 방향 선택과 공개 판단을 맡았습니다. AI는 디자인 제안·검토, 화면 편집 또는 코드 작성·검사에 참여했습니다. 사용자 조사나 성과 측정으로 표현하지 않습니다. 예제 시각 자산 제작에도 AI를 활용했으며 제품 내 AI 호출은 없습니다.",
-    "limitation": "예제는 고정된 가상 화면입니다. 사용자 업로드·자동 디자인 평가·학습 점수·서버 저장을 제공하지 않습니다. 실제 학습 효과는 검증하지 않았습니다.",
-    "dataUsage": "6가지 고정 예제와 미리 작성한 해설을 사용합니다. 선택 메모는 현재 페이지 메모리에만 남고 새로고침하면 초기화됩니다.",
-    "cardProblem": "같은 화면도 목적에 따라 다르게 고르는 UI 비교 연습입니다.",
+    "overview": "엑셀·메일로 요청을 정리하고 종이 결재서를 올린 뒤 업체에 발주하던 경험에서 출발했습니다. 품의·결재·발주·입고·지급을 같은 자재와 기록으로 이어주는 웹앱입니다.",
+    "problem": "발주한 수량과 실제로 받은 수량, 현장에 지급하고 남은 수량을 구분해야 합니다. 문서와 기록이 흩어지면 지금 쓸 수 있는 재고의 근거를 다시 찾아야 합니다.",
+    "goal": "주문·입고·지급의 상태를 구분하고, 한 자재에서 관련 품의와 입출고 이력으로 이어지도록 구성합니다.",
+    "targetUser": "구매·자재 담당자와 결재자(시연 역할)",
+    "designPoint": "입출고 전표의 형태에 받은 수량·지급한 수량·현재 보유량을 묶었습니다. 다음 처리할 품의와 입고 확인 건을 구분합니다.",
+    "process": "실제 구매·자재 업무 경험 제시 → 요구 범위·수정 방향 선택 → AI 협업 화면·코드 제작 → 시연 흐름 확인",
+    "result": "품의·결재·발주·입고·지급과 업체 관리의 시연 흐름을 구성했습니다. 기록은 해당 브라우저에 저장됩니다.",
+    "lesson": "주문이 완료된 상태와 실제로 사용할 수 있는 재고를 구분하는 것이 구매·자재 업무 화면의 핵심입니다.",
+    "nextStep": "실제 담당자의 사용 과제를 통해 용어와 처리 순서를 검토할 필요가 있습니다.",
+    "aiContribution": "김도한은 실제 업무 경험과 처리 순서, 요구사항·개선 피드백·방향 선택을 제공했습니다. AI는 구체적인 화면·그래픽 제안과 코드 작성·검사에 참여했습니다.",
+    "limitation": "가상 업무 데이터와 시연 역할을 사용하는 브라우저 앱입니다. 실제 인증·결재 서버·메일·업체 발주·AI 호출·DB 동기화는 없습니다. 업무 효율 개선 수치는 측정하지 않았습니다.",
+    "dataUsage": "가상 품의·자재·업체·담당자를 사용하며 해당 브라우저 localStorage에 저장합니다. 실제 회사 자료나 실제 결재 권한을 연결하지 않습니다.",
+    "cardProblem": "주문량과 현재 재고를 구분하고, 구매 문서와 입출고 이력을 연결합니다.",
     "cardRole": [
-      "목적·설명·비교 흐름에 대한 피드백",
+      "실제 업무 경험·요구사항·개선 피드백",
       "AI 협업 화면·코드 제작"
     ],
-    "cardScope": "웹 · 고정 A/B 예제 6종",
-    "cardLimit": "고정 예제 · 메모는 페이지 내 임시 저장",
-    "accentColor": "#74618e"
+    "cardScope": "웹 · 브라우저 저장 시연",
+    "cardLimit": "가상 데이터 · 실제 결재·메일 전송 없음",
+    "accentColor": "#36566e",
+    "productionLabel": "AI 협업 웹 제작",
+    "thumbnailAlt": "품의선 업무 현황 — 발주·입고·지급과 현재 보유 수량을 구분한 실제 웹 화면"
   },  {
     id: 'gamstagram',
     title: 'Mini SNS',
@@ -567,7 +570,7 @@ export const fallbackProjects = [
     aiContribution: null,
     limitation: '프론트엔드 전용 데모로 실제 백엔드·로그인·회원가입 기능이 없습니다. 게시글·댓글·좋아요 변경은 브라우저 메모리에서만 동작하며, 프로필은 준비된 데모 정보를 표시하고, 새로고침하면 초기 mock 데이터로 복원됩니다. 모임·채팅·알림도 모두 mock 데이터이며 실시간 통신과 실제 이미지 업로드는 지원하지 않습니다.',
   },
-  {
+    {
     "id": "ott-service",
     "slug": "ott-service",
     "title": "잔상관",
@@ -615,13 +618,13 @@ export const fallbackProjects = [
     "is_featured": true,
     "moreWorksPublished": false,
     "moreWorksStatus": "반응형 웹 · 가상 영화",
-    "sort_order": 3,
+    "sort_order": 1,
     "status": "complete",
     "overview": "분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남는 작품과 관심 메모를 모으는 반응형 웹입니다. HTML·CSS·JavaScript로 탐색부터 내 보관함까지 연결했습니다.",
     "problem": "영화의 분위기를 보여주면서도 모바일에서 설명을 지나 작품까지 오래 내려가지 않도록 해야 했습니다. 김도한은 이미지보다 글이 먼저 보이는 구성과 단조로운 시각 표현을 개선 과제로 제기했습니다.",
     "goal": "작은 영화 전시관이라는 인상을 유지하며, 분위기·시간으로 찾기 → 작품 상세 → 찜·관심 메모 → 내 보관함의 흐름을 완성합니다.",
     "targetUser": "짧은 영화를 분위기와 시간으로 고르고 관심 작품과 선택 이유를 기록하는 이용자(가정)",
-    "designPoint": "차콜 바탕에 작품별 제목을 포함한 포스터와 테마 기획전 배너를 배치했습니다. 홈의 콘텐츠 폭을 맞추고, 웹 글자 크기·굵기를 유지하며 선택창·카드·메모 펼침을 정리했습니다.",
+    "designPoint": "파란 오후와 새벽 두 시의 식탁을 표지의 두 장면으로 배치하고, 작품 목록·테마 기획전의 크기를 달리했습니다. 분위기와 시간으로 탐색하고 선택한 작품과 메모를 보관합니다.",
     "process": "김도한의 참고 사례·방향 선택과 개선 피드백 → AI와 화면 구성 검토 → 포스터 편집·배너 구성·코드 수정 → 실제 화면·저장 흐름 점검",
     "result": "가상 영화 12편, 분위기·러닝타임·검색·정렬, 큐레이션 3개와 작품 상세를 구현했습니다. 찜 또는 저장한 관심 메모가 있는 작품을 중복 없이 내 보관함에 모읍니다.",
     "lesson": "이미지를 먼저 보여주는 데에는 글자를 줄이는 것보다 설명 영역의 비중과 탐색 순서가 중요했습니다. 저장 상태와 빈 결과에서도 다음 행동을 찾을 수 있도록 구성했습니다.",
@@ -636,7 +639,8 @@ export const fallbackProjects = [
     ],
     "cardScope": "반응형 웹 · 브라우저 저장",
     "cardLimit": "가상 영화 · 실제 영상·예매·결제 미제공",
-    "accentColor": "#B47F68"
+    "accentColor": "#B47F68",
+    "productionLabel": "AI 협업 웹 제작"
   },
   /* ── Redesign ── */
   {

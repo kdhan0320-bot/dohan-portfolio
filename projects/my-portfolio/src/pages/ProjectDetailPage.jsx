@@ -1,4 +1,3 @@
-import { useId, useState } from 'react';
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { ALL_PROJECTS } from '../data/projectsData';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
@@ -52,327 +51,40 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
   </figure>
 );
 
-const ScreenChoices = ({ choices }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const panelId = useId();
-  const selected = choices[selectedIndex];
-  return <div className="case-screen-choices">
-    <div className="case-screen-choices__controls" role="group" aria-label="보관함 시연 화면 선택">
-      {choices.map((choice, index) => <button key={choice.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>{choice.label}</button>)}
-    </div>
-    <div id={panelId} aria-live="polite">
-      <ScreenFigure media={selected.media} label={selected.caption} />
-    </div>
-  </div>;
-};
-
-const ServiceWalkthrough = ({ flow }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const panelId = useId();
-  return <section className="case-section case-service-flow" aria-labelledby="case-flow-heading">
-    <div className="case-section__heading">
-      <p className="case-eyebrow">같은 회사로 이어지는 실제 샘플</p>
-      <h2 id="case-flow-heading">{flow.title}</h2>
-      <p className="case-service-flow__record">{flow.summary}</p>
-    </div>
-    <div className="case-service-flow__controls" role="group" aria-label="사용 단계별 실제 화면 선택">
-      {flow.steps.map((item, index) => <button key={item.label} type="button" aria-pressed={selectedIndex === index} aria-controls={`${panelId}-${index}`} onClick={() => setSelectedIndex(index)}>
-        <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{item.label}
-      </button>)}
-    </div>
-    <div className="case-service-flow__stage">
-      {flow.steps.map((step, index) => <div
-        key={step.label}
-        className={`case-service-flow__panel${isPortrait(step.media) ? ' case-service-flow__panel--portrait' : ''}`}
-        id={`${panelId}-${index}`}
-        data-active={selectedIndex === index}
-        aria-hidden={selectedIndex !== index}
-        inert={selectedIndex !== index ? '' : undefined}
-      >
-        <div className="case-service-flow__copy">
-          <p className="case-eyebrow">{step.screen}</p>
-          <h3>{step.title}</h3>
-          <p>{step.action}</p>
-          {step.result && <p className="case-service-flow__result">{step.result}</p>}
-        </div>
-        <ScreenFigure media={step.media} label={step.caption} priority={selectedIndex === index} />
-      </div>)}
-    </div>
-    <p className="case-service-flow__announcement" aria-live="polite" aria-atomic="true">{flow.steps[selectedIndex].screen}: {flow.steps[selectedIndex].title}</p>
-    <p className="case-service-flow__note">{flow.note}</p>
-  </section>;
-};
-
-const ScreenComparison = ({ decision }) => {
-  const [selectedIndex, setSelectedIndex] = useState(1);
-  const panelId = useId();
-  const selectable = decision.comparison.layout === 'mobile';
-  return <div className={`case-comparison${decision.comparison.layout ? ` case-comparison--${decision.comparison.layout}` : ''}`}>
-  {selectable && <div className="case-comparison__controls" role="group" aria-label="모바일 마감 일정 개선 전후 선택">
-    {['개선 전', '개선 후'].map((label, index) => <button key={label} type="button" aria-pressed={selectedIndex === index} aria-controls={`${panelId}-${index}`} onClick={() => setSelectedIndex(index)}>{label}</button>)}
-  </div>}
-  <div className="case-comparison__grid">
-    <div id={`${panelId}-0`} data-active={selectedIndex === 0}>
-      <p className="case-comparison__label">{decision.comparison.beforeHeading || '이전 화면'}</p>
-      <ScreenFigure media={decision.comparison.before} label={decision.comparison.beforeLabel} />
-      <p className="case-comparison__summary">{decision.comparison.beforeSummary}</p>
-    </div>
-    <div id={`${panelId}-1`} data-active={selectedIndex === 1}>
-      <p className="case-comparison__label case-comparison__label--current">{decision.comparison.afterHeading || '현재 화면'}</p>
-      <ScreenFigure media={decision.media} label={decision.comparison.afterLabel} />
-      <p className="case-comparison__summary">{decision.comparison.afterSummary}</p>
-    </div>
-  </div>
-  <p className="case-comparison__note">
-    {decision.comparison.note}
-    {decision.comparison.reference && <a href={mediaUrl(decision.comparison.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.comparison.reference.label} (새 탭)`}>
-      {decision.comparison.reference.label}
-    </a>}
-  </p>
-</div>;
-};
-
-const WorkspaceComparison = ({ decision }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const panelId = useId();
-  const { comparison } = decision;
-  const states = [
-    { label: comparison.beforeHeading, caption: comparison.beforeLabel, summary: comparison.beforeSummary, media: comparison.before },
-    { label: comparison.afterHeading, caption: comparison.afterLabel, summary: comparison.afterSummary, media: decision.media },
-  ];
-  const selected = states[selectedIndex];
-  return <div className="case-workspace-comparison">
-    <div className="case-workspace-comparison__controls" role="group" aria-label="같은 위치의 필터 결과 비교">
-      {states.map((state, index) => <button key={state.label} type="button" aria-pressed={selectedIndex === index} aria-controls={panelId} onClick={() => setSelectedIndex(index)}>{state.label}</button>)}
-    </div>
-    <div id={panelId}>
-      <ScreenFigure key={selected.media.src} media={selected.media} label={selected.caption} />
-      <p className="case-comparison__summary" aria-live="polite" aria-atomic="true">{selected.summary}</p>
-    </div>
-    <p className="case-comparison__note">{comparison.note}</p>
-  </div>;
-};
-
-const ExternalAction = ({ href, children, primary = false }) => href ? (
-  <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>
-    {children}
-  </a>
-) : null;
-
-const ScopeList = ({ title, items }) => items?.length ? (
-  <div className="case-scope__column">
-    <h3>{title}</h3>
-    <ul>{items.map((item) => <li key={item}>{item}</li>)}</ul>
-  </div>
-) : null;
+const ExternalAction = ({ href, children, primary = false }) => href ? <a className={`case-action${primary ? ' case-action--primary' : ''}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={`${children} (새 탭)`}>{children}</a> : null;
+const ScopeList = ({ title, items }) => items?.length ? <div className="case-scope__column"><h3>{title}</h3><ul>{items.map(item=><li key={item}>{item}</li>)}</ul></div> : null;
 
 const ProjectDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const publicProjects = ALL_PROJECTS.filter((item) => item.is_featured || item.moreWorksPublished);
-  const project = publicProjects.find((item) => projectSlug(item) === slug);
+  const projects = ALL_PROJECTS.filter(item => item.is_featured || item.moreWorksPublished);
+  const project = projects.find(item => projectSlug(item) === slug);
   const ready = PROJECT_DETAIL_READY[slug];
-
   if (!project || !ready) return <Navigate to="/projects" replace />;
-
-  const goBack = () => {
-    if (location.key === 'default') navigate('/projects');
-    else navigate(-1);
-  };
-  const currentIndex = publicProjects.findIndex((item) => item.id === project.id);
-  const nextProject = publicProjects[(currentIndex + 1) % publicProjects.length];
-  const focusedCase = ready.presentation === 'focused-decisions';
+  const index = projects.findIndex(item=>item.id===project.id);
+  const next = projects[(index+1)%projects.length];
   const figmaUrl = project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
-  const heroMedia = (ready.hero?.media || []).filter((media) => media?.src);
-  const mediaKey = (item) => `${item.src}:${JSON.stringify(item.crop || null)}`;
-  const usedImages = new Set(heroMedia.map(mediaKey));
-  const decisions = (ready.decisions || []).map((decision) => {
-    const media = decision.mediaChoices?.[0]?.media || decision.media;
-    const showMedia = media?.src && !usedImages.has(mediaKey(media));
-    if (showMedia) usedImages.add(mediaKey(media));
-    return { ...decision, media, showMedia };
+  const heroMedia = (ready.hero?.media || []).filter(item=>item.src);
+  const usedImages = new Set(heroMedia.map(item=>`${item.src}:${JSON.stringify(item.crop||null)}`));
+  const decisions=(ready.decisions||[]).map(item=>{
+    const key=item.media ? `${item.media.src}:${JSON.stringify(item.media.crop||null)}` : '';
+    const showMedia=key&&!usedImages.has(key);
+    if(showMedia)usedImages.add(key);
+    return {...item,showMedia};
   });
-  const additionalScreens = (ready.mainScreens || []).filter((screen) => {
-    if (!screen.media?.src || usedImages.has(mediaKey(screen.media))) return false;
-    usedImages.add(mediaKey(screen.media));
-    return true;
-  });
-  const facts = [
-    { label: '작업 분야', value: project.categoryLabel || ready.meta?.type },
-    { label: project.is_figma_project && !project.liveUrl ? '디자인 도구' : '제작에 사용한 도구·기술', value: (project.tools || []).join(' · ') || ready.meta?.tools },
-    ...(ready.aiCollaboration || []).map((item) => ({
-      label: item.label === '김도한' ? '김도한의 기여' : item.label,
-      value: item.value,
-    })),
-  ].filter((item) => item.value);
-
-  return (
-    <article className="case-page" data-page-id="project-detail" data-project-slug={slug}>
-      <div className="portfolio-shell">
-        <header className="case-intro">
-          <button className="case-back" onClick={goBack} type="button">
-             작업으로 돌아가기
-          </button>
-          <div className="case-intro__grid">
-            <div>
-              <p className="case-eyebrow">{project.productionLabel ? `개인 프로젝트 · ${project.productionLabel}` : (project.is_figma_project ? '개인 프로젝트 · Figma 디자인 시안' : '개인 프로젝트 · AI 협업 웹 제작')}</p>
-              <h1>{project.title}</h1>
-            </div>
-            <div className="case-intro__description">
-              <p className="case-lead">{ready.hero?.summary || project.description}</p>
-              <div className="case-actions" aria-label="프로젝트 바로 보기">
-                <ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction>
-                <ExternalAction href={figmaUrl} primary={!project.liveUrl}>
-                  {project.figmaDesignUrl ? 'Figma 디자인 보기' : (project.figmaPrototypeLabel || 'Figma 화면 보기')}
-                </ExternalAction>
-                <ExternalAction href={project.githubUrl}>코드 보기</ExternalAction>
-              </div>
-            </div>
-          </div>
-          {!ready.imageFirst && <dl className="case-facts">
-            {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
-          </dl>}
-        </header>
-
-        {ready.openingFacts && <section className="case-opening-facts" aria-label="제작 역할과 도구">
-          <dl>
-            {(ready.aiCollaboration || []).map((item) => <div key={item.label}>
-              <dt>{item.label === '김도한' ? '김도한의 기여' : item.label}</dt>
-              <dd>{item.value}</dd>
-            </div>)}
-          </dl>
-          <p className="case-opening-facts__tools">{(project.tools || []).join(' · ')}</p>
-        </section>}
-
-        {heroMedia.length > 0 && <div className={`case-cover ${heroMedia.length > 1 ? 'case-cover--pair' : ''}`}>
-          {heroMedia.map((media, index) => <ScreenFigure
-            key={media.src} media={media} priority={index === 0}
-            label={index === 0 ? ready.hero.mediaLabel : '화면 구성'}
-          />)}
-        </div>}
-
-        {ready.serviceFlow && <ServiceWalkthrough key={slug} flow={ready.serviceFlow} />}
-
-        {ready.heroNote && !ready.openingFacts && <section className="case-hero-note" aria-label="첫 화면의 구성 판단">
-          <h2>{ready.heroNote.title}</h2>
-          <p>{ready.heroNote.text}</p>
-        </section>}
-
-        {ready.imageFirst && !ready.openingFacts && <section className="case-project-facts" aria-label="제작 역할과 도구">
-          <dl className="case-facts">
-            {facts.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}
-          </dl>
-        </section>}
-
-        {!focusedCase && <section className="case-section case-context" aria-labelledby="case-context-heading">
-          <div className="case-section__heading">
-            <p className="case-eyebrow">01 / 프로젝트 배경</p>
-            <h2 id="case-context-heading">어떤 문제에서<br />시작했나요?</h2>
-          </div>
-          <div className="case-context__body">
-            <div><h3>{ready.context?.problemLabel || '출발점'}</h3><p>{ready.context?.problem || project.problem}</p></div>
-            <div><h3>목표</h3><p>{ready.context?.goal || project.goal}</p></div>
-          </div>
-        </section>}
-
-        {decisions.length > 0 && <section className={`case-section case-decisions${focusedCase ? ' case-decisions--focused' : ''}`} aria-labelledby="case-decisions-heading">
-          <div className="case-section__heading case-section__heading--inline">
-            <div><p className="case-eyebrow">{focusedCase ? '선택과 근거' : '02 / 화면과 판단'}</p><h2 id="case-decisions-heading">{ready.decisionsTitle || '이렇게 구성했습니다.'}</h2></div>
-            {!focusedCase && <p className="case-section__note">화면에 반영한 선택과 그 이유입니다.</p>}
-          </div>
-          {focusedCase && ready.context?.summary && <p className="case-assumption">{ready.context.summary}</p>}
-          <div className="case-decisions__list">
-            {decisions.map((decision, index) => {
-              const evidence = decision.evidence || [
-                { label: '선택', text: decision.choice },
-                { label: '이유', text: decision.reason },
-                { label: '확인', text: decision.verification },
-              ];
-              return <section key={decision.title} className={`case-decision${decision.comparison ? ' case-decision--comparison' : decision.layout === 'wide' ? ' case-decision--wide' : decision.showMedia ? '' : ' case-decision--text'}`}>
-                <div className="case-decision__copy">
-                  <span className="case-decision__number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-                  <h3>{decision.title}</h3>
-                  {decision.summary ? <p className="case-decision__summary">{decision.summary}</p> : <dl>{evidence.filter((item) => item.text).map((item) => <div key={item.label}>
-                    <dt>{item.label}</dt><dd>{item.text}</dd>
-                  </div>)}</dl>}
-                </div>
-                {decision.comparison?.layout === 'workspace' ? <WorkspaceComparison decision={decision} /> : decision.comparison ? decision.comparison.disclosure ? <details className="case-comparison-details">
-                  <summary>{decision.comparison.disclosure}</summary>
-                  <ScreenComparison decision={decision} />
-                </details> : <ScreenComparison decision={decision} /> : decision.showMedia && (decision.mediaChoices ? <ScreenChoices choices={decision.mediaChoices} /> : decision.reference ? <div>
-                  <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />
-                  <a className="case-screen-reference" href={mediaUrl(decision.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${decision.reference.label} (새 탭)`}>{decision.reference.label}</a>
-                </div> : <ScreenFigure media={decision.media} label={decision.mediaLabel || '주요 화면'} />)}
-                {decision.check && <div className={`case-decision-check${decision.check.title ? '' : ' case-decision-check--inline'}`}>
-                  {decision.check.title && <h4>{decision.check.title}</h4>}
-                  <p>{decision.check.result}</p>
-                </div>}
-              </section>;
-            })}
-          </div>
-          {ready.decisionsNote && <div className={`case-decisions__aside${ready.decisionsNote.media ? ' case-decisions__aside--illustrated' : ''}`}>
-            <div className="case-decisions__aside-copy">
-              <h3>{ready.decisionsNote.title}</h3>
-              <p>{ready.decisionsNote.text}</p>
-            </div>
-            {ready.decisionsNote.media ? <ScreenFigure media={ready.decisionsNote.media} label={ready.decisionsNote.mediaLabel} className="case-figure--curation" /> : <a href={mediaUrl(ready.decisionsNote.reference.src)} target="_blank" rel="noopener noreferrer" aria-label={`${ready.decisionsNote.reference.label} (새 탭)`}>{ready.decisionsNote.reference.label}</a>}
-          </div>}
-        </section>}
-
-        {additionalScreens.length > 0 && <section className="case-section" aria-labelledby="case-screens-heading">
-          <div className="case-section__heading"><h2 id="case-screens-heading">함께 살펴볼 화면</h2></div>
-          <div className="case-screen-grid">
-            {additionalScreens.map((screen) => <ScreenFigure key={screen.media.src} media={screen.media} label={screen.label} />)}
-          </div>
-        </section>}
-
-        {!focusedCase && ready.verification?.tasks?.length > 0 && <section className="case-section case-verification" aria-labelledby="case-verification-heading">
-          <div className="case-section__heading">
-            <p className="case-eyebrow">03 / 동작 확인</p>
-            <h2 id="case-verification-heading">만든 흐름을 직접 확인했습니다.</h2>
-            <p className="case-section__note">{ready.verification.method}</p>
-          </div>
-          <ol className="case-verification__tasks">
-            {ready.verification.tasks.map((task) => <li key={task.title}>
-              <h3>{task.title}</h3>
-              <p>{task.result}</p>
-            </li>)}
-          </ol>
-          <p className="case-verification__limit">{ready.verification.limit}</p>
-        </section>}
-
-        <section className="case-section case-scope" aria-labelledby="case-scope-heading">
-          <div className="case-section__heading case-section__heading--inline">
-            <div>{!ready.scopeSummary && <p className="case-eyebrow">{focusedCase ? '제작 범위' : `${ready.verification?.tasks?.length ? '04' : '03'} / 제작 범위`}</p>}<h2 id="case-scope-heading">{ready.scopeTitle || '완성한 것과 남은 것'}</h2></div>
-          </div>
-          {ready.scopeSummary ? <div className="case-scope__grid case-scope__grid--summary">
-            {ready.scopeSummary.map((item) => <div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}
-          </div> : <div className="case-scope__grid">
-            <ScopeList title="제작한 범위" items={ready.scope?.actual} />
-            <ScopeList title="데모·샘플의 범위" items={ready.scope?.demoStatic} />
-            <ScopeList title="포함하지 않은 기능" items={ready.scope?.notIncluded} />
-          </div>}
-          {focusedCase && ready.verification && <div className="case-validation-summary">
-            {ready.verification.method && <p>{ready.verification.method}</p>}
-            {ready.verification.limit && <p>{ready.verification.limit}</p>}
-          </div>}
-          {(ready.resultLimit?.done || ready.resultLimit?.limit) && <div className="case-outcome">
-            {ready.resultLimit.done && <div><h3>작업 결과</h3><p>{ready.resultLimit.done}</p></div>}
-            {ready.resultLimit.limit && <div><h3>한계</h3><p>{ready.resultLimit.limit}</p></div>}
-          </div>}
-        </section>
-
-        <footer className="case-footer">
-          <Link className="case-list-link" to="/projects">전체 작업</Link>
-          {nextProject && nextProject.id !== project.id && <Link className="case-next" to={`/projects/${projectSlug(nextProject)}`}>
-            <span><small>다음 프로젝트</small><strong>{nextProject.title}</strong></span>
-            <span className="case-next-label">작업 보기</span>
-          </Link>}
-        </footer>
-      </div>
-    </article>
-  );
+  const goBack=()=>location.key==='default'?navigate('/projects'):navigate(-1);
+  return <article className="case-page" data-page-id="project-detail" data-project-slug={slug}><div className="portfolio-shell">
+    <header className="case-intro">
+      <div className="case-register"><button className="case-back" onClick={goBack} type="button">작업으로 돌아가기</button><span>PROJECT / {String(index+1).padStart(2,'0')}</span></div>
+      <div className="case-intro__grid"><div><p className="case-eyebrow">{project.categoryLabel}</p><h1>{project.title}</h1><p className="case-production">{project.productionLabel || (project.is_figma_project?'Figma 디자인':'AI 협업 웹 제작')}</p></div><div><p className="case-lead">{ready.hero?.summary||project.description}</p><div className="case-actions" aria-label="프로젝트 바로 보기"><ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction><ExternalAction href={figmaUrl} primary={!project.liveUrl}>Figma 디자인 보기</ExternalAction><ExternalAction href={project.githubUrl}>코드 보기</ExternalAction></div></div></div>
+      <div className="case-opening-facts"><dl>{(ready.aiCollaboration||[]).map(item=><div key={item.label}><dt>{item.label==='김도한'?'김도한의 기여':item.label}</dt><dd>{item.value}</dd></div>)}</dl><p className="case-opening-facts__tools">제작 도구·기술 <span>{project.tools.join(' · ')}</span></p></div>
+    </header>
+    <div className="case-cover">{heroMedia.map((item,i)=><ScreenFigure key={item.src} media={item} priority={i===0} label={ready.hero.mediaLabel}/>)}</div>
+    <section className="case-section case-context" aria-labelledby="case-context-heading"><div><p className="case-eyebrow">01 / CONTEXT</p><h2 id="case-context-heading">어디에서<br />시작했나요?</h2></div><div className="case-context__body"><div><h3>출발점</h3><p>{ready.context?.summary||ready.context?.problem||project.problem}</p></div><div><h3>화면의 목표</h3><p>{ready.context?.goal||project.goal}</p></div></div></section>
+    <section className="case-section case-decisions" aria-labelledby="case-decisions-heading"><div className="case-section__heading"><p className="case-eyebrow">02 / DESIGN DECISIONS</p><h2 id="case-decisions-heading">{ready.decisionsTitle||'이렇게 구성했습니다.'}</h2></div><div className="case-decisions__list">{decisions.map((item,i)=><section className={`case-decision ${item.showMedia?'case-decision--illustrated':'case-decision--text'}`} key={item.title}><div className="case-decision__copy"><div><span className="case-decision__number">{String(i+1).padStart(2,'0')}</span><h3>{item.title}</h3></div>{item.summary?<p className="case-decision__summary">{item.summary}</p>:<dl>{(item.evidence||[]).map(entry=><div key={entry.label}><dt>{entry.label}</dt><dd>{entry.text}</dd></div>)}</dl>}</div>{item.showMedia&&<ScreenFigure media={item.media} label={item.mediaLabel||'선택이 반영된 화면'}/>}</section>)}</div></section>
+    <section className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}</section>
+    <footer className="case-footer"><Link className="case-list-link" to="/projects">전체 작업 보기</Link>{next&&<Link className="case-next" to={`/projects/${projectSlug(next)}`}><span><small>NEXT PROJECT</small><strong>{next.title}</strong></span><span className="case-next-label">작업 보기</span></Link>}</footer>
+  </div></article>;
 };
-
 export default ProjectDetailPage;

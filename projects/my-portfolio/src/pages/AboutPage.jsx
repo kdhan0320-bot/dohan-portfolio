@@ -8,15 +8,15 @@ const relatedWork = [
     slug: 'seolbiit',
     title: '설비결',
     type: '설비 점검 · 업무 관리',
-    image: 'detail/current/seolbigyeol-20261028.png',
+    image: 'detail/current/seolbigyeol-20261105.png',
     alt: '설비결의 설비 점검 현황과 요청을 보여주는 실제 디자인 화면',
   },
   {
     slug: 'feedback-hub',
-    title: '고른시선',
-    type: '목적에 따른 UI 비교',
-    image: 'detail/current/goreunsiseon-20261028.jpg',
-    alt: '고른시선의 고정 A/B 화면과 목표별 비교 연습',
+    title: '품의선',
+    type: '구매·자재 업무의 연결',
+    image: 'detail/current/pumuiseon-home-20261105.jpg',
+    alt: '품의선의 발주·입고·지급과 현재 보유량',
   },
 ];
 
@@ -39,7 +39,7 @@ const AboutPage = () => (
         <div className="about-block__heading">
           <p className="eyebrow">01 / 현재의 관심사</p>
           <h2 id="about-interest-title">상태가 보이고,<br />다음 행동이 분명한 화면.</h2>
-          <p>요청의 우선순위와 처리 상태를 어떻게 보여줄지 고민합니다. 설비결에서는 정비 요청과 담당자 배정을, 고른시선에서는 목적에 따라 달라지는 화면의 선택 기준을 다뤘습니다.</p>
+          <p>요청의 우선순위와 처리 상태를 어떻게 보여줄지 고민합니다. 설비결에서는 정비 요청과 담당자 배정을, 품의선에서는 실제 구매·자재 경험을 바탕으로 주문량과 현재 재고를 구분했습니다.</p>
         </div>
         <div className="about-work-grid">
           {relatedWork.map((work) => (
@@ -80,32 +80,12 @@ const AboutPage = () => (
       </section>
 
       <section className="about-block about-making" aria-labelledby="about-making-title">
-        <div className="about-block__heading">
-          <p className="eyebrow">03 / 검토와 개선</p>
-          <h2 id="about-making-title">문제를 짚고,<br />수정 방향을 정하는 일.</h2>
-          <p>이 포트폴리오를 다듬으며 제가 제기한 문제와 반영한 방향입니다. 작품별 제작 범위와 기여는 각 상세 페이지에서 설명합니다.</p>
-        </div>
-        <div className="about-review">
-          <p className="about-review__label">실제 사례 · 이 포트폴리오의 개선</p>
-          <dl className="about-decisions">
-            <div>
-              <dt>작품이 더 먼저 보이도록</dt>
-              <dd>화면이 밋밋하고 작품의 개성이 충분히 드러나지 않는다고 피드백했습니다. 따뜻한 색상과 자연스러운 흐름을 요청하고, 실제 작품을 크게 보여주는 화면 편집실 방향을 선택했습니다.</dd>
-            </div>
-            <div>
-              <dt>실제 수행 범위를 분명하게</dt>
-              <dd>Figma에서 직접 가능한 작업과 AI의 도움을 받은 웹 구현을 구분했습니다. 사용한 기술 목록이 독립적으로 구현할 수 있는 역량으로 읽히지 않도록 소개를 정리했습니다.</dd>
-            </div>
-            <div>
-              <dt>작업과 경력의 위치를 구분</dt>
-              <dd>홈에 회사명과 연혁을 넣은 구성을 재검토했습니다. 홈은 작품 중심으로, 자세한 경력은 소개 페이지에서 읽도록 방향을 정했습니다.</dd>
-            </div>
-          </dl>
-          <div className="about-review__roles" aria-label="이 사이트 개선의 기여 구분">
-            <p><strong>김도한</strong><span>문제 제기 · 수정 요청 · 방향 승인</span></p>
-            <p><strong>AI 협업</strong><span>디자인 제안 · 편집 · 코드 수정 · 점검</span></p>
-          </div>
-        </div>
+        <div className="about-block__heading"><p className="eyebrow">03 / 제작과 협업</p><h2 id="about-making-title">직접 하는 일과,<br />함께 만드는 일.</h2><p>사용한 기술과 독립적으로 수행할 수 있는 역량을 구분합니다. 구체적인 기여와 시연 범위는 각 작품에서 설명합니다.</p></div>
+        <div className="about-review"><p className="about-review__label">현재의 작업 범위</p><dl className="about-decisions">
+          <div><dt>직접 수정·설명 — Figma</dt><dd>현재 AI 도움 없이 직접 수정하고 설명할 수 있는 도구는 Figma입니다. 모든 작품의 디자인을 혼자 제작했다는 의미는 아니며, 화면 편집과 AI 협업 범위를 작품별로 구분합니다.</dd></div>
+          <div><dt>경험과 판단 — 주제·요구사항·피드백</dt><dd>품의선에는 실제 구매·자재 업무의 순서를 제공했습니다. 잔상관에는 참고 사례와 이미지 중심의 방향을 제시하고, 가독성과 자연스러운 흐름을 반복해서 검토했습니다.</dd></div>
+          <div><dt>학습과 협업 — 웹퍼블리싱</dt><dd>웹퍼블리싱은 학습 중입니다. 웹의 구체적인 디자인 제안·코드 작성·기능 검사에는 AI의 도움을 받았습니다. 프로젝트에 사용된 기술 목록을 독립 구현 능력으로 제시하지 않습니다.</dd></div>
+        </dl><div className="about-review__roles"><p><strong>김도한</strong><span>주제와 요구사항 · 개선 피드백 · 방향 선택</span></p><p><strong>AI 협업</strong><span>화면 제안·편집 · 코드 작성 · 검사</span></p></div></div>
       </section>
 
       <footer className="about-closing">
