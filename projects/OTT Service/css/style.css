@@ -1810,67 +1810,59 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .home-films .single-result .poster-save { grid-row: 1; }
 }
 
-/* The two cover frames follow the afternoon-to-dawn sequence in 파란 숨 고르기. */
-.cover-spread {
+/* A single cover film opens the issue; the paired scenes belong to the exhibitions. */
+.feature-cover {
+  --cover-inset: max(48px, calc((100% - var(--content-width)) / 2));
   display: grid;
-  grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
-  grid-template-areas: "connection connection" "lead companion" "copy copy";
-  min-height: 0;
-  align-items: stretch;
-  column-gap: 4px;
   isolation: isolate;
 }
-.cover-lead { grid-area: lead; }
-.cover-companion { grid-area: companion; }
-.cover-connection {
-  grid-area: connection;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(8px, 1.5vw, 20px);
-  margin: 0;
-  padding: 0 max(32px,calc((100% - var(--content-width))/2));
-  color: var(--text);
-  text-align: center;
-  word-break: keep-all;
-  font-size: 13px;
-  font-weight: 400;
+.feature-cover > * { grid-area: 1 / 1; }
+.feature-cover .hero-film-trigger {
+  position: relative;
+  height: clamp(340px, 33vw, 540px);
+  aspect-ratio: auto;
+  overflow: hidden;
 }
-.cover-collection {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  flex: none;
-  color: var(--accent);
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-underline-offset: .28em;
+.feature-cover .hero-film-trigger > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 44%;
 }
-.cover-collection:is(:hover,:focus-visible) { text-decoration-color: currentColor; }
-.cover-pair-note {
-  border-inline-start: 1px solid var(--line);
-  padding-inline-start: clamp(8px,1.5vw,20px);
+.feature-cover .hero-film-trigger::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #161d26db, #161d26b3 40%, transparent 71%),
+              linear-gradient(0deg, #171d28e6, #171d28ae 94px, transparent 166px);
+  pointer-events: none;
 }
-.cover-pair-note > span { display: inline-block; }
-.scene-preview { background-size: cover; background-repeat: no-repeat; }
-.cover-spread .hero-film-trigger { position: relative; inset: auto; height: clamp(300px,27vw,430px); }
-.cover-spread .hero-film-trigger > img { position: absolute; inset: 0; }
-.cover-companion > img { object-position: 50% 21%; }
-.cover-spread .hero-film-trigger::after { background: linear-gradient(0deg,#202127ec,transparent 46%); }
-.cover-spread .discovery-copy {
-  grid-area: copy;
-  display: flex;
-  flex-wrap: wrap;
+.feature-cover .discovery-copy {
+  align-self: center;
+  width: fit-content;
+  max-width: 55%;
+  margin: 0 0 0 var(--cover-inset);
+  padding: 0;
+}
+.feature-cover h1 em { display: inline-block; }
+.feature-cover .discovery-intro { max-width: none; margin-top: 8px; }
+.feature-credit {
+  position: absolute;
+  z-index: 1;
+  right: var(--cover-inset);
+  bottom: 24px;
+  display: grid;
+  grid-template-columns: auto auto;
   align-items: baseline;
-  gap: 4px 32px;
-  width: min(var(--content-width),calc(100% - 64px));
-  margin: 0 auto;
-  padding: 20px 0 0;
+  gap: 2px 12px;
+  color: #f6f3ed;
+  text-shadow: 0 1px 5px #101720;
 }
-.cover-spread h1 em { display: inline-block; }
-.cover-spread .discovery-intro { max-width: none; margin: 0; }
-.cover-spread .spotlight-caption { inset: auto 24px 18px; gap: 14px; }
-.cover-spread .spotlight-details { display: contents; }
+.feature-kicker { grid-column: 1 / -1; font-size: 13px; }
+.feature-credit .spotlight-title { font-size: clamp(20px, 1.8vw, 27px); }
+.feature-meta { font-size: 14px; }
+.scene-preview { background-size: cover; background-repeat: no-repeat; }
 /* Offset frame edges join the two scenes, echoing the overlapping frames in the logo. */
 .frame-join { position: absolute; z-index: 3; width: 44px; height: 36px; color: var(--collection-surface,var(--accent)); filter: drop-shadow(0 1px 2px #17191dcc); }
 .frame-join, .frame-join * { pointer-events: none; }
@@ -1878,15 +1870,9 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .frame-join path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; opacity: .72; transition: opacity .22s ease-out; }
 .frame-join path + path { opacity: .4; }
 .theme-preview-pair > .frame-join { top: 16px; left: 50%; transform: translateX(-50%); }
-.cover-spread > .frame-join { position: relative; grid-area: companion; align-self: start; justify-self: start; width: 52px; height: 42px; margin: 24px 0 0 -28px; }
-.theme-preview:focus-visible .frame-join path,
-.cover-spread:has(.hero-film-trigger:focus-visible) .frame-join path { opacity: 1; }
+.theme-preview:focus-visible .frame-join path { opacity: 1; }
 @media (hover: hover) and (pointer: fine) {
-  .theme-preview:hover .frame-join path,
-  .cover-spread:has(.hero-film-trigger:hover) .frame-join path { opacity: 1; }
-}
-@media (max-width: 800px) {
-  .cover-spread > .frame-join { width: 40px; height: 32px; margin: 12px 0 0 -22px; }
+  .theme-preview:hover .frame-join path { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .frame-join path { transition: none; }
@@ -1900,84 +1886,27 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .article-film-link:hover .article-film-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
 }
 @media (min-width: 801px) and (max-width: 1100px) {
-  .cover-spread .discovery-copy { gap: 4px 24px; }
-}
-@media (min-width: 801px) {
-  .cover-spread { grid-template-areas: "lead companion" "copy copy"; }
-  .cover-lead .spotlight-caption { justify-content: flex-end; }
-  .cover-spread .spotlight-film { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
-  .cover-lead .spotlight-film { align-items: flex-end; }
-  .cover-spread .spotlight-label {
-    display: block;
-    color: var(--text);
-    font-size: clamp(18px,1.55vw,25px);
-    line-height: 1.45;
-    letter-spacing: -.025em;
-    word-break: keep-all;
-  }
-  .cover-spread .spotlight-details { display: flex; align-items: baseline; gap: 12px; }
-  .cover-spread .discovery-copy { padding-right: 144px; }
-  .cover-connection {
-    grid-area: copy;
-    justify-self: end;
-    align-self: center;
-    z-index: 1;
-    margin: 20px max(32px,calc((100% - var(--content-width))/2)) 0 0;
-    padding: 0;
-  }
-  .cover-pair-note { display: none; }
+  .feature-cover { --cover-inset: 32px; }
+  .feature-cover .discovery-copy { max-width: 45%; }
 }
 @media (max-width: 800px) {
-  .cover-spread {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    grid-template-areas: "lead companion" "connection connection" "copy copy";
+  .feature-cover { --cover-inset: 24px; }
+  .feature-cover .hero-film-trigger { grid-row: 1; height: clamp(208px, 58vw, 350px); }
+  .feature-cover .hero-film-trigger > img { object-position: 75% center; }
+  .feature-cover .hero-film-trigger::after { background: linear-gradient(0deg, #171d28e6, #171d28b3 66px, transparent 118px); }
+  .feature-credit { left: var(--cover-inset); right: auto; bottom: 12px; }
+  .feature-cover .discovery-copy {
+    grid-row: 2;
+    justify-self: start;
+    max-width: none;
+    width: calc(100% - 2 * var(--cover-inset));
+    padding-top: 14px;
   }
-  .cover-connection { padding-inline: 32px; }
-  .cover-credit-type { display: none; }
-  .cover-spread .discovery-copy { padding-top: 14px; }
-  .cover-spread .hero-film-trigger { display: flex; flex-direction: column; height: auto; aspect-ratio: auto; }
-  .cover-spread .hero-film-trigger > img { position: relative; height: clamp(150px,49vw,260px); flex: none; }
-  .cover-spread .hero-film-trigger::after { bottom: auto; height: clamp(150px,49vw,260px); background: linear-gradient(0deg,#25262c55,transparent 28%); }
-  .cover-spread .spotlight-caption { position: relative; inset: auto; width: 100%; flex: 1; padding: 10px 20px; text-shadow: none; }
-  .cover-spread .spotlight-film { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 7px; }
-  .cover-spread .spotlight-film > .spotlight-label { display: none; }
-  .cover-companion > img { object-position: center 28%; }
+  .feature-cover .discovery-intro { margin-top: 4px; }
   .home-films { margin-top: 18px; }
 }
 @media (max-width: 600px) {
-  .cover-spread {
-    grid-template-areas: "lead companion" "connection connection" "copy copy";
-    column-gap: 2px;
-  }
-  .cover-connection {
-    justify-content: flex-start;
-    gap: 12px;
-    padding: 2px 20px;
-    background: var(--surface);
-    text-align: left;
-  }
-  .cover-pair-note { padding-inline-start: 12px; }
-  .cover-spread .discovery-copy { width: calc(100% - 40px); }
-  .cover-spread .hero-film-trigger { justify-content: flex-end; min-height: clamp(186px,56vw,280px); }
-  .cover-spread .hero-film-trigger > img { position: absolute; height: 100%; }
-  .cover-lead > img { object-position: 90% center; }
-  .cover-spread .hero-film-trigger::after {
-    inset: 0;
-    height: auto;
-    background: linear-gradient(to top,#191b20f5 0%,#191b20bf 17%,transparent 47%);
-  }
-  .cover-spread .spotlight-caption {
-    flex: none;
-    z-index: 1;
-    padding: 8px 12px 10px;
-    color: #f3f1ed;
-  }
-  .cover-spread .spotlight-film { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-  .cover-spread .spotlight-film > .spotlight-label { display: none; }
-  .cover-spread .spotlight-title { white-space: normal; word-break: keep-all; }
-  .cover-spread .spotlight-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-  .cover-spread .spotlight-genre { display: inline; }
-  .cover-spread .spotlight-meta span { margin-left: 0; }
+  .feature-cover { --cover-inset: 20px; }
   .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 76px minmax(0,1fr); gap: 0 12px; padding: 14px; }
   .library-reading .film-note-badge { margin-top: 12px; }
   .library-reading .film-note-preview { margin-top: 6px; }
@@ -1985,6 +1914,10 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .saved-view .catalog-options { margin-block: 8px 12px; }
   .saved-view .results-bar { margin-block: 8px 12px; }
   .film-grid.library-reading { gap: 12px; }
+}
+
+@media (max-width: 359px) {
+  .feature-cover { --cover-inset: 16px; }
 }
 
 .scene-pair-caption { display: none; }

@@ -32,11 +32,11 @@
     <link
       as="image"
       fetchpriority="high"
-      href="assets/frames-v24/bluehour.webp"
+      href="assets/posters-v13/bluehour-hero.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=7982592192da" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=9fefc3f822e6"></script>
+    <link href="css/style.css?v=1eb7cabe23d2" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=70831f8d1248"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -115,33 +115,19 @@
       <div id="homeView">
         <div class="projection-light" aria-hidden="true"></div>
         <section aria-labelledby="heroTitle" class="discovery-hero">
-          <div class="discovery-stage cover-spread">
+          <div class="feature-cover">
             <div class="discovery-copy">
               <h1 id="heroTitle" tabindex="-1">짧은 영화, <em>오래 남을 장면.</em></h1>
               <p class="discovery-intro">분위기로 찾고, 마음에 남는 작품을 모으세요.</p>
             </div>
-            <button class="discovery-scene hero-film-trigger cover-lead" type="button" data-detail="bluehour" aria-label="첫 장면, 오랜 친구와 대화를 잇는 오후. 파란 오후 작품 보기 · 애니메이션 · 28분" aria-haspopup="dialog">
-              <img alt="바닷가 길에서 자전거를 세우고 쉬는 두 친구. 파란 오후의 가상 장면" src="assets/frames-v24/bluehour.webp" width="1774" height="887" fetchpriority="high" />
-              <span class="spotlight-caption" aria-hidden="true">
-                <span class="spotlight-film">
-                  <span class="spotlight-label">오랜 친구와 대화를 잇는 오후,</span>
-                  <span class="spotlight-details"><span class="spotlight-title">파란 오후</span><span class="spotlight-meta"><span class="spotlight-genre">애니메이션</span> <span>28분</span></span></span>
-                </span>
+            <button class="hero-film-trigger" type="button" data-detail="bluehour" aria-label="표지작 파란 오후 작품 보기 · 애니메이션 · 28분" aria-haspopup="dialog">
+              <img alt="" src="assets/posters-v13/bluehour-hero.webp" width="1920" height="800" fetchpriority="high" />
+              <span class="feature-credit" aria-hidden="true">
+                <span class="feature-kicker">표지작</span>
+                <span class="spotlight-title">파란 오후</span>
+                <span class="feature-meta">애니메이션 · 28분</span>
               </span>
             </button>
-            <button class="discovery-scene hero-film-trigger cover-companion" type="button" data-detail="nocturne" aria-label="둘째 장면, 낯선 이와 말을 트는 새벽. 새벽 두 시의 식탁 작품 보기 · 드라마 · 23분" aria-haspopup="dialog">
-              <img alt="" src="assets/frames-v31/nocturne.webp" width="1086" height="1448" />
-              <span class="spotlight-caption" aria-hidden="true">
-                <span class="spotlight-film">
-                  <span class="spotlight-label">낯선 이와 말을 트는 새벽.</span>
-                  <span class="spotlight-details"><span class="spotlight-title">새벽 두 시의 식탁</span><span class="spotlight-meta"><span class="spotlight-genre">드라마</span> <span>23분</span></span></span>
-                </span>
-              </span>
-            </button>
-            <p class="cover-connection">
-              <a class="cover-collection" href="#themes/quiet" data-theme-preview="quiet" aria-label="파란 숨 고르기 기획전 보기">파란 숨 고르기<span class="cover-credit-type">&nbsp;기획전</span></a>
-              <span class="cover-pair-note"><span>오랜 친구와 대화를 잇는 오후,</span> <span>낯선 이와 말을 트는 새벽.</span></span>
-            </p>
           </div>
         </section>
         <section aria-labelledby="homeFilmsTitle" class="home-films wrap section">
@@ -344,7 +330,7 @@
             <button aria-pressed="false" class="button small save-button" id="detailSave" type="button">
               <svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg><span id="detailSaveLabel">찜하기</span>
             </button>
-            <a class="text-link" id="detailLibraryLink" href="#saved" hidden>보관함에서 보기 <span aria-hidden="true">→</span></a>
+            <a class="text-link" id="detailLibraryLink" href="#saved" hidden>보관함에서 보기</a>
           </div>
           <div aria-label="삭제한 메모 복원" class="note-undo-list" hidden="" id="detailUndoList"></div>
           <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteDisclosureLabel">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>

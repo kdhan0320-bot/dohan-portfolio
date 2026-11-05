@@ -2303,7 +2303,7 @@
   // In-flow panels close explicitly: collapsing on pointerdown would move the
   // film underneath the pointer before its click can open the detail dialog.
   function initFrameJoins() {
-    const frames = document.querySelectorAll(".cover-spread, .theme-preview-pair");
+    const frames = document.querySelectorAll(".theme-preview-pair");
     frames.forEach(frame => {
       const join = document.createElement("span");
       join.className = "frame-join";
