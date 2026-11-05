@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=c9a13e72c7ec" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=934d802490a0"></script>
+    <link href="css/style.css?v=b9a933b0a440" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=051ff62a0c36"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -116,26 +116,26 @@
         <div class="projection-light" aria-hidden="true"></div>
         <section aria-labelledby="heroTitle" class="discovery-hero">
           <div class="discovery-stage cover-spread">
-            <p class="cover-connection">
-              <a class="cover-collection" href="#themes/quiet" data-theme-preview="quiet" aria-label="파란 숨 고르기 기획전 보기">파란 숨 고르기</a>
-              <span class="cover-pair-note"><span>오랜 친구와 대화를 잇는 오후,</span> <span>낯선 이와 말을 트는 새벽.</span></span>
-            </p>
             <div class="discovery-copy">
               <h1 id="heroTitle" tabindex="-1">짧은 영화, <em>오래 남을 장면.</em></h1>
               <p class="discovery-intro">분위기로 찾고, 마음에 남는 작품을 모으세요.</p>
             </div>
-            <button class="discovery-scene hero-film-trigger cover-lead" type="button" data-detail="bluehour" aria-label="첫 장면, 다시 만난 친구. 파란 오후 작품 보기 · 애니메이션 · 28분" aria-haspopup="dialog">
+            <button class="discovery-scene hero-film-trigger cover-lead" type="button" data-detail="bluehour" aria-label="첫 장면, 오랜 친구와 대화를 잇는 오후. 파란 오후 작품 보기 · 애니메이션 · 28분" aria-haspopup="dialog">
               <img alt="바닷가 길에서 자전거를 세우고 쉬는 두 친구. 파란 오후의 가상 장면" src="assets/frames-v24/bluehour.webp" width="1774" height="887" fetchpriority="high" />
               <span class="spotlight-caption" aria-hidden="true">
-                <span class="spotlight-film"><span class="spotlight-label"><span class="scene-index">01</span>다시 만난 친구</span><span class="spotlight-title">파란 오후</span><span class="spotlight-meta"><span class="spotlight-genre">애니메이션</span> <span>28분</span></span></span>
+                <span class="spotlight-film"><span class="spotlight-label"><span class="scene-index">01</span>오랜 친구와 대화를 잇는 오후,</span><span class="spotlight-title">파란 오후</span><span class="spotlight-meta"><span class="spotlight-genre">애니메이션</span> <span>28분</span></span></span>
               </span>
             </button>
-            <button class="discovery-scene hero-film-trigger cover-companion" type="button" data-detail="nocturne" aria-label="둘째 장면, 처음 만난 손님. 새벽 두 시의 식탁 작품 보기 · 드라마 · 23분" aria-haspopup="dialog">
+            <button class="discovery-scene hero-film-trigger cover-companion" type="button" data-detail="nocturne" aria-label="둘째 장면, 낯선 이와 말을 트는 새벽. 새벽 두 시의 식탁 작품 보기 · 드라마 · 23분" aria-haspopup="dialog">
               <img alt="" src="assets/frames-v31/nocturne.webp" width="1086" height="1448" />
               <span class="spotlight-caption" aria-hidden="true">
-                <span class="spotlight-film"><span class="spotlight-label"><span class="scene-index">02</span>처음 만난 손님</span><span class="spotlight-title">새벽 두 시의 식탁</span><span class="spotlight-meta"><span class="spotlight-genre">드라마</span> <span>23분</span></span></span>
+                <span class="spotlight-film"><span class="spotlight-label"><span class="scene-index">02</span>낯선 이와 말을 트는 새벽.</span><span class="spotlight-title">새벽 두 시의 식탁</span><span class="spotlight-meta"><span class="spotlight-genre">드라마</span> <span>23분</span></span></span>
               </span>
             </button>
+            <p class="cover-connection">
+              <a class="cover-collection" href="#themes/quiet" data-theme-preview="quiet" aria-label="파란 숨 고르기 기획전 보기">파란 숨 고르기<span class="cover-credit-type">&nbsp;기획전</span></a>
+              <span class="cover-pair-note"><span>오랜 친구와 대화를 잇는 오후,</span> <span>낯선 이와 말을 트는 새벽.</span></span>
+            </p>
           </div>
         </section>
         <section aria-labelledby="homeFilmsTitle" class="home-films wrap section">
@@ -207,6 +207,7 @@
               단편영화 큐레이션
             </p>
             <h1 id="catalogTitle" tabindex="-1">영화 찾기</h1>
+            <button id="libraryToolsToggle" class="text-link" type="button" aria-expanded="false" aria-controls="catalogTools libraryFilters" hidden>검색·보기<svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
           </div>
           <div
             aria-label="보관함 분류"
@@ -320,6 +321,7 @@
       <div class="cinema-toolbar">
         <button class="text-link cinema-back" id="cinemaBack" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg><span>기획전으로</span></button>
         <span class="cinema-context" id="cinemaContext">작품 살펴보기</span>
+        <span id="articleRuntime" hidden></span>
         <button aria-label="영화 찜하기" aria-pressed="false" class="icon-button save-button detail-bookmark" id="detailSave" type="button"><svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg></button>
         <button aria-label="팝업 닫기" class="icon-button close-button" data-close="cinemaDialog" type="button"><svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg></button>
       </div>
@@ -376,7 +378,7 @@
         <div class="article-content">
           <p class="eyebrow" id="articleCategory"></p>
           <h2 id="articleTitle" tabindex="-1"></h2>
-          <div class="article-sequence-heading"><h3 id="articleLens">장면의 연결</h3><p id="articleRuntime"></p></div>
+          <p class="article-sequence-heading" id="articleLens"></p>
           <div id="articleBody" class="article-intro" role="note" aria-label="함께 고른 이유"></div>
           <div aria-label="기획전에 소개된 작품" class="article-films" id="articleFilmLinks" role="group"></div>
         </div>
