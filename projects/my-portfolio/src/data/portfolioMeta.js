@@ -102,9 +102,10 @@ export const PROJECT_DETAIL_READY = {
     { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
     {
       imageFirst: true,
+      creditsOnCover: true,
       decisionsTitle: '정비 요청에서 담당자 배정까지',
       aiCollaboration: [
-        { label: '김도한', value: '설비 점검 주제와 요구사항 제시, 작업 상태의 우선순위에 대한 피드백과 방향 선택' },
+        { label: '김도한', value: '설비 점검 요구사항 제시, 작업 상태의 우선순위 검토' },
         { label: 'AI 협업', value: 'Figma 화면 구성 제안·편집과 검토' },
       ],
     },

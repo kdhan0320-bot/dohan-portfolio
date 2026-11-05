@@ -227,3 +227,7 @@
   .case-intro--screen-first .case-question { margin-bottom: 8px; }
   .case-intro--screen-first .case-actions { margin-top: 16px; }
 }
+@media (max-width: 360px) {
+  [data-project-slug="seolbiit"] .case-intro { padding-top: 8px; }
+  [data-project-slug="seolbiit"] .case-title--credits { margin-block: 4px 8px; }
+}
