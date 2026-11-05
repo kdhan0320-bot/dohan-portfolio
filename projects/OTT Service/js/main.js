@@ -12,6 +12,7 @@
       moodText: "잔잔한 여운",
       image: "tide",
       posterPath: "assets/stills/tide.webp",
+      previewBase: "UklGRnYBAABXRUJQVlA4IGoBAABQCQCdASpQAC0APtlWokwoJKMiMzVdUQAbCWVpZVbi0IDQoTBEOyumA1R97qNdQVmv7EiotSVYu71oPfL7TuNbYJnqY0n3OaL0Rt29I98PE44WAAD+8HVDCZUWqX87HU5C2w5NQxFRzhme30jFWdeU4yYZnUY7FfH6RpTZipsd9n7n7GNTYSVQMMpxZ3ss9TbtIeDrtrGB8YKJ7EydvQsrgFfrgrymFbqkQ64DJqPjNHTjZdNkKoo2Cpgp/wHRLK+IjnmJIfi0XMFBlzIbTuDb4t1jAUzUk21op0Kdb1XiKZsAY8xE6o6tv9lGLf7iZcqCTEZ4WJm7HhipV8IHTDtttyajp0Qq/0H+rSVkeRcxFMH7O8FRANsGZiKbj5XAEjw7hpkadt9qArdbPWq+5maFzm7I6Rtlcf4JLmQMQaQpJI/jVy2XJMUf+IoAvtCsXPLVl9T3LQNho2JEChuwQOrxQ9PvLvwZAAAAAA==",
       posterPosition: "83% center",
       position: "82% center",
       detailPosition: "75% center",
@@ -30,6 +31,7 @@
       moodText: "다정한 온기",
       image: "letters",
       posterPath: "assets/frames-v31/letters.webp",
+      previewBase: "UklGRroCAABXRUJQVlA4IK4CAAAwEQCdASpQADUAPt1YpUyopSOiMzVbARAbiWUAyrr29eF3ZLyG4vB1qYv4dvwf1QSGNZ5R3EgucIjEiJVR6TfCmS1mQeHpeHazh8OIbmX7rNAbckxRfuk8BNq1ctRhwvkzFjqXJcdrNSINaHst6YRSftM8sG9jM6lzE2QucWhNyQdZsS65XtX7mEX2B6bZosM50gD++E2mhZ8Vx+Ju3uQUxsdID/0A7zD7VFQ1xe/dw10527qLHRBdsCuaI7dO1/Kaxblw9YKiYlHa1IunyzcWYyCTPT1orwQ71Y/hH/Rjc8W1hn12C43Xn6dCeZWaVQePizzmR6ybk9a8yWLfO0oTsv9EEc1WEMOuuZG2PZuRrjy39YcigRB8Jcr54aaZuD+JEAMQl/PCPyMWgPBcZ41NzNktJJs9Q+SoV9fl/ywy5LMHedbGbqOVcrw5k4SOhNQvc0SGgUwBR4ux5O4fyBz0e+rq0UD9JRQmUuowuzJ+FR23HH1+BIhy+dKRANaCs9DyAP+Q1iu7QeRYAh61au62tdXsuOXo2N1gpShba++0RgENdo+3ucRwmk6sxBmT0Vm+j9g5/CYuxSxwAVJTxQpnrUicFqYqwBOVLCnJoubK6lXB0NJKQYbTxX5BvsuUg1rPxmfn09Mm+3IYs2regWpq9E7gXS3BSsJwi4IrMGX3uwiW7imyiEOGgtJ6VGj990OjTahtNbhO9Wl1Fz9CXeDFxQaxY3z8QJq07j+PBFsN9RMy5zrQUrIVg43PBCagDD/eHMldI96kgZ7kDDQsD81VZ/sATuHxMkHRFHp5TZP4wRL8nFPra/PF6IkBqQ7qSxNR1lhP6CtmDpirEEKZOSOMbRh7C87vBsyLqxWlY3AO+6jnSvDeTqjCjHc2uQ45uyz/FcKs298M6QmQc2gAAA==",
       stillPath: "assets/frames-v31/letters.webp",
       resultPreview: {
         image: "assets/stills/letters.webp",
@@ -54,6 +56,7 @@
       moodText: "고요한 긴장",
       image: "greenhouse",
       posterPath: "assets/frames-v35/greenhouse.webp",
+      previewBase: "UklGRvoBAABXRUJQVlA4IO4BAABQDgCdASpQADUAPt1iqU6opaQiKzbbERAbiWUAycu2oad+bfI/TxMG+QuKx92YeaEpF1iVkdu6q93cmybEwry7i5xWzD4BoZABwZlfNJzJZ1UMORyTEToZqVt5IOBzXlJ5MxtmJiLp38vBwKA18qeQhxWH2BmLb9hfR4AA/vhXZkXmqYnbOvHS6PoQ/vVW2k9dfEqEepXIhAC9bSU/4dgkWQjqQ1IzCfrHoj75EAlHSCgQJ+AeOFeUVLhb5jEM4mpKXgd5WWIaDtDdhhMusbQM5O2QB0K1BiOUhyBoCJrNNKuzZHDNpwQqmVb+WhS598k6YIGC6E84ChnQIP4CE9hgb1AD2NsgXvIHDhzQjB+OL8Q4Kx9vQkUpk2Th3Sf1wbDbx7H8NQ/wAEPKIShEZgkhBZjXJBaixAV/rsoUEsBn+KrE68WDa5CdqH3HdAr/DWinChQ/Ioc11HVWsIjeBbkKpLZ1aQcNXISVThlKFXtJkOydyfhFSoVeRA0ocW8RnDXNj8yZkZGqr07vfgSpUmvlunawzBt4MRst3XlwLX6O2yHe006VX2hdChVxZNOIhjPEeGSmimfgRQc5fMEInCyN+2lZPRORQXFQ+U9vL472wNyiLL8qW3LLV9FQYS+FbKOuoAHoTswg5Fi8oNNgAA==",
       stillPath: "assets/frames-v35/greenhouse.webp",
       posterPosition: "44% center",
       position: "44% center",
@@ -73,6 +76,7 @@
       moodText: "낯선 경이",
       image: "orbit",
       posterPath: "assets/frames-v39/orbit.jpg",
+      previewBase: "UklGRtwCAABXRUJQVlA4INACAACQDwCdASo8AFAAPt1YpU0opKMiLNYOqRAbiWUAznuyey8yYOtr1KPyJE49XpPwnUN8Vv93ylIcVkIBbaoPqfo6pfQYP//y8byMbWzD2ziBljz6H04g//2tpUB9s3u9nWZyYAUL7XVqaDWINJuV+FqySuP83Ogx9XTux3j/1T+x893KNePAAP75O2v6GwNM4x+8U7WyjLnylI5d3wGydTcbMbWlY5KMyMUZssig9E0K3qSChW71r/dxXj6H5O3DYIHLDsbOPfDGA5ehE4HcgpNVP7/9srXlj+YMGmeYHWg2AEqOGGNhaVXz13G7y2czuOrlsNrDjf6imWoDdUzUXX3Ix8rcssfHbDH/v01RA/n/OHBIq8tly5xRUih5qR/HL+monaE9HZIrH4UYBOHQIf6YjKaA+0KU1ePep4xBvWIrpQT0uNO60yEcTYwbsT2MhWt+lrh//NA50YGq7ewbKRPxtn0mdpV9RyP/Vg9tbx5PM3uGrUzXkSTvY8p3lF4AyL/hGmfvqPuaZfSLctdIyXYUoHIA483tEWLUrZ+NNKwHL3zqUu10vmyB/mTpQAG7B+vC9Yq0olylSaFf4AG7IfzqUsK9YhazzKJregYgXc66+RkWdyms8P5m64zd/5f0NdowxBdeVUuIXY8qxSyzdVdqOC3Y43ZkRVLUU6HW2MuUbel74WmMqKXcjGKfRX8QqKzJVCPAWgb5dBF/Oh+uhFi/FXsbmJT87phC169nRce7ekE4SWhQssyWhDfDPd+z4vtPXhGD1fNFOAw8nbwJfXSPeO8Lkh5fBmau/6FO74RMsJehcpgbM19ZPR6xlZ3r1mOJ5ofNrZ7cQvhY7z2VApNqcTI2XxFkE4VpV4SoIYC+Hr6fHMtRcW5p16rPShd7tdrawu1U5XwXOgyWERlkIcpaxB8WG31+QtNH0+e7tTEf7vYMkM7e4xxjNKy4KefcAAA=",
       posterArtwork: "assets/posters-v39/orbit.jpg",
       posterPosition: "center 42%",
       position: "center 42%",
@@ -92,6 +96,7 @@
       moodText: "다정한 온기",
       image: "windows",
       posterPath: "assets/frames-v35/windows.webp",
+      previewBase: "UklGRioCAABXRUJQVlA4IB4CAADQDgCdASo8AFAAPt1YoUwopSMiMzarARAbiWUA0Fc4qOOyRN51v5Zg/nBIthCFK/EcM907up3jgsO1IPu8D9+fGFJc9sUSp8/u4OfM+8UuiM3tpbC+7jUvx2+5xLBpURBr/nLL6eLu58GetbubFwHvh2anWqChzGAYDEj8+E4AAP60Lf7sV3CgNdacZqRrvvIjliZn+OoHl2o8CQaUfSES4WZdKUFyUg2+8BIyn3dr/vIvhkpjybXUi6I8WF/4fqixZOW/U2jysdMc+4VJHRLg3NLSNYTqHZp+RVjCGGu9VOVk2666em7mNPczJoqkh664jr6p+xALO20WSxXT9zrWYOt/KYtk0iyyowxu/E3LeVfIBCcLHet+tKzvL5Gp3JrNimy3Px2EAACMO8z7538h73KyKerfoDozO0djU5MIldPGV3ujWGa89/Bg2KlLuyGhTgGGMbQuxu3+9dmxEDpZbnzja4EapUZrd7rT1KMaU4YbG0TulpPemVIFOl/77dElmAYzVNFyp+jbTGQZsvmkt2aA7B+xHRPtdBp3Ad6FZNce/1/1CLqxNR5zbAl2rkZtm0r8xFiC4XkLQbMy5qVruWoy/Y9IITjeyTxRFwi6Itam8BuXaoHmay3wcdYuDWysp6CPr70tzCkVY9mmIFIGJn5fUIbdUKZ8N20qvBtAdrjAKpLRc2mXZKfPUe2DsHssZBqR7wIi3Y9+ms8AAA==",
       stillPath: "assets/frames-v35/windows.webp",
       posterPosition: "left center",
       position: "left center",
@@ -111,6 +116,7 @@
       moodText: "잔잔한 여운",
       image: "forest",
       posterPath: "assets/frames-v24/forest.webp",
+      previewBase: "UklGRpYDAABXRUJQVlA4IIoDAACQDwCdASpQAC0APtVaoEwoJSMiMzjsAQAaiWUAyY+prvC/F+A/lY+XtE6pO9mVOwl0tzRxaUqqBu3NRhXtgTuwRA1QmtUaBCQr84HWc87UP0K0PEXJ46KgO7zUMGN8Jqn0hSX0Lj8PpFCFlmXKv9FtrHLKTrzhOFbwgwYTr5hLB4aBg23AAP7O1exUmD7JqgaIKfTTLBGcwdjFJiK3UeC5vMJI/hDbtpXQTmSQC3HaAmT00RbjxGGt4fB1I8x6q6FKDm6bZ04GHCjr8XDZPrwz4YEptJoNSxKOceOiRb2mCTZoOTgslpc8xSMtvLA+Nsi5VP2LhbtMk4Zlwhg6QOg8O48MWbteXNqj9EFuHb/ubA8uR+q6fdROms4uXSgo1AO204HbMwWujKZhxkWdZQVeQnWCfK1hqGv8WudVHROTQAl1TABjhK5L6FWx1C/N9pUnsVehVYT5nj0ZRSx5jpXIy00p+P02Q5C4BUAmdew8Ek/aR01cTHOgl29+pQ3GXmp+uknFzh8YWaXOt7tdBn215XslDEr4f2m6S0vAWpYTWjcPD1lkDwzJ49lcnI3iPrGeSU0n3AExJ89VZ7XXUd4HFEN9ETDAO7HeNv39V/oDgmLW1zY3S0lOCENsYzTJdu+jINUSthSUVxP3YaG2hdwk+Ez0q7r1vcoUAHu0HXtv5XJF3VM2m72dZNHW5tvYayPiUGWsEcq+BlQ8gTP7OasD0GPAd9fSLh70j7zxR2UZYaCORVkdWhhIMGiKk/yC0huJwRf1b2S3RCxs83kCeHpLnHP9hZvCcchK4J4y/ZjoRQvG868zLzZwzT04k9ceJ0nLRQ+JGk0rYu368kYSlqeb6viFK6Agp1Ta7FQvzRuEbMyalLDt5IjRaRyNCY4MpJWzHLxbKxZA+c2hJ2lwfxmb1kVCqvDkgcXM9yEMFIbj+r7u8lBo9yvO+oZR1WsxWuv8iaKNmyQriWbe7BN2zoQgZcNDkvl2c7UwdtdMF/EPU2830voB9woWXG3W4pbAIFoeYqtCxsrXex75XhWBOilieQhfx+kvNqmqykml8bdFIqVwWu9pBKDpm8e15B6/6GzwA128gDv9OhZ8+7zA3HePLHr8Oe9qdmKqooRibssezFOUS3Mg1xArNQw+rvZwBWWx3rX3QzApqTLw4Al8VrID3U1nQh4Fr0a0mQQTU6PqBfy56LIdFAn6oAA=",
       position: "48% center",
       detailPosition: "center 54%",
       detailRatio: "1.55",
@@ -128,6 +134,7 @@
       moodText: "다정한 모험",
       image: "bluehour",
       posterPath: "assets/frames-v24/bluehour.webp",
+      previewBase: "UklGRjICAABXRUJQVlA4ICYCAACQDACdASpQACgAPt1gpU4opaMiKrZtmRAbiWUAtunhPEPoLyOdfRsIfQTKwYSbX/+eIJ8j2L19tRgRGSmKp4n4kgsTJLUSapaWsB4R+1KueyCgP5qOwasxjvMiW7/yvWguzgOF2ND0JvZMTp1YAP7MdQUlnVsZ1uYlC5WD0P2Xu/126fGNit1FWLEu0d1Nv7pSQbYCv6DBVZc8Y+K+YDhUXpzNy5w+bBsfg1TLI/tRyMiuEAhvl23b0dy94x/7ADaeGFfSbLSSMW4U4hkPz/0iWzL5fRZ3RoXMq06nAcK67VbQJLWY2HKYk7zABHn+TvrQJHAgJi3YMOzGOpVqrK/VgzRF/Qiw6l+x5rO6stQ8PID/jeWV9IAFKTg25icVJ/5Vchnpdin64jOGH2RH/fQ97zSneUbNVmAVVgblRcoSs82PMfFMj5zAMlQb6K7vEfbMfMqawJr3zPEIrB0/AOLAVcCTIlPiqxTaie7RnlEqhnuepnAP621BHHNQ84rOtXzoVc9V5FJDT0epXl7vTLZm+2pdzSzkvDC9DAwklmfCi1x0vVflKARh6ovdPFA0ve5wpNBgCrgrA/BQzEZupWfbUMD06diHjxsm8zFboLF+uN0giW2Fi6TcB6L6/k59ajfLX+idFp4pFN1l2gOLsm0eEFA9i8YgiFWRpR3sr95WxoBTv5zcVPv0Wy8TI8VRBM4/UV4uPMTzldvnmUxU8EAbEhzaUVAA",
       posterPosition: "90% center",
       detailPosition: "82% center",
       detailRatio: "1.55",
@@ -147,6 +154,7 @@
       image: "atlas",
       posterArtwork: "assets/posters-v45/atlas.jpg",
       posterPath: "assets/atlas-still-v50.jpg",
+      previewBase: "UklGRvoBAABXRUJQVlA4IO4BAABwDACdASpQADwAPt1cpEyopSMiMBTcyRAbiU0bKi9AbIHtdczE1h68KoQGS3tHqXeiNLKq8eFR0ZtKpqHlyLVy5MrSG/MiLlFyaCqeYA/0PqQLsVJMX2q30GPMfGNS23bowrIWXk4zbgc167YA/vKjEdC+6tlY58uskS3mfUx01y3lZNRu6VYsRM0SzannFQQ9X7BJwpH1alUREmmVcr3kb8yEjp3z7CC7vP2WHjwc08ybQLL+8rJ2j/l95mHnIk5b1G3FtANS9mYEom/xUh7aBUlWglGnMLUlcOizvOYP90Z0+l0nJ9qgv4I/YnlVxbinPOxhLnICK5SEhJ+9FRPmPkPn7+vbKcYtP4j3VidwRB8USkbNBuTAIjefJo25ELy+Gg0x3sep9d4gCY/8LHVdRqBeS9n2pitTQAfgr0QUO4sRpB1ryUxbizfHBMd+aqeJIM43Aoza4CWFqaVavYxjY26xAab/b2n2ARKyzlTaFW7kXBO4tm5/VV14RBfS8+GkWbr8I6Ie+FGX+QEURZZw79aidLjGI3lHSzq42R1wt3Nzbyh+D8Kcu8ltGiWn83o55TujeRwiOWdek9O+oBWOAey+ygdfnTsgCN6oKt+lNUQVVMvTJhV6l1ekNwfvUeAr2SCQMwWN6BORO/AAAA==",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:
@@ -163,6 +171,7 @@
       moodText: "다정한 온기",
       image: "rooftop",
       posterPath: "assets/frames-v33/rooftop.webp",
+      previewBase: "UklGRp4CAABXRUJQVlA4IJICAADQDgCdASo8AFAAPt1cpE8opKMiLNYMARAbiUAYkoTv0HcYPubGQvVsHhmvM1Klb6goMx3yokHLnR+cN0KNbIx1+CnPrkxeXWctk8E5c3dPFmMEH3kvK1ixu/wE1NJuRe0sTysgu4MiKJJv3fIognGpUSAr69WRrNSfWR5EIbMAAP64kh0sliVXEKkmbMkbVQqYP0OgifxdaE1/MPb2Vq+xNQEa6vKLnSvUtDQNuxxjuiGV8hNtqEKyOaBeG39xYjgaafhutS0z61E1Apb2xHQygEh25T+um0DhLc5uASX2uvHIm3Q1u3YYVJmRKTSilVRLFrfPbu7UgnWO7TRfzGXcM8eYsrJQrgKcUfbskuveU0scc10d70eQ1E4qPW2P9a/gKYcFRXQKQ9rFFzHJvioirH3IGycLpuksYW7ih0fXddpjKZIZkxuFGDOFldkkFuwvFXENM6LIetF5bBPv9Ar+fXEGuf5KlE1fvvtrx3QBTG9B4zzPAMB2RtoKcuh0iUbOLF2EpYDzhGJDEVFEid91v8hxAvK40vRNZ54hFL4rdefjwF619TxtBYVTnE9j0+upt1ss71LBtk27K03adHV+wBI+j22zgGUzHFN5+16nojTLItO6d8X5OcXZIl0/E53l5gZRZ6M1+4lrMgGaPa+qbAmMMivWS0mhnkJWheFTpQwuXl2zWc6barAn0cmQL9J7CCDf2iOQ8L4subzCaIXHvAHrsi363Lxn+Nt8KLJSqQf1W0d7HRvrMsppyiB9v3GBello1JSKR9wHOtguG20R+BZVdefpvwxq4XuGu7lfSsjNHvRky2cpk7poE8vdO7EFdpQFYT5HlAWXjNj0jve1IaL8Flk/2NxloGvd8n41gAAA",
       position: "center center",
       posterPosition: "center center",
       detailPosition: "center 25%",
@@ -181,6 +190,7 @@
       moodText: "고요한 긴장",
       image: "signal",
       posterPath: "assets/frames-v33/signal.webp",
+      previewBase: "UklGRjYCAABXRUJQVlA4ICoCAABwDgCdASo1AFAAPt1ap1AopCMirNQLURAbiWUAzyhxraMqZmkEtAG7VK+58lLEacHCbRroHYbsu73+PpawJNUq/lbdQiE85Ht7Qa/8oIhpz3IfDCiuA7gaNUxJWrXhL4M6lqVODZPMRg563WgZ9kQ2mpnOzFjx205xVbDgAP75T151WG+m+ebFBzpjwV2UrrYFJ6AUjMWvV4v4k6+VqQXkFYU/jQEz8r/FfPa/ZKQdiGfeslxS8FVoZzsbovt8ESV8p+JAW1YvpH9i3JWVzFKgLZyL99U8M6ryp6UpH91wD/jeeHLbbWQyvS7dfCardJcsqTRWty94/77sM9xdM072D2QuMV7ek/+3IsgZYgRM1RtSf5qeoCVicIaBlvKX2M04zyLujF8SbBDO5W1C41VKiRp8Jx7F2Yqqk0TezRFM/yQ1WqT6rFV6Lteu8qELEvk4T9bFU5Uz//4Pj+uBaONB2XM0YU6uwXmpUt8tpsWUFY3ae6mwF4QGaIZDdAvu54j5KxbxFara2E2ZFACyOrceNoxx9oSccLRJ7XAI/Fc4tVGsb4i7qZ8EJgGrWr5yFMAaJiL1vEtlqwoOFzKHjvb1DxWBLNYMFr8BxZgQrYTRGah2/H5VIFeX9eD86Y5TMPDP5Y64xR7sJs/8ffwzMWFQo9oXje9T14kDwYMvaYtk4oDAqGr7ZBvKLVovBhhC3JR4sQuwcNG/y/uN+XgqJReqgqXBRiO7SNdAAA==",
       position: "center center",
       posterPosition: "center center",
       detailPosition: "center 32%",
@@ -199,6 +209,7 @@
       moodText: "함께하는 용기",
       image: "relay",
       posterPath: "assets/frames-v33/relay.webp",
+      previewBase: "UklGRmgDAABXRUJQVlA4IFwDAABQEwCdASo8AFAAPt1ep08opKMiKzScSRAbiWMAyJCNyTRYdOdhL2OvXl36hxqpUc/FgW6ud2PrXbC17JiOT/2J8lEYkq8NyzGT0M89Ss33keMLKhRoDp3QRFCaTx9XXhgvgSdYCPBu4rc89V9QKIKLC1bCx8wjtXP6IvI4eRekveQvUbOLxBtVDp/Oomp+qcMnBrEpJsljaH+k6FeWb0JxeLEAAP75ebx/Lp2KONZyff6HgkbLc5SRFxgfIDtq+UH+u2U6JgdlQesCgHJQrafODouHyGiaUGz5hvla5B7Bnbv82Yj2rLYexDsuqyI3tigpdwLgq+qFa94Lgz8De0mM8EugoGvaR1YVMbQLJQ9x7BMFmsPCDljjUh7qTsYmdbCaoq5moFpC7iy63Qtti1T/9NDn/jsUHoD3tR4bKYaIXGoXAVJ5PE7FuqTU0hx+SbJYsQYzc/iNRuq1IEbTZy1Q2eRe/+BQkB6N7Jy2EOK8LYD7+qKu1bVUm+C7QWcKb37hOCvXpiVEmaCOjVQOXKOwHqdumPHwq6tnZWmCiwwVZV9IwfGhTlEMxqB0JrCurBW+72JoGWSp+PirBk8WL+57ZDe9ro6jzZQYKolLdQPE4Uh1NG8q/vQ8GmU6LbIFUOrTSKR0pVkvFY+TCf5Crk3u1OKfuIMo45Ci+KEP/QpRO4UoU9TA6GCWOsSPj4khWFcbwyfy6Z4hyWS7nw0LRmjw8Ht2NBvTa6UU83oYa02jBhB9jHDTil2QlynBjkrUa8sbXnI4j20E3eNM9QiqB8PuPx3UEdE466cNNangm3rGWHYL+AtAX2BIMmOU8NDHc1WJzxdqAwCTkkz4PZqijRAprgiINmk1UrRmL3tckfl7ZxdBej9MVX7CfOLWivCvtKqH5zdjV+o2kIiVOQCoVHvOalRg/LUXsROKDMEHtfiKlaHkzDusPMerEKjYb7T4UINcq+6JNPQxQymkq9hFRq2Nny+CQK/bu2DS2jdpfZNuG8/q5y3l2lRxQ8GIpL4hi+AyFgx6soXQs1FJ9PW5++Xq/uo85lSTNpO8HEedsZkdlC/oZSrMCV5cmPKhDYJWL3o5x6cjdniuQZQ+rXGZnID/MzsBSuO3KvXk7aqEg9aIcTEv5mgK252gCgAAAA==",
       resultPreview: {
         image: "assets/relay-bench.jpg",
         position: "center",
@@ -222,6 +233,7 @@
       moodText: "다정한 온기",
       image: "nocturne",
       posterPath: "assets/frames-v31/nocturne.webp",
+      previewBase: "UklGRlQCAABXRUJQVlA4IEgCAACQDwCdASo8AFAAPtFYpUwoJSOiMBZuYQAaCWUAzNe0Yl/cJ5xmVa6hWJEGEIzva4Xk4BvUreX49ixIfdo3GbiDmTpv9l8dE6QW3zgH1n7leoNgqhXgwJSV3AS8OYKq7T2yfpGg791n4muTUmerpGuF266U3tl77jZDBlAeVSeGLpaCqqQAAP7qV/AaDGH9ocwdpUaNaP9GevCEI6VdDuKT+Vra8xedIC+Qoa8k0Nwb/THce0H7EzoQBAsxqCKumtO+a7Eh2a5VTeUy5SkqtdeWyGfXAC/svWjT8lPTqlKJZi/+Hq/qEB3sJVh+bzP+ZEqBhgwAI6c7mZLtSZabqIhyVWMib6vC4QFP2zb5Ua3H2GW0dQqY6OAc+47BpihamHntDPVUFj2IF0BfTWnjsPphkg7xyLbmaqGChegICIBd1Q1GHZxBgPoJ3MqGOhP0pJfzWBfwcS+8TJhU5oqJxD0r7Xux7CDes99zDxZvlyMhVJv6pH69HBTbncqVN5GCtIVuQBQkG+/uBFQcYtN8RaRdIbOzSLCUXJteFXJpKWwZCLEO221Kw9Itsg8qIwilYNtNefgRpvovCi13kY3QV+KlpvRizc+q/phqxTn3KFNH7StHwDBmzskD9Cx4r3J07oOKMMHgx5whG47YBP5M2kkcUf6VaxzYrT7LG+dw7MFg3pSaXqEl7FioC7fzNJ5JkcTzWihTAHu8zf9IqnuTkS31hDWg6fz9yLsodHOo7lssCoosFG1m6GsKdXG1gZUh0ZsiTr1ckgAAAA==",
       posterPosition: "60% center",
       detailPosition: "center top",
       detailRatio: "1.2",
@@ -303,7 +315,7 @@
       title: "풍경 속에 남은 마음",
       film: "tide",
       paragraphs: [
-        "파도와 물소리로 시작해 친구와 식탁의 대화로 끝납니다. 조용함을 고립이 아닌 관계로 이어지는 순서로 골랐습니다.",
+        "앞의 두 편에서는 파도와 숲의 물소리를 듣습니다. 뒤의 두 편에서는 그 자리를 친구와 손님의 목소리가 채웁니다.",
       ],
     },
     {
@@ -502,6 +514,11 @@
   );
   const scenePath = (film) =>
     film.posterPath || `assets/posters-v8/${film.image}.webp`;
+  function scenePreviewImage(film, position, loading) {
+    const preview = `assets/scene-previews/${film.id}.webp`;
+    const base = `url(data:image/webp;base64,${film.previewBase})`;
+    return `<img class="scene-preview" src="${preview}" alt="" width="240" height="180" loading="${loading}" style="object-position:${position};background-position:${position};background-image:${base}">`;
+  }
   function makeCard(film, context = "catalog") {
     const article = document.createElement("article");
     article.className = "film-card";
@@ -575,7 +592,7 @@
     // Preview the beginning and ending of the same sequence shown in the exhibition.
     const bookends = [theme.films[0], theme.films[theme.films.length - 1]]
       .map(id => films.find(film => film.id === id));
-    const scenes = bookends.map(film => `<img src="${scenePath(film)}" alt="" width="1200" height="750" loading="lazy" style="object-position:${film.detailPosition || "center"}">`).join("");
+    const scenes = bookends.map(film => scenePreviewImage(film, film.detailPosition || "center", "lazy")).join("");
     link.innerHTML = `<div class="theme-preview-image theme-preview-pair">${scenes}</div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.lens}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div>`;
     return link;
   }
@@ -1727,13 +1744,12 @@
     if (index === 0) button.id = "articleFilmLink";
     button.setAttribute("aria-label", `${film.title} 작품 보기 · ${film.genre} · ${film.minutes}분`);
     button.setAttribute("aria-describedby", `scene-note-${film.id}`);
+    const position = film.sequencePosition || film.detailPosition || film.posterPosition || "center";
     button.innerHTML = `
-      <img src="${scenePath(film)}" alt="" width="240" height="180" loading="lazy">
+      ${scenePreviewImage(film, position, "eager")}
       <span class="article-film-title">${film.title}</span>
       <span class="article-film-meta">${film.genre} · ${film.minutes}분</span>
       <span class="article-film-note" id="scene-note-${film.id}"></span>`;
-    button.querySelector("img").style.objectPosition =
-      film.sequencePosition || film.detailPosition || film.posterPosition || "center";
     button.querySelector(".article-film-note").textContent = note;
     return button;
   }

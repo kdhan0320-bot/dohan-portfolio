@@ -1814,14 +1814,24 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   grid-area: connection;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  gap: clamp(8px, 1.5vw, 20px);
   margin: 0;
   padding: 8px max(32px,calc((100% - var(--content-width))/2)) 12px;
-  color: var(--accent);
+  color: var(--text);
+  text-align: center;
+  word-break: keep-all;
   font-size: 13px;
   font-weight: 400;
 }
-.cover-connection::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.cover-connection::before, .cover-connection::after {
+  content: "";
+  flex: 0 1 clamp(8px, calc(18vw - 44px), 44px);
+  height: 1px;
+  background: var(--accent);
+  opacity: .48;
+}
+.scene-preview { background-size: cover; background-repeat: no-repeat; }
 .cover-spread .hero-film-trigger { position: relative; inset: auto; height: clamp(300px,27vw,430px); }
 .cover-spread .hero-film-trigger > img { position: absolute; inset: 0; }
 .cover-companion > img { object-position: 50% 21%; }
