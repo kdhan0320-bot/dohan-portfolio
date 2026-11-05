@@ -1530,8 +1530,6 @@ dialog { max-width: none; }
 .spotlight-film { gap: 4px 16px; }
 .spotlight-label { display: block; color: #d7dfeb; }
 .spotlight-title, .spotlight-meta { color: #f3f1ed; }
-.spotlight-caption > .icon { width: 22px; height: 22px; color: #f3f1ed; transition: translate .18s; }
-.hero-film-trigger:hover .spotlight-caption > .icon { translate: 4px 0; }
 .home-films { margin-top: 44px; }
 .home-films .section-heading { margin-bottom: 16px; }
 .discovery-tools { justify-content: flex-start; flex-wrap: wrap; gap: 8px 24px; }
@@ -1835,7 +1833,6 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .cover-spread .hero-film-trigger::after { bottom: auto; height: clamp(150px,49vw,260px); background: linear-gradient(0deg,#25262c55,transparent 28%); }
   .cover-spread .spotlight-caption { position: relative; inset: auto; width: 100%; flex: 1; padding: 10px 20px; text-shadow: none; }
   .cover-spread .spotlight-film { grid-template-columns: 1fr; gap: 0; }
-  .cover-spread .spotlight-caption > .icon { position: absolute; right: 14px; top: -34px; margin: 0; filter: drop-shadow(0 1px 3px #000b); }
   .cover-companion > img { object-position: center 28%; }
 }
 @media (max-width: 600px) {
@@ -1850,4 +1847,14 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .saved-view .catalog-options { margin-block: 8px 12px; }
   .saved-view .results-bar { margin-block: 8px 12px; }
   .film-grid.library-reading { gap: 12px; }
+}
+
+/* Keep the paper stars and night sky in the same landscape frame on desktop. */
+@media (min-width: 801px) {
+  #detailDialog[data-film-id="atlas"] .detail-layout { grid-template-columns: 1.2fr 1fr; }
+  #detailDialog[data-film-id="atlas"] .detail-visual { position: relative; align-self: center; width: calc(100% - 24px); height: auto; margin-left: 24px; aspect-ratio: 4/3; }
+}
+@media (min-width: 601px) and (max-width: 800px) {
+  #detailDialog[data-film-id="atlas"] .detail-layout { display: block; }
+  #detailDialog[data-film-id="atlas"] .detail-visual { position: relative; width: min(480px,calc(100% - 48px)); height: auto; margin: 24px auto 0; aspect-ratio: 4/3; }
 }

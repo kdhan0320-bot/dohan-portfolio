@@ -556,7 +556,7 @@
       <span class="single-title">${film.title}</span>
       <span class="single-meta">${film.genre} · ${film.minutes}분</span>
       <span class="single-story" id="preview-${film.id}">${film.resultPreview?.note || film.moodText}</span>
-      <span class="single-open">작품 보기 ${icon("arrow")}</span>`;
+      <span class="single-open">작품 보기</span>`;
     trigger.replaceChildren(picture, copy);
     trigger.setAttribute("aria-describedby", `preview-${film.id}`);
     return card;
@@ -572,7 +572,7 @@
     link.dataset.themePreview = theme.id;
     link.setAttribute("aria-haspopup", "dialog");
     link.style.setProperty("--collection-surface", theme.accent);
-    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.comparisonFocus}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분 ${icon("arrow")}</span></div>`;
+    link.innerHTML = `<div class="theme-preview-image"><img src="${theme.galleryImage || theme.previewImage}" alt="" width="1200" height="750" loading="lazy"></div><div class="theme-preview-copy"><p class="theme-lens"><span class="scene-index">${theme.number}</span>${theme.comparisonFocus}</p><div class="theme-preview-heading"><h3>${theme.name}</h3></div><p class="theme-preview-description">${theme.previewDescription}</p><span class="theme-entry">${theme.films.length}편 · 총 ${themeMinutes(theme)}분</span></div>`;
     return link;
   }
   $("themeOverview").replaceChildren(...themes.map(makeThemePreview));
