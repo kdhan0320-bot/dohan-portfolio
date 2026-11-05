@@ -153,8 +153,10 @@
       moodText: "낯선 경이",
       image: "atlas",
       posterArtwork: "assets/posters-v45/atlas.jpg",
-      posterPath: "assets/atlas-still-v50.jpg",
-      previewBase: "UklGRvoBAABXRUJQVlA4IO4BAABwDACdASpQADwAPt1cpEyopSMiMBTcyRAbiU0bKi9AbIHtdczE1h68KoQGS3tHqXeiNLKq8eFR0ZtKpqHlyLVy5MrSG/MiLlFyaCqeYA/0PqQLsVJMX2q30GPMfGNS23bowrIWXk4zbgc167YA/vKjEdC+6tlY58uskS3mfUx01y3lZNRu6VYsRM0SzannFQQ9X7BJwpH1alUREmmVcr3kb8yEjp3z7CC7vP2WHjwc08ybQLL+8rJ2j/l95mHnIk5b1G3FtANS9mYEom/xUh7aBUlWglGnMLUlcOizvOYP90Z0+l0nJ9qgv4I/YnlVxbinPOxhLnICK5SEhJ+9FRPmPkPn7+vbKcYtP4j3VidwRB8USkbNBuTAIjefJo25ELy+Gg0x3sep9d4gCY/8LHVdRqBeS9n2pitTQAfgr0QUO4sRpB1ryUxbizfHBMd+aqeJIM43Aoza4CWFqaVavYxjY26xAab/b2n2ARKyzlTaFW7kXBO4tm5/VV14RBfS8+GkWbr8I6Ie+FGX+QEURZZw79aidLjGI3lHSzq42R1wt3Nzbyh+D8Kcu8ltGiWn83o55TujeRwiOWdek9O+oBWOAey+ygdfnTsgCN6oKt+lNUQVVMvTJhV6l1ekNwfvUeAr2SCQMwWN6BORO/AAAA==",
+      posterPath: "assets/atlas-still-v57.webp",
+      previewPath: "assets/scene-previews/atlas-v57.webp",
+      sceneAlt: "창밖 별이 보이는 밤, 아이의 손이 접힌 자국이 남은 종이 앞에서 멈춰 있다.",
+      previewBase: "UklGRq4BAABXRUJQVlA4IKIBAABwDACdASpQADwAPt1cpE0opT8iMBgLM+AbiUAXQQ2RIM4G6AAypklEUN9n3tydgdpancTMgQfD6LZ59g7tkXaWLz4xyPe/Gcm/1U8yaxVRrRaxnY7AHJa4HedbFrUyDEmblL51W9CuOaCfcoAA/vCiO2Mhe2zyajZUdoBqjIvkauuTAtMAGTlB3wPmvNW7iuGvvDMT4ZVHo8vsdVlizq5z03hqH6wxvsPx/CxFXwxdNwcOfreIlnu+zy0f49DkuCZzDBLpVQ3IeQdlCGWSn5iSYUeVUXVEhIcIH0BMMoTfoLcuON0LIMGfeyDscw7Iyhsq8qJ5kzCUbsZUDmW5XRvT56FbXq3ysWbi8Z05sXcUIYLDmKgog2sW4JH8Ckaw2k7ekSn0V7yEGag2M50OvKPUbPBZU4seufnUgE8Qq0HmjcehAE0AMYmayBC3Vq54qlEAxaAfAZyBZC9MxX83jU2oUOBKZ7jRmXXOnAE/Fihh+5vzEu1hPzKEFYxCW9xJgfhS8+JzsfMPIQlT1b4UgROeV/+J4NrcD1OoHgLlMkreFIAA",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:
@@ -266,13 +268,13 @@
     },
     {
       id: "warmth",
-      name: "다정한 반전",
+      name: "마음을 건네는 방식",
       number: "02",
       article: "running-time",
-      lens: "마음을 건네는 방식",
+      lens: "편지에서 바통까지",
       comparisonFocus: "행동 · 관계",
       pairCaptions: ["우연히 마주친 사이", "마지막에 건네는 마음"],
-      previewDescription: "편지와 연주, 이웃과 팀의 작은 행동에서 마음을 읽습니다.",
+      previewDescription: "친구와 이웃, 밴드와 동료가 서로에게 다가가는 네 순간.",
       previewImage: "assets/frames-v31/letters.webp",
       galleryImage: "assets/frames-v35/windows.webp",
       imageAlt: "하숙집을 정리하다 서랍에서 편지를 꺼내는 두 친구",
@@ -324,7 +326,7 @@
       title: "서로에게 건네는 작은 용기",
       film: "letters",
       paragraphs: [
-        "편지를 꺼내는 사적인 순간에서 이웃, 밴드, 팀으로 관계의 범위를 넓혔습니다. 마음이 행동으로 드러나는 순간을 따라가세요.",
+        "앞의 두 편은 우연히 가까워진 사이를, 뒤의 두 편은 먼저 손을 내미는 사람을 따라갑니다.",
       ],
     },
     {
@@ -514,9 +516,15 @@
   );
   const scenePath = (film) =>
     film.posterPath || `assets/posters-v8/${film.image}.webp`;
+  function sceneBackground(film) {
+    return `url(data:image/webp;base64,${film.previewBase})`;
+  }
+  function scenePreviewPath(film) {
+    return film.previewPath || `assets/scene-previews/${film.id}.webp`;
+  }
   function scenePreviewImage(film, position, loading) {
-    const preview = `assets/scene-previews/${film.id}.webp`;
-    const base = `url(data:image/webp;base64,${film.previewBase})`;
+    const preview = scenePreviewPath(film);
+    const base = sceneBackground(film);
     return `<img class="scene-preview" src="${preview}" alt="" width="240" height="180" loading="${loading}" style="object-position:${position};background-position:${position};background-image:${base}">`;
   }
   function makeCard(film, context = "catalog") {
@@ -1330,7 +1338,6 @@
   const deletedNotes = new Map();
   let noteUndoExpanded = false;
   let activeDetailId = null;
-  let detailImageRequest = 0;
   let noteDirty = false;
   let noteMode = "edit";
   let noteSizeFrame = 0;
@@ -1684,6 +1691,30 @@
     focusAfterNoteUndo(id);
     notify("삭제한 메모를 복원했어요.");
   }
+  function setDetailScene(film, trigger) {
+    const visual = $("detailVisual");
+    const thumbnail = trigger?.querySelector(".scene-preview");
+    const layers = [sceneBackground(film)];
+    if (thumbnail?.complete && thumbnail.naturalWidth && trigger.dataset.detail === film.id) {
+      layers.unshift(`url("${thumbnail.currentSrc}")`);
+    }
+    visual.style.backgroundImage = layers.join(", ");
+    visual.style.setProperty("--scene-position", film.detailPosition || film.posterPosition || "center");
+
+    // A late load can only reveal its own image, even after another film opens.
+    const image = new Image();
+    image.id = "detailImage";
+    image.alt = film.sceneAlt || `${film.title}의 가상 영화 장면`;
+    image.decoding = "async";
+    image.onload = () => image.classList.add("is-ready");
+    image.onerror = () => {
+      image.onerror = null;
+      if (image.isConnected) image.src = scenePreviewPath(film);
+    };
+    visual.replaceChildren(image);
+    image.src = scenePath(film);
+  }
+
   function showDetail(id, trigger) {
     const film = films.find((f) => f.id === id);
     if (!film) return;
@@ -1696,6 +1727,7 @@
           focusTarget: trigger,
         }
       : null;
+    setDetailScene(film, trigger);
     if (returnToArticle) trigger = articleContext?.trigger || trigger;
     if (isDialogOpen($("detailDialog"))) rememberNoteDraft();
     activeDetailId = id;
@@ -1704,28 +1736,7 @@
     $("detailMood").textContent = film.moodText;
     $("detailMeta").textContent = `${film.genre} · ${film.minutes}분`;
     $("detailDescription").textContent = film.description;
-    const detailImage = $("detailImage");
-    const imageRequest = ++detailImageRequest;
-    const revealImage = () => {
-      if (imageRequest === detailImageRequest)
-        detailImage.style.visibility = "visible";
-    };
-    detailImage.style.visibility = "hidden";
-    detailImage.alt = `${film.title}의 가상 영화 장면`;
-    detailImage.width = 800;
-    detailImage.height = 1200;
-    detailImage.style.objectPosition = film.detailPosition || film.posterPosition || "center";
     $("detailDialog").style.setProperty("--detail-image-ratio", film.detailRatio || "1.4");
-    detailImage.src = scenePath(film);
-    // Keep the previous film's poster hidden until the new source is ready.
-    // A failed image still reveals its alternative text instead of staying blank.
-    if (typeof detailImage.decode === "function")
-      detailImage.decode().then(revealImage, revealImage);
-    else {
-      detailImage.onload = revealImage;
-      detailImage.onerror = revealImage;
-      if (detailImage.complete) revealImage();
-    }
     $("detailSave").dataset.save = id;
     noteMode = state.notes[id] ? "read" : "edit";
     loadNote();
@@ -1775,6 +1786,12 @@
         shots.append(makeSceneButton(film, theme?.filmNotes[film.id] || "작품 보기", start + offset));
       });
       pair.append(heading, shots);
+      const caption = document.createElement("p");
+      caption.className = "article-film-note scene-pair-caption";
+      // Each button already describes its own shot to assistive technology.
+      caption.setAttribute("aria-hidden", "true");
+      caption.textContent = filmsInPair.map(film => theme?.filmNotes[film.id]).filter(Boolean).join(" ");
+      pair.append(caption);
       pairs.append(pair);
     }
     $("articleFilmLinks").replaceChildren(pairs);

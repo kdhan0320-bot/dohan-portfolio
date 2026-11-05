@@ -369,8 +369,9 @@ dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index:
 .close-button { position: absolute; top: 16px; right: 16px; z-index: 4; border-radius: 50%; background: #202020ed; border-color: #918a80; }
 .detail-dialog { border-color: #b2a18b80; background: #222322; }
 .detail-layout { display: grid; grid-template-columns: .86fr 1.14fr; }
-.detail-visual { position: relative; overflow: hidden; background: var(--bg); min-height: 440px; }
-.detail-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.detail-visual { position: relative; overflow: hidden; background: var(--bg) var(--scene-position, center) / cover no-repeat; min-height: 440px; }
+.detail-visual img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: var(--scene-position, center); opacity: 0; transition-property: none; }
+.detail-visual img.is-ready { opacity: 1; }
 .detail-visual::after { content: ""; position: absolute; pointer-events: none; inset: 12px; border-top: 1px solid #f2e1cd55; border-left: 1px solid #f2e1cd55; }
 .detail-content { padding: 86px 36px 30px; background: linear-gradient(145deg,#302b25aa,#222322 62%); }
 .detail-content > .eyebrow { font-size: 14px; color: #d0bba6; }
@@ -1920,27 +1921,20 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .film-grid.library-reading { gap: 12px; }
 }
 
-/* Each narrow-screen caption gets a full line inside its own film button. */
+.scene-pair-caption { display: none; }
+/* Keep the diptych intact and give its two notes one shared caption width. */
 @media (max-width: 360px) {
   .cover-spread .spotlight-label .scene-index { display: none; }
-  .scene-pair-shots { grid-template-columns: minmax(0,1fr); gap: 14px; }
-  .scene-pair-shots .article-film-link {
-    display: grid;
-    grid-template-columns: 76px minmax(0,1fr);
-    grid-template-areas: "still title" "still meta" "note note";
-    gap: 0 12px;
-    align-items: center;
-    padding: 0;
-  }
+  .scene-pair-shots { align-items: stretch; gap: 6px; }
+  .scene-pair-shots .article-film-link { padding: 0; }
   .scene-pair-shots .article-film-link > img {
-    grid-area: still;
     aspect-ratio: 4/3;
-    margin: 0;
+    margin-bottom: 7px;
     border-radius: 3px;
   }
-  .scene-pair-shots .article-film-title { grid-area: title; align-self: end; }
-  .scene-pair-shots .article-film-meta { grid-area: meta; align-self: start; }
-  .scene-pair-shots .article-film-note { grid-area: note; margin-top: 6px; }
+  .scene-pair-shots .article-film-meta { margin-top: auto; padding-top: 4px; }
+  .scene-pair-shots .article-film-note { display: none; }
+  .scene-pair-caption { display: block; margin-top: 10px; }
 }
 
 /* Keep the paper stars and night sky in the same landscape frame on desktop. */
