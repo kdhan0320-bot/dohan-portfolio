@@ -1,6 +1,7 @@
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
 import { ALL_PROJECTS, FEATURED_CASES } from '../data/projectsData';
 import ProcurementCase from './ProcurementCase';
+import AssignmentPreview from '../components/projects/AssignmentPreview';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
 import { scrollToSection } from '../hooks/useScrollNav';
@@ -66,11 +67,12 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     if(showMedia)usedImages.add(key);
     return {...item,showMedia};
   });
-  const cover = (
-    <div className="case-cover">{heroMedia.map((item, index) => (
-      <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
-    ))}</div>
-  );
+  const figures = heroMedia.map((item, index) => (
+    <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
+  ));
+  const cover = <div className="case-cover">
+    {project.id === 'seolbiit' ? <AssignmentPreview>{figures}</AssignmentPreview> : figures}
+  </div>;
   const title = (
     <div className="case-title">
       <p className="case-eyebrow">{project.categoryLabel}</p>

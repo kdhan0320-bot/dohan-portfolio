@@ -122,27 +122,10 @@
 .about-job p { font-size: 16px; line-height: 1.8; }
 .about-job .text-link { margin-top: 4px; }
 
-.about-review__label {
-  margin-bottom: 22px;
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 650;
-  line-height: 1.6;
-}
 .about-decisions { display: grid; gap: 24px; }
 .about-decisions > div + div { padding-top: 24px; border-top: 1px solid var(--line); }
 .about-decisions dt { margin-bottom: 9px; font-size: 19px; font-weight: 650; line-height: 1.5; letter-spacing: -.025em; }
 .about-decisions dd { color: var(--muted); font-size: 16px; line-height: 1.85; }
-.about-review__roles {
-  display: grid;
-  gap: 10px;
-  margin-top: 28px;
-  padding: 20px 22px;
-  background: var(--mist);
-}
-.about-review__roles p { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; font-size: 14px; line-height: 1.75; }
-.about-review__roles strong { font-weight: 650; }
-.about-review__roles span { color: var(--muted); }
 
 .about-closing {
   display: flex;
@@ -188,11 +171,8 @@
   .about-job h3 { font-size: 24px; }
   .about-jobs { gap: 24px; }
   .about-job + .about-job { padding-top: 24px; }
-  .about-review__label { margin-bottom: 20px; }
   .about-decisions { gap: 22px; }
   .about-decisions > div + div { padding-top: 22px; }
-  .about-review__roles { margin-top: 24px; padding: 18px; }
-  .about-review__roles p { grid-template-columns: 56px minmax(0, 1fr); gap: 10px; }
   .about-closing { display: block; padding: 27px 24px; }
   .about-closing h2 { font-size: 26px; }
   .about-closing__break { display: none; }
@@ -222,7 +202,6 @@
 .about-work__image{border-radius:9px;background:#e7ecef}
 .about-work__image img{border-color:#d5dde2;border-radius:7px 7px 0 0}
 .about-work__caption>span{text-decoration-color:#97abb9}
-.about-review__roles{border-radius:9px;padding:24px}
 .about-closing{border-radius:10px;background:#e7ecef}
 .about-block__heading .eyebrow{letter-spacing:.06em}
 

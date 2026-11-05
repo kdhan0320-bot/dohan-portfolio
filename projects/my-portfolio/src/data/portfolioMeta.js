@@ -87,10 +87,6 @@ export const PROJECT_DETAIL_READY = {
     'seolbiit',
     media('detail/current/seolbigyeol-overview-2x.webp', '설비결 작업 현황에 표시된 정비 요청과 담당자 배정', '2880 / 2160', {
       label: '설비결 Figma 시안 · 정비 작업 현황',
-      mobile: {
-        src: 'detail/current/seolbigyeol-assignment-2x.webp', aspectRatio: '1568 / 1040',
-        label: '설비결 Figma 시안 · 배정 대기 요청 발췌', original: 'detail/current/seolbigyeol-overview-2x.webp',
-      },
     }),
     [
       evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),

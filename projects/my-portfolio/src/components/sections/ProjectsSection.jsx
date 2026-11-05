@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FEATURED_CASES, PROCUREMENT_RECEIPT } from '../../data/projectsData';
+import AssignmentPreview from '../projects/AssignmentPreview';
 import './selectedWorks.css';
 
 const media = `${import.meta.env.BASE_URL}detail/current/`;
@@ -64,10 +65,12 @@ export default function ProjectsSection() {
       </article>
       <div className="companion-cases">
         <article className="companion-case">
-          <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
-            <img src={media + 'seolbigyeol-assignment-2x.webp'} width="1568" height="1040"
-              loading="lazy" alt="냉각수 펌프의 증상, 담당자와 완료 기한을 모은 배정 대기 요청" />
-          </Link>
+          <AssignmentPreview>
+            <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
+              <img src={media + 'seolbigyeol-assignment-2x.webp'} width="1568" height="1040"
+                loading="lazy" alt="냉각수 펌프의 증상, 담당자와 완료 기한을 모은 배정 대기 요청" />
+            </Link>
+          </AssignmentPreview>
           <CaseCopy item={maintenance} />
         </article>
         <article className="companion-case">
