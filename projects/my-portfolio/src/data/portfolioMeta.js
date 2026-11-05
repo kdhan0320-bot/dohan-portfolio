@@ -121,7 +121,19 @@ export const PROJECT_DETAIL_READY = {
         ],
       },
       { title: '우연한 만남에서 먼저 건네는 마음으로.', layout: 'wide', summary: '‘마음을 건네는 방식’의 앞 두 편에서는 오래된 편지와 멈춘 승강기가 사람을 이어줍니다. 다음 두 편에서는 한 사람이 누군가를 위해 연주하고, 다른 한 사람이 동료에게 바통을 건넵니다.', media: cinemaExhibition, mediaLabel: '기획전 발췌 · 마음을 건네는 방식' },
-      { title: '한 편을 담으면, 그 영화와 내 메모부터.', summary: '처음 한 편을 담았을 때는 검색과 보기 설정을 접어 메모를 바로 읽을 수 있게 했습니다. 여러 편 중 검색 결과가 한 편으로 좁혀졌을 때는 검색창을 계속 보여줍니다.', media: media('detail/current/jansang-v63-library-390.webp', '별을 접는 아이 한 편과 저장한 예시 메모가 보이는 보관함', '780 / 842', { frameWidth: 390 }), mediaLabel: '모바일 보관함 발췌 · 예시 메모' },
+      {
+        title: '한 편을 고른 뒤, 내 메모까지.',
+        summary: '줄거리 아래에서 찜하거나 메모를 남기면 같은 영화의 보관함 카드로 바로 이동합니다. 한 편만 담았을 때는 검색 도구를 접어 제목과 메모가 먼저 보입니다.',
+        sequence: [
+          media('detail/current/jansang-detail-saved.webp', '별을 접는 아이 상세에서 찜한 상태와 보관함에서 보기 링크', '1922 / 1008', {
+            label: '작품 상세 · 찜한 뒤',
+            mobile: { src: 'detail/current/jansang-detail-saved-mobile.webp', aspectRatio: '698 / 772', label: '모바일 작품 상세 · 찜한 뒤' },
+          }),
+          media('detail/current/jansang-v63-library-390.webp', '같은 영화 카드 아래에 표시된 저장 메모', '780 / 842', {
+            label: '내 보관함 · 같은 영화에 남긴 예시 메모', frameWidth: 390,
+          }),
+        ],
+      },
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
     { imageFirst: true, creditsOnCover: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',

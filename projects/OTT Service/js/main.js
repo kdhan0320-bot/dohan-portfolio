@@ -481,6 +481,14 @@
       const label = `${film.title} ${on ? "찜 해제" : "찜하기"}`;
       btn.setAttribute("aria-label", label);
       btn.setAttribute("title", label);
+      if (btn.id === "detailSave") {
+        $("detailSaveLabel").textContent = on ? "찜 해제" : "찜하기";
+        const link = $("detailLibraryLink");
+        link.href = `#saved/${film.id}`;
+        const showLink = state.view !== "saved" && inLibrary(film.id);
+        if (!showLink && document.activeElement === link) btn.focus({ preventScroll: true });
+        link.hidden = !showLink;
+      }
     });
     document.querySelectorAll("[data-note-for]").forEach((badge) => {
       badge.hidden = !state.notes[badge.dataset.noteFor];
@@ -1147,11 +1155,11 @@
     document
       .querySelectorAll("dialog[open]")
       .forEach((dialog) => closeDialog(dialog, { restoreFocus: false }));
-    let [path, themeId] = location.hash.slice(1).split("/");
+    let [path, itemId] = location.hash.slice(1).split("/");
     if (["journal", "news"].includes(path)) {
       history.replaceState(null, "", "#themes");
       path = "themes";
-      themeId = undefined;
+      itemId = undefined;
     }
     const view = ["browse", "saved", "themes"].includes(path)
       ? path
@@ -1175,9 +1183,14 @@
       else a.removeAttribute("aria-current");
     });
     let heading = $("heroTitle");
+    const savedFilm = view === "saved" && validIds.has(itemId) && inLibrary(itemId);
     if (catalogFilters[view]) {
       Object.assign(state, catalogFilters[view]);
       if (view === "saved") state.mood = "all";
+      if (savedFilm && !matches(films.find(film => film.id === itemId))) {
+        state.libraryFilter = "all";
+        state.query = "";
+      }
       $("searchInput").value = state.query;
       $("catalogTitle").textContent =
         view === "saved" ? "내 보관함" : "영화 찾기";
@@ -1204,11 +1217,16 @@
       if (searchRequested) $("searchInput").focus({ preventScroll: true });
       else heading.focus({ preventScroll: true });
     }
+    if (savedFilm) {
+      const card = $("filmGrid").querySelector(`.film-art[data-detail="${itemId}"]`);
+      card.focus({ preventScroll: true });
+      card.closest(".film-card").scrollIntoView({ block: "nearest", behavior: "instant" });
+    }
     searchRequested = false;
     firstRoute = false;
     requestRailUpdate();
-    if (view === "themes" && themes.some(item => item.id === themeId))
-      showArticle(themes.find(item => item.id === themeId).article, document.querySelector(`#themeOverview [data-theme-preview="${themeId}"]`));
+    if (view === "themes" && themes.some(item => item.id === itemId))
+      showArticle(themes.find(item => item.id === itemId).article, document.querySelector(`#themeOverview [data-theme-preview="${itemId}"]`));
   }
   window.addEventListener("hashchange", route);
   document.addEventListener("click", (event) => {
@@ -1469,7 +1487,6 @@
       [$("detailDialog"), $("articleDialog")].forEach(item => { item.hidden = item !== view; });
       host.dataset.view = view.id;
       host.setAttribute("aria-labelledby", heading.id);
-      $("detailSave").hidden = view.id !== "detailDialog";
       $("articleRuntime").hidden = view.id !== "articleDialog";
       $("cinemaBack").hidden = !returnToArticle;
       $("cinemaContext").hidden = Boolean(returnToArticle);

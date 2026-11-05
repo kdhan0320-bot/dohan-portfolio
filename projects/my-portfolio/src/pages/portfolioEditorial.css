@@ -54,6 +54,14 @@
 .case-decision dd,.case-decision__summary{font-size:16px;line-height:1.85;color:var(--muted)}
 .case-decision__summary{padding-top:29px}
 .case-decision--illustrated>.case-figure{max-width:100%}
+.case-screen-sequence {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  align-items: start; gap: clamp(16px, 2.5vw, 32px);
+}
+.case-screen-sequence .case-figure__surface { padding: 0; }
+@media (max-width: 760px) {
+  .case-screen-sequence { grid-template-columns: minmax(0, 390px); justify-content: center; gap: 16px; }
+}
 .case-scope__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
 .case-scope__grid--summary{grid-template-columns:1fr 1fr}
 .case-scope__column{padding:24px 0 12px;border-top:2px solid #96aaba}

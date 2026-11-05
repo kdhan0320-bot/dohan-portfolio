@@ -376,14 +376,19 @@ dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index:
 .detail-visual img.is-ready { opacity: 1; }
 .detail-visual::after { content: ""; position: absolute; pointer-events: none; inset: 12px; border-top: 1px solid #f2e1cd55; border-left: 1px solid #f2e1cd55; }
 .detail-content { padding: 86px 36px 30px; background: linear-gradient(145deg,#302b25aa,#222322 62%); }
-.detail-content > .eyebrow { font-size: 14px; color: #d0bba6; }
+.detail-byline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.detail-byline .eyebrow { font-size: 14px; color: var(--summer-sage); }
 .detail-content h2 { font-size: 36px; font-weight: 450; line-height: 1.3; letter-spacing: -.025em; margin-top: 16px; padding-right: 24px; }
-.detail-meta { color: var(--muted); font-size: 14px; margin-top: 16px; }
+.detail-meta { color: var(--muted); font-size: 14px; }
+.detail-byline .detail-meta { padding-left: 12px; border-left: 1px solid #72757d; line-height: 1.2; }
 .detail-description { color: #ddd9d1; font-size: 16px; line-height: 1.7; margin-top: 24px; }
-.detail-bookmark { position: absolute; z-index: 4; top: 16px; right: 74px; border-radius: 50%; border-color: #918a80; background: #202020ed; color: #eee8df; }
-.detail-bookmark .icon { width: 20px; height: 20px; }
-.detail-bookmark[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: #342b25f5; }
-.detail-bookmark:hover { border-color: var(--accent); background: #39312b; }
+.detail-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; margin-top: 20px; }
+.detail-actions .save-button { min-width: 104px; color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+.detail-actions .save-button:hover { background: #cfdbeb; }
+.detail-actions .save-button[aria-pressed="true"] { color: var(--text); background: transparent; border-color: var(--accent); }
+.detail-actions .save-button .icon { width: 17px; height: 17px; }
+.detail-actions .text-link { gap: 8px; color: var(--text); text-decoration: underline; text-underline-offset: 4px; }
+.detail-actions ~ .note-disclosure { margin-top: 18px; }
 .note-disclosure { border-top: 1px solid #d1b29355; margin-top: 30px; }
 .note-disclosure summary { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 15px; cursor: pointer; font-size: 15px; font-weight: 450; list-style: none; }
 .note-disclosure summary::-webkit-details-marker { display: none; }
@@ -832,9 +837,7 @@ dialog[data-scrolled="true"]::before { content: ""; position: absolute; z-index:
   .detail-visual { min-height: 0; aspect-ratio: var(--detail-image-ratio, 1.4); }
   .detail-content { padding: 26px 22px; }
   .detail-content h2 { font-size: 28px; margin-top: 12px; }
-  .detail-meta { margin-top: 13px; font-size: 14px; }
   .detail-description { margin-top: 20px; font-size: 16px; line-height: 1.7; }
-  .detail-bookmark { top: 12px; right: 64px; width: 44px; height: 44px; }
   .note-disclosure { margin-top: 24px; }
   .note-form textarea { font-size: 16px; }
   .note-controls p { flex-basis: 100%; }
@@ -1053,7 +1056,6 @@ body[data-view="browse"] .film-foot { align-items: flex-start; padding-top: 16px
 .detail-visual { min-height: 0; aspect-ratio: 3/4; position: sticky; top: 0; }
 .detail-visual::after { content: none; }
 .detail-content { background: none; }
-.detail-bookmark, .detail-bookmark[aria-pressed="true"], .detail-bookmark:hover { border: 0; border-radius: 4px; background: #222322ee; }
 .close-button { border: 0; border-radius: 4px; background: #222322ee; }
 .note-disclosure { border-top: 0; margin-top: 24px; }
 .note-disclosure summary { min-height: 48px; padding: 0 14px; background: #ffffff07; border-radius: 4px; }
@@ -1201,7 +1203,7 @@ body[data-view="browse"] #filmGrid .film-art { aspect-ratio: 2/3; }
 .note-disclosure summary { border-bottom: 1px solid #ffffff1c; border-radius: 0; padding-inline: 0; background: transparent; }
 .note-form textarea { border: 0; border-bottom: 1px solid #ffffff35; border-radius: 0; background: #ffffff05; }
 .note-reader-text { border-left: 0; padding-left: 0; }
-.detail-bookmark, .close-button { backdrop-filter: blur(8px); }
+.close-button { backdrop-filter: blur(8px); }
 @media (min-width: 1600px) {
   .rail-shell { --rail-columns: 5.3; --rail-card-width: calc((100cqw - 5 * var(--rail-gap)) / var(--rail-columns)); }
 }
@@ -1426,8 +1428,8 @@ dialog { max-width: none; }
 .cinema-context { color: #c5c5ba; font-size: 14px; }
 .cinema-back { gap: 8px; }
 .cinema-back .icon { transform: rotate(180deg); width: 18px; height: 18px; }
-.cinema-toolbar .close-button, .cinema-toolbar .detail-bookmark { position: static; flex: none; width: 44px; height: 44px; min-width: 44px; min-height: 44px; margin: 0; padding: 10px; border-radius: 3px; background: transparent; backdrop-filter: none; }
-.cinema-toolbar .close-button:hover, .cinema-toolbar .detail-bookmark:hover { background: #ffffff0a; }
+.cinema-toolbar .close-button { position: static; flex: none; width: 44px; height: 44px; min-width: 44px; min-height: 44px; margin: 0; padding: 10px; border-radius: 3px; background: transparent; backdrop-filter: none; }
+.cinema-toolbar .close-button:hover { background: #ffffff0a; }
 .cinema-view { flex: 1; min-height: 0; width: 100%; max-height: none; margin: 0; overflow: clip; border: 0; background: none; }
 .cinema-view > .dialog-scroll { height: 100%; max-height: none; overflow-y: auto; scroll-padding-block: 24px; }
 .cinema-view .detail-visual { height: calc(var(--cinema-height) - 63px); min-height: 0; aspect-ratio: auto; }
@@ -1636,7 +1638,6 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .note-draft-notice, .detail-content .note-undo-list { border-color: #b6c4d855; background: #b6c4d80b; }
 .note-reader-text, .note-draft-notice p, .detail-description { color: #e0e1e6; }
 .library-reading .film-note-preview { border-left-color: #b6c4d840; }
-.detail-content > .eyebrow { color: var(--summer-sage); }
 .toast, .view-tooltip { background: var(--surface-raised); color: var(--text); border-color: #b6c4d855; }
 
 .footer { background: #26282d; }

@@ -35,8 +35,8 @@
       href="assets/frames-v24/bluehour.webp"
       rel="preload"
     />
-    <link href="css/style.css?v=2579dd5c66f4" rel="stylesheet" />
-    <script defer="" src="js/main.js?v=a82f03adba7a"></script>
+    <link href="css/style.css?v=7982592192da" rel="stylesheet" />
+    <script defer="" src="js/main.js?v=9fefc3f822e6"></script>
   </head>
   <body>
     <svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
@@ -328,17 +328,24 @@
         <button class="text-link cinema-back" id="cinemaBack" type="button" hidden><svg class="icon" aria-hidden="true"><use href="#i-arrow"></use></svg><span>기획전으로</span></button>
         <span class="cinema-context" id="cinemaContext">작품 살펴보기</span>
         <span id="articleRuntime" hidden></span>
-        <button aria-label="영화 찜하기" aria-pressed="false" class="icon-button save-button detail-bookmark" id="detailSave" type="button"><svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg></button>
         <button aria-label="팝업 닫기" class="icon-button close-button" data-close="cinemaDialog" type="button"><svg aria-hidden="true" class="icon"><use href="#i-close"></use></svg></button>
       </div>
       <section id="detailDialog" class="detail-dialog cinema-view" hidden>
       <div class="detail-layout dialog-scroll">
         <div class="detail-visual" id="detailVisual"></div>
         <div class="detail-content">
-          <p class="eyebrow" id="detailMood"></p>
+          <div class="detail-byline">
+            <p class="eyebrow" id="detailMood"></p>
+            <p class="detail-meta" id="detailMeta"></p>
+          </div>
           <h2 id="detailTitle" tabindex="-1"></h2>
-          <p class="detail-meta" id="detailMeta"></p>
           <p class="detail-description" id="detailDescription"></p>
+          <div class="detail-actions">
+            <button aria-pressed="false" class="button small save-button" id="detailSave" type="button">
+              <svg aria-hidden="true" class="icon"><use href="#i-bookmark"></use></svg><span id="detailSaveLabel">찜하기</span>
+            </button>
+            <a class="text-link" id="detailLibraryLink" href="#saved" hidden>보관함에서 보기 <span aria-hidden="true">→</span></a>
+          </div>
           <div aria-label="삭제한 메모 복원" class="note-undo-list" hidden="" id="detailUndoList"></div>
           <details class="note-disclosure" id="noteDisclosure"><summary><span id="noteDisclosureLabel">관심 메모 남기기</span><span class="disclosure-plus" aria-hidden="true"></span></summary>
           <section aria-label="저장한 관심 메모" class="note-reader" hidden="" id="noteReader">
