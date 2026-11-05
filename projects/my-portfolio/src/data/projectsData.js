@@ -18,7 +18,7 @@ const THUMB_MAP = {
   jobflow:      `${BASE}detail/current/galpirok-home-20261105.jpg`,
   seolbiit:     `${BASE}detail/current/seolbigyeol-overview-2x.webp`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-v58-home.jpg`,
+  'ott-service': `${BASE}detail/current/jansang-v63-list-thumb.webp`,
   'bus-arrival-app': `${BASE}detail/current/onjeongryu-20261105.png`,
   brewstep: `${BASE}detail/current/soyobit-20261105.png`,
   'feedback-hub': `${BASE}detail/current/pumuiseon-home-20261105.jpg`,

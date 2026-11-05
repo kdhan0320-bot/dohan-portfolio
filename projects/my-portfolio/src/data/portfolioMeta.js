@@ -58,8 +58,11 @@ function detail(id, image, decisions, scope, extra = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-spread-1440.webp', '잔상관 표지에 놓인 두 단편영화, 파란 오후 28분과 새벽 두 시의 식탁 23분', '2850 / 1046', {
-  mobile: { src: 'detail/current/jansang-spread-390.webp', aspectRatio: '750 / 710' },
+const cinemaHome = media('detail/current/jansang-v63-cover-1440.webp', '바닷가의 두 친구와 새벽 식탁의 두 사람을 나란히 놓은 잔상관 표지', '2850 / 958', {
+  mobile: { src: 'detail/current/jansang-v63-cover-390.webp', aspectRatio: '780 / 710', label: '모바일 표지 · 두 장면 아래에서 이어지는 한 문장' },
+});
+const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
+  mobile: { src: 'detail/current/jansang-v63-exhibit-390.webp', aspectRatio: '688 / 622', label: '모바일 기획전 발췌 · 마지막 두 작품' },
 });
 
 export const PROJECT_DETAIL_READY = {
@@ -110,21 +113,21 @@ export const PROJECT_DETAIL_READY = {
     'ott-service',
     cinemaHome,
     [
-      evidence('오후와 새벽, 두 장면으로 시작하기.', '다시 만난 친구와 처음 만난 손님의 장면을 나란히 놓았습니다. 모바일에서도 두 작품의 제목과 상영 시간을 한 번에 볼 수 있습니다.', '장면을 누르면 그 작품의 상세가 열립니다. 제목을 알고 있다면 상단 ‘영화 찾기’에서 전체 12편을 검색할 수 있습니다.'),
-      { title: '같은 작품도, 다른 관점으로 발견하기.', layout: 'wide', summary: '‘파란 숨 고르기’, ‘마음을 건네는 방식’, ‘상상 바깥으로’는 각각 네 편을 묶은 기획전입니다. 시작과 끝의 장면, 네 편을 모두 보는 데 걸리는 시간을 함께 보여줍니다.', media: media('detail/current/jansang-v58-curation.jpg', '잔상관의 세 기획전과 기획전별 총 상영 시간', '1348 / 926'), mediaLabel: '잔상관 공개 웹 · 기획전 세 편' },
-      evidence('마음에 남은 이유는 보관함으로.', '작품 상세에서 찜과 관심 메모로 이어지고, 보관함에서 작품을 훑거나 메모를 읽도록 구성했습니다.', '다시 찾을 작품과 그 작품을 고른 이유를 함께 남기는 흐름입니다.'),
+      evidence('다시 만난 친구와 처음 만난 손님.', 'PC에서는 두 장면이 맞닿는 곳에 각 영화의 캡션을 놓았습니다. 모바일에서는 두 이미지 아래에서 한 문장으로 읽습니다.', '두 영화에는 모두 대화가 있습니다. 한쪽은 오랜 친구 사이에서 다시 이어지고, 다른 쪽은 낯선 식탁에서 처음 시작됩니다.'),
+      { title: '우연한 만남에서 먼저 건네는 마음으로.', layout: 'wide', summary: '‘마음을 건네는 방식’의 앞 두 편에서는 오래된 편지와 멈춘 승강기가 사람을 이어줍니다. 다음 두 편에서는 한 사람이 누군가를 위해 연주하고, 다른 한 사람이 동료에게 바통을 건넵니다.', media: cinemaExhibition, mediaLabel: '기획전 발췌 · 마음을 건네는 방식' },
+      { title: '한 편을 담으면, 그 영화와 내 메모부터.', summary: '처음 한 편을 담았을 때는 검색과 보기 설정을 접어 메모를 바로 읽을 수 있게 했습니다. 여러 편 중 검색 결과가 한 편으로 좁혀졌을 때는 검색창을 계속 보여줍니다.', media: media('detail/current/jansang-v63-library-390.webp', '별을 접는 아이 한 편과 저장한 예시 메모가 보이는 보관함', '780 / 842', { frameWidth: 390 }), mediaLabel: '모바일 보관함 발췌 · 예시 메모' },
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
     { imageFirst: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
       context: { summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.' },
-      hero: { summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: '잔상관 공개 웹 · 가상 작품과 AI 생성 이미지' },
+      hero: { summary: '분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남은 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: 'PC 표지 · 가상 작품과 AI 생성 이미지' },
       aiCollaboration: [
-        { label: '김도한', value: '참고 사례 선택, 이미지·가독성·자연스러운 흐름 개선 요청, 시각 방향 피드백과 공개 판단' },
+        { label: '김도한', value: '참고 사례와 영화 편집 잡지 방향 선택, 이미지·가독성·모바일 탐색에 대한 피드백, 공개 판단' },
         { label: 'AI 협업', value: '두 장면의 선정·카피·배치, 가상 영화 이미지 제작, 디자인·코드 작성과 검사' },
       ],
       scopeSummary: [
-        { title: '구현과 데이터', text: '가상 영화 12편과 AI 생성 이미지를 사용합니다. 찜·관심 메모·보기 설정은 해당 브라우저 localStorage에 저장하며 다른 기기와 동기화하지 않습니다.' },
-        { title: '제공하지 않는 기능', text: '영상 재생·예매·결제·계정·외부 API·서버 저장을 제공하지 않습니다. 이번 소개 갱신은 현재 화면 확인이며 실제 이용자 조사나 전체 기능 재검증은 아닙니다.' },
+        { title: '콘텐츠와 저장 방식', text: '가상 작품과 AI 생성 이미지로 영화 발견부터 보관까지 구현했습니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },
+        { title: '검증 범위', text: 'PC와 모바일 크기의 브라우저에서 작품 탐색, 상세 열기와 복귀, 메모 저장 후 다시 읽기를 확인했습니다. 실기기와 실제 이용자를 대상으로 한 사용성 조사는 진행하지 않았습니다.' },
       ], resultLimit: {},
     },
   ),

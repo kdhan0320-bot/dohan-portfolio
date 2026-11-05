@@ -1905,6 +1905,9 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 @media (min-width: 801px) {
   .cover-spread { grid-template-areas: "lead companion" "copy copy"; }
+  /* Place the two clauses on either side of the cut for a single reading line. */
+  .cover-lead .spotlight-caption { justify-content: flex-end; }
+  .cover-spread .spotlight-film > .spotlight-label { color: var(--text); }
   .cover-spread .discovery-copy { padding-right: 144px; }
   .cover-connection {
     grid-area: copy;
