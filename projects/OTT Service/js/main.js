@@ -2245,6 +2245,36 @@
   });
   // In-flow panels close explicitly: collapsing on pointerdown would move the
   // film underneath the pointer before its click can open the detail dialog.
+  function initFrameJoins() {
+    const frames = document.querySelectorAll(".cover-spread, .theme-preview-pair");
+    frames.forEach(frame => {
+      const join = document.createElement("span");
+      join.className = "frame-join";
+      join.setAttribute("aria-hidden", "true");
+      join.innerHTML = '<svg viewBox="0 0 40 32" focusable="false"><path pathLength="1" d="M30 2H2V24H30"/><path pathLength="1" d="M10 8H38V30H10"/></svg>';
+      frame.append(join);
+    });
+    // A short first-appearance drawing; returning to a page does not replay it.
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        if (reducedMotion.matches) return;
+        entry.target.querySelectorAll(".frame-join path").forEach((path, index) => {
+          path.animate([{ strokeDashoffset: "1" }, { strokeDashoffset: "0" }], {
+            duration: 650, delay: index * 90, easing: "cubic-bezier(.22,1,.36,1)", fill: "backwards",
+          });
+        });
+      });
+    }, { threshold: .25 });
+    frames.forEach(frame => observer.observe(frame));
+    reducedMotion.addEventListener("change", () => {
+      if (reducedMotion.matches)
+        document.querySelectorAll(".frame-join path").forEach(path => path.getAnimations().forEach(animation => animation.cancel()));
+    });
+  }
   renderHome();
   route();
+  initFrameJoins();
 })();

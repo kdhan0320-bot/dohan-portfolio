@@ -1824,6 +1824,26 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .cover-companion .spotlight-caption { left: 24px; justify-content: space-between; }
 .cover-spread .spotlight-film > .spotlight-label { display: flex; align-items: center; gap: 8px; }
 .cover-spread .scene-index { border-top-color: #b6c4d855; border-left-color: #b6c4d855; }
+/* Offset frame edges join the two scenes, echoing the overlapping frames in the logo. */
+.frame-join { position: absolute; z-index: 3; width: 44px; height: 36px; color: var(--collection-surface,var(--accent)); filter: drop-shadow(0 1px 2px #17191dcc); }
+.frame-join, .frame-join * { pointer-events: none; }
+.frame-join svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.frame-join path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; opacity: .72; transition: opacity .22s ease-out; }
+.frame-join path + path { opacity: .4; }
+.theme-preview-pair > .frame-join { top: 16px; left: 50%; transform: translateX(-50%); }
+.cover-spread > .frame-join { position: relative; grid-area: companion; align-self: start; justify-self: start; width: 52px; height: 42px; margin: 24px 0 0 -28px; }
+.theme-preview:focus-visible .frame-join path,
+.cover-spread:has(.hero-film-trigger:focus-visible) .frame-join path { opacity: 1; }
+@media (hover: hover) and (pointer: fine) {
+  .theme-preview:hover .frame-join path,
+  .cover-spread:has(.hero-film-trigger:hover) .frame-join path { opacity: 1; }
+}
+@media (max-width: 800px) {
+  .cover-spread > .frame-join { width: 40px; height: 32px; margin: 12px 0 0 -22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame-join path { transition: none; }
+}
 .hero-film-trigger:focus-visible .spotlight-title,
 .theme-preview:focus-visible h3,
 .article-film-link:focus-visible .article-film-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
