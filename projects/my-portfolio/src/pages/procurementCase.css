@@ -6,7 +6,9 @@
 }
 .procurement-heading { grid-area: heading; }
 .procurement-heading h1 { margin: 10px 0 20px; font-size: clamp(56px, 6vw, 88px); line-height: 1.1; letter-spacing: -.065em; }
-.procurement-heading > p:last-child { font-size: clamp(17px, 1.6vw, 22px); line-height: 1.6; letter-spacing: -.025em; }
+.procurement-role { border-inline-start: 2px solid var(--accent); padding-inline-start: 14px; }
+.procurement-role p:first-child { margin-bottom: 3px; color: var(--accent); font-size: 13px; font-weight: 650; }
+.procurement-role p:last-child { max-width: 24em; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.55; letter-spacing: -.025em; }
 .procurement-credits { grid-area: credits; align-self: start; border-top: 1px solid var(--line); padding-top: 20px; }
 .procurement-credits h2, .receipt-ledger h3 { font-size: 19px; line-height: 1.5; letter-spacing: -.035em; }
 .procurement-case .procurement-credits dl { margin-top: 16px; display: grid; gap: 14px; }
@@ -52,8 +54,7 @@
 @media (max-width: 799px) {
   .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
   .procurement-heading h1 { margin: 6px 0 8px; }
-  .procurement-heading > p:last-child { font-size: 16px; }
-  .procurement-heading br { display: none; }
+  .procurement-role p:last-child { font-size: 16px; }
   .receipt-story > h2 { margin-bottom: 12px; }
 }
 @media (max-width: 420px) {

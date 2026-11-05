@@ -1,12 +1,17 @@
 .work-archive { padding-bottom: clamp(48px, 6vw, 88px); }
 .industrial-work { border-top: 2px solid var(--ink); }
-.industrial-work > a { display: block; color: inherit; text-decoration: none; }
+.industrial-work figure { margin: 0; }
 .industrial-heading { display: grid; grid-template-columns: 5fr 6fr auto; align-items: end; gap: 32px; padding: 24px 0; }
 .industrial-heading h2 { font-size: clamp(40px, 4.5vw, 64px); line-height: 1.12; letter-spacing: -.065em; }
 .industrial-heading > p { font-size: clamp(16px, 1.35vw, 20px); line-height: 1.6; }
 .industrial-read { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-size: 14px; font-weight: 650; text-decoration: underline; text-underline-offset: 5px; }
-.industrial-work > a:hover .industrial-read { color: var(--accent); }
+.industrial-work .industrial-read { width: fit-content; color: var(--ink); }
+.industrial-work a:hover { color: var(--accent); }
 .industrial-work picture,.industrial-work img { display: block; width: 100%; height: auto; }
+.industrial-work figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 16px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.industrial-work figcaption > span { color: var(--muted); font-size: 13px; }
+.industrial-destinations { display: flex; flex-wrap: wrap; gap: 0 20px; }
+.industrial-destinations a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .remaining-work { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; margin-top: clamp(32px, 4vw, 64px); border-top: 1px solid var(--ink); }
 .remaining-work h2 { padding-top: 18px; font-size: clamp(22px, 2vw, 30px); letter-spacing: -.045em; }
 .remaining-work ul { list-style: none; margin: 0; padding: 0; }
@@ -19,6 +24,7 @@
   .industrial-heading { grid-template-columns: minmax(0,1fr) auto; gap: 12px 16px; align-items: center; padding: 18px 0; }
   .industrial-heading > p { grid-row: 2; grid-column: 1/-1; font-size: 15px; }
   .industrial-heading br { display: none; }
+  .industrial-work figcaption { row-gap: 2px; padding-top: 12px; }
   .remaining-work { grid-template-columns: 1fr; gap: 8px; }
   .remaining-work a { min-height: 52px; }
 }

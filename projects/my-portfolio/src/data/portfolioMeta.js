@@ -31,7 +31,6 @@ const evidence = (title, choice, reason, detailMedia, comparison) => ({
 function detail(id, image, decisions, scope, extra = {}) {
   const project = fallbackProjects.find((item) => item.id === id);
   return {
-    imageFirst: true,
     openingFacts: true,
     meta: {
       type: project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : '웹 구현'),
@@ -42,7 +41,7 @@ function detail(id, image, decisions, scope, extra = {}) {
     hero: {
       summary: project.overview,
       media: [image],
-      mediaLabel: project.is_figma_project && !project.liveUrl ? '현재 Figma 디자인 · 정적 예시' : '실제 웹 화면 · 포트폴리오용 예시',
+      mediaLabel: image.label || (project.is_figma_project && !project.liveUrl ? '현재 Figma 디자인 · 정적 예시' : '실제 웹 화면 · 포트폴리오용 예시'),
     },
     context: { problem: project.problem, goal: project.goal },
     decisions,
@@ -59,8 +58,8 @@ function detail(id, image, decisions, scope, extra = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-v58-home.jpg', '잔상관 홈 — 나란히 선 두 친구와 마주 앉은 두 사람의 영화 장면', '1348 / 926', {
-  mobile: { src: 'detail/current/jansang-v58-mobile.jpg', aspectRatio: '375 / 780', label: '잔상관 모바일 홈 · 두 장면과 각 작품의 상영 시간' },
+const cinemaHome = media('detail/current/jansang-spread-1440.webp', '잔상관 표지에 놓인 두 단편영화, 파란 오후 28분과 새벽 두 시의 식탁 23분', '2850 / 1046', {
+  mobile: { src: 'detail/current/jansang-spread-390.webp', aspectRatio: '750 / 710' },
 });
 
 export const PROJECT_DETAIL_READY = {
@@ -86,14 +85,24 @@ export const PROJECT_DETAIL_READY = {
   ),
   seolbiit: detail(
     'seolbiit',
-    media('detail/current/seolbigyeol-overview-2x.webp', '설비결 작업 현황 — 배정 대기, 검토 대기와 진행 중 정비', '2880 / 2160'),
+    media('detail/current/seolbigyeol-overview-2x.webp', '설비결 작업 현황에 표시된 정비 요청과 담당자 배정', '2880 / 2160', {
+      label: '설비결 Figma 시안 · 정비 작업 현황',
+      mobile: {
+        src: 'detail/current/seolbigyeol-assignment-2x.webp', aspectRatio: '1568 / 1040',
+        label: '설비결 Figma 시안 · 배정 대기 요청 발췌', original: 'detail/current/seolbigyeol-overview-2x.webp',
+      },
+    }),
     [
       evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),
-      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결의 배정 대기 요청과 담당자 배정 확대', '1568 / 1040', { original: 'detail/current/seolbigyeol-overview-2x.webp' })),
+      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '1568 / 1040', {
+        original: 'detail/current/seolbigyeol-overview-2x.webp',
+        mobile: { src: 'detail/current/seolbigyeol-overview-2x.webp', aspectRatio: '2880 / 2160', label: '배정 대기 요청이 놓인 작업 현황 전체 화면' },
+      })),
       evidence('검토와 진행 중인 작업을 구분.', '검토 대기 보고는 조치 내용·재확인 결과와 검토 버튼을 함께 두고, 진행 중인 정비는 별도 영역에 배치했습니다.', '보고를 확인해야 하는 작업과 아직 정비 중인 작업을 구분하려는 설계입니다.'),
     ],
     { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
     {
+      imageFirst: true,
       decisionsTitle: '정비 요청에서 담당자 배정까지',
       aiCollaboration: [
         { label: '김도한', value: '설비 점검 주제와 요구사항 제시, 작업 상태의 우선순위에 대한 피드백과 방향 선택' },
@@ -105,12 +114,12 @@ export const PROJECT_DETAIL_READY = {
     'ott-service',
     cinemaHome,
     [
-      evidence('오후와 새벽, 두 장면으로 시작하기.', '다시 만난 친구와 처음 만난 손님의 장면을 나란히 놓았습니다. 모바일에서도 두 작품의 제목과 상영 시간을 한 번에 볼 수 있습니다.', '장면을 누르면 그 작품의 상세가 열립니다. 제목을 알고 있다면 상단 ‘영화 찾기’에서 전체 12편을 검색할 수 있습니다.', media(cinemaHome.src, '표지에 나란히 놓인 두 장면과 작품별 상영 시간', cinemaHome.aspectRatio, { crop: { x: 0, y: 130, width: 1333, height: 364 } })),
+      evidence('오후와 새벽, 두 장면으로 시작하기.', '다시 만난 친구와 처음 만난 손님의 장면을 나란히 놓았습니다. 모바일에서도 두 작품의 제목과 상영 시간을 한 번에 볼 수 있습니다.', '장면을 누르면 그 작품의 상세가 열립니다. 제목을 알고 있다면 상단 ‘영화 찾기’에서 전체 12편을 검색할 수 있습니다.'),
       { title: '같은 작품도, 다른 관점으로 발견하기.', layout: 'wide', summary: '‘파란 숨 고르기’, ‘마음을 건네는 방식’, ‘상상 바깥으로’는 각각 네 편을 묶은 기획전입니다. 시작과 끝의 장면, 네 편을 모두 보는 데 걸리는 시간을 함께 보여줍니다.', media: media('detail/current/jansang-v58-curation.jpg', '잔상관의 세 기획전과 기획전별 총 상영 시간', '1348 / 926'), mediaLabel: '잔상관 공개 웹 · 기획전 세 편' },
       evidence('마음에 남은 이유는 보관함으로.', '작품 상세에서 찜과 관심 메모로 이어지고, 보관함에서 작품을 훑거나 메모를 읽도록 구성했습니다.', '다시 찾을 작품과 그 작품을 고른 이유를 함께 남기는 흐름입니다.'),
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
-    { presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
+    { imageFirst: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
       context: { summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.' },
       hero: { summary: '분위기와 시간으로 단편영화를 찾고, 관심 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: '잔상관 공개 웹 · 가상 작품과 AI 생성 이미지' },
       aiCollaboration: [
@@ -125,7 +134,10 @@ export const PROJECT_DETAIL_READY = {
   ),
   gongjeongbom: detail(
     'gongjeongbom',
-    media('detail/current/gijunseon-home-20261105.jpg', '기준선 현재 공개 웹 — 산업용 비전 검사 솔루션 소개', '1348 / 926'),
+    media('detail/current/gijunseon-samples-1440.webp', '산업용 비전 검사 예시 이미지에 결함 위치를 표시한 화면', '2560 / 614', {
+      label: '기준선 검사 예시 · 표면 흠집, 부품 누락, 인쇄 상태',
+      mobile: { src: 'detail/current/gijunseon-samples-390.webp', aspectRatio: '700 / 528', label: '기준선 검사 예시 · 금속 표면의 선형 흠집' },
+    }),
     [
       evidence('무엇을 검사하는지 이미지로 설명합니다.', '산업 이미지 다음에 흠집·부품 누락·바코드 등 검사 사례를 배치했습니다.', '기술 용어만 읽기 전에 서비스가 다루는 문제를 볼 수 있도록 구성했습니다.'),
       evidence('사례에서 도입 과정으로 이어집니다.', '산업 이미지 다음에 제품·공정에 맞춘 솔루션 설명을 두고, 결함 사례·도입 검토·문의 순서로 구성했습니다.', '서비스의 용도를 이해한 뒤 진행 방법과 다음 행동을 찾도록 했습니다.'),
@@ -135,14 +147,15 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['가상 기업 소개와 검사 예시 · AI 이미지 포함', '상담 입력·검사 선택 시연'],
       notIncluded: ['실제 검사·납품 실적', '상담 전송·메일·DB 저장', '사용자 조사·성과 측정'],
     },
-    { aiCollaboration: [
+    { imageFirst: true, aiCollaboration: [
       { label: '김도한', value: '원본 Figma 작품·요구 범위 제시, 디자인 방향 선택, 수정 결과 확인' },
       { label: 'AI 협업', value: 'HTML·CSS·JavaScript 작성, 반응형·접근성 보완, 도식 정리와 검수' },
     ] },
   ),
   'feedback-hub': {
+    role: '현장에서 쓰던 발주·입고·지급 순서를 웹앱의 요구사항으로 정리했습니다.',
     aiCollaboration: [
-      { label: '김도한', value: '엑셀·메일로 구매 요청을 정리하고 종이 결재서를 올리던 경험을 바탕으로, 발주·입고·지급의 처리 순서를 요구사항으로 전달했습니다.' },
+      { label: '업무 경험', value: '엑셀과 메일로 구매 요청을 정리하고 종이 결재서를 올렸습니다.' },
       { label: 'AI 협업', value: '시연 구조와 화면을 제안하고 코드를 작성·검사했습니다.' },
     ],
     history: [

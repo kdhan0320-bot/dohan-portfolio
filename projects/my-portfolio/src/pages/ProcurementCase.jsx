@@ -107,11 +107,14 @@ export default function ProcurementCase({ project, ready, question, register }) 
         <header className="procurement-heading">
           <p className="case-eyebrow">{project.categoryLabel}</p>
           <h1>{project.title}</h1>
-          <p>구매 요청부터 현장 지급까지,<br /> 한 자재의 기록을 이어 보는 웹앱.</p>
+          <div className="procurement-role">
+            <p>김도한의 역할</p>
+            <p>{ready.role}</p>
+          </div>
         </header>
         <ReceiptAndHistory ready={ready} liveUrl={project.liveUrl} question={question} />
         <section className="procurement-credits" aria-labelledby="procurement-credit-title">
-          <h2 id="procurement-credit-title">이 작업에서 맡은 일</h2>
+          <h2 id="procurement-credit-title">업무 경험과 제작 범위</h2>
           <dl>{ready.aiCollaboration.map(person => (
             <div key={person.label}><dt>{person.label}</dt><dd>{person.value}</dd></div>
           ))}</dl>

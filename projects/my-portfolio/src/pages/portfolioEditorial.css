@@ -178,3 +178,24 @@
 .case-question { color: var(--accent); font-size: clamp(21px, 2vw, 29px); line-height: 1.45; font-weight: 650; letter-spacing: -.035em; margin-bottom: 12px; }
 .case-opening-facts { margin-top: 0; margin-bottom: 24px; }
 .case-cover { margin-bottom: 48px; }
+
+.case-intro--screen-first .case-title {
+  display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+  gap: 4px 16px; margin: 20px 0 24px;
+}
+.case-intro--screen-first .case-eyebrow { grid-column: 1 / -1; }
+.case-intro--screen-first h1 { margin: 0; font-size: clamp(44px, 5.5vw, 76px); line-height: 1.12; }
+.case-intro--screen-first .case-production { margin: 0; }
+.case-intro--screen-first .case-cover { max-width: none; margin: 0 0 24px; }
+.case-intro--screen-first .case-responsive-image { max-width: none; }
+.case-intro--screen-first .case-figure img { max-height: 580px; object-position: center; }
+.case-intro--screen-first .case-introduction { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 32px; align-items: start; }
+.case-intro--screen-first .case-question { grid-column: 1 / -1; margin: 0; }
+.case-intro--screen-first .case-actions { margin: 0; }
+@media (max-width: 760px) {
+  .case-intro--screen-first .case-title { margin: 10px 0 16px; }
+  .case-intro--screen-first .case-cover { margin-bottom: 16px; }
+  .case-intro--screen-first .case-introduction { display: block; }
+  .case-intro--screen-first .case-question { margin-bottom: 8px; }
+  .case-intro--screen-first .case-actions { margin-top: 16px; }
+}

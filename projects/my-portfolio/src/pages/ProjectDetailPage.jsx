@@ -47,7 +47,7 @@ const ScreenFigure = ({ media, label, priority = false, className = '' }) => (
       <a className={media.mobile ? 'case-original-desktop' : undefined} href={mediaUrl(media.original || media.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 원본 새 탭에서 보기`}>
         {media.original ? '전체 화면 보기' : '원본 보기'}
       </a>
-      {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.original || media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${label || '프로젝트 화면'} 모바일 원본 새 탭에서 보기`}>{media.mobile.original ? '전체 화면 보기' : '원본 보기'}</a>}
+      {media.mobile && <a className="case-original-mobile" href={mediaUrl(media.mobile.original || media.mobile.src)} target="_blank" rel="noopener noreferrer" aria-label={`${media.mobile.label || label || '프로젝트 화면'} · ${media.mobile.original ? '전체 화면' : '원본'} 새 탭에서 보기`}>{media.mobile.original ? '전체 화면 보기' : '원본 보기'}</a>}
       {media.relatedOriginal && <a className="case-original-related" href={mediaUrl(media.relatedOriginal.src)} target="_blank" rel="noopener noreferrer" aria-label={`${media.relatedOriginal.label} · PC 원본 새 탭에서 보기`}>{media.relatedOriginal.label}</a>}
     </figcaption>
   </figure>
@@ -66,30 +66,38 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     if(showMedia)usedImages.add(key);
     return {...item,showMedia};
   });
-  return <>
-    <header className="case-intro">
-      {register}
-      <div className="case-intro__grid">
-        <div>
-          <p className="case-eyebrow">{project.categoryLabel}</p>
-          <h1>{project.title}</h1>
-          <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>
-        </div>
-        <div>
-          {featuredCase && <p className="case-question">{featuredCase.question}</p>}
-          <p className="case-lead">{ready.hero?.summary || project.description}</p>
-          <div className="case-actions" aria-label="프로젝트 바로 보기">
-            <ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction>
-            <ExternalAction href={figmaUrl} primary={!project.liveUrl}>Figma 디자인 보기</ExternalAction>
-            <ExternalAction href={project.githubUrl}>코드 보기</ExternalAction>
-          </div>
-        </div>
+  const cover = (
+    <div className="case-cover">{heroMedia.map((item, index) => (
+      <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
+    ))}</div>
+  );
+  const title = (
+    <div className="case-title">
+      <p className="case-eyebrow">{project.categoryLabel}</p>
+      <h1>{project.title}</h1>
+      <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>
+    </div>
+  );
+  const introduction = (
+    <div className="case-introduction">
+      {featuredCase && <p className="case-question">{featuredCase.question}</p>}
+      <p className="case-lead">{ready.hero?.summary || project.description}</p>
+      <div className="case-actions" aria-label="프로젝트 바로 보기">
+        <ExternalAction href={project.liveUrl} primary>웹사이트 보기</ExternalAction>
+        <ExternalAction href={figmaUrl} primary={!project.liveUrl}>Figma 디자인 보기</ExternalAction>
+        <ExternalAction href={project.githubUrl}>코드 보기</ExternalAction>
       </div>
+    </div>
+  );
+  return <>
+    <header className={`case-intro${ready.imageFirst ? ' case-intro--screen-first' : ''}`}>
+      {register}
+      {ready.imageFirst ? <>{title}{cover}{introduction}</> : <div className="case-intro__grid">{title}{introduction}</div>}
 
       <nav className="case-jumps" aria-label="프로젝트 상세 구간"><button type="button" onClick={() => scrollToSection('case-context')}><span>01</span>출발점</button><button type="button" onClick={() => scrollToSection('case-decisions')}><span>02</span>화면의 선택</button><button type="button" onClick={() => scrollToSection('case-scope')}><span>03</span>제작 범위</button></nav>
     </header>
     <div className="case-opening-facts"><dl>{(ready.aiCollaboration||[]).map(item=><div key={item.label}><dt>{item.label==='김도한'?'김도한의 기여':item.label}</dt><dd>{item.value}</dd></div>)}</dl><p className="case-opening-facts__tools">제작 도구·기술 <span>{project.tools.join(' · ')}</span></p></div>
-    <div className="case-cover">{heroMedia.map((item,i)=><ScreenFigure key={item.src} media={item} priority={i===0} label={ready.hero.mediaLabel}/>)}</div>
+    {!ready.imageFirst && cover}
     <section id="case-context" className="case-section case-context" aria-labelledby="case-context-heading"><div><p className="case-eyebrow">01 / CONTEXT</p><h2 id="case-context-heading">어디에서<br />시작했나요?</h2></div><div className="case-context__body"><div><h3>출발점</h3><p>{ready.context?.summary||ready.context?.problem||project.problem}</p></div><div><h3>화면의 목표</h3><p>{ready.context?.goal||project.goal}</p></div></div></section>
     <section id="case-decisions" className="case-section case-decisions" aria-labelledby="case-decisions-heading"><div className="case-section__heading"><p className="case-eyebrow">02 / DESIGN DECISIONS</p><h2 id="case-decisions-heading">{ready.decisionsTitle||'이렇게 구성했습니다.'}</h2></div><div className="case-decisions__list">{decisions.map((item,i)=><section className={`case-decision ${item.showMedia?'case-decision--illustrated':'case-decision--text'}`} key={item.title}><div className="case-decision__copy"><div><span className="case-decision__number">{String(i+1).padStart(2,'0')}</span><h3>{item.title}</h3></div>{item.summary?<p className="case-decision__summary">{item.summary}</p>:<dl>{(item.evidence||[]).map(entry=><div key={entry.label}><dt>{entry.label}</dt><dd>{entry.text}</dd></div>)}</dl>}</div>{item.showMedia&&<ScreenFigure media={item.media} label={item.mediaLabel||'선택이 반영된 화면'}/>}</section>)}</div></section>
     <section id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}</section>
