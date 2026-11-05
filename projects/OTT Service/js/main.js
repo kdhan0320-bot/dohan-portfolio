@@ -146,7 +146,7 @@
       moodText: "낯선 경이",
       image: "atlas",
       posterArtwork: "assets/posters-v45/atlas.jpg",
-      posterPath: "assets/frames-v36/atlas.webp",
+      posterPath: "assets/atlas-still-v50.jpg",
       detailPosition: "center 4%",
       detailRatio: "1.25",
       description:

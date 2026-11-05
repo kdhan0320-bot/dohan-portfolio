@@ -1805,6 +1805,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 .cover-lead { grid-area: lead; }
 .cover-companion { grid-area: companion; }
+.cover-connection { display: none; }
 .cover-spread .hero-film-trigger { position: relative; inset: auto; }
 .cover-spread .hero-film-trigger > img { position: absolute; inset: 0; }
 .cover-companion > img { object-position: 50% 40%; }
@@ -1819,35 +1820,34 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .cover-kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; }
 .cover-spread .spotlight-caption { inset: auto 24px 24px auto; gap: 14px; }
 .cover-companion .spotlight-caption { left: 24px; justify-content: space-between; }
-.cover-spread .hero-film-trigger:focus-visible::after { outline: 3px solid var(--accent); outline-offset: -6px; }
 @media (min-width: 801px) and (max-width: 1100px) {
   .cover-spread { grid-template-columns: minmax(0,1.9fr) minmax(0,1fr); }
   .cover-spread .spotlight-film { grid-template-columns: 1fr; }
 }
 @media (max-width: 800px) {
-  .cover-spread { grid-template-columns: 1fr; grid-template-areas: "lead" "companion" "copy"; }
+  .cover-spread { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-areas: "connection connection" "lead companion" "copy copy"; }
+  .cover-connection { display: flex; grid-area: connection; align-items: center; gap: 12px; margin: 0; padding: 12px 32px; color: var(--accent); font-size: 13px; font-weight: 400; }
+  .cover-connection::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .cover-spread .discovery-copy { grid-area: copy; width: calc(100% - 64px); margin: 0 auto; }
   .cover-spread .cover-kicker { display: none; }
-  .cover-lead { aspect-ratio: 2.2; }
-  .cover-spread .spotlight-caption { inset: auto 32px 16px; }
-  .cover-companion {
-    display: grid;
-    grid-template-columns: clamp(100px,30%,200px) minmax(0,1fr);
-    aspect-ratio: auto;
-    min-height: 78px;
-    margin-top: 3px;
-    background: var(--surface);
-  }
-  .cover-spread .cover-companion > img { position: relative; grid-column: 1; grid-row: 1; height: 78px; object-position: center 37%; }
-  .cover-companion::after { display: none; }
-  .cover-spread .cover-companion .spotlight-caption { position: static; grid-column: 2; padding: 10px 20px; text-shadow: none; }
+  .cover-spread .hero-film-trigger { display: flex; flex-direction: column; aspect-ratio: auto; }
+  .cover-spread .hero-film-trigger > img { position: relative; height: clamp(150px,49vw,260px); flex: none; }
+  .cover-spread .hero-film-trigger::after { bottom: auto; height: clamp(150px,49vw,260px); background: linear-gradient(0deg,#25262c55,transparent 28%); }
+  .cover-spread .spotlight-caption { position: relative; inset: auto; width: 100%; flex: 1; padding: 10px 20px; text-shadow: none; }
+  .cover-spread .spotlight-film { grid-template-columns: 1fr; gap: 0; }
+  .cover-spread .spotlight-caption > .icon { position: absolute; right: 14px; top: -34px; margin: 0; filter: drop-shadow(0 1px 3px #000b); }
+  .cover-companion > img { object-position: center 28%; }
 }
 @media (max-width: 600px) {
-  .cover-lead { aspect-ratio: 1.6; }
+  .cover-connection { padding-inline: 20px; }
   .cover-spread .discovery-copy { width: calc(100% - 40px); }
-  .cover-spread .spotlight-caption { inset: auto 20px 16px; }
-  .cover-spread .cover-companion .spotlight-caption { padding-inline: 14px 20px; gap: 6px; }
-  .cover-companion .spotlight-film { column-gap: 6px; }
-  .cover-companion .spotlight-meta span { margin-left: 0; }
-  .cover-companion .spotlight-caption > .icon { flex: none; }
+  .cover-spread .spotlight-caption { padding: 8px 12px 10px; }
+  .cover-spread .spotlight-meta span { margin-left: 0; }
+  .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 76px minmax(0,1fr); gap: 0 12px; padding: 14px; }
+  .library-reading .film-note-badge { margin-top: 12px; }
+  .library-reading .film-note-preview { margin-top: 6px; }
+  .library-reading .saved-actions { margin-top: 4px; }
+  .saved-view .catalog-options { margin-block: 8px 12px; }
+  .saved-view .results-bar { margin-block: 8px 12px; }
+  .film-grid.library-reading { gap: 12px; }
 }

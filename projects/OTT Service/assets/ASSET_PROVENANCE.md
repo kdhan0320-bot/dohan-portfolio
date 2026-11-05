@@ -1,5 +1,19 @@
 # 잔상관 Asset Provenance
 
+## v50 별을 접는 아이 상세 질감 (2026-11-05)
+
+기존 자체 생성 장면 `frames-v36/atlas.webp`를 입력해 내장 OpenAI `image_gen.imagegen`으로 편집했습니다. 아이·손·종이별·창문·별의 배치를 유지하고, 옷과 목재 등에 있던 과도한 요철을 완화했습니다. 정확한 모델 버전은 도구가 제공하지 않았습니다. AI 생성 이미지 고지를 유지합니다.
+
+- 생성 원본은 `exec-83b77c4c-69a9-4021-9ab3-5b4b868fc3c4.png`입니다.
+- 배포 파일은 `atlas-still-v50.jpg`이며 1448×1086, 254,174바이트입니다. 원본 크기에서 System.Drawing JPEG 품질 88로 형식만 변환했습니다.
+- 배포 파일 SHA-256은 `f86357a9831a8de711bf772588822fa5b650a9aaacf47df5e4954e2478a78fc0`입니다.
+
+사용한 편집 프롬프트
+
+```text
+Edit the attached fictional animation film still. Edit target is this exact image. Make a restrained texture cleanup of the existing illustration, retaining its hand-painted animation aesthetic and exact composition. Keep the same child, hairstyle, maroon sweater, posture, both hands holding the partly folded paper, two finished paper stars on the desk, window framing, silhouetted village and one small star in a deep blue night sky. Keep all positions and the warm interior light with blue night contrast. Smooth out the exaggerated all-over crumpled, scaly, scratchy relief pattern on the sweater, skin, hair, wooden desk, chair, window and wall. Replace it with restrained brushwork, believable soft knitted cloth, quieter painted timber grain and natural hair strands. Preserve distinct readable paper creases and sharp paper star edges. This is surface refinement, not a redesigned scene. Do not blur the image, add objects, add words or typography, increase saturation, make glossy 3D or photorealism. Keep the original landscape aspect ratio and framing.
+```
+
 ## v49 마지막 바통의 벤치 (2026-11-05)
 
 `relay-bench.jpg`는 PC 단일 결과 카드에 쓸 소품 장면으로, 내장 OpenAI 이미지 생성 도구로 새로 만들었습니다. 사용 프롬프트는 한국 단편영화의 계주 장면에 등장하는 빛바랜 자주색 금속 바통과 접힌 검은 무릎 보호대를 나무 벤치 중앙에 놓고, 뒤로 흐릿한 육상 트랙과 울타리가 보이는 자연광 정물을 요청했습니다. 인물, 글자, 로고를 넣지 않도록 지정했습니다.
