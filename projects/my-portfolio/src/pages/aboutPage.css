@@ -88,7 +88,7 @@
   background: var(--mist);
   border: 1px solid var(--line);
 }
-.about-work:nth-child(2) .about-work__image { background: #e8e5f0; }
+.about-work:nth-child(2) .about-work__image { background: #edf0f7; }
 .about-work__image img {
   display: block;
   width: 100%;
@@ -229,9 +229,12 @@
 
 /* The same soft surfaces continue from the portfolio homepage. */
 .about-intro h1{letter-spacing:-.055em;line-height:1.25}
-.about-work__image{border-radius:16px;background:#eee8dc}
-.about-work__image img{border-color:#d8ccbe;border-radius:7px 7px 0 0}
-.about-work__caption>span{text-decoration-color:#c8aa91}
-.about-review__roles{border-radius:14px;padding:24px}
-.about-closing{border-radius:24px;background:#eee3d5}
+.about-work__image{border-radius:9px;background:#edf0f7}
+.about-work__image img{border-color:#dce0e8;border-radius:7px 7px 0 0}
+.about-work__caption>span{text-decoration-color:#a4b4ea}
+.about-review__roles{border-radius:9px;padding:24px}
+.about-closing{border-radius:10px;background:#edf0f7}
 .about-block__heading .eyebrow{letter-spacing:.06em}
+
+.about-page{animation:page-enter .45s var(--ease) both}.about-intro h1 span{color:var(--accent)}.about-work__image{padding:16px;border:0}.about-closing{border:1px solid var(--line)}
+@media(prefers-reduced-motion:reduce){.about-page{animation:none}}
