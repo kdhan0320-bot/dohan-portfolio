@@ -355,16 +355,19 @@
       ? `${characters.slice(0, limit).join("")}…`
       : characters.join("");
   }
-  const state = {
-    view: "home",
+  const defaultCatalogFilters = {
     mood: "all",
     duration: "all",
+    query: "",
+    sort: "recommended",
+  };
+  const state = {
+    view: "home",
+    ...defaultCatalogFilters,
     homeMood: "all",
     homeDuration: "all",
-    query: "",
     libraryFilter: "all",
     libraryView: "reading",
-    sort: "recommended",
     saved: new Set(),
     storageAvailable: true,
     notes: {},
@@ -1110,17 +1113,14 @@
     }
   }
   function resetFilters() {
-    state.mood = "all";
-    state.duration = "all";
-    state.sort = "recommended";
-    state.query = "";
+    Object.assign(state, defaultCatalogFilters);
     if (state.view === "saved") state.libraryFilter = "all";
     $("searchInput").value = "";
     render();
   }
   const catalogFilters = {
-    browse: { mood: "all", duration: "all", query: "", sort: "recommended" },
-    saved: { mood: "all", duration: "all", query: "", sort: "recommended" },
+    browse: { ...defaultCatalogFilters },
+    saved: { ...defaultCatalogFilters },
   };
   let searchRequested = false;
   let firstRoute = true;
@@ -1225,12 +1225,7 @@
       state.view === "home" &&
       link.matches('.nav [data-view="browse"]')
     ) {
-      catalogFilters.browse = {
-        ...catalogFilters.browse,
-        mood: state.homeMood,
-        duration: state.homeDuration,
-        query: "",
-      };
+      catalogFilters.browse = { ...defaultCatalogFilters };
     }
     navigate(hash.slice(1));
   });
