@@ -1,0 +1,237 @@
+{
+  "date": "2026-11-05",
+  "method": "Chromium CSS iframe; not real devices",
+  "routes": [
+    {
+      "width": "320",
+      "page": "홈",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "전체 작업",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "소개",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "품의선",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "잔상관",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "갈피록",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "설비결",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "기준선",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "온정류",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "320",
+      "page": "소요빛",
+      "broken": 0,
+      "client": 320,
+      "h1Count": 1,
+      "scroll": 320
+    },
+    {
+      "width": "1440",
+      "page": "홈",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "전체 작업",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "소개",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "품의선",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "잔상관",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "갈피록",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "설비결",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "기준선",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "온정류",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    },
+    {
+      "width": "1440",
+      "page": "소요빛",
+      "broken": 0,
+      "client": 1440,
+      "h1Count": 1,
+      "scroll": 1440
+    }
+  ],
+  "homeWidths": [
+    {
+      "width": "390",
+      "client": 390,
+      "scroll": 390
+    },
+    {
+      "width": "768",
+      "client": 768,
+      "scroll": 768
+    },
+    {
+      "width": "1024",
+      "client": 1024,
+      "scroll": 1024
+    },
+    {
+      "width": "2560",
+      "client": 2560,
+      "scroll": 2560
+    },
+    {
+      "width": "3840",
+      "client": 3840,
+      "scroll": 3840
+    }
+  ],
+  "filters": [
+    {
+      "filter": "업무·관리",
+      "expected": 4,
+      "titles": [
+        "품의선",
+        "갈피록",
+        "설비결",
+        "기준선"
+      ]
+    },
+    {
+      "filter": "생활 서비스",
+      "expected": 2,
+      "titles": [
+        "온정류",
+        "소요빛"
+      ]
+    },
+    {
+      "filter": "콘텐츠 탐색",
+      "expected": 1,
+      "titles": [
+        "잔상관"
+      ]
+    },
+    {
+      "filter": "전체 작업",
+      "expected": 7,
+      "titles": [
+        "품의선",
+        "잔상관",
+        "갈피록",
+        "설비결",
+        "기준선",
+        "온정류",
+        "소요빛"
+      ]
+    }
+  ],
+  "scrollReturn": {
+    "before": 706,
+    "after": 706
+  }
+}

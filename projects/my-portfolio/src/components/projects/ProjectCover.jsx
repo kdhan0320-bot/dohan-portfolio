@@ -1,13 +1,13 @@
 import './projectCovers.css';
 const BASE=import.meta.env.BASE_URL;
 const COVERS={
- seolbiit:{theme:'equipment',width:1440,height:1080},
+ seolbiit:{theme:'equipment',width:1024,height:768},
  jobflow:{theme:'record',width:1363,height:936},
  'ott-service':{theme:'cinema',width:1425,height:950},
  gongjeongbom:{theme:'industry',width:1363,height:936},
  'feedback-hub':{theme:'feedback',width:1348,height:926},
  'bus-arrival-app':{theme:'transit',width:390,height:844,mobile:true},
- brewstep:{theme:'cafe',width:390,height:1114,mobile:true},
+ brewstep:{theme:'cafe',width:370,height:1024,mobile:true},
 };
 const ProjectCover=({project,eager=false,image,imageAlt})=>{
  const cover=COVERS[project.id]||{};
