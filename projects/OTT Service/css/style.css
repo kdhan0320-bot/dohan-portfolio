@@ -1710,8 +1710,10 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .scene-pair .scene-index { padding-inline: 5px; }
 .scene-pair-shots { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; align-items: start; }
 .scene-pair-shots .article-film-link { min-width: 0; }
-.scene-pair-shots .article-film-link:first-child:not(:only-child) > img { border-radius: 4px 0 0 4px; }
-.scene-pair-shots .article-film-link:last-child:not(:only-child) > img { border-radius: 0 4px 4px 0; }
+@media (min-width: 361px) {
+  .scene-pair-shots .article-film-link:first-child:not(:only-child) > img { border-radius: 4px 0 0 4px; }
+  .scene-pair-shots .article-film-link:last-child:not(:only-child) > img { border-radius: 0 4px 4px 0; }
+}
 @media (min-width: 801px) {
   .home-films:has(.single-result) .home-selection { display: none; }
   .film-rail > .single-result { flex-basis: 100%; }
@@ -1799,29 +1801,44 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 /* The two cover frames follow the afternoon-to-dawn sequence in 파란 숨 고르기. */
 .cover-spread {
   display: grid;
-  grid-template-columns: minmax(0,2.25fr) minmax(0,1fr);
-  grid-template-areas: "lead companion";
+  grid-template-columns: minmax(0,1.1fr) minmax(0,1fr);
+  grid-template-areas: "connection connection" "lead companion" "copy copy";
+  min-height: 0;
   align-items: stretch;
   column-gap: 4px;
   isolation: isolate;
 }
 .cover-lead { grid-area: lead; }
 .cover-companion { grid-area: companion; }
-.cover-connection { display: none; }
-.cover-spread .hero-film-trigger { position: relative; inset: auto; }
-.cover-spread .hero-film-trigger > img { position: absolute; inset: 0; }
-.cover-companion > img { object-position: 50% 40%; }
-.cover-companion::after { background: linear-gradient(0deg,#25262cec,transparent 50%); }
-.cover-spread .discovery-copy {
-  grid-area: lead;
-  align-self: center;
-  width: fit-content;
-  margin-left: max(48px,calc((100vw - var(--content-width))/2));
+.cover-connection {
+  grid-area: connection;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 8px max(32px,calc((100% - var(--content-width))/2)) 12px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 400;
 }
-.cover-kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.cover-kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; }
-.cover-spread .spotlight-caption { inset: auto 24px 24px auto; gap: 14px; }
-.cover-companion .spotlight-caption { left: 24px; justify-content: space-between; }
+.cover-connection::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.cover-spread .hero-film-trigger { position: relative; inset: auto; height: clamp(300px,27vw,430px); }
+.cover-spread .hero-film-trigger > img { position: absolute; inset: 0; }
+.cover-companion > img { object-position: 50% 21%; }
+.cover-spread .hero-film-trigger::after { background: linear-gradient(0deg,#202127ec,transparent 46%); }
+.cover-spread .discovery-copy {
+  grid-area: copy;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 32px;
+  width: min(var(--content-width),calc(100% - 64px));
+  margin: 0 auto;
+  padding: 20px 0 0;
+}
+.cover-spread h1 em { display: inline-block; }
+.cover-spread .discovery-intro { max-width: none; margin: 0; }
+.cover-spread .spotlight-caption { inset: auto 24px 18px; gap: 14px; }
 .cover-spread .spotlight-film > .spotlight-label { display: flex; align-items: center; gap: 8px; }
 .cover-spread .scene-index { border-top-color: #b6c4d855; border-left-color: #b6c4d855; }
 /* Offset frame edges join the two scenes, echoing the overlapping frames in the logo. */
@@ -1854,26 +1871,35 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .hero-film-trigger:hover .scene-index { border-top-color: currentColor; border-left-color: currentColor; }
 }
 @media (min-width: 801px) and (max-width: 1100px) {
-  .cover-spread { grid-template-columns: minmax(0,1.9fr) minmax(0,1fr); }
-  .cover-spread .spotlight-film { grid-template-columns: 1fr; }
+  .cover-spread .discovery-copy { gap: 4px 24px; }
 }
 @media (max-width: 800px) {
-  .cover-spread { grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-areas: "connection connection" "lead companion" "copy copy"; }
-  .cover-connection { display: flex; grid-area: connection; align-items: center; gap: 12px; margin: 0; padding: 12px 32px; color: var(--accent); font-size: 13px; font-weight: 400; }
-  .cover-connection::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-  .cover-spread .discovery-copy { grid-area: copy; width: calc(100% - 64px); margin: 0 auto; }
-  .cover-spread .cover-kicker { display: none; }
-  .cover-spread .hero-film-trigger { display: flex; flex-direction: column; aspect-ratio: auto; }
+  .cover-spread { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .cover-connection { padding: 8px 32px; }
+  .cover-spread .discovery-copy { padding-top: 14px; }
+  .cover-spread .hero-film-trigger { display: flex; flex-direction: column; height: auto; aspect-ratio: auto; }
   .cover-spread .hero-film-trigger > img { position: relative; height: clamp(150px,49vw,260px); flex: none; }
   .cover-spread .hero-film-trigger::after { bottom: auto; height: clamp(150px,49vw,260px); background: linear-gradient(0deg,#25262c55,transparent 28%); }
   .cover-spread .spotlight-caption { position: relative; inset: auto; width: 100%; flex: 1; padding: 10px 20px; text-shadow: none; }
-  .cover-spread .spotlight-film { grid-template-columns: 1fr; gap: 0; }
+  .cover-spread .spotlight-film { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 7px; }
+  .cover-spread .spotlight-label { flex-basis: 100%; }
   .cover-companion > img { object-position: center 28%; }
+  .home-films { margin-top: 18px; }
 }
 @media (max-width: 600px) {
   .cover-connection { padding-inline: 20px; }
   .cover-spread .discovery-copy { width: calc(100% - 40px); }
   .cover-spread .spotlight-caption { padding: 8px 12px 10px; }
+  .cover-spread .spotlight-film {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    grid-template-areas: "label time" "title title";
+    gap: 0 4px;
+  }
+  .cover-spread .spotlight-film > .spotlight-label { grid-area: label; gap: 4px; }
+  .cover-spread .spotlight-meta { grid-area: time; align-self: center; }
+  .cover-spread .spotlight-title { grid-area: title; }
   .cover-spread .spotlight-meta span { margin-left: 0; }
   .library-reading .film-card, .library-reading .film-card:only-child { grid-template-columns: 76px minmax(0,1fr); gap: 0 12px; padding: 14px; }
   .library-reading .film-note-badge { margin-top: 12px; }
@@ -1882,6 +1908,29 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .saved-view .catalog-options { margin-block: 8px 12px; }
   .saved-view .results-bar { margin-block: 8px 12px; }
   .film-grid.library-reading { gap: 12px; }
+}
+
+/* Each narrow-screen caption gets a full line inside its own film button. */
+@media (max-width: 360px) {
+  .cover-spread .spotlight-label .scene-index { display: none; }
+  .scene-pair-shots { grid-template-columns: minmax(0,1fr); gap: 14px; }
+  .scene-pair-shots .article-film-link {
+    display: grid;
+    grid-template-columns: 76px minmax(0,1fr);
+    grid-template-areas: "still title" "still meta" "note note";
+    gap: 0 12px;
+    align-items: center;
+    padding: 0;
+  }
+  .scene-pair-shots .article-film-link > img {
+    grid-area: still;
+    aspect-ratio: 4/3;
+    margin: 0;
+    border-radius: 3px;
+  }
+  .scene-pair-shots .article-film-title { grid-area: title; align-self: end; }
+  .scene-pair-shots .article-film-meta { grid-area: meta; align-self: start; }
+  .scene-pair-shots .article-film-note { grid-area: note; margin-top: 6px; }
 }
 
 /* Keep the paper stars and night sky in the same landscape frame on desktop. */
