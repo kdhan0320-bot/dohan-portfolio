@@ -73,11 +73,19 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
   const cover = <div className="case-cover">
     {project.id === 'seolbiit' ? <AssignmentPreview showPicker>{figures}</AssignmentPreview> : figures}
   </div>;
+  const credits = (
+    <dl className={ready.creditsOnCover ? 'case-cover-credits' : undefined} aria-label={ready.creditsOnCover ? '제작 기여' : undefined}>
+      {(ready.aiCollaboration || []).map(({ label, value }) => (
+        <div key={label}><dt>{label === '김도한' && !ready.creditsOnCover ? '김도한의 기여' : label}</dt><dd>{value}</dd></div>
+      ))}
+    </dl>
+  );
+  const toolsLine = <p className="case-opening-facts__tools">제작 도구·기술 <span>{project.tools.join(' · ')}</span></p>;
   const title = (
-    <div className="case-title">
+    <div className={ready.creditsOnCover ? 'case-title case-title--credits' : 'case-title'}>
       <p className="case-eyebrow">{project.categoryLabel}</p>
       <h1>{project.title}</h1>
-      <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>
+      {ready.creditsOnCover ? credits : <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>}
     </div>
   );
   const introduction = (
@@ -98,11 +106,13 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
 
       <nav className="case-jumps" aria-label="프로젝트 상세 구간"><button type="button" onClick={() => scrollToSection('case-context')}><span>01</span>출발점</button><button type="button" onClick={() => scrollToSection('case-decisions')}><span>02</span>화면의 선택</button><button type="button" onClick={() => scrollToSection('case-scope')}><span>03</span>제작 범위</button></nav>
     </header>
-    <div className="case-opening-facts"><dl>{(ready.aiCollaboration||[]).map(item=><div key={item.label}><dt>{item.label==='김도한'?'김도한의 기여':item.label}</dt><dd>{item.value}</dd></div>)}</dl><p className="case-opening-facts__tools">제작 도구·기술 <span>{project.tools.join(' · ')}</span></p></div>
+    {!ready.creditsOnCover && <div className="case-opening-facts">{credits}{toolsLine}</div>}
     {!ready.imageFirst && cover}
     <section id="case-context" className="case-section case-context" aria-labelledby="case-context-heading"><div><p className="case-eyebrow">01 / CONTEXT</p><h2 id="case-context-heading">어디에서<br />시작했나요?</h2></div><div className="case-context__body"><div><h3>출발점</h3><p>{ready.context?.summary||ready.context?.problem||project.problem}</p></div><div><h3>화면의 목표</h3><p>{ready.context?.goal||project.goal}</p></div></div></section>
     <section id="case-decisions" className="case-section case-decisions" aria-labelledby="case-decisions-heading"><div className="case-section__heading"><p className="case-eyebrow">02 / DESIGN DECISIONS</p><h2 id="case-decisions-heading">{ready.decisionsTitle||'이렇게 구성했습니다.'}</h2></div><div className="case-decisions__list">{decisions.map((item,i)=><section className={`case-decision ${item.showMedia?'case-decision--illustrated':'case-decision--text'}`} key={item.title}><div className="case-decision__copy"><div><span className="case-decision__number">{String(i+1).padStart(2,'0')}</span><h3>{item.title}</h3></div>{item.summary?<p className="case-decision__summary">{item.summary}</p>:<dl>{(item.evidence||[]).map(entry=><div key={entry.label}><dt>{entry.label}</dt><dd>{entry.text}</dd></div>)}</dl>}</div>{item.showMedia&&<ScreenFigure media={item.media} label={item.mediaLabel||'선택이 반영된 화면'}/>}</section>)}</div></section>
-    <section id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}</section>
+    <section id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}
+      {ready.creditsOnCover && toolsLine}
+    </section>
   </>;
 };
 

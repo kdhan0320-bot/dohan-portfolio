@@ -1869,8 +1869,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 .cover-spread h1 em { display: inline-block; }
 .cover-spread .discovery-intro { max-width: none; margin: 0; }
 .cover-spread .spotlight-caption { inset: auto 24px 18px; gap: 14px; }
-.cover-spread .spotlight-film > .spotlight-label { display: flex; align-items: center; gap: 8px; }
-.cover-spread .scene-index { border-top-color: #b6c4d855; border-left-color: #b6c4d855; }
+.cover-spread .spotlight-details { display: contents; }
 /* Offset frame edges join the two scenes, echoing the overlapping frames in the logo. */
 .frame-join { position: absolute; z-index: 3; width: 44px; height: 36px; color: var(--collection-surface,var(--accent)); filter: drop-shadow(0 1px 2px #17191dcc); }
 .frame-join, .frame-join * { pointer-events: none; }
@@ -1898,16 +1897,24 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .hero-film-trigger:hover .spotlight-title,
   .theme-preview:hover h3,
   .article-film-link:hover .article-film-title { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .22em; }
-  .hero-film-trigger:hover .scene-index { border-top-color: currentColor; border-left-color: currentColor; }
 }
 @media (min-width: 801px) and (max-width: 1100px) {
   .cover-spread .discovery-copy { gap: 4px 24px; }
 }
 @media (min-width: 801px) {
   .cover-spread { grid-template-areas: "lead companion" "copy copy"; }
-  /* Place the two clauses on either side of the cut for a single reading line. */
   .cover-lead .spotlight-caption { justify-content: flex-end; }
-  .cover-spread .spotlight-film > .spotlight-label { color: var(--text); }
+  .cover-spread .spotlight-film { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .cover-lead .spotlight-film { align-items: flex-end; }
+  .cover-spread .spotlight-label {
+    display: block;
+    color: var(--text);
+    font-size: clamp(18px,1.55vw,25px);
+    line-height: 1.45;
+    letter-spacing: -.025em;
+    word-break: keep-all;
+  }
+  .cover-spread .spotlight-details { display: flex; align-items: baseline; gap: 12px; }
   .cover-spread .discovery-copy { padding-right: 144px; }
   .cover-connection {
     grid-area: copy;

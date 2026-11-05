@@ -58,7 +58,7 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-v63-cover-1440.webp', '바닷가의 두 친구와 새벽 식탁의 두 사람을 나란히 놓은 잔상관 표지', '2850 / 958', {
+const cinemaHome = media('detail/current/jansang-v64-cover-1440.webp', '바닷가의 두 친구와 새벽 식탁의 두 사람을 나란히 놓은 잔상관 표지', '2850 / 958', {
   mobile: { src: 'detail/current/jansang-v63-cover-390.webp', aspectRatio: '780 / 710', label: '모바일 표지 · 두 장면 아래에서 이어지는 한 문장' },
 });
 const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
@@ -113,17 +113,23 @@ export const PROJECT_DETAIL_READY = {
     'ott-service',
     cinemaHome,
     [
-      evidence('다시 만난 친구와 처음 만난 손님.', 'PC에서는 두 장면이 맞닿는 곳에 각 영화의 캡션을 놓았습니다. 모바일에서는 두 이미지 아래에서 한 문장으로 읽습니다.', '두 영화에는 모두 대화가 있습니다. 한쪽은 오랜 친구 사이에서 다시 이어지고, 다른 쪽은 낯선 식탁에서 처음 시작됩니다.'),
+      {
+        title: '다시 만난 친구와 처음 만난 손님.',
+        evidence: [
+          { label: '김도한의 판단', text: '오른쪽 영화가 별도 배너처럼 보였습니다. 첫 화면에서 두 장면이 한 쌍으로 읽히도록 수정해 달라고 요청했습니다.' },
+          { label: '화면에 반영', text: '다시 이어지는 대화와 처음 시작되는 대화를 짝지었습니다. PC에서는 두 장면의 경계에서, 모바일에서는 이미지 아래에서 한 문장으로 이어집니다.' },
+        ],
+      },
       { title: '우연한 만남에서 먼저 건네는 마음으로.', layout: 'wide', summary: '‘마음을 건네는 방식’의 앞 두 편에서는 오래된 편지와 멈춘 승강기가 사람을 이어줍니다. 다음 두 편에서는 한 사람이 누군가를 위해 연주하고, 다른 한 사람이 동료에게 바통을 건넵니다.', media: cinemaExhibition, mediaLabel: '기획전 발췌 · 마음을 건네는 방식' },
       { title: '한 편을 담으면, 그 영화와 내 메모부터.', summary: '처음 한 편을 담았을 때는 검색과 보기 설정을 접어 메모를 바로 읽을 수 있게 했습니다. 여러 편 중 검색 결과가 한 편으로 좁혀졌을 때는 검색창을 계속 보여줍니다.', media: media('detail/current/jansang-v63-library-390.webp', '별을 접는 아이 한 편과 저장한 예시 메모가 보이는 보관함', '780 / 842', { frameWidth: 390 }), mediaLabel: '모바일 보관함 발췌 · 예시 메모' },
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
-    { imageFirst: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
+    { imageFirst: true, creditsOnCover: true, presentation: 'focused-decisions', decisionsTitle: '장면을 만나고, 선택으로 이어지도록.',
       context: { summary: '작품명을 정하지 않은 사람이 분위기와 남는 시간으로 영화를 고르는 상황을 가정했습니다.' },
       hero: { summary: '분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남은 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: 'PC 표지 · 가상 작품과 AI 생성 이미지' },
       aiCollaboration: [
-        { label: '김도한', value: '참고 사례와 영화 편집 잡지 방향 선택, 이미지·가독성·모바일 탐색에 대한 피드백, 공개 판단' },
-        { label: 'AI 협업', value: '두 장면의 선정·카피·배치, 가상 영화 이미지 제작, 디자인·코드 작성과 검사' },
+        { label: '김도한', value: '영화 편집 잡지 방향 선택, 모바일 표지 검토' },
+        { label: 'AI 협업', value: '장면 선정·카피·이미지 제작, 화면 설계·구현·검사' },
       ],
       scopeSummary: [
         { title: '콘텐츠와 저장 방식', text: '가상 작품과 AI 생성 이미지로 영화 발견부터 보관까지 구현했습니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },

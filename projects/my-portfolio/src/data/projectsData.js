@@ -18,7 +18,7 @@ const THUMB_MAP = {
   jobflow:      `${BASE}detail/current/galpirok-home-20261105.jpg`,
   seolbiit:     `${BASE}detail/current/seolbigyeol-overview-2x.webp`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-v63-list-thumb.webp`,
+  'ott-service': `${BASE}detail/current/jansang-v64-list-thumb.webp`,
   'bus-arrival-app': `${BASE}detail/current/onjeongryu-20261105.png`,
   brewstep: `${BASE}detail/current/soyobit-20261105.png`,
   'feedback-hub': `${BASE}detail/current/pumuiseon-home-20261105.jpg`,
@@ -63,7 +63,7 @@ const CASE_NOTES = {
     scope: 'Figma 디자인 · 가상 설비 데이터',
   },
   'ott-service': {
-    question: '제목을 몰라도 보고 싶은 영화를 고를 수 있을까?',
+    question: '제목을 몰라도 영화를 고를 수 있을까?',
     choice: '두 편의 영화 장면에 분위기와 상영 시간을 붙여, 이미지에서 작품 선택으로 이어지게 했습니다.',
     scope: 'AI 협업 웹 제작 · 가상 단편영화',
   },

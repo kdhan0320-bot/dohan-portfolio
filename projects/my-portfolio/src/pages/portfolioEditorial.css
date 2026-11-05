@@ -186,6 +186,26 @@
 .case-intro--screen-first .case-eyebrow { grid-column: 1 / -1; }
 .case-intro--screen-first h1 { margin: 0; font-size: clamp(44px, 5.5vw, 76px); line-height: 1.12; }
 .case-intro--screen-first .case-production { margin: 0; }
+.case-intro--screen-first .case-title--credits {
+  grid-template-columns: auto minmax(0, 540px);
+  justify-content: space-between;
+  align-items: end;
+}
+.case-cover-credits { display: grid; gap: 5px; }
+.case-cover-credits > div {
+  display: grid;
+  grid-template-columns: 4em 1fr;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+.case-cover-credits dt { color: var(--accent); font-weight: 600; }
+.case-cover-credits dd { color: var(--ink); }
+@media (max-width: 760px) {
+  .case-intro--screen-first .case-title--credits { grid-template-columns: 1fr; }
+  .case-cover-credits { margin-top: 6px; }
+}
 .case-intro--screen-first .case-cover { max-width: none; margin: 0 0 24px; }
 .case-intro--screen-first .case-responsive-image { max-width: none; }
 .case-intro--screen-first .case-figure img { max-height: 580px; object-position: center; }
