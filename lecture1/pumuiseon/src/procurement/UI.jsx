@@ -86,10 +86,15 @@ function RegisterMark({ kind }) {
         <path d="M19 10h27l8 8v24H19zM46 10v9h8M15 16v30h33"/>
         <path d="M25 18h12M25 25h20M25 32h9"/>
         <path className="register-ink" d="m39 33 4 4 9-10"/>
+      </> : kind === 'order' ? <>
+        <path d="m14 22 16-8 16 8-16 8zM14 22v16l16 8 16-8V22M30 30v16M22 18l16 8"/>
+        <path className="register-ink" d="M55 10v22m-6-6 6 6 6-6M49 40h12"/>
+      </> : kind === 'material' ? <>
+        <path d="M15 12v32M57 12v32M15 27h42M15 43h42M21 12h12v15H21zM39 12h12v15H39zM21 32h18v11H21z"/>
+        <path className="register-ink" d="M26 16h3M44 16h3M27 36h6M46 33v7m-3-3 3 3 3-3"/>
       </> : <>
-        <path d="m14 22 16-8 17 8-17 9zM14 22v13l16 8 11-5M30 31v12M22 18l16 8"/>
-        <path className="register-ink" d="M41 23h12l7 7-12 12-8-8z"/>
-        <circle cx="46" cy="28" r="1.7"/>
+        <path d="M19 44V14l22-6v36M41 22h13v22M14 44h44M25 19h5M25 26h5M25 33h5M46 28h3M46 35h3"/>
+        <path className="register-ink" d="M33 37h8v7M49 10h11v8H49zM52 14h5"/>
       </>}
     </g>
   </svg>;

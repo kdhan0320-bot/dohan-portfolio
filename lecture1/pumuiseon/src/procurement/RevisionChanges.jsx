@@ -1,5 +1,28 @@
 import { revisionChanges } from './revisions';
 
+// Use the same comparison as the full table; never infer a change from the round alone.
+export function RevisionSummary({ request }) {
+  if (request.revision < 2) return null;
+  const { previous, changes } = revisionChanges(request);
+  const priority = change => / · 수량$/.test(change.label) ? 0 : change.label === '품의 합계' ? 1 : 2;
+  const highlights = [...changes].sort((a, b) => priority(a) - priority(b)).slice(0, 2);
+  const showComparison = () => {
+    const heading = document.getElementById('revision-heading');
+    heading?.focus({ preventScroll: true });
+    heading?.scrollIntoView({ block: 'start', behavior: 'instant' });
+  };
+  return <section className="revision-summary" aria-label="이번 품의의 변경 요약">
+    <h2>이번 변경 요약</h2>
+    {!previous ? <p>이전 제출 기록이 없어 비교할 수 없습니다.</p> : !changes.length ? <p>이전 제출본과 같은 내용입니다.</p> : <dl>
+      {highlights.map((change, index) => <div key={`${change.label}-${index}`}>
+        <dt>{change.label}</dt>
+        <dd><span><span className="sr-only">이전 </span>{change.before}</span><span className="revision-direction" aria-hidden="true">→</span><strong><span className="sr-only">현재 </span>{change.after}</strong></dd>
+      </div>)}
+    </dl>}
+    {previous && changes.length > 0 && <button type="button" onClick={showComparison} aria-controls="revision-heading">전체 변경 {changes.length}건 보기</button>}
+  </section>;
+}
+
 export default function RevisionChanges({ request }) {
   if (request.revision < 2) return null;
   const { previous, changes } = revisionChanges(request);

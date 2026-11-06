@@ -7,7 +7,7 @@ import RecordPreview from './RecordPreview';
 import { listOrigin, originReturn, savedListPosition } from './listNavigation';
 import Icon from './Icons';
 import ApprovalLine from './ApprovalLine';
-import RevisionChanges from './RevisionChanges';
+import RevisionChanges, { RevisionSummary } from './RevisionChanges';
 import { PageHead, Empty, Modal, StateTag, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail } from './InventoryPages';
 import { duplicateRequests, findSensorExample, orderId, workflowStatus } from './inventory';
@@ -73,7 +73,7 @@ function Shell() {
       <main id="main-content" tabIndex="-1"><Routes>
         <Route path="/" element={<WorkOverview/>}/><Route path="/requests" element={<RequestList/>}/><Route path="/requests/new" element={<RequestEditor/>}/><Route path="/requests/:id/edit" element={<RequestEditor/>}/><Route path="/requests/:id" element={<RequestDetail/>}/><Route path="/approvals" element={<RequestList mode="approvals"/>}/><Route path="/orders" element={<OrderList/>}/><Route path="/orders/:id" element={<OrderDetail/>}/><Route path="/materials" element={<MaterialList/>}/><Route path="/materials/:id" element={<MaterialDetail/>}/><Route path="/vendors" element={<VendorList/>}/><Route path="/vendors/:id" element={<VendorDetail/>}/><Route path="/about" element={<Navigate to="/" replace/>}/>
         {['tips', 'guide', 'recap', 'exercises', 'case-study', 'checklist'].map(path => <Route key={path} path={`/${path}/*`} element={<Navigate to="/" replace/>}/>)}
-        <Route path="*" element={<><PageHead eyebrow="PAGE NOT FOUND" title="페이지를 찾을 수 없습니다."/><Link className="button primary" to="/">업무 현황으로</Link></>}/>
+        <Route path="*" element={<><PageHead eyebrow="페이지 안내" title="페이지를 찾을 수 없습니다."/><Link className="button primary" to="/">업무 현황으로</Link></>}/>
       </Routes></main>
       <footer className="workspace-footer"><p><span className="status-dot"/>{storage ? '시연 데이터 · 이 브라우저에 저장' : '임시 시연 · 새로고침 시 초기화'}<span className="footer-separator">/</span><span>실제 AI·결재·메일 전송 없음</span></p><div className="footer-actions"><button className="text-button" onClick={() => setConfirmReset(true)}>샘플 초기화</button></div></footer>
     </div>
@@ -91,13 +91,13 @@ function RequestList({ mode = 'requests' }) {
   const requestedStatus = params.get('status') || defaultStatus;
   const status = mode === 'approvals' && role === 'staff' && requestedStatus === 'action' ? 'all' : requestedStatus;
   const setParam = (key, value) => { const next = new URLSearchParams(params); value ? next.set(key, value) : next.delete(key); setParams(next, { replace: true }); };
-  const config = mode === 'approvals' ? { title: '결재함', eyebrow: 'APPROVAL INBOX', tabs: [['all', '전체'], ['team', '팀장 결재'], ['director', '사장님 결재']] } : mode === 'orders' ? { title: '발주 관리', eyebrow: 'ORDER HANDOFF', tabs: [['all', '전체'], ['approved', '발주 대기'], ['ordered', '발주 기록 완료']] } : { title: '구매·결재', eyebrow: 'PURCHASE REQUESTS', tabs: [['all', '전체'], ['action', '내 처리 대기'], ['waiting', '결재 진행'], ['approved', '발주 대기'], ['closed', '발주·반려']] };
+  const config = mode === 'approvals' ? { title: '결재함', eyebrow: '결재 검토 대장', tabs: [['all', '전체'], ['team', '팀장 결재'], ['director', '사장님 결재']] } : mode === 'orders' ? { title: '발주 관리', eyebrow: '발주·입고 대장', tabs: [['all', '전체'], ['approved', '발주 대기'], ['ordered', '발주 기록 완료']] } : { title: '구매·결재', eyebrow: '구매 품의 대장', tabs: [['all', '전체'], ['action', '내 처리 대기'], ['waiting', '결재 진행'], ['approved', '발주 대기'], ['closed', '발주·반려']] };
   if (mode === 'approvals' && role !== 'staff') config.tabs.unshift(['action', '내 차례']);
   let base = requests.filter(r => mode === 'approvals' ? ['team', 'director'].includes(r.status) : mode === 'orders' ? ['approved', 'ordered'].includes(r.status) : true);
   const matches = (r, value) => value === 'all' || (value === 'action' ? (role === 'staff' ? ['draft', 'revision', 'approved'].includes(r.status) : canReview(r, role)) : value === 'waiting' ? ['team', 'director'].includes(r.status) : value === 'closed' ? ['ordered', 'rejected'].includes(r.status) : r.status === value);
   const shown = base.filter(r => matches(r, status) && `${r.title} 품의 ${r.id} ${r.items.map(i => i.name).join(' ')} ${r.supplier}`.toLowerCase().includes(query.trim().toLowerCase()));
   const filters = config.tabs.map(([key, label]) => ({ key, label, count: base.filter(r => matches(r, key)).length }));
-  return <><PageHead register={mode === 'requests' ? 'purchase' : undefined} eyebrow={mode === 'requests' ? '구매 품의 대장' : config.eyebrow} title={config.title} action={role === 'staff' && <ListLink id="new-purchase-request" className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 품의 작성</ListLink>}/>
+  return <><PageHead register={mode === 'orders' ? 'order' : 'purchase'} eyebrow={mode === 'requests' ? '구매 품의 대장' : config.eyebrow} title={config.title} action={role === 'staff' && <ListLink id="new-purchase-request" className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 품의 작성</ListLink>}/>
 
     <section className="panel requests-panel"><div className="list-toolbar">
       {compact && mode === 'requests' ? (
@@ -149,7 +149,7 @@ function RequestDetail() {
     });
     return () => cancelAnimationFrame(frame);
   }, [location.key, location.state]);
-  if (!request) return <><PageHead eyebrow="REQUEST NOT FOUND" title="품의를 찾을 수 없습니다."/><Link className="button primary" to="/requests">구매·결재로</Link></>;
+  if (!request) return <><PageHead eyebrow="품의 안내" title="품의를 찾을 수 없습니다."/><Link className="button primary" to="/requests">구매·결재로</Link></>;
   const editable = canEdit(request, role), reviewable = canReview(request, role), approved = request.status === 'approved', ordered = request.status === 'ordered';
   const closed = ordered || request.status === 'rejected';
   const orderPath = `/orders/${id}`;
@@ -192,7 +192,7 @@ function RequestDetail() {
           {approved || ordered ? <StateTag tone="green">최종 승인</StateTag> : <WorkflowStatus data={data} request={request}/>}
         </div>
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
-        {reasonFirst && purchaseReason}
+        {compact && <RevisionSummary request={request}/>}{reasonFirst && purchaseReason}
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
         {(approved || ordered) && <div className="linked-order-status">
           {ordered
