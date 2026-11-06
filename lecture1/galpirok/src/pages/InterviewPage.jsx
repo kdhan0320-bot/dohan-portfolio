@@ -308,15 +308,17 @@ export default function InterviewPage() {
       {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
       {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
     </Field>
-    {!pageLoading && !pageError && !missingCompany && activeNote && <Field
+    {!pageLoading && !pageError && !missingCompany && activeNote && (filtered.length === 1 ? <div className="mobile-question-summary" role="group" aria-label="현재 질문">
+      <span className="question-picker-caption"><span className="question-picker-title" title={activeNote.question}>{activeNote.question}</span><small>1 / 1</small></span>
+    </div> : <Field
       className="mobile-question-select" id="interview-question-select" label="질문 목록" hideLabel select size="small"
-      value={activeNote.id} disabled={open || filtered.length === 1} onChange={event => setActiveId(event.target.value)}
+      value={activeNote.id} disabled={open} onChange={event => setActiveId(event.target.value)}
       slotProps={{ select: {
         SelectDisplayProps: { 'aria-describedby': open ? undefined : 'practice-question-title' },
         renderValue: () => <span className="question-picker-caption"><span className="question-picker-title" title={activeNote.question}>{activeNote.question}</span><small>{activeIndex + 1} / {filtered.length}</small></span>,
       } }}>
       {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {!companyScoped ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
-    </Field>}
+    </Field>)}
   </div>
   <LoadState loading={pageLoading} error={pageError} retry={refreshPage} />
   {!pageLoading && !pageError && missingCompany && <Alert severity="info" action={<Button color="inherit" onClick={() => selectCompany('all')}>전체 질문 보기</Button>}>이 회사의 지원 기록을 찾을 수 없어요. 삭제한 회사인지 확인해주세요.</Alert>}

@@ -148,7 +148,7 @@
 .workspace-diary .job-lane-heading { min-height: 58px; padding: 16px 4px; border-bottom: 1px solid var(--line); margin-bottom: 14px; }
 .workspace-diary .job-lane-heading h2 { font-size: 16px; }
 .workspace-diary .job-lane-cards { gap: 14px; }
-.workspace-diary .job-tile { --tile-inset: 16px; padding: var(--tile-inset); border-radius: 3px 8px 3px 3px; }
+.workspace-diary .job-tile { --tile-inset: 16px; padding: var(--tile-inset); border-radius: var(--record-corners); }
 .workspace-diary .job-tile-heading { width: auto; margin: 0; padding: 0; background: transparent; border: 0; }
 /* Follow one company's index from the board to its preparation sheet and detail. */
 :is(.diary-welcome .preview-company-identity, .workspace-diary .job-tile, .workspace-diary .preparation-group-identity, .workspace-diary .practice-record-company, .company-record-title) .company-mark {
@@ -243,7 +243,7 @@
 /* Preparation groups and interview pages use the same quiet paper edge. */
 .workspace-diary .grouped-checklist .preparation-groups { gap: 24px; }
 .preparation-group-identity { display: flex; align-items: center; min-width: 0; gap: 10px; }
-.workspace-diary .grouped-checklist .preparation-group-heading { align-items: center; border-left: 0; border-radius: 3px 8px 0 0; background: var(--record-heading); padding: 20px 22px; }
+.workspace-diary .grouped-checklist .preparation-group-heading { align-items: center; border-left: 0; border-radius: 4px 12px 0 0; background: var(--record-heading); padding: 20px 22px; }
 .workspace-diary .grouped-checklist .preparation-group-common .preparation-group-heading { background: var(--mint); }
 .workspace-diary .grouped-checklist .preparation-group-heading p { line-height: 1.7; }
 .workspace-diary .preparation-controls { margin: 0 0 20px; }
@@ -255,7 +255,10 @@
 .workspace-diary .interview-target-select .field-label { margin-bottom: 8px; font-size: 14px; }
 .workspace-diary .interview-page .interview-workspace { grid-template-columns: var(--interview-columns); gap: var(--interview-gap); }
 .workspace-diary .interview-page .question-queue { padding: 12px; background: #f6f7f6; border-radius: var(--record-corners); }
+.workspace-diary .interview-page .question-queue-heading { padding-inline: 12px; }
 .workspace-diary .interview-page .question-index { padding: 14px 12px; }
+.workspace-diary .question-index-number { color: var(--record-blue); font-variant-numeric: tabular-nums; }
+.workspace-diary .mobile-question-summary { display: none; }
 .practice-folio {
   flex: 0 0 auto; align-self: center; white-space: nowrap;
   color: var(--muted); font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums;
@@ -263,9 +266,11 @@
 .practice-folio strong { color: var(--ink-action); font-weight: 600; }
 .workspace-diary .practice-card-meta .practice-company-label { align-items: center; }
 .workspace-diary .practice-record-company {
-  display: inline-flex; align-items: center; gap: 8px; max-width: 100%; min-width: 0;
+  display: inline-flex; align-items: center; gap: 10px; max-width: 100%; min-width: 0;
 }
-.workspace-diary .practice-record-company .company-mark { --index-width: 28px; height: 32px; }
+.workspace-diary .practice-record-company .company-mark { --index-width: 32px; height: 36px; }
+.workspace-diary .interview-page .practice-card-meta { align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.workspace-diary .interview-page .practice-card-meta .practice-company-label { padding-block: 0; align-items: center; }
 /* The desk is one record sheet; the answer does not need a second card border. */
 .workspace-diary .workspace-main .interview-page .practice-card { padding: 24px; border: 0; border-radius: 0; box-shadow: none; }
 .workspace-diary .interview-page .practice-card:not(.inline-answer-editor) { min-height: 300px; }
@@ -312,8 +317,8 @@
 .workspace-diary .settings-card .MuiCardContent-root { padding: 28px; }
 
 /* Retain dialog scrolling, validation and fixed action areas. */
-.MuiDialog-paper.company-panel, .company-summary-dialog .MuiDialog-paper, .record-editor-dialog .MuiDialog-paper { border: 1px solid #d6d3dd; }
-.company-panel .company-panel-head, .company-summary-dialog .MuiDialogTitle-root, .record-editor-dialog .MuiDialogTitle-root { background: #f6f7f6; }
+.MuiDialog-paper.company-panel, .company-summary-dialog .MuiDialog-paper, .record-editor-dialog .MuiDialog-paper { border: 1px solid var(--line); border-radius: var(--record-corners); }
+.company-panel .company-panel-head, .company-summary-dialog .MuiDialogTitle-root, .record-editor-dialog .MuiDialogTitle-root { background: var(--record-heading); }
 .company-record-title { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .company-record-title > span:last-child { min-width: 0; overflow-wrap: anywhere; }
 .company-summary-dialog .MuiDialogTitle-root > div { min-width: 0; }
@@ -379,6 +384,9 @@
   .workspace-diary .interview-target-select { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; }
   .workspace-diary .interview-target-select .field-label { margin: 0; white-space: nowrap; }
   .workspace-diary .mobile-question-select { width: 100%; min-width: 0; }
+  .workspace-diary .mobile-question-summary { display: flex; align-items: center; min-width: 0; min-height: 44px; padding: 10px 12px; border-bottom: 1px solid var(--record-edge); background: var(--record-heading); border-radius: 4px 12px 0 0; font-size: 14px; line-height: 22px; }
+  .workspace-diary .mobile-question-summary .question-picker-caption { align-items: flex-start; }
+  .workspace-diary .mobile-question-summary .question-picker-title { white-space: normal; overflow-wrap: anywhere; }
   .question-picker-caption { display: flex; width: 100%; min-width: 0; align-items: center; gap: 12px; color: var(--ink); }
   .question-picker-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .question-picker-caption small { flex: 0 0 auto; font-size: .9em; color: var(--muted); font-variant-numeric: tabular-nums; }
