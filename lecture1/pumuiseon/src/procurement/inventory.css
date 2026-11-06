@@ -822,6 +822,7 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 .request-table.purchase-list { padding: 0; }
 .purchase-list .request-table-row { padding-inline: 20px; }
 .erp-table .cell-main > .row-link { font-size: 16px; line-height: 24px; }
+.row-link-table .cell-main > .mono { margin: 4px 0 0; line-height: 22px; }
 .panel-head h2 { font-size: 16px; font-weight: 550; line-height: 24px; }
 
 .revision-summary { margin-top: 12px; padding-top: 12px; border-top: 1px solid #cbd7e6; }
@@ -869,4 +870,23 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   .purchase-list .request-table-row { padding-inline: 16px; }
   .erp-table thead th, .revision-table thead th { height: auto; }
   .request-facts { gap: 16px; }
+}
+
+@media (max-width: 680px) {
+  .request-editor-page > .back-link { margin-bottom: 0; }
+  .request-editor-page > .page-head { margin-bottom: 12px; }
+  .request-editor-page .source-optional { margin-bottom: 12px; }
+  .request-editor-page .source-optional summary { min-height: 44px; padding-block: 12px; }
+  .catalog-request-form > .panel:first-child > .panel-head { padding-block: 12px; }
+  /* The panel already names a single material; keep its legend available to assistive tools. */
+  .catalog-request-form .item-editor:only-of-type > legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }

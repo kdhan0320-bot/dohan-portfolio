@@ -1,9 +1,24 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from './Icons';
+import useCompactViewport from './useCompactViewport';
 import { STATUS } from './model';
 import { workflowStatus, materialTotals, orderProgress, qty } from './inventory';
 import { originReturn, listOrigin, plainClick, rememberList } from './listNavigation';
+
+export function ListStatusFilter({ label, value, options, onChange, fallbackLabel = '지정된 상태' }) {
+  const compact = useCompactViewport();
+  if (compact) return <label className="request-status-filter">{label}
+    <select value={value} onChange={event => onChange(event.target.value)}>
+      {!options.some(option => option.key === value) && <option value={value}>{fallbackLabel}</option>}
+      {options.map(({ key, label: text, count }) => <option key={key} value={key}>{text}{count != null ? ` · ${count}건` : ''}</option>)}
+    </select>
+  </label>;
+  return <div className="filter-tabs" aria-label={label}>
+    {options.map(({ key, label: text, count }) => <button key={key} className={value === key ? 'active' : ''}
+      aria-pressed={value === key} onClick={() => onChange(key)}>{text}{count != null && <span>{count}</span>}</button>)}
+  </div>;
+}
 
 export function ListLink({ to, state, id, children, ...props }) {
   const location = useLocation(), navigate = useNavigate();

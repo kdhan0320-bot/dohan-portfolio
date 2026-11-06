@@ -8,7 +8,7 @@ import { listOrigin, originReturn, savedListPosition } from './listNavigation';
 import Icon from './Icons';
 import ApprovalLine from './ApprovalLine';
 import RevisionChanges, { RevisionSummary } from './RevisionChanges';
-import { PageHead, Empty, Modal, StateTag, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber } from './UI';
+import { PageHead, Empty, Modal, StateTag, WorkflowStatus, ListLink, ListBackLink, LinkLabel, DocumentNumber, ListStatusFilter } from './UI';
 import { WorkOverview, OrderList, OrderDetail, MaterialList, MaterialDetail, VendorList, VendorDetail } from './InventoryPages';
 import { duplicateRequests, findSensorExample, orderId, workflowStatus } from './inventory';
 import useCompactViewport from './useCompactViewport';
@@ -84,7 +84,6 @@ function Shell() {
 
 function RequestList({ mode = 'requests' }) {
   const { data, requests, role } = useWorkspace();
-  const compact = useCompactViewport();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') || '';
   const defaultStatus = role !== 'staff' ? 'action' : 'all';
@@ -100,19 +99,8 @@ function RequestList({ mode = 'requests' }) {
   return <div className="purchase-register"><PageHead register={mode === 'orders' ? 'order' : 'purchase'} eyebrow={mode === 'requests' ? '구매 품의 대장' : config.eyebrow} title={config.title} action={role === 'staff' && <ListLink id="new-purchase-request" className="button primary" to="/requests/new"><Icon name="plus" size={18}/>구매 품의 작성</ListLink>}/>
 
     <section className="panel requests-panel"><div className="list-toolbar">
-      {compact && mode === 'requests' ? (
-        <label className="request-status-filter">품의 상태
-          <select value={status} onChange={event => setParam('status', event.target.value)}>
-            {!filters.some(filter => filter.key === status) && <option value={status}>{STATUS[status]?.label || '지정된 상태'}</option>}
-            {filters.map(({ key, label, count }) => <option key={key} value={key}>{label} · {count}건</option>)}
-          </select>
-        </label>
-      ) : (
-        <div className="filter-tabs" aria-label="상태 필터">{filters.map(({ key, label, count }) =>
-          <button key={key} className={status === key ? 'active' : ''} aria-pressed={status === key}
-            onClick={() => setParam('status', key)}>{label}<span>{count}</span></button>
-        )}</div>
-      )}
+      <ListStatusFilter label="품의 상태" value={status} options={filters}
+        onChange={value => setParam('status', value)} fallbackLabel={STATUS[status]?.label}/>
       <label className="list-search"><Icon name="search" size={18}/><input aria-label="현재 목록 검색" placeholder="품의명·자재·번호 검색" value={query} onChange={e => setParam('q', e.target.value)}/>{query && <button className="icon-button" aria-label="검색어 지우기" onClick={() => setParam('q', '')}><Icon name="close" size={16}/></button>}</label>
     </div>
     {query && <div className="list-caption">검색 결과 <strong>{shown.length}</strong>건</div>}
