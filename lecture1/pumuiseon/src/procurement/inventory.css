@@ -795,17 +795,6 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   color: #325657;
   background: #edf4f2;
   border-color: #8da9a6;
-  border-radius: 7px 2px 2px 7px;
-  padding-inline: 8px 5px;
-}
-.ledger-number[data-series="VN"] .ledger-series::after {
-  inset: 50% auto auto 3px;
-  width: 2px;
-  height: 2px;
-  transform: translateY(-50%);
-  background: currentColor;
-  border: 0;
-  border-radius: 50%;
 }
 /* Shared register identity: four departments, one document system. */
 .register-head { min-height: 54px; gap: 16px; }
@@ -831,7 +820,6 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 }
 .erp-table thead th, .revision-table thead th { background: transparent; color: inherit; padding: 12px 20px; height: 60px; font-size: 14px; font-weight: 500; line-height: 20px; vertical-align: middle; }
 .purchase-list .table-heading, .item-table .item-head { min-height: 60px; padding: 9px 20px; margin: 0; border-radius: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
-.purchase-table-note { display: none; }
 .request-table.purchase-list { padding: 0; }
 .purchase-list .request-table-row { padding-inline: 20px; }
 .erp-table .cell-main > .row-link { font-size: 16px; line-height: 24px; }
@@ -859,7 +847,6 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 }
 @media (min-width: 1101px) {
   /* Center the date between the amount and status; keep every header on one baseline. */
-  .purchase-table-note { display: block; margin: 0; padding: 8px 20px; text-align: right; color: #626f81; font-size: 12px; line-height: 18px; }
   .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: minmax(0, 2.8fr) minmax(120px, 1.6fr) minmax(156px, 1.5fr) minmax(0, 2.5fr) minmax(122px, 1.6fr); gap: 0; padding-inline: 0; }
   .purchase-list .table-heading > span, .purchase-list .request-table-row > * { min-width: 0; padding-inline: 20px; }
   .purchase-list .table-heading > span { white-space: nowrap; }

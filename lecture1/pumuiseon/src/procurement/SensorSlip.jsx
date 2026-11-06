@@ -39,10 +39,10 @@ export default function SensorSlip({ data, materials }) {
 
   return (
     <section className="sensor-slip" aria-labelledby="sensor-slip-title">
-      {example && <ListLink id="home-sensor-example" className="sensor-slip-example" to={`/requests/${example.id}`}>
+      {example && <div className="sensor-slip-example">
         <span>포토센서 {orderItems(example)[0].quantity}개 품의, <span className="sensor-slip-case-end">{sensorIssueCaption(data, example)}</span></span>
-        <strong>대표 품의 보기</strong>
-      </ListLink>}
+        <ListLink id="home-sensor-example" className="sensor-slip-example-link" to={`/requests/${example.id}`}>대표 품의 보기</ListLink>
+      </div>}
       <div className="sensor-slip-plate">
         <div className="sensor-slip-identity">
           <span className="sensor-slip-label">자재 입출고 전표</span>
