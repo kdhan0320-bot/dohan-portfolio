@@ -101,11 +101,6 @@
 /* Keep the binding anchored between pages. The sheet can grow below it for long records. */
 @media (min-width: 1600px) and (min-height: 900px) {
   .workspace-with-topnav.workspace-diary { --diary-max-height: 900px; }
-  .workspace-diary .board-view-tools {
-    display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 22px;
-  }
-  .workspace-diary .board-view-tools :is(.applications-view-nav, .board-toolbar) { margin: 0; }
-  .workspace-diary .board-view-tools .board-search { width: clamp(232px, 18vw, 340px); }
   .workspace-with-topnav.workspace-diary.diary-welcome #welcome-content { padding-top: clamp(64px, 12vh, 172px); }
   .diary-welcome .site-footer .site-footer-inner {
     width: min(1100px, calc(100% - 104px)); margin-inline: auto;
@@ -113,6 +108,16 @@
 }
 
 @media (min-width: 1000px) {
+  /* One control row leaves more height for company records on short PCs. */
+  .workspace-diary .board-view-tools {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 16px;
+  }
+  .workspace-diary .board-view-tools :is(.applications-view-nav, .board-toolbar) { margin: 0; }
+  .workspace-diary .board-view-tools .applications-view-nav { flex-shrink: 0; }
+  .workspace-diary .board-view-tools .board-toolbar { align-items: center; min-width: 0; gap: 12px; }
+  .workspace-diary .board-view-tools .board-search { width: clamp(232px, 18vw, 340px); }
+  .workspace-diary .board-view-tools .paused-toggle { flex-shrink: 0; white-space: nowrap; }
   .diary-welcome .galpi-intro {
     grid-template-columns: fit-content(52%) minmax(0, 1fr); align-items: center;
     column-gap: 24px; row-gap: 0;

@@ -92,8 +92,14 @@ jobs:
             cp lecture1/pumuiseon/legacy-my-community-redirect.html "_site/$legacy/index.html"
             cp lecture1/pumuiseon/legacy-my-community-redirect.html "_site/$legacy/404.html"
           done
-          cp -r lecture1/galpirok/dist/. _site/jobflow-dashboard
-          cp _site/jobflow-dashboard/index.html _site/jobflow-dashboard/404.html
+          cp -r lecture1/galpirok/dist/. _site/galpirok
+          cp _site/galpirok/index.html _site/galpirok/404.html
+          mkdir -p _site/jobflow-dashboard/assets
+          cp lecture1/galpirok/legacy-jobflow-redirect.html _site/jobflow-dashboard/index.html
+          cp lecture1/galpirok/legacy-jobflow-redirect.html _site/jobflow-dashboard/404.html
+          # Cached old HTML can detect the new release and reach the redirect.
+          cp lecture1/galpirok/dist/release.json _site/jobflow-dashboard/release.json
+          cp lecture1/galpirok/dist/assets/index-B1ncJhLB.js lecture1/galpirok/dist/assets/index-lnYHg2Gk.js _site/jobflow-dashboard/assets/
           mkdir -p _site/ott-service
           cp lecture1/jansang-cinema/index.html _site/ott-service/
           cp -r lecture1/jansang-cinema/assets lecture1/jansang-cinema/css lecture1/jansang-cinema/js _site/ott-service/

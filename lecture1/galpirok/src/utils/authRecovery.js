@@ -19,6 +19,11 @@ export function inspectAuthCallback(href) {
 export function authRedirectUrl(baseUrl, origin) {
   // Implicit auth uses the fragment for tokens, so a HashRouter route must not be appended.
   const url = new URL(baseUrl, origin);
+  // Keep the existing email callback while the public app moves.
+  // The same-origin legacy entry forwards its query/hash to /galpirok/.
+  if (url.origin === 'https://kdhan0320-bot.github.io' && url.pathname === '/dohan-portfolio/galpirok/') {
+    url.pathname = '/dohan-portfolio/jobflow-dashboard/';
+  }
   url.hash = '';
   url.search = '';
   return url.toString();

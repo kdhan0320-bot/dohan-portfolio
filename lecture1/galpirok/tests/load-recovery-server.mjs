@@ -5,11 +5,29 @@ import { readFile } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 
 const dist = resolve(import.meta.dirname, '../dist');
-const base = '/dohan-portfolio/jobflow-dashboard/';
+const base = '/dohan-portfolio/galpirok/';
+const legacyEntry = resolve(import.meta.dirname, '../legacy-jobflow-redirect.html');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.png': 'image/png', '.woff2': 'font/woff2', '.json': 'application/json' };
 createServer(async (request, response) => {
   const url = new URL(request.url, 'http://127.0.0.1:4174');
   response.setHeader('Cache-Control', 'no-store');
+  const legacyBase = '/dohan-portfolio/jobflow-dashboard/';
+  const legacyAsset = url.pathname.slice(legacyBase.length);
+  if (url.pathname.startsWith(legacyBase) && ['release.json', 'assets/index-B1ncJhLB.js', 'assets/index-lnYHg2Gk.js'].includes(legacyAsset)) {
+    response.setHeader('Content-Type', types[extname(legacyAsset)]);
+    response.end(await readFile(resolve(dist, legacyAsset)));
+    return;
+  }
+  if (/^\/dohan-portfolio\/jobflow-dashboard(?:\/|$)/.test(url.pathname)) {
+    response.setHeader('Content-Type', 'text/html; charset=utf-8');
+    if (url.searchParams.get('fault') === 'cached-legacy' && !url.searchParams.has('__galpirok_reload')) {
+      response.end('<!doctype html><html lang="ko"><meta charset="utf-8"><title>이전 주소의 캐시 복구 검증</title><div id="root"></div><script type="module" src="' + legacyBase + 'assets/index-B1ncJhLB.js"></script></html>');
+    } else if (url.searchParams.get('fault') === 'cached-html' && !url.searchParams.has('__galpirok_reload')) {
+      const html = (await readFile(resolve(dist, 'index.html'), 'utf8')).replace(/(name="galpirok-build" content=")[^"]+/, '$10000000000000000');
+      response.end(html);
+    } else response.end(await readFile(legacyEntry));
+    return;
+  }
   if (url.pathname === '/') {
     response.setHeader('Content-Type', 'text/html; charset=utf-8');
     response.end('<html lang="ko"><meta charset="utf-8"><title>갈피록 로딩 검증</title><h1>갈피록 로딩 검증</h1>' +

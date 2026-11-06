@@ -11,7 +11,7 @@ const mounts = {
   'my-portfolio': 'lecture1/portfolio/dist',
   'pumuiseon': 'lecture1/pumuiseon/dist',
   'portfolio-feedback-hub': 'lecture1/pumuiseon/dist',
-  'jobflow-dashboard': 'lecture1/galpirok/dist',
+  'galpirok': 'lecture1/galpirok/dist',
   'mini-sns': 'lecture1/mini-sns/dist',
   'ott-service': 'lecture1/jansang-cinema',
   'gijunseon': 'lecture1/gijunseon',
@@ -22,7 +22,7 @@ const cases = [
   ...['feedback-hub','seolbiit','gongjeongbom','ott-service','jobflow','bus-arrival','brewstep'].map(slug => [slug,`my-portfolio/#/projects/${slug}`]),
   ['pumuiseon','pumuiseon/'], ['requests','pumuiseon/#/requests'], ['new-request','pumuiseon/#/requests/new'],
   ['materials','pumuiseon/#/materials'], ['orders','pumuiseon/#/orders'],
-  ['galpirok','jobflow-dashboard/'], ['mini-sns','mini-sns/'], ['jansang','ott-service/'],
+  ['galpirok','galpirok/'], ['mini-sns','mini-sns/'], ['jansang','ott-service/'],
   ...['index','inspection','process','adoption','consultation','implementation'].map(name=>[`gijunseon-${name}`,`gijunseon/${name}.html`]),
 ];
 const report = { target: remote || 'local production builds', checks: [], interactions: [], errors: [] };
@@ -55,6 +55,11 @@ async function inspect(page, label, width) {
       try {
         const parts=decodeURIComponent(new URL(req.url,'http://localhost').pathname).split('/').filter(Boolean);
         if(parts.shift()!=='dohan-portfolio' || parts.some(s=>s.startsWith('.') || s.includes('\\'))) {res.writeHead(404).end();return;}
+        if(parts[0]==='jobflow-dashboard'){
+          res.writeHead(200,{'Content-Type':'text/html; charset=utf-8'});
+          fs.createReadStream(path.join(root,'lecture1/galpirok/legacy-jobflow-redirect.html')).pipe(res);
+          return;
+        }
         const mount=mounts[parts.shift()];
         if(!mount){res.writeHead(404).end();return;}
         const folder=path.resolve(root,mount); let file=path.resolve(folder,...parts);

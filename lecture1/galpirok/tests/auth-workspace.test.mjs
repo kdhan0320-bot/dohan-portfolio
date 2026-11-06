@@ -11,7 +11,7 @@ import * as authRecovery from '../src/utils/authRecovery.js';
 const source = await readFile(new URL('../src/context/AuthContext.jsx', import.meta.url), 'utf8');
 const { code } = await transform(source, {
   loader: 'jsx', format: 'cjs', jsx: 'automatic',
-  define: { 'import.meta.env.BASE_URL': '"/jobflow-dashboard/"' },
+  define: { 'import.meta.env.BASE_URL': '"/dohan-portfolio/galpirok/"' },
 });
 
 function providerWith(auth) {

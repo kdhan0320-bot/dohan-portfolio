@@ -16,7 +16,7 @@
 | --- | --- | --- | --- |
 | [lecture1/portfolio](lecture1/portfolio/README.md) | 공통 포트폴리오 | 웹·UI 디자인 소개, 작품 상세, 확인된 본인 기여 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/) |
 | [lecture1/pumuiseon](lecture1/pumuiseon/README.md) | 품의선 | 구매 요청·결재·발주·입고·지급을 연결하는 브라우저 저장 시연 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/) |
-| [lecture1/galpirok](lecture1/galpirok/README.md) | 갈피록 | 입사지원 현황·마감일·준비·면접 기록 관리 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/) |
+| [lecture1/galpirok](lecture1/galpirok/README.md) | 갈피록 | 입사지원 현황·마감일·준비·면접 기록 관리 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/galpirok/) |
 | [lecture1/jansang-cinema](lecture1/jansang-cinema/README.md) | 잔상관 | 가상 단편영화 탐색·찜·메모 보관 시연 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/) |
 | [lecture1/gijunseon](lecture1/gijunseon/README.md) | 기준선 | Figma 기반 산업용 비전 검사 기업 웹퍼블리싱 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/gijunseon/) |
 | [lecture1/mini-sns](lecture1/mini-sns/README.md) | Mini SNS | 게스트·메모리 상태로 동작하는 SNS 학습 기록 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/) |

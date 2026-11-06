@@ -41,7 +41,7 @@ function startupRecoveryPlugin() {
 
 export default defineConfig({
   plugins: [react(), startupRecoveryPlugin()],
-  base: process.env.NODE_ENV === 'production' ? '/dohan-portfolio/jobflow-dashboard/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/dohan-portfolio/galpirok/' : '/',
   build: {
     rollupOptions: {
       output: {

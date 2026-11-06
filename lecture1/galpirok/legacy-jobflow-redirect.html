@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="canonical" href="https://kdhan0320-bot.github.io/dohan-portfolio/galpirok/" />
+    <title>갈피록 새 주소로 이동</title>
+    <noscript><meta http-equiv="refresh" content="0; url=/dohan-portfolio/galpirok/" /></noscript>
+  </head>
+  <body>
+    <p>갈피록의 새 주소로 이동합니다. <a id="destination" href="/dohan-portfolio/galpirok/">이동하지 않으면 여기를 눌러주세요.</a></p>
+    <script>
+      // Preserve saved pages, filters and auth callbacks without leaving this origin.
+      const destination = new URL('/dohan-portfolio/galpirok/', window.location.origin);
+      destination.search = window.location.search;
+      destination.hash = window.location.hash;
+      document.getElementById('destination').href = destination.href;
+      window.location.replace(destination.href);
+    </script>
+  </body>
+</html>
