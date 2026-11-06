@@ -1,7 +1,7 @@
 /* Product system: neutral records, purple actions, mint completion.
    All route styles load before this layer to keep navigation visually stable. */
 :root {
-  --ink: #302d38; --muted: #716c79; --line: #e1dfe7; --surface: #fff;
+  --ink: #302d38; --muted: #635d70; --line: #e1dfe7; --surface: #fff;
   --ink-action: #675181; --action-hover: #514064; --action-tint: #f1edf5;
   --focus: #675181; --mint: #dbeae2; --mint-ink: #37675e;
   --record-wash: #d7e4ed; --record-blue: #3d5c6c; --record-rose: #925361;

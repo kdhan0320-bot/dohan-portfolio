@@ -16,7 +16,7 @@ export default createTheme({
     },
     text: {
       primary: '#302D38',
-      secondary: '#716C79'
+      secondary: '#635D70'
     },
     divider: '#E1DFE7',
     success: {
@@ -191,7 +191,7 @@ export default createTheme({
         },
         head: {
           fontSize: 13,
-          color: '#716C79',
+          color: '#635D70',
           backgroundColor: '#FAFAFB',
           fontWeight: 500
         }
