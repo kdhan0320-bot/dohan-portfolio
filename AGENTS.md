@@ -29,7 +29,7 @@
 ## 승인과 보안
 
 - 기존 파일·자산·문서·폴더의 삭제, 이동, rename은 사용자 승인이 필요하다.
-- commit, push, PR, merge, deploy는 사용자 승인이 필요하다.
+- commit, push, deploy(기존 Pages workflow)는 2026-11-06 사용자 승인에 따라 매번 다시 묻지 않고 진행한다. 범위는 "2026-11-06 커밋·푸시·배포 자동 진행" 절을 따른다. PR, merge는 여전히 사용자 승인이 필요하다.
 - package·lockfile, workflow(CI/CD), DB·migration, secret 관련 변경은 사용자 승인이 필요하다.
 - checkout, switch, restore, stash, reset, rebase, clean, cherry-pick, branch 생성·삭제는 사용자 승인이 필요하다.
 - `git status`, `diff`, `log`, `show`, `branch` 조회 등 읽기 전용 Git 명령은 승인 없이 사용할 수 있다.
@@ -95,6 +95,13 @@
 - 폴더명과 공개 URL은 README의 대응표를 따른다. 공개 URL을 폴더 이름에 맞춰 임의 변경하지 않는다.
 - .env·.claude 등 비공개 로컬 설정은 Git에 추가하지 않는다. 잠금 파일은 추적한다.
 - 백업 위치와 이름 변경은 docs/workspace-migration.md를 확인한다. 이전 C드라이브 사본을 다시 생성하거나 최신 파일 위에 과거 백업을 일괄 복사하지 않는다.
+
+## 2026-11-06 커밋·푸시·배포 자동 진행 승인
+
+- 사용자가 기준선(gijunseon) 브랜드 모티프 보강 작업 커밋 후 "앞으로 수정되면 자동으로 진행"을 요청해 commit·push·deploy를 매번 묻지 않는 범위로 승인했다. 적용 범위는 이 저장소(`portfolio-workspace`)의 기존 Pages workflow를 통한 통상적인 작업 커밋·푸시·배포이며, 별도 디자인·코드 수정 작업 자체를 승인한 것은 아니다. 작업 범위·Source of Truth는 여전히 사용자가 정하거나 확인한다.
+- 이 자동 진행은 새 저장소 연결, force push, 히스토리 재작성, 다른 브랜치로의 강제 배포에는 적용하지 않는다. 그런 작업과 위에 남아 있는 승인 필수 항목(삭제·이동·rename, PR·merge, package·lockfile·workflow·DB·secret 변경, 위험 Git 작업)은 기존대로 사용자 승인을 받는다.
+- 커밋마다 실제 변경 파일과 실행한 검사를 최종 보고에 적어, 승인을 건너뛰더라도 사용자가 사후에 확인할 수 있게 한다.
+- 이 승인을 되돌리거나 범위를 바꾸려면 사용자가 다시 알려주고, 이 절을 함께 수정한다.
 
 ## 교차 검토와 전체 작업실
 
