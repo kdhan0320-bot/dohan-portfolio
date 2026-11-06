@@ -2,6 +2,19 @@
 
 2026-11-06에 현재 공개 저장소의 main을 기준으로 작업 폴더와 Git 기록을 통합했습니다. 공개 URL은 유지하며 lecture1 구조 안에서 작품 이름을 정리했습니다.
 
+## 현재 백업 기준
+
+- 현재 작업·배포 코드: main 브랜치. 로컬의 portfolio-workspace와 비교해 최신 여부를 확인합니다.
+- 최신 GitHub 백업: [backup/current-workspace](https://github.com/kdhan0320-bot/dohan-portfolio/tree/backup/current-workspace). 검수된 main과 같은 커밋으로 생성·갱신합니다.
+- 최신 작업실 파일 백업: D:\Archive\my_ai_web\backups\current-workspace. 기존 웹 작품뿐 아니라 ai-projects·design-resources·상위 작업 안내를 함께 보관합니다. BACKUP-INFO.json에서 기준 커밋·파일 수·제외 항목을 확인합니다.
+- 날짜가 붙은 기존 백업 브랜치와 폴더는 과거 복구용입니다. 최신 작업 위치로 사용하지 않습니다.
+
+최신 백업은 파일을 바꿀 때마다 자동 동기화되는 폴더가 아닙니다. 작업 완료 후 현재 원본을 기준으로 복사·검증하고 갱신합니다. 이전 최신 백업에만 남은 파일을 확인하기 전에는 덮어쓰거나 일괄 삭제하지 않습니다. node_modules·dist·캐시·자동 검수 출력·로그와 중첩 backups·.git은 최신 파일 사본에서 제외합니다. Git 기록은 원격 main과 백업 브랜치에 보존합니다. .env·로컬 도구 설정은 로컬 사본으로만 보존하고 내용은 읽거나 공개하지 않습니다.
+
+GitHub 백업은 이 저장소의 추적 파일 범위입니다. 상위 ai-projects·design-resources·공통 안내가 GitHub에 자동 포함되는 것은 아니며, 이 자료는 최신 로컬 작업실 백업에 포함합니다.
+
+## 이전 정리 기록
+
 | 이전 폴더 | 현재 폴더 |
 | --- | --- |
 | my-portfolio | lecture1/portfolio |
@@ -35,3 +48,7 @@
 - 홈·소개·품의선·설비결·잔상관·기준선 캡처를 별도로 시각 확인했습니다. 새 폴더 구조에 따른 주요 화면의 누락이나 잘림을 확인하지 못했습니다. 승인 Figma와의 전체 재대조나 계정·실제 DB 쓰기 테스트를 수행한 것은 아닙니다.
 - 현재 README와 색상 기준 문서의 로컬 링크 확인 완료. 과거 제작 이력의 내용은 당시 기록이며 현재 작업 기준과 구분합니다.
 - 검수 재실행: tools/site-audit-kit/README.md. 원본 결과·화면은 같은 도구의 audit-output/workspace-reorganization에 있으며 Git에서 제외합니다.
+
+## 별도 C드라이브 사본 정리
+
+2026-11-06에 C:\work와 C:\Work_repo-audit를 보관한 뒤 삭제했습니다. 복구 위치는 D:\Archive\my_ai_web\backups\2026-11-06-retired-c-work입니다. work에 670개 파일, repo-audit에 52개 파일을 보존했으며 일반 파일의 내용과 로컬 설정의 존재·크기를 대조했습니다. 두 Git 저장소의 무결성 검사도 통과했습니다. 긴 경로가 있는 이전 Git을 검사할 때는 core.longpaths=true 옵션을 사용합니다. 재설치·재생성이 가능한 의존성·빌드·캐시·로그는 제외했으며 상세 목록은 해당 백업의 verification.json에 있습니다.

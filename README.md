@@ -8,6 +8,8 @@
 
 현재 저장소: [dohan-portfolio](https://github.com/kdhan0320-bot/dohan-portfolio) · [공통 포트폴리오](https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/)
 
+최신 복구용 코드는 [현재 작업 백업](https://github.com/kdhan0320-bot/dohan-portfolio/tree/backup/current-workspace)에서 확인합니다. 전체 로컬 작업실의 백업 범위와 과거 백업 구분은 [백업 안내](docs/workspace-migration.md)를 따릅니다.
+
 ## 작품 폴더
 
 | 폴더 | 작품 | 역할 | 공개 주소 |
