@@ -26,6 +26,8 @@
   color: var(--action);
   font-size: 14px;
   line-height: 22px;
+  font-family: var(--mono);
+  letter-spacing: .02em;
 }
 
 .adoption-jump strong {
@@ -61,6 +63,8 @@
   height: 42px;
   color: var(--action);
   font-size: 26px;
+  font-family: var(--mono);
+  letter-spacing: .02em;
 }
 
 /* 검사 예시 확대 화면의 코너 브라켓 표식을 단계 번호 배지에도 재사용합니다. */

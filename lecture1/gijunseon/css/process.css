@@ -38,7 +38,9 @@ body[data-page="process"] > main {
   min-width: 34px;
   min-height: 26px;
   padding: 2px 6px;
-  margin-right: 18px
+  margin-right: 18px;
+  font-family: var(--mono);
+  letter-spacing: .02em
 }
 
 .process-step span:before {

@@ -65,7 +65,7 @@
 .inspection-figure { min-width: 0; margin: 0; }
 .inspection-visual-heading { min-height: 44px; display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
 .inspection-visual-heading h2 { margin: 0; font-size: 20px; font-weight: 500; line-height: 30px; }
-.inspection-zoom-label { flex-shrink: 0; color: #923a27; font-size: 14px; line-height: 22px; }
+.inspection-zoom-label { flex-shrink: 0; color: #923a27; font-size: 14px; line-height: 22px; font-family: var(--mono); letter-spacing: .02em; }
 .inspection-photo { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #f0f0ec; }
 .inspection-original { display: block; width: 100%; height: 100%; object-fit: contain; }
 .inspection-roi { position: absolute; left: var(--roi-x); top: var(--roi-y); width: var(--roi-width); height: var(--roi-height); border: 2px solid #923a27; }
