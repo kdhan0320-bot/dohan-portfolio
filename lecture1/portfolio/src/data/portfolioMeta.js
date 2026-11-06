@@ -58,8 +58,8 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-bluehour-cover-1440.webp', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '2850 / 952', {
-  mobile: { src: 'detail/current/jansang-bluehour-cover-390.webp', aspectRatio: '780 / 630', label: '모바일 홈 표지 · 파란 오후' },
+const cinemaHome = media('detail/current/jansang-cover-20261106-1440.webp', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '2850 / 952', {
+  mobile: { src: 'detail/current/jansang-cover-20261106-390.webp', aspectRatio: '780 / 674', label: '모바일 홈 표지 · 파란 오후' },
 });
 const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
   mobile: { src: 'detail/current/jansang-v63-exhibit-390.webp', aspectRatio: '688 / 622', label: '모바일 기획전 발췌 · 마지막 두 작품' },
@@ -145,7 +145,7 @@ export const PROJECT_DETAIL_READY = {
         { label: 'AI 협업', value: '장면 선정·글·이미지 제작, UI 설계·구현·검사' },
       ],
       scopeSummary: [
-        { title: '콘텐츠와 저장 방식', text: '가상 작품과 AI 생성 이미지로 영화 발견부터 보관까지 구현했습니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },
+        { title: '콘텐츠와 저장 방식', text: '가상 영화의 포스터는 작품마다 제목의 형태·색·배치가 다른 AI 생성 시안을 사용했습니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },
         { title: '검증 범위', text: 'PC와 모바일 크기의 브라우저에서 작품 탐색, 상세 열기와 복귀, 메모 저장 후 다시 읽기를 확인했습니다. 실기기와 실제 이용자를 대상으로 한 사용성 조사는 진행하지 않았습니다.' },
       ], resultLimit: {},
     },

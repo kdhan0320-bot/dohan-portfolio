@@ -1847,8 +1847,8 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 .feature-cover h1 em { display: inline-block; }
 .feature-cover .discovery-intro { max-width: none; margin-top: 8px; }
-/* Ties the cover headline to the same bespoke display face used on each poster title. */
-.feature-cover .discovery-copy h1 { font-family: "Jansang Display", Pretendard, serif; font-weight: 650; }
+/* Use one complete font for the Korean headline and its punctuation. */
+.feature-cover .discovery-copy h1 { font-family: Pretendard, system-ui, sans-serif; font-weight: 650; }
 .feature-cover .hero-eyebrow { letter-spacing: .16em; }
 .feature-credit {
   position: absolute;
