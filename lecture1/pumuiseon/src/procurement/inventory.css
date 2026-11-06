@@ -352,7 +352,7 @@
 .filter-tabs button span,.filter-tabs button.active span { padding:0;margin:0;background:transparent;color:inherit;font-size:14px;font-weight:inherit; }
 .list-search input { font-size:14px; }
 .list-search { min-height:44px; }
-.purchase-register { width:100%;max-width:1120px;margin-inline:auto; }
+.purchase-register { width:100%; }
 .purchase-list .table-heading,.purchase-list .request-table-row { grid-template-columns:minmax(180px,1fr) 110px 72px 158px 126px;gap:16px; }
 .purchase-list .table-heading { font-size:13px; }
 .purchase-list .request-table-row { align-items:start;padding:20px 15px; }
@@ -845,15 +845,19 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   .revision-summary button { margin: 0; font-size: 14px; white-space: nowrap; }
 }
 @media (min-width: 1101px) {
-  /* Bound short fields within one register width; long titles may grow vertically. */
-  .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: minmax(0, 1fr) clamp(120px, 14%, 160px) 144px clamp(180px, 25%, 280px) clamp(128px, 16%, 176px); gap: 0; padding-inline: 0; }
-  .purchase-list .table-heading > span, .purchase-list .request-table-row > * { min-width: 0; padding-inline: 16px; }
+  /* Keep the shared page width; separate columns without narrowing the register. */
+  .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: minmax(0, 2.6fr) minmax(112px, 1.25fr) minmax(144px, 1.5fr) minmax(180px, 2.25fr) minmax(124px, 1.4fr); column-gap: clamp(12px, 1.5vw, 28px); padding-inline: 20px; }
+  .purchase-list .table-heading > span, .purchase-list .request-table-row > * { min-width: 0; padding-inline: 0; }
   .purchase-list .table-heading > span { white-space: nowrap; }
   .purchase-list .table-heading > span:nth-child(3), .purchase-list .table-date { text-align: center; }
   .purchase-list .request-table-row { min-height: 88px; padding-block: 18px; align-items: start; }
   .purchase-list .request-title-cell > .mono { line-height: 22px; margin-top: 4px; }
   .purchase-list .request-title-cell h2 { margin: 0; }
   .purchase-list .table-amount { white-space: normal; overflow-wrap: anywhere; }
+}
+@media (min-width: 1101px) and (max-width: 1280px) {
+  .purchase-list .request-title-cell > .mono > .request-department { display: block; }
+  .purchase-list .request-department::before { content: none; }
 }
 @media (max-width: 680px) {
   .register-head { gap: 8px; }
