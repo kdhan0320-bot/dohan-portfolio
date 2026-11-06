@@ -12,6 +12,9 @@
   --accent: #e9c16a;
   --gutter: clamp(24px,5.556vw,80px);
   --content: 1280px;
+  /* 도식과 본문이 배경보다 먼저 읽히도록 격자 대비를 제한합니다. */
+  --grid-line: rgba(255,255,255,.06);
+  --grid-dot: rgba(255,255,255,.18);
   /* 계측기 판독부 느낌의 숫자 서체. 새 자산을 받지 않고 OS 기본 모노스페이스만 사용합니다. */
   --mono: ui-monospace,'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace
 }
@@ -402,9 +405,9 @@ a,button {
    타겟처럼 보이게 합니다. */
 .consultation-band-dark {
   background:
-    radial-gradient(circle 1.5px at 0 0,#ffffff4d 1.5px,transparent 1.6px) 0 0/56px 56px,
-    repeating-linear-gradient(0deg,#ffffff1f 0 1px,transparent 1px 56px),
-    repeating-linear-gradient(90deg,#ffffff1f 0 1px,transparent 1px 56px),
+    radial-gradient(circle 1.5px at 0 0,var(--grid-dot) 1.5px,transparent 1.6px) 0 0/56px 56px,
+    repeating-linear-gradient(0deg,var(--grid-line) 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,var(--grid-line) 0 1px,transparent 1px 56px),
     var(--dark);
   color: var(--surface);
 }

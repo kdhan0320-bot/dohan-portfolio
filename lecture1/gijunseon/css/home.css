@@ -330,9 +330,9 @@
    드러냅니다. 선·도트 모두 흰 글자 대비에 영향을 줄 만큼 진하지는 않습니다. */
 .introduction {
   background:
-    radial-gradient(circle 1.5px at 0 0,#ffffff4d 1.5px,transparent 1.6px) 0 0/56px 56px,
-    repeating-linear-gradient(0deg,#ffffff1f 0 1px,transparent 1px 56px),
-    repeating-linear-gradient(90deg,#ffffff1f 0 1px,transparent 1px 56px),
+    radial-gradient(circle 1.5px at 0 0,var(--grid-dot) 1.5px,transparent 1.6px) 0 0/56px 56px,
+    repeating-linear-gradient(0deg,var(--grid-line) 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,var(--grid-line) 0 1px,transparent 1px 56px),
     var(--dark);
   color: white;
   padding-block: 56px;
@@ -432,9 +432,9 @@
 .home-consultation {
   padding-block: 0;
   background:
-    radial-gradient(circle 1.5px at 0 0,#ffffff4d 1.5px,transparent 1.6px) 0 0/56px 56px,
-    repeating-linear-gradient(0deg,#ffffff1f 0 1px,transparent 1px 56px),
-    repeating-linear-gradient(90deg,#ffffff1f 0 1px,transparent 1px 56px),
+    radial-gradient(circle 1.5px at 0 0,var(--grid-dot) 1.5px,transparent 1.6px) 0 0/56px 56px,
+    repeating-linear-gradient(0deg,var(--grid-line) 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,var(--grid-line) 0 1px,transparent 1px 56px),
     var(--dark);
   color: var(--page)
 }
