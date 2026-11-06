@@ -278,7 +278,7 @@ test('inline interview editing restores an unfinished answer after leaving and s
   const answer = page.find(node => node.type === 'Field' && node.props.id === 'note-answer');
   answer.props.onChange({ target: { value: '아직 저장하지 않은 답변' } }); page.render();
   page = await mount('InterviewPage', dependencies);
-  page.find(node => node.props?.id === 'interview-topic').props.onChange({ target: { value: 'none' } }); page.render();
+  page.find(node => node.props?.id === 'interview-company-scope').props.onChange({ target: { value: 'companies' } }); page.render();
   assert.ok(page.find(node => node.props?.['aria-label'] === '면접 질문 목록 결과'));
   await page.click('이어서 작성');
   assert.ok(page.find(node => node.type === 'form' && node.props['aria-label'] === '면접 기록 수정'));
@@ -443,36 +443,40 @@ test('answer entry waits for usable layout, reveals its label once, then preserv
 });
 
 
-test('interview scope and topic filters combine without changing stored records', async () => {
+test('interview targets select all, common and company questions without changing records', async () => {
   const notes = [
     { id: 'a', question: '공통 자기소개', related_project: '자기소개', application_id: null },
     { id: 'b', question: '회사 A 경험', related_project: '프로젝트', application_id: 'a' },
     { id: 'c', question: '회사 B 소개', related_project: '자기소개', application_id: 'b' },
   ];
+  const original = JSON.stringify(notes);
   const page = await mount('InterviewPage', {
-    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: 'A' }, { id: 'b', company_name: 'B' }] }) },
+    '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: 'A' }, { id: 'b', company_name: 'B' }, { id: 'empty', company_name: '질문 없는 회사' }] }) },
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
   });
-  const selectScope = value => { page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value } }); page.render(); };
-  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.value, 'all');
+  const scope = () => page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope');
+  const selectScope = value => { scope().props.onChange({ target: { value } }); page.render(); };
+  assert.equal(scope().props.value, 'all');
   selectScope('companies');
   assert.doesNotMatch(page.text(), /공통 자기소개/);
-  page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.onChange({ target: { value: '프로젝트' } }); page.render();
-  assert.match(page.text(), /회사 A 경험/); assert.doesNotMatch(page.text(), /회사 B 소개/);
-  page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope').props.onChange({ target: { value: 'b' } }); page.render();
+  assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
+  selectScope('b');
   assert.match(page.text(), /회사 B 소개/); assert.doesNotMatch(page.text(), /회사 A 경험/);
   selectScope('common');
   assert.match(page.text(), /공통 자기소개/); assert.doesNotMatch(page.text(), /회사 B 소개/);
-  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'interview-topic').props.value, 'all');
-  selectScope('companies');
-  assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
+  selectScope('empty');
+  assert.equal(page.find(n => n.type === 'Empty').props.title, '이 회사의 질문이 없어요');
+  await page.click('질문 추가');
+  assert.equal(page.find(n => n.type === 'Field' && n.props.id === 'note-company').props.value, 'empty', 'adding from a company keeps its target');
+  assert.equal(scope().props.disabled, true, 'changing scope cannot hide a draft during editing');
+  await page.click('취소');
   selectScope('all');
   assert.match(page.text(), /공통 자기소개/); assert.match(page.text(), /회사 A 경험/); assert.match(page.text(), /회사 B 소개/);
-  assert.equal(notes.length, 3);
+  assert.equal(JSON.stringify(notes), original);
 });
 
-test('editing preserves matching company and topic filters, but follows a record moved outside them', async () => {
+test('editing preserves the selected target and topic metadata, and follows a moved record', async () => {
   const notes = [{ id: 'q1', question: '회사 질문', answer: '기존 답변', related_project: '협업', application_id: 'a' }];
   const page = await mount('InterviewPage', {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: 'A' }] }) },
@@ -480,57 +484,51 @@ test('editing preserves matching company and topic filters, but follows a record
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
   });
   const scope = () => page.find(n => n.type === 'Field' && n.props.id === 'interview-company-scope');
-  const topic = () => page.find(n => n.type === 'Field' && n.props.id === 'interview-topic');
+  const save = async () => { await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render(); };
   scope().props.onChange({ target: { value: 'companies' } }); page.render();
-  topic().props.onChange({ target: { value: '협업' } }); page.render();
   await page.click('기록 수정');
-  assert.equal(scope().props.value, 'companies', 'opening an existing company record must not narrow the filter');
-  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
-  assert.equal(scope().props.value, 'companies', 'saving within the selected scope must keep that scope');
-  assert.equal(topic().props.value, '협업', 'saving an answer must keep the matching topic filter');
+  assert.equal(scope().props.value, 'companies');
+  await save();
+  assert.equal(scope().props.value, 'companies');
+  assert.equal(notes[0].related_project, '협업');
   await page.click('기록 수정');
   page.find(n => n.type === 'Field' && n.props.label === '관련 프로젝트 또는 주제 (선택)').props.onChange({ target: { value: '자기소개' } }); page.render();
-  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
-  assert.equal(topic().props.value, 'all', 'a changed topic must not hide the saved record');
+  await save();
+  assert.equal(scope().props.value, 'companies', 'editing a topic no longer changes which records are shown');
+  assert.equal(notes[0].related_project, '자기소개');
   await page.click('기록 수정');
   page.find(n => n.type === 'Field' && n.props.id === 'note-company').props.onChange({ target: { value: '' } }); page.render();
-  await page.find(n => n.type === 'form' && n.props['aria-label'] === '면접 기록 수정').props.onSubmit({ preventDefault() {} }); page.render();
-  assert.equal(scope().props.value, 'common', 'a record moved outside the filter stays visible after saving');
+  await save();
+  assert.equal(scope().props.value, 'common', 'a moved record stays visible after saving');
   assert.equal(notes[0].application_id, null);
 });
 
-test('one interview filter disclosure keeps selections when closed and clears both conditions together', async () => {
+test('mobile question selection keeps its title and sequence in sync with the selected target', async () => {
   const notes = [
-    { id: 'a', question: '회사 질문', answer: '답변', related_project: '협업', application_id: 'a' },
-    { id: 'b', question: '공통 질문', related_project: '자기소개', application_id: null },
+    { id: 'q1', question: '자기소개를 해주세요.', answer: '답변', application_id: 'a' },
+    { id: 'q2', question: '협업 과정에서 서로 다른 의견을 조율한 경험과 판단 기준을 설명해주세요.', answer: '답변', application_id: null },
+    { id: 'q3', question: '프로젝트에서 맡은 역할은 무엇인가요?', answer: '', application_id: 'a' },
   ];
   const page = await mount('InterviewPage', {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [{ id: 'a', company_name: '회사 A' }] }) },
     '../hooks/useInterviewNotes': { __esModule: true, default: () => ({ notes }) },
     '../hooks/useRecordDraft': draftHook(createRecordDraftStore(), 'interview'),
   });
-  const panel = () => page.find(n => n.props?.id === 'interview-filters');
-  const toggle = () => page.find(n => n.props?.['aria-controls'] === 'interview-filters');
   const field = id => page.find(n => n.type === 'Field' && n.props.id === id);
-  const toggleFilters = () => { toggle().props.onClick(); page.render(); };
-  assert.equal(panel().props.hidden, true);
-  assert.equal(toggle().props['aria-expanded'], false);
-  toggleFilters();
-  assert.equal(panel().props.hidden, false);
+  const picker = () => field('interview-question-select');
+  const caption = () => text(picker().props.slotProps.select.renderValue());
+  assert.equal(caption(), notes[0].question + '1 / 3');
+  picker().props.onChange({ target: { value: 'q2' } }); page.render();
+  assert.equal(caption(), notes[1].question + '2 / 3');
+  assert.equal(page.find(n => n.props?.id === 'practice-question-title').props.children, notes[1].question);
   field('interview-company-scope').props.onChange({ target: { value: 'a' } }); page.render();
-  field('interview-topic').props.onChange({ target: { value: '협업' } }); page.render();
-  toggleFilters();
-  assert.equal(panel().props.hidden, true);
-  assert.equal(field('interview-topic').props.value, '협업');
-  assert.match(page.text(), /회사 A · 협업/);
-  toggleFilters();
+  assert.equal(caption(), notes[0].question + '1 / 2', 'a target change resets the sequence within its own questions');
+  picker().props.onChange({ target: { value: 'q3' } }); page.render();
+  assert.equal(caption(), notes[2].question + '2 / 2');
+  field('interview-company-scope').props.onChange({ target: { value: 'common' } }); page.render();
+  assert.equal(caption(), notes[1].question + '1 / 1');
+  assert.equal(picker().props.disabled, true, 'a single question is identified without implying another choice');
+  field('interview-company-scope').props.onChange({ target: { value: 'all' } }); page.render();
   await page.click('기록 수정');
-  assert.equal(panel().props.hidden, true, 'editing closes the filters without losing the selection');
-  assert.equal(toggle().props.disabled, true);
-  await page.click('취소');
-  await page.click('필터 해제');
-  assert.equal(field('interview-company-scope').props.value, 'all');
-  assert.equal(field('interview-topic').props.value, 'all');
-  assert.equal(page.find(n => n.props?.className === 'interview-filter-summary'), null);
-  assert.equal(notes.length, 2);
+  assert.equal(picker().props.disabled, true, 'question switching cannot discard an open edit');
 });

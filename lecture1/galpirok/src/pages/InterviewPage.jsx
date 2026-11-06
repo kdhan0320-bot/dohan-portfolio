@@ -6,7 +6,6 @@ import Add from '@mui/icons-material/Add';
 import DeleteOutline from '@mui/icons-material/DeleteOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreHoriz from '@mui/icons-material/MoreHoriz';
-import TuneOutlined from '@mui/icons-material/TuneOutlined';
 import useInterviewNotes from '../hooks/useInterviewNotes';
 import useApplications from '../hooks/useApplications';
 import useRecordDraft from '../hooks/useRecordDraft';
@@ -47,9 +46,6 @@ export default function InterviewPage() {
   const companyMap = new Map(applications.map(company => [company.id, company]));
   const selectedCompany = companyMap.get(companyScope);
   const companyScoped = !['all', 'common', 'companies'].includes(companyScope);
-  const [topic, setTopic] = useState('all');
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const filterCount = Number(companyScope !== 'all') + Number(topic !== 'all');
   const scopeLabel = SCOPE_LABELS[companyScope] || selectedCompany?.company_name || (companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사');
   const missingCompany = companyScoped && !selectedCompany;
   const pageLoading = loading || companiesLoading;
@@ -84,9 +80,7 @@ export default function InterviewPage() {
     return () => window.cancelAnimationFrame(frame);
   }, [busy, notes, open, pageLoading]);
   const includesCompany = applicationId => companyScope === 'all' || (companyScope === 'common' ? !applicationId : companyScope === 'companies' ? Boolean(applicationId) : applicationId === companyScope);
-  const scopedNotes = notes.filter(note => includesCompany(note.application_id));
-  const topics = [...new Set(scopedNotes.map(note => note.related_project?.trim()).filter(Boolean))];
-  const filtered = scopedNotes.filter(note => topic === 'all' || (note.related_project?.trim() || 'none') === topic);
+  const filtered = notes.filter(note => includesCompany(note.application_id));
   const activeNote = filtered.find(n => n.id === activeId) || filtered[0];
   const activeHasAnswer = Boolean(activeNote?.answer?.trim());
   const activeCompany = companyMap.get(activeNote?.application_id);
@@ -148,7 +142,6 @@ export default function InterviewPage() {
     else next.set('company', value);
     setSearchParams(next);
     setActiveId(null);
-    setTopic('all');
   }
   function refreshPage() {
     refresh();
@@ -173,12 +166,10 @@ export default function InterviewPage() {
     openEditor(note.id, recovered?.values || draft, recovered?.baseline || draft, Boolean(recovered), note.id);
   }
   function openEditor(id, values, baseline, recovered, draftKey = id || 'new') {
-    setFiltersOpen(false);
     if (id) {
-      // The list filters the saved record, even when its draft has a different company or topic.
+      // Select the saved record even when its draft belongs to a different company.
       const record = notes.find(note => note.id === id);
       if (record && !includesCompany(record.application_id)) selectCompany(record.application_id || 'common');
-      else if (record && topic !== 'all' && (record.related_project?.trim() || 'none') !== topic) setTopic('all');
       setActiveId(id);
     }
     setDraftId(draftKey);
@@ -250,7 +241,6 @@ export default function InterviewPage() {
       await drafts.save(draftId, form, () => editingId ? update(editingId, payload) : add(payload));
       pendingResultFocus.current = true;
       setOpen(false);
-      if (topic !== 'all' && (payload.related_project || 'none') !== topic) setTopic('all');
       setForm(INITIAL);
       // Keep the saved question in view when its company changes while filtered.
       if (!includesCompany(payload.application_id)) selectCompany(payload.application_id || 'common');
@@ -313,34 +303,20 @@ export default function InterviewPage() {
   </PageHeading>
   {drafts.pending && !open && <Alert className="record-draft-notice" severity="info" action={<Button color="inherit" disabled={pageLoading || Boolean(pageError)} onClick={resumeDraft}>이어서 작성</Button>}>저장하지 않은 면접 기록이 있어요. </Alert>}
   <div className="interview-controls">
-    <div className="interview-filter-bar">
-      {filterCount > 0 && <div className="interview-filter-summary">
-        <span>{scopeLabel}{topic !== 'all' ? ` · ${topic === 'none' ? '주제 미지정' : topic}` : ''}</span>
-        <Button disabled={open} onClick={() => { selectCompany('all'); setTopic('all'); }}>필터 해제</Button>
-      </div>}
-      {!pageLoading && !pageError && !missingCompany && filtered.length > 1 && <Field
-        className="mobile-question-select" id="interview-question-select" label="질문 목록" hideLabel select size="small"
-        value={activeNote.id} disabled={open} onChange={event => setActiveId(event.target.value)}
-        slotProps={{ select: {
-          SelectDisplayProps: { 'aria-describedby': open ? undefined : 'practice-question-title' },
-          renderValue: () => <span className="question-picker-caption">질문 목록 <small>{activeIndex + 1} / {filtered.length}</small></span>,
-        } }}>
-        {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {!companyScoped ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
-      </Field>}
-      <Button variant="outlined" startIcon={<TuneOutlined />} aria-label={`필터${filterCount ? ' · 적용 중' : ''}`} aria-expanded={filtersOpen} aria-controls="interview-filters" disabled={open} onClick={() => setFiltersOpen(value => !value)}>
-        필터{filterCount > 0 && <span className="filter-count" aria-hidden="true">{filterCount}</span>}
-      </Button>
-    </div>
-    <div id="interview-filters" className="interview-filter-fields" hidden={!filtersOpen}>
-      <Field id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => scopeLabel } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
-        {Object.entries(SCOPE_LABELS).map(([value, label]) => <MenuItem key={value} value={value}>{label}</MenuItem>)}
-        {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
-        {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
-      </Field>
-      <Field id="interview-topic" select size="small" label="주제" value={topic} disabled={pageLoading || Boolean(pageError) || open} onChange={event => { setTopic(event.target.value); setActiveId(null); }}>
-        <MenuItem value="all">전체 주제</MenuItem>{topics.map(value => <MenuItem key={value} value={value}>{value}</MenuItem>)}<MenuItem value="none">주제 미지정</MenuItem>
-      </Field>
-    </div>
+    <Field className="interview-target-select" id="interview-company-scope" select size="small" label="질문 대상" value={companyScope} slotProps={{ select: { renderValue: () => <span title={scopeLabel}>{scopeLabel}</span> } }} disabled={companiesLoading || Boolean(companiesError) || open} onChange={event => selectCompany(event.target.value)}>
+      {Object.entries(SCOPE_LABELS).map(([value, label]) => <MenuItem key={value} value={value}>{label}</MenuItem>)}
+      {missingCompany && <MenuItem value={companyScope} disabled>{companiesLoading ? '회사 확인 중' : '찾을 수 없는 회사'}</MenuItem>}
+      {applications.map(company => <MenuItem className="interview-company-option" key={company.id} value={company.id}>{company.company_name} · {company.position || '직무 미입력'}</MenuItem>)}
+    </Field>
+    {!pageLoading && !pageError && !missingCompany && activeNote && <Field
+      className="mobile-question-select" id="interview-question-select" label="질문 목록" hideLabel select size="small"
+      value={activeNote.id} disabled={open || filtered.length === 1} onChange={event => setActiveId(event.target.value)}
+      slotProps={{ select: {
+        SelectDisplayProps: { 'aria-describedby': open ? undefined : 'practice-question-title' },
+        renderValue: () => <span className="question-picker-caption"><span className="question-picker-title" title={activeNote.question}>{activeNote.question}</span><small>{activeIndex + 1} / {filtered.length}</small></span>,
+      } }}>
+      {filtered.map((note, index) => <MenuItem className="interview-question-option" key={note.id} value={note.id}>{index + 1}. {!companyScoped ? `${companyLabel(note)} · ` : ''}{note.question}{!note.answer?.trim() ? ' · 답변 준비 전' : ''}</MenuItem>)}
+    </Field>}
   </div>
   <LoadState loading={pageLoading} error={pageError} retry={refreshPage} />
   {!pageLoading && !pageError && missingCompany && <Alert severity="info" action={<Button color="inherit" onClick={() => selectCompany('all')}>전체 질문 보기</Button>}>이 회사의 지원 기록을 찾을 수 없어요. 삭제한 회사인지 확인해주세요.</Alert>}
@@ -396,8 +372,8 @@ export default function InterviewPage() {
       </article>}
     </section>
   </div> : <div className="panel practice-empty" ref={emptyResult} tabIndex={-1} role="region" aria-label="면접 질문 목록 결과">
-    <Empty title={topic !== 'all' ? '이 주제의 질문이 없어요' : selectedCompany ? '이 회사의 질문이 없어요' : companyScope === 'common' ? '공통 질문이 없어요' : '질문이 없어요'}>
-      {topic !== 'all' ? <Button onClick={() => setTopic('all')}>전체 주제 보기</Button> : <Button onClick={startNew}>질문 추가</Button>}
+    <Empty title={selectedCompany ? '이 회사의 질문이 없어요' : companyScope === 'common' ? '공통 질문이 없어요' : '질문이 없어요'}>
+      <Button onClick={startNew}>질문 추가</Button>
     </Empty>
   </div>)}
   </div>
