@@ -34,11 +34,11 @@ function CinemaScenes() {
   const [selected, setSelected] = useState(0);
   return (
     <div className="scene-editor">
-      <div className="scene-frame">
+      <Link className="scene-frame" to="/projects/ott-service" aria-label="잔상관 설계 과정 보기">
         {scenes.map((scene, i) => <img key={scene.src} src={media + scene.src} loading="lazy"
           className={selected === i ? 'active' : ''} alt={selected === i ? scene.alt : ''} aria-hidden={selected !== i} />)}
         <p className="scene-caption" aria-live="polite">{scenes[selected].title} <span>{scenes[selected].info}</span></p>
-      </div>
+      </Link>
       <div className="scene-choices" role="group" aria-label="잔상관 영화 장면 선택">
         {scenes.map((scene, i) => <button key={scene.title} type="button" aria-pressed={i === selected}
           onClick={() => setSelected(i)}>{scene.title}</button>)}

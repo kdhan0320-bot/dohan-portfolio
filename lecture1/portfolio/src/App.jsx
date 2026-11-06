@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -29,6 +29,27 @@ const RouteFallback = () => (
   </Box>
 );
 
+/* 경로가 바뀔 때마다(같은 /projects/:slug 안에서 다음 작품으로 이동하는
+ * 경우도 포함) key를 pathname으로 바꿔 아래 트리를 다시 마운트시킨다.
+ * 리마운트된 요소에 index.css의 .route-transition CSS 애니메이션이 다시
+ * 걸리는 방식으로, 새 라이브러리 없이 페이지 전환에 짧은 페이드를 준다.
+ * 이미 로드된 lazy 청크는 Promise가 캐시돼 있어 재마운트해도 Suspense
+ * fallback이 다시 뜨지 않는다. */
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  return (
+    <Box key={location.pathname} className="route-transition">
+      <Routes location={location}>
+        <Route path="/"              element={<HomePage />} />
+        <Route path="/about"         element={<AboutPage />} />
+        <Route path="/projects"      element={<ProjectsPage />} />
+        <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+        <Route path="*"              element={<NotFoundPage />} />
+      </Routes>
+    </Box>
+  );
+};
+
 const App = () => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
@@ -44,13 +65,7 @@ const App = () => (
        * 여기로 이동하게 한다. */}
       <Box component="main" id="main-content" tabIndex={-1} sx={{ outline: 'none' }}>
       <Suspense fallback={<RouteFallback />}>
-        <Routes>
-          <Route path="/"              element={<HomePage />} />
-          <Route path="/about"         element={<AboutPage />} />
-          <Route path="/projects"      element={<ProjectsPage />} />
-          <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-          <Route path="*"              element={<NotFoundPage />} />
-        </Routes>
+        <AnimatedRoutes />
       </Suspense>
       </Box>
     </HashRouter>

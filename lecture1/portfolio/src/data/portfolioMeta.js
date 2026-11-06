@@ -173,8 +173,8 @@ export const PROJECT_DETAIL_READY = {
   'feedback-hub': {
     role: '현장에서 쓰던 발주·입고·지급 순서를 웹앱의 요구사항으로 정리했습니다.',
     aiCollaboration: [
-      { label: '업무 경험', value: '엑셀과 메일로 구매 요청을 정리하고 종이 결재서를 올렸습니다.' },
-      { label: 'AI 협업', value: '시연 구조와 화면을 제안하고 코드를 작성·검사했습니다.' },
+      { label: '업무 경험', value: '엑셀·메일로 구매 요청 정리, 종이 결재서 제출' },
+      { label: 'AI 협업', value: '시연 구조·화면 제안, 코드 작성·검사' },
     ],
     history: [
       { date: '2026-11-02', type: '입고', amount: '+3개', party: '한결센서', record: 'RC-0001' },
@@ -194,7 +194,7 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['정적 노선·방향·도착 예시', 'Figma 화면 시안'],
       notIncluded: ['실시간 버스 API·차량 위치', 'Push·계정·앱 코드', '실제 운행 안내·사용성 검증'],
     },
-    { responsiveNotApplicable: true, contribution: '버스 도착 정보의 요구사항을 제시했습니다.' },
+    { responsiveNotApplicable: true, contribution: '버스 도착 정보 요구사항 제시' },
   ),
   brewstep: detail(
     'brewstep',
@@ -208,6 +208,6 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['음료·가격·프로모션 예시', '현재 Figma 화면 시안'],
       notIncluded: ['실제 주문·결제·재고', '최신 버전의 완성된 결제 흐름', '앱 코드·사용자 조사'],
     },
-    { responsiveNotApplicable: true, contribution: '카페 모바일 시안의 방향을 선택했습니다.' },
+    { responsiveNotApplicable: true, contribution: '카페 모바일 시안 방향 선택' },
   ),
 };

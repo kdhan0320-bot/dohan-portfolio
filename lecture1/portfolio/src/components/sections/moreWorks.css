@@ -10,7 +10,8 @@
 .industrial-work picture,.industrial-work img { display: block; width: 100%; height: auto; }
 .industrial-work figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 16px; padding: 8px 0; border-bottom: 1px solid var(--line); }
 .industrial-work figcaption > span { color: var(--muted); font-size: 13px; }
-.industrial-destinations { display: flex; flex-wrap: wrap; gap: 0 20px; }
+.industrial-destinations { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 20px; }
+.industrial-destinations-label { width: 100%; color: var(--muted); font-size: 12px; font-weight: 600; }
 .industrial-destinations a { display: inline-flex; align-items: center; gap: 5px; min-height: 44px; color: var(--accent); font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 .remaining-work { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 32px; margin-top: clamp(32px, 4vw, 64px); border-top: 1px solid var(--ink); }
 .remaining-work h2 { padding-top: 18px; font-size: clamp(22px, 2vw, 30px); letter-spacing: -.045em; }

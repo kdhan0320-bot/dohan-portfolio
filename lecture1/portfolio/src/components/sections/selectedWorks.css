@@ -19,7 +19,7 @@
 .case-reason { color: var(--muted); max-width: 43ch; font-size: 16px; line-height: 1.75; }
 .case-read { display: inline-flex; align-items: center; gap: 14px; min-height: 44px; margin-top: 14px; font-weight: 660; font-size: 15px; text-underline-offset: 5px; }
 .case-read:hover { color: var(--accent); }
-.case-credit { font-size: 13px; color: var(--muted); line-height: 1.65; margin-top: 8px; }
+.case-credit { font-size: 13px; font-weight: 600; color: var(--muted); line-height: 1.65; margin-top: 8px; }
 .receipt-proof { margin: 0; }
 .slip-board { display: grid; place-items: center; aspect-ratio: 3 / 2; background: #dfe3e0; }
 .slip-print { display: block; width: 82.552%; position: relative; box-shadow: 0 6px 14px #26323616; }
@@ -34,7 +34,8 @@
 .request-board { display: grid; place-items: center; aspect-ratio: 1.85; background: #e1e7e4; overflow: hidden; }
 .request-board img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .scene-editor { position: relative; background: #202729; color: #fff; }
-.scene-frame { position: relative; overflow: hidden; aspect-ratio: 1.85; }
+.scene-frame { display: block; position: relative; overflow: hidden; aspect-ratio: 1.85; text-decoration: none; }
+.scene-frame:hover .scene-caption { background: linear-gradient(transparent, #0a121add); }
 .scene-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .38s ease; }
 .scene-frame img.active { opacity: 1; }
 .scene-frame img:nth-child(2) { object-position: 50% 42%; }

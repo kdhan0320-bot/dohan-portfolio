@@ -12,6 +12,8 @@ import useInViewOnce from '../../hooks/useInViewOnce';
  * - delay prop으로 카드 stagger 구현
  * - sx prop으로 레이아웃 오버라이드 가능
  * - API(children/delay/y/duration/threshold/sx)는 그대로 유지한다.
+ * - 그 외 props(component/className/id/aria-* 등)는 Box로 그대로 전달된다.
+ *   기존 호출부는 추가 props를 넘기지 않으므로 동작이 바뀌지 않는다.
  */
 const RevealOnScroll = ({
   children,
@@ -20,6 +22,7 @@ const RevealOnScroll = ({
   duration = 0.3,
   threshold = 0.08,
   sx: sxProp,
+  ...rest
 }) => {
   const [skipAnimation, setSkipAnimation] = useState(
     typeof window !== 'undefined'
@@ -62,6 +65,7 @@ const RevealOnScroll = ({
         },
         ...(Array.isArray(sxProp) ? sxProp : sxProp ? [sxProp] : []),
       ]}
+      {...rest}
     >
       {children}
     </Box>

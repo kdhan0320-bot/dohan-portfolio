@@ -23,6 +23,7 @@ const MoreWorksSection = () => (
         <figcaption>
           <span>기준선 웹사이트 · 첫 화면 발췌</span>
           <div className="industrial-destinations">
+            <span className="industrial-destinations-label">기준선 사이트에서 더 보기</span>
             <a href={industrial.liveUrl + '#solutions'} target="_blank" rel="noreferrer">검사 솔루션 보기 <span aria-hidden="true">↗</span></a>
             <a href={industrial.liveUrl + 'adoption.html'} target="_blank" rel="noreferrer">도입 절차 알아보기 <span aria-hidden="true">↗</span></a>
           </div>

@@ -2,6 +2,7 @@ import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-route
 import { ALL_PROJECTS, FEATURED_CASES } from '../data/projectsData';
 import ProcurementCase from './ProcurementCase';
 import AssignmentPreview from '../components/projects/AssignmentPreview';
+import RevealOnScroll from '../components/ui/RevealOnScroll';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
 import { scrollToSection } from '../hooks/useScrollNav';
@@ -108,12 +109,12 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     </header>
     {!ready.creditsOnCover && <div className="case-opening-facts">{credits}{toolsLine}</div>}
     {!ready.imageFirst && cover}
-    <section id="case-context" className="case-section case-context" aria-labelledby="case-context-heading"><div><p className="case-eyebrow">01 / CONTEXT</p><h2 id="case-context-heading">어디에서<br />시작했나요?</h2></div><div className="case-context__body"><div><h3>출발점</h3><p>{ready.context?.summary||ready.context?.problem||project.problem}</p></div><div><h3>화면의 목표</h3><p>{ready.context?.goal||project.goal}</p></div></div></section>
+    <RevealOnScroll component="section" id="case-context" className="case-section case-context" aria-labelledby="case-context-heading"><div><p className="case-eyebrow">01 / CONTEXT</p><h2 id="case-context-heading">어디에서<br />시작했나요?</h2></div><div className="case-context__body"><div><h3>출발점</h3><p>{ready.context?.summary||ready.context?.problem||project.problem}</p></div><div><h3>화면의 목표</h3><p>{ready.context?.goal||project.goal}</p></div></div></RevealOnScroll>
     <section id="case-decisions" className="case-section case-decisions" aria-labelledby="case-decisions-heading">
       <div className="case-section__heading"><p className="case-eyebrow">02 / DESIGN DECISIONS</p><h2 id="case-decisions-heading">{ready.decisionsTitle || '이렇게 구성했습니다.'}</h2></div>
       <div className="case-decisions__list">
         {decisions.map((item, i) => (
-          <section className={`case-decision ${item.showMedia || item.sequence ? 'case-decision--illustrated' : 'case-decision--text'}`} key={item.title}>
+          <RevealOnScroll component="section" delay={Math.min(i, 3) * 0.08} className={`case-decision ${item.showMedia || item.sequence ? 'case-decision--illustrated' : 'case-decision--text'}`} key={item.title}>
             <div className="case-decision__copy">
               <div><span className="case-decision__number">{String(i + 1).padStart(2, '0')}</span><h3>{item.title}</h3></div>
               {item.summary ? <p className="case-decision__summary">{item.summary}</p> :
@@ -123,13 +124,13 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
             {item.sequence && <div className="case-screen-sequence">
               {item.sequence.map(screen => <ScreenFigure key={screen.src} media={screen} label={screen.label} />)}
             </div>}
-          </section>
+          </RevealOnScroll>
         ))}
       </div>
     </section>
-    <section id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}
+    <RevealOnScroll component="section" id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">03 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}{ready.resultLimit?.limit&&<p className="case-limit">{ready.resultLimit.limit}</p>}
       {ready.creditsOnCover && toolsLine}
-    </section>
+    </RevealOnScroll>
   </>;
 };
 
