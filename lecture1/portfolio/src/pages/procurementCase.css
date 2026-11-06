@@ -45,8 +45,8 @@
 .receipt-ledger[data-arrived="true"]::before { animation: ledger-connect .38s ease-out both; transform-origin: top; }
 @keyframes ledger-connect { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .receipt-ledger ol { padding: 0; margin: 12px 0 2px; list-style: none; }
-.receipt-ledger li { display: grid; grid-template-columns: 3.2em 1fr 6em auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
-.receipt-ledger time,.ledger-record { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.receipt-ledger li { display: grid; grid-template-columns: 1fr 6em auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.ledger-record { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 .ledger-event { display: flex; align-items: baseline; gap: 10px; font-size: 15px; }
 .ledger-event span { color: var(--muted); font-size: 13px; }
 .receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--navy); }
@@ -59,7 +59,7 @@
 }
 @media (max-width: 420px) {
   .receipt-sheet figcaption { padding: 4px 10px; gap: 0 8px; font-size: 12px; }
-  .receipt-ledger li { grid-template-columns: auto 1fr auto auto; gap: 8px; }
+  .receipt-ledger li { grid-template-columns: 1fr auto auto; gap: 8px; }
   .ledger-event { gap: 6px; }.ledger-event span,.ledger-record { font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) {

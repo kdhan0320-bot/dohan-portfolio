@@ -84,7 +84,6 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
         <ol>
           {ready.history.map(row => (
             <li key={row.record}>
-              <time dateTime={row.date}>{row.date.slice(5).replace('-', '.')}</time>
               <span className="ledger-event"><strong>{row.type}</strong><span>{row.party}</span></span>
               <span className="ledger-record">{row.record}</span>
               <b>{row.amount}</b>
@@ -92,7 +91,7 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
           ))}
         </ol>
         <a className="text-link" href={liveUrl + ready.historyPath} target="_blank" rel="noreferrer">
-          품의선에서 원본 이력 보기 <span aria-hidden="true">↗</span>
+          품의선에서 실시간 이력 보기 <span aria-hidden="true">↗</span>
         </a>
       </section>
     </section>

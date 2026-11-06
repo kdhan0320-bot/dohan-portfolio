@@ -176,9 +176,11 @@ export const PROJECT_DETAIL_READY = {
       { label: '업무 경험', value: '엑셀·메일로 구매 요청 정리, 종이 결재서 제출' },
       { label: 'AI 협업', value: '시연 구조·화면 제안, 코드 작성·검사' },
     ],
+    // 날짜는 싣지 않는다 — 품의선 샘플은 방문 시점 기준 상대 날짜(ago())로 매번
+    // 다시 계산되므로, 여기 고정 날짜를 적으면 실제 공개 앱과 반드시 어긋난다.
     history: [
-      { date: '2026-11-02', type: '입고', amount: '+3개', party: '한결센서', record: 'RC-0001' },
-      { date: '2026-11-04', type: '지급', amount: '−2개', party: '설비보전팀', record: 'IS-0001' },
+      { type: '입고', amount: '+3개', party: '한결센서', record: 'RC-0001' },
+      { type: '지급', amount: '−2개', party: '설비보전팀', record: 'IS-0001' },
     ],
     historyPath: '#/materials/MT-0001#movement-history',
   },
