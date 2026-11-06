@@ -849,9 +849,8 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 .revision-direction { color: #6a7c92; }
 .revision-summary p { font-size: 14px; line-height: 1.6; color: #5d6b7d; }
 .revision-summary button { display: inline-flex; align-items: center; min-height: 44px; margin-top: 2px; font-size: 13px; color: #4267a5; text-decoration: underline; text-underline-offset: 3px; }
-@media (max-width: 1100px) and (min-width: 681px) {
-  .erp-table thead th, .revision-table thead th { padding-inline: 16px; }
-  .purchase-list .request-table-row, .purchase-list .table-heading { padding-inline: 16px; }
+@media (min-width: 681px) {
+  .item-table .item-row { padding-inline: 20px; }
 }
 @media (max-width: 680px) {
   .register-head { gap: 8px; }
