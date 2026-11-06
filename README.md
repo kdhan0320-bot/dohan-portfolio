@@ -52,6 +52,8 @@ GitHub Actions는 네 React 작품을 npm ci로 설치하고 lint·build·기존
 
 ## 자료 위치
 
+직접 만드는 작업 사본과 검수 출력은 현재 D드라이브 작업실에 둡니다. 자동 검수 출력은 tools/site-audit-kit/audit-output, 보존할 검수 자료는 review를 사용합니다. C드라이브의 과거 임시 경로를 다시 작업 위치로 사용하지 않습니다.
+
 - [현재 색상 기준](docs/design/포트폴리오-색상-기준.md)과 [이전 PiCKCARE 참고 원문](docs/references/PiCKCARE-팔레트-원문-20260608.md)
 - [검수 도구](tools/site-audit-kit/README.md): Playwright 실행·캡처·결과 정리
 - [이전 검수 캡처](review/README.md): 코드와 분리한 화면·결과 기록
