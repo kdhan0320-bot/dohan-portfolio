@@ -104,7 +104,18 @@ export function PageHead({ eyebrow, title, children, action, register }) {
     {action}
   </header>;
 }
-export function Empty({ title = '표시할 기록이 없습니다.', children }) { return <div className="empty"><span className="empty-icon"><Icon name="file" size={28}/></span><h3>{title}</h3>{children}</div>; }
+// Echoes the document register marks: a folded-corner slip with empty,
+// dashed rows — the same "nothing recorded yet" idiom as 미입고 elsewhere.
+function EmptyMark() {
+  return <svg className="empty-mark" viewBox="0 0 28 28" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 4h10l4 4v16H7Z"/>
+      <path d="M17 4v4h4"/>
+      <path d="M10.5 14h7M10.5 18h4.5" strokeDasharray="2.2 2.6"/>
+    </g>
+  </svg>;
+}
+export function Empty({ title = '표시할 기록이 없습니다.', children }) { return <div className="empty"><span className="empty-icon"><EmptyMark/></span><h3>{title}</h3>{children}</div>; }
 // Keep an explicit date format while retaining the browser's calendar picker.
 export function DateInput({ label, value, onChange, onBlur, min, max, ...props }) {
   const picker = useRef(null), text = useRef(null);

@@ -1216,6 +1216,11 @@ main {
   margin:0 auto 20px;
 }
 
+.empty-mark {
+  width:30px;
+  height:30px;
+}
+
 .empty h3 {
   font-size:14px;
   color:#576985;
