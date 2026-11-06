@@ -54,9 +54,24 @@
 }
 
 .adoption-step h2 span {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
   flex: 0 0 42px;
+  height: 42px;
   color: var(--action);
   font-size: 26px;
+}
+
+/* 검사 예시 확대 화면의 코너 브라켓 표식을 단계 번호 배지에도 재사용합니다. */
+.adoption-step h2 span:before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background-color: currentColor;
+  -webkit-mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  opacity: .85;
 }
 
 .adoption-step-lead {
@@ -238,6 +253,7 @@
   }
   .adoption-step h2 span {
     flex-basis: 34px;
+    height: 34px;
     font-size: 22px;
     line-height: 34px;
   }

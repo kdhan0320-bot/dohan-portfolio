@@ -326,8 +326,13 @@
   transition: width .2s
 }
 
+/* 평면 다크 배경에 아주 옅은 격자를 깔아 "센서/스캔" 질감을 암시합니다.
+   선 투명도가 낮아 흰 글자 대비에는 영향을 주지 않습니다. */
 .introduction {
-  background: var(--dark);
+  background:
+    repeating-linear-gradient(0deg,#ffffff14 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,#ffffff14 0 1px,transparent 1px 56px),
+    var(--dark);
   color: white;
   padding-block: 56px;
   scroll-margin-top: 24px
@@ -384,8 +389,27 @@
   margin-top: 16px
 }
 
+/* 어두운 배경에서는 흰 글자색을 그대로 물려받아 브라켓이 자동으로 밝게 보입니다.
+   (현재 Figma 01_전체디자인의 이 구간도 흰 글자이며, 과거 숨김 처리된 이전 그룹에만
+   강조색이 남아 있었음을 확인했습니다 — 2026-11-06 재확인) */
 .intro-steps h3 span {
-  margin-right: 10px
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 32px;
+  min-height: 26px;
+  padding: 2px 6px;
+  margin-right: 8px
+}
+
+.intro-steps h3 span:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  -webkit-mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  opacity: .9
 }
 
 .step-description {
@@ -404,7 +428,10 @@
 
 .home-consultation {
   padding-block: 0;
-  background: var(--dark);
+  background:
+    repeating-linear-gradient(0deg,#ffffff14 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,#ffffff14 0 1px,transparent 1px 56px),
+    var(--dark);
   color: var(--page)
 }
 

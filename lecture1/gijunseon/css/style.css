@@ -396,7 +396,13 @@ a,button {
 .implementation-button:hover { border-color: var(--action-hover); color: var(--action-hover); }
 
 /* 세 서브페이지의 상담 영역은 높이·제목·버튼을 같은 기준으로 맞춥니다. */
-.consultation-band-dark { background: var(--dark); color: var(--surface); }
+.consultation-band-dark {
+  background:
+    repeating-linear-gradient(0deg,#ffffff14 0 1px,transparent 1px 56px),
+    repeating-linear-gradient(90deg,#ffffff14 0 1px,transparent 1px 56px),
+    var(--dark);
+  color: var(--surface);
+}
 .consultation-band-inner {
   position: relative;
   display: flex;

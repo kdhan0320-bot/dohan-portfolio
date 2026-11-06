@@ -29,8 +29,26 @@ body[data-page="process"] > main {
   margin-bottom: 12px
 }
 
+/* 코너 브라켓 배지. 검사 예시 확대 화면의 바운딩 박스 표식을 공정 단계 번호에도 재사용해
+   "비전 검사" 브랜드를 전역에서 일관되게 느끼게 합니다. 색은 섹션별 currentColor를 따릅니다. */
 .process-step span {
-  margin-right: 24px
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  min-height: 26px;
+  padding: 2px 6px;
+  margin-right: 18px
+}
+
+.process-step span:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  -webkit-mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  mask: url(../assets/brand/corner-frame.svg) center/100% 100% no-repeat;
+  opacity: .85
 }
 
 .process-step.teal {
