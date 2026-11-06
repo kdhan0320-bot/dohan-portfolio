@@ -3,7 +3,7 @@
 상위 AGENTS.md와 README.md를 따릅니다. 실제 작품 코드는 이 lecture1 폴더 안에서 수정합니다.
 
 - portfolio: 공통 포트폴리오 · 공개 경로 /dohan-portfolio/my-portfolio/
-- pumuiseon: 품의선 · 공개 경로 /dohan-portfolio/portfolio-feedback-hub/
+- pumuiseon: 품의선 · 공개 경로 /dohan-portfolio/pumuiseon/ (이전 portfolio-feedback-hub·my-community 주소는 상세 경로를 유지해 이동)
 - galpirok: 갈피록 · 공개 경로 /dohan-portfolio/jobflow-dashboard/
 - jansang-cinema: 잔상관 · 공개 경로 /dohan-portfolio/ott-service/
 - gijunseon: 기준선 · 공개 경로 /dohan-portfolio/gijunseon/

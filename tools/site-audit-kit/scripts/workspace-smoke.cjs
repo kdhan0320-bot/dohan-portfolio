@@ -9,6 +9,7 @@ const remote = process.env.AUDIT_SITE_URL;
 const output = path.join(__dirname, '../audit-output/workspace-reorganization', remote ? 'public' : 'local');
 const mounts = {
   'my-portfolio': 'lecture1/portfolio/dist',
+  'pumuiseon': 'lecture1/pumuiseon/dist',
   'portfolio-feedback-hub': 'lecture1/pumuiseon/dist',
   'jobflow-dashboard': 'lecture1/galpirok/dist',
   'mini-sns': 'lecture1/mini-sns/dist',
@@ -19,8 +20,8 @@ const types = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css',
 const cases = [
   ['home','my-portfolio/'], ['about','my-portfolio/#/about'], ['works','my-portfolio/#/projects'],
   ...['feedback-hub','seolbiit','gongjeongbom','ott-service','jobflow','bus-arrival','brewstep'].map(slug => [slug,`my-portfolio/#/projects/${slug}`]),
-  ['pumuiseon','portfolio-feedback-hub/'], ['requests','portfolio-feedback-hub/#/requests'], ['new-request','portfolio-feedback-hub/#/requests/new'],
-  ['materials','portfolio-feedback-hub/#/materials'], ['orders','portfolio-feedback-hub/#/orders'],
+  ['pumuiseon','pumuiseon/'], ['requests','pumuiseon/#/requests'], ['new-request','pumuiseon/#/requests/new'],
+  ['materials','pumuiseon/#/materials'], ['orders','pumuiseon/#/orders'],
   ['galpirok','jobflow-dashboard/'], ['mini-sns','mini-sns/'], ['jansang','ott-service/'],
   ...['index','inspection','process','adoption','consultation','implementation'].map(name=>[`gijunseon-${name}`,`gijunseon/${name}.html`]),
 ];

@@ -192,7 +192,7 @@ function RequestDetail() {
           {approved || ordered ? <StateTag tone="green">최종 승인</StateTag> : <WorkflowStatus data={data} request={request}/>}
         </div>
         <h1 tabIndex="-1">{request.title || '제목 없는 품의'}</h1>
-        {compact && <RevisionSummary request={request}/>}{reasonFirst && purchaseReason}
+        <RevisionSummary request={request}/>{reasonFirst && purchaseReason}
         <p className="document-meta">{request.department} · 최근 변경 {timestamp(request.updatedAt)}</p>
         {(approved || ordered) && <div className="linked-order-status">
           {ordered

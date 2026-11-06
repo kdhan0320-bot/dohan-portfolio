@@ -848,9 +848,20 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 .revision-summary dd strong { color: #294d7e; font-weight: 600; }
 .revision-direction { color: #6a7c92; }
 .revision-summary p { font-size: 14px; line-height: 1.6; color: #5d6b7d; }
-.revision-summary button { display: inline-flex; align-items: center; min-height: 44px; margin-top: 2px; font-size: 13px; color: #4267a5; text-decoration: underline; text-underline-offset: 3px; }
+.revision-summary button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; margin-top: 2px; padding: 9px 12px; border: 1px solid #cedae7; border-radius: 4px; background: #eef3f9; font-size: 13px; line-height: 24px; color: #365b91; cursor: pointer; }
+.revision-summary button:hover { background: #e2ebf5; }
+.revision-summary button:focus-visible { outline: 2px solid #4267a5; outline-offset: 3px; }
 @media (min-width: 681px) {
   .item-table .item-row { padding-inline: 20px; }
+  .revision-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: end; }
+  .revision-summary h2 { grid-column: 1 / -1; margin: 0; }
+  .revision-summary dl { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px 24px; }
+  .revision-summary button { margin: 0; font-size: 14px; white-space: nowrap; }
+}
+@media (min-width: 1101px) {
+  /* Match table-cell gutters: a right-aligned amount and the next date stay distinct. */
+  .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: 28% 18% 12% 26% 16%; gap: 0; padding-inline: 0; }
+  .purchase-list .table-heading > span, .purchase-list .request-table-row > * { min-width: 0; padding-inline: 20px; }
 }
 @media (max-width: 680px) {
   .register-head { gap: 8px; }

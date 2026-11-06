@@ -85,11 +85,13 @@ jobs:
           cp _site/mini-sns/index.html _site/mini-sns/404.html
           cp -r lecture1/portfolio/dist/. _site/my-portfolio
           cp _site/my-portfolio/index.html _site/my-portfolio/404.html
-          cp -r lecture1/pumuiseon/dist/. _site/portfolio-feedback-hub
-          cp _site/portfolio-feedback-hub/index.html _site/portfolio-feedback-hub/404.html
-          mkdir -p _site/my-community
-          cp lecture1/pumuiseon/legacy-my-community-redirect.html _site/my-community/index.html
-          cp lecture1/pumuiseon/legacy-my-community-redirect.html _site/my-community/404.html
+          cp -r lecture1/pumuiseon/dist/. _site/pumuiseon
+          cp _site/pumuiseon/index.html _site/pumuiseon/404.html
+          mkdir -p _site/portfolio-feedback-hub _site/my-community
+          for legacy in portfolio-feedback-hub my-community; do
+            cp lecture1/pumuiseon/legacy-my-community-redirect.html "_site/$legacy/index.html"
+            cp lecture1/pumuiseon/legacy-my-community-redirect.html "_site/$legacy/404.html"
+          done
           cp -r lecture1/galpirok/dist/. _site/jobflow-dashboard
           cp _site/jobflow-dashboard/index.html _site/jobflow-dashboard/404.html
           mkdir -p _site/ott-service
