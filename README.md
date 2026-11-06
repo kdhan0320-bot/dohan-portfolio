@@ -1,6 +1,8 @@
 # 김도한 포트폴리오 작업공간
 
-작품 수정, 검수, Git 기록, 기존 GitHub Pages 배포를 이 저장소에서 관리합니다. 실제 작품 폴더는 lecture1입니다.
+기존 웹 작품과 공통 포트폴리오의 수정·검수·Git 기록·GitHub Pages 배포를 이 저장소에서 관리합니다. 실제 작품 폴더는 lecture1입니다.
+
+전체 작업실은 `D:\Archive\my_ai_web`입니다. 새 독립 AI 작품은 상위 ai-projects, 디자인 원본은 design-resources, 이전 버전은 backups에서 관리합니다. 현재 웹 작품은 이 저장소에서 계속 작업합니다.
 
 로컬 작업 위치: `D:\Archive\my_ai_web\portfolio-workspace`
 
@@ -53,5 +55,6 @@ GitHub Actions는 네 React 작품을 npm ci로 설치하고 lint·build·기존
 - [이전 검수 캡처](review/README.md): 코드와 분리한 화면·결과 기록
 - 각 작품의 docs/HISTORY.md: 기존 제작 이력·기여 설명·검증 범위
 - [이름 변경과 복구 안내](docs/workspace-migration.md)
+- [클로드 교차 검토 방법과 요청문](docs/cross-review.md)
 
 로컬 백업은 작업 폴더 밖의 `D:\Archive\my_ai_web\backups`에 보관합니다. node_modules·dist는 재생성 자료이며 Git에 넣지 않습니다. package-lock.json은 설치 재현을 위해 Git에 보관합니다. .env 및 .claude 로컬 설정은 공개하지 않습니다.
