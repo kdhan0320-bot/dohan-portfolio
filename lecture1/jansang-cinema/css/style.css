@@ -1847,6 +1847,9 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 .feature-cover h1 em { display: inline-block; }
 .feature-cover .discovery-intro { max-width: none; margin-top: 8px; }
+/* Ties the cover headline to the same bespoke display face used on each poster title. */
+.feature-cover .discovery-copy h1 { font-family: "Jansang Display", Pretendard, serif; font-weight: 650; }
+.feature-cover .hero-eyebrow { letter-spacing: .16em; }
 .feature-credit {
   position: absolute;
   z-index: 1;
@@ -1859,7 +1862,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   color: #f6f3ed;
   text-shadow: 0 1px 5px #101720;
 }
-.feature-kicker { grid-column: 1 / -1; font-size: 13px; }
+.feature-kicker { grid-column: 1 / -1; font-size: 13px; letter-spacing: .16em; }
 .feature-credit .spotlight-title { font-size: clamp(20px, 1.8vw, 27px); }
 .feature-meta { font-size: 14px; }
 .scene-preview { background-size: cover; background-repeat: no-repeat; }
