@@ -26,66 +26,78 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Install dependencies (mini_sns)
-        working-directory: projects/mini_sns
+      - name: Install dependencies (Mini SNS)
+        working-directory: lecture1/mini-sns
         run: npm ci
 
-      - name: Build mini_sns
-        working-directory: projects/mini_sns
+      - name: Build Mini SNS
+        working-directory: lecture1/mini-sns
         env:
           NODE_ENV: production
-        run: npm run build
+        run: |
+          npm run lint
+          npm run build
 
-      - name: Install dependencies (my-portfolio)
-        working-directory: projects/my-portfolio
+      - name: Install dependencies (Portfolio)
+        working-directory: lecture1/portfolio
         run: npm ci
 
-      - name: Build my-portfolio
-        working-directory: projects/my-portfolio
-        run: npm run build
+      - name: Build Portfolio
+        working-directory: lecture1/portfolio
+        run: |
+          npm run lint
+          npm run build
 
-      - name: Install dependencies (Portfolio Feedback Hub)
-        working-directory: projects/portfolio-feedback-hub
+      - name: Install dependencies (Pumuiseon)
+        working-directory: lecture1/pumuiseon
         run: npm ci
 
-      - name: Build Portfolio Feedback Hub
-        working-directory: projects/portfolio-feedback-hub
+      - name: Build Pumuiseon
+        working-directory: lecture1/pumuiseon
+        run: |
+          npm run lint
+          npm run build
+
+      - name: Install dependencies (Galpirok)
+        working-directory: lecture1/galpirok
+        run: npm ci
+
+      - name: Build Galpirok
+        working-directory: lecture1/galpirok
         env:
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: npm run build
-
-      - name: Install dependencies (jobflow-dashboard)
-        working-directory: projects/jobflow-dashboard
-        run: npm ci
-
-      - name: Build jobflow-dashboard
-        working-directory: projects/jobflow-dashboard
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           NODE_ENV: production
-        run: npm run build
+        run: |
+          npm run lint
+          npm run build
+
+      - name: Verify existing application rules
+        run: |
+          node --test lecture1/pumuiseon/tests/*.test.mjs
+          node --test lecture1/galpirok/tests/*.test.mjs
 
       - name: Prepare site directory
         run: |
           mkdir -p _site
           cp index.html _site/index.html
-          cp -r projects/mini_sns/dist/. _site/mini-sns
+          cp -r lecture1/mini-sns/dist/. _site/mini-sns
           cp _site/mini-sns/index.html _site/mini-sns/404.html
-          cp -r projects/my-portfolio/dist/. _site/my-portfolio
+          cp -r lecture1/portfolio/dist/. _site/my-portfolio
           cp _site/my-portfolio/index.html _site/my-portfolio/404.html
-          cp -r projects/portfolio-feedback-hub/dist/. _site/portfolio-feedback-hub
+          cp -r lecture1/pumuiseon/dist/. _site/portfolio-feedback-hub
           cp _site/portfolio-feedback-hub/index.html _site/portfolio-feedback-hub/404.html
           mkdir -p _site/my-community
-          cp projects/portfolio-feedback-hub/legacy-my-community-redirect.html _site/my-community/index.html
-          cp projects/portfolio-feedback-hub/legacy-my-community-redirect.html _site/my-community/404.html
-          cp -r projects/jobflow-dashboard/dist/. _site/jobflow-dashboard
+          cp lecture1/pumuiseon/legacy-my-community-redirect.html _site/my-community/index.html
+          cp lecture1/pumuiseon/legacy-my-community-redirect.html _site/my-community/404.html
+          cp -r lecture1/galpirok/dist/. _site/jobflow-dashboard
           cp _site/jobflow-dashboard/index.html _site/jobflow-dashboard/404.html
           mkdir -p _site/ott-service
-          cp -r "projects/OTT Service/." _site/ott-service
+          cp lecture1/jansang-cinema/index.html _site/ott-service/
+          cp -r lecture1/jansang-cinema/assets lecture1/jansang-cinema/css lecture1/jansang-cinema/js _site/ott-service/
           mkdir -p _site/gijunseon
-          cp -r projects/gijunseon/. _site/gijunseon
+          cp lecture1/gijunseon/*.html _site/gijunseon/
+          cp -r lecture1/gijunseon/assets lecture1/gijunseon/css lecture1/gijunseon/js _site/gijunseon/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

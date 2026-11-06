@@ -1,4 +1,4 @@
-// projects/my-portfolio 검사용 정적 리뷰 페이지를 생성하는 스크립트.
+// lecture1/portfolio 검사용 정적 리뷰 페이지를 생성하는 스크립트.
 // 결과물은 저장소에 커밋되는 my-portfolio가 아니라, tools/site-audit-kit/audit-output/
 // portfolio-review/ 아래(이 폴더의 .gitignore audit-output/ 규칙으로 Git 추적 제외)에
 // 만든다. tools/site-audit-kit에 이미 설치된 @playwright/test(Chromium)를 재사용하며,
@@ -10,7 +10,7 @@
 // 1. git status 확인
 // 2. Playwright/Chromium 실행 가능 여부 확인
 // 3. 기존 review 결과물 중 허용된 생성 파일만 정리
-// 4. projects/my-portfolio npm run build (캡처용, 1회만 실행)
+// 4. lecture1/portfolio npm run build (캡처용, 1회만 실행)
 // 5. 로컬 Vite Preview 서버 시작
 // 6. 서버 응답 대기
 // 7. 메인 포트폴리오 데스크톱·모바일 캡처
@@ -28,7 +28,7 @@ const { chromium } = require('@playwright/test');
 
 const SITE_AUDIT_DIR = path.resolve(__dirname, '..');
 const REPO_ROOT = path.resolve(SITE_AUDIT_DIR, '..', '..');
-const PORTFOLIO_DIR = path.join(REPO_ROOT, 'projects', 'my-portfolio');
+const PORTFOLIO_DIR = path.join(REPO_ROOT, 'lecture1', 'portfolio');
 const REVIEW_DIR = path.join(SITE_AUDIT_DIR, 'audit-output', 'portfolio-review');
 const ASSETS_DIR = path.join(REVIEW_DIR, 'assets');
 
@@ -538,8 +538,8 @@ async function main() {
       }
       fs.mkdirSync(ASSETS_DIR, { recursive: true });
 
-      // 4. projects/my-portfolio npm run build (캡처용, 1회만 실행)
-      log('4/12', 'projects/my-portfolio npm run build 시작');
+      // 4. lecture1/portfolio npm run build (캡처용, 1회만 실행)
+      log('4/12', 'lecture1/portfolio npm run build 시작');
       await run('npm', ['run', 'build'], { cwd: PORTFOLIO_DIR });
       log('4/12', 'npm run build 완료');
 

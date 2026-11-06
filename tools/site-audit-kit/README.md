@@ -1,5 +1,22 @@
 # Site Audit Kit
 
+## 현재 폴더 구조 검수
+
+저장소 루트에서 네 React 작품을 빌드한 뒤 다음 명령으로 현재 공개 경로와 화면을 확인합니다. 기존 설치된 Microsoft Edge를 사용하며 추가 브라우저 다운로드가 필요하지 않습니다.
+
+```powershell
+node tools/site-audit-kit/scripts/workspace-smoke.cjs
+
+$env:AUDIT_SITE_URL='https://kdhan0320-bot.github.io/dohan-portfolio/'
+node tools/site-audit-kit/scripts/workspace-smoke.cjs
+Remove-Item Env:AUDIT_SITE_URL
+```
+
+PC 1440·모바일 390에서 24개 화면, 홈의 14개 폭, 표지 펼치기·샘플 대화상자·게스트 진입을 검사합니다. 캡처와 결과는 audit-output/workspace-reorganization에 저장되고 Git에서는 제외됩니다. 계정 로그인이나 실제 DB 쓰기를 검사하는 명령은 아닙니다. 자동 검사와 별도로 주요 PNG를 열어 시각 검토합니다.
+
+아래 기존 audit·audit:detailed·audit:projects에는 과거 QHD 원형 장식과 섹션 배치를 전제로 한 항목이 있습니다. 현재 접힌 표지 디자인에 그대로 적용한 결과를 배포 합격 기준으로 사용하지 않습니다. 과거 회귀 근거는 보존하고 새 화면에 맞는 검사를 선택합니다.
+
+
 ## 목적
 Playwright로 실제 브라우저를 열어 배포된 사이트의 스크린샷·콘솔 오류·링크·
 반응형 화면을 점검하고, 결과를 `audit-output/report.md`와 스크린샷 PNG로
@@ -27,10 +44,10 @@ Playwright로 실제 브라우저를 열어 배포된 사이트의 스크린샷�
 npm run audit                 # 전체 점검 (playwright test) - 5개 기본 viewport
 npm run audit:headed          # 브라우저 화면을 보면서 실행
 npm run audit:ui              # Playwright UI 모드
-npm run audit:detailed        # 9개 viewport(390~2560) 상세 점검
+npm run audit:detailed        # 14개 viewport(390~2560) 과거 디자인 상세 점검
 npm run audit:detailed:headed # 위 상세 점검을 브라우저 화면 보면서 실행
 npm run audit:routes          # 6개 route(회귀) + 200% equivalent reflow proxy (390/1440/2560)
-npm run audit:projects        # /projects 전용 6개 viewport(390~2560) — Featured/More Works 공개 사실성·QHD index·link semantics
+npm run audit:projects        # /projects 전용 11개 viewport(390~2560) — Featured/More Works 공개 사실성·QHD index·link semantics
 npm run zip                    # audit-output -> site-audit-result.zip
 npm run clean                  # audit-output/screenshots 와 report.md 초기화
 ```
@@ -100,7 +117,7 @@ Feedback Hub)를 실제 Chromium으로 캡처해서, ChatGPT 업로드용 검토
   `portfolio-review.pdf`, `assets/*.png`)
 - 재생성 가능한 로컬 산출물이며, 이 폴더는 `.gitignore`의 `audit-output/`
   규칙으로 Git 추적·GitHub Pages 배포 대상에서 제외된다.
-- 실행 전 `projects/my-portfolio`의 dependency 설치(`npm install`)와
+- 실행 전 `lecture1/portfolio`의 dependency 설치(`npm install`)와
   `tools/site-audit-kit`의 Chromium(`@playwright/test`)이 필요하다.
 
 ## 자동 검사와 수동 QA

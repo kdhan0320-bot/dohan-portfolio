@@ -40,3 +40,7 @@ npm-debug.log*
 
 # 백업 파일
 *.bak
+
+# Local assistant settings and generated previews
+.claude/
+_site/
