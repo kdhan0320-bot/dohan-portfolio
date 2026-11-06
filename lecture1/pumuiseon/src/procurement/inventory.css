@@ -572,7 +572,6 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 .row-link-table .row-link:focus-visible::after { outline:2px solid #4267a5;outline-offset:-3px; }
 .cell-dates small { white-space:nowrap; }
 .panel-head h2>small { margin-left:10px;font-size:13px;font-weight:400;color:#647185; }
-.purchase-list .table-heading small { display:block;font-size:12px;line-height:18px;color:#718094;font-weight:400; }
 .requests-panel .list-caption { padding:10px 24px;margin:0;justify-content:flex-start;gap:4px; }
 @media(min-width:1101px) {
   .sidebar nav { gap:12px; }
@@ -832,7 +831,7 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
 }
 .erp-table thead th, .revision-table thead th { background: transparent; color: inherit; padding: 12px 20px; height: 60px; font-size: 14px; font-weight: 500; line-height: 20px; vertical-align: middle; }
 .purchase-list .table-heading, .item-table .item-head { min-height: 60px; padding: 9px 20px; margin: 0; border-radius: 0; font-size: 14px; font-weight: 500; line-height: 20px; }
-.purchase-list .table-heading small { color: #626f81; }
+.purchase-table-note { display: none; }
 .request-table.purchase-list { padding: 0; }
 .purchase-list .request-table-row { padding-inline: 20px; }
 .erp-table .cell-main > .row-link { font-size: 16px; line-height: 24px; }
@@ -859,9 +858,12 @@ a:is(:hover,:focus-visible) .link-label>span,.row-link-table tr:is(:hover,:focus
   .revision-summary button { margin: 0; font-size: 14px; white-space: nowrap; }
 }
 @media (min-width: 1101px) {
-  /* Match table-cell gutters: a right-aligned amount and the next date stay distinct. */
-  .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: 28% 18% 12% 26% 16%; gap: 0; padding-inline: 0; }
+  /* Center the date between the amount and status; keep every header on one baseline. */
+  .purchase-table-note { display: block; margin: 0; padding: 8px 20px; text-align: right; color: #626f81; font-size: 12px; line-height: 18px; }
+  .purchase-list .table-heading, .purchase-list .request-table-row { grid-template-columns: minmax(0, 2.8fr) minmax(120px, 1.6fr) minmax(156px, 1.5fr) minmax(0, 2.5fr) minmax(122px, 1.6fr); gap: 0; padding-inline: 0; }
   .purchase-list .table-heading > span, .purchase-list .request-table-row > * { min-width: 0; padding-inline: 20px; }
+  .purchase-list .table-heading > span { white-space: nowrap; }
+  .purchase-list .table-heading > span:nth-child(3), .purchase-list .table-date { text-align: center; }
 }
 @media (max-width: 680px) {
   .register-head { gap: 8px; }
