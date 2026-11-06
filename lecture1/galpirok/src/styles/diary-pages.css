@@ -154,10 +154,10 @@
   border: 0;
   border-radius: 2px;
   clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 0 100%);
-  background: var(--record-wash);
-  color: var(--record-blue);
+  background: var(--record-blue);
+  color: #fff;
   font-size: 15px;
-  font-weight: 550;
+  font-weight: 600;
 }
 .workspace-diary :is(.job-tile, .grouped-checklist .company-record) {
   box-shadow: 2px 2px 0 -1px #fff, 2px 2px 0 var(--line);
@@ -172,7 +172,7 @@
   width: calc(var(--index-width, 32px) + var(--tile-inset));
   padding-inline-start: var(--tile-inset); border-radius: 0 2px 2px 0;
 }
-.workspace-diary .job-tile .job-company { font-size: 16px; }
+.workspace-diary .job-tile .job-company { font-size: 16px; font-weight: 600; }
 .workspace-diary .job-tile .job-tile-bottom { width: 100%; margin: 0; padding: 12px 0 0; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .workspace-diary .job-tile .job-date time { color: var(--ink); font-variant-numeric: tabular-nums; }
 .workspace-diary .job-tile .board-schedule {
@@ -182,11 +182,20 @@
 .workspace-diary .job-tile .board-schedule time {
   padding: 2px 7px; background: var(--record-wash); color: inherit;
   clip-path: polygon(0 0, calc(100% - 5px) 0, 100% 5px, 100% 100%, 0 100%);
-  font-size: 14px; line-height: 20px; font-weight: 600;
+  font-size: 16px; line-height: 22px; font-weight: 600;
 }
 .workspace-diary .job-tile .board-schedule.overdue { color: var(--record-rose); }
 .workspace-diary .job-tile .board-schedule.overdue time { background: #f2e7e9; }
-.workspace-diary .job-tile .job-tile-preparation { width: 100%; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+.workspace-diary .job-tile .job-tile-preparation { display: flex; flex-direction: column; gap: 3px; width: 100%; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--line); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-wrap: anywhere; }
+/* Company index = identity, blue date = schedule, mint label = next action. */
+.record-next-label { color: var(--mint-ink); font-size: 12px; font-weight: 600; line-height: 1.5; }
+.record-next-copy { font-weight: 500; }
+.record-next-copy small { white-space: nowrap; }
+.record-next-copy small, .record-next-empty { color: var(--muted); font-size: 13px; font-weight: 400; }
+.diary-entry:not(.diary-entry-review) .diary-entry-next > span { color: var(--mint-ink); font-weight: 600; }
+.diary-entry:not(.diary-entry-review) .diary-entry-next:not(.is-quiet) p { font-weight: 500; }
+.diary-welcome .preview-preparation li:first-child { color: var(--ink); font-weight: 550; }
+.diary-welcome .preview-preparation li:not(:first-child) { color: var(--muted); }
 .workspace-diary .applications-view-nav { margin-bottom: 20px; gap: 12px; }
 .workspace-diary .applications-view-nav a { border: 1px solid transparent; }
 .workspace-diary .applications-view-nav a[aria-current] { background: var(--action-tint); border-color: #ded7e6; }
@@ -208,11 +217,19 @@
   .workspace-diary .board-calendar-link { color: var(--ink-action); border-radius: 5px; }
   .workspace-diary .board-calendar-link:hover { font-weight: 650; }
   .workspace-diary .board-calendar-link:focus-visible { outline: 2px solid var(--focus); }
-  .workspace-diary .workspace-main .mobile-board-tabs { min-height: 44px; margin-bottom: 6px; }
-  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root { min-height: 44px; padding: 4px 2px; }
-}
-@media (min-width: 375px) and (max-width: 699px) {
-  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root > span { flex-direction: row; gap: 4px; }
+  .workspace-diary .workspace-main .mobile-board-tabs { min-height: 50px; margin-bottom: 12px; }
+  .workspace-diary .mobile-board-tabs :is(.MuiTabs-list, .MuiTabs-flexContainer) { gap: 4px; }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root {
+    min-width: 0; min-height: 50px; padding: 5px 2px; border: 1px solid var(--line);
+    border-radius: 3px 8px 3px 3px; background: #f7f6f8; color: var(--muted); font-size: 14px;
+  }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root > span { flex-direction: column; gap: 1px; line-height: 20px; }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root > span > b { font-size: 12px; line-height: 16px; color: inherit; }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root.Mui-selected {
+    background: var(--ink-action); border-color: var(--ink-action); color: #fff; font-weight: 650;
+  }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root.Mui-selected > span > b { font-weight: 550; }
+  .workspace-diary .workspace-main .mobile-board-tabs .MuiTab-root.Mui-selected:focus-visible { outline-color: #fff; }
 }
 @media (max-width: 374px) {
   .workspace-diary .board-search .MuiInputAdornment-positionStart { display: none; }

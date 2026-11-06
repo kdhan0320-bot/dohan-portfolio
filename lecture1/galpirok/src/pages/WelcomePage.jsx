@@ -35,9 +35,9 @@ export default function WelcomePage() {
   useLayoutEffect(() => {
     if (practicing) titleRef.current?.focus({ preventScroll: true });
   }, [practicing]);
-  function openPreview(id) {
+  function openPreview(id, practice = false) {
     setError('');
-    setPracticing(false);
+    setPracticing(practice);
     setPreviewId(id);
   }
   function closePreview() {
@@ -67,7 +67,7 @@ export default function WelcomePage() {
         <div className="galpi-intro-action">
             {user && <small>내 계정에 저장된 기록</small>}
             <Button variant="contained" size="large" aria-haspopup={!user && featured ? 'dialog' : undefined}
-              onClick={() => user ? enterWorkspace('/') : featured ? openPreview(featured.id) : enterWorkspace('/overview')}
+              onClick={() => user ? enterWorkspace('/') : featured ? openPreview(featured.id, true) : enterWorkspace('/overview')}
               disabled={busy || loading}>{busy ? '준비 중…' : user ? '내 지원 현황 열기' : featured ? '샘플 기록 체험하기' : '오늘의 샘플 보기'}</Button>
             {error && !preview && <Alert severity="error">{error}</Alert>}
         </div>

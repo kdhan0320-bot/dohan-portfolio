@@ -139,7 +139,7 @@ test('company preparation keeps its company and draft across closing, failures a
   assert.equal(another.find(node => node.type === 'form'), null, 'another company does not inherit the draft');
 });
 
-test('home previews the selected stage, then opens that company on Today or its full preparation list', async () => {
+test('home starts preparation immediately, keeps preview separate, and follows the selected company', async () => {
   const destinations = [];
   const scrolls = [];
   let guestStarts = 0;
@@ -159,10 +159,10 @@ test('home previews the selected stage, then opens that company on Today or its 
   assert.deepEqual(scrolls, [[0, 0]], 'a fresh home visit does not retain a workspace scroll position');
   await page.click('샘플 기록 체험하기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, true);
-  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-3');
+  assert.equal(page.find(node => node.type === 'CompanySummary'), null, 'the primary sample action skips the read-only preview');
+  assert.doesNotMatch(page.text(), /준비 체크 체험하기/);
   assert.deepEqual(destinations, []);
   assert.equal(guestStarts, 0);
-  await page.click('준비 체크 체험하기');
   const practice = page.find(node => node.type === 'SampleRecordScope').props.children;
   assert.equal(practice.type, 'LiveCompanySummary');
   assert.equal(practice.props.application.id, 'demo-3');
@@ -172,16 +172,20 @@ test('home previews the selected stage, then opens that company on Today or its 
   assert.deepEqual(destinations, []);
   await page.click('닫기');
   assert.equal(page.find(node => node.type === 'Dialog').props.open, false);
+  page.find(node => node.type === 'Preview').props.onOpen('demo-3'); page.render();
+  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-3', 'the record preview remains read-only');
+  assert.equal(page.find(node => node.type === 'LiveCompanySummary'), null);
+  await page.click('준비 체크 체험하기');
+  assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.application.id, 'demo-3');
+  await page.click('닫기');
   page.find(node => node.type === 'Preview').props.onStageChange(2); page.render();
   await page.click('샘플 기록 체험하기');
-  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-1');
-  await page.click('준비 체크 체험하기');
+  assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.application.id, 'demo-1');
   await page.click('오늘에서 다음 준비 보기');
   await page.click('닫기');
   page.find(node => node.type === 'Preview').props.onStageChange(3); page.render();
   await page.click('샘플 기록 체험하기');
-  assert.equal(page.find(node => node.type === 'CompanySummary').props.application.id, 'demo-7');
-  await page.click('할 일 추가 체험하기');
+  assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.application.id, 'demo-7');
   assert.equal(page.find(node => node.type === 'LiveCompanySummary').props.startWithAdd, true);
   assert.doesNotMatch(page.text(), /이 회사의 준비 보기/);
   sampleItems.push({ application_id: 'demo-7', title: '결과 회고', is_done: true });

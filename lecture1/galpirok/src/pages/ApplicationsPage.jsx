@@ -75,8 +75,10 @@ export default function ApplicationsPage() {
   function card(a) {
     const stage = boardColumn(a.status);
     const pending = stage === 'before';
+    const tasks = checklist.items.filter(item => item.application_id === a.id);
+    const remaining = tasks.filter(item => !item.is_done);
     const preparation = !checklist.loading && !checklist.error
-      ? boardPreparation(stage, checklist.items.filter(item => item.application_id === a.id))
+      ? boardPreparation(stage, tasks)
       : '';
     return <button id={`company-card-${a.id}`} type="button" className="job-tile" key={a.id} onClick={() => changeParams({ company: a.id })} aria-haspopup="dialog">
       <span className="job-tile-heading"><CompanyMark name={a.company_name} /><span className="job-tile-identity"><strong className="job-company">{a.company_name}</strong><span className="job-position">{a.position || '직무 미입력'}</span></span></span>
@@ -88,7 +90,10 @@ export default function ApplicationsPage() {
         </span>}
         {a.status === '면접 예정' ? <span className="job-date board-schedule">{a.interview_date ? <><time dateTime={a.interview_date}>{shortDate(a.interview_date)}</time> 면접</> : '면접일 미정'}</span> : !pending && a.applied_date && <span className="job-date"><time dateTime={a.applied_date}>{shortDate(a.applied_date)}</time> 지원</span>}
       </span>
-      {preparation && <span className="job-tile-preparation">{preparation}</span>}
+      {preparation && <span className="job-tile-preparation">{remaining.length ? <>
+        <span className="record-next-label">다음 준비</span>
+        <span className="record-next-copy">{remaining[0].title}{remaining.length > 1 && <small> 외 {remaining.length - 1}개</small>}</span>
+      </> : <span className="record-next-empty">{preparation}</span>}</span>}
     </button>;
   }
   return <>
