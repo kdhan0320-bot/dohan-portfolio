@@ -20,7 +20,7 @@
 | [lecture1/jansang-cinema](lecture1/jansang-cinema/README.md) | 잔상관 | 가상 단편영화 탐색·찜·메모 보관 시연 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/) |
 | [lecture1/gijunseon](lecture1/gijunseon/README.md) | 기준선 | Figma 기반 산업용 비전 검사 기업 웹퍼블리싱 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/gijunseon/) |
 | [lecture1/mini-sns](lecture1/mini-sns/README.md) | Mini SNS | 게스트·메모리 상태로 동작하는 SNS 학습 기록 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/mini-sns/) |
-| [lecture1/gongjeongbom](lecture1/gongjeongbom/README.md) | 공정봄 | 검사 제품 탐색·비교·문의 흐름 실험작 | 현재 배포 대상 아님 |
+| [lecture1/gongjeongbom](lecture1/gongjeongbom/README.md) | 공정봄 | 검사 제품 탐색·비교·문의 흐름 실험작 · 포트폴리오 미편입 | [보기](https://kdhan0320-bot.github.io/dohan-portfolio/gongjeongbom/) |
 
 설비결·온정류·소요빛 등 Figma 작품의 웹 소개는 공통 포트폴리오 안에 있습니다. 폴더 이름과 기존 공개 URL은 서로 다를 수 있으며 위 표가 현재 대응 관계입니다.
 
@@ -48,7 +48,7 @@ python -m http.server 4178 --bind 127.0.0.1
 3. 원격의 다른 수정과 충돌이 없는지 확인한 뒤 승인된 작업을 main에 커밋·푸시합니다.
 4. Deploy to GitHub Pages 워크플로 완료와 공개 주소를 확인합니다. 폴더명 변경으로 공개 URL을 바꾸지 않습니다.
 
-GitHub Actions는 네 React 작품을 npm ci로 설치하고 lint·build·기존 업무 규칙 테스트 후 게시합니다. 잔상관과 기준선은 정적 파일을 게시합니다. 공정봄은 현재 배포 대상에 추가하지 않았습니다.
+GitHub Actions는 네 React 작품을 npm ci로 설치하고 lint·build·기존 업무 규칙 테스트 후 게시합니다. 잔상관·기준선·공정봄은 정적 파일을 게시합니다. 공정봄은 독립 주소로만 공개하며 공통 포트폴리오 작품 목록에는 추가하지 않습니다.
 
 ## 자료 위치
 

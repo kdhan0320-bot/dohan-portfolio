@@ -110,6 +110,9 @@ jobs:
           mkdir -p _site/gijunseon
           cp lecture1/gijunseon/*.html _site/gijunseon/
           cp -r lecture1/gijunseon/assets lecture1/gijunseon/css lecture1/gijunseon/js _site/gijunseon/
+          mkdir -p _site/gongjeongbom
+          cp lecture1/gongjeongbom/*.html _site/gongjeongbom/
+          cp -r lecture1/gongjeongbom/assets lecture1/gongjeongbom/css lecture1/gongjeongbom/js _site/gongjeongbom/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4

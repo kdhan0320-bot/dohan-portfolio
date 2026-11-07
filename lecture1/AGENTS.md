@@ -8,6 +8,6 @@
 - jansang-cinema: 잔상관 · 공개 경로 /dohan-portfolio/jansang-cinema/ (이전 ott-service 주소는 새 주소로 이동)
 - gijunseon: 기준선 · 공개 경로 /dohan-portfolio/gijunseon/
 - mini-sns: Mini SNS · 공개 경로 /dohan-portfolio/mini-sns/
-- gongjeongbom: 공정봄 · 현재 배포 대상 아님
+- gongjeongbom: 공정봄 · 공개 경로 /dohan-portfolio/gongjeongbom/ · 공통 포트폴리오 작품 목록에는 추가하지 않음
 
 폴더 이름과 공개 URL을 구분합니다. Git 기록과 배포는 부모의 portfolio-workspace 루트에서 직접 관리합니다. 백업은 ../ 밖의 별도 backups 위치에 둡니다.
