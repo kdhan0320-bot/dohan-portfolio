@@ -3290,3 +3290,204 @@ a {
 html {
   scroll-padding-block: 90px;
 }
+
+/* Keep the first writing step short; filled drafts reveal their optional fields. */
+.record-intro {
+  padding: 18px 24px;
+}
+.record-intro .eyebrow {
+  display: none;
+}
+.record-map {
+  margin-top: 12px;
+}
+.record-options,
+.record-options *,
+.record-options::details-content {
+  box-sizing: border-box;
+}
+.record-options {
+  border-top: 1px dashed #b8beca;
+}
+.record-options > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 56px;
+  padding: 10px 0;
+  list-style: none;
+  cursor: pointer;
+}
+.record-options > summary:focus-visible {
+  outline: 3px solid #35438d;
+  outline-offset: 3px;
+}
+.record-options > summary::-webkit-details-marker {
+  display: none;
+}
+.option-title {
+  font-size: 14px;
+  font-weight: 650;
+  color: #35438d;
+}
+.option-status {
+  font-size: 12px;
+  color: #566273;
+  margin-left: auto;
+}
+.record-options .disclosure-hint {
+  margin-left: 0;
+  color: #35438d;
+}
+.record-options[open] > summary .disclosure-hint {
+  transform: rotate(45deg);
+}
+.option-help {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #566273;
+  margin-bottom: 20px;
+}
+.option-content {
+  padding-top: 8px;
+}
+.record-editor .form-submit {
+  margin-top: 12px;
+  padding-top: 16px;
+}
+.record-read-more {
+  display: none;
+}
+@media (max-width: 767px) {
+  .feed-heading .eyebrow,
+  .feed-heading + .composer {
+    display: none;
+  }
+  .feed-heading {
+    margin-bottom: 12px;
+  }
+  .feed-heading h1 {
+    font-size: 23px;
+  }
+  .feed-heading p:not(.eyebrow) {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .feed-controls {
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+  .feed-preview .record-edge {
+    min-height: 24px;
+  }
+  .feed-preview .post-header {
+    padding-top: 10px;
+  }
+  .feed-preview .post-copy {
+    padding-top: 12px;
+    padding-bottom: 8px;
+  }
+  .feed-preview .post-copy h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .feed-preview .record-attempt p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    line-height: 1.7;
+  }
+  .feed-preview .record-reason,
+  .feed-preview .hashtags,
+  .feed-preview .comment-preview {
+    display: none;
+  }
+  .feed-preview .record-read-more {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 44px;
+    margin-top: 4px;
+    color: #75442e;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .feed-preview .record-read-more > svg {
+    margin-left: auto;
+  }
+  .feed-preview .post-image {
+    height: 148px;
+    aspect-ratio: auto;
+    object-fit: contain;
+  }
+  .feed-preview .post-image-button > span {
+    opacity: 1;
+  }
+  .feed-preview .record-question {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 8px;
+    padding: 6px 10px 10px;
+    margin-top: 12px;
+  }
+  .feed-preview .record-question-label {
+    gap: 6px;
+  }
+  .feed-preview .question-reply {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 4px;
+    min-height: 44px;
+  }
+  .feed-preview .record-question > p {
+    grid-column: 1 / -1;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    line-height: 1.7;
+  }
+  .feed-preview .post-actions {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .record-intro {
+    padding: 15px 18px;
+  }
+  .record-intro h2 {
+    font-size: 19px;
+  }
+  .record-intro > p:not(.eyebrow) {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .record-intro .record-map {
+    gap: 17px;
+    margin-top: 10px;
+  }
+  .record-editor {
+    padding: 18px 16px;
+  }
+  .record-editor .form-field {
+    margin-bottom: 18px;
+  }
+  .record-editor .form-submit {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .record-editor .form-submit p {
+    text-align: center;
+  }
+  .record-options > summary {
+    flex-wrap: wrap;
+  }
+  .record-options .option-title {
+    flex: 1 1 170px;
+  }
+  .record-options .option-status {
+    margin-left: 0;
+  }
+}

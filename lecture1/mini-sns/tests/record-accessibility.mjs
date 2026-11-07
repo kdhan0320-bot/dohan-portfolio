@@ -151,6 +151,7 @@ try {
   await go("/create");
   await page.locator("#post-title").fill("접근성과 기록 형식 검수");
   await page.locator("#post-caption").fill("버튼의 여백을 넓혔어요.");
+  await page.locator("#reflection-options > summary").click();
   await page
     .locator("#post-reason")
     .fill("가까이 붙어 있어 잘못 누를 수 있다고 생각했어요.");
@@ -268,6 +269,11 @@ try {
     ]) {
       await go(route);
       await contrast(`${width} ${route}`);
+      if (route === "/create") {
+        await page.locator("#reflection-options > summary").click();
+        await page.locator("#media-options > summary").click();
+        await contrast(`${width} expanded editor`);
+      }
       if (route === "/profile") {
         const cover = await page.locator(".profile-cover").evaluate((el) => {
           const label = el
@@ -293,7 +299,9 @@ try {
   }
   await page.setViewportSize({ width: 390, height: 844 });
   await go("/");
+  await go("/post/guest-1");
   const summary = page.locator('.post-card[data-post-id="guest-1"] summary');
+  await summary.click();
   await summary.focus();
   await page.keyboard.press("Enter");
   await expect(

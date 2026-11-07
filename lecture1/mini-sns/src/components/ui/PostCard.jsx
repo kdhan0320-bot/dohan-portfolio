@@ -26,7 +26,11 @@ import { useDemoData } from "../../hooks/useDemoData";
 import { DEMO_USER } from "../../constants/demoUser";
 import { formatDistanceToNow } from "../../utils/timeFormat";
 import CommentModal from "./CommentModal";
-export default function PostCard({ post, openComments = false }) {
+export default function PostCard({
+  post,
+  openComments = false,
+  feedPreview = false,
+}) {
   const { toggleLike, toggleSave, deletePost, profile } = useDemoData();
   const navigate = useNavigate();
   const { pathname, search } = useLocation();
@@ -41,7 +45,7 @@ export default function PostCard({ post, openComments = false }) {
   const own = post.user_id === DEMO_USER.id;
   return (
     <article
-      className="post-card"
+      className={`post-card ${feedPreview ? "feed-preview" : ""}`}
       aria-label={post.title || "작업 기록"}
       data-post-id={post.id}
     >
@@ -94,6 +98,20 @@ export default function PostCard({ post, openComments = false }) {
             <p>{post.caption}</p>
           </div>
         </div>
+        {feedPreview && (
+          <Link
+            className="record-read-more"
+            to={withFeedReturn(`/post/${post.id}`, feedReturn)}
+            aria-label={`${post.title || "작업 기록"} 기록 전체 보기`}
+          >
+            {post.reflection?.reason && (
+              <span className="step-index reason" aria-hidden="true">
+                02
+              </span>
+            )}
+            기록 전체 보기 <ArrowForwardRounded fontSize="small" />
+          </Link>
+        )}
         {post.reflection?.reason && (
           <details
             className="record-reason"

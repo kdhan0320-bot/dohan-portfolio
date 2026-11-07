@@ -41,7 +41,7 @@ export default function Home() {
   );
   return (
     <MainLayout>
-      <div className="page-heading">
+      <div className="page-heading feed-heading">
         <div>
           <p className="eyebrow">기록이 겹쳐, 다음 시도로</p>
           <h1>작은 기록, 새로운 영감</h1>
@@ -76,7 +76,7 @@ export default function Home() {
       >
         <div className="feed-list">
           {visible.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post.id} post={post} feedPreview />
           ))}
         </div>
         {!visible.length && (

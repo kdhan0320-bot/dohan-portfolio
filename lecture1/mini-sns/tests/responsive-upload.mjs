@@ -103,6 +103,7 @@ try {
   await page
     .locator("#post-caption")
     .fill("실제 파일 첨부와 새로고침 후 복원을 확인하는 임시 기록입니다.");
+  await page.locator("#media-options > summary").click();
   const input = page.getByLabel("내 이미지 첨부", { exact: true });
   await input.setInputFiles({
     name: "invalid.txt",

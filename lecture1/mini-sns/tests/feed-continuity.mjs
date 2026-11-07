@@ -88,6 +88,7 @@ const base = process.env.MINI_SNS_URL || "http://127.0.0.1:5174/";
         .waitFor();
       await page.locator("#post-title").fill("이어 쓰는 과정");
       await page.locator("#post-caption").fill("버튼 위치를 조정했습니다.");
+      await page.locator("#reflection-options > summary").click();
       await page
         .locator("#post-reason")
         .fill("누르기 쉬운 위치를 찾기 위해서입니다.");
@@ -128,6 +129,7 @@ const base = process.env.MINI_SNS_URL || "http://127.0.0.1:5174/";
       await page
         .locator("#post-caption")
         .fill("고민하던 버튼 위치를 바꿨어요.");
+      await page.locator("#reflection-options > summary").click();
       await page
         .locator("#post-reason")
         .fill("스크롤 후에도 찾기 쉬운 위치예요.");

@@ -67,12 +67,20 @@ function PostEditor({ id }) {
   const [customImage, setCustomImage] = useState(
     seed?.imageKey ? "" : seed?.image_url || "",
   );
+  const [reflectionOpen, setReflectionOpen] = useState(
+    Boolean(seed?.reflection?.reason || seed?.reflection?.question),
+  );
+  const [mediaOpen, setMediaOpen] = useState(
+    Boolean(seed?.imageKey || seed?.image_url || seed?.hashtag),
+  );
   const [error, setError] = useState("");
+  const [uploadError, setUploadError] = useState("");
   const [busy, setBusy] = useState(false);
   const [cancel, setCancel] = useState(false);
   const [draftExitError, setDraftExitError] = useState("");
   const labels = recordLabels(category);
   const image = imageKey ? sampleImage(imageKey) : customImage;
+  const reflectionCount = [reason, question].filter((value) => value.trim()).length;
   const dirty =
     title !== (existing?.title || "") ||
     caption !== (existing?.caption || "") ||
@@ -183,17 +191,17 @@ function PostEditor({ id }) {
     e.target.value = "";
     if (!file) return;
     if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      setError("JPG, PNG, WebP 이미지로 선택해 주세요.");
+      setUploadError("JPG, PNG, WebP 이미지로 선택해 주세요.");
       return;
     }
     if (file.size > 1.5 * 1024 * 1024) {
-      setError(
+      setUploadError(
         "이 브라우저에 저장할 수 있도록 1.5MB 이하의 이미지를 선택해 주세요.",
       );
       return;
     }
     setBusy(true);
-    setError("");
+    setUploadError("");
     try {
       const result = await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -210,7 +218,7 @@ function PostEditor({ id }) {
       setCustomImage(result);
       setImageKey("");
     } catch {
-      setError("이미지를 읽지 못했어요. 다른 파일을 선택해 주세요.");
+      setUploadError("이미지를 읽지 못했어요. 다른 파일을 선택해 주세요.");
     } finally {
       setBusy(false);
     }
@@ -247,7 +255,7 @@ function PostEditor({ id }) {
         <p className="eyebrow">나의 시도 + 너의 생각</p>
         <h2>한 줄에서 시작하는, 기록 한 장.</h2>
         <p>시도한 것 하나면 충분해요. 이유와 질문은 천천히 덧붙여도 좋아요.</p>
-        <ol className="record-map">
+        <ol className="record-map" aria-label="기록의 흐름">
           <li>
             <b>01</b> 시도
           </li>
@@ -347,122 +355,170 @@ function PostEditor({ id }) {
               <span>{caption.length} / 1200</span>
             </div>
           </div>
-          <div className="form-field record-field reason">
-            <span className="step-index" aria-hidden="true">
-              02
-            </span>
-            <label className="field-label" htmlFor="post-reason">
-              {labels.reason}
-              <span aria-hidden="true">선택</span>
-            </label>
-            <textarea
-              id="post-reason"
-              className="form-input"
-              rows={3}
-              placeholder="예: 사진 위의 버튼은 배경에 묻혀 찾기 어렵다고 느꼈어요."
-              value={reason}
-              maxLength={400}
-              aria-describedby="reason-help"
-              onChange={(e) => setReason(e.target.value)}
-            />
-            <div className="field-helper" id="reason-help">
-              <span>어떤 고민이 이 선택으로 이어졌나요?</span>
-              <span>{reason.length} / 400</span>
-            </div>
-          </div>
-          <div className="form-field record-field question">
-            <span className="step-index" aria-hidden="true">
-              03
-            </span>
-            <label className="field-label" htmlFor="post-question">
-              의견이 필요한 부분<span aria-hidden="true">선택</span>
-            </label>
-            <textarea
-              id="post-question"
-              className="form-input"
-              rows={3}
-              placeholder="예: 버튼의 위치와 크기가 자연스러운가요?"
-              value={question}
-              maxLength={240}
-              aria-describedby="question-help"
-              onChange={(e) => setQuestion(e.target.value)}
-            />
-            <div className="field-helper" id="question-help">
-              <span>이 질문은 기록과 댓글 창에 함께 보여요.</span>
-              <span>{question.length} / 240</span>
-            </div>
-          </div>
         </div>
-        <div className="form-field">
-          <span className="field-label">
-            함께 보여줄 이미지<span>선택</span>
-          </span>
-          <p className="field-helper">
-            직접 첨부하거나 아래의 샘플 작업 이미지를 골라보세요.
+        <details
+          className="record-options"
+          id="reflection-options"
+          open={reflectionOpen}
+          onToggle={(event) => setReflectionOpen(event.currentTarget.open)}
+        >
+          <summary>
+            <span className="option-title">이유와 질문 덧붙이기</span>
+            <span className="option-status">
+              {reflectionCount
+                ? `${reflectionCount}개 작성됨`
+                : "선택"}
+            </span>
+            <span className="disclosure-hint" aria-hidden="true">
+              +
+            </span>
+          </summary>
+          <p className="option-help">
+            고민이나 궁금한 점이 있다면 남겨주세요. 접어도 내용은 유지돼요.
           </p>
-          <div className="art-options">
-            {SAMPLE_ART.slice(0, 3).map((a) => (
-              <button
-                key={a.id}
-                type="button"
-                className={imageKey === a.id ? "selected" : ""}
-                aria-label={`${a.name} 선택`}
-                aria-pressed={imageKey === a.id}
-                onClick={() => {
-                  setImageKey(a.id);
-                  setCustomImage("");
-                }}
-              >
-                <img src={a.src} alt="" />
-                <span>{a.name}</span>
-              </button>
-            ))}
-          </div>
-          <div className="upload-actions">
-            <label className="upload-label">
-              <AddPhotoAlternateOutlined />내 이미지 첨부
-              <input
-                type="file"
-                aria-label="내 이미지 첨부"
-                accept="image/png,image/jpeg,image/webp"
-                disabled={busy}
-                onChange={upload}
+          <div className="record-fields">
+            <div className="form-field record-field reason">
+              <span className="step-index" aria-hidden="true">
+                02
+              </span>
+              <label className="field-label" htmlFor="post-reason">
+                {labels.reason}
+                <span aria-hidden="true">선택</span>
+              </label>
+              <textarea
+                id="post-reason"
+                className="form-input"
+                rows={3}
+                placeholder="예: 사진 위의 버튼은 배경에 묻혀 찾기 어렵다고 느꼈어요."
+                value={reason}
+                maxLength={400}
+                aria-describedby="reason-help"
+                onChange={(e) => setReason(e.target.value)}
               />
-            </label>
-            {image && (
-              <button
-                type="button"
-                className="text-button"
-                onClick={() => {
-                  setImageKey("");
-                  setCustomImage("");
-                }}
-              >
-                이미지 빼기
-              </button>
-            )}
-            <span className="field-helper">JPG · PNG · WebP / 1.5MB 이하</span>
-          </div>
-          {image && (
-            <div className="image-preview">
-              <img src={image} alt="선택한 이미지 미리보기" />
+              <div className="field-helper" id="reason-help">
+                <span>어떤 고민이 이 선택으로 이어졌나요?</span>
+                <span>{reason.length} / 400</span>
+              </div>
             </div>
-          )}
-        </div>
-        <div className="form-field">
-          <label className="field-label" htmlFor="post-tags">
-            태그<span>선택 · 최대 6개</span>
-          </label>
-          <input
-            className="form-input"
-            id="post-tags"
-            placeholder="#UI디자인 #React #작업기록"
-            value={tags}
-            maxLength={120}
-            onChange={(e) => setTags(e.target.value)}
-          />
-          <div className="field-helper">띄어쓰기로 구분해 주세요.</div>
-        </div>
+            <div className="form-field record-field question">
+              <span className="step-index" aria-hidden="true">
+                03
+              </span>
+              <label className="field-label" htmlFor="post-question">
+                의견이 필요한 부분<span aria-hidden="true">선택</span>
+              </label>
+              <textarea
+                id="post-question"
+                className="form-input"
+                rows={3}
+                placeholder="예: 버튼의 위치와 크기가 자연스러운가요?"
+                value={question}
+                maxLength={240}
+                aria-describedby="question-help"
+                onChange={(e) => setQuestion(e.target.value)}
+              />
+              <div className="field-helper" id="question-help">
+                <span>이 질문은 기록과 댓글 창에 함께 보여요.</span>
+                <span>{question.length} / 240</span>
+              </div>
+            </div>
+          </div>
+        </details>
+        <details
+          className="record-options"
+          id="media-options"
+          open={mediaOpen}
+          onToggle={(event) => setMediaOpen(event.currentTarget.open)}
+        >
+          <summary>
+            <span className="option-title">이미지와 태그 덧붙이기</span>
+            <span className="option-status">
+              {[image && "이미지 1장", tags.trim() && "태그"]
+                .filter(Boolean)
+                .join(" · ") || "선택"}
+            </span>
+            <span className="disclosure-hint" aria-hidden="true">
+              +
+            </span>
+          </summary>
+          <div className="option-content">
+            <div className="form-field">
+              <span className="field-label">
+                함께 보여줄 이미지<span>선택</span>
+              </span>
+              <p className="field-helper">
+                직접 첨부하거나 아래의 샘플 작업 이미지를 골라보세요.
+              </p>
+              <div className="art-options">
+                {SAMPLE_ART.slice(0, 3).map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    className={imageKey === a.id ? "selected" : ""}
+                    aria-label={`${a.name} 선택`}
+                    aria-pressed={imageKey === a.id}
+                    onClick={() => {
+                      setImageKey(a.id);
+                      setCustomImage("");
+                    }}
+                  >
+                    <img src={a.src} alt="" />
+                    <span>{a.name}</span>
+                  </button>
+                ))}
+              </div>
+              <div className="upload-actions">
+                <label className="upload-label">
+                  <AddPhotoAlternateOutlined />내 이미지 첨부
+                  <input
+                    type="file"
+                    aria-label="내 이미지 첨부"
+                    accept="image/png,image/jpeg,image/webp"
+                    disabled={busy}
+                    onChange={upload}
+                  />
+                </label>
+                {image && (
+                  <button
+                    type="button"
+                    className="text-button"
+                    onClick={() => {
+                      setImageKey("");
+                      setCustomImage("");
+                    }}
+                  >
+                    이미지 빼기
+                  </button>
+                )}
+                <span className="field-helper">JPG · PNG · WebP / 1.5MB 이하</span>
+              </div>
+              {uploadError && (
+                <Alert severity="error" sx={{ mt: 2 }}>
+                  {uploadError}
+                </Alert>
+              )}
+              {image && (
+                <div className="image-preview">
+                  <img src={image} alt="선택한 이미지 미리보기" />
+                </div>
+              )}
+            </div>
+            <div className="form-field">
+              <label className="field-label" htmlFor="post-tags">
+                태그<span>선택 · 최대 6개</span>
+              </label>
+              <input
+                className="form-input"
+                id="post-tags"
+                placeholder="#UI디자인 #React #작업기록"
+                value={tags}
+                maxLength={120}
+                onChange={(e) => setTags(e.target.value)}
+              />
+              <div className="field-helper">띄어쓰기로 구분해 주세요.</div>
+            </div>
+          </div>
+        </details>
         <div className="form-submit">
           <p>
             이 기록은 현재 브라우저에 저장돼요.
