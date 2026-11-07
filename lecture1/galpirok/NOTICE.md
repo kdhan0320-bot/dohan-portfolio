@@ -6,11 +6,17 @@
 
 포트폴리오에서 사용하는 JobFlow 자산의 상세 origin·derivative·확인 상태는 다음 중앙 등록부가 Source of Truth입니다.
 
-- [lecture1/portfolio/docs/asset-license-register.md](../my-portfolio/docs/asset-license-register.md)
+- [lecture1/portfolio/docs/asset-license-register.md](../portfolio/docs/asset-license-register.md)
 
 이 프로젝트 수준 NOTICE는 중앙 등록부를 대체하거나 그 확인 범위를 넓히지 않습니다.
 
-## 현재 자산 역할과 확인 범위
+## 현재 자산 구성 — 2026-11-07
+
+현재 실행 자산은 `src/assets/galpirok-wordmark.svg`, `galpirok-stroke.svg`, `galpirok-bookmark.svg`, `public`의 favicon·Pretendard 글꼴입니다. 회사 색인·날짜표·기록지는 JSX/CSS로 표현합니다. 현재 화면에서 사용하지 않는 이전 그림 파일 11개와 `PaperScene`·`JournalScene` 코드를 정리했습니다. 이전 자산의 제작 경로와 생성 프롬프트는 아래 역사 기록과 Git에 보존합니다.
+
+주 메뉴는 오늘·지원 관리·준비·면접 네 개입니다. 아래 날짜별 자산 역할·옛 경로·과거 화면 설명은 당시 기록이며 현재 실행 구조는 `docs/FRONTEND_STRUCTURE.md`를 따릅니다.
+
+## 이전 자산 역할과 확인 범위
 
 2026-10-16 후속 정리: `src/assets/galpi-index-pattern.svg`의 폴더 윤곽을 연하게 조정하고 하단의 반복 갈피·선 장식을 덜어냈습니다. 전형별 폴더 색상과 기록 행의 작은 갈피는 CSS로 표현합니다. 이번 변경도 AI 보조 코드 작업이며 이미지 생성 모델, 외부 그림·사진 또는 다른 서비스의 화면 자산을 추가하지 않았습니다. 모바일 하단 메뉴는 기존 다섯 메뉴의 텍스트 링크로 구성하며 새 아이콘 자산을 사용하지 않습니다.
 

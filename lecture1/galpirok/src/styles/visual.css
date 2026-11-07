@@ -1,9 +1,8 @@
 /* Galpirok's own paper, bookmark and filing motifs. Artwork stays outside inputs. */
 .paper-graphic { display: block; width: 180px; height: auto; flex-shrink: 0; }
-.welcome-page { background: var(--surface) url('../assets/galpi-paper-landscape.svg') center bottom / 100% auto no-repeat; }
+.welcome-page { background: var(--surface); }
 .welcome-nav { min-height: 100px; }
 .welcome-stage { position: relative; isolation: isolate; background: var(--surface); border-block: 1px solid var(--line); overflow: hidden; }
-.welcome-stage::before { content: ''; position: absolute; inset: 0; z-index: -1; background: url('../assets/galpi-paper-landscape.svg') right 42% / cover no-repeat; opacity: .8; pointer-events: none; }
 .welcome-hero { min-height: 540px; padding-block: 24px; gap: 12px; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
 .welcome-kicker { display: inline-flex; align-items: center; gap: 11px; color: var(--ink-action); }
 .welcome-kicker::before { content: ''; width: 12px; height: 21px; background: var(--ink-action); clip-path: polygon(0 0,100% 0,100% 100%,50% 75%,0 100%); }
@@ -12,7 +11,6 @@
 .welcome-copy h1 em { color: var(--ink-action); }
 .welcome-copy > p { color: var(--muted); font-size: 16px; margin: 24px 0 30px; }
 .welcome-actions small { color: var(--muted); }
-.welcome-sculpture { position: relative; height: 490px; margin-right: -35px; background: url('../assets/galpi-rose-archive.webp') center / contain no-repeat; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent), linear-gradient(0deg, transparent, #000 8%, #000 92%, transparent); mask-composite: intersect; }
 .welcome-showcase { width: min(1200px, calc(100% - 96px)); margin-inline: auto; padding: 56px 0 50px; scroll-margin-top: 20px; }
 .welcome-showcase > header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
 .welcome-showcase h2 { font-size: 32px; line-height: 1.4; letter-spacing: -.045em; color: var(--ink); }
@@ -54,7 +52,6 @@
 .page-heading-illustrated .heading-actions { flex-shrink: 0; padding: 0; }
 .page-heading .muted { color: var(--muted); }
 .next-application { background: var(--surface); border: 1px solid var(--line); min-height: 288px; }
-.next-application::before { content: ''; position: absolute; inset: 0 0 0 52%; background: url('../assets/galpi-ribbon-paper.webp') right center / auto 100% no-repeat, #EDF2F7; clip-path: polygon(13% 0, 100% 0, 100% 100%, 0 100%); pointer-events: none; }
 .next-application-copy { max-width: 520px; padding-right: 8px; }
 .next-application::after { content: ''; position: absolute; top: 0; left: 43px; height: 20px; width: 22px; background: var(--ink-action); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); pointer-events: none; }
 .ticket-orbit { display: none; }
@@ -69,24 +66,20 @@
 
 .login-story { position: relative; isolation: isolate; background: transparent; }
 .login-story-center { padding-block: 28px; }
-.login-brand-art { width: 100%; height: clamp(250px, 27vw, 365px); margin: 16px 0 8px; background: url('../assets/galpi-filing-scene.svg') center / contain no-repeat; }
 .login-shell { background: radial-gradient(ellipse at 4% 60%, #E9EFF6 0, transparent 53%), radial-gradient(ellipse at 95% 5%, #F0EDF5 0, transparent 45%), #F8F9FA; }
 .login-form-section { position: relative; isolation: isolate; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; width: calc(100% - 64px); padding-inline: clamp(28px, 3vw, 45px); box-shadow: 0 12px 32px #29374608; }
 .login-form-section::before { content: ''; width: 15px; height: 26px; background: var(--rose); clip-path: polygon(0 0,100% 0,100% 100%,50% 76%,0 100%); margin: 0 0 19px; }
 
 @media (min-width: 1600px) {
   .welcome-hero { min-height: 590px; }
-  .welcome-sculpture { height: 540px; }
 }
 @media (max-width: 1199px) {
   .welcome-hero { min-height: 480px; }
-  .welcome-sculpture { height: 440px; margin-right: -25px; }
   .showcase-layout { grid-template-columns: 220px minmax(0, 1fr); gap: 24px; }
 }
 @media (max-width: 959px) {
   .welcome-hero { grid-template-columns: 1fr; padding-block: 42px 12px; gap: 0; }
   .welcome-copy h1 { font-size: 48px; }
-  .welcome-sculpture { height: 360px; width: 100%; max-width: 620px; margin: 0 auto; }
   .welcome-showcase { width: calc(100% - 64px); }
   .welcome-closing { width: calc(100% - 64px); padding: 28px; }
   .showcase-layout { grid-template-columns: 190px minmax(0, 1fr); gap: 18px; }
@@ -101,7 +94,6 @@
   .welcome-hero { min-height: 0; padding-block: 32px 4px; }
   .welcome-copy h1 { font-size: clamp(32px, 9vw, 45px); }
   .welcome-copy > p { font-size: 14px; margin-bottom: 24px; }
-  .welcome-sculpture { height: 280px; }
   .welcome-showcase { width: calc(100% - 40px); padding-block: 32px; }
   .welcome-showcase > header { margin-bottom: 18px; gap: 12px; }
   .welcome-showcase h2 { font-size: 26px; }
@@ -121,8 +113,6 @@
   .page-heading-illustrated .heading-actions .MuiButton-root { min-height: 44px; }
   .next-application::after { left: 25px; width: 18px; height: 15px; }
   .next-application { min-height: 0; }
-  .next-application::before { inset-inline-start: 48%; }
-  .login-brand-art { height: 220px; }
   .login-form-section { width: calc(100% - 40px); margin-block: 24px 36px; padding: 26px 22px; }
   .login-form-section::before { margin-bottom: 14px; }
 

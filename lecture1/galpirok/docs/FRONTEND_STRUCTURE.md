@@ -1,47 +1,46 @@
 # 갈피록 프론트엔드 구조
 
-2026-09-27, 공개 배포 및 마감 점검 기준. 실제 라우트는 `src/App.jsx`가 기준입니다.
+2026-11-07 현재 코드 기준입니다. 실제 라우트는 `src/App.jsx`, 공개 주소는 `/dohan-portfolio/galpirok/`입니다.
 
 ## 화면과 흐름
 
-- 비로그인: `/welcome` → 샘플 체험 또는 `/login` → `/overview`.
-- 주 메뉴: 오늘의 지원 / 지원 현황 / 마감 일정 / 준비 체크 / 면접 연습.
-- 지원 현황 `/`에서 `company` 또는 `new=1` 검색 매개변수로 오른쪽 회사 패널을 엽니다. `q`, `lane`, `view`는 검색·모바일 전형·보류함입니다.
-- 마감 일정 `/calendar`는 `month=YYYY-MM`, `date=YYYY-MM-DD`로 선택을 보존합니다. 회사 링크는 현황판의 해당 회사 패널을 엽니다.
-- 기존 `/applications`, 상세·수정·추가, `/kanban` URL은 현황판/회사 패널로 이동합니다. `/ai-prompt`는 `/document-helper`로 이동합니다.
+- 홈 `/welcome`: 서비스 소개와 회사 기록 미리보기. 샘플 기록 체험은 선택한 회사의 준비 체크로 연결합니다.
+- 주 메뉴는 오늘 `/overview`, 지원 관리 `/`, 준비 `/checklist`, 면접 `/interview`입니다. PC는 왼쪽 메뉴, 모바일은 하단 메뉴입니다.
+- 지원 관리의 회사 목록과 지원 마감 달력 `/calendar`를 전환합니다. 회사 등록·상세·수정은 팝업입니다.
+- `company`, `new=1`, `q`, `lane`, `view`는 회사·등록·검색·모바일 전형·보류함 상태를 표현합니다.
+- 면접의 질문 대상은 항상 표시합니다. 모바일 질문이 한 개면 제목·순번을 일반 정보로 표시하고, 여러 개면 선택창을 사용합니다.
+- 설정 `/settings`, 작성 요청문 도구 `/document-helper`, 이용 안내 `/guide`는 보조 화면입니다.
+- `/applications/new`는 등록 팝업, 기존 상세·수정·`/kanban` 주소는 해당 회사/현황으로 연결합니다. `/ai-prompt`는 작성 요청문 도구로 연결합니다.
+- 이전 공개 경로 `jobflow-dashboard`와 복구 스크립트는 호환성을 위해 유지합니다.
 
 ## 역할별 파일
 
-| 파일 | 역할 |
+| 위치 | 역할 |
 | --- | --- |
-| `pages/WelcomePage.jsx`, `components/ui/ProductPreview.jsx` | 서비스 소개·샘플 진입·전환 가능한 제품 예시 |
-| `pages/DashboardPage.jsx` | 실제 기록으로 가까운 마감·지원 중 회사·남은 할 일 표시 |
-| `pages/ApplicationsPage.jsx`, `components/applications/ApplicationPanel.jsx` | 회사 카드·검색·상태 변경·추가·삭제·미저장 이탈 확인 |
-| `pages/CalendarPage.jsx`, `utils/calendar.js` | 마감 달력·날짜 검증·월 이동·미지원 회사 선택 |
-| `pages/ChecklistPage.jsx`, `pages/InterviewPage.jsx` | 할 일·면접 질문 추가·편집·삭제·완료 관리 |
-| `context/AuthContext.jsx` | 실제 인증 상태와 샘플 데이터 3개 집합 관리 |
-| `hooks/useApplications.js`, `useChecklist.js`, `useInterviewNotes.js` | 사용자별 DB 요청 또는 샘플 메모리 변경 |
-| `components/ui/Field.jsx` | 외부 고정 라벨·입력·설명·오류 연결 |
-| `components/layout/` | 주 메뉴·모바일 Drawer·본문 포커스 |
-| `components/ui/PaperGraphic.jsx`, `assets/galpi-paper-field.svg` | 원본 기능별 벡터와 장식용 종이 배경 |
-| `utils/recordPayload.js` | 기록 수정 필드 제한과 빈 값·분류 검증 |
-| `components/ui/CompletionRing.jsx` | 실제 완료 건수/전체 건수의 접근 가능한 SVG 진행도 |
-| `styles/workspace.css` | 파일 분류함·준비 진행판·면접 연습 카드와 해당 반응형 규칙 |
-| `styles/visual.css` | 소개·로그인·내부 화면의 배경 및 그래픽 배치 |
-| `styles/global.css`, `responsive.css`, `website.css` | 공통 컴포넌트·반응형·소개/오늘/달력 스타일 |
+| `pages/` | 홈·오늘·지원 관리·달력·준비·면접·설정·인증 화면 |
+| `components/applications/` | 회사 등록·수정·상세·지원 관리 전환 |
+| `components/ui/` | 글자로고·회사 색인·날짜 입력·알림 등 공통 표현 |
+| `components/layout/` | PC 왼쪽 메뉴·모바일 하단 메뉴·하단 안내 |
+| `hooks/`, `context/` | 계정과 샘플 상태, 회사·준비·면접 기록, 작성 중 내용 |
+| `utils/` | 날짜·전형 분류·입력 검증·내려받기·커서/화면 높이 처리 |
+| `styles/`, `index.css` | 현재 화면에 필요한 CSS와 적용 순서. 파일명만으로 구버전이라 판단해 삭제하지 않음 |
+| `assets/` | 현재 사용하는 글자로고·획·갈피 SVG |
+| `../public/` | favicon과 로컬 글꼴·글꼴 라이선스 |
+| `../tests/` | 업무 규칙·상호작용·오류 복구 검사와 로컬 빌드 확인 서버 |
+
+위 표의 코드 위치는 `src/` 기준입니다.
 
 ## 데이터 경계
 
-- 실제 인증은 Supabase Auth, 실제 데이터는 사용자별 DB 요청입니다. 이번 회차에 실제 인증 서버·DB 저장을 검증하지 않았습니다.
-- 연결 정보가 없는 미리보기는 계정 요청을 막고 샘플만 제공합니다. 게스트 데이터는 메모리 전용이며 새로고침 시 초기화됩니다. 샘플 진입 상태만 sessionStorage에 보관합니다.
-- 달력은 `관심`·`지원 예정` 회사의 유효한 `deadline`만 사용합니다. 면접 예약·알림은 제공하지 않습니다.
-- `documentTemplateHelpers.js`는 사용자가 입력한 내용을 로컬 템플릿으로 조합합니다. 외부 LLM/API 호출은 하지 않습니다.
-- `hooks/useToday.js`는 샘플 기준일과 실제 사용자의 로컬 날짜를 구분합니다.
+- 샘플 기록은 브라우저 메모리에서 변경하며 새로고침하면 초기화됩니다. 샘플 기준일은 2026-09-27입니다.
+- 계정 인증·기록 요청은 기존 Supabase 연결을 사용합니다. 실제 계정·DB 검증 여부는 README의 해당 검사 범위를 따릅니다.
+- 지원 마감 달력은 지원 전 회사의 유효한 마감일을 표시합니다. 면접일은 회사 기록에 저장하고 오늘 화면에서 확인합니다. 알림 전송 기능은 없습니다.
+- 작성 요청문 도구는 입력 내용을 로컬 템플릿으로 조합하며 외부 AI API를 호출하지 않습니다.
 
-## 시각 자산과 보존 파일
+## 자산과 보존 기준
 
-- 제품 예시와 날짜 티켓은 원본 JSX/CSS 구성입니다. 회사 마크는 가상 회사명 첫 글자입니다.
-- `Brand.jsx`의 로고 SVG, `public/fonts`의 Pretendard Variable과 OFL 전문을 사용합니다.
-- 생성 WebP 정물은 `JournalArt`를 통해 설정 화면에서 사용합니다. 외부 사진·상표 이미지를 추가하지 않았습니다.
-- 이전 `ApplicationDetailPage`, `ApplicationFormPage`, `StageJourney`, `applicationStages` 파일은 보존했지만 현재 라우트에서 사용하지 않습니다.
-- 공개 Chrome 1363×936에서 주요 샘플 기능, 폰트 로드, 입력란, 로그인 버튼 호버와 입력란 키보드 포커스를 확인했습니다. 모바일·태블릿 및 실제 인증/DB 검증은 남아 있습니다. 상세 범위는 README의 검사 기록을 참조합니다.
+- 글자로고·마무리 획·갈피 SVG, JSX/CSS로 표현한 회사 색인·날짜표·기록지를 사용합니다.
+- `public/fonts`의 Pretendard와 OFL 전문, MUI 아이콘을 유지합니다.
+- `favicon.svg`는 현재 아이콘, `galpirok-favicon.svg`는 기존 파일명 호환용입니다.
+- `docs/HISTORY.md`와 NOTICE의 날짜별 기록은 과거 제작 근거입니다. 현재 기능 설명과 구분합니다.
+- 사용하지 않는 옛 그림과 그림 컴포넌트는 2026-11-07 정리했습니다. 필요하면 Git 기록에서 확인합니다.
