@@ -30,9 +30,19 @@ python -m http.server 4178 --bind 127.0.0.1
 
 ## 파일 안내
 
-- index.html 및 다른 HTML: 페이지 구성
-- css·js: 스타일과 상호작용
-- assets: 이미지·글꼴 및 출처 자료
+- index.html: 현재 잔상관 서비스 진입점
+- legacy-ott-service-redirect.html: 기존 제출 주소를 새 주소로 연결
+- css/style.css, js/main.js: 화면 스타일, 영화 데이터와 탐색·메모 동작
+- assets/posters-v37, posters-v39, posters-v45: 현재 사용하는 12편의 포스터
+- assets/frames-*, stills, atlas-still-v62.webp, bluehour-cover-v72.webp: 현재 장면과 표지
+- assets/scene-previews: 기획전 장면 미리보기
+- assets/fonts: 사용 글꼴과 라이선스
+- assets/ASSET_PROVENANCE.md: AI 이미지 제작·편집 출처
+- docs/HISTORY.md: 제작·검수 이력
+
+버전 번호는 오래된 파일이라는 뜻이 아닙니다. 현재 이미지의 경로와 내용을 유지하고 사용하지 않는 시안·중복 캡처만 정리했습니다. 이미지 원본과 라이선스, 과거 제작 근거를 임의로 대체하지 않습니다.
+
+작품 소개에서 현재 쓰는 잔상관 화면 9개는 ../portfolio/public/detail/current/jansang-*에 있습니다. 정리 전 자산은 [정리 전 복구 지점](https://github.com/kdhan0320-bot/dohan-portfolio/tree/backup/jansang-cleanup-before-20261107)에서 확인할 수 있습니다. 과거 검수의 임시 캡처와 발행용 임시 파일은 실행에 필요하지 않습니다.
 
 가상 영화 12편을 탐색하고 찜·메모를 브라우저에 저장합니다. 실제 영상 재생·예매·결제 서비스가 아닙니다.
 

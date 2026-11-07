@@ -526,8 +526,7 @@
   const themeMinutes = (theme) => theme.films.reduce(
     (total, id) => total + films.find((film) => film.id === id).minutes, 0,
   );
-  const scenePath = (film) =>
-    film.posterPath || `assets/posters-v8/${film.image}.webp`;
+  const scenePath = (film) => film.posterPath;
   function sceneBackground(film) {
     return `url(data:image/webp;base64,${film.previewBase})`;
   }

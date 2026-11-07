@@ -5,7 +5,7 @@
 - portfolio: 공통 포트폴리오 · 공개 경로 /dohan-portfolio/my-portfolio/
 - pumuiseon: 품의선 · 공개 경로 /dohan-portfolio/pumuiseon/ (이전 portfolio-feedback-hub·my-community 주소는 상세 경로를 유지해 이동)
 - galpirok: 갈피록 · 공개 경로 /dohan-portfolio/galpirok/ (이전 jobflow-dashboard 주소는 페이지·필터를 유지해 이동)
-- jansang-cinema: 잔상관 · 공개 경로 /dohan-portfolio/ott-service/
+- jansang-cinema: 잔상관 · 공개 경로 /dohan-portfolio/jansang-cinema/ (이전 ott-service 주소는 새 주소로 이동)
 - gijunseon: 기준선 · 공개 경로 /dohan-portfolio/gijunseon/
 - mini-sns: Mini SNS · 공개 경로 /dohan-portfolio/mini-sns/
 - gongjeongbom: 공정봄 · 현재 배포 대상 아님

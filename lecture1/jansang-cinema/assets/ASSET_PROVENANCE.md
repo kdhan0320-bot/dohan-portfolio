@@ -1,5 +1,7 @@
 # 잔상관 Asset Provenance
 
+> 2026-11-07 폴더 정리: 아래의 이전 버전 경로와 프롬프트는 제작 이력입니다. 현재 웹에서 사용하지 않는 이미지 파일은 정리했으며, 원래 파일은 [정리 전 복구 지점](https://github.com/kdhan0320-bot/dohan-portfolio/tree/backup/jansang-cleanup-before-20261107/lecture1/jansang-cinema/assets)에서 확인할 수 있습니다. 현재 선택된 자산은 js/main.js의 작품별 경로와 index.html을 기준으로 합니다.
+
 ## v62 별을 접는 아이의 손끝 (2026-11-05)
 
 기존 장면 `atlas-still-v61.webp`를 바탕으로 내장 OpenAI 이미지 편집 도구로 두 시안을 생성했습니다. 첫 번째는 엄지와 종이 모서리의 변화가 작아서, PC와 모바일 팝업에서 손가락의 윤곽과 모서리의 눌림이 보이는 두 번째를 선택했습니다. 화면의 포스터는 `posters-v45/atlas.jpg`를 사용합니다.
