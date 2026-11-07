@@ -134,7 +134,7 @@ export const fallbackProjects = [
     "cardScope": "Figma 디자인",
     "cardLimit": "도착 정보는 정적 예시 · 실시간 API 미연동",
     "accentColor": "#18736E",
-    "figmaDesignUrl": "https://www.figma.com/design/bzwp6FhsZaaenOA4ABIAFs?node-id=671-797"
+    "figmaDesignUrl": "https://www.figma.com/proto/bzwp6FhsZaaenOA4ABIAFs?node-id=817-622&starting-point-node-id=817-622&scaling=scale-down-width&content-scaling=fixed"
   },
   /* ── React Dashboard ── */
     {
