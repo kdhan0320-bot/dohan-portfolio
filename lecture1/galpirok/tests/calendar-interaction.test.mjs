@@ -58,7 +58,7 @@ function calendarPage({ compact = true, query = '' } = {}) {
     '../components/applications/ApplicationPanel': 'company-panel',
     '../components/applications/ApplicationsNav': 'applications-nav',
     '../hooks/useToday': { useToday: () => DEMO_TODAY },
-    '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
+    '../context/authState': { useAuth: () => ({ isGuest: true }) },
     '../utils/calendar': calendar,
     '../utils/dates': { deadlineLabel },
     '../components/ui/PageUI': { CompanyMark: 'company-mark', Empty: 'empty', LoadState: 'load-state', PageHeading: 'page-heading' },

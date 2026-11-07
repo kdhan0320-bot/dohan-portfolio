@@ -146,7 +146,8 @@ test('home starts preparation immediately, keeps preview separate, and follows t
   const sampleItems = [...constants.DEMO_CHECKLISTS];
   const page = await mount('WelcomePage', {
     'react-router-dom': { useNavigate: () => (to, options) => destinations.push([to, options.state?.sampleCompanyId]) },
-    '../context/AuthContext': { SampleRecordScope: 'SampleRecordScope', useAuth: () => ({
+    '../context/AuthContext': { SampleRecordScope: 'SampleRecordScope' },
+    '../context/authState': { useAuth: () => ({
       demoApplications: constants.DEMO_APPLICATIONS, demoItems: sampleItems, demoNotes: constants.DEMO_INTERVIEW_NOTES,
       enterGuestMode: async () => guestStarts++,
     }) },
@@ -202,7 +203,7 @@ test('today review opens the same company and requires an explicit status change
   const page = await mount('DashboardPage', {
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications, update: async (id, patch) => { writes.push({ id, patch }); applications = applications.map(company => company.id === id ? { ...company, ...patch } : company); } }) },
     '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], refresh() {} }) },
-    '../context/AuthContext': { useAuth: () => ({ isGuest: true }) },
+    '../context/authState': { useAuth: () => ({ isGuest: true }) },
     '../hooks/useToday': { useToday: () => '2026-09-27' },
     '../utils/calendar': { WEEKDAYS: ['월', '화', '수', '목', '금', '토', '일'] },
     '../utils/preparationGroups': { todayCompanyGroups, beforeApplication },

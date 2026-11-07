@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import CheckRounded from '@mui/icons-material/CheckRounded';
 import { Link } from 'react-router-dom';
 import { PageHeading } from '../components/ui/PageUI';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { BOARD_COLUMNS } from '../utils/applicationBoard';
 import { DEMO_TODAY } from '../constants';
 

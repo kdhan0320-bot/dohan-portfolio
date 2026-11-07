@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { createSafeDataError, getSafeDataErrorMessage } from '../utils/dataErrors';
 import { interviewUpdate } from '../utils/recordPayload';
 const useInterviewNotes = () => {

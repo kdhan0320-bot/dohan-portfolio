@@ -1,4 +1,4 @@
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { DEMO_TODAY } from '../constants';
 export function useToday() {
   const {

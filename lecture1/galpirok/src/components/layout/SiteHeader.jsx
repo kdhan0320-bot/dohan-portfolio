@@ -5,7 +5,7 @@ import MenuOutlined from '@mui/icons-material/MenuOutlined';
 import Close from '@mui/icons-material/Close';
 import { Brand } from '../ui/Brand';
 import ActionFeedback from '../ui/ActionFeedback';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/authState';
 import { getAuthErrorMessage } from '../../utils/authErrors';
 
 const mainLinks = [

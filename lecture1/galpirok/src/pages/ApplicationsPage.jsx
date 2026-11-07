@@ -16,7 +16,7 @@ import Field from '../components/ui/Field';
 import StatusChip from '../components/ui/StatusChip';
 import ActionFeedback from '../components/ui/ActionFeedback';
 import ApplicationPanel from '../components/applications/ApplicationPanel';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 
 export default function ApplicationsPage() {
   const { user, isGuest } = useAuth();

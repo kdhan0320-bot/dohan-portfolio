@@ -61,7 +61,7 @@ function loginPage(returnTo = null, isGuest = true) {
     'react-router-dom': { Link: 'Link', useNavigate: () => to => destinations.push(to), useSearchParams: () => [search, value => { pendingSearch = value; }] },
     '../components/ui/Field': 'Field',
     '../components/ui/Brand': { Brand: 'Brand' },
-    '../context/AuthContext': { useAuth: () => ({ isGuest, enterGuestMode: async () => {} }) },
+    '../context/authState': { useAuth: () => ({ isGuest, enterGuestMode: async () => {} }) },
     '../lib/supabase': { isAuthConfigured: false },
     '../utils/authErrors': { getAuthErrorMessage: noOp },
     '../utils/workspaceReturn': { workspaceReturn },

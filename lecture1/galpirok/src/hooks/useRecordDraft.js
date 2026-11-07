@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { recordDraftStore } from '../utils/recordDraftStore';
 
 export default function useRecordDraft(kind) {

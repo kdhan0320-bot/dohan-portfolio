@@ -22,7 +22,7 @@ function registration(add, auth = { isGuest: true }) {
     '../components/ui/Field': 'field',
     '../components/ui/StatusChip': 'status',
     '../components/ui/ActionFeedback': 'feedback',
-    '../context/AuthContext': { useAuth: () => auth },
+    '../context/authState': { useAuth: () => auth },
     '../hooks/useApplications': { __esModule: true, default: () => ({ applications: [], add }) },
     '../hooks/useChecklist': { __esModule: true, default: () => ({ items: [], refresh() {} }) },
     '../hooks/useToday': { useToday: () => '2026-09-27' },

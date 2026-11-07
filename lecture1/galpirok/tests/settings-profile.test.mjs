@@ -85,7 +85,7 @@ function pageWith(readResults, { draftStore = createRecordDraftStore(), initialA
     '../components/ui/PageUI': { PageHeading: 'PageHeading' },
     '../components/ui/PaperGraphic': 'PaperGraphic',
     '../lib/supabase': { supabase },
-    '../context/AuthContext': { useAuth: () => ({ user: account, isGuest: false, signOut: noOp }) },
+    '../context/authState': { useAuth: () => ({ user: account, isGuest: false, signOut: noOp }) },
     '../utils/authErrors': { getAuthErrorMessage: noOp },
     '../utils/recordExport': { createRecordExport: noOp, loadRecordExport: noOp, downloadRecordExport: noOp },
     '../utils/dataErrors': { getSafeDataErrorMessage: noOp },

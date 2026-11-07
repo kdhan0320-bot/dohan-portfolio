@@ -5,7 +5,7 @@ import VisibilityOffOutlined from '@mui/icons-material/VisibilityOffOutlined';
 import { Link, useNavigate } from 'react-router-dom';
 import Field from '../components/ui/Field';
 import { Brand } from '../components/ui/Brand';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { passwordValidation } from '../utils/authRecovery';
 

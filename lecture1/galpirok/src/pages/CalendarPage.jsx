@@ -11,7 +11,7 @@ import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
 import ApplicationPanel from '../components/applications/ApplicationPanel';
 import { useToday } from '../hooks/useToday';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { agendaDeadlines, calendarFocusDate, calendarState, keyboardDate, monthCells, monthLabel, pendingDeadlines, shiftMonth, validDate, WEEKDAYS } from '../utils/calendar';
 import { deadlineLabel } from '../utils/dates';
 import { Empty, LoadState, PageHeading } from '../components/ui/PageUI';

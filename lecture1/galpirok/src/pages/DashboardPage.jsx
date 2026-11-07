@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@mui/material';
 import useApplications from '../hooks/useApplications';
 import useChecklist from '../hooks/useChecklist';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { useToday } from '../hooks/useToday';
 import { deadlineLabel, interviewDayLabel, shortDate } from '../utils/dates';
 import { WEEKDAYS } from '../utils/calendar';

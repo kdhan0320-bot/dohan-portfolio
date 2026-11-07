@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation, useParams } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/authState';
 import Layout from './components/layout/Layout';
 import RouteBoundary from './components/ui/RouteBoundary';
 import { CircularProgress, Box } from '@mui/material';

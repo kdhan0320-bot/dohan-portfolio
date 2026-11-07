@@ -4,7 +4,7 @@ import { Button, Alert, Tabs, Tab, IconButton, InputAdornment } from '@mui/mater
 import VisibilityOutlined from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlined from '@mui/icons-material/VisibilityOffOutlined';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { isAuthConfigured } from '../lib/supabase';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { EMAIL_COOLDOWN_KEY, EMAIL_COOLDOWN_MS, emailCooldownSeconds } from '../utils/authRecovery';

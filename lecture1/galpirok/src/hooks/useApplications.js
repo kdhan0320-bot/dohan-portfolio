@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { buildApplicationPayload } from '../utils/applicationPayload';
 import { createSafeDataError, getSafeDataErrorMessage } from '../utils/dataErrors';
 const useApplications = () => {

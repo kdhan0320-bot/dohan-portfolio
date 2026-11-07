@@ -14,6 +14,9 @@ const { code } = await transform(source, {
   define: { 'import.meta.env.BASE_URL': '"/dohan-portfolio/galpirok/"' },
 });
 
+const stateSource = await readFile(new URL('../src/context/authState.js', import.meta.url), 'utf8');
+const { code: stateCode } = await transform(stateSource, { loader: 'js', format: 'cjs' });
+
 function providerWith(auth) {
   const state = [];
   let cursor = 0;
@@ -31,7 +34,16 @@ function providerWith(auth) {
     useRef: value => ({ current: value }),
     useEffect: noOp,
   };
+  const stateModule = { exports: {} };
+  vm.runInNewContext(stateCode, {
+    module: stateModule, exports: stateModule.exports,
+    require: name => {
+      assert.equal(name, 'react');
+      return react;
+    },
+  });
   const dependencies = {
+    './authState': stateModule.exports,
     react,
     'react/jsx-runtime': { jsx: (type, props) => ({ type, props }) },
     'react-router-dom': { useNavigate: () => noOp },

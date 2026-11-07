@@ -1,11 +1,11 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AuthContext, useAuth } from './authState';
 import { useNavigate } from 'react-router-dom';
 import { supabase, isAuthConfigured, initialAuthCallback } from '../lib/supabase';
 import { createAuthError, getAuthErrorMessage } from '../utils/authErrors';
 import { authRedirectUrl, cleanAuthCallbackUrl, forgetRecovery, readRecovery, rememberRecovery, sendAccountEmail, updateRecoveryPassword } from '../utils/authRecovery';
 import { DEMO_APPLICATIONS, DEMO_CHECKLISTS, DEMO_INTERVIEW_NOTES } from '../constants';
 import { recordDraftStore } from '../utils/recordDraftStore';
-const AuthContext = createContext(null);
 const GUEST_MODE_KEY = 'jobflow-guest-mode';
 const recoveryStorage = () => {
   try { return window.sessionStorage; } catch { return null; }
@@ -291,9 +291,3 @@ export function SampleRecordScope({ children }) {
     {children}
   </AuthContext.Provider>;
 }
-
-export const useAuth = () => {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
-};

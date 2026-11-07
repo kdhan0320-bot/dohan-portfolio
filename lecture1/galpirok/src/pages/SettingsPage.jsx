@@ -5,7 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import DownloadOutlined from '@mui/icons-material/DownloadOutlined';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/authState';
 import { PageHeading } from '../components/ui/PageUI';
 import { getAuthErrorMessage } from '../utils/authErrors';
 import { createRecordExport, loadRecordExport, downloadRecordExport } from '../utils/recordExport';
