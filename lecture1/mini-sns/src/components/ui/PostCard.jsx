@@ -21,7 +21,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from "@mui/icons-material/Close";
 import { useAuth } from "../../hooks/useAuth";
-import { useDemoData } from "../../context/DemoDataContext";
+import { useDemoData } from "../../hooks/useDemoData";
 import { formatDistanceToNow } from "../../utils/timeFormat";
 import sampleFallback from "../../assets/samples/sample-fallback.svg";
 import CommentModal from "./CommentModal";

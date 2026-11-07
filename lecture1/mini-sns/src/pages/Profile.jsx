@@ -13,15 +13,16 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MainLayout from "../components/layout/MainLayout";
-import PageHeroHeader, {
+import PageHeroHeader from "../components/layout/PageHeroHeader";
+import {
   heroChipSx,
   heroSurfaceSx,
   cardShelfSx,
-} from "../components/layout/PageHeroHeader";
+} from "../components/layout/pageHeroStyles";
 import PostCard from "../components/ui/PostCard";
 import sampleFallback from "../assets/samples/sample-fallback.svg";
 import { useAuth } from "../hooks/useAuth";
-import { useDemoData } from "../context/DemoDataContext";
+import { useDemoData } from "../hooks/useDemoData";
 import { ROUTES } from "../constants/routes";
 
 const GUEST_INTEREST_TAGS = ["작업기록", "스터디", "모바일UI", "React"];

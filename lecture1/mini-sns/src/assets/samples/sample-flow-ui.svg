@@ -19,4 +19,6 @@
   <rect x="175" y="305" width="90" height="8" rx="4" fill="#FFEDD5"/>
   <rect x="175" y="322" width="110" height="8" rx="4" fill="#FFEDD5"/>
   <path d="M240 200 L240 260" stroke="#FB923C" stroke-width="4" marker-end="url(#arrow)"/>
+  <rect x="24" y="24" width="130" height="30" rx="15" fill="#C2410C"/>
+  <text x="89" y="44" font-family="Pretendard, 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">플로우 스케치</text>
 </svg>

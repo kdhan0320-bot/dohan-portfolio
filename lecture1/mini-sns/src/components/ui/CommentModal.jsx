@@ -16,7 +16,7 @@ import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useAuth } from "../../hooks/useAuth";
-import { useDemoData } from "../../context/DemoDataContext";
+import { useDemoData } from "../../hooks/useDemoData";
 import { formatDistanceToNow } from "../../utils/timeFormat";
 
 const CommentModal = ({ open, onClose, postId, comments = [] }) => {

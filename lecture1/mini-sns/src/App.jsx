@@ -1,6 +1,8 @@
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./hooks/useAuth";
-import { DemoDataProvider } from "./context/DemoDataContext";
+import { useAuth } from "./hooks/useAuth";
+import { AuthProvider } from "./context/AuthProvider";
+import { DemoDataProvider } from "./context/DemoDataProvider";
+import { NotificationsProvider } from "./context/NotificationsProvider";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
@@ -103,7 +105,9 @@ const App = () => (
   <HashRouter>
     <AuthProvider>
       <DemoDataProvider>
-        <AppRoutes />
+        <NotificationsProvider>
+          <AppRoutes />
+        </NotificationsProvider>
       </DemoDataProvider>
     </AuthProvider>
   </HashRouter>

@@ -1,12 +1,13 @@
 import { Box, Typography, Chip } from "@mui/material";
 import MainLayout from "../components/layout/MainLayout";
-import PageHeroHeader, {
+import PageHeroHeader from "../components/layout/PageHeroHeader";
+import {
   heroChipSx,
   heroSurfaceSx,
   cardShelfSx,
-} from "../components/layout/PageHeroHeader";
+} from "../components/layout/pageHeroStyles";
 import PostCard from "../components/ui/PostCard";
-import { useDemoData } from "../context/DemoDataContext";
+import { useDemoData } from "../hooks/useDemoData";
 
 const Home = () => {
   const { posts } = useDemoData();

@@ -45,7 +45,7 @@ const theme = createTheme({
     h6: { fontSize: "0.875rem", fontWeight: 600 },
     body1: { fontSize: "0.9375rem", lineHeight: 1.65 },
     body2: { fontSize: "0.875rem", lineHeight: 1.6 },
-    caption: { fontSize: "0.75rem", color: "#7F8FA4" },
+    caption: { fontSize: "0.75rem", color: "#64748B" },
     button: { fontSize: "0.875rem", fontWeight: 600, textTransform: "none" },
   },
   spacing: 8,

@@ -10,15 +10,21 @@ import {
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import GroupsIcon from "@mui/icons-material/Groups";
 import { ROUTES } from "../../constants/routes";
+import { useNotifications } from "../../hooks/useNotifications";
 
 const TopBar = () => {
   const navigate = useNavigate();
+  const { unreadCount } = useNotifications();
 
   return (
     <AppBar
       position="fixed"
       elevation={0}
-      sx={{ background: "linear-gradient(135deg, #111827 0%, #312E81 100%)" }}
+      sx={{
+        maxWidth: 480,
+        mx: "auto",
+        background: "linear-gradient(135deg, #111827 0%, #312E81 100%)",
+      }}
     >
       <Toolbar sx={{ justifyContent: "space-between", minHeight: 56 }}>
         {/* 로고 */}
@@ -63,7 +69,7 @@ const TopBar = () => {
           aria-label="알림 페이지로 이동"
         >
           <Badge
-            badgeContent={3}
+            badgeContent={unreadCount}
             color="error"
             sx={{
               "& .MuiBadge-badge": {

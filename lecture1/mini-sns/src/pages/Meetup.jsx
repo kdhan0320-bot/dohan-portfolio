@@ -22,13 +22,14 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PeopleIcon from "@mui/icons-material/People";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MainLayout from "../components/layout/MainLayout";
-import PageHeroHeader, {
+import PageHeroHeader from "../components/layout/PageHeroHeader";
+import {
   heroChipSx,
   heroSurfaceSx,
   cardShelfSx,
-} from "../components/layout/PageHeroHeader";
+} from "../components/layout/pageHeroStyles";
 import { chatRoomPath } from "../constants/routes";
-import { getRandomProfileAvatar } from "../hooks/useAuth";
+import { getRandomProfileAvatar } from "../constants/demoUser";
 
 const MOCK_MEETUPS = [
   {

@@ -14,14 +14,28 @@ const MainLayout = ({ children, hideGuestBanner = false }) => {
   return (
     <Box
       sx={{
-        maxWidth: 480,
-        mx: "auto",
         minHeight: "100vh",
-        bgcolor: "background.default",
-        position: "relative",
+        bgcolor: "#EEF0FA",
+        backgroundImage: {
+          sm: "radial-gradient(circle at 10% 10%, rgba(99,102,241,0.14) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(6,182,212,0.12) 0%, transparent 45%)",
+        },
+        display: "flex",
+        justifyContent: "center",
       }}
     >
-      <TopBar />
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 480,
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          position: "relative",
+          boxShadow: {
+            sm: "0 32px 64px -24px rgba(30,27,75,0.28)",
+          },
+        }}
+      >
+        <TopBar />
       <Box
         sx={{
           pt: "56px",
@@ -162,7 +176,8 @@ const MainLayout = ({ children, hideGuestBanner = false }) => {
           </Box>
         </Box>
       </Box>
-      <BottomNav />
+        <BottomNav />
+      </Box>
     </Box>
   );
 };
