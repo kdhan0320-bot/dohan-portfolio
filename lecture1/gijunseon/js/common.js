@@ -10,8 +10,8 @@ function navLinks() {
   }).join('');
 }
 const preparationAction = page === 'consultation'
-  ? `<button class="btn btn-primary" type="button" data-dialog-close data-return-to-consultation>상담 입력 계속하기<img class="arrow" src="${A}home-img36.svg" alt=""></button>`
-  : `<a class="btn btn-primary" href="consultation.html">도입 상담하기<img class="arrow" src="${A}home-img36.svg" alt=""></a>`;
+  ? `<button class="btn btn-primary" type="button" data-dialog-close data-return-to-consultation>상담 입력 계속하기</button>`
+  : `<a class="btn btn-primary" href="consultation.html">도입 상담하기</a>`;
 document.body.insertAdjacentHTML('beforeend', `<dialog id="mobile-menu" class="mobile-menu" aria-labelledby="menu-title"><h2 id="menu-title">전체 메뉴</h2><button class="dialog-close" data-dialog-close aria-label="메뉴 닫기"><img src="${A}741-2-img.svg" alt=""></button><nav aria-label="모바일 주 메뉴">${navLinks(true)}</nav></dialog><dialog id="preparation-dialog" class="preparation-dialog" aria-labelledby="preparation-title"><h2 id="preparation-title">상담 전 준비 안내</h2><button type="button" class="dialog-close" data-dialog-close aria-label="준비 안내 닫기"><img src="${A}741-2-img.svg" alt=""></button><ul class="preparation-list"><li><span class="prep-icon" aria-hidden="true"><img src="${A}741-2-img2.svg" alt=""></span><div><h3>제품 사진</h3><p>제품 전체와 검사 부위 사진</p></div></li><li><span class="prep-icon" aria-hidden="true"><img src="${A}741-2-img3.svg" alt=""><img src="${A}741-2-img4.svg" alt=""></span><div><h3>검사할 항목</h3><p>흠집·누락·인쇄 중 필요한 검사</p></div></li><li><span class="prep-icon" aria-hidden="true"><img src="${A}741-2-img5.svg" alt=""></span><div><h3>설치 환경</h3><p>촬영 위치와 주변 설비 사진</p></div></li></ul>${preparationAction}</dialog>`);
 const openers = new WeakMap();
 export function openDialog(dialog, opener = document.activeElement) {

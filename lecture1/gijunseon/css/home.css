@@ -637,9 +637,6 @@
     padding: 12px 10px;
     gap: 8px
   }
-  .hero-actions .arrow {
-    display: none
-  }
   .solution-media-image {
     height: auto;
     aspect-ratio: 350 / 260

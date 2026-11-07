@@ -73,8 +73,13 @@ body[data-page="process"] > main {
 }
 
 .process-copy .text-link {
+  color: var(--action);
   margin-top: 12px;
   min-height: 48px
+}
+
+.process-copy .text-link:hover {
+  color: var(--action-hover)
 }
 
 .process-art {
@@ -126,8 +131,7 @@ body[data-page="process"] > main {
     line-height: 38px
   }
   .process-copy .text-link {
-    margin-top: 8px;
-    color: var(--text)
+    margin-top: 8px
   }
   .process-art {
     min-height: 176px;

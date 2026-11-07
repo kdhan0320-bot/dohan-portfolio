@@ -1,4 +1,4 @@
-import './common.js';
+import './common.js?v=20261107-buttons';
 import { inspections } from './data.js?v=20261021-figma';
 import { setResponsiveImage } from './images.js';
 
