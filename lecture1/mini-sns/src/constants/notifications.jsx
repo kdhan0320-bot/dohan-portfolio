@@ -1,95 +1,67 @@
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ForumIcon from "@mui/icons-material/Forum";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EventIcon from "@mui/icons-material/Event";
 import { getRandomProfileAvatar } from "./demoUser";
-import sampleCardUi from "../assets/samples/sample-card-ui.svg";
-import sampleStudy from "../assets/samples/sample-study.svg";
-import sampleChatUx from "../assets/samples/sample-chat-ux.svg";
-import sampleProfileUi from "../assets/samples/sample-profile-ui.svg";
-
 export const MOCK_NOTIFICATIONS = [
   {
-    id: 1,
+    id: "n1",
     type: "comment",
     read: false,
-    avatar: getRandomProfileAvatar("프론트러너"),
-    user: "프론트러너",
-    content: '"카드 그림자 톤이 훨씬 차분해졌네요!"',
-    time: "방금 전",
-    postImage: sampleCardUi,
+    avatar: getRandomProfileAvatar("서연"),
+    user: "서연",
+    content: "여백을 넓힌 이유가 화면에서 잘 느껴져요.",
+    time: "15분 전",
+    target: "/post/guest-1",
+    label: "작업에 댓글을 남겼어요",
   },
   {
-    id: 2,
+    id: "n2",
     type: "meetup",
     read: false,
-    avatar: getRandomProfileAvatar("모바일 UI 스터디"),
-    user: "모바일 UI 스터디",
-    content: "모임이 시작되었습니다. 채팅방을 확인하세요.",
-    time: "5분 전",
-    postImage: null,
+    avatar: getRandomProfileAvatar("서연"),
+    user: "작은 화면을 깊이 읽는 시간",
+    content: "이번 주 주제는 ‘쓰고 싶은 피드’예요. 함께 살펴볼까요?",
+    time: "30분 전",
+    target: "/meetup?group=mobile-ui-study",
+    label: "새로운 스터디 소식",
   },
   {
-    id: 3,
+    id: "n3",
     type: "like",
     read: false,
-    avatar: getRandomProfileAvatar("스터디메이트"),
-    user: "스터디메이트",
-    content: "회원님의 게시물을 좋아합니다.",
-    time: "30분 전",
-    postImage: sampleStudy,
+    avatar: getRandomProfileAvatar("유진"),
+    user: "유진",
+    content: "‘여행의 시작은, 조금 더 가볍게’에 좋아요를 남겼어요.",
+    time: "1시간 전",
+    target: "/post/guest-1",
+    label: "작업에 공감을 보냈어요",
   },
   {
-    id: 4,
-    type: "comment",
+    id: "n4",
+    type: "meetup",
     read: true,
-    avatar: getRandomProfileAvatar("디자인메이트"),
-    user: "디자인메이트",
-    content: '"아바타 톤이 잘 어울려요."',
+    avatar: getRandomProfileAvatar("민준"),
+    user: "하루 한 조각, React",
+    content: "오늘 만든 컴포넌트 이야기를 이어가요.",
     time: "2시간 전",
-    postImage: sampleProfileUi,
-  },
-  {
-    id: 5,
-    type: "follow",
-    read: true,
-    avatar: getRandomProfileAvatar("모바일UX"),
-    user: "모바일UX",
-    content: "회원님을 팔로우하기 시작했습니다.",
-    time: "5시간 전",
-    postImage: null,
-  },
-  {
-    id: 6,
-    type: "like",
-    read: true,
-    avatar: getRandomProfileAvatar("UX러너"),
-    user: "UX러너",
-    content: "회원님의 채팅 UI 게시물을 좋아합니다.",
-    time: "어제",
-    postImage: sampleChatUx,
+    target: "/chat/react-worklog",
+    label: "참여 중인 모임의 대화",
   },
 ];
-
 export const NOTIFICATION_TYPE_CONFIG = {
   like: {
-    icon: <FavoriteIcon sx={{ fontSize: 12 }} />,
-    color: "#e53935",
-    bg: "#fce4e4",
+    icon: <FavoriteIcon fontSize="inherit" />,
+    color: "#B85460",
+    bg: "#FAEDEF",
   },
   comment: {
-    icon: <ForumIcon sx={{ fontSize: 12 }} />,
-    color: "#4F46E5",
-    bg: "#EEF2FF",
-  },
-  follow: {
-    icon: <PersonAddIcon sx={{ fontSize: 12 }} />,
-    color: "#2e7d32",
-    bg: "#e8f5e9",
+    icon: <ForumIcon fontSize="inherit" />,
+    color: "#535FC1",
+    bg: "#EDEFFC",
   },
   meetup: {
-    icon: <EventIcon sx={{ fontSize: 12 }} />,
-    color: "#0891B2",
-    bg: "#ECFEFF",
+    icon: <EventIcon fontSize="inherit" />,
+    color: "#4C735D",
+    bg: "#EAF2ED",
   },
 };

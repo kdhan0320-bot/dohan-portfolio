@@ -1,15 +1,18 @@
+import { lazy, Suspense } from "react";
+import RouteEffects from "./components/layout/RouteEffects";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import { AuthProvider } from "./context/AuthProvider";
 import { DemoDataProvider } from "./context/DemoDataProvider";
 import { NotificationsProvider } from "./context/NotificationsProvider";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import CreatePost from "./pages/CreatePost";
-import Profile from "./pages/Profile";
-import Meetup from "./pages/Meetup";
-import Chat from "./pages/Chat";
-import Notifications from "./pages/Notifications";
+const Login = lazy(() => import("./pages/Login"));
+const Home = lazy(() => import("./pages/Home"));
+const CreatePost = lazy(() => import("./pages/CreatePost"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Meetup = lazy(() => import("./pages/Meetup"));
+const Chat = lazy(() => import("./pages/Chat"));
+const Notifications = lazy(() => import("./pages/Notifications"));
+const PostDetail = lazy(() => import("./pages/PostDetail"));
 import { ROUTES } from "./constants/routes";
 
 const ProtectedRoute = ({ children }) => {
@@ -97,6 +100,14 @@ const AppRoutes = () => (
         </ProtectedRoute>
       }
     />
+    <Route
+      path="/post/:id"
+      element={
+        <ProtectedRoute>
+          <PostDetail />
+        </ProtectedRoute>
+      }
+    />
     <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
   </Routes>
 );
@@ -106,7 +117,16 @@ const App = () => (
     <AuthProvider>
       <DemoDataProvider>
         <NotificationsProvider>
-          <AppRoutes />
+          <RouteEffects />
+          <Suspense
+            fallback={
+              <div className="loading-state" role="status">
+                작업실을 여는 중이에요…
+              </div>
+            }
+          >
+            <AppRoutes />
+          </Suspense>
         </NotificationsProvider>
       </DemoDataProvider>
     </AuthProvider>

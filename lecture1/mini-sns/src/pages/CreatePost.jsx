@@ -1,215 +1,370 @@
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { readStored, writeStored } from "../utils/storage";
+import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  IconButton,
   Alert,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import ArrowBackRounded from "@mui/icons-material/ArrowBackRounded";
+import AddPhotoAlternateOutlined from "@mui/icons-material/AddPhotoAlternateOutlined";
+import MainLayout from "../components/layout/MainLayout";
 import { useDemoData } from "../hooks/useDemoData";
-import { getRandomSampleImage } from "../constants/samples";
-import sampleFallback from "../assets/samples/sample-fallback.svg";
-import { ROUTES } from "../constants/routes";
-
-const CreatePost = () => {
+import { DEMO_USER } from "../constants/demoUser";
+import { SAMPLE_ART, sampleImage } from "../constants/samples";
+export default function CreatePost() {
+  const { id } = useParams();
+  return <PostEditor key={id || "new"} id={id} />;
+}
+function PostEditor({ id }) {
+  const { getPost, addPost, updatePost } = useDemoData();
+  const existing = id ? getPost(id) : null;
   const navigate = useNavigate();
-  const location = useLocation();
-  const editPost = location.state?.post;
-  const { addPost, updatePost } = useDemoData();
-
-  const [caption, setCaption] = useState(editPost?.caption || "");
-  const [hashtag, setHashtag] = useState(editPost?.hashtag || "");
-  const [postLocation, setPostLocation] = useState(editPost?.location || "");
-  const [imageUrl, setImageUrl] = useState(
-    editPost?.image_url || getRandomSampleImage(),
+  const draftKey = `draft-${id || "new"}`;
+  const [storedDraft] = useState(() =>
+    readStored(
+      draftKey,
+      null,
+      (value) =>
+        value &&
+        [
+          "title",
+          "caption",
+          "category",
+          "hashtag",
+          "imageKey",
+          "image_url",
+        ].every((key) => typeof value[key] === "string"),
+    ),
+  );
+  const seed = storedDraft || existing;
+  const draftEnabled = useRef(true);
+  const [draftSaved, setDraftSaved] = useState(true);
+  const [title, setTitle] = useState(seed?.title || "");
+  const [caption, setCaption] = useState(seed?.caption || "");
+  const [category, setCategory] = useState(seed?.category || "작업기록");
+  const [tags, setTags] = useState(seed?.hashtag || "");
+  const [imageKey, setImageKey] = useState(seed?.imageKey || "");
+  const [customImage, setCustomImage] = useState(
+    seed?.imageKey ? "" : seed?.image_url || "",
   );
   const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-
-  const refreshImage = () => setImageUrl(getRandomSampleImage());
-
-  const handleSubmit = (e) => {
+  const [busy, setBusy] = useState(false);
+  const [cancel, setCancel] = useState(false);
+  const image = imageKey ? sampleImage(imageKey) : customImage;
+  const dirty =
+    title !== (existing?.title || "") ||
+    caption !== (existing?.caption || "") ||
+    tags !== (existing?.hashtag || "") ||
+    category !== (existing?.category || "작업기록") ||
+    imageKey !== (existing?.imageKey || "") ||
+    customImage !== (existing?.imageKey ? "" : existing?.image_url || "");
+  useEffect(() => {
+    if (!draftEnabled.current) return;
+    setDraftSaved(
+      writeStored(
+        draftKey,
+        dirty
+          ? {
+              title,
+              caption,
+              category,
+              hashtag: tags,
+              imageKey,
+              image_url: customImage,
+            }
+          : null,
+      ),
+    );
+  }, [draftKey, dirty, title, caption, category, tags, imageKey, customImage]);
+  const clearDraft = () => {
+    draftEnabled.current = false;
+    writeStored(draftKey, null);
+  };
+  const submit = (e) => {
     e.preventDefault();
-    if (!caption.trim()) {
-      setError("게시물 내용을 입력해주세요.");
+    if (!title.trim() || !caption.trim()) {
+      setError("제목과 작업 이야기를 모두 적어주세요.");
       return;
     }
-    setError("");
-
-    if (editPost) {
-      const success = updatePost(editPost.id, {
-        caption: caption.trim(),
-        hashtag: hashtag.trim(),
-        location: postLocation.trim(),
-        image_url: imageUrl,
-      });
-      if (!success) {
-        setError("이 게시글은 수정할 권한이 없습니다.");
+    const values = {
+      title: title.trim(),
+      caption: caption.trim(),
+      category,
+      hashtag: [
+        ...new Set(
+          tags
+            .split(/\s+/)
+            .filter(Boolean)
+            .map((t) => (t.startsWith("#") ? t : `#${t}`)),
+        ),
+      ]
+        .slice(0, 6)
+        .join(" "),
+      imageKey,
+      image_url: customImage,
+    };
+    if (existing) {
+      if (!updatePost(id, values)) {
+        setError("내가 작성한 기록만 수정할 수 있어요.");
         return;
       }
-      setNotice("데모 게시글이 수정되었습니다. 새로고침하면 초기화됩니다.");
+      clearDraft();
+      navigate(`/post/${id}`);
     } else {
-      addPost({
-        caption: caption.trim(),
-        hashtag: hashtag.trim(),
-        location: postLocation.trim(),
-        image_url: imageUrl,
-      });
-      setNotice("데모 게시글이 추가되었습니다. 새로고침하면 초기화됩니다.");
+      clearDraft();
+      const newId = addPost(values);
+      navigate(`/post/${newId}`);
     }
-    setTimeout(() => navigate(ROUTES.HOME), 1200);
   };
-
+  const upload = async (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setError("JPG, PNG, WebP 이미지로 선택해 주세요.");
+      return;
+    }
+    if (file.size > 1.5 * 1024 * 1024) {
+      setError(
+        "이 브라우저에 저장할 수 있도록 1.5MB 이하의 이미지를 선택해 주세요.",
+      );
+      return;
+    }
+    setBusy(true);
+    setError("");
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      await new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = resolve;
+        img.onerror = reject;
+        img.src = result;
+      });
+      setCustomImage(result);
+      setImageKey("");
+    } catch {
+      setError("이미지를 읽지 못했어요. 다른 파일을 선택해 주세요.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  if (id && (!existing || existing.user_id !== DEMO_USER.id))
+    return (
+      <MainLayout>
+        <div className="empty-state">
+          <h1 style={{ fontSize: 20 }}>수정할 수 없는 기록이에요</h1>
+          <p>내가 작성한 기록인지 확인해 주세요.</p>
+          <Link className="button primary" to="/profile">
+            내 기록으로
+          </Link>
+        </div>
+      </MainLayout>
+    );
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "#EEF0FA",
-        backgroundImage: {
-          sm: "radial-gradient(circle at 10% 10%, rgba(99,102,241,0.14) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(6,182,212,0.12) 0%, transparent 45%)",
-        },
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-    <Box
-      sx={{
-        width: "100%",
-        maxWidth: 480,
-        minHeight: "100vh",
-        bgcolor: "background.default",
-        boxShadow: {
-          sm: "0 32px 64px -24px rgba(30,27,75,0.28)",
-        },
-      }}
-    >
-      {/* 헤더 */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          px: 2,
-          py: 1.5,
-          bgcolor: "background.paper",
-          borderBottom: "1px solid",
-          borderColor: "divider",
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <IconButton onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography variant="h4">
-          {editPost ? "게시물 수정" : "새 게시물"}
-        </Typography>
-        <Box sx={{ width: 40 }} />
-      </Box>
-
-      <Box component="form" onSubmit={handleSubmit} sx={{ pb: 4 }}>
+    <MainLayout>
+      <div className="detail-heading">
+        <button
+          className="back-link text-button"
+          onClick={() =>
+            dirty ? setCancel(true) : navigate(existing ? `/post/${id}` : "/")
+          }
+        >
+          <ArrowBackRounded />
+          돌아가기
+        </button>
+        <h1>{existing ? "기록 다듬기" : "오늘의 작은 기록"}</h1>
+      </div>
+      <form className="form-panel" onSubmit={submit}>
+        {!draftSaved && (
+          <Alert severity="warning" sx={{ mb: 3 }}>
+            초안을 저장하지 못했어요. 작성한 내용을 복사해 보관하거나 이미지
+            용량을 줄여주세요.
+          </Alert>
+        )}
+        {dirty && draftSaved && (
+          <p className="draft-status" role="status">
+            초안을 이 브라우저에 저장했어요.
+          </p>
+        )}
         {error && (
-          <Alert severity="error" sx={{ m: 2, borderRadius: 2 }}>
+          <Alert severity="error" sx={{ mb: 3 }}>
             {error}
           </Alert>
         )}
-        {notice && (
-          <Alert severity="info" sx={{ m: 2, borderRadius: 2 }}>
-            {notice}
-          </Alert>
-        )}
-
-        {/* 이미지 미리보기 */}
-        <Box sx={{ position: "relative" }}>
-          <Box
-            component="img"
-            src={imageUrl}
-            alt="게시물 미리보기 이미지"
-            loading="lazy"
-            onError={(e) => {
-              e.target.src = sampleFallback;
-            }}
-            sx={{
-              width: "100%",
-              aspectRatio: "1/1",
-              objectFit: "cover",
-              display: "block",
-            }}
-          />
-          <Button
-            startIcon={<RefreshIcon />}
-            onClick={refreshImage}
-            size="small"
-            sx={{
-              position: "absolute",
-              bottom: 12,
-              right: 12,
-              bgcolor: "rgba(0,0,0,0.6)",
-              color: "#fff",
-              "&:hover": { bgcolor: "rgba(0,0,0,0.8)" },
-              borderRadius: 2,
-            }}
+        <div className="form-field">
+          <span className="field-label" id="category-label">
+            어떤 이야기인가요?
+          </span>
+          <div
+            className="category-options"
+            role="group"
+            aria-labelledby="category-label"
           >
-            이미지 변경
-          </Button>
-        </Box>
-
-        {/* 입력 폼 */}
-        <Box sx={{ px: 2, pt: 2 }}>
-          <TextField
-            label="게시물 내용 (캡션)"
-            multiline
-            rows={3}
-            fullWidth
+            {["작업기록", "질문", "스터디"].map((c) => (
+              <button
+                type="button"
+                aria-pressed={category === c}
+                className={category === c ? "selected" : ""}
+                key={c}
+                onClick={() => setCategory(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="form-field">
+          <label className="field-label" htmlFor="post-title">
+            제목
+          </label>
+          <input
+            id="post-title"
+            className="form-input"
+            placeholder="오늘의 시도를 한 문장으로"
+            value={title}
+            maxLength={60}
+            required
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <div className="field-helper">
+            <span>작은 변화 하나도 좋아요.</span>
+            <span>{title.length} / 60</span>
+          </div>
+        </div>
+        <div className="form-field">
+          <label className="field-label" htmlFor="post-caption">
+            작업 이야기
+          </label>
+          <textarea
+            id="post-caption"
+            className="form-input textarea"
+            placeholder="무엇을 만들었나요? 왜 바꿨나요? 다음에는 어떤 걸 해볼까요?"
             value={caption}
+            maxLength={1200}
+            required
             onChange={(e) => setCaption(e.target.value)}
-            placeholder="오늘의 작업 기록이나 스터디 내용을 공유해보세요"
-            sx={{ mb: 2 }}
           />
-          <TextField
-            label="해시태그"
-            fullWidth
-            value={hashtag}
-            onChange={(e) => setHashtag(e.target.value)}
-            placeholder="#작업기록 #스터디 #React"
-            helperText="띄어쓰기로 구분"
-            sx={{ mb: 2 }}
+          <div className="field-helper">
+            <span>
+              과정과 생각을 함께 나누면 더 좋은 피드백을 받을 수 있어요.
+            </span>
+            <span>{caption.length} / 1200</span>
+          </div>
+        </div>
+        <div className="form-field">
+          <span className="field-label">
+            함께 보여줄 이미지<span>선택</span>
+          </span>
+          <p className="field-helper">
+            직접 첨부하거나 아래의 샘플 작업 이미지를 골라보세요.
+          </p>
+          <div className="art-options">
+            {SAMPLE_ART.slice(0, 3).map((a) => (
+              <button
+                key={a.id}
+                type="button"
+                className={imageKey === a.id ? "selected" : ""}
+                aria-label={`${a.name} 선택`}
+                aria-pressed={imageKey === a.id}
+                onClick={() => {
+                  setImageKey(a.id);
+                  setCustomImage("");
+                }}
+              >
+                <img src={a.src} alt="" />
+                <span>{a.name}</span>
+              </button>
+            ))}
+          </div>
+          <div className="upload-actions">
+            <label className="upload-label">
+              <AddPhotoAlternateOutlined />내 이미지 첨부
+              <input
+                type="file"
+                aria-label="내 이미지 첨부"
+                accept="image/png,image/jpeg,image/webp"
+                disabled={busy}
+                onChange={upload}
+              />
+            </label>
+            {image && (
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => {
+                  setImageKey("");
+                  setCustomImage("");
+                }}
+              >
+                이미지 빼기
+              </button>
+            )}
+            <span className="field-helper">JPG · PNG · WebP / 1.5MB 이하</span>
+          </div>
+          {image && (
+            <div className="image-preview">
+              <img src={image} alt="선택한 이미지 미리보기" />
+            </div>
+          )}
+        </div>
+        <div className="form-field">
+          <label className="field-label" htmlFor="post-tags">
+            태그<span>선택 · 최대 6개</span>
+          </label>
+          <input
+            className="form-input"
+            id="post-tags"
+            placeholder="#UI디자인 #React #작업기록"
+            value={tags}
+            maxLength={120}
+            onChange={(e) => setTags(e.target.value)}
           />
-          <TextField
-            label="위치"
-            fullWidth
-            value={postLocation}
-            onChange={(e) => setPostLocation(e.target.value)}
-            placeholder="서울, 대한민국"
-            sx={{ mb: 3 }}
-          />
-
-          {/* 하단 등록 버튼 */}
+          <div className="field-helper">띄어쓰기로 구분해 주세요.</div>
+        </div>
+        <div className="form-submit">
+          <p>
+            이 기록은 현재 브라우저에 저장돼요.
+            <br />
+            다른 사람에게 공개되지 않습니다.
+          </p>
+          <button
+            className="button primary"
+            type="submit"
+            disabled={busy || !title.trim() || !caption.trim()}
+          >
+            {busy ? "이미지 읽는 중" : existing ? "수정 완료" : "기록 남기기"}
+          </button>
+        </div>
+      </form>
+      <Dialog
+        open={cancel}
+        onClose={() => setCancel(false)}
+        aria-labelledby="discard-title"
+      >
+        <DialogTitle id="discard-title">작성 중인 기록을 닫을까요?</DialogTitle>
+        <DialogContent>아직 저장하지 않은 내용은 사라집니다.</DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCancel(false)}>계속 작성</Button>
           <Button
-            variant="contained"
-            fullWidth
-            size="large"
-            onClick={handleSubmit}
-            sx={{
-              py: 1.6,
-              borderRadius: 3,
-              fontWeight: 700,
-              fontSize: "1rem",
-              mb: 1,
+            color="error"
+            onClick={() => {
+              clearDraft();
+              navigate(existing ? `/post/${id}` : "/");
             }}
           >
-            {editPost ? "수정하기" : "게시물 등록하기"}
+            닫기
           </Button>
-        </Box>
-      </Box>
-    </Box>
-    </Box>
+        </DialogActions>
+      </Dialog>
+    </MainLayout>
   );
-};
-
-export default CreatePost;
+}

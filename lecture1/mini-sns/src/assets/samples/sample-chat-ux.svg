@@ -1,14 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
-  <rect width="480" height="480" fill="#EEF2FF"/>
-  <rect x="70" y="80" width="220" height="56" rx="20" fill="#FFFFFF" stroke="#E0E7FF" stroke-width="2"/>
-  <rect x="94" y="100" width="140" height="16" rx="8" fill="#C7D2FE"/>
-  <rect x="190" y="160" width="220" height="56" rx="20" fill="#6366F1"/>
-  <rect x="214" y="180" width="150" height="16" rx="8" fill="#E0E7FF"/>
-  <rect x="70" y="240" width="180" height="56" rx="20" fill="#FFFFFF" stroke="#E0E7FF" stroke-width="2"/>
-  <rect x="94" y="260" width="100" height="16" rx="8" fill="#C7D2FE"/>
-  <rect x="70" y="360" width="340" height="48" rx="24" fill="#FFFFFF" stroke="#C7D2FE" stroke-width="2"/>
-  <rect x="94" y="378" width="200" height="12" rx="6" fill="#E0E7FF"/>
-  <circle cx="376" cy="384" r="18" fill="#6366F1"/>
-  <rect x="24" y="24" width="128" height="30" rx="15" fill="#4338CA"/>
-  <text x="88" y="44" font-family="Pretendard, 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">채팅 UI 스케치</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620"><defs><style>text{font-family:Pretendard,'Noto Sans KR',Arial,sans-serif}</style></defs>
+<rect width="1000" height="620" fill="#e8efeb"/><text x="60" y="70" fill="#8a9f93" font-size="13" letter-spacing="3">INTERACTION NOTES / 02</text>
+<text x="60" y="176" fill="#456255" font-size="46" font-weight="700" letter-spacing="-2">말이 편안하게</text><text x="60" y="236" fill="#456255" font-size="46" font-weight="700" letter-spacing="-2">오가는 화면.</text><text x="63" y="288" fill="#8a9f95" font-size="16">대화는 흐르고, 입력창은 제자리에.</text>
+<text x="65" y="436" fill="#658775" font-size="15">01   읽는 순서에 맞춘 여백</text><text x="65" y="476" fill="#658775" font-size="15">02   긴 문장도 자연스럽게</text><text x="65" y="516" fill="#658775" font-size="15">03   언제나 닿는 입력창</text>
+<rect x="547" y="38" width="353" height="550" rx="32" fill="#cfddd4"/><rect x="552" y="32" width="343" height="550" rx="30" fill="#f9fbfa"/><path d="M571 63l-7 7 7 7" fill="none" stroke="#8ba294" stroke-width="2"/><text x="594" y="78" fill="#4e695b" font-size="17" font-weight="700">오늘의 작은 작업</text><text x="594" y="99" fill="#9bac9f" font-size="10">함께 만드는 사람들</text><line x1="552" y1="119" x2="895" y2="119" stroke="#e4ebe7"/>
+<text x="724" y="148" text-anchor="middle" fill="#a3b1a8" font-size="10">작은 변화부터 나누어요</text>
+<circle cx="583" cy="190" r="16" fill="#d8e5db"/><text x="583" y="194" text-anchor="middle" fill="#6d8e78" font-size="10">지</text><text x="610" y="183" fill="#7e9586" font-size="10">지우</text><rect x="608" y="195" width="232" height="63" rx="13" fill="#fff" stroke="#e1e9e3"/><text x="624" y="221" font-size="12" fill="#758c7e">오늘은 버튼에 글자를 붙여봤어요.</text><text x="624" y="241" font-size="12" fill="#758c7e">의미가 더 잘 전달되는 것 같아요.</text>
+<rect x="660" y="286" width="209" height="47" rx="13" fill="#7d9d8c"/><text x="677" y="315" font-size="12" fill="#fff">작은 차이가 꽤 크네요!</text><text x="863" y="352" text-anchor="end" font-size="9" fill="#a7b6ad">오후 2:21</text>
+<circle cx="583" cy="390" r="16" fill="#d8e5db"/><text x="583" y="394" text-anchor="middle" fill="#6d8e78" font-size="10">지</text><text x="610" y="382" fill="#7e9586" font-size="10">지우</text><rect x="608" y="394" width="232" height="47" rx="13" fill="#fff" stroke="#e1e9e3"/><text x="624" y="423" font-size="12" fill="#758c7e">다음에는 키보드로도 확인해볼게요.</text>
+<rect x="571" y="513" width="305" height="47" rx="14" fill="#fff" stroke="#dde6e0"/><text x="588" y="542" font-size="12" fill="#a8b7ad">작업 이야기를 이어가세요</text><rect x="834" y="520" width="33" height="33" rx="10" fill="#7d9d8c"/><path d="M846 528l12 8-12 8 3-8z" fill="#fff"/>
 </svg>

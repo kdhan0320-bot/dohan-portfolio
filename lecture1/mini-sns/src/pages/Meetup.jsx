@@ -1,348 +1,207 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
-  Box,
-  Typography,
-  Card,
-  CardContent,
   Avatar,
   Button,
-  AvatarGroup,
-  Chip,
-  Stack,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Snackbar,
-  Alert,
 } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import PeopleIcon from "@mui/icons-material/People";
-import GroupsIcon from "@mui/icons-material/Groups";
+import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
+import VideocamOutlined from "@mui/icons-material/VideocamOutlined";
+import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import MainLayout from "../components/layout/MainLayout";
-import PageHeroHeader from "../components/layout/PageHeroHeader";
-import {
-  heroChipSx,
-  heroSurfaceSx,
-  cardShelfSx,
-} from "../components/layout/pageHeroStyles";
-import { chatRoomPath } from "../constants/routes";
+import { useDemoData } from "../hooks/useDemoData";
 import { getRandomProfileAvatar } from "../constants/demoUser";
-
-const MOCK_MEETUPS = [
-  {
-    id: 1,
-    title: "모바일 UI 스터디",
-    game: "Mobile UI / UX",
-    time: "매주 수요일 저녁 8시",
-    location: "온라인 (Discord)",
-    current: 3,
-    max: 5,
-    tags: ["#모바일UI", "#스터디", "#UX"],
-    chatRoomId: "mobile-ui-study",
-    avatars: ["a1", "b2", "c3"].map((s) => getRandomProfileAvatar(s)),
-  },
-  {
-    id: 2,
-    title: "React 작업 인증방",
-    game: "React / 작업기록",
-    time: "상시 운영",
-    location: "온라인 (카카오톡)",
-    current: 8,
-    max: 12,
-    tags: ["#React", "#작업기록", "#프론트엔드"],
-    chatRoomId: "react-worklog",
-    avatars: ["d4", "e5", "f6", "g7"].map((s) => getRandomProfileAvatar(s)),
-  },
-  {
-    id: 3,
-    title: "포트폴리오 정리 모임",
-    game: "작업 기록 정리",
-    time: "이번 주 토요일 오후 2시",
-    location: "온라인 (Zoom)",
-    current: 4,
-    max: 6,
-    tags: ["#포트폴리오정리", "#작업기록"],
-    chatRoomId: "portfolio-club",
-    avatars: ["h8", "i9", "j10", "k11"].map((s) => getRandomProfileAvatar(s)),
-  },
-];
-
-const MeetupCard = ({ meetup, joined, onJoin, onGoToChat }) => {
-  const isFull = meetup.current >= meetup.max && !joined;
-  return (
-    <Card sx={{ mx: 2, mb: 1.5 }}>
-      <CardContent sx={{ p: 2, "&:last-child": { pb: 2 } }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            mb: 1,
-          }}
-        >
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h4" sx={{ mb: 0.3 }}>
-              {meetup.title}
-            </Typography>
-            <Typography variant="caption" color="primary.main" fontWeight={600}>
-              {meetup.game}
-            </Typography>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{ display: "block", fontSize: "0.68rem" }}
-            >
-              데모 모임
-            </Typography>
-          </Box>
-          <Chip
-            label={isFull ? "마감" : "모집중"}
-            size="small"
-            sx={{
-              bgcolor: isFull ? "error.main" : "success.main",
-              color: "#fff",
-              fontWeight: 600,
-              fontSize: "0.7rem",
-            }}
-          />
-        </Box>
-
-        <Stack spacing={0.5} sx={{ mb: 1.5 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <AccessTimeIcon sx={{ fontSize: 14, color: "text.secondary" }} />
-            <Typography variant="caption" color="text.secondary">
-              {meetup.time}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <LocationOnIcon sx={{ fontSize: 14, color: "text.secondary" }} />
-            <Typography variant="caption" color="text.secondary">
-              {meetup.location}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-            <PeopleIcon sx={{ fontSize: 14, color: "text.secondary" }} />
-            <Typography variant="caption" color="text.secondary">
-              {meetup.current} / {meetup.max}명 참여 중
-            </Typography>
-          </Box>
-        </Stack>
-
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5, mb: 1.5 }}>
-          {meetup.tags.map((tag) => (
-            <Chip
-              key={tag}
-              label={tag}
-              size="small"
-              sx={{
-                bgcolor: "secondary.light",
-                color: "primary.dark",
-                fontSize: "0.68rem",
-                height: 20,
-              }}
-            />
-          ))}
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <AvatarGroup
-            max={4}
-            sx={{
-              "& .MuiAvatar-root": {
-                width: 28,
-                height: 28,
-                fontSize: "0.7rem",
-              },
-            }}
-          >
-            {meetup.avatars.map((src, i) => (
-              <Avatar key={i} src={src} />
-            ))}
-          </AvatarGroup>
-          <Button
-            variant={joined ? "outlined" : isFull ? "outlined" : "contained"}
-            size="small"
-            disabled={isFull}
-            onClick={() => (joined ? onGoToChat(meetup) : onJoin(meetup))}
-            sx={{ borderRadius: 2, minWidth: 96 }}
-          >
-            {isFull ? "마감됨" : joined ? "채팅방으로 이동" : "참가하기"}
-          </Button>
-        </Box>
-      </CardContent>
-    </Card>
-  );
-};
-
-const Meetup = () => {
+export default function Meetup() {
+  const { meetups, joinMeetup, leaveMeetup, profile } = useDemoData();
+  const [filter, setFilter] = useState("전체 모임");
+  const [target, setTarget] = useState(null);
+  const [leave, setLeave] = useState(null);
+  const [params] = useSearchParams();
   const navigate = useNavigate();
-  const [meetups, setMeetups] = useState(MOCK_MEETUPS);
-  const [joinedIds, setJoinedIds] = useState([]);
-  const [joinTarget, setJoinTarget] = useState(null);
-  const [snackOpen, setSnackOpen] = useState(false);
-
-  const handleJoin = (meetup) => setJoinTarget(meetup);
-
-  const handleGoToChat = (meetup) => navigate(chatRoomPath(meetup.chatRoomId));
-
-  const handleConfirm = () => {
-    const target = joinTarget;
-    setMeetups((prev) =>
-      prev.map((m) =>
-        m.id === target.id ? { ...m, current: m.current + 1 } : m,
-      ),
-    );
-    setJoinedIds((prev) => [...prev, target.id]);
-    setJoinTarget(null);
-    setSnackOpen(true);
-    setTimeout(() => navigate(chatRoomPath(target.chatRoomId)), 1000);
-  };
-
+  const selectedGroup = params.get("group");
+  useEffect(() => {
+    if (selectedGroup)
+      document
+        .getElementById(`group-${selectedGroup}`)
+        ?.scrollIntoView({ block: "start" });
+  }, [selectedGroup]);
   return (
     <MainLayout>
-      <Box
-        sx={{
-          bgcolor: "background.default",
-          minHeight: "100%",
-          ...heroSurfaceSx,
-        }}
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">BETTER, TOGETHER</p>
+          <h1>함께하면 조금 더 멀리</h1>
+          <p>같은 관심사를 가진 사람들과 작업을 이어가요.</p>
+        </div>
+      </div>
+      <div
+        className="filter-tabs meetup-filters"
+        role="tablist"
+        aria-label="모임 분류"
       >
-        <PageHeroHeader
-          title="스터디 모임"
-          subtitle="관심 있는 모임에 참여하고 채팅방에서 이어가세요"
-          chips={
-            <>
-              <Chip
-                label={`모임 ${meetups.length}개`}
-                size="small"
-                sx={heroChipSx}
-              />
-              <Chip label="채팅 연결" size="small" sx={heroChipSx} />
-              <Chip label="온라인 중심" size="small" sx={heroChipSx} />
-            </>
-          }
-          flowLabel="흐름"
-          flowText="모임 선택 → 참가하기 → 채팅방 이동"
-          featureText="모임 카드 / 참여 상태 / 채팅 연결"
-        />
-
-        <Box sx={cardShelfSx}>
-          {meetups.map((meetup) => (
-            <MeetupCard
-              key={meetup.id}
-              meetup={meetup}
-              joined={joinedIds.includes(meetup.id)}
-              onJoin={handleJoin}
-              onGoToChat={handleGoToChat}
-            />
-          ))}
-
-          <Box sx={{ textAlign: "center", py: 3 }}>
-            <Typography variant="caption" color="text.secondary">
-              실시간 위치 기능은 준비 중입니다
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* 참가 확인 다이얼로그 */}
-      <Dialog
-        open={Boolean(joinTarget)}
-        onClose={() => setJoinTarget(null)}
-        maxWidth="xs"
-        fullWidth
-        slotProps={{ paper: { sx: { borderRadius: 3, mx: 2 } } }}
-      >
-        <DialogTitle sx={{ pb: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <GroupsIcon color="primary" />
-            <Typography variant="h4">모임 참가하기</Typography>
-          </Box>
-        </DialogTitle>
-        {joinTarget && (
-          <DialogContent sx={{ pt: 1 }}>
-            <Box
-              sx={{
-                bgcolor: "background.default",
-                borderRadius: 2,
-                p: 2,
-                mb: 1.5,
-              }}
-            >
-              <Typography variant="body2" fontWeight={700} sx={{ mb: 0.5 }}>
-                {joinTarget.title}
-              </Typography>
-              <Stack spacing={0.5}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <AccessTimeIcon
-                    sx={{ fontSize: 13, color: "text.secondary" }}
-                  />
-                  <Typography variant="caption" color="text.secondary">
-                    {joinTarget.time}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <LocationOnIcon
-                    sx={{ fontSize: 13, color: "text.secondary" }}
-                  />
-                  <Typography variant="caption" color="text.secondary">
-                    {joinTarget.location}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <PeopleIcon sx={{ fontSize: 13, color: "text.secondary" }} />
-                  <Typography variant="caption" color="text.secondary">
-                    현재 {joinTarget.current}명 / 최대 {joinTarget.max}명
-                  </Typography>
-                </Box>
-              </Stack>
-            </Box>
-            <Typography variant="body2" color="text.secondary">
-              이 모임에 참가 신청하시겠습니까? 참가 후 연결된 채팅방으로
-              이동합니다.
-            </Typography>
-          </DialogContent>
-        )}
-        <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
-          <Button
-            onClick={() => setJoinTarget(null)}
-            sx={{ borderRadius: 2, flex: 1 }}
+        {["전체 모임", "참여 중"].map((f) => (
+          <button
+            key={f}
+            role="tab"
+            aria-selected={filter === f}
+            className={filter === f ? "selected" : ""}
+            onClick={() => setFilter(f)}
           >
-            취소
-          </Button>
+            {f}
+            {f === "참여 중" && ` ${meetups.filter((m) => m.joined).length}`}
+          </button>
+        ))}
+      </div>
+      <div className="meetup-list">
+        {meetups
+          .filter((m) => filter === "전체 모임" || m.joined)
+          .map((m) => (
+            <article
+              key={m.id}
+              id={`group-${m.id}`}
+              className={`meetup-card ${params.get("group") === m.id ? "highlight" : ""}`}
+              aria-label={m.name}
+            >
+              <div className="meetup-card-top">
+                <span className={`group-symbol ${m.color}`}>{m.letter}</span>
+                <div>
+                  <small>
+                    {m.category} · {m.host}의 모임
+                  </small>
+                  <h2>{m.name}</h2>
+                </div>
+                <span className={`state-label ${m.joined ? "joined" : ""}`}>
+                  {m.joined
+                    ? "참여 중"
+                    : m.current >= m.capacity
+                      ? "모집 마감"
+                      : "모집 중"}
+                </span>
+              </div>
+              <p className="meetup-description">{m.description}</p>
+              <div className="meetup-details">
+                <span>
+                  <ScheduleRounded />
+                  {m.schedule} · {m.duration}
+                </span>
+                <span>
+                  <VideocamOutlined />
+                  {m.location}
+                </span>
+              </div>
+              <div className="meetup-topic">{m.prompt}</div>
+              <div className="meetup-card-footer">
+                <div className="member-summary">
+                  <span className="member-faces">
+                    {[...m.people, ...(m.joined ? [profile.nickname] : [])]
+                      .slice(0, 4)
+                      .map((name, i) => (
+                        <Avatar key={i} src={getRandomProfileAvatar(name)} />
+                      ))}
+                  </span>
+                  <span>
+                    <b>{m.current}</b> / {m.capacity}명
+                  </span>
+                </div>
+                {m.joined ? (
+                  <Link to={`/chat/${m.id}`} className="button secondary">
+                    대화 이어가기 <ArrowForwardRounded />
+                  </Link>
+                ) : (
+                  <button
+                    className="button primary"
+                    disabled={m.current >= m.capacity}
+                    onClick={() => setTarget(m)}
+                  >
+                    {m.current >= m.capacity ? "모집이 끝났어요" : "함께하기"}
+                  </button>
+                )}
+              </div>
+              {filter === "참여 중" && (
+                <button className="meetup-exit" onClick={() => setLeave(m)}>
+                  모임 나가기
+                </button>
+              )}
+            </article>
+          ))}
+      </div>
+      {filter === "참여 중" && !meetups.some((m) => m.joined) && (
+        <div className="empty-state">
+          <h2>함께할 모임을 찾아보세요</h2>
+          <p>관심 있는 모임에 참여하면 대화를 이어갈 수 있어요.</p>
+          <button
+            className="button secondary"
+            onClick={() => setFilter("전체 모임")}
+          >
+            전체 모임 보기
+          </button>
+        </div>
+      )}
+      <Dialog
+        open={Boolean(target)}
+        onClose={() => setTarget(null)}
+        aria-labelledby="join-title"
+      >
+        <DialogTitle id="join-title">이 모임에 함께할까요?</DialogTitle>
+        <DialogContent>
+          {target && (
+            <div className="join-summary">
+              <strong>{target.name}</strong>
+              <p>
+                {target.schedule}
+                <br />
+                {target.location}
+                <br />
+                {target.current} / {target.capacity}명 참여 중
+              </p>
+            </div>
+          )}
+          <p className="muted" style={{ fontSize: 13, lineHeight: 1.8 }}>
+            참여하면 모임 대화방으로 이어져요. 이 체험에서는 실제 신청이나
+            메시지 전송 없이 내 브라우저에만 반영됩니다.
+          </p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setTarget(null)}>다음에 할게요</Button>
           <Button
             variant="contained"
-            onClick={handleConfirm}
-            sx={{ borderRadius: 2, flex: 1, fontWeight: 700 }}
+            onClick={() => {
+              if (joinMeetup(target.id)) {
+                navigate(`/chat/${target.id}`);
+              }
+              setTarget(null);
+            }}
           >
-            참가 확정
+            참여하고 대화방 열기
           </Button>
         </DialogActions>
       </Dialog>
-
-      {/* 참가 완료 스낵바 */}
-      <Snackbar
-        open={snackOpen}
-        autoHideDuration={3000}
-        onClose={() => setSnackOpen(false)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        sx={{ mb: 8 }}
+      <Dialog
+        open={Boolean(leave)}
+        onClose={() => setLeave(null)}
+        aria-labelledby="leave-title"
       >
-        <Alert severity="success" sx={{ width: "100%", borderRadius: 2 }}>
-          모임에 참가했습니다. 채팅방으로 이동합니다.
-        </Alert>
-      </Snackbar>
+        <DialogTitle id="leave-title">모임에서 나갈까요?</DialogTitle>
+        <DialogContent>
+          참여 모임에서 제외됩니다. 다시 참여하면 이 브라우저에 남아 있는 대화를
+          이어갈 수 있어요.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setLeave(null)}>유지하기</Button>
+          <Button
+            color="error"
+            onClick={() => {
+              leaveMeetup(leave.id);
+              setLeave(null);
+            }}
+          >
+            나가기
+          </Button>
+        </DialogActions>
+      </Dialog>
     </MainLayout>
   );
-};
-
-export default Meetup;
+}

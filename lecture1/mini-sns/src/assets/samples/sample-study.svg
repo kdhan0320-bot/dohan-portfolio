@@ -1,15 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
-  <rect width="480" height="480" fill="#F0FDFA"/>
-  <rect x="90" y="90" width="300" height="260" rx="20" fill="#FFFFFF" stroke="#CFFAFE" stroke-width="2"/>
-  <rect x="120" y="120" width="240" height="18" rx="9" fill="#5EEAD4"/>
-  <rect x="120" y="152" width="180" height="12" rx="6" fill="#99F6E4"/>
-  <circle cx="140" cy="210" r="22" fill="#2DD4BF"/>
-  <circle cx="196" cy="210" r="22" fill="#5EEAD4"/>
-  <circle cx="252" cy="210" r="22" fill="#99F6E4"/>
-  <rect x="304" y="196" width="56" height="28" rx="14" fill="#0D9488"/>
-  <rect x="120" y="262" width="240" height="10" rx="5" fill="#CCFBF1"/>
-  <rect x="120" y="282" width="200" height="10" rx="5" fill="#CCFBF1"/>
-  <rect x="120" y="310" width="120" height="26" rx="13" fill="#0D9488"/>
-  <rect x="24" y="24" width="150" height="30" rx="15" fill="#0F766E"/>
-  <text x="99" y="44" font-family="Pretendard, 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">스터디 모임 스케치</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620"><defs><style>text{font-family:Pretendard,'Noto Sans KR',Arial,sans-serif}</style></defs>
+<rect width="1000" height="620" fill="#eeeaf7"/><rect x="38" y="38" width="924" height="544" rx="2" stroke="#d0c8e3" fill="none"/>
+<text x="76" y="88" fill="#948aa8" font-size="14" letter-spacing="4">WEDNESDAY DESIGN CLUB</text><text x="76" y="182" fill="#544b6d" font-size="62" font-weight="700" letter-spacing="-3">작은 화면을</text><text x="76" y="258" fill="#544b6d" font-size="62" font-weight="700" letter-spacing="-3">깊이 읽는 시간.</text>
+<text x="80" y="322" fill="#9b90af" font-size="20">하나의 앱, 서로 다른 시선.</text>
+<g transform="translate(790 297)"><ellipse rx="98" ry="180" stroke="#a49ac2" stroke-width="2" fill="none" transform="rotate(25)"/><ellipse rx="98" ry="180" stroke="#a49ac2" stroke-width="2" fill="none" transform="rotate(85)"/><ellipse rx="98" ry="180" stroke="#a49ac2" stroke-width="2" fill="none" transform="rotate(145)"/><circle r="40" fill="#c1b6d8"/><circle r="13" fill="#eeeaf7"/></g>
+<line x1="80" y1="430" x2="596" y2="430" stroke="#c8bedb"/><text x="80" y="473" fill="#706482" font-size="17">매주 수요일 20:00</text><text x="80" y="507" fill="#9e91b1" font-size="14">UI / UX · ONLINE · 5 PEOPLE</text>
+<text x="80" y="557" fill="#ada2bd" font-size="11" letter-spacing="3">BRING YOUR CURIOSITY, NOT A PERFECT DESIGN.</text></svg>

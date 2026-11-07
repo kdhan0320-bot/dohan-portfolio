@@ -1,185 +1,177 @@
-import { useNavigate } from "react-router-dom";
-import { Box, Typography, Button } from "@mui/material";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import WorkOutlineIcon from "@mui/icons-material/WorkOutlineOutlined";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  Alert,
+  Avatar,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  Snackbar,
+} from "@mui/material";
+import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 import TopBar from "./TopBar";
-import BottomNav from "./BottomNav";
-import { useAuth } from "../../hooks/useAuth";
-import { ROUTES } from "../../constants/routes";
-
-const MainLayout = ({ children, hideGuestBanner = false }) => {
-  const navigate = useNavigate();
-  const { isGuest, exitGuestMode } = useAuth();
-
+import BottomNav, { NavItems } from "./BottomNav";
+import { useDemoData } from "../../hooks/useDemoData";
+export default function MainLayout({ children, wide = false, chat = false }) {
+  const { profile, meetups, storageError, notice, setNotice } = useDemoData();
+  const [about, setAbout] = useState(false);
+  const { pathname } = useLocation();
   return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        bgcolor: "#EEF0FA",
-        backgroundImage: {
-          sm: "radial-gradient(circle at 10% 10%, rgba(99,102,241,0.14) 0%, transparent 45%), radial-gradient(circle at 90% 85%, rgba(6,182,212,0.12) 0%, transparent 45%)",
-        },
-        display: "flex",
-        justifyContent: "center",
-      }}
-    >
-      <Box
-        sx={{
-          width: "100%",
-          maxWidth: 480,
-          minHeight: "100vh",
-          bgcolor: "background.default",
-          position: "relative",
-          boxShadow: {
-            sm: "0 32px 64px -24px rgba(30,27,75,0.28)",
-          },
+    <div className="app">
+      <a
+        className="skip-link"
+        href="#main-content"
+        onClick={(e) => {
+          e.preventDefault();
+          document.getElementById("main-content")?.focus();
         }}
       >
-        <TopBar />
-      <Box
-        sx={{
-          pt: "56px",
-          pb: "calc(76px + env(safe-area-inset-bottom))",
-          minHeight: "100vh",
-        }}
-      >
-        {isGuest && !hideGuestBanner && (
-          <Box
-            sx={{
-              mx: 2,
-              mt: 1.5,
-              mb: 0.5,
-              p: 2,
-              borderRadius: "20px",
-              background:
-                "linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(6,182,212,0.10) 100%)",
-              border: "1px solid rgba(99,102,241,0.22)",
-            }}
-          >
-            <Typography
-              sx={{
-                fontWeight: 800,
-                fontSize: "1rem",
-                color: "#3730A3",
-                mb: 0.6,
-                lineHeight: 1.4,
-              }}
-            >
-              게스트 데모로 체험하는 중입니다.
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "0.85rem",
-                color: "#4C1D95",
-                lineHeight: 1.7,
-                mb: 1.75,
-              }}
-            >
-              실제 데이터는 저장되지 않고, 주요 화면 흐름만 확인할 수 있어요.
-            </Typography>
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => {
-                exitGuestMode();
-                navigate(ROUTES.LOGIN);
-              }}
-              sx={{
-                borderRadius: 2,
-                fontSize: "0.8rem",
-                fontWeight: 700,
-                px: 2.5,
-                py: 0.8,
-                background: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
-                "&:hover": {
-                  background:
-                    "linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)",
-                },
-              }}
-            >
-              로그인 화면으로
-            </Button>
-          </Box>
-        )}
-        {children}
-
-        {/* 프로젝트 링크 utility row (compact) */}
-        <Box
-          sx={{
-            px: 2,
-            pt: 1.25,
-            pb: 1.25,
-            mt: 0.5,
-            borderTop: "1px solid",
-            borderColor: "divider",
-          }}
+        본문으로 건너뛰기
+      </a>
+      <TopBar />
+      <div className={`app-grid ${wide ? "wide" : ""}`}>
+        <aside className="left-rail">
+          <nav className="desktop-nav" aria-label="주요 메뉴">
+            <NavItems desktop />
+          </nav>
+          <div className="rail-bottom">
+            <Link to="/profile" className="rail-profile">
+              <Avatar src={profile.profile_image_url} />
+              <div>
+                <strong>{profile.nickname}</strong>
+                <span>나의 작은 작업실</span>
+              </div>
+            </Link>
+            <button className="text-button" onClick={() => setAbout(true)}>
+              이 공간에 대하여 <ArrowOutwardRounded fontSize="inherit" />
+            </button>
+            <small>© Mini SNS · 작은 기록의 힘</small>
+          </div>
+        </aside>
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className={`main-content ${chat ? "chat-main" : ""}`}
+          key={pathname}
         >
-          <Typography
-            variant="caption"
-            sx={{ display: "block", color: "text.disabled", mb: 0.75 }}
+          {storageError && (
+            <Alert severity="warning" sx={{ mb: 2 }}>
+              브라우저 저장 공간이 부족하거나 저장이 차단됐어요. 이번 변경은
+              새로고침하면 사라질 수 있어요. 첨부 이미지 용량을 줄여주세요.
+            </Alert>
+          )}
+          {!chat && (
+            <div className="demo-note">
+              <span className="status-dot" />
+              기록은 이 브라우저에만 저장돼요.
+              <button onClick={() => setAbout(true)}>안내</button>
+            </div>
+          )}
+          {children}
+        </main>
+        {!wide && (
+          <aside className="right-rail">
+            <section className="daily-note">
+              <span className="eyebrow">A LITTLE EVERY DAY</span>
+              <span className="note-orbit" aria-hidden="true">
+                ✳
+              </span>
+              <h2>
+                완성 전의 생각도
+                <br />
+                좋은 기록이니까.
+              </h2>
+              <p>
+                오늘 바꾼 것 하나,
+                <br />그 이유 한 줄을 남겨보세요.
+              </p>
+              <Link to="/create">
+                작은 기록 시작하기 <ArrowOutwardRounded fontSize="small" />
+              </Link>
+            </section>
+            <section className="rail-section">
+              <div className="section-label">
+                <h2>함께하는 작은 모임</h2>
+                <Link to="/meetup">전체</Link>
+              </div>
+              {meetups.slice(0, 2).map((m) => (
+                <Link
+                  to={`/meetup?group=${m.id}`}
+                  className="mini-meetup"
+                  key={m.id}
+                >
+                  <span className={`group-symbol ${m.color}`}>{m.letter}</span>
+                  <div>
+                    <strong>{m.name}</strong>
+                    <span>
+                      {m.current}/{m.capacity}명 ·{" "}
+                      {m.joined ? "참여 중" : "모집 중"}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </section>
+            <p className="rail-footnote">
+              서로의 과정을 존중해요.
+              <br />
+              구체적인 피드백은 다음 시도의 힘이 됩니다.
+            </p>
+          </aside>
+        )}
+      </div>
+      {!chat && <BottomNav />}
+      <Snackbar
+        open={Boolean(notice)}
+        autoHideDuration={3200}
+        onClose={() => setNotice("")}
+        message={notice}
+        action={
+          <button
+            className="snack-close"
+            aria-label="알림 닫기"
+            onClick={() => setNotice("")}
           >
-            Mini SNS · 모바일 작업 커뮤니티 데모
-          </Typography>
-          <Box sx={{ display: "flex", gap: 0.75 }}>
-            <Button
-              component="a"
-              href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/mini-sns"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outlined"
-              size="small"
-              startIcon={<GitHubIcon sx={{ fontSize: 15 }} />}
-              sx={{
-                flex: 1,
-                minHeight: "42px",
-                justifyContent: "flex-start",
-                borderRadius: "10px",
-                color: "text.secondary",
-                borderColor: "divider",
-                fontSize: "0.7rem",
-                px: 1.25,
-                "&:hover": {
-                  color: "primary.main",
-                  borderColor: "primary.main",
-                  bgcolor: "transparent",
-                },
-              }}
-            >
-              GitHub 저장소
-            </Button>
-            <Button
-              component="a"
-              href="https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/"
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="outlined"
-              size="small"
-              startIcon={<WorkOutlineIcon sx={{ fontSize: 15 }} />}
-              sx={{
-                flex: 1,
-                minHeight: "42px",
-                justifyContent: "flex-start",
-                borderRadius: "10px",
-                color: "text.secondary",
-                borderColor: "divider",
-                fontSize: "0.7rem",
-                px: 1.25,
-                "&:hover": {
-                  color: "primary.main",
-                  borderColor: "primary.main",
-                  bgcolor: "transparent",
-                },
-              }}
-            >
-              포트폴리오로 돌아가기
-            </Button>
-          </Box>
-        </Box>
-      </Box>
-        <BottomNav />
-      </Box>
-    </Box>
+            <CloseRounded fontSize="small" />
+          </button>
+        }
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        sx={{ bottom: { xs: 86, md: 24 } }}
+      />
+      <Dialog
+        open={about}
+        onClose={() => setAbout(false)}
+        aria-labelledby="about-title"
+      >
+        <DialogTitle id="about-title">작은 기록을 나누는 연습</DialogTitle>
+        <DialogContent className="about-content">
+          <p>
+            Mini SNS는 작업 기록을 공유하고, 스터디에 참여하고, 대화를 이어가는
+            프론트엔드 체험 작품입니다.
+          </p>
+          <p>
+            게시물, 인물, 모임과 기존 반응은 시연을 위한 예시입니다. 직접 작성한
+            기록·댓글·대화·프로필·참여 상태는 이 브라우저에 저장됩니다.
+          </p>
+          <p>
+            서버 전송, 실제 회원가입, 다른 사람과의 실시간 대화는 제공하지
+            않습니다. 다른 기기와 동기화되지 않으며, 브라우저 데이터를 지우면
+            기록도 사라집니다.
+          </p>
+          <a
+            href="https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/mini-sns"
+            target="_blank"
+            rel="noreferrer"
+          >
+            제작 코드 보기 ↗
+          </a>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setAbout(false)}>알겠어요</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
-};
-
-export default MainLayout;
+}

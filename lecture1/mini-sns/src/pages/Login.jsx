@@ -1,511 +1,72 @@
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Avatar, Chip } from "@mui/material";
-import GroupsIcon from "@mui/icons-material/Groups";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ForumOutlinedIcon from "@mui/icons-material/ForumOutlined";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
+import { Avatar } from "@mui/material";
+import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { useAuth } from "../hooks/useAuth";
-import { ROUTES } from "../constants/routes";
-
-const MiniTab = ({ icon, active }) => (
-  <Box
-    sx={{
-      width: 30,
-      height: 30,
-      borderRadius: "50%",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      bgcolor: active ? "#6366F1" : "transparent",
-      color: active ? "#fff" : "#94A3B8",
-    }}
-  >
-    {icon}
-  </Box>
-);
-
-const AppMockup = () => (
-  <Box
-    sx={{
-      width: "100%",
-      maxWidth: 440,
-      mx: "auto",
-      borderRadius: "32px",
-      p: "10px",
-      background:
-        "linear-gradient(160deg, #1E1B4B 0%, #312E81 55%, #4F46E5 100%)",
-      boxShadow: "0 32px 64px -16px rgba(30,27,75,0.45)",
-    }}
-  >
-    <Box sx={{ borderRadius: "24px", overflow: "hidden", bgcolor: "#F8FAFC" }}>
-      {/* 상단 헤더 */}
-      <Box
-        sx={{
-          px: 2.5,
-          py: 2,
-          background: "linear-gradient(135deg, #4338CA 0%, #6366F1 100%)",
-        }}
-      >
-        <Typography sx={{ color: "#fff", fontWeight: 800, fontSize: "1rem" }}>
-          Worklog Today
-        </Typography>
-        <Typography sx={{ color: "#C7D2FE", fontSize: "0.7rem", mt: 0.2 }}>
-          스터디와 작업 기록을 확인하세요
-        </Typography>
-      </Box>
-
-      {/* 피드 카드 1 */}
-      <Box sx={{ px: 2, pt: 1.5, pb: 1, borderBottom: "1px solid #EEF0FA" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, mb: 0.8 }}>
-          <Avatar
-            src="https://api.dicebear.com/7.x/initials/svg?seed=UX러너&backgroundColor=6366F1"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Typography
-            sx={{ fontSize: "0.72rem", fontWeight: 700, color: "#0F172A" }}
-          >
-            UX러너
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            height: 64,
-            borderRadius: 2,
-            bgcolor: "#EEF2FF",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mb: 0.8,
-          }}
-        >
-          <Typography
-            sx={{ fontSize: "0.7rem", color: "#6366F1", fontWeight: 700 }}
-          >
-            작업 기록
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <FavoriteIcon sx={{ fontSize: 12, color: "#EF4444" }} />
-          <Typography
-            sx={{ fontSize: "0.62rem", fontWeight: 600, color: "#334155" }}
-          >
-            24
-          </Typography>
-          <ForumOutlinedIcon sx={{ fontSize: 12, ml: 0.5, color: "#94A3B8" }} />
-          <Typography sx={{ fontSize: "0.62rem", color: "#94A3B8" }}>
-            6
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* 피드 카드 2 */}
-      <Box sx={{ px: 2, pt: 1.5, pb: 1, borderBottom: "1px solid #EEF0FA" }}>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.8, mb: 0.8 }}>
-          <Avatar
-            src="https://api.dicebear.com/7.x/initials/svg?seed=프론트러너&backgroundColor=06B6D4"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Typography
-            sx={{ fontSize: "0.72rem", fontWeight: 700, color: "#0F172A" }}
-          >
-            프론트러너
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: "100%",
-            height: 64,
-            borderRadius: 2,
-            bgcolor: "#ECFEFF",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            mb: 0.8,
-          }}
-        >
-          <Typography
-            sx={{ fontSize: "0.7rem", color: "#06B6D4", fontWeight: 700 }}
-          >
-            채팅 UI
-          </Typography>
-        </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-          <FavoriteIcon sx={{ fontSize: 12, color: "#EF4444" }} />
-          <Typography
-            sx={{ fontSize: "0.62rem", fontWeight: 600, color: "#334155" }}
-          >
-            17
-          </Typography>
-          <ForumOutlinedIcon sx={{ fontSize: 12, ml: 0.5, color: "#94A3B8" }} />
-          <Typography sx={{ fontSize: "0.62rem", color: "#94A3B8" }}>
-            3
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* 스터디 모임 카드 */}
-      <Box
-        sx={{
-          px: 2,
-          py: 1.2,
-          borderBottom: "1px solid #EEF0FA",
-          bgcolor: "#FAFAFF",
-        }}
-      >
-        <Box
-          sx={{
-            border: "1px solid #E0E7FF",
-            borderRadius: 2.5,
-            p: 1.2,
-            bgcolor: "#fff",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              mb: 0.6,
-            }}
-          >
-            <Typography
-              sx={{ fontSize: "0.72rem", fontWeight: 800, color: "#0F172A" }}
-            >
-              모바일 UI 스터디
-            </Typography>
-            <Chip
-              label="모집중"
-              size="small"
-              sx={{
-                height: 18,
-                fontSize: "0.58rem",
-                fontWeight: 700,
-                bgcolor: "#DCFCE7",
-                color: "#16A34A",
-              }}
-            />
-          </Box>
-          <Box
-            sx={{ display: "flex", alignItems: "center", gap: 0.4, mb: 0.8 }}
-          >
-            <AccessTimeRoundedIcon sx={{ fontSize: 11, color: "#94A3B8" }} />
-            <Typography sx={{ fontSize: "0.62rem", color: "#94A3B8" }}>
-              매주 수요일 저녁 8시
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Box sx={{ display: "flex" }}>
-              {["a1", "b2", "c3"].map((s) => (
-                <Avatar
-                  key={s}
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${s}&backgroundColor=6366F1,06B6D4,4F46E5`}
-                  sx={{
-                    width: 18,
-                    height: 18,
-                    ml: "-4px",
-                    border: "1.5px solid #fff",
-                  }}
-                />
-              ))}
-            </Box>
-            <Box
-              sx={{
-                border: "1px solid #6366F1",
-                borderRadius: 1.5,
-                px: 1,
-                py: 0.3,
-              }}
-            >
-              <Typography
-                sx={{ fontSize: "0.6rem", fontWeight: 700, color: "#6366F1" }}
-              >
-                참가하기
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-
-      {/* 채팅 알림 bubble */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: 0.8,
-          px: 2,
-          py: 1.2,
-          bgcolor: "#F8FAFC",
-        }}
-      >
-        <ChatBubbleOutlineIcon sx={{ fontSize: 16, color: "#6366F1" }} />
-        <Typography sx={{ fontSize: "0.64rem", color: "#475569", flex: 1 }}>
-          모임 참가 후 채팅방으로 이동했어요
-        </Typography>
-        <Box
-          sx={{ width: 7, height: 7, borderRadius: "50%", bgcolor: "#EF4444" }}
-        />
-      </Box>
-
-      {/* 하단 탭 */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          px: 1,
-          py: 1,
-          borderTop: "1px solid #EEF0FA",
-          bgcolor: "#FFFFFF",
-        }}
-      >
-        <MiniTab icon={<HomeRoundedIcon sx={{ fontSize: 16 }} />} active />
-        <MiniTab icon={<PeopleAltRoundedIcon sx={{ fontSize: 16 }} />} />
-        <MiniTab icon={<AddRoundedIcon sx={{ fontSize: 18 }} />} />
-        <MiniTab icon={<ForumOutlinedIcon sx={{ fontSize: 16 }} />} />
-        <MiniTab icon={<PersonRoundedIcon sx={{ fontSize: 16 }} />} />
-      </Box>
-    </Box>
-  </Box>
-);
-
-const Login = () => {
-  const navigate = useNavigate();
+import { SAMPLE_ART } from "../constants/samples";
+import { DEMO_USER } from "../constants/demoUser";
+export default function Login() {
   const { enterGuestMode } = useAuth();
-
-  const handleStartDemo = () => {
-    enterGuestMode();
-    navigate(ROUTES.HOME);
-  };
-
+  const navigate = useNavigate();
   return (
-    <Box
-      sx={{
-        position: "relative",
-        minHeight: "100vh",
-        overflow: "hidden",
-        background:
-          "linear-gradient(160deg, #0F172A 0%, #1E1B4B 45%, #312E81 78%, #3730A3 100%)",
-        px: { xs: 2.5, md: 5 },
-        py: { xs: 4, md: 7 },
-      }}
-    >
-      {/* 은은한 배경 blob 애니메이션 - 좌측 카피 뒤 바깥쪽 */}
-      <Box
-        aria-hidden
-        sx={{
-          position: "absolute",
-          top: "-18%",
-          left: "-16%",
-          width: 540,
-          height: 540,
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 0,
-          background: "radial-gradient(circle, #818CF8 0%, transparent 70%)",
-          opacity: 0.5,
-          filter: "blur(60px)",
-          "@keyframes blobFloatA": {
-            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
-            "50%": { transform: "translate(180px, 140px) scale(1.25)" },
-          },
-          animation: "blobFloatA 20s ease-in-out infinite",
-          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
-        }}
-      />
-      {/* 하단 코너 blob */}
-      <Box
-        aria-hidden
-        sx={{
-          position: "absolute",
-          bottom: "-20%",
-          right: "-14%",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 0,
-          background: "radial-gradient(circle, #06B6D4 0%, transparent 70%)",
-          opacity: 0.42,
-          filter: "blur(50px)",
-          "@keyframes blobFloatB": {
-            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
-            "50%": { transform: "translate(-170px, -150px) scale(1.28)" },
-          },
-          animation: "blobFloatB 24s ease-in-out infinite",
-          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
-        }}
-      />
-      {/* 목업 뒤 blob (우측) */}
-      <Box
-        aria-hidden
-        sx={{
-          position: "absolute",
-          top: "26%",
-          right: { xs: "-18%", md: "2%" },
-          width: 520,
-          height: 520,
-          borderRadius: "50%",
-          pointerEvents: "none",
-          zIndex: 0,
-          background: "radial-gradient(circle, #A78BFA 0%, transparent 70%)",
-          opacity: 0.48,
-          filter: "blur(46px)",
-          "@keyframes blobFloatC": {
-            "0%, 100%": { transform: "translate(0, 0) scale(1)" },
-            "50%": { transform: "translate(140px, -150px) scale(1.2)" },
-          },
-          animation: "blobFloatC 15s ease-in-out infinite",
-          "@media (prefers-reduced-motion: reduce)": { animation: "none" },
-        }}
-      />
-
-      <Box
-        sx={{
-          position: "relative",
-          zIndex: 1,
-          width: "100%",
-          maxWidth: 1220,
-          mx: "auto",
-          display: "grid",
-          columnGap: { md: 8.5 },
-          rowGap: 3,
-          gridTemplateColumns: {
-            xs: "1fr",
-            md: "minmax(0, 0.9fr) minmax(440px, 520px)",
-          },
-          gridTemplateAreas: {
-            xs: `"brand" "cta" "mockup"`,
-            md: `"brand mockup" "cta mockup"`,
-          },
-          alignItems: { xs: "start", md: "center" },
-        }}
-      >
-        {/* 브랜드 카피 */}
-        <Box
-          sx={{ gridArea: "brand", textAlign: { xs: "center", md: "left" } }}
-        >
-          <Box
-            sx={{
-              width: 56,
-              height: 56,
-              borderRadius: "16px",
-              bgcolor: "rgba(129,140,248,0.16)",
-              border: "1px solid rgba(165,180,252,0.35)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              mb: 2,
-              mx: { xs: "auto", md: 0 },
-            }}
-          >
-            <GroupsIcon sx={{ fontSize: 28, color: "#C7D2FE" }} />
-          </Box>
-          <Typography
-            sx={{
-              color: "#fff",
-              fontWeight: 800,
-              fontSize: { xs: "1.6rem", md: "2rem" },
-              letterSpacing: "-0.5px",
-              lineHeight: 1.15,
-              mb: 1,
-            }}
-          >
-            Mini SNS
-          </Typography>
-          <Typography
-            sx={{
-              color: "#C7D2FE",
-              fontWeight: 600,
-              fontSize: { xs: "0.95rem", md: "1.05rem" },
-              mb: 1.5,
-            }}
-          >
-            작업 기록과 스터디 모임을 연결하는 모바일 소셜 앱
-          </Typography>
-          <Typography
-            variant="body2"
-            sx={{ color: "#A5B4C7", lineHeight: 1.8 }}
-          >
-            오늘 작업한 화면을 기록하고,
+    <div className="login-page">
+      <header className="login-header">
+        <span className="brand">
+          <span className="brand-mark" aria-hidden="true">
+            <i />
+            <i />
+          </span>
+          <span>
+            mini<span className="brand-sns">SNS</span>
+          </span>
+        </span>
+        <span>SMALL STEPS, SHARED.</span>
+      </header>
+      <main className="login-layout">
+        <div className="login-copy">
+          <p className="eyebrow">A LITTLE WORK. A LITTLE CONNECTION.</p>
+          <h1>
+            작은 기록이 모여,
             <br />
-            스터디 모임에 참여하고,
+            <em>다음 작업의 영감.</em>
+          </h1>
+          <p>
+            만드는 사람들의 작은 작업실.
             <br />
-            채팅방에서 흐름을 이어가세요.
-          </Typography>
-        </Box>
-
-        {/* CTA: 독립된 hero action block */}
-        <Box
-          sx={{
-            gridArea: "cta",
-            p: { xs: 2, md: 2.25 },
-            borderRadius: "20px",
-            bgcolor: "rgba(255,255,255,0.05)",
-            border: "1px solid rgba(129,140,248,0.22)",
-          }}
-        >
-          <Button
-            variant="contained"
-            fullWidth
-            size="large"
-            onClick={handleStartDemo}
-            aria-label="게스트 데모 시작하기"
-            sx={{
-              py: 1.6,
-              borderRadius: 3,
-              fontWeight: 700,
-              fontSize: "1rem",
-              mb: 1.25,
-              background: "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)",
-              boxShadow: "0 12px 24px -8px rgba(79,70,229,0.55)",
-              "&:hover": {
-                background: "linear-gradient(135deg, #4F46E5 0%, #4338CA 100%)",
-              },
+            오늘의 시도를 나누고, 함께할 모임을 만나고,
+            <br />
+            서로의 과정에서 한 걸음 더 나아가요.
+          </p>
+          <button
+            className="button primary"
+            onClick={() => {
+              enterGuestMode();
+              navigate("/");
             }}
           >
-            게스트 데모 시작하기
-          </Button>
-          <Typography
-            variant="caption"
-            sx={{
-              color: "#A5B4C7",
-              display: "block",
-              textAlign: "center",
-              lineHeight: 1.6,
-            }}
-          >
-            mock 데이터 기반 프론트엔드 데모입니다. 입력·좋아요·댓글 등의
-            변경은 서버에 저장되지 않고, 새로고침하면 초기 상태로 복원됩니다.
-          </Typography>
-        </Box>
-
-        {/* 앱 목업 */}
-        <Box
-          sx={{
-            gridArea: "mockup",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            py: { xs: 1, md: 0 },
-          }}
-        >
-          <AppMockup />
-        </Box>
-      </Box>
-    </Box>
+            작업실 둘러보기 <ArrowForwardRounded fontSize="small" />
+          </button>
+          <p className="login-note">
+            가입 없이 바로 시작해요. 예시 인물과 콘텐츠로 구성된 체험 공간이며,
+            직접 남긴 기록은 이 브라우저에만 저장됩니다.
+          </p>
+        </div>
+        <div className="login-art">
+          <img
+            src={SAMPLE_ART[0].src}
+            alt="여행 앱의 탐색 화면을 정리한 샘플 작업"
+          />
+          <div className="login-art-caption">
+            <Avatar src={DEMO_USER.profile_image_url} />
+            <div>
+              <strong>완성 전의 생각도, 좋은 기록이니까.</strong>
+              <p>오늘 바꾼 것 하나, 그 이유 한 줄부터.</p>
+            </div>
+          </div>
+        </div>
+      </main>
+      <p className="login-footnote">
+        Mini SNS · 서로의 작은 시도를 응원합니다.
+      </p>
+    </div>
   );
-};
-
-export default Login;
+}

@@ -1,24 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
-  <rect width="480" height="480" fill="#FFF7ED"/>
-  <rect x="70" y="110" width="130" height="90" rx="14" fill="#FFFFFF" stroke="#FED7AA" stroke-width="2"/>
-  <circle cx="102" cy="140" r="10" fill="#FB923C"/>
-  <rect x="122" y="134" width="60" height="10" rx="5" fill="#FDBA74"/>
-  <rect x="90" y="160" width="120" height="8" rx="4" fill="#FFEDD5"/>
-  <rect x="280" y="110" width="130" height="90" rx="14" fill="#FFFFFF" stroke="#FED7AA" stroke-width="2"/>
-  <circle cx="312" cy="140" r="10" fill="#FDBA74"/>
-  <rect x="332" y="134" width="60" height="10" rx="5" fill="#FED7AA"/>
-  <rect x="300" y="160" width="90" height="8" rx="4" fill="#FFEDD5"/>
-  <path d="M200 155 L280 155" stroke="#FB923C" stroke-width="4" marker-end="url(#arrow)"/>
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L6,3 L0,6 Z" fill="#FB923C"/>
-    </marker>
-  </defs>
-  <rect x="150" y="260" width="180" height="90" rx="14" fill="#FFFFFF" stroke="#FED7AA" stroke-width="2"/>
-  <rect x="175" y="285" width="130" height="10" rx="5" fill="#FDBA74"/>
-  <rect x="175" y="305" width="90" height="8" rx="4" fill="#FFEDD5"/>
-  <rect x="175" y="322" width="110" height="8" rx="4" fill="#FFEDD5"/>
-  <path d="M240 200 L240 260" stroke="#FB923C" stroke-width="4" marker-end="url(#arrow)"/>
-  <rect x="24" y="24" width="130" height="30" rx="15" fill="#C2410C"/>
-  <text x="89" y="44" font-family="Pretendard, 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">플로우 스케치</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620"><defs><style>text{font-family:Pretendard,'Noto Sans KR',Arial,sans-serif}</style></defs>
+<rect width="1000" height="620" fill="#f3ede3"/><path d="M0 110h1000M0 180h1000M0 250h1000M0 320h1000M0 390h1000M0 460h1000M0 530h1000" stroke="#e5dccd"/><path d="M110 0v620" stroke="#decebc"/>
+<text x="155" y="83" fill="#aa957c" font-size="13" letter-spacing="4">FRIDAY WORK NOTES</text><text x="151" y="236" fill="#796450" font-size="65" font-weight="700" letter-spacing="-3">완성보다, 과정.</text><text x="156" y="303" fill="#a59179" font-size="21">이번 주의 작은 시도들을 모아보는 시간</text>
+<text x="157" y="381" fill="#8d7761" font-size="22">01   시도한 것</text><text x="157" y="451" fill="#8d7761" font-size="22">02   바꾼 이유</text><text x="157" y="521" fill="#8d7761" font-size="22">03   다음에 해볼 일</text><circle cx="816" cy="442" r="94" stroke="#baa98f" stroke-width="2" fill="#eee5d4"/><text x="816" y="430" text-anchor="middle" fill="#a38c6c" font-size="14" letter-spacing="4">ONE STEP</text><text x="816" y="466" text-anchor="middle" fill="#8c7457" font-size="27" font-weight="600">AT A TIME</text></svg>

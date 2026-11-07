@@ -1,18 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 480">
-  <rect width="480" height="480" fill="#EFF6FF"/>
-  <rect x="60" y="70" width="360" height="110" rx="16" fill="#FFFFFF" stroke="#DBEAFE" stroke-width="2"/>
-  <circle cx="96" cy="106" r="16" fill="#93C5FD"/>
-  <rect x="122" y="98" width="90" height="10" rx="5" fill="#BFDBFE"/>
-  <rect x="122" y="116" width="60" height="8" rx="4" fill="#DBEAFE"/>
-  <rect x="80" y="150" width="320" height="10" rx="5" fill="#E0EAFB"/>
-  <rect x="60" y="200" width="360" height="110" rx="16" fill="#FFFFFF" stroke="#DBEAFE" stroke-width="2"/>
-  <circle cx="96" cy="236" r="16" fill="#60A5FA"/>
-  <rect x="122" y="228" width="110" height="10" rx="5" fill="#BFDBFE"/>
-  <rect x="122" y="246" width="70" height="8" rx="4" fill="#DBEAFE"/>
-  <rect x="80" y="280" width="280" height="10" rx="5" fill="#E0EAFB"/>
-  <rect x="60" y="330" width="360" height="80" rx="16" fill="#FFFFFF" stroke="#DBEAFE" stroke-width="2"/>
-  <rect x="80" y="352" width="150" height="10" rx="5" fill="#BFDBFE"/>
-  <rect x="80" y="372" width="240" height="8" rx="4" fill="#E0EAFB"/>
-  <rect x="24" y="24" width="128" height="30" rx="15" fill="#1D4ED8"/>
-  <text x="88" y="44" font-family="Pretendard, 'Noto Sans KR', sans-serif" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">카드 UI 스케치</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="620" viewBox="0 0 1000 620"><defs><style>text{font-family:Pretendard,'Noto Sans KR',Arial,sans-serif}</style></defs>
+<rect width="1000" height="620" fill="#e7edf4"/>
+<circle cx="900" cy="80" r="250" fill="#dfe7f0"/><path d="M0 530C200 420 400 680 700 550S960 460 1020 540" fill="none" stroke="#c9d7e6" stroke-width="2"/>
+<text x="48" y="64" fill="#8092aa" font-size="13" letter-spacing="3">UI EXPLORATION / 01</text>
+<text x="48" y="140" fill="#364c65" font-size="45" font-weight="700" letter-spacing="-2">어디로,</text><text x="48" y="196" fill="#364c65" font-size="45" font-weight="700" letter-spacing="-2">가볍게.</text>
+<text x="51" y="240" fill="#8595aa" font-size="15">일상에서 한 걸음 떨어지는 여행</text>
+<line x1="50" y1="285" x2="100" y2="285" stroke="#a9b9cc" stroke-width="2"/>
+<text x="50" y="320" fill="#8595aa" font-size="13">EXPLORE · SAVE · GO</text>
+<circle cx="62" cy="529" r="12" fill="#6c86a5"/><circle cx="96" cy="529" r="12" fill="#bdcddd"/><circle cx="130" cy="529" r="12" fill="#f8fafc"/>
+<text x="49" y="575" fill="#93a4b7" font-size="11" letter-spacing="2">MOBILE APP / CONCEPT STUDY</text>
+<rect x="356" y="45" width="270" height="535" rx="31" fill="#d5dfe9"/><rect x="361" y="40" width="260" height="535" rx="29" fill="#fff"/>
+<text x="384" y="70" font-size="10" fill="#5d6a7c">9:41</text><rect x="467" y="49" width="50" height="5" rx="3" fill="#e7ebf0"/>
+<text x="382" y="117" font-size="24" font-weight="700" fill="#3c4d63">어디로.</text><circle cx="590" cy="109" r="12" fill="#e8edf4"/><path d="M585 111l5-6 5 6" stroke="#8e9eb3" fill="none"/>
+<text x="382" y="155" font-size="12" fill="#929eae">이번 주말, 잠깐 떠나볼까요?</text>
+<rect x="381" y="176" width="221" height="37" rx="11" fill="#f2f5f8"/><circle cx="398" cy="194" r="5" stroke="#b2becd" fill="none"/><text x="412" y="199" fill="#a1adbd" font-size="10">어디로 떠나고 싶나요?</text>
+<text x="382" y="246" font-size="14" font-weight="700" fill="#4c5d72">천천히 머무는 곳</text><text x="577" y="246" font-size="9" fill="#99a6b7">전체</text>
+<rect x="382" y="263" width="219" height="159" rx="13" fill="#d2e2e7"/><circle cx="545" cy="295" r="19" fill="#f9f3dc"/><path d="M382 354L440 302 487 356 532 322 601 370V422H382Z" fill="#a6c2c5"/><path d="M382 380l48-27 51 22 46-19 74 34v32H382Z" fill="#729e9f"/><path d="M465 422l52-60 17 3-41 57" fill="#dbe8d8"/>
+<text x="396" y="399" fill="#fff" font-size="14" font-weight="700">초록을 따라, 제주</text><circle cx="581" cy="282" r="11" fill="#ffffffc9"/><path d="M578 277h6v9l-3-2-3 2z" stroke="#7e969f" fill="none"/>
+<text x="383" y="450" font-size="13" fill="#52647b" font-weight="600">이번 주의 작은 여행</text><text x="383" y="473" font-size="10" fill="#9aa8b8">제주 · 양양 · 남해</text>
+<line x1="382" y1="511" x2="601" y2="511" stroke="#eef1f5"/>
+<path d="M403 538l7-6 7 6v9h-5v-6h-4v6h-5z" fill="#6c86a5"/><circle cx="491" cy="540" r="7" stroke="#b2becc" fill="none"/><path d="M565 532h10v17l-5-4-5 4z" stroke="#b2becc" fill="none"/>
+<rect x="658" y="83" width="270" height="490" rx="31" fill="#d3dee9"/><rect x="663" y="78" width="260" height="490" rx="29" fill="#fff"/>
+<rect x="678" y="93" width="230" height="259" rx="20" fill="#d0e1e2"/><circle cx="844" cy="154" r="30" fill="#f4efdb"/><path d="M678 256l58-83 66 85 45-47 61 76v65H678z" fill="#a0bfc0"/><path d="M678 291l59-27 43 18 54-22 74 44v48H678z" fill="#719c99"/><path d="M749 352l58-77 17 5-39 72" fill="#d4e3d0"/><circle cx="701" cy="117" r="12" fill="#ffffffcc"/><path d="M704 112l-5 5 5 5" fill="none" stroke="#7f97a1"/>
+<rect x="680" y="335" width="226" height="175" rx="19" fill="#fff"/><text x="691" y="370" fill="#879b99" font-size="9" letter-spacing="2">SLOW TRAVEL</text><text x="691" y="405" fill="#465d67" font-size="24" font-weight="700">초록을 따라, 제주</text><text x="691" y="433" fill="#98a7b3" font-size="10">오롯이 나의 속도로 걷는 하루.</text><text x="691" y="453" fill="#98a7b3" font-size="10">산책길 끝에서 만나는 새로운 풍경.</text>
+<rect x="684" y="500" width="218" height="41" rx="12" fill="#6c86a5"/><text x="793" y="526" text-anchor="middle" font-size="12" fill="#fff">이 여행 저장하기</text>
 </svg>

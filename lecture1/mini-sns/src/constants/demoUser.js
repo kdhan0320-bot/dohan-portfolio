@@ -1,15 +1,21 @@
-const AVATAR_PALETTE = ["6366F1", "4F46E5", "0F172A", "06B6D4", "312E81"].join(
-  ",",
-);
-
-export const getRandomProfileAvatar = (seed) =>
-  `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(seed || Math.random().toString(36).slice(2))}&backgroundColor=${AVATAR_PALETTE}`;
-
+const colors = [
+  ["#E8EAF8", "#4956A6"],
+  ["#E8F0E9", "#42634D"],
+  ["#F4E8DD", "#8D5D3C"],
+  ["#EFE8F2", "#775283"],
+  ["#E3EDF4", "#3D647D"],
+];
+export const getRandomProfileAvatar = (seed = "방문자") => {
+  const name = String(seed);
+  const [bg, fg] =
+    colors[[...name].reduce((n, c) => n + c.charCodeAt(0), 0) % colors.length];
+  const initials = name.slice(0, 1).replace(/[<>&"']/g, "");
+  return `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="28" fill="${bg}"/><text x="40" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-size="30" font-weight="600" fill="${fg}">${initials}</text></svg>`)}`;
+};
 export const DEMO_USER = {
   id: "demo-user",
-  nickname: "데모유저",
-  handle: "@demo_user",
-  bio: "Mini SNS 화면 흐름을 체험하기 위한 mock 사용자",
-  profile_image_url:
-    "https://api.dicebear.com/7.x/initials/svg?seed=%EB%8D%B0%EB%AA%A8%EC%9C%A0%EC%A0%80",
+  nickname: "도한",
+  handle: "@dohan",
+  bio: "화면을 만들고, 작은 발견을 기록합니다. 오늘도 한 걸음씩.",
+  profile_image_url: getRandomProfileAvatar("도한"),
 };

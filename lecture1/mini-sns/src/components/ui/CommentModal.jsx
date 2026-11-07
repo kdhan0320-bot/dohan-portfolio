@@ -1,234 +1,155 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import {
-  Drawer,
-  Box,
-  Typography,
   Avatar,
-  TextField,
   Button,
-  List,
-  ListItem,
-  Divider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
   IconButton,
+  TextField,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import SendIcon from "@mui/icons-material/Send";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { useAuth } from "../../hooks/useAuth";
+import CloseRounded from "@mui/icons-material/CloseRounded";
+import SendRounded from "@mui/icons-material/SendRounded";
+import EditOutlined from "@mui/icons-material/EditOutlined";
+import DeleteOutlineRounded from "@mui/icons-material/DeleteOutlineRounded";
 import { useDemoData } from "../../hooks/useDemoData";
+import { DEMO_USER, getRandomProfileAvatar } from "../../constants/demoUser";
 import { formatDistanceToNow } from "../../utils/timeFormat";
-
-const CommentModal = ({ open, onClose, postId, comments = [] }) => {
-  const { guestIdentity } = useAuth();
-  const { addComment, updateComment, deleteComment } = useDemoData();
+export default function CommentModal({ open, onClose, postId, comments }) {
+  const { addComment, updateComment, deleteComment, profile } = useDemoData();
   const [text, setText] = useState("");
-  const [editId, setEditId] = useState(null);
-  const [editText, setEditText] = useState("");
-  const listRef = useRef(null);
-
-  useEffect(() => {
-    if (!open) return;
-    setTimeout(
-      () => listRef.current?.scrollTo(0, listRef.current.scrollHeight),
-      50,
-    );
-  }, [open]);
-
-  const handleSubmit = () => {
-    if (!text.trim()) return;
-    addComment(postId, text.trim());
-    setText("");
-    setTimeout(
-      () => listRef.current?.scrollTo(0, listRef.current.scrollHeight),
-      100,
-    );
+  const [edit, setEdit] = useState(null);
+  const [draft, setDraft] = useState("");
+  const submit = (e) => {
+    e.preventDefault();
+    if (text.trim()) {
+      addComment(postId, text);
+      setText("");
+    }
   };
-
-  const handleDelete = (commentId) => deleteComment(postId, commentId);
-
-  const handleEdit = (commentId) => {
-    if (!editText.trim()) return;
-    updateComment(postId, commentId, editText.trim());
-    setEditId(null);
-    setEditText("");
-  };
-
   return (
-    <Drawer
-      anchor="bottom"
+    <Dialog
       open={open}
       onClose={onClose}
-      slotProps={{
-        paper: {
-          sx: {
-            maxWidth: 480,
-            mx: "auto",
-            borderRadius: "16px 16px 0 0",
-            maxHeight: "80vh",
-            display: "flex",
-            flexDirection: "column",
-          },
-        },
-      }}
-      sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 2,
-        "& .MuiBackdrop-root": { bgcolor: "rgba(0,0,0,0.5)" },
-      }}
+      aria-labelledby={`comments-${postId}`}
+      className="comments-dialog"
     >
-      {/* 헤더 */}
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          px: 2,
-          py: 1.5,
-          borderBottom: "1px solid",
-          borderColor: "divider",
-        }}
-      >
-        <Typography variant="h4">댓글 {comments.length}개</Typography>
-        <IconButton size="small" onClick={onClose}>
-          <CloseIcon />
+      <DialogTitle id={`comments-${postId}`} className="dialog-heading">
+        댓글 <span className="count-accent">{comments.length}</span>
+        <IconButton aria-label="댓글 닫기" onClick={onClose}>
+          <CloseRounded />
         </IconButton>
-      </Box>
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ px: 2, pt: 1, display: "block" }}
-      >
-        댓글은 데모 상태에서만 반영되며 새로고침하면 초기화됩니다.
-      </Typography>
-
-      {/* 댓글 목록 */}
-      <List ref={listRef} sx={{ flex: 1, overflowY: "auto", px: 1 }}>
-        {comments.length === 0 && (
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: "center", py: 4 }}
-          >
-            첫 댓글을 남겨보세요!
-          </Typography>
+      </DialogTitle>
+      <DialogContent dividers className="comments-list">
+        {!comments.length && (
+          <div className="empty-state">
+            <h2>첫 이야기를 건네보세요</h2>
+            <p>마음에 든 부분이나 궁금한 점을 나눠요.</p>
+          </div>
         )}
-        {comments.map((comment, idx) => (
-          <Box key={comment.id}>
-            <ListItem alignItems="flex-start" sx={{ px: 1, py: 1.5 }}>
-              <Avatar
-                src={comment.profiles?.profile_image_url}
-                sx={{ width: 32, height: 32, mr: 1.5, mt: 0.5 }}
-              />
-              <Box sx={{ flex: 1 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "flex-start",
+        {comments.map((c) => (
+          <div className="comment" key={c.id}>
+            <Avatar
+              src={
+                c.user_id === DEMO_USER.id
+                  ? profile.profile_image_url
+                  : c.profiles.profile_image_url ||
+                    getRandomProfileAvatar(c.profiles.nickname)
+              }
+              sx={{ width: 34, height: 34 }}
+            />
+            <div className="comment-body">
+              <div className="comment-meta">
+                <strong>
+                  {c.user_id === DEMO_USER.id
+                    ? profile.nickname
+                    : c.profiles.nickname}
+                </strong>
+                <time>{formatDistanceToNow(c.created_at)}</time>
+              </div>
+              {edit === c.id ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (draft.trim()) {
+                      updateComment(postId, c.id, draft);
+                      setEdit(null);
+                    }
                   }}
                 >
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      fontWeight={700}
-                      sx={{ mr: 1 }}
-                    >
-                      {comment.profiles?.nickname}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {formatDistanceToNow(comment.created_at)}
-                    </Typography>
-                  </Box>
-                  {comment.user_id === guestIdentity.id && (
-                    <Box>
-                      <IconButton
-                        size="small"
-                        aria-label="댓글 수정"
-                        onClick={() => {
-                          setEditId(comment.id);
-                          setEditText(comment.content);
-                        }}
-                      >
-                        <EditIcon sx={{ fontSize: 16 }} />
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        aria-label="댓글 삭제"
-                        onClick={() => handleDelete(comment.id)}
-                      >
-                        <DeleteIcon sx={{ fontSize: 16 }} />
-                      </IconButton>
-                    </Box>
-                  )}
-                </Box>
-                {editId === comment.id ? (
-                  <Box sx={{ display: "flex", gap: 1, mt: 0.5 }}>
-                    <TextField
-                      size="small"
-                      fullWidth
-                      value={editText}
-                      onChange={(e) => setEditText(e.target.value)}
-                    />
-                    <Button
-                      size="small"
-                      variant="contained"
-                      onClick={() => handleEdit(comment.id)}
-                    >
-                      저장
-                    </Button>
-                    <Button size="small" onClick={() => setEditId(null)}>
-                      취소
-                    </Button>
-                  </Box>
-                ) : (
-                  <Typography variant="body2" sx={{ mt: 0.5 }}>
-                    {comment.content}
-                  </Typography>
-                )}
-              </Box>
-            </ListItem>
-            {idx < comments.length - 1 && (
-              <Divider variant="inset" component="li" />
-            )}
-          </Box>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    slotProps={{
+                      htmlInput: {
+                        "aria-label": "댓글 수정 내용",
+                        maxLength: 500,
+                      },
+                    }}
+                  />
+                  <Button type="submit" disabled={!draft.trim()}>
+                    저장
+                  </Button>
+                  <Button onClick={() => setEdit(null)}>취소</Button>
+                </form>
+              ) : (
+                <p>{c.content}</p>
+              )}
+              {c.user_id === DEMO_USER.id && edit !== c.id && (
+                <div className="comment-options">
+                  <button
+                    onClick={() => {
+                      setEdit(c.id);
+                      setDraft(c.content);
+                    }}
+                    aria-label="댓글 수정"
+                  >
+                    <EditOutlined />
+                    수정
+                  </button>
+                  <button
+                    onClick={() => deleteComment(postId, c.id)}
+                    aria-label="댓글 삭제"
+                  >
+                    <DeleteOutlineRounded />
+                    삭제
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
         ))}
-      </List>
-
-      {/* 댓글 입력 */}
-      <Box
-        sx={{
-          p: 2,
-          borderTop: "1px solid",
-          borderColor: "divider",
-          display: "flex",
-          gap: 1,
-          alignItems: "center",
-        }}
-      >
+      </DialogContent>
+      <form className="comment-form" onSubmit={submit}>
         <Avatar
-          src={guestIdentity.profile_image_url}
-          sx={{ width: 32, height: 32 }}
+          src={profile.profile_image_url}
+          sx={{ width: 34, height: 34 }}
         />
         <TextField
-          placeholder="댓글을 입력하세요..."
           size="small"
-          fullWidth
+          placeholder="따뜻한 피드백을 남겨주세요"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSubmit()}
-          sx={{ bgcolor: "background.default", borderRadius: 2 }}
+          fullWidth
+          slotProps={{
+            htmlInput: { "aria-label": "댓글 입력", maxLength: 500 },
+          }}
+          onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing && e.key === "Enter")
+              e.preventDefault();
+          }}
         />
         <IconButton
-          color="primary"
-          onClick={handleSubmit}
+          type="submit"
           disabled={!text.trim()}
-          aria-label="댓글 전송"
+          color="primary"
+          aria-label="댓글 보내기"
         >
-          <SendIcon />
+          <SendRounded />
         </IconButton>
-      </Box>
-    </Drawer>
+      </form>
+    </Dialog>
   );
-};
-
-export default CommentModal;
+}
