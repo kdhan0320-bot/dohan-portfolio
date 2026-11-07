@@ -1,102 +1,75 @@
-import "./common.js";
-import { getProducts, modelDiagramMarkup, PRODUCT_TYPES } from "./data.js";
-import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js";
+import "./common.js?v=20261108a";
+import { getProducts, PRODUCT_TYPES } from "./data.js?v=20261108a";
+import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js?v=20261108a";
 
 const page = document.querySelector("#compare-page");
 let selected = getProducts(getCompareIds());
 let differencesOnly = false;
-
 const problemLabels = { assembly: "누락·오조립", surface: "외관 결함", dimension: "치수·위치", code: "코드·문자" };
 const rows = [
-  ["적합한 문제", (product) => product.problems.map((value) => problemLabels[value]).join(" · ")],
+  ["잘 맞는 공정", (product) => product.fit],
+  ["해결하는 문제", (product) => product.problems.map((value) => problemLabels[value]).join(" · ")],
   ["카메라 구성", (product) => product.camera],
-  ["검사 흐름", (product) => product.flow],
-  ["결과 데이터", (product) => product.resultData || "판정 결과"],
+  ["검사 위치", (product) => product.flow],
+  ["결과 데이터", (product) => product.resultData || "판정 결과 출력"],
   ["설치 부담", (product) => product.complexity],
-  ["나중에 추가할 수 있는 범위", (product) => product.expandability],
-  ["더 적합한 경우", (product) => product.fit],
+  ["확장 범위", (product) => product.expandability],
 ];
+const isDifferent = (value) => new Set(selected.map(value)).size > 1;
+const visibleRows = () => differencesOnly ? rows.filter(([, value]) => isDifferent(value)) : rows;
 
-function visibleRows() {
-  return differencesOnly
-    ? rows.filter(([, value]) => new Set(selected.map(value)).size > 1)
-    : rows;
+function tableMarkup() {
+  return `<table class="compare-table"><caption class="sr-only">선택 제품의 구성과 적용 조건 비교</caption>
+    <thead><tr><th scope="col">비교 항목</th>${selected.map((product) => `<th scope="col" class="font-tech">${product.model}</th>`).join("")}</tr></thead>
+    <tbody>${visibleRows().map(([label, value]) => `<tr class="${isDifferent(value) ? "is-different" : ""}"><th scope="row">${label}</th>${selected.map((product) => `<td>${value(product)}</td>`).join("")}</tr>`).join("")}</tbody>
+  </table>`;
 }
-
-function renderDesktopTable() {
-  return `<div class="compare-table compare-table--${selected.length === 2 ? "two" : "three"}" role="table" aria-label="제품 세부 비교">
-    <div class="compare-table__row compare-table__head" role="row"><strong role="columnheader">비교 항목</strong>${selected.map(({ model }) => `<strong role="columnheader" class="font-tech">${model}</strong>`).join("")}</div>
-    ${visibleRows().map(([label, value]) => `<div class="compare-table__row" role="row"><strong role="rowheader">${label}</strong>${selected.map((product) => `<span role="cell">${value(product)}</span>`).join("")}</div>`).join("")}
-  </div>`;
+function mobileMarkup() {
+  return `<div class="compare-mobile-list">${visibleRows().map(([label, value]) => `<section class="compare-mobile-card ${selected.length === 3 ? "compare-mobile-card--three" : ""} ${isDifferent(value) ? "is-different" : ""}"><h3>${label}</h3><div>${selected.map((product) => `<p><strong class="font-tech">${product.model}</strong>${value(product)}</p>`).join("")}</div></section>`).join("")}</div>`;
 }
-
-function renderMobileCards() {
-  return visibleRows().map(([label, value]) => `<section class="compare-mobile-card"><h3>${label}</h3>${selected.map((product) => `<p><strong class="font-tech">${product.model}</strong> ${value(product)}</p>`).join("")}</section>`).join("");
-}
-
-function renderKeyDifferences() {
-  return selected.map((product) => `<article>
-    <span class="font-tech">${product.model}</span>
-    <strong>${product.detail.title}</strong>
-    <small>${product.fit}</small>
-    <small>${product.camera} · ${product.flow} · 설치 부담 ${product.complexity} · 추가 범위 ${product.expandability}</small>
-  </article>`).join("");
-}
-
 function render() {
-  const type = selected[0]?.type;
   const enough = selected.length >= 2;
-  const controls = selected.length
-    ? `<div class="button-row"><span class="product-type-pill">${PRODUCT_TYPES[type]}</span>${enough ? `<button class="button button--secondary difference-toggle" type="button" aria-pressed="${differencesOnly}">차이만 보기</button>` : ""}<button class="button button--secondary clear-compare" type="button">모두 지우기</button></div>`
-    : "";
+  const type = selected[0]?.type;
+  const addHref = type ? `products.html?type=${type}` : "products.html";
+  const selection = selected.length ? `<div class="compare-selection ${selected.length === 3 ? "compare-selection--three" : ""}">${selected.map((product) => `<article><a href="product.html?id=${product.id}"><strong>${product.model}</strong><small>${PRODUCT_TYPES[product.type]} · 상세 보기 ↗</small></a><button class="text-button" type="button" data-remove-compare="${product.id}" aria-label="${product.model} 비교에서 제거">제거 ×</button></article>`).join("")}</div>` : "";
   page.innerHTML = `
-    <section class="page-hero compare-hero"><div class="container"><p class="eyebrow">제품 비교</p><h1><span class="desktop-only">${enough ? "같은 종류의 제품 차이를 한눈에 확인하세요." : "비교할 제품을 선택해 주세요."}</span><span class="mobile-only">${type ? PRODUCT_TYPES[type] : "제품"} 비교</span></h1><p class="lead">${enough ? "모델 번호보다 검사 흐름, 설치 부담과 추가 가능한 범위를 먼저 확인합니다." : "같은 종류의 제품을 2~3개 선택하면 비교할 수 있습니다."}</p>
-      ${controls}
+    <section class="page-hero compare-hero"><div class="container">
+      <p class="eyebrow">제품 비교 / COMPARE</p><h1>${enough ? "차이를 보고, 선택을 좁히세요." : "함께 볼 제품을 골라주세요."}</h1>
+      <p class="lead">${enough ? "연한 초록색 행은 선택한 제품의 값이 다른 항목입니다." : "같은 종류의 제품 2~3개를 나란히 비교할 수 있습니다."}</p>
+      ${selected.length ? `<div class="compare-toolbar"><span class="product-type-pill">${PRODUCT_TYPES[type]} · ${selected.length}개 선택</span><div class="button-row">${enough ? `<button class="button button--secondary difference-toggle" type="button" aria-pressed="${differencesOnly}">차이만 보기</button>` : ""}<button class="text-button clear-compare" type="button">전체 비우기</button></div></div>` : ""}
     </div></section>
-    ${enough ? `
-      <section class="section section--muted selected-products-section"><div class="container"><h2>선택한 제품 ${selected.length}개</h2><div class="selected-card-row selected-card-row--${selected.length === 2 ? "two" : "three"}">${selected.map((product) => {
-        return `<article><div class="selected-card__top"><strong class="font-tech">${product.model}</strong>${modelDiagramMarkup(product.model)}</div><span>${product.detail.title}</span><small>${product.fit}</small><button class="text-button remove-compare" data-remove-compare="${product.id}" type="button">비교에서 제거</button></article>`;
-      }).join("")}</div></div></section>
-      <section class="section compare-differences compare-differences--${selected.length === 2 ? "two" : "three"}"><div class="container"><h2>먼저 읽는 핵심 차이</h2><p class="section-intro">현재 선택한 제품의 적합 조건과 구성 차이를 확인합니다.</p><div class="difference-grid">${renderKeyDifferences()}</div></div></section>
-      <section class="section section--muted compare-details"><div class="container"><h2>세부 비교</h2><p class="section-intro">같은 종류의 제품별 직접 비교입니다.</p>${renderDesktopTable()}<div class="compare-mobile-list">${renderMobileCards()}</div><div class="info-note"><strong>숫자가 높다고 항상 더 적합하지 않습니다.</strong><p>검사 위치와 공정 흐름, 설치 복잡도를 먼저 확인하세요.</p></div></div></section>
-      <section class="section compare-help"><div class="container"><div><h2>다른 종류의 제품은 직접 사양 비교하지 않습니다.</h2><p>구성 방식과 사용 목적이 다른 제품은 제품 종류 선택 도움말에서 먼저 확인합니다.</p></div><a class="button button--secondary" href="products.html">제품 선택 도움말</a></div></section>
-      <section class="cta-band"><div class="container"><div><h2>선택한 제품과 공정 조건을 함께 문의하세요.</h2><p>비교 목록을 기술 문의로 전달합니다.</p></div><a class="button button--primary compare-inquiry" href="inquiry.html?products=${selected.map(({ id }) => id).join(",")}">기술 문의하기</a></div></section>
-      <section class="disclosure"><div class="container"><strong>가상 제품과 사양</strong><span>제품명과 사양은 화면 설계를 위한 가상 정보이며 실제 장비 선정에 사용할 수 없습니다.</span></div></section>`
-      : '<section class="section"><div class="container empty-state"><h2>선택된 제품이 부족합니다.</h2><p>같은 종류의 제품을 최소 2개 선택해 주세요.</p><a class="button button--primary" href="products.html">제품 찾기</a></div></section>'}`;
+    <section class="compare-content"><div class="container">
+      ${selection}
+      ${enough ? `
+        <p class="compare-key">${differencesOnly ? `서로 다른 항목 ${visibleRows().length}개를 보고 있습니다.` : "값이 다른 항목 · 제품의 우열을 뜻하지 않습니다."}</p>
+        ${tableMarkup()}${mobileMarkup()}
+        <div class="compare-next"><div><h2>이 후보들로 공정 조건을 정리해볼까요?</h2><p>선택한 제품이 문의 양식에 자동으로 연결됩니다.</p></div><a class="button button--primary compare-inquiry" href="inquiry.html?products=${selected.map(({ id }) => id).join(",")}">선택 제품 문의 ↗</a></div>
+        <div class="button-row compare-back"><a class="text-link" href="${addHref}">← 같은 종류 제품 더 보기</a></div>
+      ` : `<div class="empty-state"><h2>${selected.length ? "비교할 제품을 하나 더 선택하세요." : "아직 담은 제품이 없습니다."}</h2><p>${selected.length ? "선택한 제품과 같은 종류의 모델을 추가하면 비교표가 나타납니다." : "제품 목록에서 ‘비교 추가’를 눌러 후보를 담아보세요."}</p><a class="button button--primary" href="${addHref}">${type ? PRODUCT_TYPES[type] + " 더 보기" : "제품 찾기"} ↗</a></div>`}
+    </div></section>
+    <section class="disclosure"><div class="container"><strong>가상 제품 비교</strong><span>구성 차이를 살펴보는 데모입니다. 실제 장비 선정에는 제조사 사양과 현장 조건 검토가 필요합니다.</span></div></section>`;
 }
-
-function focusAfterRender(selector) {
-  const target = page.querySelector(selector);
-  target?.focus({ preventScroll: true });
-}
-
 document.addEventListener("click", (event) => {
   const remove = event.target.closest("[data-remove-compare]");
   if (remove) {
-    const removedIndex = selected.findIndex(({ id }) => id === remove.dataset.removeCompare);
-    toggleCompare(selected.find(({ id }) => id === remove.dataset.removeCompare));
-    selected = selected.filter(({ id }) => id !== remove.dataset.removeCompare);
+    const index = selected.findIndex(({ id }) => id === remove.dataset.removeCompare);
+    toggleCompare(selected[index]);
+    selected = getProducts(getCompareIds());
     render();
-    const remainingControls = [...page.querySelectorAll("[data-remove-compare]")];
-    const adjacent = remainingControls[Math.min(removedIndex, remainingControls.length - 1)];
-    if (adjacent) adjacent.focus({ preventScroll: true });
-    else focusAfterRender(".clear-compare, .empty-state .button");
-    return;
-  }
-  if (event.target.closest(".difference-toggle")) {
+    const controls = [...page.querySelectorAll("[data-remove-compare]")];
+    (controls[Math.min(index, controls.length - 1)] || page.querySelector(".empty-state .button"))?.focus({preventScroll:true});
+  } else if (event.target.closest(".difference-toggle")) {
     differencesOnly = !differencesOnly;
     render();
-    focusAfterRender(".difference-toggle");
-    return;
-  }
-  if (event.target.closest(".clear-compare")) {
+    page.querySelector(".difference-toggle").focus({preventScroll:true});
+  } else if (event.target.closest(".clear-compare")) {
     clearCompare();
     selected = [];
+    differencesOnly = false;
     render();
-    focusAfterRender(".empty-state .button");
-    return;
+    page.querySelector(".empty-state .button").focus({preventScroll:true});
+  } else if (event.target.closest(".compare-inquiry")) {
+    setInquiryProducts(selected.map(({id}) => id));
   }
-  if (event.target.closest(".compare-inquiry")) setInquiryProducts(selected.map(({ id }) => id));
 });
-
 render();

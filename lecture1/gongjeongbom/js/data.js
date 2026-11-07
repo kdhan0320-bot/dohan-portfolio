@@ -166,7 +166,7 @@ export const products = [
     id: "mv-x700",
     model: "MV-X700",
     type: "vision-system",
-    name: "여러 위치와 복합한 검사 흐름을 처리하는 상위 시스템",
+    name: "여러 위치와 복잡한 검사 흐름을 처리하는 상위 시스템",
     summary: "최대 4대 카메라와 복잡한 검사 흐름 지원",
     fit: "다면·다공정 검사 · 높은 확장",
     problems: ["assembly", "surface", "dimension", "code"],
@@ -233,7 +233,7 @@ export const products = [
         { title: "코드 판독", description: "1D·2D 단일 코드를 읽고 판독 결과를 정리합니다." },
         { title: "결과 연결", description: "판독 결과를 이더넷으로 설비에 전달합니다." },
       ],
-      visual: { kind: "asset", src: "assets/graphics/code-reading.svg", description: "CR-L100 포장 라벨 1D·2D 코드 판독 도식" },
+      visual: { kind: "asset", src: "assets/graphics/code-reading.svg?v=20261108a", description: "CR-L100 포장 라벨 1D·2D 코드 판독 도식" },
       relatedDescription: "판독 흐름과 데이터 출력 범위가 다른 코드 판독기를 함께 확인하세요.",
     },
   },
@@ -270,7 +270,7 @@ export const products = [
         { title: "코드·문자 판독", description: "코드와 문자 조건에 따라 판독 결과를 정리합니다." },
         { title: "데이터 출력", description: "판독 결과와 필요한 데이터를 외부 시스템으로 전달합니다." },
       ],
-      visual: { kind: "asset", src: "assets/graphics/code-reading.svg", description: "CR-L300 고속 이송 코드·문자 연속 판독 도식" },
+      visual: { kind: "asset", src: "assets/graphics/code-reading.svg?v=20261108a", description: "CR-L300 고속 이송 코드·문자 연속 판독 도식" },
       relatedDescription: "판독 대상과 공정 흐름이 다른 코드 판독기를 함께 확인하세요.",
     },
   },
@@ -302,29 +302,29 @@ export function productHref(product) {
 export function familyDiagramMarkup(type) {
   if (type === "vision-sensor") {
     return `<svg class="family-diagram" viewBox="0 0 72 52" aria-hidden="true" focusable="false">
-      <rect width="72" height="52" rx="10" fill="#f3f7ff"/>
-      <rect x="10" y="13" width="28" height="26" rx="7" fill="#17212b"/>
-      <circle cx="24" cy="26" r="5" fill="#1647c5"/>
-      <path d="M38 26H58" stroke="#20b8ac" stroke-width="2" stroke-linecap="round"/>
-      <rect x="58" y="18" width="6" height="16" rx="3" fill="#d8e5ff"/>
+      <rect width="72" height="52" rx="10" fill="#eef3ec"/>
+      <rect x="10" y="13" width="28" height="26" rx="7" fill="#183330"/>
+      <circle cx="24" cy="26" r="5" fill="#126658"/>
+      <path d="M38 26H58" stroke="#4d9b79" stroke-width="2" stroke-linecap="round"/>
+      <rect x="58" y="18" width="6" height="16" rx="3" fill="#d7e5ca"/>
     </svg>`;
   }
   if (type === "vision-system") {
     return `<svg class="family-diagram" viewBox="0 0 72 52" aria-hidden="true" focusable="false">
-      <rect width="72" height="52" rx="10" fill="#f3f7ff"/>
-      <rect x="24" y="8" width="26" height="18" rx="5" fill="#17212b"/>
-      <rect x="29" y="12" width="16" height="8" rx="3" fill="#d8e5ff"/>
-      <path d="M38 26V34M17 34H59" stroke="#20b8ac" stroke-width="2" stroke-linecap="round"/>
-      <rect x="8" y="31" width="18" height="15" rx="4" fill="#fff" stroke="#bfcbda"/>
-      <rect x="47" y="31" width="18" height="15" rx="4" fill="#fff" stroke="#bfcbda"/>
-      <circle cx="17" cy="38.5" r="3" fill="#1647c5"/><circle cx="56" cy="38.5" r="3" fill="#1647c5"/>
+      <rect width="72" height="52" rx="10" fill="#eef3ec"/>
+      <rect x="24" y="8" width="26" height="18" rx="5" fill="#183330"/>
+      <rect x="29" y="12" width="16" height="8" rx="3" fill="#d7e5ca"/>
+      <path d="M38 26V34M17 34H59" stroke="#4d9b79" stroke-width="2" stroke-linecap="round"/>
+      <rect x="8" y="31" width="18" height="15" rx="4" fill="#fff" stroke="#bdcdbf"/>
+      <rect x="47" y="31" width="18" height="15" rx="4" fill="#fff" stroke="#bdcdbf"/>
+      <circle cx="17" cy="38.5" r="3" fill="#126658"/><circle cx="56" cy="38.5" r="3" fill="#126658"/>
     </svg>`;
   }
   return `<svg class="family-diagram" viewBox="0 0 72 52" aria-hidden="true" focusable="false">
-    <rect width="72" height="52" rx="10" fill="#f3f7ff"/>
-    <rect x="10" y="11" width="52" height="30" rx="6" fill="#fff" stroke="#bfcbda"/>
-    <path d="M15 17V34M19 17V34M24 17V34M29 17V34M34 17V34M39 17V34M44 17V34M49 17V34M54 17V34" stroke="#17212b" stroke-width="1.2"/>
-    <path d="M12 34H60" stroke="#20b8ac" stroke-width="2" stroke-linecap="round"/>
+    <rect width="72" height="52" rx="10" fill="#eef3ec"/>
+    <rect x="10" y="11" width="52" height="30" rx="6" fill="#fff" stroke="#bdcdbf"/>
+    <path d="M15 17V34M19 17V34M24 17V34M29 17V34M34 17V34M39 17V34M44 17V34M49 17V34M54 17V34" stroke="#183330" stroke-width="1.2"/>
+    <path d="M12 34H60" stroke="#4d9b79" stroke-width="2" stroke-linecap="round"/>
   </svg>`;
 }
 
@@ -337,11 +337,11 @@ export function modelDiagramMarkup(model) {
   const busStart = centers[0];
   const busEnd = centers[centers.length - 1];
   return `<svg class="model-diagram" viewBox="0 0 112 64" data-camera-count="${count}" aria-hidden="true" focusable="false">
-    <rect width="112" height="64" rx="10" fill="#f3f7ff"/>
-    <rect x="39" y="7" width="34" height="22" rx="6" fill="#17212b"/>
-    <rect x="45" y="12" width="22" height="10" rx="3" fill="#d8e5ff"/>
-    <path d="M56 29V36M${busStart} 36H${busEnd}" stroke="#20b8ac" stroke-width="2" stroke-linecap="round"/>
-    ${centers.map((center) => `<path d="M${center} 36V40" stroke="#20b8ac" stroke-width="2" stroke-linecap="round"/>`).join("")}
-    ${positions.map((position) => `<g transform="translate(${position} 39)"><rect width="${nodeWidth}" height="18" rx="5" fill="#fff" stroke="#bfcbda"/><circle cx="${nodeWidth / 2}" cy="9" r="${count === 4 ? 3 : 3.5}" fill="#1647c5"/></g>`).join("")}
+    <rect width="112" height="64" rx="10" fill="#eef3ec"/>
+    <rect x="39" y="7" width="34" height="22" rx="6" fill="#183330"/>
+    <rect x="45" y="12" width="22" height="10" rx="3" fill="#d7e5ca"/>
+    <path d="M56 29V36M${busStart} 36H${busEnd}" stroke="#4d9b79" stroke-width="2" stroke-linecap="round"/>
+    ${centers.map((center) => `<path d="M${center} 36V40" stroke="#4d9b79" stroke-width="2" stroke-linecap="round"/>`).join("")}
+    ${positions.map((position) => `<g transform="translate(${position} 39)"><rect width="${nodeWidth}" height="18" rx="5" fill="#fff" stroke="#bdcdbf"/><circle cx="${nodeWidth / 2}" cy="9" r="${count === 4 ? 3 : 3.5}" fill="#126658"/></g>`).join("")}
   </svg>`;
 }

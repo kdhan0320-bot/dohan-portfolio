@@ -1,11 +1,11 @@
-import "./common.js";
-import { getProducts } from "./data.js";
+import "./common.js?v=20261108a";
+import { getProducts } from "./data.js?v=20261108a";
 import {
   getInquiryProducts,
   getCompareIds,
   hasInquiryProducts,
   setInquiryProducts,
-} from "./common.js";
+} from "./common.js?v=20261108a";
 
 const form = document.querySelector("#inquiry-form");
 const steps = [...document.querySelectorAll(".form-step")];
@@ -26,7 +26,7 @@ const selectedProducts = getProducts(initialIds);
 setInquiryProducts(selectedProducts.map(({ id }) => id));
 
 document.querySelector(".selected-products").innerHTML = selectedProducts.length
-  ? selectedProducts.map((product) => `<label class="selected-product" for="selected-product-${product.id}"><input id="selected-product-${product.id}" type="checkbox" name="products" value="${product.id}" checked>${product.model} ×</label>`).join("")
+  ? selectedProducts.map((product) => `<label class="selected-product" for="selected-product-${product.id}"><input id="selected-product-${product.id}" type="checkbox" name="products" value="${product.id}" checked>${product.model}</label>`).join("")
   : '<p>선택한 제품이 없습니다. 제품 없이도 문의할 수 있습니다.</p>';
 
 if (selectedProducts.length) {
@@ -67,7 +67,7 @@ function updateSummary() {
   summary.replaceChildren(fragment);
 }
 
-function showStep(step) {
+function showStep(step, { moveFocus = true } = {}) {
   currentStep = step;
   steps.forEach((section) => {
     section.hidden = Number(section.dataset.step) !== step;
@@ -75,10 +75,12 @@ function showStep(step) {
   indicators.forEach((indicator) => {
     const active = Number(indicator.dataset.stepIndicator) === step;
     indicator.classList.toggle("is-active", active);
+    indicator.classList.toggle("is-complete", Number(indicator.dataset.stepIndicator) < step);
     if (active) indicator.setAttribute("aria-current", "step");
     else indicator.removeAttribute("aria-current");
   });
   updateSummary();
+  if (!moveFocus) return;
   document.querySelector(`[data-step="${step}"] h2`)?.focus({ preventScroll: true });
   window.scrollTo({
     top: document.querySelector(".inquiry-section").offsetTop - 70,
@@ -105,7 +107,7 @@ function validationItems(step) {
       }
       return;
     }
-    if (!field.checkValidity()) items.push({ controls: [field], target: field, linkTarget: field, field });
+    if (!field.checkValidity() || (field.required && typeof field.value === "string" && !field.value.trim())) items.push({ controls: [field], target: field, linkTarget: field, field });
   });
 
   return items;
@@ -129,7 +131,7 @@ function clearResolvedItem(control) {
   if (!target) return;
   const resolved = control.type === "radio"
     ? [...target.querySelectorAll('input[type="radio"]')].some((radio) => radio.checked)
-    : control.checkValidity();
+    : control.checkValidity() && (!control.required || typeof control.value !== "string" || Boolean(control.value.trim()));
   if (!resolved) return;
   target.removeAttribute("aria-invalid");
   const linkId = control.type === "radio"
@@ -183,17 +185,34 @@ form.addEventListener("click", (event) => {
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
+  if (currentStep < 3) {
+    if (validateStep(currentStep)) showStep(currentStep + 1);
+    return;
+  }
   if (!validateStep(3)) return;
   const completion = document.querySelector(".completion-state");
   steps.forEach((step) => { step.hidden = true; });
   clearValidationState();
   document.querySelector(".inquiry-summary").hidden = true;
+  const completionSummary = completion.querySelector(".completion-summary");
+  completionSummary.replaceChildren();
+  const finalData = new FormData(form);
+  [["문의 목적", finalData.get("purpose")], ["검사 유형", finalData.get("problem")], ["관심 제품", selectedProductModels().join(" · ") || "제품 미선정"]].forEach(([label, value]) => {
+    const row = document.createElement("p");
+    const key = document.createElement("strong");
+    const content = document.createElement("span");
+    key.textContent = label;
+    content.textContent = value;
+    row.append(key, content);
+    completionSummary.append(row);
+  });
   completion.hidden = false;
   indicators.forEach((indicator) => {
     indicator.classList.remove("is-active");
     indicator.removeAttribute("aria-current");
+    indicator.classList.add("is-complete");
   });
   completion.focus();
 });
 
-showStep(currentStep);
+showStep(currentStep, { moveFocus: false });

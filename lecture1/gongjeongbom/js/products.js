@@ -1,19 +1,21 @@
-import "./common.js";
+import "./common.js?v=20261108a";
 import {
   products,
   PRODUCT_TYPES,
   PROBLEM_LABELS,
   modelDiagramMarkup,
+  familyDiagramMarkup,
   productHref,
   typeCounts,
-} from "./data.js";
+} from "./data.js?v=20261108a";
 import {
   announce,
   clearCompare,
   getCompareIds,
+  showToast,
   toggleCompare,
   updateCompareUi,
-} from "./common.js";
+} from "./common.js?v=20261108a";
 
 const state = {
   query: "",
@@ -23,10 +25,26 @@ const state = {
   connections: new Set(),
 };
 
-const params = new URLSearchParams(location.search);
-if (PRODUCT_TYPES[params.get("type")]) state.type = params.get("type");
-if (PROBLEM_LABELS[params.get("problem")]) state.problems.add(params.get("problem"));
-if (["basic", "multiple", "precision"].includes(params.get("level"))) state.level = params.get("level");
+function readUrlState() {
+  const params = new URLSearchParams(location.search);
+  state.query = params.get("q") || "";
+  state.type = PRODUCT_TYPES[params.get("type")] ? params.get("type") : "";
+  state.problems = new Set(params.getAll("problem").filter((value) => PROBLEM_LABELS[value]));
+  state.level = ["basic", "multiple", "precision"].includes(params.get("level")) ? params.get("level") : "";
+  state.connections = new Set(params.getAll("connection").filter((value) => ["built-in", "external-light", "ethernet", "data"].includes(value)));
+}
+function syncUrlState() {
+  const params = new URLSearchParams();
+  if (state.query.trim()) params.set("q", state.query.trim());
+  if (state.type) params.set("type", state.type);
+  state.problems.forEach((value) => params.append("problem", value));
+  if (state.level) params.set("level", state.level);
+  state.connections.forEach((value) => params.append("connection", value));
+  const query = params.toString();
+  const url = location.pathname + (query ? "?" + query : "") + location.hash;
+  if (url !== location.pathname + location.search + location.hash) history.replaceState(null, "", url);
+}
+readUrlState();
 
 const searchForm = document.querySelector(".product-search");
 const searchInput = document.querySelector("#product-search");
@@ -52,9 +70,9 @@ function filterMarkup(prefix = "") {
     </fieldset>`
     : "";
   return `
-    <h2>필터</h2>
+    <h2>조건 좁히기</h2>
     ${typeChoices}
-    <fieldset><legend>해결 문제</legend>${problemChoices}</fieldset>
+    <fieldset><legend>해결 문제</legend><p class="filter-hint">여러 개를 고르면 모두 충족하는 제품</p>${problemChoices}</fieldset>
     <fieldset><legend>필요한 검사 수준</legend>
       <label><input type="radio" name="${prefix}level" value="">전체</label>
       <label><input type="radio" name="${prefix}level" value="basic">기본</label>
@@ -141,13 +159,13 @@ function cardMarkup(product) {
   return `
     <article class="product-card">
       ${selected ? '<span class="badge">비교에 추가됨</span>' : ""}
-      <div class="product-card__top"><span class="eyebrow">${PRODUCT_TYPES[product.type]}</span>${modelDiagramMarkup(product.model)}</div>
-      <h3>${product.model}</h3>
+      <div class="product-card__top"><span class="eyebrow">${PRODUCT_TYPES[product.type]}</span>${modelDiagramMarkup(product.model) || familyDiagramMarkup(product.type)}</div>
+      <h3><a href="${productHref(product)}&filters=${encodeURIComponent(location.search.slice(1))}">${product.model}</a></h3>
       <p class="product-card__summary">${product.name}</p>
       <p>잘 맞는 경우: ${product.fit}</p>
       <div class="chip-row">${product.chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
       <div class="card-actions">
-        <a class="button button--primary" href="${productHref(product)}">상세 보기</a>
+        <a class="button button--primary" href="${productHref(product)}&filters=${encodeURIComponent(location.search.slice(1))}" aria-label="${product.model} 상세 보기">상세 보기</a>
         <button class="button button--secondary" type="button" data-compare-id="${product.id}" aria-pressed="${selected}">${selected ? "비교 제거" : "비교 추가"}</button>
       </div>
     </article>`;
@@ -185,6 +203,7 @@ function focusCompareControl(productId) {
 }
 
 function render() {
+  syncUrlState();
   const results = filteredProducts();
   const label = state.type ? PRODUCT_TYPES[state.type] : "전체 제품";
   heading.textContent = `${label} · ${results.length}개`;
@@ -213,17 +232,21 @@ function render() {
         <h3>어떤 제품이 맞을지 모르겠나요?</h3>
         <p>카메라 수보다 검사 위치, 공정 흐름, 앞으로 추가할 기능을 먼저 확인하세요.</p>
         <ul><li>한 곳인가요, 여러 곳인가요?</li><li>결과를 저장하거나 전송해야 하나요?</li><li>나중에 구성을 바꿀 가능성이 있나요?</li></ul>
-        <a class="button button--secondary" href="inquiry.html">제품 선택 문의</a>
+        <a class="text-link" href="index.html#guide">제품 종류 선택 가이드 →</a>
       </article>`
     : '<div class="empty-state"><h3>조건에 맞는 제품이 없습니다.</h3><p>검색어나 필터를 줄여 다시 확인해 주세요.</p><button class="button button--secondary reset-filter" type="button">필터 초기화</button></div>';
   renderCompareBar();
   syncControls();
   updateCompareUi();
+  announce(`조건에 맞는 제품 ${results.length}개입니다.`);
 }
 
 function renderCompareBar() {
   const selected = products.filter((product) => getCompareIds().includes(product.id));
   compareBar.hidden = selected.length === 0;
+  const compareLink = compareBar.querySelector('a[href="compare.html"]');
+  compareLink.textContent = selected.length >= 2 ? `비교하기 (${selected.length})` : "1개 더 선택하세요";
+  compareLink.setAttribute("aria-disabled", String(selected.length < 2));
   if (!selected.length) return;
   compareBar.querySelector(".compare-bar__title").textContent = `${PRODUCT_TYPES[selected[0].type]} 비교 · ${selected.length}개 선택됨`;
   compareBar.querySelector(".compare-bar__models").textContent = selected.map(({ model }) => model).join(" · ");
@@ -259,6 +282,11 @@ function resetFilters() {
 filterPanel.innerHTML = filterMarkup();
 mobileFilterBody.innerHTML = filterMarkup("mobile-");
 
+searchInput.value = state.query;
+window.addEventListener("popstate", () => { readUrlState(); searchInput.value = state.query; render(); });
+searchInput.addEventListener("search", () => { state.query = searchInput.value; render(); });
+compareBar.querySelector('a[href="compare.html"]').addEventListener("click", (event) => { if (getCompareIds().length < 2) event.preventDefault(); });
+
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
   state.query = searchInput.value;
@@ -290,7 +318,7 @@ document.addEventListener("click", (event) => {
   if (compareButton) {
     const product = products.find(({ id }) => id === compareButton.dataset.compareId);
     const result = toggleCompare(product);
-    if (!result.ok) alert(result.message);
+    if (!result.ok) showToast(result.message);
     render();
     focusCompareControl(product.id);
     return;

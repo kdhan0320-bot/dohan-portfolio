@@ -1,88 +1,54 @@
-import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js";
+import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js?v=20261108a";
 
 const COMPARE_KEY = "gongjeongbom-compare";
 const INQUIRY_KEY = "gongjeongbom-inquiry-products";
 
-function pageName() {
-  return document.body.dataset.page || "";
-}
-
+function pageName() { return document.body.dataset.page || ""; }
 function navLink(href, label, active = false) {
   return `<a href="${href}"${active ? ' aria-current="page"' : ""}>${label}</a>`;
 }
+const brandMarkup = '<span class="brand-mark" aria-hidden="true"></span>공정봄';
 
 function headerTemplate() {
   const page = pageName();
-  const productsActive = ["products", "product", "compare"].includes(page);
-  const inquiryActive = page === "inquiry";
-  return `
-    <div class="site-header__inner">
-      <a class="brand" href="index.html" aria-label="공정봄 홈">공정봄</a>
-      <nav class="primary-nav" aria-label="주 메뉴">
-        ${navLink("index.html#solutions", "솔루션")}
-        ${navLink("products.html", "제품", productsActive)}
-        ${navLink("index.html#cases", "적용 예시")}
-        ${navLink("inquiry.html", "기술 문의", inquiryActive)}
-        ${navLink("index.html#about", "기업 소개")}
-      </nav>
-      <div class="header-actions">
-        <a class="button button--secondary compare-link" href="compare.html">비교 목록 <span class="compare-count" aria-label="선택 제품 수">0</span></a>
-        <a class="button button--primary header-inquiry" href="inquiry.html">기술 문의</a>
-        <button class="button button--primary menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog">메뉴</button>
-      </div>
-    </div>`;
+  return `<div class="site-header__inner">
+    <a class="brand" href="index.html" aria-label="공정봄 홈">${brandMarkup}</a>
+    <nav class="primary-nav" aria-label="주 메뉴">
+      ${navLink("index.html#solutions", "문제로 찾기")}
+      ${navLink("products.html", "제품 찾기", ["products", "product"].includes(page))}
+      ${navLink("index.html#guide", "선택 가이드")}
+    </nav>
+    <div class="header-actions">
+      <a class="button button--secondary compare-link" href="compare.html"${page === "compare" ? ' aria-current="page"' : ""}>비교 목록 <span class="compare-count" aria-label="선택 제품 수">0</span></a>
+      <a class="button button--primary header-inquiry" href="inquiry.html"${page === "inquiry" ? ' aria-current="page"' : ""}>기술 문의 ↗</a>
+      <button class="button button--secondary menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog">메뉴</button>
+    </div>
+  </div>`;
 }
-
 function footerTemplate() {
-  return `
-    <div class="site-footer__inner">
-      <div>
-        <strong class="footer-brand">공정봄</strong>
-        <p>제조 검사 시스템 선택을 돕는 가상의 B2B 포트폴리오 프로젝트입니다.</p>
-      </div>
-      <div class="footer-links">
-        <div><strong>탐색</strong><a href="index.html#solutions">솔루션</a><a href="products.html">제품</a><a href="index.html#cases">적용 예시</a></div>
-        <div><strong>지원</strong><a href="products.html">제품 선택 도움말</a><a href="inquiry.html">기술 문의</a></div>
-        <div><strong>프로젝트</strong><a href="README.md">프로젝트 안내·자산 출처</a></div>
-      </div>
-      <p class="footer-meta">가상 기업 · 데모 고지 · 자산 라이선스</p>
-    </div>`;
+  return `<div class="site-footer__inner">
+    <div class="footer-top"><div><a class="footer-brand" href="index.html">공정봄</a><p>공정의 작은 이상에서, 알맞은 검사 선택으로.</p></div>
+      <nav class="footer-links" aria-label="하단 메뉴"><a href="products.html">제품 찾기</a><a href="index.html#guide">선택 가이드</a><a href="inquiry.html">기술 문의</a><a href="notice.html">작품 안내·출처</a></nav>
+    </div>
+    <div class="footer-meta"><span>가상 제품으로 만든 인터랙션 실험작 · 실제 장비 선정 및 문의 접수 서비스가 아닙니다.</span><span class="font-tech">GONGJEONGBOM / INSPECTION FINDER</span></div>
+  </div>`;
 }
-
 function menuTemplate() {
   const page = pageName();
-  const productsActive = ["products", "product", "compare"].includes(page);
-  const inquiryActive = page === "inquiry";
-  return `
-    <dialog class="sheet-dialog menu-dialog" id="menu-dialog" aria-labelledby="menu-title">
-      <div class="sheet-dialog__header">
-        <a class="brand" href="index.html">공정봄</a>
-        <button class="button button--secondary dialog-close" type="button">닫기</button>
-      </div>
-      <div class="sheet-dialog__body">
-        <h2 id="menu-title">전체 메뉴</h2>
-        <p>제품 탐색부터 비교·문의까지 원하는 경로로 이동하세요.</p>
-        <nav class="mobile-nav" aria-label="전체 메뉴">
-          <span>탐색</span>
-          ${navLink("index.html#solutions", "솔루션 →")}
-          ${navLink("products.html", "제품 →", productsActive)}
-          ${navLink("index.html#cases", "적용 예시 →")}
-          <span>지원</span>
-          ${navLink("inquiry.html", "기술 문의 →", inquiryActive)}
-          ${navLink("products.html", "제품 선택 도움말 →")}
-          <span>기업</span>
-          ${navLink("index.html#about", "기업 소개 →")}
-          ${navLink("README.md", "프로젝트 고지 →")}
-        </nav>
-        <div class="sheet-actions">
-          <a class="button button--secondary" href="compare.html">비교 목록 보기</a>
-          <a class="button button--primary" href="inquiry.html">기술 문의</a>
-        </div>
-      </div>
-      <div class="dialog-footer"><strong>공정봄</strong><p>가상 기업 · 데모 고지 · 자산 라이선스</p></div>
-    </dialog>`;
+  return `<dialog class="sheet-dialog menu-dialog" id="menu-dialog" aria-labelledby="menu-title">
+    <div class="sheet-dialog__header"><a class="brand" href="index.html">${brandMarkup}</a><button class="button button--secondary dialog-close" type="button">닫기</button></div>
+    <div class="sheet-dialog__body"><h2 id="menu-title">어디서 시작할까요?</h2><p>문제를 찾고, 제품을 비교하고, 문의를 정리하세요.</p>
+      <nav class="mobile-nav" aria-label="전체 메뉴">
+        ${navLink("index.html#solutions", "문제로 찾기 ↗")}
+        ${navLink("products.html", "제품 찾기 ↗", ["products", "product"].includes(page))}
+        ${navLink("index.html#guide", "선택 가이드 ↗")}
+        ${navLink("compare.html", "비교 목록 ↗", page === "compare")}
+        ${navLink("inquiry.html", "기술 문의 ↗", page === "inquiry")}
+        ${navLink("notice.html", "작품 안내·출처 ↗", page === "notice")}
+      </nav>
+    </div><div class="dialog-footer">가상 제품을 사용하는 데모입니다.<br>입력한 문의는 실제 업체에 전송되지 않습니다.</div>
+  </dialog>`;
 }
-
 export function getCompareIds() {
   try {
     const saved = JSON.parse(sessionStorage.getItem(COMPARE_KEY) || "[]");
@@ -160,6 +126,19 @@ export function announce(message) {
   });
 }
 
+let toastTimer = null;
+
+export function showToast(message, variant = "warning") {
+  const root = document.querySelector("#toast-root");
+  if (!root) return;
+  root.innerHTML = `<p class="toast toast--${variant}">${message}</p>`;
+  root.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    root.classList.remove("is-visible");
+  }, 4000);
+}
+
 export function updateCompareUi() {
   const selected = getProducts(getCompareIds());
   document.querySelectorAll(".compare-count").forEach((node) => {
@@ -184,7 +163,7 @@ function setupDialog(trigger, dialog) {
   });
   close?.addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
+    if (event.target === dialog || event.target.closest("a")) dialog.close();
   });
   dialog.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
@@ -216,6 +195,10 @@ function initCommon() {
   document.body.insertAdjacentHTML(
     "beforeend",
     '<p class="sr-only" id="live-region" aria-live="polite" aria-atomic="true"></p>',
+  );
+  document.body.insertAdjacentHTML(
+    "beforeend",
+    '<div class="toast-root" id="toast-root" role="status" aria-live="polite"></div>',
   );
   setupDialog(document.querySelector(".menu-trigger"), document.querySelector("#menu-dialog"));
   document.querySelectorAll("[data-family-diagram]").forEach((diagram) => {
