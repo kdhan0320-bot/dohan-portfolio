@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef } from "react";
+import {
+  FEED_CATEGORIES,
+  feedPath,
+  withFeedReturn,
+} from "../utils/feedLocation";
 import { Link, useSearchParams } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import SearchRounded from "@mui/icons-material/SearchRounded";
@@ -11,12 +16,22 @@ import { useDemoData } from "../hooks/useDemoData";
 export default function Home() {
   const { posts, profile } = useDemoData();
   const [params, setParams] = useSearchParams();
-  const category = ["작업기록", "질문", "스터디"].includes(
-    params.get("category"),
-  )
+  const pendingParams = useRef(params);
+  useLayoutEffect(() => {
+    pendingParams.current = params;
+  }, [params]);
+  const category = FEED_CATEGORIES.includes(params.get("category"))
     ? params.get("category")
     : "전체";
-  const [query, setQuery] = useState("");
+  const query = (params.get("q") || "").slice(0, 120);
+  const currentFeed = feedPath(`/?${params}`);
+  const updateFilter = (key, value, replace = false) => {
+    const next = new URLSearchParams(pendingParams.current);
+    if (!value || (key === "category" && value === "전체")) next.delete(key);
+    else next.set(key, value);
+    pendingParams.current = next;
+    setParams(next, { replace });
+  };
   const visible = posts.filter(
     (p) =>
       (category === "전체" || p.category === category) &&
@@ -33,7 +48,7 @@ export default function Home() {
           <p>시도한 것과 그 이유. 서로의 질문에 한 줄을 보태요.</p>
         </div>
       </div>
-      <Link to="/create" className="composer">
+      <Link to={withFeedReturn("/create", currentFeed)} className="composer">
         <Avatar src={profile.profile_image_url} />
         <span>오늘의 시도 한 줄, 남겨볼까요?</span>
         <ImageOutlined />
@@ -41,9 +56,9 @@ export default function Home() {
       <ActivityTabs
         id="feed"
         label="피드 분류"
-        items={["전체", "작업기록", "질문", "스터디"]}
+        items={FEED_CATEGORIES}
         value={category}
-        onChange={(c) => setParams(c === "전체" ? {} : { category: c })}
+        onChange={(c) => updateFilter("category", c)}
         className="feed-controls"
         tools={
           <label className="search-box">
@@ -53,7 +68,8 @@ export default function Home() {
               aria-label="작업 검색"
               placeholder="작업 검색"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              maxLength={120}
+              onChange={(e) => updateFilter("q", e.target.value, true)}
             />
           </label>
         }
@@ -71,7 +87,6 @@ export default function Home() {
             <button
               className="button secondary"
               onClick={() => {
-                setQuery("");
                 setParams({});
               }}
             >
@@ -83,7 +98,7 @@ export default function Home() {
       {visible.length > 0 && (
         <div className="feed-end">
           <span>여기까지, 오늘의 작은 발견들.</span>
-          <Link to="/create">
+          <Link to={withFeedReturn("/create", currentFeed)}>
             나의 기록도 남겨볼까요? <ArrowForwardRounded fontSize="small" />
           </Link>
         </div>

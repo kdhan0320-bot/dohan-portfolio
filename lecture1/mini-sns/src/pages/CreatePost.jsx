@@ -1,7 +1,13 @@
+import { feedPath, withFeedReturn } from "../utils/feedLocation";
 import { recordLabels, validReflection } from "../utils/recordFormat";
 import { readStored, writeStored } from "../utils/storage";
 import { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   Alert,
   Button,
@@ -24,6 +30,11 @@ function PostEditor({ id }) {
   const { getPost, addPost, updatePost } = useDemoData();
   const existing = id ? getPost(id) : null;
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const feedReturn = feedPath(params.get("from"));
+  const exitPath = existing
+    ? withFeedReturn(`/post/${id}`, feedReturn)
+    : feedReturn;
   const draftKey = `draft-${id || "new"}`;
   const [storedDraft] = useState(() =>
     readStored(
@@ -44,6 +55,7 @@ function PostEditor({ id }) {
   );
   const seed = storedDraft || existing;
   const draftEnabled = useRef(true);
+  const keepDraftButton = useRef(null);
   const [draftSaved, setDraftSaved] = useState(true);
   const [title, setTitle] = useState(seed?.title || "");
   const [caption, setCaption] = useState(seed?.caption || "");
@@ -58,6 +70,7 @@ function PostEditor({ id }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [cancel, setCancel] = useState(false);
+  const [draftExitError, setDraftExitError] = useState("");
   const labels = recordLabels(category);
   const image = imageKey ? sampleImage(imageKey) : customImage;
   const dirty =
@@ -100,8 +113,33 @@ function PostEditor({ id }) {
     customImage,
   ]);
   const clearDraft = () => {
-    draftEnabled.current = false;
-    writeStored(draftKey, null);
+    const cleared = writeStored(draftKey, null);
+    if (cleared) draftEnabled.current = false;
+    return cleared;
+  };
+  const keepDraftAndLeave = () => {
+    const saved = writeStored(draftKey, {
+      title,
+      caption,
+      reflection: { reason, question },
+      category,
+      hashtag: tags,
+      imageKey,
+      image_url: customImage,
+    });
+    setDraftSaved(saved);
+    if (saved) navigate(exitPath);
+    else
+      setDraftExitError(
+        "초안을 보관하지 못했어요. 계속 작성으로 돌아가 내용을 복사해 주세요.",
+      );
+  };
+  const discardDraftAndLeave = () => {
+    if (clearDraft()) navigate(exitPath);
+    else
+      setDraftExitError(
+        "초안을 지우지 못했어요. 브라우저 저장 설정을 확인한 뒤 다시 시도해 주세요.",
+      );
   };
   const submit = (e) => {
     e.preventDefault();
@@ -133,11 +171,11 @@ function PostEditor({ id }) {
         return;
       }
       clearDraft();
-      navigate(`/post/${id}`);
+      navigate(withFeedReturn(`/post/${id}`, feedReturn));
     } else {
       clearDraft();
       const newId = addPost(values);
-      navigate(`/post/${newId}`);
+      navigate(withFeedReturn(`/post/${newId}`, feedReturn));
     }
   };
   const upload = async (e) => {
@@ -195,7 +233,9 @@ function PostEditor({ id }) {
         <button
           className="back-link text-button"
           onClick={() =>
-            dirty ? setCancel(true) : navigate(existing ? `/post/${id}` : "/")
+            dirty
+              ? (setDraftExitError(""), setCancel(true))
+              : navigate(exitPath)
           }
         >
           <ArrowBackRounded />
@@ -228,7 +268,9 @@ function PostEditor({ id }) {
         )}
         {dirty && draftSaved && (
           <p className="draft-status" role="status">
-            초안을 이 브라우저에 저장했어요.
+            {storedDraft
+              ? "보관한 초안을 이어 쓰고 있어요. 변경 내용도 자동 보관됩니다."
+              : "초안을 이 브라우저에 자동 보관했어요."}
           </p>
         )}
         {error && (
@@ -440,19 +482,50 @@ function PostEditor({ id }) {
         open={cancel}
         onClose={() => setCancel(false)}
         aria-labelledby="discard-title"
+        slotProps={{
+          transition: { onEntered: () => keepDraftButton.current?.focus() },
+        }}
       >
-        <DialogTitle id="discard-title">작성 중인 기록을 닫을까요?</DialogTitle>
-        <DialogContent>아직 저장하지 않은 내용은 사라집니다.</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCancel(false)}>계속 작성</Button>
+        <DialogTitle id="discard-title">초안을 보관할까요?</DialogTitle>
+        <DialogContent sx={{ wordBreak: "keep-all", overflowWrap: "anywhere" }}>
+          <p>
+            {draftSaved
+              ? "내용은 이 브라우저에 자동 보관되어 있어요. 초안을 남겨두면 다음에 이어 쓸 수 있습니다."
+              : "지금은 초안이 저장되지 않았어요. 보관을 다시 시도하거나 계속 작성으로 돌아가 내용을 복사해 주세요."}
+          </p>
+          <p>
+            ‘초안 버리기’를 선택하면 작성 중인 내용과 첨부 이미지가 지워집니다.
+            {existing && " 이미 등록한 기록은 그대로 유지됩니다."}
+          </p>
+          {draftExitError && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {draftExitError}
+            </Alert>
+          )}
+        </DialogContent>
+        <DialogActions
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 1,
+            px: 3,
+            pb: 3,
+            "& > :not(style) ~ :not(style)": { ml: 0 },
+          }}
+        >
+          <Button color="error" onClick={discardDraftAndLeave}>
+            초안 버리기
+          </Button>
+          <Button variant="outlined" onClick={() => setCancel(false)}>
+            계속 작성
+          </Button>
           <Button
-            color="error"
-            onClick={() => {
-              clearDraft();
-              navigate(existing ? `/post/${id}` : "/");
-            }}
+            variant="contained"
+            ref={keepDraftButton}
+            sx={{ gridColumn: "1 / -1" }}
+            onClick={keepDraftAndLeave}
           >
-            닫기
+            초안 보관하고 나가기
           </Button>
         </DialogActions>
       </Dialog>

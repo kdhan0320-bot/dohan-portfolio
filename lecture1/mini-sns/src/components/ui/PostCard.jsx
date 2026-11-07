@@ -1,3 +1,4 @@
+import { feedPath, withFeedReturn } from "../../utils/feedLocation";
 import { recordLabels } from "../../utils/recordFormat";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +29,10 @@ import CommentModal from "./CommentModal";
 export default function PostCard({ post, openComments = false }) {
   const { toggleLike, toggleSave, deletePost, profile } = useDemoData();
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  const feedReturn = feedPath(
+    pathname === "/" ? `/${search}` : new URLSearchParams(search).get("from"),
+  );
   const [comments, setComments] = useState(openComments);
   const [image, setImage] = useState(false);
   const [menu, setMenu] = useState(null);
@@ -77,7 +81,7 @@ export default function PostCard({ post, openComments = false }) {
       </div>
       <div className="post-copy">
         <h2>
-          <Link to={`/post/${post.id}`}>
+          <Link to={withFeedReturn(`/post/${post.id}`, feedReturn)}>
             {post.title || "오늘의 작업 기록"}
           </Link>
         </h2>
@@ -196,7 +200,7 @@ export default function PostCard({ post, openComments = false }) {
         <MenuItem
           onClick={() => {
             setMenu(null);
-            navigate(`/edit/${post.id}`);
+            navigate(withFeedReturn(`/edit/${post.id}`, feedReturn));
           }}
         >
           기록 수정
@@ -230,7 +234,7 @@ export default function PostCard({ post, openComments = false }) {
             onClick={() => {
               setConfirm(false);
               deletePost(post.id);
-              if (pathname === `/post/${post.id}`) navigate("/");
+              if (pathname === `/post/${post.id}`) navigate(feedReturn);
             }}
           >
             삭제하기
