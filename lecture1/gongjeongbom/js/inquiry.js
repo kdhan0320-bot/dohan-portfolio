@@ -1,12 +1,12 @@
-import { updateContextLinks } from "./navigation.js?v=20261108b";
-import "./common.js?v=20261108b";
-import { getProducts } from "./data.js?v=20261108b";
+import { updateContextLinks } from "./navigation.js?v=20261108c";
+import "./common.js?v=20261108c";
+import { getProducts } from "./data.js?v=20261108c";
 import {
   getInquiryProducts,
   getCompareIds,
   hasInquiryProducts,
   setInquiryProducts,
-} from "./common.js?v=20261108b";
+} from "./common.js?v=20261108c";
 
 const form = document.querySelector("#inquiry-form");
 const steps = [...document.querySelectorAll(".form-step")];

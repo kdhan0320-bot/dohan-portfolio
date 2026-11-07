@@ -81,7 +81,7 @@ function monitor(page) {
     await page.getByRole('link',{name:'MV-X300 상세 보기',exact:true}).click();
     await page.getByRole('link',{name:'MV-X500 상세 보기',exact:true}).click();
     await page.reload(); assert(new URL(page.url()).searchParams.get('filters')===filters,'related detail retains filters');
-    await page.getByRole('link',{name:'← 검색 결과로 돌아가기',exact:true}).click();
+    await page.getByRole('link',{name:'검색 결과로 돌아가기',exact:true}).click();
     assert(page.url()===searchUrl,'related detail returns to exact search');
     await page.locator('[data-compare-id="mv-x300"]').click();
     await page.locator('[data-compare-id="mv-x500"]').click();
@@ -90,7 +90,7 @@ function monitor(page) {
     await page.getByRole('button',{name:'차이만 보기',exact:true}).click();
     await expect(page.locator('.compare-table tbody tr')).toHaveCount(6);
     await page.locator('.compare-selection a').first().click();
-    await page.reload(); await page.getByRole('link',{name:'← 비교로 돌아가기',exact:true}).click();
+    await page.reload(); await page.getByRole('link',{name:'비교로 돌아가기',exact:true}).click();
     await expect(page.locator('.compare-selection article')).toHaveCount(2);
     await page.locator('.compare-inquiry').click();
     const inquiryUrl=page.url();
@@ -115,7 +115,7 @@ function monitor(page) {
     const stored=await page.evaluate(key=>sessionStorage.getItem(key),key);
     assert(stored.includes('커넥터')&&stored.includes('두 위치'),'process and reason saved');
     for(const personal of ['비공개이름','비공개회사','private-contact@example.com','010-1234-5678']) assert(!stored.includes(personal),'contact excluded from draft: '+personal);
-    if(width<761){await page.locator('.menu-trigger').click();await page.locator('#menu-dialog').getByRole('link',{name:'제품 찾기 ↗',exact:true}).click();await expect(page.locator('.keep-and-leave')).toBeFocused();await page.keyboard.press('Escape');await expect(page.locator('.menu-trigger')).toBeFocused();}
+    if(width<761){await page.locator('.menu-trigger').click();await page.locator('#menu-dialog').getByRole('link',{name:'제품 찾기',exact:true}).click();await expect(page.locator('.keep-and-leave')).toBeFocused();await page.keyboard.press('Escape');await expect(page.locator('.menu-trigger')).toBeFocused();}
     await page.locator('.review-route a').first().click();
     await expect(page.locator('#leave-dialog')).toBeVisible(); await expect(page.locator('.keep-and-leave')).toBeFocused();
     await inspect(page,'leave-dialog',width); await capture(page,'leave-dialog',width);
@@ -196,7 +196,7 @@ function monitor(page) {
   await page.locator('#filter-dialog').getByRole('checkbox',{name:'데이터 출력',exact:true}).check();
   await page.locator('.apply-filter').click(); await expect(page.locator('.product-card')).toHaveCount(3);
   await page.reload(); await expect(page.locator('.product-card')).toHaveCount(3);
-  const normalize=await page.evaluate(async()=>{const {normalizeFilters}=await import('./js/navigation.js?v=20261108b');return normalizeFilters('type=__proto__&problem=bad&problem=assembly&problem=assembly&connection=data&connection=bad&q='+encodeURIComponent('<img onerror=alert(1)>')+'&next=https://example.com')});
+  const normalize=await page.evaluate(async()=>{const {normalizeFilters}=await import('./js/navigation.js?v=20261108c');return normalizeFilters('type=__proto__&problem=bad&problem=assembly&problem=assembly&connection=data&connection=bad&q='+encodeURIComponent('<img onerror=alert(1)>')+'&next=https://example.com')});
   const normalized=new URLSearchParams(normalize);
   assert(!normalized.has('type') && !normalized.has('next') && normalized.getAll('problem').length===1 && normalized.get('q')==='<img onerror=alert(1)>','filter validation');
   const links=new Set();

@@ -1,4 +1,4 @@
-import "./common.js?v=20261108b";
+import "./common.js?v=20261108c";
 
 const field = document.querySelector(".inspection-field");
 const result = document.querySelector(".sample-result");

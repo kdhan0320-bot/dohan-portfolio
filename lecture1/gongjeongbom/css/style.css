@@ -72,7 +72,6 @@ main[id],main [id]{scroll-margin-top:100px}
 .hero__copy .button--primary{padding:15px 21px}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--primary)}
 .hero__path{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:36px;color:var(--muted);font-size:12px}
-.hero__path i{font-style:normal;color:#a4b0a5}
 .inspection-demo{overflow:hidden;border-radius:16px;background:var(--dark);color:white;box-shadow:0 16px 40px #173e3915}
 .inspection-demo__head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px 0;font-size:12px;letter-spacing:.08em;color:#c0d7d0}
 .demo-pill{border:1px solid #ffffff33;padding:3px 9px;border-radius:4px;font:12px/1.6 "Noto Sans KR",sans-serif;white-space:nowrap}
@@ -115,7 +114,6 @@ main[id],main [id]{scroll-margin-top:100px}
 .problem-card h3{font-size:21px;margin-bottom:8px}
 .problem-card p{font-size:13px;color:var(--muted);flex:1}
 .problem-card__link{display:flex;align-items:center;justify-content:space-between;margin-top:23px;padding-top:16px;border-top:1px solid var(--line);color:var(--primary);font-size:12px;font-weight:650}
-.problem-card__link b{font-size:20px;font-weight:400}
 .surface-graphic{position:relative;display:grid;place-items:center;border-radius:10px;background:#eef3ec}
 .surface-graphic span{width:76%;height:60px;border:1px solid #b7c7b7;border-radius:6px;background:linear-gradient(135deg,#d0dbd0,#f9fcf5 48%,#c2d1c3)}
 .surface-graphic i{position:absolute;top:25px;left:40%;width:46px;height:48px;border:1px dashed #aa5d24}
@@ -125,13 +123,12 @@ main[id],main [id]{scroll-margin-top:100px}
 .guide-intro>p:not(.eyebrow){margin-top:20px;color:var(--muted);font-size:14px}
 .guide-intro .text-link{margin-top:20px}
 .guide-list{border-top:1px solid var(--line)}
-.guide-row{display:grid;grid-template-columns:76px 1fr 18px;gap:22px;padding:24px 0;border-bottom:1px solid var(--line);align-items:center}
+.guide-row{display:grid;grid-template-columns:76px minmax(0,1fr);gap:22px;padding:24px 0;border-bottom:1px solid var(--line);align-items:center}
 .guide-row:hover h3{color:var(--primary)}
 .guide-row i{display:grid;place-items:center;width:76px;min-height:70px}
 .guide-row span{font-size:12px;color:var(--primary)}
 .guide-row h3{margin:3px 0 7px}
 .guide-row p{font-size:13px;color:var(--muted)}
-.guide-row>b{font-size:24px;font-weight:400;color:var(--primary)}
 .family-diagram{width:72px;height:52px}.model-diagram{width:100px;height:58px}
 .questions-section{background:white;border-top:1px solid var(--line)}
 .questions-layout{display:grid;grid-template-columns:.82fr 1.18fr;gap:90px}
@@ -394,7 +391,7 @@ code{overflow-wrap:anywhere}
   .problem-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.problem-card{padding:24px}
   .problem-card img,.surface-graphic{height:110px}
   .guide-layout,.questions-layout{gap:40px;grid-template-columns:.85fr 1.15fr}
-  .guide-row{gap:15px;grid-template-columns:60px 1fr 16px}.guide-row i{width:60px}
+  .guide-row{gap:15px;grid-template-columns:60px minmax(0,1fr)}.guide-row i{width:60px}
   .product-layout{grid-template-columns:190px minmax(0,1fr);gap:20px}.filter-panel{padding:18px}
   .product-card{padding:20px}.result-heading{align-items:start}.result-heading>a{white-space:normal}
   .product-hero__grid{gap:32px}.product-summary h2{font-size:20px}
@@ -422,7 +419,7 @@ code{overflow-wrap:anywhere}
   .surface-graphic span{height:45px}.surface-graphic i{top:17px;height:38px;width:32px}.surface-graphic i::before{inset:4px 13px}
   .guide-layout,.questions-layout{grid-template-columns:1fr;gap:26px}.guide-intro h2{font-size:28px}
   .guide-intro>p:not(.eyebrow){margin-top:14px;font-size:13px}.guide-intro .text-link{margin-top:10px}
-  .guide-row{grid-template-columns:62px 1fr 18px;padding:20px 0;gap:15px}.guide-row h3{font-size:19px}.guide-row p{font-size:12px}
+  .guide-row{grid-template-columns:62px minmax(0,1fr);padding:20px 0;gap:15px}.guide-row h3{font-size:19px}.guide-row p{font-size:12px}
   .questions-layout h2 br{display:none}.questions-list summary{font-size:14px}
   .questions-list details>p{font-size:13px;padding-right:0}
   .cta-band{padding:30px 0}.cta-band .container{display:block}.cta-band h2{font-size:24px}.cta-band .button{margin-top:22px}
@@ -531,7 +528,6 @@ body[data-page="product"] .section{padding-block:48px}
 .review-route a[aria-current="step"]>span{color:white;background:var(--primary);border-color:var(--primary);box-shadow:4px -4px 0 -2px var(--lime)}
 .review-route a:hover{text-decoration:underline;text-underline-offset:4px}
 .hero__path{gap:14px;font-size:13px;font-weight:600;padding-top:24px;border-top:1px solid #cfdbca;max-width:450px}
-.hero__path i{color:var(--primary)}
 .inspection-demo__head{font-size:12px}
 .sample-controls button{min-height:42px;font-size:13px}
 .field-label,.field-caption{font-size:12px;letter-spacing:0}
@@ -613,7 +609,7 @@ input:not([type="radio"],[type="checkbox"]),select,textarea{font-size:16px}
 @media(max-width:360px){
   .hero__copy h1{font-size:32px}.hero__copy .button-row{align-items:stretch;gap:6px}.hero__copy .button-row>a{justify-content:center;width:100%}
   .review-route a{flex-direction:column;align-items:flex-start;gap:4px;padding-block:12px}.review-route a>span{width:25px;height:22px}
-  .hero__path{gap:6px}.hero__path i{display:none}.hero__path span{flex:1;word-break:keep-all}
+  .hero__path{gap:6px}.hero__path span{flex:1;word-break:keep-all}
   .sample-result{padding-inline:16px}.sample-result__description{max-width:130px}
   .compare-selection--three strong{font-size:12px}.compare-selection--three article{padding:10px 6px}
 }

@@ -1,7 +1,7 @@
-import { updateContextLinks } from "./navigation.js?v=20261108b";
-import "./common.js?v=20261108b";
-import { getProducts, PRODUCT_TYPES } from "./data.js?v=20261108b";
-import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js?v=20261108b";
+import { updateContextLinks } from "./navigation.js?v=20261108c";
+import "./common.js?v=20261108c";
+import { getProducts, PRODUCT_TYPES } from "./data.js?v=20261108c";
+import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js?v=20261108c";
 
 const page = document.querySelector("#compare-page");
 let selected = getProducts(getCompareIds());
@@ -32,9 +32,9 @@ function render() {
   const enough = selected.length >= 2;
   const type = selected[0]?.type;
   const addHref = type ? `products.html?type=${type}` : "products.html";
-  const selection = selected.length ? `<div class="compare-selection ${selected.length === 3 ? "compare-selection--three" : ""}">${selected.map((product) => `<article><a href="product.html?id=${product.id}"><strong>${product.model}</strong><small>${PRODUCT_TYPES[product.type]} · 상세 보기 ↗</small></a><button class="text-button" type="button" data-remove-compare="${product.id}" aria-label="${product.model} 비교에서 제거">제거 ×</button></article>`).join("")}</div>` : "";
+  const selection = selected.length ? `<div class="compare-selection ${selected.length === 3 ? "compare-selection--three" : ""}">${selected.map((product) => `<article><a href="product.html?id=${product.id}"><strong>${product.model}</strong><small>${PRODUCT_TYPES[product.type]} · 상세 보기</small></a><button class="text-button" type="button" data-remove-compare="${product.id}" aria-label="${product.model} 비교에서 제거">제거 ×</button></article>`).join("")}</div>` : "";
   page.innerHTML = `
-    <section class="page-hero compare-hero"><div class="container"><a class="text-link context-return" href="products.html">← 검색 결과로 돌아가기</a>
+    <section class="page-hero compare-hero"><div class="container"><a class="text-link context-return" href="products.html">검색 결과로 돌아가기</a>
       <p class="eyebrow">제품 비교 / COMPARE</p><h1>${enough ? "차이를 보고, 선택을 좁히세요." : "함께 볼 제품을 골라주세요."}</h1>
       <p class="lead">${enough ? "연한 초록색 행은 선택한 제품의 값이 다른 항목입니다." : "같은 종류의 제품 2~3개를 나란히 비교할 수 있습니다."}</p>
       ${selected.length ? `<div class="compare-toolbar"><span class="product-type-pill">${PRODUCT_TYPES[type]} · ${selected.length}개 선택</span><div class="button-row">${enough ? `<button class="button button--secondary difference-toggle" type="button" aria-pressed="${differencesOnly}">차이만 보기</button>` : ""}<button class="text-button clear-compare" type="button">전체 비우기</button></div></div>` : ""}
@@ -44,9 +44,9 @@ function render() {
       ${enough ? `
         <p class="compare-key">${differencesOnly ? `서로 다른 항목 ${visibleRows().length}개를 보고 있습니다.` : "값이 다른 항목 · 제품의 우열을 뜻하지 않습니다."}</p>
         ${tableMarkup()}${mobileMarkup()}
-        <div class="compare-next"><div><h2>이 후보들로 공정 조건을 정리해볼까요?</h2><p>선택한 제품이 문의 양식에 자동으로 연결됩니다.</p></div><a class="button button--primary compare-inquiry" href="inquiry.html?products=${selected.map(({ id }) => id).join(",")}">선택 제품 문의 ↗</a></div>
-        <div class="button-row compare-back"><a class="text-link" href="${addHref}">← 같은 종류 제품 더 보기</a></div>
-      ` : `<div class="empty-state"><h2>${selected.length ? "비교할 제품을 하나 더 선택하세요." : "아직 담은 제품이 없습니다."}</h2><p>${selected.length ? "선택한 제품과 같은 종류의 모델을 추가하면 비교표가 나타납니다." : "제품 목록에서 ‘비교 추가’를 눌러 후보를 담아보세요."}</p><a class="button button--primary" href="${addHref}">${type ? PRODUCT_TYPES[type] + " 더 보기" : "제품 찾기"} ↗</a></div>`}
+        <div class="compare-next"><div><h2>이 후보들로 공정 조건을 정리해볼까요?</h2><p>선택한 제품이 문의 양식에 자동으로 연결됩니다.</p></div><a class="button button--primary compare-inquiry" href="inquiry.html?products=${selected.map(({ id }) => id).join(",")}">선택 제품 문의</a></div>
+        <div class="button-row compare-back"><a class="text-link" href="${addHref}">같은 종류 제품 더 보기</a></div>
+      ` : `<div class="empty-state"><h2>${selected.length ? "비교할 제품을 하나 더 선택하세요." : "아직 담은 제품이 없습니다."}</h2><p>${selected.length ? "선택한 제품과 같은 종류의 모델을 추가하면 비교표가 나타납니다." : "제품 목록에서 ‘비교 추가’를 눌러 후보를 담아보세요."}</p><a class="button button--primary" href="${addHref}">${type ? PRODUCT_TYPES[type] + " 더 보기" : "제품 찾기"}</a></div>`}
     </div></section>
     <section class="disclosure"><div class="container"><strong>가상 제품 비교</strong><span>구성 차이를 살펴보는 데모입니다. 실제 장비 선정에는 제조사 사양과 현장 조건 검토가 필요합니다.</span></div></section>`;
   updateContextLinks();

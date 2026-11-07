@@ -1,5 +1,5 @@
-import { updateContextLinks } from "./navigation.js?v=20261108b";
-import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js?v=20261108b";
+import { updateContextLinks } from "./navigation.js?v=20261108c";
+import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js?v=20261108c";
 
 const COMPARE_KEY = "gongjeongbom-compare";
 const INQUIRY_KEY = "gongjeongbom-inquiry-products";
@@ -21,7 +21,7 @@ function headerTemplate() {
     </nav>
     <div class="header-actions">
       <a class="button button--secondary compare-link" href="compare.html"${page === "compare" ? ' aria-current="page"' : ""}>비교 목록 <span class="compare-count" aria-label="선택 제품 수">0</span></a>
-      <a class="button button--primary header-inquiry" href="inquiry.html"${page === "inquiry" ? ' aria-current="page"' : ""}>기술 문의 ↗</a>
+      <a class="button button--primary header-inquiry" href="inquiry.html"${page === "inquiry" ? ' aria-current="page"' : ""}>기술 문의</a>
       <button class="button button--secondary menu-trigger" type="button" aria-haspopup="dialog" aria-controls="menu-dialog">메뉴</button>
     </div>
   </div>`;
@@ -40,12 +40,12 @@ function menuTemplate() {
     <div class="sheet-dialog__header"><a class="brand" href="index.html">${brandMarkup}</a><button class="button button--secondary dialog-close" type="button">닫기</button></div>
     <div class="sheet-dialog__body"><h2 id="menu-title">어디서 시작할까요?</h2><p>문제를 찾고, 제품을 비교하고, 문의를 정리하세요.</p>
       <nav class="mobile-nav" aria-label="전체 메뉴">
-        ${navLink("index.html#solutions", "문제로 찾기 ↗")}
-        ${navLink("products.html", "제품 찾기 ↗", ["products", "product"].includes(page))}
-        ${navLink("index.html#guide", "선택 가이드 ↗")}
-        ${navLink("compare.html", "비교 목록 ↗", page === "compare")}
-        ${navLink("inquiry.html", "기술 문의 ↗", page === "inquiry")}
-        ${navLink("notice.html", "작품 안내·출처 ↗", page === "notice")}
+        ${navLink("index.html#solutions", "문제로 찾기")}
+        ${navLink("products.html", "제품 찾기", ["products", "product"].includes(page))}
+        ${navLink("index.html#guide", "선택 가이드")}
+        ${navLink("compare.html", "비교 목록", page === "compare")}
+        ${navLink("inquiry.html", "기술 문의", page === "inquiry")}
+        ${navLink("notice.html", "작품 안내·출처", page === "notice")}
       </nav>
     </div><div class="dialog-footer">가상 제품을 사용하는 데모입니다.<br>입력한 문의는 실제 업체에 전송되지 않습니다.</div>
   </dialog>`;

@@ -1,5 +1,5 @@
-import { normalizeFilters, updateContextLinks } from "./navigation.js?v=20261108b";
-import "./common.js?v=20261108b";
+import { normalizeFilters, updateContextLinks } from "./navigation.js?v=20261108c";
+import "./common.js?v=20261108c";
 import {
   products,
   PRODUCT_TYPES,
@@ -8,7 +8,7 @@ import {
   familyDiagramMarkup,
   productHref,
   typeCounts,
-} from "./data.js?v=20261108b";
+} from "./data.js?v=20261108c";
 import {
   announce,
   clearCompare,
@@ -16,7 +16,7 @@ import {
   showToast,
   toggleCompare,
   updateCompareUi,
-} from "./common.js?v=20261108b";
+} from "./common.js?v=20261108c";
 
 const state = {
   query: "",
@@ -236,7 +236,7 @@ function render(mode = "replace") {
         <h3>어떤 제품이 맞을지 모르겠나요?</h3>
         <p>카메라 수보다 검사 위치, 공정 흐름, 앞으로 추가할 기능을 먼저 확인하세요.</p>
         <ul><li>한 곳인가요, 여러 곳인가요?</li><li>결과를 저장하거나 전송해야 하나요?</li><li>나중에 구성을 바꿀 가능성이 있나요?</li></ul>
-        <a class="text-link" href="index.html#guide">제품 종류 선택 가이드 →</a>
+        <a class="text-link" href="index.html#guide">제품 종류 선택 가이드</a>
       </article>`
     : '<div class="empty-state"><h3>조건에 맞는 제품이 없습니다.</h3><p>검색어나 필터를 줄여 다시 확인해 주세요.</p><button class="button button--secondary reset-filter reset-all" type="button">검색·필터 모두 초기화</button></div>';
   renderCompareBar();

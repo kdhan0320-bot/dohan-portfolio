@@ -1,4 +1,4 @@
-import { PRODUCT_TYPES, PROBLEM_LABELS } from "./data.js?v=20261108b";
+import { PRODUCT_TYPES, PROBLEM_LABELS } from "./data.js?v=20261108c";
 
 // Only known list filters travel between pages; URLs never become arbitrary return destinations.
 export function normalizeFilters(value = "") {

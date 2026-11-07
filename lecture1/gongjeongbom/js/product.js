@@ -1,5 +1,5 @@
-import { currentFilters, updateContextLinks, contextHref } from "./navigation.js?v=20261108b";
-import "./common.js?v=20261108b";
+import { currentFilters, updateContextLinks, contextHref } from "./navigation.js?v=20261108c";
+import "./common.js?v=20261108c";
 import {
   familyDiagramMarkup,
   getProduct,
@@ -7,8 +7,8 @@ import {
   products,
   PRODUCT_TYPES,
   productHref,
-} from "./data.js?v=20261108b";
-import { setInquiryProducts, showToast, toggleCompare, updateCompareUi } from "./common.js?v=20261108b";
+} from "./data.js?v=20261108c";
+import { setInquiryProducts, showToast, toggleCompare, updateCompareUi } from "./common.js?v=20261108c";
 
 const detailRoot = document.querySelector("#product-detail");
 const detailParams = new URLSearchParams(location.search);
@@ -63,7 +63,7 @@ function renderProduct(item) {
   document.title = `${item.model} 제품 상세 — 공정봄`;
   detailRoot.innerHTML = `
     <nav class="breadcrumb" aria-label="현재 위치"><div class="container"><a href="${listHref}">제품 목록</a><span aria-hidden="true">›</span><a href="products.html?type=${item.type}">${PRODUCT_TYPES[item.type]}</a><span aria-hidden="true">›</span><span aria-current="page" class="font-tech">${item.model}</span></div></nav>
-    <div class="container context-return"><a class="text-link" href="${detailParams.get("via") === "compare" ? contextHref("compare.html") : listHref}">← ${detailParams.get("via") === "compare" ? "비교로 돌아가기" : returnFilters ? "검색 결과로 돌아가기" : "제품 목록으로 돌아가기"}</a></div>
+    <div class="container context-return"><a class="text-link" href="${detailParams.get("via") === "compare" ? contextHref("compare.html") : listHref}">${detailParams.get("via") === "compare" ? "비교로 돌아가기" : returnFilters ? "검색 결과로 돌아가기" : "제품 목록으로 돌아가기"}</a></div>
     <section class="product-hero section" id="overview"><div class="container product-hero__grid">
 
       <div class="product-summary"><p class="product-type-pill">${PRODUCT_TYPES[item.type]}</p><h1 class="font-tech">${item.model}</h1><h2>${detail.title}</h2><p>${detail.summary}</p>
