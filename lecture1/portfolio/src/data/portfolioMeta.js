@@ -95,9 +95,12 @@ export const PROJECT_DETAIL_READY = {
       evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),
       evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '1568 / 1040', {
         original: 'detail/current/seolbigyeol-overview-2x.webp',
-        mobile: { src: 'detail/current/seolbigyeol-overview-2x.webp', aspectRatio: '2880 / 2160', label: '배정 대기 요청이 놓인 작업 현황 전체 화면' },
+        mobile: { src: 'detail/current/seolbigyeol-mobile-overview.png', aspectRatio: '390 / 1144', label: '모바일 보완 시안 · 배정 대기 요청이 놓인 작업 현황' },
       })),
       evidence('검토와 진행 중인 작업을 구분.', '검토 대기 보고는 조치 내용·재확인 결과와 검토 버튼을 함께 두고, 진행 중인 정비는 별도 영역에 배치했습니다.', '보고를 확인해야 하는 작업과 아직 정비 중인 작업을 구분하려는 설계입니다.'),
+      evidence('모바일에서는 같은 정보를 세로로 다시 배치했습니다.', '상태 요약을 2×2로 묶고, 배정 대기 카드와 처리 현황을 세로로 쌓아 한 손 스크롤로 읽도록 다시 그렸습니다.', 'PC 화면을 그대로 축소하지 않고, 모바일 폭(390px) 전용 화면을 Figma에서 별도로 구성했습니다.', media('detail/current/seolbigyeol-mobile-overview.png', '설비결 모바일 보완 시안 · 작업 현황', '390 / 1144', {
+        label: '모바일 보완 시안 · 작업 현황', frameWidth: 390,
+      })),
     ],
     { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
     {
