@@ -10,7 +10,7 @@ export default function Notifications() {
     <MainLayout>
       <div className="page-heading">
         <div>
-          <p className="eyebrow">A SMALL CONNECTION</p>
+          <p className="eyebrow">기록에 더해진 생각</p>
           <h1>내 작업에 닿은 이야기</h1>
           <p>
             {unreadCount
@@ -23,7 +23,7 @@ export default function Notifications() {
           startIcon={<DoneAllRounded />}
           disabled={!unreadCount}
           onClick={markAllRead}
-          sx={{ fontSize: 11, whiteSpace: "nowrap", px: 1 }}
+          sx={{ fontSize: 12, whiteSpace: "nowrap", px: 1 }}
         >
           모두 읽음
         </Button>

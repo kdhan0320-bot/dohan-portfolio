@@ -1,3 +1,4 @@
+import { recordLabels, validReflection } from "../utils/recordFormat";
 import { readStored, writeStored } from "../utils/storage";
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -37,7 +38,8 @@ function PostEditor({ id }) {
           "hashtag",
           "imageKey",
           "image_url",
-        ].every((key) => typeof value[key] === "string"),
+        ].every((key) => typeof value[key] === "string") &&
+        validReflection(value.reflection),
     ),
   );
   const seed = storedDraft || existing;
@@ -45,6 +47,8 @@ function PostEditor({ id }) {
   const [draftSaved, setDraftSaved] = useState(true);
   const [title, setTitle] = useState(seed?.title || "");
   const [caption, setCaption] = useState(seed?.caption || "");
+  const [reason, setReason] = useState(seed?.reflection?.reason || "");
+  const [question, setQuestion] = useState(seed?.reflection?.question || "");
   const [category, setCategory] = useState(seed?.category || "작업기록");
   const [tags, setTags] = useState(seed?.hashtag || "");
   const [imageKey, setImageKey] = useState(seed?.imageKey || "");
@@ -54,10 +58,13 @@ function PostEditor({ id }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [cancel, setCancel] = useState(false);
+  const labels = recordLabels(category);
   const image = imageKey ? sampleImage(imageKey) : customImage;
   const dirty =
     title !== (existing?.title || "") ||
     caption !== (existing?.caption || "") ||
+    reason !== (existing?.reflection?.reason || "") ||
+    question !== (existing?.reflection?.question || "") ||
     tags !== (existing?.hashtag || "") ||
     category !== (existing?.category || "작업기록") ||
     imageKey !== (existing?.imageKey || "") ||
@@ -71,6 +78,7 @@ function PostEditor({ id }) {
           ? {
               title,
               caption,
+              reflection: { reason, question },
               category,
               hashtag: tags,
               imageKey,
@@ -79,7 +87,18 @@ function PostEditor({ id }) {
           : null,
       ),
     );
-  }, [draftKey, dirty, title, caption, category, tags, imageKey, customImage]);
+  }, [
+    draftKey,
+    dirty,
+    title,
+    caption,
+    reason,
+    question,
+    category,
+    tags,
+    imageKey,
+    customImage,
+  ]);
   const clearDraft = () => {
     draftEnabled.current = false;
     writeStored(draftKey, null);
@@ -87,12 +106,13 @@ function PostEditor({ id }) {
   const submit = (e) => {
     e.preventDefault();
     if (!title.trim() || !caption.trim()) {
-      setError("제목과 작업 이야기를 모두 적어주세요.");
+      setError("제목과 첫 번째 기록을 적어주세요.");
       return;
     }
     const values = {
       title: title.trim(),
       caption: caption.trim(),
+      reflection: { reason: reason.trim(), question: question.trim() },
       category,
       hashtag: [
         ...new Set(
@@ -183,7 +203,23 @@ function PostEditor({ id }) {
         </button>
         <h1>{existing ? "기록 다듬기" : "오늘의 작은 기록"}</h1>
       </div>
-      <form className="form-panel" onSubmit={submit}>
+      <div className="record-intro">
+        <p className="eyebrow">나의 시도 + 너의 생각</p>
+        <h2>한 줄에서 시작하는, 기록 한 장.</h2>
+        <p>시도한 것 하나면 충분해요. 이유와 질문은 천천히 덧붙여도 좋아요.</p>
+        <ol className="record-map">
+          <li>
+            <b>01</b> 시도
+          </li>
+          <li>
+            <b>02</b> 이유
+          </li>
+          <li>
+            <b>03</b> 대화
+          </li>
+        </ol>
+      </div>
+      <form className="form-panel record-editor" onSubmit={submit}>
         {!draftSaved && (
           <Alert severity="warning" sx={{ mb: 3 }}>
             초안을 저장하지 못했어요. 작성한 내용을 복사해 보관하거나 이미지
@@ -233,31 +269,86 @@ function PostEditor({ id }) {
             value={title}
             maxLength={60}
             required
+            aria-describedby="title-help"
             onChange={(e) => setTitle(e.target.value)}
           />
-          <div className="field-helper">
+          <div className="field-helper" id="title-help">
             <span>작은 변화 하나도 좋아요.</span>
             <span>{title.length} / 60</span>
           </div>
         </div>
-        <div className="form-field">
-          <label className="field-label" htmlFor="post-caption">
-            작업 이야기
-          </label>
-          <textarea
-            id="post-caption"
-            className="form-input textarea"
-            placeholder="무엇을 만들었나요? 왜 바꿨나요? 다음에는 어떤 걸 해볼까요?"
-            value={caption}
-            maxLength={1200}
-            required
-            onChange={(e) => setCaption(e.target.value)}
-          />
-          <div className="field-helper">
-            <span>
-              과정과 생각을 함께 나누면 더 좋은 피드백을 받을 수 있어요.
+        <div className="record-fields">
+          <div className="form-field record-field attempt">
+            <span className="step-index" aria-hidden="true">
+              01
             </span>
-            <span>{caption.length} / 1200</span>
+            <label className="field-label" htmlFor="post-caption">
+              {labels.attempt}
+              <span aria-hidden="true">필수</span>
+            </label>
+            <textarea
+              id="post-caption"
+              className="form-input textarea"
+              placeholder={
+                category === "작업기록"
+                  ? "예: 여행 카드의 저장 버튼을 이미지 아래로 옮겼어요."
+                  : "함께 나누고 싶은 이야기를 적어주세요."
+              }
+              value={caption}
+              maxLength={1200}
+              required
+              aria-describedby="attempt-help"
+              onChange={(e) => setCaption(e.target.value)}
+            />
+            <div className="field-helper" id="attempt-help">
+              <span>완성한 결과보다 오늘 해본 것 하나.</span>
+              <span>{caption.length} / 1200</span>
+            </div>
+          </div>
+          <div className="form-field record-field reason">
+            <span className="step-index" aria-hidden="true">
+              02
+            </span>
+            <label className="field-label" htmlFor="post-reason">
+              {labels.reason}
+              <span aria-hidden="true">선택</span>
+            </label>
+            <textarea
+              id="post-reason"
+              className="form-input"
+              rows={3}
+              placeholder="예: 사진 위의 버튼은 배경에 묻혀 찾기 어렵다고 느꼈어요."
+              value={reason}
+              maxLength={400}
+              aria-describedby="reason-help"
+              onChange={(e) => setReason(e.target.value)}
+            />
+            <div className="field-helper" id="reason-help">
+              <span>어떤 고민이 이 선택으로 이어졌나요?</span>
+              <span>{reason.length} / 400</span>
+            </div>
+          </div>
+          <div className="form-field record-field question">
+            <span className="step-index" aria-hidden="true">
+              03
+            </span>
+            <label className="field-label" htmlFor="post-question">
+              의견이 필요한 부분<span aria-hidden="true">선택</span>
+            </label>
+            <textarea
+              id="post-question"
+              className="form-input"
+              rows={3}
+              placeholder="예: 버튼의 위치와 크기가 자연스러운가요?"
+              value={question}
+              maxLength={240}
+              aria-describedby="question-help"
+              onChange={(e) => setQuestion(e.target.value)}
+            />
+            <div className="field-helper" id="question-help">
+              <span>이 질문은 기록과 댓글 창에 함께 보여요.</span>
+              <span>{question.length} / 240</span>
+            </div>
           </div>
         </div>
         <div className="form-field">

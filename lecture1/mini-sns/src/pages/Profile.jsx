@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import MainLayout from "../components/layout/MainLayout";
+import ActivityTabs from "../components/ui/ActivityTabs";
 import PostCard from "../components/ui/PostCard";
 import { useDemoData } from "../hooks/useDemoData";
 import { useAuth } from "../hooks/useAuth";
@@ -32,7 +33,17 @@ export default function Profile() {
     <MainLayout>
       <section className="profile-panel">
         <div className="profile-cover">
-          <span>MY LITTLE WORKSPACE</span>
+          <span>나의 기록 묶음</span>
+          <strong>
+            기록은 쌓이고,
+            <br />
+            생각은 자랍니다.
+          </strong>
+          <div className="cover-sheets" aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </div>
         </div>
         <div className="profile-identity">
           <Avatar src={profile.profile_image_url} />
@@ -67,76 +78,68 @@ export default function Profile() {
           ))}
         </div>
       </section>
-      <div
-        className="filter-tabs profile-tabs"
-        role="tablist"
-        aria-label="내 활동"
+      <ActivityTabs
+        id="profile"
+        label="내 활동"
+        items={["내 기록", "저장한 기록", "참여 모임"]}
+        value={tab}
+        onChange={setTab}
+        className="profile-tabs"
       >
-        {["내 기록", "저장한 기록", "참여 모임"].map((t) => (
-          <button
-            role="tab"
-            aria-selected={t === tab}
-            className={t === tab ? "selected" : ""}
-            key={t}
-            onClick={() => setTab(t)}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-      {tab === "참여 모임" ? (
-        <div className="meetup-list">
-          {joined.map((m) => (
-            <Link
-              key={m.id}
-              to={`/chat/${m.id}`}
-              className="meetup-card mini-meetup"
-            >
-              <span className={`group-symbol ${m.color}`}>{m.letter}</span>
-              <div>
-                <strong>{m.name}</strong>
-                <span>
-                  {m.current} / {m.capacity}명 · 대화 이어가기 →
-                </span>
-              </div>
-            </Link>
-          ))}
-          {!joined.length && (
-            <div className="empty-state">
-              <h2>아직 함께하는 모임이 없어요</h2>
-              <Link to="/meetup" className="button secondary">
-                모임 찾아보기
-              </Link>
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="profile-post-list">
-          {list.map((p) => (
-            <PostCard key={p.id} post={p} />
-          ))}
-          {!list.length && (
-            <div className="empty-state">
-              <h2>
-                {tab === "내 기록"
-                  ? "나의 첫 기록을 남겨보세요"
-                  : "다시 보고 싶은 기록을 모아보세요"}
-              </h2>
-              <p>
-                {tab === "내 기록"
-                  ? "오늘의 작은 시도로 충분해요."
-                  : "피드에서 북마크를 누르면 여기에 모입니다."}
-              </p>
+        {tab === "참여 모임" ? (
+          <div className="meetup-list">
+            {joined.map((m) => (
               <Link
-                to={tab === "내 기록" ? "/create" : "/"}
-                className="button secondary"
+                key={m.id}
+                to={`/chat/${m.id}`}
+                className="meetup-card mini-meetup"
               >
-                {tab === "내 기록" ? "기록 남기기" : "피드 둘러보기"}
+                <span className={`group-symbol ${m.color}`}>{m.letter}</span>
+                <div>
+                  <strong>{m.name}</strong>
+                  <span>
+                    {m.current} / {m.capacity}명 · 대화 이어가기 →
+                  </span>
+                </div>
               </Link>
-            </div>
-          )}
-        </div>
-      )}
+            ))}
+            {!joined.length && (
+              <div className="empty-state">
+                <h2>아직 함께하는 모임이 없어요</h2>
+                <Link to="/meetup" className="button secondary">
+                  모임 찾아보기
+                </Link>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="profile-post-list">
+            {list.map((p) => (
+              <PostCard key={p.id} post={p} />
+            ))}
+            {!list.length && (
+              <div className="empty-state">
+                <h2>
+                  {tab === "내 기록"
+                    ? "나의 첫 기록을 남겨보세요"
+                    : "다시 보고 싶은 기록을 모아보세요"}
+                </h2>
+                <p>
+                  {tab === "내 기록"
+                    ? "오늘의 작은 시도로 충분해요."
+                    : "피드에서 북마크를 누르면 여기에 모입니다."}
+                </p>
+                <Link
+                  to={tab === "내 기록" ? "/create" : "/"}
+                  className="button secondary"
+                >
+                  {tab === "내 기록" ? "기록 남기기" : "피드 둘러보기"}
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
+      </ActivityTabs>
       <div className="profile-footer">
         <Button startIcon={<LogoutRounded />} onClick={() => setExit(true)}>
           시작 화면으로

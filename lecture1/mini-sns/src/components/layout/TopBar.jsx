@@ -16,7 +16,7 @@ export default function TopBar() {
             mini<span className="brand-sns">SNS</span>
           </span>
         </Link>
-        <span className="brand-tagline">작업을 나누고, 함께 자라는 곳</span>
+        <span className="brand-tagline">시도는 기록으로, 기록은 대화로</span>
         <div className="topbar-actions">
           <span className="demo-pill">체험 공간</span>
           <IconButton component={Link} to="/notifications" aria-label="알림">

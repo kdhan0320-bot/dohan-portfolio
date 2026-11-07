@@ -1,3 +1,4 @@
+import { recordLabels } from "../../utils/recordFormat";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -32,6 +33,7 @@ export default function PostCard({ post, openComments = false }) {
   const [image, setImage] = useState(false);
   const [menu, setMenu] = useState(null);
   const [confirm, setConfirm] = useState(false);
+  const labels = recordLabels(post.category);
   const own = post.user_id === DEMO_USER.id;
   return (
     <article
@@ -39,6 +41,12 @@ export default function PostCard({ post, openComments = false }) {
       aria-label={post.title || "작업 기록"}
       data-post-id={post.id}
     >
+      <div className="record-edge" aria-hidden="true">
+        <span>기록 한 장</span>
+        <i />
+        <i />
+        <i />
+      </div>
       <div className="post-header">
         <Avatar
           src={post.profiles.profile_image_url}
@@ -73,7 +81,32 @@ export default function PostCard({ post, openComments = false }) {
             {post.title || "오늘의 작업 기록"}
           </Link>
         </h2>
-        <p>{post.caption}</p>
+        <div className="record-attempt">
+          <span className="step-index" aria-hidden="true">
+            01
+          </span>
+          <div>
+            <h3>{labels.attempt}</h3>
+            <p>{post.caption}</p>
+          </div>
+        </div>
+        {post.reflection?.reason && (
+          <details
+            className="record-reason"
+            open={pathname === `/post/${post.id}` ? true : undefined}
+          >
+            <summary>
+              <span className="step-index" aria-hidden="true">
+                02
+              </span>
+              <span>{labels.reason}</span>
+              <span className="disclosure-hint" aria-hidden="true">
+                +
+              </span>
+            </summary>
+            <p>{post.reflection.reason}</p>
+          </details>
+        )}
         {post.hashtag && (
           <div className="hashtags">
             {post.hashtag
@@ -99,6 +132,20 @@ export default function PostCard({ post, openComments = false }) {
           />
           <span>크게 보기 ↗</span>
         </button>
+      )}
+      {post.reflection?.question && (
+        <section className="record-question" aria-label="이 기록의 질문">
+          <div className="record-question-label">
+            <span className="step-index" aria-hidden="true">
+              03
+            </span>
+            <h3>의견을 기다려요</h3>
+          </div>
+          <p>{post.reflection.question}</p>
+          <button className="question-reply" onClick={() => setComments(true)}>
+            의견 보태기 <ArrowForwardRounded fontSize="small" />
+          </button>
+        </section>
       )}
       {post.meetupId && (
         <Link className="post-group-link" to={`/meetup?group=${post.meetupId}`}>
@@ -215,6 +262,7 @@ export default function PostCard({ post, openComments = false }) {
         onClose={() => setComments(false)}
         postId={post.id}
         comments={post.comments}
+        feedbackQuestion={post.reflection?.question}
       />
     </article>
   );

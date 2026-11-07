@@ -1,3 +1,4 @@
+import { enrichSampleRecords } from "./recordFormat.js";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readStored, writeStored, STORAGE_PREFIX } from "./storage.js";
@@ -85,4 +86,43 @@ test("정상 저장은 지정된 작품 키만 사용한다", () => {
   assert.deepEqual(writes, [
     [STORAGE_PREFIX + "draft-new", '{"title":"초안"}'],
   ]);
+});
+
+test("이전 기록과 새 기록 형식을 모두 복원하되 잘못된 세부 필드는 거른다", () => {
+  const state = data();
+  assert.equal(validCommunityData(state), true);
+  state.posts[0].reflection = {
+    reason: "선택의 이유",
+    question: "어떻게 보이나요?",
+  };
+  assert.equal(validCommunityData(state), true);
+  state.posts[0].reflection.question = null;
+  assert.equal(validCommunityData(state), false);
+});
+
+test("예시 보강은 수정한 기록·반응·삭제 상태를 보존한다", () => {
+  const base = data().posts[0];
+  const seed = { ...base, reflection: { reason: "이유", question: "질문" } };
+  const state = {
+    ...data(),
+    posts: [{ ...base, liked: true, likes_count: 4 }],
+  };
+  const upgraded = enrichSampleRecords(state, [seed]);
+  assert.deepEqual(upgraded.posts[0].reflection, seed.reflection);
+  assert.equal(upgraded.posts[0].likes_count, 4);
+  assert.equal(upgraded.posts[0].liked, true);
+  const edited = { ...base, caption: "내가 바꾼 글" };
+  assert.equal(
+    enrichSampleRecords({ ...state, posts: [edited] }, [seed]).posts[0],
+    edited,
+  );
+  const cleared = { ...base, reflection: { reason: "", question: "" } };
+  assert.equal(
+    enrichSampleRecords({ ...state, posts: [cleared] }, [seed]).posts[0],
+    cleared,
+  );
+  assert.deepEqual(
+    enrichSampleRecords({ ...state, posts: [] }, [seed]).posts,
+    [],
+  );
 });

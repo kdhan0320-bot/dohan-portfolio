@@ -19,22 +19,21 @@ export default function Login() {
             mini<span className="brand-sns">SNS</span>
           </span>
         </span>
-        <span>SMALL STEPS, SHARED.</span>
+        <span>한 장씩, 함께 쌓는 작업실</span>
       </header>
       <main className="login-layout">
         <div className="login-copy">
-          <p className="eyebrow">A LITTLE WORK. A LITTLE CONNECTION.</p>
+          <p className="eyebrow">나의 시도 + 너의 생각</p>
           <h1>
-            작은 기록이 모여,
+            작은 시도를 적고,
             <br />
-            <em>다음 작업의 영감.</em>
+            <em>다음 생각을 만나요.</em>
           </h1>
           <p>
-            만드는 사람들의 작은 작업실.
+            완성하지 못한 작업도 괜찮아요.
             <br />
-            오늘의 시도를 나누고, 함께할 모임을 만나고,
-            <br />
-            서로의 과정에서 한 걸음 더 나아가요.
+            시도한 것, 바꾼 이유, 아직 풀리지 않은 질문.
+            <br />한 장의 기록에서 서로의 작업을 이어가요.
           </p>
           <button
             className="button primary"
@@ -51,17 +50,51 @@ export default function Login() {
           </p>
         </div>
         <div className="login-art">
-          <img
-            src={SAMPLE_ART[0].src}
-            alt="여행 앱의 탐색 화면을 정리한 샘플 작업"
-          />
-          <div className="login-art-caption">
-            <Avatar src={DEMO_USER.profile_image_url} />
-            <div>
-              <strong>완성 전의 생각도, 좋은 기록이니까.</strong>
-              <p>오늘 바꾼 것 하나, 그 이유 한 줄부터.</p>
+          <div className="landing-sheet">
+            <div className="sheet-heading">
+              <span>작업 기록 / 001</span>
+              <span className="sheet-stamp">완성 전도 좋아요</span>
+            </div>
+            <h2>
+              버튼 하나를 옮겼어요.
+              <br />그 이유도 남겼어요.
+            </h2>
+            <img
+              src={SAMPLE_ART[0].src}
+              alt="여행 앱의 탐색 화면을 정리한 샘플 작업"
+            />
+            <div className="landing-record-row">
+              <b className="step-index">01</b>
+              <div>
+                <strong>시도</strong>
+                <p>저장 버튼을 사진 아래로.</p>
+              </div>
+            </div>
+            <div className="landing-record-row">
+              <b className="step-index reason">02</b>
+              <div>
+                <strong>이유</strong>
+                <p>풍경에 묻히지 않도록.</p>
+              </div>
+            </div>
+            <div className="landing-question">
+              <b className="step-index question">03</b>
+              <div>
+                <strong>너의 생각은?</strong>
+                <p>이 위치, 한 손으로 누르기 편할까요?</p>
+              </div>
             </div>
           </div>
+          <div className="landing-reply">
+            <Avatar src={DEMO_USER.profile_image_url} />
+            <p>
+              <strong>기록에 다른 시선을 더해요.</strong>
+              <span>생각을 나누면, 다음 시도가 시작되니까.</span>
+            </p>
+          </div>
+          <p className="sample-caption">
+            미니 SNS의 기록 형식을 보여주는 예시입니다.
+          </p>
         </div>
       </main>
       <p className="login-footnote">

@@ -1,3 +1,4 @@
+import { validReflection } from "./recordFormat.js";
 const categories = ["작업기록", "질문", "스터디"];
 const profileIsValid = (p) =>
   p &&
@@ -17,6 +18,7 @@ const postIsValid = (p) =>
   typeof p.title === "string" &&
   typeof p.caption === "string" &&
   categories.includes(p.category) &&
+  validReflection(p.reflection) &&
   profileIsValid(p.profiles) &&
   typeof p.created_at === "string" &&
   Number.isFinite(p.likes_count) &&

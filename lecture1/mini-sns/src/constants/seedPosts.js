@@ -14,6 +14,12 @@ export const buildInitialPosts = () => {
   return [
     {
       id: "guest-1",
+      reflection: {
+        reason:
+          "처음 화면에 목적지가 한꺼번에 보여 선택이 어려웠어요. 추천 수를 줄이고, 장소 이름과 저장 행동을 가까이 묶었습니다.",
+        question:
+          "저장 버튼이 충분히 눈에 들어오나요? 위치와 크기에 대한 의견이 궁금해요.",
+      },
       user_id: DEMO_USER.id,
       profiles: DEMO_USER,
       title: "여행의 시작은, 조금 더 가볍게",
@@ -39,6 +45,12 @@ export const buildInitialPosts = () => {
     },
     {
       id: "guest-2",
+      reflection: {
+        reason:
+          "혼자 보면 익숙해서 지나치는 부분이 많아요. 같은 화면을 서로 다른 시선으로 읽어보고 싶었습니다.",
+        question:
+          "평소 쓰면서 편했던 앱 화면이 있나요? 첫 모임에서 함께 살펴봐요.",
+      },
       user_id: "seoyeon",
       profiles: {
         nickname: "서연",
@@ -61,6 +73,12 @@ export const buildInitialPosts = () => {
     },
     {
       id: "guest-3",
+      reflection: {
+        reason:
+          "대화가 길어질수록 입력창까지 함께 밀려났어요. 읽는 영역과 쓰는 영역을 나눠 대화를 이어가기 쉽게 했습니다.",
+        question:
+          "입력 중인 메시지가 길어지면, 입력창을 몇 줄까지 늘리는 게 편할까요?",
+      },
       user_id: "minjun",
       profiles: {
         nickname: "민준",
@@ -89,6 +107,12 @@ export const buildInitialPosts = () => {
     },
     {
       id: "guest-4",
+      reflection: {
+        reason:
+          "식물의 생기와 종이의 편안함을 함께 담고 싶었어요. 선명한 초록 대신 깊은 녹색과 따뜻한 바탕을 골랐습니다.",
+        question:
+          "작은 가격표에도 이 분위기가 남을까요? 글자와 여백의 균형이 고민이에요.",
+      },
       user_id: "yujin",
       profiles: {
         nickname: "유진",
@@ -112,6 +136,12 @@ export const buildInitialPosts = () => {
     },
     {
       id: "guest-5",
+      reflection: {
+        reason:
+          "완성 화면만 모으니 당시의 판단을 설명하기 어려웠어요. 다음 작업에서 다시 꺼내 쓸 수 있는 기록을 찾고 있습니다.",
+        question:
+          "여러분은 작업 중 무엇을 꼭 남기나요? 부담 없이 이어가는 방법을 나눠주세요.",
+      },
       user_id: "jiwoo",
       profiles: {
         nickname: "지우",

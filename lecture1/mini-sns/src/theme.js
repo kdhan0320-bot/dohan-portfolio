@@ -2,8 +2,8 @@ import { createTheme } from "@mui/material/styles";
 export default createTheme({
   palette: {
     primary: { main: "#505EC2", dark: "#3B469C", light: "#EAEDFA" },
-    background: { default: "#F7F8FA", paper: "#FFFFFF" },
-    text: { primary: "#242A38", secondary: "#717887" },
+    background: { default: "#F6F5F1", paper: "#FFFFFF" },
+    text: { primary: "#242A38", secondary: "#566273" },
     divider: "#E9EBF0",
     error: { main: "#B64D5A" },
     success: { main: "#417357" },
@@ -23,7 +23,7 @@ export default createTheme({
       },
     },
     MuiIconButton: {
-      styleOverrides: { root: { minWidth: 40, minHeight: 40 } },
+      styleOverrides: { root: { minWidth: 44, minHeight: 44 } },
     },
     MuiDialog: {
       defaultProps: { fullWidth: true, maxWidth: "sm" },
@@ -33,7 +33,13 @@ export default createTheme({
       defaultProps: { variant: "outlined" },
       styleOverrides: {
         root: {
-          "& .MuiOutlinedInput-root": { borderRadius: 10, background: "#fff" },
+          "& .MuiOutlinedInput-root": { borderRadius: 8, background: "#fff" },
+          "& .MuiOutlinedInput-notchedOutline": { borderColor: "#778295" },
+          "& .MuiFormHelperText-root": { fontSize: 12, color: "#566273" },
+          "& input::placeholder, & textarea::placeholder": {
+            color: "#596477",
+            opacity: 1,
+          },
         },
       },
     },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Alert,
@@ -19,6 +19,10 @@ export default function MainLayout({ children, wide = false, chat = false }) {
   const { profile, meetups, storageError, notice, setNotice } = useDemoData();
   const [about, setAbout] = useState(false);
   const { pathname } = useLocation();
+  const main = useRef(null);
+  useEffect(() => {
+    main.current?.focus({ preventScroll: true });
+  }, [pathname]);
   return (
     <div className="app">
       <a
@@ -53,6 +57,8 @@ export default function MainLayout({ children, wide = false, chat = false }) {
         </aside>
         <main
           id="main-content"
+          ref={main}
+          data-route={pathname}
           tabIndex={-1}
           className={`main-content ${chat ? "chat-main" : ""}`}
           key={pathname}
@@ -75,21 +81,34 @@ export default function MainLayout({ children, wide = false, chat = false }) {
         {!wide && (
           <aside className="right-rail">
             <section className="daily-note">
-              <span className="eyebrow">A LITTLE EVERY DAY</span>
-              <span className="note-orbit" aria-hidden="true">
-                ✳
-              </span>
+              <span className="eyebrow">한 장의 기록, 세 가지 시선</span>
               <h2>
-                완성 전의 생각도
+                오늘의 시도에
                 <br />
-                좋은 기록이니까.
+                다른 생각을 더해요.
               </h2>
-              <p>
-                오늘 바꾼 것 하나,
-                <br />그 이유 한 줄을 남겨보세요.
-              </p>
+              <ol className="stacked-notes">
+                <li>
+                  <b>01</b>
+                  <span>
+                    시도<small>오늘 해본 것 하나</small>
+                  </span>
+                </li>
+                <li>
+                  <b>02</b>
+                  <span>
+                    이유<small>그 선택을 한 까닭</small>
+                  </span>
+                </li>
+                <li>
+                  <b>03</b>
+                  <span>
+                    대화<small>아직 궁금한 것</small>
+                  </span>
+                </li>
+              </ol>
               <Link to="/create">
-                작은 기록 시작하기 <ArrowOutwardRounded fontSize="small" />
+                나의 한 장 남기기 <ArrowOutwardRounded fontSize="small" />
               </Link>
             </section>
             <section className="rail-section">

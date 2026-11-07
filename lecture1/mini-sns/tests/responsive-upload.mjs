@@ -18,6 +18,7 @@ const context = await browser.newContext({
   reducedMotion: "reduce",
 });
 const page = await context.newPage();
+page.setDefaultTimeout(10000);
 const errors = [];
 const checks = [];
 page.on("pageerror", (e) => errors.push(e.message));
@@ -26,7 +27,10 @@ page.on("console", (m) => {
 });
 const go = async (route) => {
   await page.goto(`${base}#${route}`);
-  await expect(page.locator("main")).toBeVisible();
+  await expect(page.locator("main")).toHaveAttribute(
+    "data-route",
+    route.split("?")[0],
+  );
   await page.evaluate(() => document.fonts.ready);
 };
 const checkLayout = async (label, width) => {
@@ -67,9 +71,9 @@ try {
     page.getByRole("button", { name: "작업실 둘러보기" }),
   ).toBeVisible();
   await page.screenshot({ path: `${output}/login-desktop.png` });
-  const uploadPng = await page.locator(".login-art > img").screenshot();
+  const uploadPng = await page.locator(".landing-sheet > img").screenshot();
   const uploadJpg = await page
-    .locator(".login-art > img")
+    .locator(".landing-sheet > img")
     .screenshot({ type: "jpeg", quality: 80 });
   const uploadWebp = Buffer.from(
     await page.evaluate(async (png) => {
@@ -97,7 +101,7 @@ try {
   await go("/create");
   await page.getByLabel("제목", { exact: true }).fill("이미지 첨부 검수");
   await page
-    .getByLabel("작업 이야기", { exact: true })
+    .locator("#post-caption")
     .fill("실제 파일 첨부와 새로고침 후 복원을 확인하는 임시 기록입니다.");
   const input = page.getByLabel("내 이미지 첨부", { exact: true });
   await input.setInputFiles({

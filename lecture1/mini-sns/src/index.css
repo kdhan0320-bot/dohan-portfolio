@@ -2,7 +2,7 @@
 :root {
   font-family: "Pretendard", "Noto Sans KR", sans-serif;
   color: #242a38;
-  background: #f7f8fa;
+  background: #f6f5f1;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -44,7 +44,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #9ba6f0;
+  outline: 3px solid #35438d;
   outline-offset: 3px;
 }
 p,
@@ -116,7 +116,7 @@ textarea {
   font-weight: 600;
   letter-spacing: 0.6px;
   margin-left: 5px;
-  color: #7b8091;
+  color: #566273;
 }
 .brand-mark {
   width: 31px;
@@ -143,7 +143,7 @@ textarea {
 }
 .brand-tagline {
   font-size: 12px;
-  color: #7c8190;
+  color: #566273;
   border-left: 1px solid #e4e6eb;
   padding-left: 26px;
   margin-left: 24px;
@@ -155,11 +155,11 @@ textarea {
   gap: 14px;
 }
 .demo-pill {
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid #e4e7ef;
   border-radius: 6px;
   padding: 5px 8px;
-  color: #737b8b;
+  color: #566273;
 }
 .app-grid {
   max-width: 1232px;
@@ -191,7 +191,7 @@ textarea {
   gap: 14px;
   padding: 13px 16px;
   border-radius: 10px;
-  color: #747b8a;
+  color: #566273;
   font-size: 15px;
   font-weight: 500;
   min-height: 48px;
@@ -257,8 +257,8 @@ textarea {
 }
 .rail-profile span {
   display: block;
-  font-size: 11px;
-  color: #858a98;
+  font-size: 12px;
+  color: #566273;
   margin-top: 4px;
 }
 .text-button {
@@ -268,13 +268,13 @@ textarea {
   background: none;
   border: 0;
   padding: 6px 0;
-  color: #72798b;
+  color: #566273;
   font-size: 12px;
 }
 .rail-bottom small {
   display: block;
-  font-size: 10px;
-  color: #969ba8;
+  font-size: 12px;
+  color: #566273;
   margin-top: 10px;
 }
 .main-content {
@@ -285,8 +285,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #89909e;
-  font-size: 11px;
+  color: #566273;
+  font-size: 12px;
   min-height: 20px;
   margin-bottom: 17px;
 }
@@ -300,11 +300,11 @@ textarea {
 .demo-note button {
   background: none;
   border: 0;
-  color: #737c91;
+  color: #566273;
   padding: 0 3px;
   text-decoration: underline;
   text-underline-offset: 3px;
-  font-size: 11px;
+  font-size: 12px;
 }
 .page-heading {
   display: flex;
@@ -315,9 +315,9 @@ textarea {
 }
 .eyebrow {
   font-family: "DM Sans", sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.65px;
-  color: #8991a5;
+  color: #566273;
   font-weight: 600;
   margin-bottom: 9px;
 }
@@ -328,7 +328,7 @@ textarea {
   line-height: 1.4;
 }
 .page-heading p:not(.eyebrow) {
-  color: #818796;
+  color: #566273;
   font-size: 13px;
   margin-top: 7px;
 }
@@ -344,12 +344,12 @@ textarea {
 }
 .composer span {
   font-size: 13px;
-  color: #9196a2;
+  color: #566273;
   flex: 1;
 }
 .composer > svg {
   font-size: 21px;
-  color: #8d96ac;
+  color: #566273;
 }
 .composer:hover {
   border-color: #aab3db;
@@ -372,7 +372,7 @@ textarea {
   padding: 8px 11px;
   border-radius: 8px;
   font-size: 13px;
-  color: #8a8f9b;
+  color: #566273;
   white-space: nowrap;
   min-height: 38px;
 }
@@ -387,7 +387,7 @@ textarea {
   gap: 4px;
   min-width: 0;
   width: 130px;
-  color: #9ba1af;
+  color: #566273;
 }
 .search-box svg {
   font-size: 18px;
@@ -402,7 +402,7 @@ textarea {
   outline-offset: 0;
 }
 .search-box input::placeholder {
-  color: #9ba1af;
+  color: #566273;
 }
 .feed-list {
   display: flex;
@@ -434,8 +434,8 @@ textarea {
   gap: 7px;
 }
 .post-author > span {
-  font-size: 10px;
-  color: #9096a3;
+  font-size: 12px;
+  color: #566273;
   display: block;
   margin-top: 3px;
 }
@@ -444,16 +444,16 @@ textarea {
   margin: 0 5px;
 }
 .own-label {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
-  color: #9096a6;
+  color: #566273;
   background: #f2f4f8;
   border-radius: 4px;
   padding: 1px 4px;
 }
 .category-label {
-  font-size: 10px;
-  color: #9299aa;
+  font-size: 12px;
+  color: #566273;
   background: #f6f7fa;
   border: 1px solid #eef0f4;
   padding: 4px 7px;
@@ -461,7 +461,7 @@ textarea {
   white-space: nowrap;
 }
 .post-header .MuiIconButton-root {
-  min-width: 30px;
+  min-width: 44px;
   padding: 4px;
   margin-right: -7px;
 }
@@ -482,7 +482,7 @@ textarea {
 .post-copy p {
   font-size: 13px;
   line-height: 1.8;
-  color: #717887;
+  color: #566273;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -491,8 +491,8 @@ textarea {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 11px;
-  font-size: 11px;
-  color: #7b87b1;
+  font-size: 12px;
+  color: #566273;
 }
 .post-image-button {
   width: calc(100% - 44px);
@@ -519,7 +519,7 @@ textarea {
   right: 10px;
   bottom: 10px;
   border-radius: 5px;
-  font-size: 10px;
+  font-size: 12px;
   background: #ffffffd9;
   color: #4d5568;
   padding: 4px 7px;
@@ -542,7 +542,7 @@ textarea {
   gap: 6px;
   border: 0;
   background: none;
-  color: #8c94a4;
+  color: #566273;
   padding: 6px 2px;
   min-height: 40px;
   font-size: 12px;
@@ -552,7 +552,7 @@ textarea {
   font-size: 20px;
 }
 .reaction.liked {
-  color: #b55769;
+  color: #566273;
 }
 .save-button {
   margin-left: auto;
@@ -563,7 +563,7 @@ textarea {
   min-height: 40px;
   background: none;
   border: 0;
-  color: #929aaa;
+  color: #566273;
 }
 .save-button.saved {
   color: #505ec2;
@@ -578,25 +578,25 @@ textarea {
   border: 0;
   border-top: 1px solid #f0f1f4;
   background: none;
-  font-size: 11px;
+  font-size: 12px;
   text-align: left;
 }
 .comment-preview strong {
-  color: #687083;
+  color: #566273;
   flex-shrink: 0;
 }
 .comment-preview span {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  color: #979dab;
+  color: #566273;
 }
 .post-group-link {
   margin: 12px 22px 0;
   padding: 12px;
   border-radius: 8px;
   background: #f0f3fb;
-  color: #5d6ca2;
+  color: #566273;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -608,11 +608,11 @@ textarea {
   flex-direction: column;
   gap: 10px;
   padding: 36px 10px;
-  color: #a1a7b4;
+  color: #566273;
   font-size: 12px;
 }
 .feed-end a {
-  color: #7783b0;
+  color: #566273;
   display: flex;
   gap: 6px;
   align-items: center;
@@ -631,16 +631,16 @@ textarea {
   overflow: hidden;
 }
 .daily-note .eyebrow {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.2px;
-  color: #8691b6;
+  color: #566273;
 }
 .note-orbit {
   position: absolute;
   right: -12px;
   top: 34px;
   font-size: 110px;
-  color: #d8def0;
+  color: #566273;
   font-weight: 300;
   line-height: 1;
   transform: rotate(12deg);
@@ -655,11 +655,11 @@ textarea {
 .daily-note p {
   font-size: 12px;
   line-height: 1.8;
-  color: #8590aa;
+  color: #566273;
 }
 .daily-note a {
-  font-size: 11px;
-  color: #6171aa;
+  font-size: 12px;
+  color: #566273;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -679,8 +679,8 @@ textarea {
   letter-spacing: -0.3px;
 }
 .section-label a {
-  font-size: 11px;
-  color: #959cab;
+  font-size: 12px;
+  color: #566273;
 }
 .mini-meetup {
   display: flex;
@@ -703,15 +703,15 @@ textarea {
 }
 .lavender {
   background: #e9eafb;
-  color: #6b6eb2;
+  color: #566273;
 }
 .sage {
   background: #e6efe8;
-  color: #567a63;
+  color: #566273;
 }
 .peach {
   background: #f6eae0;
-  color: #a07655;
+  color: #566273;
 }
 .mini-meetup strong {
   font-size: 12px;
@@ -720,13 +720,13 @@ textarea {
 }
 .mini-meetup div > span {
   display: block;
-  font-size: 10px;
-  color: #979eac;
+  font-size: 12px;
+  color: #566273;
   margin-top: 6px;
 }
 .rail-footnote {
-  font-size: 11px;
-  color: #a0a6b3;
+  font-size: 12px;
+  color: #566273;
   line-height: 1.85;
   margin-top: 29px;
   padding-top: 22px;
@@ -742,7 +742,7 @@ textarea {
 }
 .about-content p {
   font-size: 14px;
-  color: #6a7285;
+  color: #566273;
   line-height: 1.85;
   margin-bottom: 18px;
 }
@@ -759,7 +759,7 @@ textarea {
 }
 .empty-state > svg {
   font-size: 36px;
-  color: #aab2ce;
+  color: #566273;
   margin-bottom: 12px;
 }
 .empty-state h2 {
@@ -768,7 +768,7 @@ textarea {
 }
 .empty-state p {
   font-size: 13px;
-  color: #858d9d;
+  color: #566273;
   line-height: 1.7;
   margin-bottom: 18px;
 }
@@ -783,7 +783,7 @@ textarea {
   margin-left: auto;
 }
 .count-accent {
-  color: #6370c3;
+  color: #566273;
   font-size: 15px;
 }
 .expanded-image {
@@ -815,12 +815,12 @@ textarea {
   font-size: 13px;
 }
 .comment-meta time {
-  font-size: 10px;
-  color: #a1a6b3;
+  font-size: 12px;
+  color: #566273;
 }
 .comment-body p {
   font-size: 13px;
-  color: #697286;
+  color: #566273;
   line-height: 1.8;
   margin-top: 7px;
   white-space: pre-wrap;
@@ -832,8 +832,8 @@ textarea {
   margin-top: 9px;
 }
 .comment-options button {
-  font-size: 10px;
-  color: #9299a9;
+  font-size: 12px;
+  color: #566273;
   background: none;
   border: 0;
   padding: 4px 0;
@@ -868,7 +868,7 @@ textarea {
   align-items: center;
   gap: 7px;
   font-size: 12px;
-  color: #848d9f;
+  color: #566273;
   min-height: 40px;
 }
 .back-link svg {
@@ -908,28 +908,28 @@ textarea {
   margin-top: 5px;
 }
 .meetup-card-top small {
-  font-size: 11px;
-  color: #98a0ae;
+  font-size: 12px;
+  color: #566273;
 }
 .meetup-card-top > div {
   flex: 1;
   min-width: 0;
 }
 .state-label {
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
-  color: #6c8e77;
+  color: #566273;
   background: #edf4ee;
   border-radius: 5px;
   padding: 5px 7px;
 }
 .state-label.joined {
-  color: #606fba;
+  color: #566273;
   background: #eef0fb;
 }
 .meetup-description {
   font-size: 13px;
-  color: #7b8394;
+  color: #566273;
   line-height: 1.85;
   margin-top: 18px;
 }
@@ -937,7 +937,7 @@ textarea {
   display: grid;
   gap: 10px;
   margin: 20px 0;
-  color: #818b9b;
+  color: #566273;
   font-size: 12px;
 }
 .meetup-details span {
@@ -947,14 +947,14 @@ textarea {
 }
 .meetup-details svg {
   font-size: 17px;
-  color: #9ba4b4;
+  color: #566273;
 }
 .meetup-topic {
-  background: #f7f8fa;
+  background: #f6f5f1;
   border-radius: 8px;
   padding: 12px;
-  font-size: 11px;
-  color: #7c8598;
+  font-size: 12px;
+  color: #566273;
   margin-bottom: 20px;
 }
 .meetup-card-footer {
@@ -967,8 +967,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 11px;
-  color: #8b94a6;
+  font-size: 12px;
+  color: #566273;
 }
 .member-faces {
   display: flex;
@@ -988,8 +988,8 @@ textarea {
   background: none;
   border: 0;
   text-decoration: underline;
-  color: #9299a9;
-  font-size: 11px;
+  color: #566273;
+  font-size: 12px;
   padding: 8px;
 }
 .join-summary {
@@ -1004,7 +1004,7 @@ textarea {
 }
 .join-summary p {
   font-size: 13px;
-  color: #7e879b;
+  color: #566273;
   line-height: 1.8;
 }
 .app-grid.wide {
@@ -1036,12 +1036,12 @@ textarea {
   margin-bottom: 5px;
 }
 .chat-list-panel > .muted {
-  font-size: 11px;
+  font-size: 12px;
   padding: 0 20px;
   margin-bottom: 22px;
 }
 .muted {
-  color: #9aa1ae;
+  color: #566273;
 }
 .room-link {
   padding: 19px 18px;
@@ -1068,17 +1068,17 @@ textarea {
   margin-bottom: 6px;
 }
 .room-link p {
-  font-size: 11px;
+  font-size: 12px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  color: #929bac;
+  color: #566273;
   line-height: 1.5;
 }
 .room-link small {
   display: block;
-  font-size: 9px;
-  color: #a1a9b7;
+  font-size: 12px;
+  color: #566273;
   margin-top: 5px;
 }
 .unread-dot {
@@ -1091,8 +1091,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 11px;
-  color: #7b88b9;
+  font-size: 12px;
+  color: #566273;
   margin: 24px 18px;
 }
 .conversation {
@@ -1117,8 +1117,8 @@ textarea {
   font-weight: 700;
 }
 .conversation-header p {
-  font-size: 10px;
-  color: #9ca5b6;
+  font-size: 12px;
+  color: #566273;
   margin-top: 5px;
 }
 .conversation-header .chat-back {
@@ -1133,8 +1133,8 @@ textarea {
 }
 .chat-date {
   text-align: center;
-  font-size: 10px;
-  color: #a5adbb;
+  font-size: 12px;
+  color: #566273;
   margin: 3px 0 22px;
 }
 .message {
@@ -1151,8 +1151,8 @@ textarea {
   max-width: 80%;
 }
 .message-content > strong {
-  font-size: 10px;
-  color: #8791a5;
+  font-size: 12px;
+  color: #566273;
   display: block;
   margin-bottom: 6px;
 }
@@ -1165,7 +1165,7 @@ textarea {
   background: #fff;
   font-size: 13px;
   line-height: 1.7;
-  color: #606b80;
+  color: #566273;
 }
 .mine .message-content > p {
   background: #5867c7;
@@ -1176,14 +1176,14 @@ textarea {
 .message-content time {
   display: block;
   text-align: right;
-  font-size: 9px;
-  color: #a2aabb;
+  font-size: 12px;
+  color: #566273;
   margin-top: 5px;
 }
 .chat-demo-note {
   text-align: center;
-  color: #a2a9b8;
-  font-size: 10px;
+  color: #566273;
+  font-size: 12px;
   padding: 10px;
 }
 .chat-form {
@@ -1221,19 +1221,19 @@ textarea {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  color: #a3adbf;
+  color: #566273;
   text-align: center;
   padding: 30px;
   background: #fafbfd;
 }
 .conversation-empty > svg {
   font-size: 44px;
-  color: #bdc6de;
+  color: #566273;
   margin-bottom: 20px;
 }
 .conversation-empty h2 {
   font-size: 18px;
-  color: #65728d;
+  color: #566273;
   margin-bottom: 10px;
 }
 .conversation-empty p {
@@ -1277,9 +1277,9 @@ textarea {
   position: absolute;
   left: 20px;
   top: 27px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
-  color: #8b95b8;
+  color: #566273;
 }
 .profile-identity {
   display: flex;
@@ -1296,19 +1296,19 @@ textarea {
   letter-spacing: -0.5px;
 }
 .profile-identity p {
-  font-size: 11px;
-  color: #98a1b1;
+  font-size: 12px;
+  color: #566273;
 }
 .profile-identity .button {
   margin-left: auto;
-  font-size: 11px;
+  font-size: 12px;
   min-height: 36px;
   padding: 8px 12px;
 }
 .profile-bio {
   font-size: 13px;
   line-height: 1.8;
-  color: #7e8798;
+  color: #566273;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   margin: 19px 0 22px;
@@ -1333,8 +1333,8 @@ textarea {
   font-weight: 600;
 }
 .profile-stats span {
-  font-size: 11px;
-  color: #97a0b0;
+  font-size: 12px;
+  color: #566273;
 }
 .profile-tabs {
   margin: 25px 0 18px;
@@ -1350,8 +1350,8 @@ textarea {
   margin-top: 26px;
 }
 .profile-footer button {
-  color: #929bac;
-  font-size: 11px;
+  color: #566273;
+  font-size: 12px;
 }
 .notifications-list {
   background: white;
@@ -1387,12 +1387,12 @@ textarea {
 }
 .notification-copy p {
   font-size: 12px;
-  color: #818b9f;
+  color: #566273;
   line-height: 1.8;
 }
 .notification-copy small {
-  font-size: 10px;
-  color: #a2aabb;
+  font-size: 12px;
+  color: #566273;
   display: block;
   margin-top: 8px;
 }
@@ -1417,9 +1417,9 @@ textarea {
   margin-bottom: 9px;
 }
 .field-label > span {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 400;
-  color: #a1a9b8;
+  color: #566273;
   margin-left: 6px;
 }
 .form-input {
@@ -1433,7 +1433,7 @@ textarea {
   color: #414b60;
 }
 .form-input::placeholder {
-  color: #adb4c1;
+  color: #566273;
 }
 .form-input:focus {
   border-color: #96a2dc;
@@ -1446,8 +1446,8 @@ textarea {
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 10px;
-  color: #9ba5b6;
+  font-size: 12px;
+  color: #566273;
   margin-top: 7px;
   line-height: 1.6;
 }
@@ -1456,18 +1456,18 @@ textarea {
   gap: 8px;
 }
 .category-options button {
-  background: #f7f8fa;
+  background: #f6f5f1;
   border: 1px solid #e7eaf0;
   border-radius: 8px;
   padding: 10px 17px;
   font-size: 12px;
-  color: #8893a5;
+  color: #566273;
   min-height: 40px;
 }
 .category-options button.selected {
   background: #edf0fc;
   border-color: #9ba7df;
-  color: #5969b7;
+  color: #566273;
 }
 .art-options {
   display: grid;
@@ -1492,8 +1492,8 @@ textarea {
 }
 .art-options span {
   display: block;
-  font-size: 9px;
-  color: #8993a6;
+  font-size: 12px;
+  color: #566273;
   padding: 7px 2px;
 }
 .upload-actions {
@@ -1511,7 +1511,7 @@ textarea {
   border-radius: 8px;
   padding: 12px;
   font-size: 12px;
-  color: #8390ab;
+  color: #566273;
   cursor: pointer;
 }
 .upload-label svg {
@@ -1543,13 +1543,13 @@ textarea {
   padding-top: 23px;
 }
 .form-submit p {
-  font-size: 11px;
-  color: #99a3b4;
+  font-size: 12px;
+  color: #566273;
   line-height: 1.7;
 }
 .login-page {
   min-height: 100dvh;
-  background: #f7f8fa;
+  background: #f6f5f1;
   position: relative;
 }
 .login-header {
@@ -1561,8 +1561,8 @@ textarea {
   padding: 32px 30px;
 }
 .login-header > span:not(.brand) {
-  font-size: 11px;
-  color: #9ba2b2;
+  font-size: 12px;
+  color: #566273;
   letter-spacing: 1.2px;
   font-family: "DM Sans", sans-serif;
 }
@@ -1578,7 +1578,7 @@ textarea {
 }
 .login-copy .eyebrow {
   margin-bottom: 24px;
-  color: #909dba;
+  color: #566273;
 }
 .login-copy h1 {
   font-size: 52px;
@@ -1588,12 +1588,12 @@ textarea {
 }
 .login-copy h1 em {
   font-style: normal;
-  color: #5968bf;
+  color: #566273;
 }
 .login-copy > p {
   font-size: 15px;
   line-height: 1.9;
-  color: #8a94a7;
+  color: #566273;
   margin: 25px 0 34px;
 }
 .login-copy .button {
@@ -1602,8 +1602,8 @@ textarea {
   font-size: 14px;
 }
 .login-copy .login-note {
-  font-size: 11px;
-  color: #a1aabd;
+  font-size: 12px;
+  color: #566273;
   line-height: 1.8;
   max-width: 335px;
   margin-top: 20px;
@@ -1639,8 +1639,8 @@ textarea {
   display: block;
 }
 .login-art-caption p {
-  font-size: 11px;
-  color: #8c97ab;
+  font-size: 12px;
+  color: #566273;
   margin-top: 5px;
 }
 .login-footnote {
@@ -1649,8 +1649,8 @@ textarea {
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 10px;
-  color: #a5adbc;
+  font-size: 12px;
+  color: #566273;
 }
 .mobile-only {
   display: none;
@@ -1703,7 +1703,7 @@ textarea {
     gap: 8px;
   }
   .demo-pill {
-    font-size: 10px;
+    font-size: 12px;
     padding: 4px 6px;
   }
   .app-grid,
@@ -1717,11 +1717,11 @@ textarea {
     display: none;
   }
   .demo-note {
-    font-size: 10px;
+    font-size: 12px;
     margin-bottom: 17px;
   }
   .demo-note button {
-    font-size: 10px;
+    font-size: 12px;
   }
   .page-heading {
     margin-bottom: 18px;
@@ -1735,7 +1735,7 @@ textarea {
     margin-top: 5px;
   }
   .eyebrow {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: 1.2px;
     margin-bottom: 7px;
   }
@@ -1768,7 +1768,7 @@ textarea {
     width: 100px;
   }
   .search-box input {
-    font-size: 11px;
+    font-size: 12px;
   }
   .feed-list {
     gap: 17px;
@@ -1788,10 +1788,10 @@ textarea {
     font-size: 12px;
   }
   .post-author > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .category-label {
-    font-size: 9px;
+    font-size: 12px;
     padding: 3px 5px;
   }
   .post-copy {
@@ -1806,7 +1806,7 @@ textarea {
     line-height: 1.8;
   }
   .hashtags {
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 8px;
   }
   .post-image-button {
@@ -1821,12 +1821,12 @@ textarea {
   .comment-preview {
     width: calc(100% - 32px);
     margin: 0 16px;
-    font-size: 10px;
+    font-size: 12px;
     padding-bottom: 13px;
   }
   .post-group-link {
     margin: 10px 16px 0;
-    font-size: 11px;
+    font-size: 12px;
   }
   .bottom-nav {
     position: fixed;
@@ -1849,11 +1849,11 @@ textarea {
     padding: 5px;
     border-radius: 8px;
     min-height: 48px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .bottom-nav .nav-item.active {
     background: none;
-    color: #5363c4;
+    color: #566273;
   }
   .bottom-nav .nav-item svg {
     font-size: 23px;
@@ -1862,7 +1862,7 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    order: 1;
+    order: 0;
     margin: 0 10px;
     border-radius: 13px;
     width: 43px;
@@ -1870,12 +1870,7 @@ textarea {
     background: #5968c7;
     color: #fff;
   }
-  .bottom-nav .nav-item:nth-child(3) {
-    order: 2;
-  }
-  .bottom-nav .nav-item:nth-child(4) {
-    order: 3;
-  }
+
   .dialog-heading.MuiDialogTitle-root {
     font-size: 16px;
     padding: 12px 17px;
@@ -1917,25 +1912,25 @@ textarea {
     font-size: 14px;
   }
   .meetup-card-top small {
-    font-size: 10px;
+    font-size: 12px;
   }
   .state-label {
-    font-size: 9px;
+    font-size: 12px;
   }
   .meetup-description {
     font-size: 12px;
     margin-top: 15px;
   }
   .meetup-details {
-    font-size: 11px;
+    font-size: 12px;
     gap: 9px;
     margin: 17px 0;
   }
   .meetup-topic {
-    font-size: 10px;
+    font-size: 12px;
   }
   .member-summary {
-    font-size: 10px;
+    font-size: 12px;
     gap: 7px;
   }
   .member-faces .MuiAvatar-root {
@@ -1946,7 +1941,7 @@ textarea {
     gap: 8px;
   }
   .meetup-card .button {
-    font-size: 11px;
+    font-size: 12px;
     min-height: 39px;
     padding: 9px 11px;
   }
@@ -2002,7 +1997,7 @@ textarea {
   .conversation-header .group-symbol {
     width: 35px;
     height: 38px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .conversation-body {
     padding: 18px 16px;
@@ -2014,7 +2009,7 @@ textarea {
     padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
   }
   .chat-demo-note {
-    font-size: 9px;
+    font-size: 12px;
     padding: 7px;
   }
   .message-content {
@@ -2044,7 +2039,7 @@ textarea {
     font-size: 20px;
   }
   .profile-identity .button {
-    font-size: 10px;
+    font-size: 12px;
     padding: 7px 9px;
   }
   .profile-bio {
@@ -2064,10 +2059,10 @@ textarea {
     font-size: 12px;
   }
   .notification-copy p {
-    font-size: 11px;
+    font-size: 12px;
   }
   .notification-copy small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .form-panel {
     padding: 20px 16px;
@@ -2082,13 +2077,13 @@ textarea {
     gap: 6px;
   }
   .art-options span {
-    font-size: 8px;
+    font-size: 12px;
   }
   .form-submit {
     gap: 12px;
   }
   .form-submit p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .form-submit .button {
     font-size: 12px;
@@ -2099,7 +2094,7 @@ textarea {
     padding: 24px;
   }
   .login-header > span:not(.brand) {
-    font-size: 9px;
+    font-size: 12px;
   }
   .login-layout {
     display: flex;
@@ -2128,7 +2123,7 @@ textarea {
     font-size: 13px;
   }
   .login-copy .login-note {
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 14px;
   }
   .login-art {
@@ -2149,10 +2144,10 @@ textarea {
     gap: 10px;
   }
   .login-art-caption strong {
-    font-size: 11px;
+    font-size: 12px;
   }
   .login-art-caption p {
-    font-size: 10px;
+    font-size: 12px;
   }
   .login-art-caption .MuiAvatar-root {
     width: 32px;
@@ -2160,7 +2155,7 @@ textarea {
   }
   .login-footnote {
     bottom: 15px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .mobile-only {
     display: block;
@@ -2221,19 +2216,19 @@ textarea {
   min-height: 100dvh;
   display: grid;
   place-items: center;
-  color: #737f9a;
+  color: #566273;
   font-size: 14px;
 }
 .post-copy p {
   font-size: 14px;
-  color: #657083;
+  color: #566273;
 }
 .post-author > span,
 .page-heading p:not(.eyebrow),
 .meetup-description,
 .notification-copy p,
 .profile-bio {
-  color: #6d788b;
+  color: #566273;
 }
 .category-label,
 .comment-preview span,
@@ -2242,10 +2237,10 @@ textarea {
 .profile-stats span,
 .room-link p,
 .conversation-header p {
-  color: #758095;
+  color: #566273;
 }
 .filter-tabs button {
-  color: #747e91;
+  color: #566273;
 }
 .filter-tabs button.selected {
   color: #fff;
@@ -2258,22 +2253,22 @@ textarea {
     font-size: 13px;
   }
   .post-author > span {
-    font-size: 10px;
+    font-size: 12px;
   }
   .category-label {
-    font-size: 10px;
+    font-size: 12px;
   }
   .post-author strong {
     font-size: 13px;
   }
   .hashtags {
-    font-size: 11px;
+    font-size: 12px;
   }
   .bottom-nav .nav-item {
-    font-size: 11px;
+    font-size: 12px;
   }
   .comment-preview {
-    font-size: 11px;
+    font-size: 12px;
   }
   .meetup-details {
     font-size: 12px;
@@ -2295,12 +2290,12 @@ html {
   scroll-margin-top: 96px;
 }
 .draft-status {
-  font-size: 11px;
-  color: #7886aa;
+  font-size: 12px;
+  color: #566273;
   margin-bottom: 20px;
 }
 .upload-label:focus-within {
-  outline: 3px solid #9ba6f0;
+  outline: 3px solid #35438d;
   outline-offset: 3px;
 }
 
@@ -2325,4 +2320,973 @@ html {
     border-radius: 9px;
     background: #fff;
   }
+}
+
+/* A record is a sheet: three numbered layers connect making, reasoning and feedback. */
+:root {
+  --ink: #263247;
+  --muted: #566273;
+  --paper: #fff;
+  --line: #d8d9d3;
+  --indigo: #414fa6;
+  --clay: #8d472f;
+  --green: #32624d;
+}
+::selection {
+  background: #dddff0;
+  color: #202b41;
+}
+:focus-visible {
+  scroll-margin-block: 100px;
+}
+[role="tabpanel"]:focus-visible {
+  outline: 3px solid #35438d;
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+[role="tabpanel"]:focus:not(:focus-visible) {
+  outline: none;
+}
+button,
+a {
+  text-underline-offset: 3px;
+}
+.text-button,
+.demo-note button,
+.section-label a,
+.question-reply,
+.meetup-exit {
+  min-height: 32px;
+}
+.demo-note {
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.demo-note button {
+  font-size: 12px;
+  padding: 5px;
+}
+.form-input,
+.chat-form textarea {
+  border-color: #778295;
+}
+.form-input::placeholder,
+.chat-form textarea::placeholder,
+.search-box input::placeholder {
+  color: #596477;
+  opacity: 1;
+}
+.search-box {
+  border: 1px solid #778295;
+  border-radius: 7px;
+  background: #fff;
+  padding: 0 10px;
+  width: 155px;
+}
+.search-box input {
+  min-width: 0;
+}
+.search-box svg,
+.reaction,
+.save-button,
+.composer > svg {
+  color: #566273;
+}
+.reaction,
+.save-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.tab-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.filter-tabs button {
+  min-height: 44px;
+  border-radius: 5px 5px 0 0;
+  border-bottom: 3px solid transparent;
+}
+.filter-tabs button.selected {
+  background: #e7e9f6;
+  color: #35438d;
+  border-bottom-color: #414fa6;
+}
+.page-heading .eyebrow,
+.record-intro .eyebrow {
+  color: #75442e;
+  letter-spacing: 0.8px;
+}
+.page-heading h1 {
+  font-size: 29px;
+}
+.page-heading p:not(.eyebrow) {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.brand-mark i {
+  border-radius: 2px 7px 2px 2px;
+  transform: rotate(-9deg);
+  background: #414fa6;
+  height: 25px;
+}
+.brand-mark i + i {
+  background: #d3a77b;
+  transform: rotate(9deg);
+  border: 1px solid #946343;
+}
+.brand-mark i + i:after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 3px;
+  top: 9px;
+  height: 1px;
+  background: #5b4438;
+  box-shadow: 0 5px #5b4438;
+}
+.composer {
+  border-color: #c9cbd3;
+  border-radius: 8px 8px 3px 3px;
+  border-bottom: 3px solid #414fa6;
+  box-shadow: 0 4px 0 -1px #e5e3db;
+}
+.composer span {
+  color: #35438d;
+  font-size: 15px;
+  font-weight: 600;
+}
+.feed-list,
+.profile-post-list {
+  gap: 28px;
+}
+.post-card {
+  border-color: #d3d6df;
+  border-radius: 8px;
+  box-shadow:
+    0 5px 0 -2px #f0eee5,
+    0 6px 0 -2px #d3d6cf;
+}
+.record-edge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 33px;
+  padding: 0 22px;
+  border-bottom: 1px solid #e2e3dc;
+  background: #f7f6f1;
+}
+.record-edge > span {
+  font-size: 12px;
+  color: #566273;
+  margin-right: auto;
+  letter-spacing: 0.6px;
+}
+.record-edge i {
+  width: 18px;
+  height: 5px;
+  background: #414fa6;
+}
+.record-edge i:nth-of-type(2) {
+  background: #b77b52;
+}
+.record-edge i:nth-of-type(3) {
+  background: #47745d;
+}
+.post-author > span,
+.category-label {
+  font-size: 12px;
+}
+.post-copy h2 {
+  font-size: 21px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+.post-copy h2 a:hover {
+  text-decoration: underline;
+}
+.post-copy p,
+.meetup-description,
+.profile-bio,
+.message-content > p {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #43516a;
+}
+.step-index {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+  font:
+    600 12px/1 "DM Sans",
+    sans-serif;
+  background: #e8eaf6;
+  color: #35438d;
+  border-radius: 2px 8px 2px 2px;
+}
+.record-attempt {
+  display: flex;
+  gap: 11px;
+}
+.record-attempt h3,
+.record-question h3 {
+  font-size: 12px;
+  font-weight: 700;
+  color: #35438d;
+  margin: 3px 0 6px;
+}
+.record-attempt > div {
+  min-width: 0;
+}
+.record-reason {
+  margin: 16px 0 0;
+  border-top: 1px dashed #c6c8cf;
+  border-bottom: 1px dashed #c6c8cf;
+}
+.record-reason summary {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 44px;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: #75442e;
+  list-style: none;
+}
+.record-reason summary::-webkit-details-marker {
+  display: none;
+}
+.record-reason .step-index,
+.step-index.reason,
+.record-field.reason > .step-index {
+  background: #f3e8dc;
+  color: #75442e;
+}
+.disclosure-hint {
+  margin-left: auto;
+  font-size: 23px;
+  font-weight: 400;
+  padding: 0 6px;
+}
+.record-reason[open] .disclosure-hint {
+  transform: rotate(45deg);
+}
+.record-reason > p {
+  margin: 0 0 15px 38px;
+}
+.record-question {
+  margin: 18px 22px 0;
+  background: #eff4ed;
+  border: 1px solid #cddaca;
+  border-left: 3px solid #47745d;
+  padding: 15px 17px;
+  border-radius: 0 8px 8px 0;
+}
+.record-question-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.record-question h3 {
+  color: #32624d;
+  margin: 0;
+}
+.record-question .step-index,
+.step-index.question,
+.record-field.question > .step-index {
+  background: #dce9d9;
+  color: #2e5a43;
+}
+.record-question > p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 10px 0 5px;
+  color: #334c3e;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.question-reply {
+  color: #2e5a43;
+  font-size: 13px;
+  font-weight: 700;
+  background: none;
+  border: 0;
+  padding: 7px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.question-reply:hover {
+  text-decoration: underline;
+}
+.feedback-context {
+  background: #eff4ed;
+  border-left: 3px solid #47745d;
+  padding: 16px;
+  margin: 0 0 14px;
+}
+.feedback-context .eyebrow {
+  color: #32624d;
+  display: block;
+}
+.feedback-context p {
+  font-size: 15px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin-bottom: 8px;
+}
+.feedback-context > span:last-child {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #445a4b;
+}
+.comment-body > p {
+  font-size: 15px;
+  line-height: 1.8;
+}
+.daily-note {
+  background: #f0eee5;
+  border-color: #d9d6ca;
+  border-radius: 3px 22px 3px 3px;
+  padding: 22px;
+}
+.daily-note h2 {
+  margin-top: 14px;
+}
+.stacked-notes {
+  list-style: none;
+  padding: 0 7px 0 0;
+  margin: 22px 0 4px;
+}
+.stacked-notes li {
+  background: #fff;
+  border: 1px solid #d4d4cb;
+  padding: 14px;
+  display: flex;
+  gap: 12px;
+  position: relative;
+}
+.stacked-notes li + li {
+  margin-top: -3px;
+  margin-left: 5px;
+  margin-right: -5px;
+}
+.stacked-notes li:nth-child(2) {
+  background: #f8eee2;
+  border-left: 3px solid #946343;
+}
+.stacked-notes li:nth-child(3) {
+  background: #eaf1e6;
+  border-left: 3px solid #47745d;
+}
+.stacked-notes b {
+  font:
+    600 14px "DM Sans",
+    sans-serif;
+  color: #35438d;
+}
+.stacked-notes li:nth-child(2) b {
+  color: #75442e;
+}
+.stacked-notes li:nth-child(3) b {
+  color: #32624d;
+}
+.stacked-notes span {
+  font-weight: 600;
+  font-size: 14px;
+}
+.stacked-notes small {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #566273;
+}
+.daily-note a {
+  color: #35438d;
+  font-size: 13px;
+  min-height: 32px;
+  margin-top: 18px;
+}
+.meetup-card {
+  border-color: #d3d6cf;
+  border-radius: 6px 20px 6px 6px;
+  box-shadow: 0 4px 0 -1px #e6e8df;
+}
+.meetup-card-top {
+  align-items: flex-start;
+}
+.meetup-card-top > div {
+  min-width: 0;
+}
+.group-symbol {
+  border-radius: 3px 12px 3px 3px;
+  box-shadow:
+    3px 3px 0 -1px #fff,
+    4px 4px 0 -1px #c0c6d0;
+}
+.meetup-topic {
+  border-left: 3px solid #946343;
+  background: #f8f3e9;
+  color: #644431;
+  font-size: 13px;
+}
+.profile-cover {
+  background: #f0eee5;
+  border-radius: 3px 18px 3px 3px;
+  position: relative;
+  padding: 20px;
+  min-height: 105px;
+}
+.profile-cover:before,
+.profile-cover:after {
+  display: none;
+}
+.profile-cover > span {
+  display: block;
+  color: #644431;
+  letter-spacing: 0.7px;
+  font-size: 12px;
+}
+.profile-cover > strong {
+  display: block;
+  font-size: 16px;
+  margin-top: 10px;
+  max-width: 75%;
+  position: relative;
+  z-index: 1;
+  line-height: 1.5;
+}
+.cover-sheets {
+  position: absolute;
+  right: 15px;
+  bottom: 0;
+  width: 110px;
+  height: 85px;
+}
+.cover-sheets i {
+  position: absolute;
+  width: 60px;
+  height: 80px;
+  border: 1px solid #b9bcc7;
+  background: #e5e8f6;
+  left: 0;
+  top: 10px;
+  transform: rotate(-15deg);
+  border-radius: 3px 12px 3px 3px;
+}
+.cover-sheets i:nth-child(2) {
+  background: #eee0c9;
+  left: 20px;
+  top: 5px;
+  transform: rotate(0);
+}
+.cover-sheets i:nth-child(3) {
+  background: #dfe9d7;
+  left: 40px;
+  top: 14px;
+  transform: rotate(15deg);
+}
+.record-intro {
+  border-top: 3px solid #414fa6;
+  background: #f0eee5;
+  border-radius: 3px 18px 0 0;
+  padding: 24px 28px;
+}
+.record-intro h2 {
+  font-size: 23px;
+  line-height: 1.5;
+}
+.record-intro > p:not(.eyebrow) {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #43516a;
+}
+.record-map {
+  list-style: none;
+  display: flex;
+  gap: 22px;
+  margin: 20px 0 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+.record-map li {
+  font-size: 13px;
+  color: #35438d;
+}
+.record-map b {
+  font-family: "DM Sans", sans-serif;
+  margin-right: 5px;
+}
+.record-map li:nth-child(2) {
+  color: #75442e;
+}
+.record-map li:nth-child(3) {
+  color: #32624d;
+}
+.record-editor {
+  border-radius: 0 0 8px 8px;
+  border-color: #d3d6cf;
+}
+.record-fields {
+  border-left: 1px dashed #b8beca;
+  margin-left: 13px;
+  padding-left: 26px;
+}
+.record-field {
+  position: relative;
+}
+.record-field > .step-index {
+  position: absolute;
+  left: -40px;
+  top: -2px;
+}
+.record-field textarea {
+  line-height: 1.8;
+  resize: vertical;
+  min-height: 100px;
+}
+.record-field .textarea {
+  min-height: 120px;
+}
+.field-label {
+  font-size: 15px;
+}
+.field-helper {
+  line-height: 1.6;
+  gap: 12px;
+}
+.field-helper > span:last-child {
+  flex-shrink: 0;
+}
+.field-label > span {
+  font-size: 12px;
+  color: #566273;
+}
+.form-submit p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.art-options span {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.upload-label {
+  min-height: 44px;
+  border: 1px solid #778295;
+  padding: 8px 12px;
+  border-radius: 7px;
+}
+.upload-label:focus-within {
+  outline-color: #35438d;
+}
+.chat-demo-note,
+.notification-copy small,
+.message-content time {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.room-link h3 {
+  font-size: 14px;
+}
+.notification-copy p {
+  font-size: 14px;
+  line-height: 1.8;
+}
+.notification-copy strong {
+  font-size: 15px;
+}
+/* The entry screen previews the same three-part record used inside the app. */
+.login-layout {
+  gap: 80px;
+  padding-top: 65px;
+  padding-bottom: 90px;
+}
+.login-copy h1 {
+  font-size: 48px;
+  line-height: 1.3;
+}
+.login-copy > p {
+  font-size: 16px;
+}
+.login-copy .login-note {
+  font-size: 13px;
+  line-height: 1.8;
+}
+.login-copy .eyebrow {
+  font-size: 13px;
+  color: #75442e;
+}
+.login-art {
+  background: none;
+  border: 0;
+  padding: 0 10px;
+  border-radius: 0;
+  transform: none;
+  box-shadow: none;
+  width: 100%;
+  max-width: 470px;
+}
+.landing-sheet {
+  position: relative;
+  background: #fff;
+  border: 1px solid #c9cdc6;
+  border-radius: 5px 24px 5px 5px;
+  padding: 24px;
+  box-shadow:
+    7px 7px 0 -1px #e9e1d0,
+    7px 7px 0 #cec4af,
+    14px 14px 0 -1px #e1e8dd,
+    14px 14px 0 #b7c5b4;
+}
+.sheet-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  color: #566273;
+  align-items: center;
+}
+.sheet-stamp {
+  color: #75442e;
+  border: 1px solid #a67654;
+  padding: 5px 7px;
+  border-radius: 3px;
+}
+.landing-sheet h2 {
+  font-size: 25px;
+  line-height: 1.45;
+  margin: 21px 0 17px;
+  letter-spacing: -0.8px;
+}
+.login-art .landing-sheet img {
+  border-radius: 3px;
+  aspect-ratio: 2.1;
+  object-fit: cover;
+  object-position: center;
+  margin-bottom: 16px;
+}
+.landing-record-row,
+.landing-question {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 0;
+  border-top: 1px solid #dddeda;
+}
+.landing-record-row strong,
+.landing-question strong {
+  font-size: 12px;
+  color: #35438d;
+}
+.landing-record-row:nth-of-type(3) strong {
+  color: #75442e;
+}
+.landing-record-row p,
+.landing-question p {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-top: 3px;
+}
+.landing-question {
+  background: #eff4ed;
+  margin: 6px -8px -8px;
+  padding: 12px;
+  border: 0;
+}
+.landing-question strong {
+  color: #32624d;
+}
+.landing-reply {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 17px;
+  margin: 27px -10px 0 26px;
+  background: #fff;
+  border: 1px solid #c9cdd5;
+  border-left: 3px solid #414fa6;
+  border-radius: 3px 15px 3px 3px;
+  position: relative;
+}
+.landing-reply strong {
+  display: block;
+  font-size: 14px;
+}
+.landing-reply span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #566273;
+  line-height: 1.6;
+}
+.sample-caption {
+  font-size: 12px;
+  color: #566273;
+  margin: 13px 0 0 26px;
+  line-height: 1.6;
+}
+.login-footnote {
+  position: static;
+  padding: 0 20px 24px;
+}
+@media (max-width: 767px) {
+  .page-heading h1 {
+    font-size: 25px;
+  }
+  .page-heading p:not(.eyebrow) {
+    font-size: 14px;
+  }
+  .page-heading .eyebrow {
+    font-size: 12px;
+  }
+  .composer span {
+    font-size: 14px;
+  }
+  .post-copy h2 {
+    font-size: 19px;
+  }
+  .post-copy p,
+  .meetup-description,
+  .profile-bio,
+  .message-content > p,
+  .comment-body > p {
+    font-size: 15px;
+  }
+  .post-header {
+    flex-wrap: wrap;
+  }
+  .post-author {
+    flex: 1;
+    min-width: 0;
+  }
+  .post-author > span {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .post-header .category-label {
+    display: none;
+  }
+  .record-edge {
+    padding-inline: 16px;
+  }
+  .record-question {
+    margin-inline: 16px;
+    padding: 13px;
+  }
+  .post-copy {
+    padding-top: 18px;
+  }
+  .search-box {
+    width: 100%;
+    min-height: 44px;
+  }
+  .filter-tabs {
+    flex-wrap: wrap;
+  }
+  .feed-controls {
+    gap: 12px;
+  }
+  .profile-cover {
+    padding: 18px;
+  }
+  .profile-cover > strong {
+    font-size: 15px;
+  }
+  .form-panel {
+    padding: 24px 18px;
+  }
+  .record-intro {
+    padding: 20px;
+  }
+  .record-intro h2 {
+    font-size: 21px;
+  }
+  .field-label {
+    font-size: 15px;
+  }
+  .record-map {
+    gap: 19px;
+  }
+  .form-submit {
+    flex-wrap: wrap;
+  }
+  .form-submit p {
+    font-size: 12px;
+  }
+  .form-submit .button {
+    flex: 1;
+    min-height: 44px;
+  }
+  .art-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .meetup-card-top {
+    flex-wrap: wrap;
+  }
+  .meetup-card-top > div {
+    flex: 1;
+  }
+  .meetup-card-top .state-label {
+    margin-left: 55px;
+  }
+  .meetup-card-footer {
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .bottom-nav .nav-item {
+    font-size: 12px;
+  }
+  .nav-create {
+    margin-inline: 7px;
+    width: 44px;
+    height: 44px;
+  }
+  .login-layout {
+    padding: 35px 24px 55px;
+    gap: 42px;
+  }
+  .login-copy h1 {
+    font-size: 37px;
+    letter-spacing: -1.6px;
+  }
+  .login-copy > p {
+    font-size: 15px;
+  }
+  .login-copy .login-note {
+    font-size: 13px;
+  }
+  .login-copy .button {
+    font-size: 15px;
+  }
+  .login-header {
+    padding: 22px;
+    gap: 15px;
+  }
+  .login-header > span:not(.brand) {
+    max-width: 115px;
+    font-size: 12px;
+    text-align: right;
+    line-height: 1.6;
+  }
+  .login-art {
+    padding: 0 14px 0 0;
+    margin: 0;
+  }
+  .landing-sheet {
+    padding: 20px 16px;
+  }
+  .landing-sheet h2 {
+    font-size: 23px;
+  }
+  .landing-reply {
+    margin-left: 12px;
+    padding: 13px;
+  }
+  .sample-caption {
+    margin-left: 12px;
+  }
+  .chat-demo-note {
+    padding: 8px 14px;
+  }
+}
+@media (max-width: 360px) {
+  .login-copy h1 {
+    font-size: 32px;
+  }
+  .sheet-heading {
+    flex-wrap: wrap;
+  }
+  .record-fields {
+    padding-left: 20px;
+  }
+  .record-field > .step-index {
+    left: -34px;
+  }
+  .field-helper {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .record-intro {
+    padding: 18px;
+  }
+  .record-intro h2 {
+    font-size: 19px;
+  }
+  .post-copy h2 {
+    font-size: 18px;
+  }
+}
+
+.login-copy h1 em {
+  color: #414fa6;
+}
+@media (min-width: 381px) and (max-width: 767px) {
+  .feed-controls .search-box {
+    width: 122px;
+  }
+  .feed-controls {
+    gap: 8px;
+  }
+}
+
+.profile-cover {
+  height: auto;
+  min-height: 112px;
+  padding-right: 105px;
+}
+.profile-cover > span {
+  position: relative;
+  left: auto;
+  top: auto;
+}
+.profile-cover > strong {
+  max-width: none;
+}
+.cover-sheets {
+  transform: scale(0.8);
+  transform-origin: bottom right;
+  right: 10px;
+}
+@media (min-width: 381px) and (max-width: 767px) {
+  .art-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.reaction.liked {
+  color: #9d3e50;
+}
+.category-options button.selected {
+  color: #35438d;
+  border-color: #414fa6;
+}
+.state-label.joined {
+  color: #35438d;
+}
+.unread-dot {
+  background: #414fa6;
+}
+.comment-options button {
+  min-height: 32px;
+  padding-inline: 4px;
+}
+.profile-identity > div:not(.MuiAvatar-root) {
+  min-width: 0;
+}
+.post-author strong,
+.profile-identity h1 {
+  overflow-wrap: anywhere;
+}
+html {
+  scroll-padding-block: 90px;
 }

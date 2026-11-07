@@ -10,10 +10,10 @@ const items = [
   { to: "/chat", label: "대화", Icon: ChatBubbleOutlineRounded },
   { to: "/profile", label: "내 기록", Icon: PersonOutlineRounded },
 ];
-export function NavItems({ desktop = false }) {
+export function NavItems({ desktop = false, entries = items }) {
   return (
     <>
-      {items.map(({ to, label, Icon }) => (
+      {entries.map(({ to, label, Icon }) => (
         <NavLink
           key={to}
           to={to}
@@ -36,10 +36,11 @@ export function NavItems({ desktop = false }) {
 export default function BottomNav() {
   return (
     <nav className="bottom-nav" aria-label="주요 메뉴">
-      <NavItems />
+      <NavItems entries={items.slice(0, 2)} />
       <Link to="/create" className="nav-create" aria-label="새 기록 작성">
         <AddRounded />
       </Link>
+      <NavItems entries={items.slice(2)} />
     </nav>
   );
 }

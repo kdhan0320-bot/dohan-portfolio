@@ -1,3 +1,4 @@
+import { enrichSampleRecords } from "../utils/recordFormat";
 import { validCommunityData } from "../utils/communityState";
 import { useEffect, useState } from "react";
 import DemoDataContext from "./DemoDataContext";
@@ -17,7 +18,10 @@ const initialData = () => ({
 const validData = validCommunityData;
 export const DemoDataProvider = ({ children }) => {
   const [data, setData] = useState(() =>
-    readStored("community", initialData, validData),
+    enrichSampleRecords(
+      readStored("community", initialData, validData),
+      buildInitialPosts(),
+    ),
   );
   const [storageError, setStorageError] = useState(false);
   const [notice, setNotice] = useState("");
