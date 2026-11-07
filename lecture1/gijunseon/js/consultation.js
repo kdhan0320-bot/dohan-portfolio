@@ -1,6 +1,6 @@
 import { inspections } from './data.js?v=20261021-figma';
 import { setResponsiveImage } from './images.js';
-import { openDialog, setupDialogs } from './common.js';
+import { openDialog, setupDialogs } from './common.js?v=20261107-buttons';
 
 // Only the selected inspection goes into the URL. Contact values stay in this page.
 const queryType = new URLSearchParams(window.location.search).get('type');

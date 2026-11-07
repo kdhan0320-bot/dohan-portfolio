@@ -301,11 +301,11 @@ a,button {
   background: currentColor
 }
 
+/* 사각 행동 버튼은 글자 자체를 중앙에 둡니다. 이동 표식은 텍스트 링크에만 사용합니다. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
   min-height: 52px;
   padding: 12px 24px;
   border: 1px solid transparent;
