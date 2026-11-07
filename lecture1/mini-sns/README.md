@@ -9,7 +9,7 @@
 기존 설치된 의존성을 사용합니다. 이 작품 폴더에서 실행합니다.
 
 ```powershell
-npm run dev -- --host 127.0.0.1
+npm run dev -- --host 127.0.0.1 --port 5174 --strictPort
 npm run lint
 node --test src/utils/communityState.test.js
 node tests/responsive-upload.mjs
