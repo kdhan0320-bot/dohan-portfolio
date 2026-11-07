@@ -33,3 +33,10 @@ npm run build
 - 서비스 공개 주소: https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/
 - 작품 소개: https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/#/projects/jansang-cinema
 - 기존 서비스 /ott-service/와 소개 /projects/ott-service는 새 주소로 연결합니다. 서비스의 검색 문자열과 hash 경로를 유지하며, 영화 ID·localStorage 저장 키·형식은 변경하지 않습니다.
+
+
+## 2026-11-07 잔상관 소개 보완
+
+- 실제 요청 기록에 근거해 단독 표지·분위기와 시간 통합·검색 초기화·메모 읽기와 편집 구분을 판단 사례로 제시합니다.
+- 화면 배치·장면 선정·문구·이미지 제작·구현·검사는 AI 협업 범위로 표시합니다. 사용자 조사·채용 성과를 수행한 것처럼 설명하지 않습니다.
+- 최신 보관함과 메모 읽기 캡처를 PC·모바일로 제공합니다. 잔상관 소개의 두 PC 화면에만 같은 너비를 적용하며 공통 포트폴리오 구성은 유지합니다.

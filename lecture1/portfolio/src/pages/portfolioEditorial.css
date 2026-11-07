@@ -235,3 +235,8 @@
   [data-project-slug="seolbiit"] .case-intro { padding-top: 8px; }
   [data-project-slug="seolbiit"] .case-title--credits { margin-block: 4px 8px; }
 }
+
+/* Jansang now compares two desktop views, rather than desktop and phone. */
+@media (min-width: 761px) {
+  .case-page[data-project-slug="jansang-cinema"] .case-screen-sequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
