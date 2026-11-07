@@ -34,7 +34,7 @@ function CinemaScenes() {
   const [selected, setSelected] = useState(0);
   return (
     <div className="scene-editor">
-      <Link className="scene-frame" to="/projects/ott-service" aria-label="잔상관 설계 과정 보기">
+      <Link className="scene-frame" to="/projects/jansang-cinema" aria-label="잔상관 설계 과정 보기">
         {scenes.map((scene, i) => <img key={scene.src} src={media + scene.src} loading="lazy"
           className={selected === i ? 'active' : ''} alt={selected === i ? scene.alt : ''} aria-hidden={selected !== i} />)}
         <p className="scene-caption" aria-live="polite">{scenes[selected].title} <span>{scenes[selected].info}</span></p>

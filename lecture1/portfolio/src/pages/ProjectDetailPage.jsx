@@ -140,7 +140,8 @@ const ProjectDetailPage = () => {
   const location = useLocation();
   const projects = ALL_PROJECTS.filter(item => item.is_featured || item.moreWorksPublished);
   const project = projects.find(item => projectSlug(item) === slug);
-  const ready = PROJECT_DETAIL_READY[slug];
+  const ready = PROJECT_DETAIL_READY[slug === 'jansang-cinema' ? 'ott-service' : slug];
+  if (slug === 'ott-service') return <Navigate to={'/projects/jansang-cinema' + location.search + location.hash} replace />;
   if (!project || !ready) return <Navigate to="/projects" replace />;
   const index = projects.indexOf(project);
   const next = projects[(index + 1) % projects.length];

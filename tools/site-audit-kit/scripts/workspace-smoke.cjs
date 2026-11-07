@@ -13,16 +13,16 @@ const mounts = {
   'portfolio-feedback-hub': 'lecture1/pumuiseon/dist',
   'galpirok': 'lecture1/galpirok/dist',
   'mini-sns': 'lecture1/mini-sns/dist',
-  'ott-service': 'lecture1/jansang-cinema',
+  'jansang-cinema': 'lecture1/jansang-cinema',
   'gijunseon': 'lecture1/gijunseon',
 };
 const types = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.json':'application/json', '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.webp':'image/webp', '.woff2':'font/woff2', '.woff':'font/woff', '.ico':'image/x-icon' };
 const cases = [
   ['home','my-portfolio/'], ['about','my-portfolio/#/about'], ['works','my-portfolio/#/projects'],
-  ...['feedback-hub','seolbiit','gongjeongbom','ott-service','jobflow','bus-arrival','brewstep'].map(slug => [slug,`my-portfolio/#/projects/${slug}`]),
+  ...['feedback-hub','seolbiit','gongjeongbom','jansang-cinema','jobflow','bus-arrival','brewstep'].map(slug => [slug,`my-portfolio/#/projects/${slug}`]),
   ['pumuiseon','pumuiseon/'], ['requests','pumuiseon/#/requests'], ['new-request','pumuiseon/#/requests/new'],
   ['materials','pumuiseon/#/materials'], ['orders','pumuiseon/#/orders'],
-  ['galpirok','galpirok/'], ['mini-sns','mini-sns/'], ['jansang','ott-service/'],
+  ['galpirok','galpirok/'], ['mini-sns','mini-sns/'], ['jansang','jansang-cinema/'],
   ...['index','inspection','process','adoption','consultation','implementation'].map(name=>[`gijunseon-${name}`,`gijunseon/${name}.html`]),
 ];
 const report = { target: remote || 'local production builds', checks: [], interactions: [], errors: [] };

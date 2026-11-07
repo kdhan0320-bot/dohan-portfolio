@@ -1145,3 +1145,16 @@ Avoid: strong straight diagonal bands, rectangular page outlines, sharp geometri
 ## v13 브랜드 색상 정합성
 
 2026-10-06, 기존 자체 작성 SVG인 `favicon.svg`와 `jansang-mark.svg`의 색상만 배경 `#08131F`와 심벌 `#97DEEF`로 변경했습니다. 형상과 기존 출처는 유지했습니다. 외부 로고를 가져오지 않았습니다.
+
+## 2026-11-07 ‘파란 오후’ 표지 보정 (v72)
+
+- 기존 자체 AI 생성 `posters-v13/bluehour-hero.webp`를 편집 대상으로 제공했습니다. 내장 OpenAI 이미지 생성 도구를 사용했으며 정확한 모델 버전은 도구에서 제공하지 않았습니다.
+- 친구 두 명·자전거·해변 길의 구성은 유지하고, 작은 반사광과 광택을 줄이며 넓은 색면과 붓결을 살렸습니다. 실제 촬영 또는 사람이 직접 그린 원화라고 표시하지 않습니다.
+- 새 파일: `bluehour-cover-v72.webp`, 1942×809, 406034 bytes. 생성 PNG를 WebP quality 92로 형식 변환했으며 추가 합성·자르기는 하지 않았습니다. 기존 원본은 보존했습니다.
+- 홈 표지와 같은 작품의 상세·큐레이션 스틸에 연결했습니다. 기존 포스터 제목 그래픽은 유지합니다.
+
+편집 프롬프트:
+
+```text
+Edit the attached ultra-wide 1920x800 animation film still for the fictional Korean short film 'Blue Afternoon'. Preserve exactly the two young adult friends, their faces, hair, blue and olive shirts, bicycles, orange bag, seaside-town setting, railing, camera viewpoint, subject positions on the right, and open shaded space on the left. Keep a wide 2.4:1 composition. Refine only illustration rendering and light: a restrained hand-painted 2D animated film still with matte gouache background shapes, clean purposeful character linework, quieter reflected light on the sea, fewer tiny glittering highlights, natural broad shadows, and slightly varied brush edges. The friends are quietly reconnecting, not posing for an advert. Retain the recognizable bright blue afternoon and readable faces. No sepia, no darkening the whole scene, no noisy paper overlay, no cinematic bloom, no glossy AI rendering, no change of story, no extra people, no lettering, no border, no watermark. Produce finished horizontal website hero art.
+```

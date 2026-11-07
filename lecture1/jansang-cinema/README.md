@@ -2,13 +2,16 @@
 
 가상 단편영화 탐색·찜·메모 보관 시연입니다.
 
-[공개 사이트](https://kdhan0320-bot.github.io/dohan-portfolio/ott-service/)
+[공개 사이트](https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/)
 
 ## 화면을 정한 기준
 
 - 제목을 정하지 않은 이용자가 분위기와 남는 시간으로 단편영화를 고르는 상황을 가정합니다. 홈에서는 ‘파란 오후’ 한 편을 먼저 보여주고 바로 아래에서 조건을 선택합니다.
 - 한글과 문장부호의 형태가 섞이지 않도록 홈 제목은 문구 전체를 지원하는 Pretendard로 표시합니다. 영화 잡지의 편집 방향은 기획전의 두 장면과 그 관계를 설명하는 한 줄로 표현합니다.
 - 이용안내는 가상 콘텐츠·브라우저 저장·초안 보존 범위에 집중합니다. AI 포스터 시안과 제목 표현에 관한 제작 설명은 작품 소개에서 확인할 수 있습니다.
+
+- 홈 기획전은 ‘파도와 물길, 그다음은 대화’로 듣는 대상이 바뀌는 선정 관점을 드러냅니다. 표지의 한 편과 기획전의 두 장면은 서로 다른 역할을 갖습니다.
+- 새 표지 이미지는 AI가 기존 시안의 반사광과 질감을 편집한 결과입니다. 생성 표현이 없어졌거나 직접 촬영·수작업한 원화라고 설명하지 않습니다.
 
 ## 실행과 검사
 
@@ -29,3 +32,9 @@ python -m http.server 4178 --bind 127.0.0.1
 ## 제작 이력과 근거
 
 [기존 제작 이력과 검증 범위](docs/HISTORY.md)에 이전 README를 보존했습니다. 당시 기록과 현재 상태는 구분해서 읽습니다. [작업공간 안내](../../README.md)에서 폴더·공개 주소·배포 절차를 확인할 수 있습니다.
+
+## 2026-11-07 잔상관 제출 주소
+
+- 서비스 공개 주소: https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/
+- 작품 소개: https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/#/projects/jansang-cinema
+- 기존 서비스 /ott-service/와 소개 /projects/ott-service는 새 주소로 연결합니다. 서비스의 검색 문자열과 hash 경로를 유지하며, 영화 ID·localStorage 저장 키·형식은 변경하지 않습니다.

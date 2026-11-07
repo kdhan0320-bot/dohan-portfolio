@@ -27,3 +27,9 @@ npm run build
 ## 제작 이력과 근거
 
 [기존 제작 이력과 검증 범위](docs/HISTORY.md)에 이전 README를 보존했습니다. 당시 기록과 현재 상태는 구분해서 읽습니다. [작업공간 안내](../../README.md)에서 폴더·공개 주소·배포 절차를 확인할 수 있습니다.
+
+## 2026-11-07 잔상관 제출 주소
+
+- 서비스 공개 주소: https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/
+- 작품 소개: https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/#/projects/jansang-cinema
+- 기존 서비스 /ott-service/와 소개 /projects/ott-service는 새 주소로 연결합니다. 서비스의 검색 문자열과 hash 경로를 유지하며, 영화 ID·localStorage 저장 키·형식은 변경하지 않습니다.

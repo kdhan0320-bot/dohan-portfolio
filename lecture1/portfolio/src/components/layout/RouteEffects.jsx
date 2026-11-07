@@ -12,6 +12,7 @@ const SLUG_TO_ID = {
   'bus-arrival': 'bus-arrival-app',
   'feedback-hub': 'feedback-hub',
   'ott-service': 'ott-service',
+  'jansang-cinema': 'ott-service',
   brewstep: 'brewstep',
   seolbiit: 'seolbiit',
 };

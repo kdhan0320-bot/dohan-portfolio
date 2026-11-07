@@ -100,8 +100,12 @@ jobs:
           # Cached old HTML can detect the new release and reach the redirect.
           cp lecture1/galpirok/dist/release.json _site/jobflow-dashboard/release.json
           cp lecture1/galpirok/dist/assets/index-B1ncJhLB.js lecture1/galpirok/dist/assets/index-lnYHg2Gk.js _site/jobflow-dashboard/assets/
-          mkdir -p _site/ott-service
-          cp lecture1/jansang-cinema/index.html _site/ott-service/
+          mkdir -p _site/jansang-cinema _site/ott-service
+          cp lecture1/jansang-cinema/index.html _site/jansang-cinema/
+          cp -r lecture1/jansang-cinema/assets lecture1/jansang-cinema/css lecture1/jansang-cinema/js _site/jansang-cinema/
+          cp lecture1/jansang-cinema/legacy-ott-service-redirect.html _site/ott-service/index.html
+          cp lecture1/jansang-cinema/legacy-ott-service-redirect.html _site/ott-service/404.html
+          # Keep assets reachable for previously cached HTML during the URL transition.
           cp -r lecture1/jansang-cinema/assets lecture1/jansang-cinema/css lecture1/jansang-cinema/js _site/ott-service/
           mkdir -p _site/gijunseon
           cp lecture1/gijunseon/*.html _site/gijunseon/
