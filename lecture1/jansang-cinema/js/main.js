@@ -1038,7 +1038,23 @@
     const grid = $("filmGrid");
     grid.classList.toggle("library-reading", state.view === "saved" && state.libraryView === "reading");
     grid.classList.toggle("library-compact", state.view === "saved" && state.libraryView === "compact");
-    grid.replaceChildren(...visible.map((film) => makeCard(film, state.view)));
+    const cards = visible.map((film) => makeCard(film, state.view));
+    // Pair consecutive films without notes; notes keep a full reading row.
+    // An unpaired film fills its row, preserving both reading and keyboard order.
+    if (state.view === "saved") {
+      let unnotedIndex = 0;
+      cards.forEach((card, index) => {
+        if (state.notes[visible[index].id]) {
+          card.dataset.readingSpan = "full";
+          unnotedIndex = 0;
+          return;
+        }
+        const nextWithoutNote = visible[index + 1] && !state.notes[visible[index + 1].id];
+        card.dataset.readingSpan = unnotedIndex % 2 === 0 && !nextWithoutNote ? "full" : "half";
+        unnotedIndex += 1;
+      });
+    }
+    grid.replaceChildren(...cards);
     const filtered =
       state.query.trim() ||
       state.mood !== "all" ||

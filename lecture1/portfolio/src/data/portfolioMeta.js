@@ -58,8 +58,8 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   };
 }
 
-const cinemaHome = media('detail/current/jansang-cover-20261107-1440.webp', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '2850 / 952', {
-  mobile: { src: 'detail/current/jansang-cover-20261107-390.webp', aspectRatio: '780 / 674', label: '모바일 홈 표지 · 파란 오후' },
+const cinemaHome = media('detail/current/jansang-cover-v73-1440.webp', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '2850 / 952', {
+  mobile: { src: 'detail/current/jansang-cover-v73-390.webp', aspectRatio: '780 / 674', label: '모바일 홈 표지 · 파란 오후' },
 });
 const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
   mobile: { src: 'detail/current/jansang-v63-exhibit-390.webp', aspectRatio: '688 / 622', label: '모바일 기획전 발췌 · 마지막 두 작품' },
@@ -123,25 +123,29 @@ export const PROJECT_DETAIL_READY = {
       },
       { title: '연주와 바통을 함께 보는 이유', layout: 'wide', summary: '‘마음을 건네는 방식’의 마지막 두 편을 묶은 말은 ‘마지막에 건네는 마음’입니다. ‘옥상의 작은 밴드’에서는 연주로, ‘마지막 바통’에서는 동료에게 내미는 손으로 마음을 전합니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
       {
-        title: '한 편을 고른 뒤, 내 메모까지',
-        summary: '‘별을 접는 아이’를 찜하면 상세에서 그 작품의 보관함 카드로 바로 갈 수 있습니다. 카드에서는 포스터와 내가 남긴 메모를 함께 읽습니다.',
+        title: '메모는 읽기부터, 수정은 선택해서',
+        evidence: [
+          { label: '김도한이 요청한 순서', text: '저장한 글을 먼저 읽고, 수정은 별도 행동으로 구분해 달라고 요청했습니다. ‘메모 읽기 / 작품 훑기’ 선택도 유지했습니다.' },
+          { label: '화면에 반영한 규칙', text: 'PC에서는 메모 없는 이웃 작품을 두 편씩 묶고, 메모가 있으면 한 줄을 사용합니다. 목록 순서를 유지하는 배치와 동작은 AI와 구체화했습니다.' },
+        ],
         sequence: [
-          media('detail/current/jansang-atlas-saved-1440.webp', '‘별을 접는 아이’를 찜한 뒤 표시되는 ‘보관함에서 보기’ 링크', '1922 / 1008', {
-            label: '작품 상세 · 찜한 뒤',
-            mobile: { src: 'detail/current/jansang-atlas-saved-390.webp', aspectRatio: '728 / 772', label: '모바일 작품 상세 발췌 · 찜한 뒤' },
+          media('detail/current/jansang-note-read-v73-1440.webp', '저장된 메모를 읽고 메모 수정 버튼을 눌러 편집하는 작품 상세', '961 / 720', {
+            label: '작품 상세 · 저장한 메모 읽기',
+            mobile: { src: 'detail/current/jansang-note-read-v73-390.webp', aspectRatio: '320 / 254', label: '모바일 상세 발췌 · 저장본과 메모 수정 버튼' },
           }),
-          media('detail/current/jansang-v63-library-390.webp', '같은 영화 카드 아래에 표시된 저장 메모', '780 / 842', {
-            label: '모바일 보관함 · 같은 영화에 남긴 예시 메모', frameWidth: 390,
+          media('detail/current/jansang-library-v73-1440.webp', '메모 없는 두 작품과 메모를 남긴 작품이 함께 있는 보관함', '1080 / 611', {
+            label: 'PC 보관함 · 메모 유무에 따른 카드 배치',
+            mobile: { src: 'detail/current/jansang-library-v73-390.webp', aspectRatio: '350 / 904', label: '모바일 보관함 · 예시 메모를 함께 읽는 목록' },
           }),
         ],
       },
     ],
     { actual: ['HTML·CSS·JavaScript 반응형 웹', '분위기·러닝타임·검색·정렬·작품 상세', '기획전 3개·찜·관심 메모·보관함'], demoStatic: ['가상 단편영화 12편과 AI 생성 이미지', '찜·메모는 해당 브라우저 localStorage 저장'], notIncluded: ['실제 영상 재생·예매·결제', '계정·외부 API·서버 저장'] },
     { imageFirst: true, creditsOnCover: true, presentation: 'focused-decisions', decisionsTitle: '표지에서 기획전, 보관함까지',
-      context: { summary: '잠깐 볼 영화를 찾을 때 제목보다 원하는 분위기와 남은 시간을 먼저 떠올리는 상황에서 출발했습니다.', goal: '모바일에서도 영화 장면이 먼저 보이고, 바로 아래에서 분위기와 시간을 골라 다른 작품을 찾을 수 있게 했습니다.' },
+      context: { summary: '제목을 정하지 않고 분위기와 남은 시간으로 영화를 고르는 상황을 가정했습니다. 김도한은 홈의 두 조건을 한 버튼 안에서 함께 선택하도록 요청했습니다.', goal: '모바일에서 이미지가 먼저 보이게 하고, 상단 영화 찾기는 홈의 선택 조건을 이어받지 않고 전체 작품에서 새로 검색하도록 정했습니다.' },
       hero: { summary: '분위기와 러닝타임으로 가상 단편영화 12편을 찾고, 마음에 남은 작품과 메모를 모으는 반응형 웹입니다.', media: [cinemaHome], mediaLabel: 'PC 홈 표지 · 파란 오후' },
       aiCollaboration: [
-        { label: '김도한', value: '편집 방향 선택·단독 표지 결정·모바일 검토' },
+        { label: '김도한', value: '편집 방향·단독 표지·필터 통합·메모 읽기 흐름 결정' },
         { label: 'AI 협업', value: '장면 선정·글·이미지 제작, UI 설계·구현·검사' },
       ],
       scopeSummary: [

@@ -1994,3 +1994,54 @@ body[data-view="browse"] .film-grid { gap: 24px; }
 }
 .event-lead .event-copy h3 { text-wrap: balance; }
 .event-lead .event-description { max-width: 30em; word-break: keep-all; }
+
+/* v73: the cover folio shares the logo's three offset frames. */
+.feature-credit { padding-left: 20px; }
+.feature-credit::before { content: none; }
+.feature-folio {
+  position: absolute;
+  left: -16px;
+  top: -5px;
+  width: 32px;
+  height: 27px;
+  color: #c1cddd;
+  pointer-events: none;
+}
+.feature-folio path { fill: none; stroke: currentColor; stroke-width: 1; }
+
+/* No-note entries use compact pairs; saved prose always retains a full row. */
+@media (min-width: 801px) {
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="full"]:has(.film-note-preview[hidden]) .saved-copy {
+    grid-template-columns: minmax(0,1fr) auto;
+    align-items: center;
+  }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="full"]:has(.film-note-preview[hidden]) .film-foot {
+    display: flex;
+    width: 100%;
+    max-width: none;
+    align-items: center;
+  }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="full"]:has(.film-note-preview[hidden]) .film-caption { flex: 1; }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="full"]:has(.film-note-preview[hidden]) .saved-actions { justify-content: flex-end; }
+}
+@media (min-width: 1101px) {
+  .catalog:not(.catalog--single) .film-grid.library-reading { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .catalog:not(.catalog--single) .library-reading .film-card { grid-column: 1/-1; }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"] {
+    grid-column: auto;
+    grid-template-columns: 64px minmax(0,1fr);
+    gap: 20px;
+    height: 100%;
+  }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"] .saved-copy {
+    display: block;
+    min-width: 0;
+  }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"]:has(.film-note-preview[hidden]) .film-foot {
+    display: flex;
+    align-items: flex-start;
+    max-width: none;
+  }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"] .film-caption { flex: 1; min-width: 0; }
+  .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"] .saved-actions { margin-top: 4px; }
+}
