@@ -18,7 +18,7 @@ function CaseCopy({ item }) {
       <p className="case-prompt">{question}</p>
       <p className="case-reason">{choice}</p>
       <Link className="case-read" to={`/projects/${project.slug || project.id}`} aria-label={`${project.title} 설계 과정 보기`}>
-        설계 과정 보기 <span aria-hidden="true">→</span>
+        설계 과정 보기
       </Link>
       <p className="case-credit">{scope}</p>
     </div>

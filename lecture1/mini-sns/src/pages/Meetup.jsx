@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
 import VideocamOutlined from "@mui/icons-material/VideocamOutlined";
-import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import ActivityTabs from "../components/ui/ActivityTabs";
 import MainLayout from "../components/layout/MainLayout";
 import { useDemoData } from "../hooks/useDemoData";
@@ -105,7 +104,7 @@ export default function Meetup() {
                   </div>
                   {m.joined ? (
                     <Link to={`/chat/${m.id}`} className="button secondary">
-                      대화 이어가기 <ArrowForwardRounded />
+                      대화 이어가기
                     </Link>
                   ) : (
                     <button

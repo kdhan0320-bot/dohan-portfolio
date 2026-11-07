@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { Alert, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, MenuItem, useMediaQuery } from '@mui/material';
 import Close from '@mui/icons-material/Close';
-import OpenInNew from '@mui/icons-material/OpenInNew';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
 import useApplicationDraft from '../../hooks/useApplicationDraft';
 import Field from '../ui/Field';
@@ -157,7 +156,7 @@ export default function ApplicationPanel({ application, creating, standalone = f
         <div className="company-panel-body">
           {error && <Alert severity="error">{error}</Alert>}
           {restored && <Alert severity="info">저장하지 않은 입력을 복원했어요.</Alert>}
-          {!creating && <div className="company-panel-identity"><span>{application.position || '직무 미입력'}</span>{application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" size="small" endIcon={<OpenInNew fontSize="small" />}>채용 공고</Button>}</div>}
+          {!creating && <div className="company-panel-identity"><span>{application.position || '직무 미입력'}</span>{application.job_url && isValidApplicationUrl(application.job_url) && <Button component="a" href={application.job_url} target="_blank" rel="noopener noreferrer" size="small" aria-label="채용 공고 (새 탭)">채용 공고</Button>}</div>}
           {creating ? <>
             {field('company_name', '회사 이름', { required: true, inputRef: companyInput, autoFocus: true, placeholder: '회사 이름' })}
             {field('position', '지원 직무', { placeholder: '예: UX/UI 디자이너' })}

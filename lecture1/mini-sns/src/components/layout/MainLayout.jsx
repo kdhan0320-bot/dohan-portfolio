@@ -10,7 +10,6 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-import ArrowOutwardRounded from "@mui/icons-material/ArrowOutwardRounded";
 import CloseRounded from "@mui/icons-material/CloseRounded";
 import TopBar from "./TopBar";
 import BottomNav, { NavItems } from "./BottomNav";
@@ -50,7 +49,7 @@ export default function MainLayout({ children, wide = false, chat = false }) {
               </div>
             </Link>
             <button className="text-button" onClick={() => setAbout(true)}>
-              이 공간에 대하여 <ArrowOutwardRounded fontSize="inherit" />
+              이 공간에 대하여
             </button>
             <small>© Mini SNS · 작은 기록의 힘</small>
           </div>
@@ -108,7 +107,7 @@ export default function MainLayout({ children, wide = false, chat = false }) {
                 </li>
               </ol>
               <Link to="/create">
-                나의 한 장 남기기 <ArrowOutwardRounded fontSize="small" />
+                나의 한 장 남기기
               </Link>
             </section>
             <section className="rail-section">
@@ -184,7 +183,7 @@ export default function MainLayout({ children, wide = false, chat = false }) {
             target="_blank"
             rel="noreferrer"
           >
-            제작 코드 보기 ↗
+            제작 코드 보기
           </a>
         </DialogContent>
         <DialogActions>

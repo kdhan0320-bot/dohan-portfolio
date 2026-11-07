@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
-import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { useAuth } from "../hooks/useAuth";
 import { SAMPLE_ART } from "../constants/samples";
 import { DEMO_USER } from "../constants/demoUser";
@@ -42,7 +41,7 @@ export default function Login() {
               navigate("/");
             }}
           >
-            작업실 둘러보기 <ArrowForwardRounded fontSize="small" />
+            작업실 둘러보기
           </button>
           <p className="login-note">
             가입 없이 바로 시작해요. 예시 인물과 콘텐츠로 구성된 체험 공간이며,

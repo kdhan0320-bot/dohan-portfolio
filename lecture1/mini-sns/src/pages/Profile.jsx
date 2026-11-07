@@ -98,7 +98,7 @@ export default function Profile() {
                 <div>
                   <strong>{m.name}</strong>
                   <span>
-                    {m.current} / {m.capacity}명 · 대화 이어가기 →
+                    {m.current} / {m.capacity}명 · 대화 이어가기
                   </span>
                 </div>
               </Link>

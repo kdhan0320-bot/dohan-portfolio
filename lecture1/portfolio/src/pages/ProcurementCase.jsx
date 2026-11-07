@@ -91,7 +91,7 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
           ))}
         </ol>
         <a className="text-link" href={liveUrl + ready.historyPath} target="_blank" rel="noreferrer">
-          품의선에서 실시간 이력 보기 <span aria-hidden="true">↗</span>
+          품의선에서 실시간 이력 보기
         </a>
       </section>
     </section>

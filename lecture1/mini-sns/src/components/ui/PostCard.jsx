@@ -21,7 +21,6 @@ import BookmarkBorderRounded from "@mui/icons-material/BookmarkBorderRounded";
 import BookmarkRounded from "@mui/icons-material/BookmarkRounded";
 import MoreHorizRounded from "@mui/icons-material/MoreHorizRounded";
 import CloseRounded from "@mui/icons-material/CloseRounded";
-import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import { useDemoData } from "../../hooks/useDemoData";
 import { DEMO_USER } from "../../constants/demoUser";
 import { formatDistanceToNow } from "../../utils/timeFormat";
@@ -109,7 +108,7 @@ export default function PostCard({
                 02
               </span>
             )}
-            기록 전체 보기 <ArrowForwardRounded fontSize="small" />
+            기록 전체 보기
           </Link>
         )}
         {post.reflection?.reason && (
@@ -152,7 +151,7 @@ export default function PostCard({
             alt={post.title}
             loading="lazy"
           />
-          <span>크게 보기 ↗</span>
+          <span>크게 보기</span>
         </button>
       )}
       {post.reflection?.question && (
@@ -165,14 +164,13 @@ export default function PostCard({
           </div>
           <p>{post.reflection.question}</p>
           <button className="question-reply" onClick={() => setComments(true)}>
-            의견 보태기 <ArrowForwardRounded fontSize="small" />
+            의견 보태기
           </button>
         </section>
       )}
       {post.meetupId && (
         <Link className="post-group-link" to={`/meetup?group=${post.meetupId}`}>
           <span>이 기록의 스터디 살펴보기</span>
-          <ArrowForwardRounded fontSize="small" />
         </Link>
       )}
       <div className="post-actions">

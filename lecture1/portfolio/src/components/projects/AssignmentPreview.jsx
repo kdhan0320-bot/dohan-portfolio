@@ -55,7 +55,7 @@ function AssignmentDetail({ compact, overview }) {
           <AssignmentFacts selected={selected} />
           <button className="pending-request__toggle" type="button" ref={trigger} aria-controls="pending-request-picker"
             aria-expanded={pickerOpen} onClick={() => setPickerOpen(open => !open)}>
-            {pickerOpen ? '담당자 선택 접기' : '담당자 선택'} <span aria-hidden="true">{pickerOpen ? '−' : '→'}</span>
+            {pickerOpen ? '담당자 선택 접기' : '담당자 선택'} <span aria-hidden="true">{pickerOpen ? '−' : '+'}</span>
           </button>
         </div>
         <figure className="pending-request__photo" hidden={pickerOpen}>
@@ -112,7 +112,7 @@ export default function AssignmentPreview({ children, showPicker = false }) {
         <AssignmentFacts />
         <Link to="/projects/seolbiit" className="assignment-action">
           <span>요청 확인·배정</span>
-          <span className="assignment-destination">선택 시안 보기 <span aria-hidden="true">→</span></span>
+          <span className="assignment-destination">선택 시안 보기</span>
         </Link>
       </div>
       <figcaption>

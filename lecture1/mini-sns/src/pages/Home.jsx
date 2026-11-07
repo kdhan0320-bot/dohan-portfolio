@@ -8,7 +8,6 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import SearchRounded from "@mui/icons-material/SearchRounded";
 import ImageOutlined from "@mui/icons-material/ImageOutlined";
-import ArrowForwardRounded from "@mui/icons-material/ArrowForwardRounded";
 import MainLayout from "../components/layout/MainLayout";
 import ActivityTabs from "../components/ui/ActivityTabs";
 import PostCard from "../components/ui/PostCard";
@@ -99,7 +98,7 @@ export default function Home() {
         <div className="feed-end">
           <span>여기까지, 오늘의 작은 발견들.</span>
           <Link to={withFeedReturn("/create", currentFeed)}>
-            나의 기록도 남겨볼까요? <ArrowForwardRounded fontSize="small" />
+            나의 기록도 남겨볼까요?
           </Link>
         </div>
       )}

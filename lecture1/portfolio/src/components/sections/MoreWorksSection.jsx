@@ -12,7 +12,7 @@ const MoreWorksSection = () => (
       <div className="industrial-heading">
         <div><p className="case-category">{industrial.categoryLabel}</p><h2 id="more-title">{industrial.title}</h2></div>
         <p>검사 사례에서 도입 상담까지 이어지는<br /> 산업용 비전 검사 웹사이트.</p>
-        <Link className="industrial-read" to={`/projects/${industrial.slug}`} aria-label="기준선 설계 과정 보기">설계 과정 보기 <span aria-hidden="true">→</span></Link>
+        <Link className="industrial-read" to={`/projects/${industrial.slug}`} aria-label="기준선 설계 과정 보기">설계 과정 보기</Link>
       </div>
       <figure>
         <picture>
@@ -24,8 +24,8 @@ const MoreWorksSection = () => (
           <span>기준선 웹사이트 · 첫 화면 발췌</span>
           <div className="industrial-destinations">
             <span className="industrial-destinations-label">기준선 사이트에서 더 보기</span>
-            <a href={industrial.liveUrl + '#solutions'} target="_blank" rel="noreferrer">검사 솔루션 보기 <span aria-hidden="true">↗</span></a>
-            <a href={industrial.liveUrl + 'adoption.html'} target="_blank" rel="noreferrer">도입 절차 알아보기 <span aria-hidden="true">↗</span></a>
+            <a href={industrial.liveUrl + '#solutions'} target="_blank" rel="noreferrer">검사 솔루션 보기</a>
+            <a href={industrial.liveUrl + 'adoption.html'} target="_blank" rel="noreferrer">도입 절차 알아보기</a>
           </div>
         </figcaption>
       </figure>
@@ -35,7 +35,7 @@ const MoreWorksSection = () => (
       <ul>{otherWork.map(project => (
         <li key={project.id}>
           <Link to={`/projects/${project.slug || project.id}`}>
-            <strong>{project.title}</strong><span>{project.categoryLabel}</span><span aria-hidden="true">→</span>
+            <strong>{project.title}</strong><span>{project.categoryLabel}</span>
           </Link>
         </li>
       ))}</ul>

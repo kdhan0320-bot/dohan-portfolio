@@ -359,12 +359,6 @@ a,button {
   text-underline-offset: 5px
 }
 
-.arrow {
-  flex: none;
-  width: auto;
-  height: auto
-}
-
 .site-footer {
   background: var(--page)
 }

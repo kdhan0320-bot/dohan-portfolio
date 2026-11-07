@@ -3413,9 +3413,6 @@ html {
     font-size: 13px;
     font-weight: 600;
   }
-  .feed-preview .record-read-more > svg {
-    margin-left: auto;
-  }
   .feed-preview .post-image {
     height: 148px;
     aspect-ratio: auto;
