@@ -1,4 +1,5 @@
-import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js?v=20261108a";
+import { updateContextLinks } from "./navigation.js?v=20261108b";
+import { familyDiagramMarkup, getProducts, PRODUCT_TYPES } from "./data.js?v=20261108b";
 
 const COMPARE_KEY = "gongjeongbom-compare";
 const INQUIRY_KEY = "gongjeongbom-inquiry-products";
@@ -59,8 +60,10 @@ export function getCompareIds() {
 }
 
 function saveCompareIds(ids) {
-  sessionStorage.setItem(COMPARE_KEY, JSON.stringify(ids));
+  try { sessionStorage.setItem(COMPARE_KEY, JSON.stringify(ids)); }
+  catch { showToast("비교 목록을 보관할 수 없습니다. 브라우저의 저장 설정을 확인해 주세요."); return false; }
   document.dispatchEvent(new CustomEvent("comparechange", { detail: ids }));
+  return true;
 }
 
 export function toggleCompare(product) {
@@ -73,7 +76,7 @@ export function toggleCompare(product) {
   const exists = current.some((candidate) => candidate.id === product.id);
 
   if (exists) {
-    saveCompareIds(current.filter((candidate) => candidate.id !== product.id).map(({ id }) => id));
+    if (!saveCompareIds(current.filter((candidate) => candidate.id !== product.id).map(({ id }) => id))) return { ok: false, message: "비교 목록을 변경하지 못했습니다." };
     announce(`${product.model}을 비교 목록에서 제거했습니다.`);
     return { ok: true, selected: false };
   }
@@ -90,22 +93,23 @@ export function toggleCompare(product) {
     return { ok: false, message };
   }
 
-  saveCompareIds([...current.map(({ id }) => id), product.id]);
+  if (!saveCompareIds([...current.map(({ id }) => id), product.id])) return { ok: false, message: "비교 목록을 변경하지 못했습니다." };
   announce(`${product.model}을 비교 목록에 추가했습니다.`);
   return { ok: true, selected: true };
 }
 
 export function clearCompare() {
-  saveCompareIds([]);
+  if (!saveCompareIds([])) return false;
   announce("비교 목록을 모두 비웠습니다.");
+  return true;
 }
 
 export function setInquiryProducts(ids) {
-  sessionStorage.setItem(INQUIRY_KEY, JSON.stringify(ids));
+  try { sessionStorage.setItem(INQUIRY_KEY, JSON.stringify(ids)); } catch { /* Explicit product URLs still work without storage. */ }
 }
 
 export function hasInquiryProducts() {
-  return sessionStorage.getItem(INQUIRY_KEY) !== null;
+  try { return sessionStorage.getItem(INQUIRY_KEY) !== null; } catch { return false; }
 }
 
 export function getInquiryProducts() {
@@ -204,6 +208,12 @@ function initCommon() {
   document.querySelectorAll("[data-family-diagram]").forEach((diagram) => {
     diagram.innerHTML = familyDiagramMarkup(diagram.dataset.familyDiagram);
   });
+  const stage = { products: 1, product: 1, compare: 2, inquiry: 3 }[pageName()];
+  if (stage) {
+    const labels = [["products.html", "문제·제품 찾기"], ["compare.html", "후보 비교"], ["inquiry.html", "공정 정리"]];
+    header?.insertAdjacentHTML("afterend", `<nav class="review-route" aria-label="제품 검토 순서"><div class="container"><span class="review-route__label">나의 검토 순서</span><ol>${labels.map(([href, label], index) => `<li><a href="${href}"${stage === index + 1 ? ' aria-current="step"' : ""}><span class="font-tech">0${index + 1}</span>${label}</a></li>`).join("")}</ol></div></nav>`);
+  }
+  updateContextLinks();
   updateCompareUi();
   document.addEventListener("comparechange", updateCompareUi);
 }

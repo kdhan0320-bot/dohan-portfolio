@@ -1,4 +1,5 @@
-import "./common.js?v=20261108a";
+import { currentFilters, updateContextLinks, contextHref } from "./navigation.js?v=20261108b";
+import "./common.js?v=20261108b";
 import {
   familyDiagramMarkup,
   getProduct,
@@ -6,13 +7,13 @@ import {
   products,
   PRODUCT_TYPES,
   productHref,
-} from "./data.js?v=20261108a";
-import { setInquiryProducts, showToast, toggleCompare, updateCompareUi } from "./common.js?v=20261108a";
+} from "./data.js?v=20261108b";
+import { setInquiryProducts, showToast, toggleCompare, updateCompareUi } from "./common.js?v=20261108b";
 
 const detailRoot = document.querySelector("#product-detail");
 const detailParams = new URLSearchParams(location.search);
 const productId = detailParams.get("id");
-const returnFilters = new URLSearchParams(detailParams.get("filters") || "").toString();
+const returnFilters = currentFilters();
 const listHref = "products.html" + (returnFilters ? "?" + returnFilters : "");
 
 function alternativeMarkup(text) {
@@ -62,6 +63,7 @@ function renderProduct(item) {
   document.title = `${item.model} 제품 상세 — 공정봄`;
   detailRoot.innerHTML = `
     <nav class="breadcrumb" aria-label="현재 위치"><div class="container"><a href="${listHref}">제품 목록</a><span aria-hidden="true">›</span><a href="products.html?type=${item.type}">${PRODUCT_TYPES[item.type]}</a><span aria-hidden="true">›</span><span aria-current="page" class="font-tech">${item.model}</span></div></nav>
+    <div class="container context-return"><a class="text-link" href="${detailParams.get("via") === "compare" ? contextHref("compare.html") : listHref}">← ${detailParams.get("via") === "compare" ? "비교로 돌아가기" : returnFilters ? "검색 결과로 돌아가기" : "제품 목록으로 돌아가기"}</a></div>
     <section class="product-hero section" id="overview"><div class="container product-hero__grid">
 
       <div class="product-summary"><p class="product-type-pill">${PRODUCT_TYPES[item.type]}</p><h1 class="font-tech">${item.model}</h1><h2>${detail.title}</h2><p>${detail.summary}</p>
@@ -69,7 +71,7 @@ function renderProduct(item) {
         <div class="button-row"><button class="button button--secondary" type="button" data-compare-id="${item.id}">비교 추가</button><a class="button button--primary product-inquiry" href="inquiry.html?products=${item.id}">기술 문의</a></div>
         <p class="demo-note">가상 제품 사양이며 실제 장비 선정에 사용할 수 없습니다.</p>
       </div>
-      <div class="product-visual">${productVisualMarkup(item)}<small>가상 제품 그래픽 · 실제 장비 외형 아님</small></div>
+      <div class="product-visual">${productVisualMarkup(item)}<small>가상 제품 구성도</small></div>
     </div></section>
     <nav class="anchor-nav" aria-label="제품 상세 목차"><div class="container"><a href="#fit">적합한 공정</a><a href="#specs">구성·사양</a><a href="#conditions">설치 조건</a><a href="#compare">다른 후보</a></div></nav>
     <section class="section section--muted product-fit" id="fit"><div class="container"><p class="eyebrow">제품 선택 도움</p><h2>이 공정에 맞을까요?</h2>
@@ -103,6 +105,7 @@ document.addEventListener("click", (event) => {
   const result = toggleCompare(candidate);
   if (!result.ok) showToast(result.message);
   updateCompareUi();
+updateContextLinks();
 });
 
 document.querySelectorAll(".product-inquiry").forEach((link) => {
@@ -110,3 +113,4 @@ document.querySelectorAll(".product-inquiry").forEach((link) => {
 });
 
 updateCompareUi();
+updateContextLinks();

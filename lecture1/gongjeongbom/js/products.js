@@ -1,4 +1,5 @@
-import "./common.js?v=20261108a";
+import { normalizeFilters, updateContextLinks } from "./navigation.js?v=20261108b";
+import "./common.js?v=20261108b";
 import {
   products,
   PRODUCT_TYPES,
@@ -7,7 +8,7 @@ import {
   familyDiagramMarkup,
   productHref,
   typeCounts,
-} from "./data.js?v=20261108a";
+} from "./data.js?v=20261108b";
 import {
   announce,
   clearCompare,
@@ -15,7 +16,7 @@ import {
   showToast,
   toggleCompare,
   updateCompareUi,
-} from "./common.js?v=20261108a";
+} from "./common.js?v=20261108b";
 
 const state = {
   query: "",
@@ -26,14 +27,14 @@ const state = {
 };
 
 function readUrlState() {
-  const params = new URLSearchParams(location.search);
+  const params = new URLSearchParams(normalizeFilters(location.search));
   state.query = params.get("q") || "";
   state.type = PRODUCT_TYPES[params.get("type")] ? params.get("type") : "";
   state.problems = new Set(params.getAll("problem").filter((value) => PROBLEM_LABELS[value]));
   state.level = ["basic", "multiple", "precision"].includes(params.get("level")) ? params.get("level") : "";
   state.connections = new Set(params.getAll("connection").filter((value) => ["built-in", "external-light", "ethernet", "data"].includes(value)));
 }
-function syncUrlState() {
+function syncUrlState(mode = "replace") {
   const params = new URLSearchParams();
   if (state.query.trim()) params.set("q", state.query.trim());
   if (state.type) params.set("type", state.type);
@@ -42,7 +43,7 @@ function syncUrlState() {
   state.connections.forEach((value) => params.append("connection", value));
   const query = params.toString();
   const url = location.pathname + (query ? "?" + query : "") + location.hash;
-  if (url !== location.pathname + location.search + location.hash) history.replaceState(null, "", url);
+  if (url !== location.pathname + location.search + location.hash) history[mode === "push" ? "pushState" : "replaceState"](null, "", url);
 }
 readUrlState();
 
@@ -162,7 +163,7 @@ function cardMarkup(product) {
       <div class="product-card__top"><span class="eyebrow">${PRODUCT_TYPES[product.type]}</span>${modelDiagramMarkup(product.model) || familyDiagramMarkup(product.type)}</div>
       <h3><a href="${productHref(product)}&filters=${encodeURIComponent(location.search.slice(1))}">${product.model}</a></h3>
       <p class="product-card__summary">${product.name}</p>
-      <p>잘 맞는 경우: ${product.fit}</p>
+      <p class="product-card__fit"><strong>검토 기준</strong>${product.fit}</p>
       <div class="chip-row">${product.chips.map((chip) => `<span>${chip}</span>`).join("")}</div>
       <div class="card-actions">
         <a class="button button--primary" href="${productHref(product)}&filters=${encodeURIComponent(location.search.slice(1))}" aria-label="${product.model} 상세 보기">상세 보기</a>
@@ -202,9 +203,12 @@ function focusCompareControl(productId) {
   else focusResultStatus();
 }
 
-function render() {
-  syncUrlState();
+function render(mode = "replace") {
+  syncUrlState(mode);
   const results = filteredProducts();
+  const searchStatus = document.querySelector(".search-status");
+  searchStatus.hidden = !state.query.trim();
+  searchStatus.querySelector("span").textContent = `‘${state.query.trim()}’ 검색 중 · ${results.length}개`;
   const label = state.type ? PRODUCT_TYPES[state.type] : "전체 제품";
   heading.textContent = `${label} · ${results.length}개`;
   document.querySelector(".mobile-result-count").textContent = `결과 ${results.length}개`;
@@ -217,7 +221,7 @@ function render() {
     ...[...state.connections].map((value) => ({ "built-in": "내장 구성", "external-light": "외부 조명", ethernet: "이더넷", data: "데이터 출력" })[value]),
   ].filter(Boolean);
   activeFilters.innerHTML = active.length
-    ? active.map((item) => `<span>${item}</span>`).join("") + '<button class="text-button reset-filter" type="button">전체 초기화</button>'
+    ? active.map((item) => `<span>${item}</span>`).join("") + '<button class="text-button reset-filter" type="button">필터 초기화</button>'
     : "";
   const compactFilters = [
     state.type && PRODUCT_TYPES[state.type],
@@ -234,17 +238,18 @@ function render() {
         <ul><li>한 곳인가요, 여러 곳인가요?</li><li>결과를 저장하거나 전송해야 하나요?</li><li>나중에 구성을 바꿀 가능성이 있나요?</li></ul>
         <a class="text-link" href="index.html#guide">제품 종류 선택 가이드 →</a>
       </article>`
-    : '<div class="empty-state"><h3>조건에 맞는 제품이 없습니다.</h3><p>검색어나 필터를 줄여 다시 확인해 주세요.</p><button class="button button--secondary reset-filter" type="button">필터 초기화</button></div>';
+    : '<div class="empty-state"><h3>조건에 맞는 제품이 없습니다.</h3><p>검색어나 필터를 줄여 다시 확인해 주세요.</p><button class="button button--secondary reset-filter reset-all" type="button">검색·필터 모두 초기화</button></div>';
   renderCompareBar();
   syncControls();
   updateCompareUi();
+  updateContextLinks();
   announce(`조건에 맞는 제품 ${results.length}개입니다.`);
 }
 
 function renderCompareBar() {
   const selected = products.filter((product) => getCompareIds().includes(product.id));
   compareBar.hidden = selected.length === 0;
-  const compareLink = compareBar.querySelector('a[href="compare.html"]');
+  const compareLink = compareBar.querySelector('.compare-results-link');
   compareLink.textContent = selected.length >= 2 ? `비교하기 (${selected.length})` : "1개 더 선택하세요";
   compareLink.setAttribute("aria-disabled", String(selected.length < 2));
   if (!selected.length) return;
@@ -272,11 +277,10 @@ function clearFilterState(target) {
   target.connections.clear();
 }
 
-function resetFilters() {
-  state.query = "";
+function resetFilters(clearQuery = false) {
+  if (clearQuery) { state.query = ""; searchInput.value = ""; }
   clearFilterState(state);
-  searchInput.value = "";
-  render();
+  render("push");
 }
 
 filterPanel.innerHTML = filterMarkup();
@@ -284,20 +288,20 @@ mobileFilterBody.innerHTML = filterMarkup("mobile-");
 
 searchInput.value = state.query;
 window.addEventListener("popstate", () => { readUrlState(); searchInput.value = state.query; render(); });
-searchInput.addEventListener("search", () => { state.query = searchInput.value; render(); });
-compareBar.querySelector('a[href="compare.html"]').addEventListener("click", (event) => { if (getCompareIds().length < 2) event.preventDefault(); });
+searchInput.addEventListener("search", () => { state.query = searchInput.value.trim().slice(0, 120); render("push"); });
+compareBar.querySelector('.compare-results-link').addEventListener("click", (event) => { if (getCompareIds().length < 2) event.preventDefault(); });
 
 searchForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  state.query = searchInput.value;
-  render();
+  state.query = searchInput.value.trim().slice(0, 120);
+  render("push");
 });
 
 tabs.addEventListener("click", (event) => {
   const button = event.target.closest("[data-type]");
   if (!button) return;
   state.type = button.dataset.type;
-  render();
+  render("push");
   focusTypeControl(state.type);
 });
 
@@ -309,7 +313,7 @@ document.addEventListener("change", (event) => {
     syncControls();
   } else {
     updateStateFromControl(event.target);
-    render();
+    render("push");
   }
 });
 
@@ -323,6 +327,13 @@ document.addEventListener("click", (event) => {
     focusCompareControl(product.id);
     return;
   }
+  if (event.target.closest(".clear-search")) {
+    state.query = "";
+    searchInput.value = "";
+    render("push");
+    searchInput.focus();
+    return;
+  }
   const reset = event.target.closest(".reset-filter");
   if (reset) {
     if (filterDialog.open && filterDialog.contains(reset)) {
@@ -331,7 +342,7 @@ document.addEventListener("click", (event) => {
       syncControls();
       return;
     }
-    resetFilters();
+    resetFilters(reset.classList.contains("reset-all"));
     if (!reset.isConnected || !isVisible(reset)) focusResultStatus();
     return;
   }
@@ -355,7 +366,7 @@ filterDialog.querySelector(".apply-filter").addEventListener("click", () => {
   if (filterDraft) replaceFilterState(state, filterDraft);
   filterDraft = null;
   filterDialog.close();
-  render();
+  render("push");
 });
 filterDialog.addEventListener("close", () => {
   filterDraft = null;

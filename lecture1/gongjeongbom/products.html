@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="검사 문제와 제품 종류로 공정봄의 가상 제조 검사 제품 7개를 검색하고 비교합니다.">
   <title>제품 찾기 — 공정봄</title>
-  <link rel="stylesheet" href="css/style.css?v=20261108a">
-  <link rel="icon" href="assets/graphics/brand-mark.svg?v=20261108a" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=20261108b">
+  <link rel="icon" href="assets/graphics/brand-mark.svg?v=20261108b" type="image/svg+xml">
 </head>
 <body data-page="products">
   <header class="site-header"></header>
@@ -18,9 +18,10 @@
         <p class="lead">조건에 맞는 후보를 찾고, 같은 종류의 제품을 나란히 비교하세요.</p>
         <form class="product-search" role="search">
           <label for="product-search">제품 검색</label>
-          <div><input id="product-search" type="search" placeholder="제품명·모델명·검사 작업을 검색하세요."><button class="button button--primary" type="submit">검색</button></div>
+          <div><input id="product-search" type="search" maxlength="120" placeholder="제품명·모델명·검사 작업을 검색하세요."><button class="button button--primary" type="submit">검색</button></div>
           <small>모델명 또는 해결 문제로 검색</small>
         </form>
+        <div class="search-status" role="status" hidden><span></span><button class="text-button clear-search" type="button">검색어 지우기 ×</button></div>
         <div class="type-tabs" aria-label="제품 종류"></div>
         <div class="mobile-filter-row">
           <button class="button button--secondary filter-trigger" type="button" aria-haspopup="dialog" aria-controls="filter-dialog">필터 <span class="filter-count">0</span></button>
@@ -40,7 +41,7 @@
       </div>
     </section>
     <section class="compare-bar" hidden>
-      <div class="container"><div><strong class="compare-bar__title"></strong><span class="compare-bar__models"></span></div><div><button class="button button--secondary clear-compare" type="button">모두 지우기</button><a class="button button--primary" href="compare.html">비교 보기</a></div></div>
+      <div class="container"><div><strong class="compare-bar__title"></strong><span class="compare-bar__models"></span></div><div><button class="button button--secondary clear-compare" type="button">모두 지우기</button><a class="button button--primary compare-results-link" href="compare.html">비교 보기</a></div></div>
     </section>
     <section class="disclosure"><div class="container"><strong>가상 제품과 사양</strong><span>가상 제품으로 구성한 탐색 데모입니다. 실제 장비 선정에는 사용할 수 없습니다.</span></div></section>
   </main>
@@ -50,6 +51,6 @@
     <div class="sheet-dialog__body mobile-filter-body"></div>
     <div class="sheet-actions filter-actions"><button class="button button--secondary reset-filter" type="button">필터 초기화</button><button class="button button--primary apply-filter" type="button">제품 보기</button></div>
   </dialog>
-  <script type="module" src="js/products.js?v=20261108a"></script>
+  <script type="module" src="js/products.js?v=20261108b"></script>
 </body>
 </html>

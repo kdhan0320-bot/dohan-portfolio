@@ -1,6 +1,7 @@
-import "./common.js?v=20261108a";
-import { getProducts, PRODUCT_TYPES } from "./data.js?v=20261108a";
-import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js?v=20261108a";
+import { updateContextLinks } from "./navigation.js?v=20261108b";
+import "./common.js?v=20261108b";
+import { getProducts, PRODUCT_TYPES } from "./data.js?v=20261108b";
+import { clearCompare, getCompareIds, setInquiryProducts, toggleCompare } from "./common.js?v=20261108b";
 
 const page = document.querySelector("#compare-page");
 let selected = getProducts(getCompareIds());
@@ -33,7 +34,7 @@ function render() {
   const addHref = type ? `products.html?type=${type}` : "products.html";
   const selection = selected.length ? `<div class="compare-selection ${selected.length === 3 ? "compare-selection--three" : ""}">${selected.map((product) => `<article><a href="product.html?id=${product.id}"><strong>${product.model}</strong><small>${PRODUCT_TYPES[product.type]} · 상세 보기 ↗</small></a><button class="text-button" type="button" data-remove-compare="${product.id}" aria-label="${product.model} 비교에서 제거">제거 ×</button></article>`).join("")}</div>` : "";
   page.innerHTML = `
-    <section class="page-hero compare-hero"><div class="container">
+    <section class="page-hero compare-hero"><div class="container"><a class="text-link context-return" href="products.html">← 검색 결과로 돌아가기</a>
       <p class="eyebrow">제품 비교 / COMPARE</p><h1>${enough ? "차이를 보고, 선택을 좁히세요." : "함께 볼 제품을 골라주세요."}</h1>
       <p class="lead">${enough ? "연한 초록색 행은 선택한 제품의 값이 다른 항목입니다." : "같은 종류의 제품 2~3개를 나란히 비교할 수 있습니다."}</p>
       ${selected.length ? `<div class="compare-toolbar"><span class="product-type-pill">${PRODUCT_TYPES[type]} · ${selected.length}개 선택</span><div class="button-row">${enough ? `<button class="button button--secondary difference-toggle" type="button" aria-pressed="${differencesOnly}">차이만 보기</button>` : ""}<button class="text-button clear-compare" type="button">전체 비우기</button></div></div>` : ""}
@@ -48,12 +49,14 @@ function render() {
       ` : `<div class="empty-state"><h2>${selected.length ? "비교할 제품을 하나 더 선택하세요." : "아직 담은 제품이 없습니다."}</h2><p>${selected.length ? "선택한 제품과 같은 종류의 모델을 추가하면 비교표가 나타납니다." : "제품 목록에서 ‘비교 추가’를 눌러 후보를 담아보세요."}</p><a class="button button--primary" href="${addHref}">${type ? PRODUCT_TYPES[type] + " 더 보기" : "제품 찾기"} ↗</a></div>`}
     </div></section>
     <section class="disclosure"><div class="container"><strong>가상 제품 비교</strong><span>구성 차이를 살펴보는 데모입니다. 실제 장비 선정에는 제조사 사양과 현장 조건 검토가 필요합니다.</span></div></section>`;
+  updateContextLinks();
 }
 document.addEventListener("click", (event) => {
   const remove = event.target.closest("[data-remove-compare]");
   if (remove) {
     const index = selected.findIndex(({ id }) => id === remove.dataset.removeCompare);
-    toggleCompare(selected[index]);
+    const result = toggleCompare(selected[index]);
+    if (!result.ok) return;
     selected = getProducts(getCompareIds());
     render();
     const controls = [...page.querySelectorAll("[data-remove-compare]")];
@@ -63,7 +66,7 @@ document.addEventListener("click", (event) => {
     render();
     page.querySelector(".difference-toggle").focus({preventScroll:true});
   } else if (event.target.closest(".clear-compare")) {
-    clearCompare();
+    if (!clearCompare()) return;
     selected = [];
     differencesOnly = false;
     render();
