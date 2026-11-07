@@ -61,17 +61,10 @@
     {
       "name": "scratch",
       "source": "451-1002-img6.png",
-      "aliases": [
-        "home-img28.png",
-        "451-2246-img5.png"
-      ],
-      "widths": [
-        480,
-        800,
-        1000
-      ],
+      "aliases": [],
+      "widths": [],
       "quality": 94,
-      "role": "Product image; maximum original resolution retained for CSS 2x inspection crop",
+      "role": "Product image served from byte-identical canonical JPEG for inspection zoom; unused WebP variants removed.",
       "original": {
         "width": 1000,
         "height": 750,
@@ -81,32 +74,7 @@
         "bytes": 29476,
         "sha256": "df796c340b0feebf223344c3c4bde20856baa8288b491c4f0398fe40c90ea407"
       },
-      "variants": [
-        {
-          "filename": "scratch-480.webp",
-          "width": 480,
-          "height": 360,
-          "bytes": 18500,
-          "sha256": "ead82aa6a47c09636da4eef7395713e289ce36b301b79f3b31a7a9cb225ef37a",
-          "smallerThanOriginal": true
-        },
-        {
-          "filename": "scratch-800.webp",
-          "width": 800,
-          "height": 600,
-          "bytes": 44026,
-          "sha256": "39b80c6f31de082980362ebc60fa2c49e680f0551de6ddc91679860228f27da4",
-          "smallerThanOriginal": false
-        },
-        {
-          "filename": "scratch-1000.webp",
-          "width": 1000,
-          "height": 750,
-          "bytes": 52756,
-          "sha256": "d8d2f875297f4f870027210fe8af75697a087da9e9d3fb9d42cda2adfb257e29",
-          "smallerThanOriginal": false
-        }
-      ],
+      "variants": [],
       "keepOriginalForZoom": true,
       "canonical": {
         "filename": "scratch-original.jpg",
@@ -120,16 +88,10 @@
     {
       "name": "missing",
       "source": "451-1181-img6.png",
-      "aliases": [
-        "home-img30.png"
-      ],
-      "widths": [
-        480,
-        800,
-        1000
-      ],
+      "aliases": [],
+      "widths": [],
       "quality": 94,
-      "role": "Product image; maximum original resolution retained for CSS 2x inspection crop",
+      "role": "Product image served from byte-identical canonical JPEG for inspection zoom; unused WebP variants removed.",
       "original": {
         "width": 1000,
         "height": 750,
@@ -139,32 +101,7 @@
         "bytes": 31871,
         "sha256": "21dd3f14575ca7953626f0ed6a133f90dd2695d727a064250ff5057a80cd4cb2"
       },
-      "variants": [
-        {
-          "filename": "missing-480.webp",
-          "width": 480,
-          "height": 360,
-          "bytes": 18188,
-          "sha256": "5d1d05fb013ac937130818c835c1762cf85f401197d2fdb924f5725690bb172e",
-          "smallerThanOriginal": true
-        },
-        {
-          "filename": "missing-800.webp",
-          "width": 800,
-          "height": 600,
-          "bytes": 46158,
-          "sha256": "1961b2aa9113aed8c5b54965e8bfdba49603ab91187b5994398403f7191131e3",
-          "smallerThanOriginal": false
-        },
-        {
-          "filename": "missing-1000.webp",
-          "width": 1000,
-          "height": 750,
-          "bytes": 57468,
-          "sha256": "fff0ffecc0dee1fef96457267659292fc9a9f44530027f1ebb2860a66c5f36f0",
-          "smallerThanOriginal": false
-        }
-      ],
+      "variants": [],
       "keepOriginalForZoom": true,
       "canonical": {
         "filename": "missing-original.jpg",
@@ -178,9 +115,7 @@
     {
       "name": "print",
       "source": "451-1360-img6.png",
-      "aliases": [
-        "home-img32.png"
-      ],
+      "aliases": [],
       "widths": [
         480,
         800,
