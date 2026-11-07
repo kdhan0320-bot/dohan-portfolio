@@ -94,7 +94,7 @@ function AssigneePicker({ selected, onSelect, compact }) {
       <figcaption>
         <span>담당자 선택 시연{compact && ' · 모바일 재구성'}</span>
         <a href={assets + 'seolbigyeol-assignee-picker.webp'} target="_blank" rel="noopener noreferrer"
-          aria-label="담당자 선택 Figma 원본 시안 보기 (새 탭)">원본 시안 보기</a>
+          aria-label="담당자 선택 원본 새 탭에서 보기">원본 보기</a>
       </figcaption>
     </figure>
   );
@@ -116,9 +116,9 @@ export default function AssignmentPreview({ children, showPicker = false }) {
         </Link>
       </div>
       <figcaption>
-        <span>설비결 시안 · 모바일용 재구성</span>
+        <span>설비결 시안 · 모바일 재구성</span>
         <a href={assets + 'seolbigyeol-assignment-2x.webp'} target="_blank" rel="noopener noreferrer"
-          aria-label="설비결 배정 카드 원본 보기 (새 탭)">원본 카드 보기</a>
+          aria-label="설비결 배정 카드 원본 새 탭에서 보기">원본 보기</a>
       </figcaption>
     </figure>
   );
