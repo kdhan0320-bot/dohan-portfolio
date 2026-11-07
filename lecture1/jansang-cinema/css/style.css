@@ -2029,7 +2029,7 @@ body[data-view="browse"] .film-grid { gap: 24px; }
   .catalog:not(.catalog--single) .library-reading .film-card { grid-column: 1/-1; }
   .catalog:not(.catalog--single) .library-reading .film-card[data-reading-span="half"] {
     grid-column: auto;
-    grid-template-columns: 64px minmax(0,1fr);
+    grid-template-columns: 80px minmax(0,1fr);
     gap: 20px;
     height: 100%;
   }
