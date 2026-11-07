@@ -8,8 +8,6 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import ScheduleRounded from "@mui/icons-material/ScheduleRounded";
-import VideocamOutlined from "@mui/icons-material/VideocamOutlined";
 import ActivityTabs from "../components/ui/ActivityTabs";
 import MainLayout from "../components/layout/MainLayout";
 import { useDemoData } from "../hooks/useDemoData";
@@ -80,11 +78,9 @@ export default function Meetup() {
                 <p className="meetup-description">{m.description}</p>
                 <div className="meetup-details">
                   <span>
-                    <ScheduleRounded />
                     {m.schedule} · {m.duration}
                   </span>
                   <span>
-                    <VideocamOutlined />
                     {m.location}
                   </span>
                 </div>

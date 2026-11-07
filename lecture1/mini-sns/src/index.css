@@ -347,10 +347,6 @@ textarea {
   color: #566273;
   flex: 1;
 }
-.composer > svg {
-  font-size: 21px;
-  color: #566273;
-}
 .composer:hover {
   border-color: #aab3db;
 }
@@ -944,10 +940,6 @@ textarea {
   display: flex;
   align-items: center;
   gap: 9px;
-}
-.meetup-details svg {
-  font-size: 17px;
-  color: #566273;
 }
 .meetup-topic {
   background: #f6f5f1;
@@ -2388,8 +2380,7 @@ a {
 }
 .search-box svg,
 .reaction,
-.save-button,
-.composer > svg {
+.save-button {
   color: #566273;
 }
 .reaction,
@@ -2450,8 +2441,7 @@ a {
 .composer {
   border-color: #c9cbd3;
   border-radius: 8px 8px 3px 3px;
-  border-bottom: 3px solid #414fa6;
-  box-shadow: 0 4px 0 -1px #e5e3db;
+  box-shadow: none;
 }
 .composer span {
   color: #35438d;
@@ -2465,35 +2455,7 @@ a {
 .post-card {
   border-color: #d3d6df;
   border-radius: 8px;
-  box-shadow:
-    0 5px 0 -2px #f0eee5,
-    0 6px 0 -2px #d3d6cf;
-}
-.record-edge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-height: 33px;
-  padding: 0 22px;
-  border-bottom: 1px solid #e2e3dc;
-  background: #f7f6f1;
-}
-.record-edge > span {
-  font-size: 12px;
-  color: #566273;
-  margin-right: auto;
-  letter-spacing: 0.6px;
-}
-.record-edge i {
-  width: 18px;
-  height: 5px;
-  background: #414fa6;
-}
-.record-edge i:nth-of-type(2) {
-  background: #b77b52;
-}
-.record-edge i:nth-of-type(3) {
-  background: #47745d;
+  box-shadow: none;
 }
 .post-author > span,
 .category-label {
@@ -2718,7 +2680,7 @@ a {
 .meetup-card {
   border-color: #d3d6cf;
   border-radius: 6px 20px 6px 6px;
-  box-shadow: 0 4px 0 -1px #e6e8df;
+  box-shadow: none;
 }
 .meetup-card-top {
   align-items: flex-start;
@@ -2728,9 +2690,7 @@ a {
 }
 .group-symbol {
   border-radius: 3px 12px 3px 3px;
-  box-shadow:
-    3px 3px 0 -1px #fff,
-    4px 4px 0 -1px #c0c6d0;
+  box-shadow: none;
 }
 .meetup-topic {
   border-left: 3px solid #946343;
@@ -3075,9 +3035,6 @@ a {
   .post-header .category-label {
     display: none;
   }
-  .record-edge {
-    padding-inline: 16px;
-  }
   .record-question {
     margin-inline: 16px;
     padding: 13px;
@@ -3376,9 +3333,6 @@ html {
   .feed-controls {
     gap: 4px;
     margin-bottom: 10px;
-  }
-  .feed-preview .record-edge {
-    min-height: 24px;
   }
   .feed-preview .post-header {
     padding-top: 10px;

@@ -7,7 +7,6 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import SearchRounded from "@mui/icons-material/SearchRounded";
-import ImageOutlined from "@mui/icons-material/ImageOutlined";
 import MainLayout from "../components/layout/MainLayout";
 import ActivityTabs from "../components/ui/ActivityTabs";
 import PostCard from "../components/ui/PostCard";
@@ -50,7 +49,6 @@ export default function Home() {
       <Link to={withFeedReturn("/create", currentFeed)} className="composer">
         <Avatar src={profile.profile_image_url} />
         <span>오늘의 시도 한 줄, 남겨볼까요?</span>
-        <ImageOutlined />
       </Link>
       <ActivityTabs
         id="feed"

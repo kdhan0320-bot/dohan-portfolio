@@ -48,12 +48,6 @@ export default function PostCard({
       aria-label={post.title || "작업 기록"}
       data-post-id={post.id}
     >
-      <div className="record-edge" aria-hidden="true">
-        <span>기록 한 장</span>
-        <i />
-        <i />
-        <i />
-      </div>
       <div className="post-header">
         <Avatar
           src={post.profiles.profile_image_url}

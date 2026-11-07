@@ -223,7 +223,7 @@ h3 {
 .heading-icon[data-kind='chat'] { color: #6B5985; background: #F0ECF6; }
 .heading-icon[data-kind='write'] { color: #805E24; background: #FAF1DE; }
 .heading-icon[data-kind='overview'] { color: #536579; background: #E9EEF3; }
-.page-heading-illustrated .page-heading-copy > .muted { margin-left: 54px; }
+.page-heading-illustrated .page-heading-copy > .muted { margin-left: 0; }
 .heading-actions {
   display: flex;
   align-items: center;

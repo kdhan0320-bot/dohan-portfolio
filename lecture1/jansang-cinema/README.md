@@ -55,3 +55,9 @@ python -m http.server 4178 --bind 127.0.0.1
 - 서비스 공개 주소: https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/
 - 작품 소개: https://kdhan0320-bot.github.io/dohan-portfolio/my-portfolio/#/projects/jansang-cinema
 - 기존 서비스 /ott-service/와 소개 /projects/ott-service는 새 주소로 연결합니다. 서비스의 검색 문자열과 hash 경로를 유지하며, 영화 ID·localStorage 저장 키·형식은 변경하지 않습니다.
+
+## 아이콘·장식 정리 — 2026-11-08
+
+필터의 ‘보기·선택 완료’ 버튼에 반복되던 체크 장식을 제거했습니다. 선택된 분위기·시간의 체크 표시, 찜 상태, 검색·보기 전환은 유지합니다. 영화 장면·포스터·겹친 프레임이 만드는 영화 전시관의 시각적 개성은 그대로 둡니다.
+
+사용자가 정한 “각 작품의 개성을 유지하며 불필요한 아이콘과 과한 장식을 줄인다”는 기준에 따른 웹 표현 조정입니다. 원본 이미지·로고·Figma는 변경하지 않았습니다.

@@ -92,9 +92,6 @@ function FoldedSheet() {
         </span>
         <span className="fold-handle">
           표지 펼치기
-          <svg aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M4 8.5 9 6l6 3 5-2.5v10L15 19l-6-3-5 2.5zM9 6v10m6-7v10"/>
-          </svg>
         </span>
       </button>
     </figure>
