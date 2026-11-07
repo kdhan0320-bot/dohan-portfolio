@@ -263,7 +263,7 @@ export const fallbackProjects = [
     "id": "brewstep",
     "slug": "brewstep",
     "title": "소요빛",
-    "description": "음료 사진과 메뉴 탐색을 중심으로 구성한 카페 모바일 UI",
+    "description": "음료 추천부터 즐겨찾기·마이페이지까지 구성한 카페 모바일 앱 UI",
     "category": "카페 앱 디자인",
     "categories": [
       "more-work",
@@ -317,11 +317,11 @@ export const fallbackProjects = [
     "result": "홈·메뉴·즐겨찾기·소식·마이까지 카페 모바일 앱의 전체 화면 흐름을 구성했습니다.",
     "lesson": "음식 사진의 인상과 실제 메뉴명·가격의 가독성을 함께 다뤄야 합니다.",
     "nextStep": "최신 디자인 기준으로 상세·장바구니·주문 흐름을 정의하고 사용자 검토가 필요합니다.",
-    "limitation": "스플래시·홈·메뉴·즐겨찾기·소식·마이 6개 화면과 리워드·쿠폰 구성까지 설계한 Figma 디자인입니다. 실제 주문·결제·재고 연동과 앱 코드 구현은 포함하지 않습니다.",
+    "limitation": "첫 진입부터 즐겨찾기·혜택 확인까지 하나의 흐름으로 이어지도록 스플래시·홈·메뉴·즐겨찾기·소식·마이 6개 화면과 리워드·쿠폰 구성까지 설계한 Figma 디자인입니다. 실제 주문·결제·재고 연동과 앱 코드 구현은 포함하지 않습니다.",
     "dataUsage": "음료·가격·프로모션은 디자인 시안의 예시이며 실제 판매 정보가 아닙니다.",
     "aiContribution": "김도한은 요구사항과 개선 피드백, 방향 선택과 공개 판단을 맡았습니다. AI는 디자인 제안·검토, 화면 편집 또는 코드 작성·검사에 참여했습니다. 사용자 조사나 성과 측정으로 표현하지 않습니다.",
     "cardProblem": "음료의 인상과 메뉴 정보를 함께 보여주는 모바일 화면입니다.",
-    "cardLimit": "홈·메뉴·마이 등 전체 화면 시안 · 실제 주문·결제 미구현",
+    "cardLimit": "스플래시~마이 전체 화면 시안 · 실제 주문·결제 미구현",
     "accentColor": "#456D95",
     "figmaDesignUrl": "https://www.figma.com/design/cvfT9QazAFaXVAxZfeUdvr?node-id=1289-674"
   },  {
