@@ -85,11 +85,24 @@ const AboutPage = () => (
                 <li><Link to="/projects/jansang-cinema">잔상관</Link><span>편집 방향을 선택하고 홈의 단독 표지를 결정했습니다. 모바일 화면도 검토했습니다.</span></li>
               </ul>
               <p>Figma 화면을 직접 편집하며 웹퍼블리싱을 배우고 있습니다.</p>
+              <ul className="about-skill-badges" aria-label="직접 다루는 도구">
+                <li>Figma</li>
+                <li>HTML</li>
+                <li>CSS</li>
+              </ul>
             </dd>
           </div>
           <div>
             <dt>AI 협업</dt>
-            <dd>설비결의 Figma 화면 구성을 제안하고 편집·검토했습니다. 웹 작품에서는 시각 시안을 제안하고 코드를 작성·검사했습니다.</dd>
+            <dd>
+              <p>설비결의 Figma 화면 구성을 제안하고 편집·검토했습니다. 웹 작품에서는 시각 시안을 제안하고 코드를 작성·검사했습니다.</p>
+              <ul className="about-skill-badges" aria-label="AI와 함께 다루는 도구">
+                <li>React</li>
+                <li>GitHub</li>
+                <li>ChatGPT</li>
+                <li>Claude</li>
+              </ul>
+            </dd>
           </div>
         </dl>
       </section>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
 import './moreWorks.css';
 
-const industrial = ALL_PROJECTS.find(project => project.id === 'gongjeongbom');
+const industrial = ALL_PROJECTS.find(project => project.id === 'gijunseon');
 const otherWork = ALL_PROJECTS.filter(project => ['jobflow', 'bus-arrival-app', 'brewstep'].includes(project.id));
 const media = `${import.meta.env.BASE_URL}detail/current/`;
 
@@ -35,7 +35,10 @@ const MoreWorksSection = () => (
       <ul>{otherWork.map(project => (
         <li key={project.id}>
           <Link to={`/projects/${project.slug || project.id}`}>
-            <strong>{project.title}</strong><span>{project.categoryLabel}</span>
+            <span className="remaining-thumb">
+              {project.thumbnailUrl && <img src={project.thumbnailUrl} alt={project.thumbnailAlt} loading="lazy" decoding="async" />}
+            </span>
+            <span className="remaining-copy"><strong>{project.title}</strong><span>{project.categoryLabel}</span></span>
           </Link>
         </li>
       ))}</ul>
