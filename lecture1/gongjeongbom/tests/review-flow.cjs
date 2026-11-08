@@ -3,6 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const base = (process.env.GONGJEONGBOM_URL || 'http://127.0.0.1:4180/').replace(/\/?$/, '/');
 const out = path.resolve(__dirname, '../../../tools/site-audit-kit/audit-output');
+fs.mkdirSync(out, { recursive: true });
 const report = { base, screens: [], flows: [], errors: [], requests: [] };
 const key = 'gongjeongbom-process-draft-v1';
 const ids = ['mv-x300', 'mv-x500', 'mv-x700'];
