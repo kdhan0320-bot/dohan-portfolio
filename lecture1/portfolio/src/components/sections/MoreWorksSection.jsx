@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
 import './moreWorks.css';
 
-const industrial = ALL_PROJECTS.find(project => project.id === 'gijunseon');
+const industrial = ALL_PROJECTS.find(project => project.id === 'gongjeongbom');
 const otherWork = ALL_PROJECTS.filter(project => ['jobflow', 'bus-arrival-app', 'brewstep'].includes(project.id));
 const media = `${import.meta.env.BASE_URL}detail/current/`;
 
