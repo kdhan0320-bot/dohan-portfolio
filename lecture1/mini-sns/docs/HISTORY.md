@@ -1,5 +1,31 @@
 # Mini SNS 작업 기록
 
+## 2026-11-08 · D드라이브 폴더 정리와 최종 재검수
+
+사용자가 미니 SNS에 한해 불필요한 이전 자료를 삭제하고 최종 기능을 확인하도록 요청했습니다. 작업 시작 시 저장소 기준은 `9d5986b`이며, 이후 확정된 화살표·아이콘·장식 정리를 포함한 현재 화면을 유지했습니다.
+
+### 정리한 항목
+
+- 실행 진입점과 테스트의 참조를 추적해 연결되지 않은 `src/components/layout/PageHeroHeader.jsx`, `src/components/layout/pageHeroStyles.js`, `src/assets/samples/sample-fallback.svg` 3개를 제거했습니다.
+- `review/mini-sns/`의 이전 시안·중복·실패 캡처와 결과 80개, `tools/site-audit-kit/audit-output/`의 미니 SNS 전용 과거 캡처·임시 스크립트 60개를 제거했습니다. 다른 작품과 함께 쓰는 검사 도구와 결과는 유지했습니다.
+- 미니 SNS의 `node_modules/.vite` 캐시 152개 파일을 제거했습니다. 위 항목의 삭제 시점 합계는 295개 파일, 20,404,616바이트이며, 아래에서 새로 생성한 최신 검수 자료의 크기는 이 수치에 포함하지 않습니다.
+- 현재 의존성·환경 설정·최신 `dist`·작업 기록·지정된 복구용 백업은 보존했습니다. 현재 원본과 복구용 과거 사본을 구분하고, 다른 작품 파일은 정리 대상에 포함하지 않았습니다.
+
+### 검수 자료의 위치와 실행 보완
+
+네 브라우저 검사의 결과·캡처를 기존 `review/mini-sns/` 한 곳에 저장하도록 정리했습니다. `feed-continuity.mjs`의 출력 위치를 이 폴더로 통일했고, `feed-continuity.mjs`, `record-accessibility.mjs`, `lighter-records.mjs`는 결과 폴더가 없어도 독립 실행할 수 있도록 폴더 생성을 보완했습니다. `responsive-upload.mjs`는 이미 같은 동작을 지원합니다.
+
+### 정리 후 실제 확인
+
+- 정리 전후 최신 빌드를 각각 생성하고 **20개 파일의 경로와 SHA-256이 전부 동일함**을 확인했습니다. 미사용 파일 정리가 공개 화면의 실행 결과를 바꾸지 않았습니다.
+- `npm run lint`, `npm run build`, 저장·피드 복귀 주소 단위 검사 9개 통과.
+- Vite 미리보기로 최종 빌드를 실행한 뒤 Edge에서 기존 네 브라우저 검사 모두 통과. 반응형 75개 화면, 첨부 형식·용량·손상 오류와 복원, 검색 복귀, 초안 보관·버리기·수정 원본 보존, 선택 입력, 키보드 초점, 19개 표본 텍스트 검사 확인.
+- 추가로 좋아요·북마크의 새로고침 유지와 저장 목록 연결, 이미지 확대·초점 복귀, 프로필 수정·게시물 작성자 반영, 모임 참여·인원·탈퇴 접근 제한·재참여, 대화 전송·목록·새로고침 유지, 알림 목적지·모두 읽음, 체험 종료 후 재진입을 확인했습니다.
+- 최신 PC·모바일 피드와 작성 화면 캡처를 시각 확인했습니다. 검사한 범위에서 실행 오류나 기능 결함을 발견하지 못해 사용자 화면·기능의 추가 수정은 하지 않았습니다.
+- 결과: `review/mini-sns/verification.json`, `accessibility-records.json`, `mini-sns-continuity-results.json`, `community-actions.json`과 같은 폴더의 최신 캡처. 아래 이전 작업 회차의 검수 수치와 이번 재실행 결과는 구분합니다.
+- 확인 한계: 실제 모바일 기종·가상 키보드·Safari·Firefox를 이번에 새로 검사한 것은 아닙니다. 사용자의 기존 모바일 직접 확인 결과는 아래에 보존합니다.
+
+
 ## 2026-11-08 · 최종 완성본 확정
 
 사용자가 현재 버전을 ‘미니 SNS 최종 완성본’으로 마무리하기로 확정했습니다. 작업 과정을 기록하고 의견을 나누는 프런트엔드 체험 작품으로서 이번 개선을 종료합니다. 포트폴리오 대표 작품 목록에는 편입하지 않고, 독립적인 학습·실험 작품으로 보존합니다.
@@ -74,7 +100,7 @@ React·MUI·React Router와 기존 상태 관리 구조를 사용합니다. 기�
 - **환경:** 기존 `tools/site-audit-kit`의 Playwright와 설치된 Edge, 독립된 검수용 브라우저 세션. 실제 사용자의 저장 데이터를 변경하지 않았습니다.
 - **화면 길이 비교:** 390×844 CSS px의 같은 예시 기록에서 첫 게시물 높이 약 859→587px, 빈 작성 페이지 전체 높이 약 1,852→1,139px. 정보 배치의 변화이며 작성 시간이나 만족도 개선을 측정한 값은 아닙니다.
 - **검사 소스:** [반응형·첨부](../tests/responsive-upload.mjs), [기록·접근성](../tests/record-accessibility.mjs), [검색·초안](../tests/feed-continuity.mjs), [모바일 요약·선택 입력](../tests/lighter-records.mjs).
-- **로컬 검수 자료:** `review/mini-sns/`의 화면 캡처·`verification.json`·`accessibility-records.json`, `tools/site-audit-kit/audit-output/mini-sns-continuity-results.json`. 검수 출력은 Git에 포함된 검사 소스와 별도로 보관합니다.
+- **로컬 검수 자료:** 당시 `review/mini-sns/`와 `tools/site-audit-kit/audit-output/`에 보관했습니다. 이후 폴더 정리에서 과거 임시 자료를 제거하고 최신 재검수 결과를 `review/mini-sns/`로 통일했습니다. 검수 출력은 Git에 포함된 검사 소스와 별도로 보관합니다.
 
 ### 사용자 모바일 직접 확인 — 2026-11-08
 

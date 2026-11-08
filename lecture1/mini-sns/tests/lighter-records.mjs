@@ -1,10 +1,12 @@
 import { createRequire } from "node:module";
+import { mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
 const { chromium, expect } = require("../../../tools/site-audit-kit/node_modules/@playwright/test");
 const base = process.env.MINI_SNS_URL || "http://127.0.0.1:5174/";
 const output = fileURLToPath(new URL("../../../review/mini-sns/", import.meta.url));
+await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: "msedge", headless: true });
 const errors = [];
 try {

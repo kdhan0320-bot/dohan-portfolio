@@ -1,6 +1,6 @@
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
 const {
@@ -11,6 +11,7 @@ const base = process.env.MINI_SNS_URL || "http://127.0.0.1:5174/";
 const output = fileURLToPath(
   new URL("../../../review/mini-sns/", import.meta.url),
 );
+await mkdir(output, { recursive: true });
 const browser = await chromium.launch({ channel: "msedge", headless: true });
 const context = await browser.newContext({
   viewport: { width: 390, height: 844 },
