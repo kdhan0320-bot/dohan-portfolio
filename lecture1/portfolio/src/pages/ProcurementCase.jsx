@@ -1,84 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useState } from 'react';
 import { PROCUREMENT_RECEIPT } from '../data/projectsData';
 import { scrollToSection } from '../hooks/useScrollNav';
+import ReceiptFlow from '../components/projects/ReceiptFlow';
 import './procurementCase.css';
 
 function ReceiptAndHistory({ ready, liveUrl, question }) {
-  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
-  const plate = useRef(null);
-  const follow = useRef(false);
-  const played = useRef(false);
-  const [loaded, setLoaded] = useState(false);
-  const [run, setRun] = useState(0);
   const [arrived, setArrived] = useState(false);
-
-  useEffect(() => {
-    if (reduced) {
-      if (follow.current) scrollToSection('receipt-history', { instant: true });
-      follow.current = false;
-      return;
-    }
-    if (!loaded || played.current || !window.IntersectionObserver) return;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting || played.current) return;
-      played.current = true;
-      setRun(n => n + 1);
-      observer.disconnect();
-    }, { threshold: 0.55 });
-    observer.observe(plate.current);
-    return () => observer.disconnect();
-  }, [loaded, reduced]);
-
-  useEffect(() => {
-    const release = () => { follow.current = false; };
-    window.addEventListener('wheel', release, { passive: true });
-    window.addEventListener('touchmove', release, { passive: true });
-    return () => {
-      window.removeEventListener('wheel', release);
-      window.removeEventListener('touchmove', release);
-    };
-  }, []);
-
-  function traceToHistory(event) {
-    if (reduced || !loaded) {
-      scrollToSection('receipt-history', { instant: true });
-      return;
-    }
-    event.currentTarget.focus({ preventScroll: true });
-    played.current = true;
-    follow.current = true;
-    setArrived(false);
-    setRun(n => n + 1);
-  }
-
-  function finishTrace() {
-    setArrived(true);
-    if (follow.current) scrollToSection('receipt-history');
-    follow.current = false;
-  }
 
   return (
     <section className="receipt-story" aria-labelledby="receipt-question">
       <h2 id="receipt-question">{question}</h2>
-      <figure className="receipt-sheet">
-        <div className="receipt-plate" ref={plate}>
-          <img {...PROCUREMENT_RECEIPT} onLoad={() => setLoaded(true)} />
-          {run > 0 && !reduced && (
-            <div key={run} className="receipt-trace" aria-hidden="true">
-              <i className="trace-in" /><i className="trace-out" />
-              <i className="trace-balance" onAnimationEnd={finishTrace} />
-            </div>
-          )}
-        </div>
-        <figcaption>
-          <span>품의선 공개 웹 · 예시 전표</span>
-          <button type="button" aria-controls="receipt-history" onClick={traceToHistory}
-            onBlur={() => { follow.current = false; }}>
-            {reduced ? '입출고 이력 보기' : '수량 흐름 따라 이력 보기'} <span aria-hidden="true">↓</span>
-          </button>
-        </figcaption>
-      </figure>
+      <ReceiptFlow onComplete={() => setArrived(true)} />
+      <div className="receipt-story-links"><span>품의선 예시 전표 · 수량 흐름 재구성</span><button type="button" onClick={() => scrollToSection('receipt-history')}>입출고 이력 보기</button></div>
       <section className="receipt-ledger" data-arrived={arrived} aria-labelledby="receipt-history">
         <h3 id="receipt-history" tabIndex="-1">포토센서 입출고 이력</h3>
         <ol>
@@ -94,6 +27,7 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
           품의선에서 예시 이력 보기
         </a>
       </section>
+      <details className="receipt-original"><summary>공개 웹의 원본 전표 보기</summary><img {...PROCUREMENT_RECEIPT} loading="lazy" /></details>
     </section>
   );
 }

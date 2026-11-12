@@ -66,3 +66,10 @@
   .receipt-trace, .receipt-ledger[data-arrived="true"]::before { animation: none; }
   .receipt-trace { display: none; }
 }
+.receipt-story-links { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px 16px; padding-top:6px; color:var(--muted); font-size:12px; }
+.receipt-story-links button { border:0; background:none; color:var(--accent); font:inherit; font-weight:600; min-height:44px; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+.receipt-original { margin-top:24px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
+.receipt-original summary { cursor:pointer; padding:14px 0; min-height:44px; }.receipt-original>img { display:block; width:100%; height:auto; margin-top:8px; }
+.receipt-ledger[data-arrived="true"] li { animation:receipt-record-in .5s ease-out both; }.receipt-ledger[data-arrived="true"] li+li { animation-delay:.12s; }
+@keyframes receipt-record-in { from { background:var(--mist); transform:translateY(8px); } to { background:transparent; transform:translateY(0); } }
+@media(prefers-reduced-motion:reduce) { .receipt-ledger[data-arrived="true"] li { animation:none; } }

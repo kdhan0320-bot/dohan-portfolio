@@ -1,0 +1,26 @@
+.receipt-flow { width:100%; min-width:0; }
+.receipt-flow__board { background:#eef0f3; color:#26333f; padding:clamp(20px,2.4vw,34px); }
+.receipt-flow__heading { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding-bottom:20px; border-bottom:1px solid #c7ced5; }
+.receipt-flow__heading strong { font-size:22px; letter-spacing:-.03em; }
+.receipt-flow__heading strong span { font-size:12px; font-weight:450; color:#586573; margin-left:10px; }
+.receipt-flow__heading>span { font-size:12px; color:#586573; }
+.receipt-flow__quantities { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:24px 0; margin:0; }
+.receipt-flow__quantities dt { color:#586573; font-size:14px; margin-bottom:10px; }
+.receipt-flow__quantities dd { margin:0; font-size:clamp(44px,4.5vw,68px); font-weight:550; letter-spacing:-.06em; line-height:1.05; font-variant-numeric:tabular-nums; }
+.receipt-flow__quantities dd>span { font-size:14px; letter-spacing:0; margin-left:5px; font-weight:450; }
+.receipt-flow__quantities>div:last-child dd { color:#3c5a88; }
+.receipt-flow__movement { position:relative; height:116px; border-block:1px solid #c7ced5; }
+.receipt-flow__bin { position:absolute; top:12px; font-size:12px; color:#586573; }
+.receipt-flow__bin:first-child { left:8%; }.receipt-flow__bin:nth-child(2) { left:65%; }
+.receipt-flow__unit { position:absolute; top:49px; width:42px; height:42px; display:grid; place-items:center; font-size:12px; font-style:normal; background:#cbd3dd; color:#35475d; transition:left .65s cubic-bezier(.2,.7,.3,1),background .35s,color .35s; }
+.receipt-flow__unit--0 { left:12%; background:#3c5a88; color:white; }.receipt-flow__unit--1 { left:65%; }.receipt-flow__unit--2 { left:81%; }
+.receipt-flow[data-phase="received"] .receipt-flow__unit--1 { left:28%; background:#3c5a88; color:white; }
+.receipt-flow[data-phase="received"] .receipt-flow__unit--2 { left:44%; background:#3c5a88; color:white; }
+.receipt-flow__explanation { color:#586573; font-size:13px; line-height:1.7; padding-top:16px; }
+.receipt-flow__controls { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px 16px; padding-top:10px; }
+.receipt-flow__controls p { font-size:13px; color:var(--accent); line-height:1.6; }
+.receipt-flow__controls button { min-height:44px; border:0; padding:0; background:none; color:var(--ink); font:inherit; font-size:12px; text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+.receipt-flow__controls button:disabled { color:var(--muted); cursor:default; text-decoration:none; }
+.receipt-flow--compact .receipt-flow__board { padding:24px; }.receipt-flow--compact .receipt-flow__heading strong { font-size:20px; }.receipt-flow--compact .receipt-flow__quantities dd { font-size:54px; }
+@media(max-width:600px) { .receipt-flow__heading { flex-wrap:wrap; gap:4px; padding-bottom:16px; }.receipt-flow__heading strong { font-size:20px; }.receipt-flow__quantities { padding:20px 0; gap:6px; }.receipt-flow__quantities dt { font-size:12px; }.receipt-flow__quantities dd { font-size:44px; }.receipt-flow__unit { width:34px; height:36px; }.receipt-flow__controls p { font-size:12px; }.receipt-flow--compact .receipt-flow__board { padding:18px; }.receipt-flow--compact .receipt-flow__quantities dd { font-size:44px; }.receipt-flow--compact .receipt-flow__heading strong span { display:none; } }
+@media(prefers-reduced-motion:reduce) { .receipt-flow__unit { transition:none; } }

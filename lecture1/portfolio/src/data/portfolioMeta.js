@@ -24,7 +24,7 @@ const media = (src, alt, aspectRatio, extra = {}) => ({
 });
 const evidence = (title, choice, reason, detailMedia, comparison) => ({
   title,
-  evidence: [{ label: '구성', text: choice }, { label: '이유', text: reason }],
+  summary: [choice, reason].filter(Boolean).join(' '),
   ...(detailMedia ? { media: detailMedia } : {}),
   ...(comparison ? { comparison } : {}),
 });
@@ -32,6 +32,7 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
   const project = fallbackProjects.find((item) => item.id === id);
   return {
     openingFacts: true,
+    imageFirst: true,
     meta: {
       type: project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : '웹 구현'),
       role: project.role,
@@ -70,7 +71,7 @@ export const PROJECT_DETAIL_READY = {
     'jobflow',
     media('detail/current/galpirok-home-1440-20261112.jpg', '갈피록 서비스 소개 — 입사지원 현황과 샘플 기록 미리보기', '1440 / 1000', { mobile: { src: 'detail/current/galpirok-home-390-20261112.jpg', aspectRatio: '390 / 844', label: '갈피록 현재 모바일 첫 화면 · 390px 브라우저' } }),
     [
-      evidence('갈피를 장식에서 정보의 위치로.', '회사 이니셜은 기록의 색인으로, 단계 탭은 지원 상태의 위치로, 잘린 모서리의 날짜 표식은 마감으로 사용했습니다.', '회사 이름과 직무, 날짜와 준비를 한 기록 안에서 찾을 수 있도록 구성했습니다.', media('detail/current/galpirok-records-1440-20261112.jpg', '갈피록의 지원 관리 — 회사 기록과 단계 탭', '1440 / 1000')),
+      evidence('회사·상태·마감을 하나의 기록으로.', '회사 이니셜은 색인, 단계 탭은 지원 상태, 날짜 표식은 마감을 나타냅니다.', '회사별로 다음에 준비할 일을 함께 읽도록 묶었습니다.', media('detail/current/galpirok-records-1440-20261112.jpg', '갈피록의 지원 관리 — 회사 기록과 단계 탭', '1440 / 1000')),
       { title: '질문과 답변을 하나의 기록으로.', layout: 'wide', summary: '면접 질문 목록에서 연습할 질문을 고르면 회사·주제·답변을 함께 읽습니다. 현재 버전의 ‘기록 수정’은 질문과 회사, 주제와 답변을 함께 다듬는 진입점입니다.', media: media('detail/current/galpirok-interview-1440-20261112.jpg', '갈피록 면접 — 질문 목록과 선택한 질문·답변, 기록 수정', '1440 / 1000'), mediaLabel: '현재 공개 체험 · 가상 면접 기록' },
     ],
     { actual: ['회사별 지원 기록·단계·날짜·준비 항목', '면접 질문·답변과 통합 기록 편집', '반응형 웹과 샘플 체험'], demoStatic: ['2026.09.27 기준 가상 회사 샘플', '체험 편집은 탭 메모리 · 새로고침하면 초기화'], notIncluded: ['외부 채용 API·실시간 알림·제품 내 AI 생성', '실제 계정 인증·DB 저장 유지의 이번 개편 검증', '사용자 조사·채용 성과 측정'] },
@@ -92,13 +93,10 @@ export const PROJECT_DETAIL_READY = {
       label: '설비결 Figma 시안 · 정비 작업 현황',
     }),
     [
-      evidence('상태 요약에서 필요한 작업으로.', '배정 대기·정비 중·검토 대기·당일 확인 완료를 가로로 묶고, 아래에서 처리할 요청을 보여줍니다.', '전체 상태를 먼저 훑은 뒤 개별 요청으로 시선을 옮기도록 구성했습니다.'),
-      evidence('요청의 내용과 다음 행동을 가까이.', '설비 사진과 증상, 요청자·담당자·완료 기한을 함께 묶고 ‘요청 확인·배정’을 바로 아래에 배치했습니다.', '요청을 이해한 뒤 필요한 행동을 같은 영역에서 찾도록 했습니다.', media('detail/current/seolbigyeol-assignment-20261112.png', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '784 / 520', {
+      evidence('요청을 읽은 자리에서 담당자를 선택.', '사진·증상·담당자·기한을 한 카드에 모으고, 바로 아래에 ‘요청 확인·배정’을 두었습니다.', '', media('detail/current/seolbigyeol-assignment-20261112.png', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '784 / 520', {
         original: 'detail/current/seolbigyeol-home-20261112.png',
-        mobile: { src: 'detail/current/seolbigyeol-mobile-20261112.png', aspectRatio: '390 / 844', label: '모바일 보완 시안 · 배정 대기 요청이 놓인 작업 현황' },
       })),
-      evidence('검토와 진행 중인 작업을 구분.', '검토 대기 보고는 조치 내용·재확인 결과와 검토 버튼을 함께 두고, 진행 중인 정비는 별도 영역에 배치했습니다.', '보고를 확인해야 하는 작업과 아직 정비 중인 작업을 구분하려는 설계입니다.'),
-      evidence('모바일에서는 같은 정보를 세로로 다시 배치했습니다.', '상태 요약을 2×2로 묶고, 배정 대기 카드와 처리 현황을 세로로 쌓아 한 손 스크롤로 읽도록 다시 그렸습니다.', 'PC 화면을 그대로 축소하지 않고, 모바일 폭(390px) 전용 화면을 Figma에서 별도로 구성했습니다.', media('detail/current/seolbigyeol-mobile-20261112.png', '설비결 모바일 보완 시안 · 작업 현황', '390 / 844', {
+      evidence('모바일은 상태 요약 다음에 요청 카드.', '상태 요약은 2×2, 요청과 처리 현황은 세로로 배치했습니다.', 'PC 화면을 축소하지 않고 390px 폭의 별도 시안으로 구성했습니다.', media('detail/current/seolbigyeol-mobile-20261112.png', '설비결 모바일 보완 시안 · 작업 현황', '390 / 844', {
         label: '모바일 보완 시안 · 작업 현황', frameWidth: 390,
       })),
     ],
@@ -120,16 +118,16 @@ export const PROJECT_DETAIL_READY = {
       {
         title: '‘파란 오후’ 한 편으로 여는 홈',
         evidence: [
-          { label: '김도한의 판단', text: '두 영화를 나란히 놓으니 오른쪽 장면이 별도 배너처럼 보였습니다. 처음 들어온 사람이 한 편에 집중할 수 있도록 ‘파란 오후’를 단독 표지로 골랐습니다.' },
-          { label: '기획전에 남긴 이유', text: '기획전에서는 두 작품을 왜 함께 골랐는지 설명할 자리가 있습니다. 영화 잡지처럼 두 장면을 나란히 싣고 짧은 글로 연결하는 방식은 이곳에 남겼습니다.' },
+          { label: '김도한의 판단', text: '두 영화가 별도 배너처럼 보여, 홈은 ‘파란 오후’ 한 편에 집중하도록 선택했습니다.' },
+          { label: '기획전과의 차이', text: '두 장면을 나란히 싣는 구성은 함께 고른 이유를 설명할 수 있는 기획전에 남겼습니다.' },
         ],
       },
-      { title: '연주와 바통을 함께 보는 이유', layout: 'wide', summary: '‘마음을 건네는 방식’의 마지막 두 편을 묶은 말은 ‘마지막에 건네는 마음’입니다. ‘옥상의 작은 밴드’에서는 연주로, ‘마지막 바통’에서는 동료에게 내미는 손으로 마음을 전합니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
+      { title: '두 작품을 연결하는 기획전', layout: 'wide', summary: '연주와 바통을 건네는 장면을 ‘마지막에 건네는 마음’으로 묶었습니다. 장면과 짧은 글이 함께 읽히는 편집 구성입니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
       {
         title: '메모는 읽기부터, 수정은 선택해서',
         evidence: [
-          { label: '김도한이 요청한 순서', text: '저장한 글을 먼저 읽고, 수정은 별도 행동으로 구분해 달라고 요청했습니다. ‘메모 읽기 / 작품 훑기’ 선택도 유지했습니다.' },
-          { label: '화면에 반영한 규칙', text: 'PC에서는 메모 없는 이웃 작품을 두 편씩 묶고, 메모가 있으면 한 줄을 사용합니다. 목록 순서를 유지하는 배치와 동작은 AI와 구체화했습니다.' },
+          { label: '김도한의 요청', text: '저장한 메모를 먼저 읽고 수정은 따로 선택하도록 요청했습니다.' },
+          { label: 'AI와 구체화한 배치', text: 'PC에서 메모가 있는 작품은 한 줄, 없는 이웃 작품은 두 편씩 배치해 목록 순서를 유지했습니다.' },
         ],
         sequence: [
           media('detail/current/jansang-note-read-v73-1440.webp', '저장된 메모를 읽고 메모 수정 버튼을 눌러 편집하는 작품 상세', '961 / 720', {
@@ -152,8 +150,8 @@ export const PROJECT_DETAIL_READY = {
         { label: 'AI 협업', value: '장면 선정·글·이미지 제작, UI 설계·구현·검사' },
       ],
       scopeSummary: [
-        { title: '콘텐츠와 저장 방식', text: '포스터와 장면은 AI 생성 시안입니다. ‘파란 오후’ 표지는 반사광을 줄이고 붓결을 살린 시안으로 다듬었습니다. 웹 화면의 글자와 포스터 속 제목 그래픽을 구분합니다. 찜·메모·보기 설정은 사용 중인 브라우저에 저장됩니다. 영상 재생·예매는 시연 범위에서 제외했습니다.' },
-        { title: '검증 범위', text: 'PC와 모바일 크기의 브라우저에서 작품 탐색, 상세 열기와 복귀, 메모 저장 후 다시 읽기를 확인했습니다. 실기기와 실제 이용자를 대상으로 한 사용성 조사는 진행하지 않았습니다.' },
+        { title: '콘텐츠와 저장', text: '가상 단편영화 12편과 AI 생성 이미지입니다. 찜·메모·보기 설정은 브라우저에 저장하며, 영상 재생·예매·서버 저장은 포함하지 않습니다.' },
+        { title: '확인과 한계', text: 'PC·모바일 브라우저에서 탐색·상세 복귀·메모 저장과 읽기를 확인했습니다. 실기기·실제 이용자 사용성 조사는 진행하지 않았습니다.' },
       ], resultLimit: {},
     },
   ),
@@ -164,8 +162,7 @@ export const PROJECT_DETAIL_READY = {
       mobile: { src: 'detail/current/gijunseon-hero-390-20261112.png', aspectRatio: '390 / 567', label: '기준선 공개 웹 · 모바일 첫 화면' },
     }),
     [
-      evidence('무엇을 검사하는지 이미지로 설명합니다.', '산업 이미지 다음에 흠집·부품 누락·바코드 등 검사 사례를 배치했습니다.', '기술 용어만 읽기 전에 서비스가 다루는 문제를 볼 수 있도록 구성했습니다.'),
-      evidence('사례에서 도입 과정으로 이어집니다.', '산업 이미지 다음에 제품·공정에 맞춘 솔루션 설명을 두고, 결함 사례·도입 검토·문의 순서로 구성했습니다.', '서비스의 용도를 이해한 뒤 진행 방법과 다음 행동을 찾도록 했습니다.'),
+      evidence('검사 사례를 먼저, 도입 절차를 다음에.', '흠집·부품 누락·바코드 사례로 검사 대상을 보여준 뒤 적용 공정·도입 절차·상담으로 이어집니다.', '기술 용어보다 사용 맥락을 먼저 이해하도록 정한 순서입니다.'),
     ],
     {
       actual: ['Figma 디자인과 HTML·CSS·JavaScript 웹 구현', '검사 예시·적용 공정·도입 절차·상담 화면', '반응형 구성과 브라우저 내 입력 검증'],
@@ -195,10 +192,9 @@ export const PROJECT_DETAIL_READY = {
     'bus-arrival-app',
     media('detail/current/onjeongryu-home-20261112.png', '온정류 — 즐겨찾는 노선의 방향과 도착 시간', '390 / 844', { frameWidth: 390 }),
     [
-      evidence('자주 찾는 버스를 먼저 배치합니다.', '즐겨찾는 노선의 번호·방향·도착 시간을 첫 화면의 큰 정보로 묶었습니다.', '반복 조회하는 내용을 여러 화면을 거치지 않고 살펴보도록 구성했습니다.'),
-      evidence('도착 상태를 글자와 크기로 구분합니다.', '남은 분과 ‘곧 도착’ 상태를 노선 정보와 함께 표시했습니다.', '색만 보고 판단하지 않고 현재 도착 상태를 읽을 수 있도록 했습니다.', media('detail/current/onjeongryu-home-20261112.png', '온정류 홈의 노선 번호와 도착 시간 확대', '390 / 844', { frameWidth: 390, crop: { x: 20, y: 280, width: 350, height: 76 } })),
-      evidence('다음 정류장까지 가는 길을 보여줍니다.', '현재 버스 위치부터 다음 정류장, 내가 탈 정류장까지 진행 단계로 표시했습니다.', '남은 시간 숫자만 보여주는 대신, 버스가 어디까지 왔는지 짐작할 수 있도록 했습니다.', media('detail/current/onjeongryu-busdetail-20261107.png', '온정류 버스 상세 — 공업탑에서 시청앞까지 정류장 진행 표시', '390 / 844', { frameWidth: 390 })),
-      evidence('결과가 없거나 정보를 못 받아올 때도 설계했습니다.', '검색 결과 없음, 저장한 항목 없음, 도착 정보를 불러오지 못했을 때의 화면을 별도로 만들었습니다.', '실제 사용에서 자주 만나는 빈 화면과 오류 상황도 비워두지 않도록 했습니다.', media('detail/current/onjeongryu-emptystate-20261107.png', '온정류 홈 — 도착 정보를 불러오지 못했을 때의 안내와 다시 시도 버튼', '390 / 844', { frameWidth: 390 })),
+      evidence('노선·방향·시간을 한눈에.', '자주 타는 버스를 먼저 두고 남은 분과 ‘곧 도착’을 글자로 구분했습니다.', '도착 상태를 색에만 의존하지 않도록 했습니다.', media('detail/current/onjeongryu-home-20261112.png', '온정류 홈의 노선 번호와 도착 시간 확대', '390 / 844', { frameWidth: 390, crop: { x: 20, y: 280, width: 350, height: 76 } })),
+      evidence('숫자 다음에는 버스의 위치.', '현재 위치·다음 정류장·탑승할 정류장을 단계로 연결해 어디까지 왔는지 보여줍니다.', '', media('detail/current/onjeongryu-busdetail-20261107.png', '온정류 버스 상세 — 공업탑에서 시청앞까지 정류장 진행 표시', '390 / 844', { frameWidth: 390 })),
+      evidence('정보를 못 받으면 다시 시도.', '도착 정보 오류에 원인 안내와 재시도 버튼을 함께 두었습니다.', '검색 결과·저장 항목이 없는 상태도 별도 시안에 포함합니다.', media('detail/current/onjeongryu-emptystate-20261107.png', '온정류 홈 — 도착 정보를 불러오지 못했을 때의 안내와 다시 시도 버튼', '390 / 844', { frameWidth: 390 })),
     ],
     {
       actual: ['모바일 정보 위계', '도착 정보와 탐색 화면 디자인', '빈 상태·오류 상태 화면'],
@@ -211,8 +207,7 @@ export const PROJECT_DETAIL_READY = {
     'brewstep',
     media('detail/current/soyobit-home-20261112.png', '소요빛 — 카페 대표 음료와 추천 메뉴', '390 / 844', { frameWidth: 390 }),
     [
-      evidence('음료 사진과 메뉴 정보를 함께 보여줍니다.', '대표 음료와 브랜드 이미지를 먼저 보여주고, 추천 메뉴의 사진 가까이에 맛의 표현·메뉴명·가격을 배치했습니다.', '브랜드 분위기를 느끼면서 실제로 살펴볼 메뉴도 읽을 수 있도록 구성했습니다.'),
-      evidence('주요 화면의 위치를 일정하게 둡니다.', '추천 메뉴에는 사진·맛의 표현·가격을 함께 두고, 주요 탐색 메뉴는 하단에 배치했습니다.', '프로모션을 읽은 뒤에도 메뉴 탐색으로 이동할 위치를 쉽게 찾도록 했습니다.', media('detail/current/soyobit-menu-20261112.png', '소요빛 메뉴 — 음료 목록과 카테고리, 하단 탐색', '390 / 844', { frameWidth: 390 })),
+      evidence('사진에서 메뉴와 가격으로.', '음료 사진 가까이에 맛·이름·가격을 묶고, 하단 메뉴의 위치를 유지했습니다.', '브랜드 분위기를 본 뒤 메뉴 탐색으로 이어지는 구성입니다.', media('detail/current/soyobit-menu-20261112.png', '소요빛 메뉴 — 음료 목록과 카테고리, 하단 탐색', '390 / 844', { frameWidth: 390 })),
     ],
     {
       actual: ['카페의 모바일 시각 체계', '홈·메뉴·즐겨찾기·소식·마이 전체 화면 디자인', '리워드 스탬프·쿠폰·매장 정보 구성'],

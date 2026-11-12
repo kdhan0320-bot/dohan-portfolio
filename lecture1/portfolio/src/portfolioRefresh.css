@@ -38,7 +38,7 @@
 .portfolio-refresh .case-figure__surface { border-radius:0; }
 .portfolio-refresh .case-page .case-action--primary { color:var(--on-action); }
 .portfolio-refresh .case-action { border-radius:0; }
-.portfolio-refresh .case-page[data-project-slug="seolbiit"] .case-decision:nth-child(2)>.case-figure { max-width:784px; margin-inline:auto; }
+.portfolio-refresh .case-page[data-project-slug="seolbiit"] .case-decision>.case-figure:not(.case-figure--portrait) { max-width:784px; margin-inline:auto; }
 .portfolio-refresh .about-intro h1 { letter-spacing:-.065em; }
 .portfolio-refresh .about-intro h1 span { color:var(--ink); }
 .portfolio-refresh .about-work__image { border-radius:0; }

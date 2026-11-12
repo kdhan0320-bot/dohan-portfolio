@@ -240,3 +240,31 @@
 @media (min-width: 761px) {
   .case-page[data-project-slug="jansang-cinema"] .case-screen-sequence { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Show the evidence beside one short explanation, instead of repeating text cards. */
+@media(min-width:761px) {
+ .case-intro--portrait { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); column-gap:64px; }
+ .case-intro--portrait>.case-register { grid-column:1 / -1; }
+ .case-intro--portrait>.case-title { grid-column:1; grid-row:2; align-self:end; }
+ .case-intro--portrait>.case-introduction { grid-column:1; grid-row:3; display:block; align-self:start; }
+ .case-intro--portrait .case-introduction .case-actions { margin-top:24px; }
+ .case-intro--portrait>.case-jumps { grid-column:1; grid-row:4; align-self:start; }
+ .case-intro--portrait.case-intro--screen-first:has(.case-cover .case-figure--portrait)>.case-cover { grid-column:2; grid-row:2 / 5; max-width:320px; width:100%; margin:24px auto 8px; }
+}
+.case-decision--illustrated:not(:has(.case-screen-sequence)) { display:grid; grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr); gap:36px; align-items:start; }
+.case-decision--illustrated:not(:has(.case-screen-sequence)) .case-decision__copy { display:block; margin:0; }
+.case-decision__summary { padding-top:0; }
+.case-decision--illustrated .case-decision__summary { padding-top:18px; }
+.case-decision dl { display:flex; flex-direction:column; gap:16px; }
+.case-decision dl>div { padding:0; border-radius:0; background:none; }
+.case-decision--illustrated .case-figure--portrait { max-width:390px; width:100%; justify-self:center; }
+.case-decision--illustrated .case-figure--portrait .case-figure__surface { padding:0; }
+.case-intro--screen-first:has(.case-cover .case-figure--portrait) .case-cover { max-width:390px; margin-inline:auto; }
+.case-intro--screen-first .case-figure--portrait .case-figure__surface { padding:0; }
+.case-intro--screen-first .case-figure--portrait img { max-height:none; }
+@media(max-width:760px) {
+ .case-decision--illustrated:not(:has(.case-screen-sequence)) { grid-template-columns:1fr; gap:20px; }
+ .case-decision--illustrated:not(:has(.case-screen-sequence))>.case-figure { grid-row:1; }
+ .case-decision--illustrated:not(:has(.case-screen-sequence))>.case-decision__copy { grid-row:2; }
+ .case-decision--illustrated .case-decision__summary { padding-top:12px; }
+}
