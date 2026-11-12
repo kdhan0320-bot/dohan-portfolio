@@ -1,1 +1,1 @@
-export { default } from './ContextScene';
+export { default } from './EditorialHero';

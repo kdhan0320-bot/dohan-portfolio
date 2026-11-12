@@ -1,0 +1,88 @@
+.editorial-hero {
+  --editorial-accent: #a8c2da;
+  position: relative;
+  padding-block: 34px 54px;
+}
+.editorial-top { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:12px; letter-spacing:.01em; }
+.editorial-top > span:last-child { font-size:11px; letter-spacing:.13em; }
+.editorial-hero h1 { margin:40px 0 0; font-size:clamp(100px,12.4vw,184px); font-weight:720; letter-spacing:-.085em; line-height:1.12; }
+.editorial-first-line { display:flex; align-items:center; gap:68px; }
+.editorial-second-line { display:block; margin-left:25.2%; white-space:nowrap; }
+.editorial-word { display:inline-block; }
+.editorial-word--screen { color:var(--editorial-accent); font-style:normal; }
+.editorial-type-rule { display:block; width:2px; height:.78em; flex-shrink:0; background:var(--editorial-accent); transform:translateY(4px); transform-origin:50% 0; }
+.editorial-bottom { display:flex; justify-content:space-between; align-items:end; margin-top:42px; gap:32px; }
+.editorial-context { display:grid; gap:7px; margin:0; padding-left:16px; border-left:1px solid var(--line); color:var(--muted); font-size:12px; line-height:1.5; }
+.editorial-intro-end { display:flex; align-items:end; gap:72px; }
+.editorial-intro-end > p { margin:0; color:var(--muted); font-size:15px; line-height:1.75; }
+.editorial-actions { position:relative; }
+.editorial-work-link { display:inline-flex; align-items:center; justify-content:space-between; gap:48px; min-height:48px; padding:12px 0; border:0; border-bottom:1px solid var(--ink); border-radius:0; background:none; color:var(--ink); font:inherit; font-size:14px; font-weight:600; cursor:pointer; }
+.editorial-work-link > span { color:var(--muted); font-size:11px; font-weight:500; }
+.editorial-work-link:hover { color:var(--editorial-accent); border-color:var(--editorial-accent); }
+.editorial-replay { position:absolute; right:0; top:100%; min-height:44px; padding:0; border:0; background:none; color:var(--muted); font:inherit; font-size:11px; cursor:pointer; text-underline-offset:4px; }
+.editorial-replay:hover { color:var(--ink); text-decoration:underline; }
+.editorial-baseline { position:absolute; bottom:0; left:0; width:100%; height:1px; background:var(--line); transform-origin:0 50%; }
+.editorial-hero + .poster-gallery { border-top:0; }
+.editorial-hero + .poster-gallery { padding-top:42px; }
+.editorial-hero + .poster-gallery .poster-gallery__heading { margin-bottom:28px; }
+.editorial-hero + .poster-gallery .poster-gallery__heading h2 { font-size:30px; }
+.editorial-hero + .poster-gallery .poster-gallery__heading p { font-size:12px; }
+.portfolio-refresh .site-header--editorial { border-bottom:0; }
+.site-header--editorial .header-inner { border-bottom:1px solid var(--line); }
+.site-header--editorial .site-wordmark { gap:22px; }
+.portfolio-refresh .site-header--editorial .site-wordmark .wordmark-name { font-size:17px; font-weight:650; }
+.portfolio-refresh .site-header--editorial .site-wordmark .wordmark-caption { display:block; margin-left:0; font-size:12px; }
+
+/* Each title keeps its final dimensions. Only the lettering and rules move. */
+.editorial-hero[data-motion="playing"] .editorial-word--field { animation:editorial-word-in 1050ms cubic-bezier(.22,1,.36,1) both; }
+.editorial-hero[data-motion="playing"] .editorial-word--screen { animation:editorial-screen-in 1150ms 200ms cubic-bezier(.22,1,.36,1) both; }
+.editorial-hero[data-motion="playing"] .editorial-word--between { animation:editorial-word-in 1050ms 400ms cubic-bezier(.22,1,.36,1) both; }
+.editorial-hero[data-motion="playing"] .editorial-type-rule { animation:editorial-rule-in 1100ms 250ms cubic-bezier(.22,1,.36,1) both; }
+.editorial-hero[data-motion="playing"] .editorial-baseline { animation:editorial-baseline-in 1100ms 650ms cubic-bezier(.22,1,.36,1) both; }
+@keyframes editorial-word-in { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+@keyframes editorial-screen-in { from { opacity:0; transform:translate(-18px,24px); } to { opacity:1; transform:translate(0,0); } }
+@keyframes editorial-rule-in { from { opacity:0; transform:translateY(4px) scaleY(0); } to { opacity:1; transform:translateY(4px) scaleY(1); } }
+@keyframes editorial-baseline-in { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+
+@media (min-width:761px) and (max-width:1100px) {
+  .editorial-hero h1 { font-size:11.9vw; }
+  .editorial-second-line { margin-left:20%; }
+  .editorial-intro-end { gap:40px; }
+}
+@media (max-width:899px) {
+  .site-header--editorial .header-inner { height:72px; }
+}
+@media (max-width:760px) {
+  .portfolio-refresh .editorial-hero,
+  .portfolio-refresh .editorial-hero + .poster-gallery,
+  .portfolio-refresh .site-header--editorial .header-inner { width:calc(100% - 40px); }
+  .site-header--editorial .site-wordmark { gap:12px; }
+  .portfolio-refresh .site-header--editorial .site-wordmark .wordmark-name { font-size:15px; }
+  .portfolio-refresh .site-header--editorial .site-wordmark .wordmark-caption { font-size:11px; }
+  .editorial-hero { padding-block:28px 32px; }
+  .editorial-top { font-size:11px; }
+  .editorial-top > span:last-child { display:none; }
+  .editorial-hero h1 { margin-top:42px; font-size:clamp(58px,20vw,126px); letter-spacing:-.075em; line-height:1.18; }
+  .editorial-first-line { gap:28px; }
+  .editorial-second-line { margin-left:0; }
+  .editorial-type-rule { width:1px; height:.8em; }
+  .editorial-bottom { display:block; margin-top:35px; }
+  .editorial-context { display:none; }
+  .editorial-intro-end { display:block; }
+  .editorial-intro-end > p { font-size:14px; line-height:1.8; }
+  .editorial-actions { display:flex; justify-content:space-between; align-items:center; gap:24px; margin-top:23px; }
+  .editorial-work-link { min-height:44px; gap:54px; font-size:13px; }
+  .editorial-replay { position:static; flex-shrink:0; }
+  .editorial-hero + .poster-gallery { padding-top:30px; }
+  .editorial-hero + .poster-gallery .poster-gallery__heading { margin-bottom:22px; }
+  .editorial-hero + .poster-gallery .poster-gallery__heading h2 { font-size:28px; }
+  .editorial-hero + .poster-gallery .poster-gallery__heading p { font-size:11px; }
+}
+@media (max-width:360px) {
+  .portfolio-refresh .site-header--editorial .site-wordmark .wordmark-caption { display:none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .editorial-hero[data-motion] .editorial-word,
+  .editorial-hero[data-motion] .editorial-type-rule,
+  .editorial-hero[data-motion] .editorial-baseline { animation:none; }
+}

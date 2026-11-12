@@ -12,8 +12,8 @@ const Navbar = () => {
   };
   return <>
     <a className="skip-link" href="#main-content" onClick={skipToContent}>본문으로 건너뛰기</a>
-    <header className="site-header"><div className="header-inner portfolio-shell">
-      <Link to="/" state={{ scrollTo: 'home' }} className="site-wordmark" aria-label="김도한 · 홈으로"><span className="wordmark-name">DOHAN KIM</span><span className="wordmark-caption" aria-hidden="true">김도한 · 웹·UI 디자인</span></Link>
+    <header className={`site-header${location.pathname === '/' ? ' site-header--editorial' : ''}`}><div className="header-inner portfolio-shell">
+      <Link to="/" state={{ scrollTo: 'home' }} className="site-wordmark" aria-label="김도한 · 홈으로"><span className="wordmark-name">김도한</span><span className="wordmark-caption" aria-hidden="true">웹·UI 디자인</span></Link>
       <nav aria-label="주요 메뉴" className="site-nav">
         <Link to="/projects" aria-current={isWork ? 'page' : undefined}>작업</Link>
         <Link to="/about" aria-current={location.pathname === '/about' ? 'page' : undefined}>소개</Link>
