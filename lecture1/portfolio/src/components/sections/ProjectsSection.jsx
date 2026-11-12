@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FEATURED_CASES, PROCUREMENT_RECEIPT } from '../../data/projectsData';
+import RevealOnScroll from '../ui/RevealOnScroll';
 import AssignmentPreview from '../projects/AssignmentPreview';
 import './selectedWorks.css';
 
@@ -9,11 +10,11 @@ const receipt = FEATURED_CASES.find(item => item.project.id === 'feedback-hub');
 const maintenance = FEATURED_CASES.find(item => item.project.id === 'seolbiit');
 const cinema = FEATURED_CASES.find(item => item.project.id === 'ott-service');
 
-function CaseCopy({ item }) {
+function CaseCopy({ item, number }) {
   const { project, question, choice, scope } = item;
   return (
     <div className="case-brief">
-      <p className="case-category">{project.categoryLabel}</p>
+      <p className="case-category"><span className="case-index">{number}</span>{project.categoryLabel}</p>
       <h3>{project.title}</h3>
       <p className="case-prompt">{question}</p>
       <p className="case-reason">{choice}</p>
@@ -55,7 +56,7 @@ export default function ProjectsSection() {
         <Link className="text-link" to="/projects">전체 작업 보기</Link>
       </div>
       <article id="receipt-feature" className="lead-case" aria-label="품의선 · 자재 입출고 전표" tabIndex="-1">
-        <CaseCopy item={receipt} />
+        <CaseCopy item={receipt} number="01" />
         <figure className="receipt-proof">
           <Link to="/projects/feedback-hub" className="slip-board" aria-label="품의선 전표의 설계 과정 보기">
             <span className="slip-print"><img id="sample-receipt" {...PROCUREMENT_RECEIPT} /></span>
@@ -64,19 +65,19 @@ export default function ProjectsSection() {
         </figure>
       </article>
       <div className="companion-cases">
-        <article className="companion-case">
+        <RevealOnScroll component="article" className="companion-case" duration={0.55}>
           <AssignmentPreview>
             <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
-              <img src={media + 'seolbigyeol-assignment-2x.webp'} width="1568" height="1040"
+              <img src={media + 'seolbigyeol-assignment-20261112.png'} width="784" height="520"
                 loading="lazy" alt="냉각수 펌프의 증상, 담당자와 완료 기한을 모은 배정 대기 요청" />
             </Link>
           </AssignmentPreview>
-          <CaseCopy item={maintenance} />
-        </article>
-        <article className="companion-case">
+          <CaseCopy item={maintenance} number="02" />
+        </RevealOnScroll>
+        <RevealOnScroll component="article" className="companion-case" duration={0.55}>
           <CinemaScenes />
-          <CaseCopy item={cinema} />
-        </article>
+          <CaseCopy item={cinema} number="03" />
+        </RevealOnScroll>
       </div>
     </section>
   );

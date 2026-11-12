@@ -10,7 +10,7 @@ const projectSlug = (project) => project.slug || (project.id === 'bus-arrival-ap
 const PROJECT_TOPICS = {
   jobflow: 'work',
   seolbiit: 'work',
-  gongjeongbom: 'work',
+  gijunseon: 'work',
   'feedback-hub': 'work',
   'bus-arrival-app': 'life',
   brewstep: 'life',

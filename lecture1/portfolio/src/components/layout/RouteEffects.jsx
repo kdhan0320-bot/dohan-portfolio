@@ -7,7 +7,8 @@ const SITE_TITLE = '김도한 | 웹·UI 디자인 포트폴리오';
 /* pages/ProjectDetailPage.jsx의 SLUG_TO_ID와 같은 매핑이다. 두 파일이
  * 갈라지면(공개 상세 프로젝트 slug 추가/변경 시) 함께 갱신해야 한다. */
 const SLUG_TO_ID = {
-  gongjeongbom: 'gongjeongbom',
+  gongjeongbom: 'gijunseon',
+  gijunseon: 'gijunseon',
   jobflow: 'jobflow',
   'bus-arrival': 'bus-arrival-app',
   'feedback-hub': 'feedback-hub',

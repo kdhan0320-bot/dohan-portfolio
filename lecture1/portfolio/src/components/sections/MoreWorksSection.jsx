@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
 import './moreWorks.css';
 
-const industrial = ALL_PROJECTS.find(project => project.id === 'gongjeongbom');
+const industrial = ALL_PROJECTS.find(project => project.id === 'gijunseon');
 const otherWork = ALL_PROJECTS.filter(project => ['jobflow', 'bus-arrival-app', 'brewstep'].includes(project.id));
 const media = `${import.meta.env.BASE_URL}detail/current/`;
 
@@ -16,8 +16,8 @@ const MoreWorksSection = () => (
       </div>
       <figure>
         <picture>
-          <source media="(max-width: 700px)" srcSet={media + 'gijunseon-intro-390.webp'} width="780" height="522" />
-          <img src={media + 'gijunseon-intro-1440.webp'} width="2880" height="688" loading="lazy" decoding="async"
+          <source media="(max-width: 700px)" srcSet={media + 'gijunseon-hero-390-20261112.png'} width="390" height="567" />
+          <img src={media + 'gijunseon-hero-1440-20261112.png'} width="1440" height="560" loading="lazy" decoding="async"
             alt="기준선 첫 화면의 비전 검사 카메라와 생산 라인" />
         </picture>
         <figcaption>

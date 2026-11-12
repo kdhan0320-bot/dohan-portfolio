@@ -4,6 +4,7 @@ import { Box, CircularProgress } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from './theme';
+import './portfolioRefresh.css';
 import Navbar from './components/layout/Navbar';
 import RouteEffects from './components/layout/RouteEffects';
 
@@ -54,6 +55,7 @@ const App = () => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
     <HashRouter>
+      <div className="portfolio-refresh">
       <RouteEffects />
       <Navbar />
       <Box sx={{ height: NAVBAR_HEIGHT }} aria-hidden="true" />
@@ -68,6 +70,7 @@ const App = () => (
         <AnimatedRoutes />
       </Suspense>
       </Box>
+      </div>
     </HashRouter>
   </ThemeProvider>
 );

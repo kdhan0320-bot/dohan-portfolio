@@ -14,17 +14,17 @@ export const PROCUREMENT_RECEIPT = {
 };
 
 const THUMB_MAP = {
-  gongjeongbom: `${BASE}detail/current/gijunseon-home-20261105.jpg`,
-  jobflow:      `${BASE}detail/current/galpirok-home-20261105.jpg`,
-  seolbiit:     `${BASE}detail/current/seolbigyeol-overview-2x.webp`,
+  gijunseon: `${BASE}detail/current/gijunseon-home-1440-20261112.jpg`,
+  jobflow:      `${BASE}detail/current/galpirok-home-1440-20261112.jpg`,
+  seolbiit:     `${BASE}detail/current/seolbigyeol-home-20261112.png`,
   gamstagram:   `${BASE}thumbnails/minisns-worklog.svg`,
-  'ott-service': `${BASE}detail/current/jansang-v64-list-thumb.webp`,
-  'bus-arrival-app': `${BASE}detail/current/onjeongryu-20261105.png`,
-  brewstep: `${BASE}detail/current/soyobit-20261105.png`,
-  'feedback-hub': `${BASE}detail/current/pumuiseon-home-20261105.jpg`,
+  'ott-service': `${BASE}detail/current/jansang-home-1440-20261112.jpg`,
+  'bus-arrival-app': `${BASE}detail/current/onjeongryu-home-20261112.png`,
+  brewstep: `${BASE}detail/current/soyobit-home-20261112.png`,
+  'feedback-hub': `${BASE}detail/current/pumuiseon-home-1440-20261112.jpg`,
 };
 
-const PROJECT_ORDER = ['feedback-hub', 'seolbiit', 'ott-service', 'jobflow', 'gongjeongbom', 'bus-arrival-app', 'brewstep'];
+const PROJECT_ORDER = ['feedback-hub', 'seolbiit', 'ott-service', 'jobflow', 'gijunseon', 'bus-arrival-app', 'brewstep'];
 const orderOf = (project) => PROJECT_ORDER.includes(project.id) ? PROJECT_ORDER.indexOf(project.id) : 99;
 export const ALL_PROJECTS = [...fallbackProjects]
   .sort((a, b) => orderOf(a) - orderOf(b))
@@ -54,17 +54,17 @@ export const FILTER_TABS = FALLBACK_FILTER_TABS;
 const CASE_NOTES = {
   'feedback-hub': {
     question: '5개를 발주했는데, 왜 재고는 1개일까?',
-    choice: '예시 전표에서 입고한 3개와 지급한 2개를 나란히 보여줍니다. 아직 받지 않은 2개는 현재 재고와 구분했습니다.',
+    choice: '입고 3개 − 지급 2개 = 보유 1개. 발주량과 재고를 전표 한 장에서 구분합니다.',
     scope: 'AI 협업 웹 제작 · 브라우저 저장 시연',
   },
   seolbiit: {
     question: '지금 누구에게 어떤 정비를 맡겨야 할까?',
-    choice: '냉각수 펌프(PU-118)의 배정 대기 요청에 사진·증상·기한을 모으고, 바로 아래에 담당자 배정 동작을 뒀습니다.',
+    choice: '설비의 증상·담당자·기한을 모아, 요청 확인에서 배정까지 이어갑니다.',
     scope: 'Figma 디자인 · 가상 설비 데이터',
   },
   'ott-service': {
     question: '제목을 몰라도 영화를 고를 수 있을까?',
-    choice: '한 편의 표지로 시작해 기획전의 두 장면을 함께 읽고, 마음에 남은 작품과 메모를 보관합니다.',
+    choice: '한 편의 표지로 시작해, 분위기로 고르고 메모로 기억합니다.',
     scope: '김도한 · 영화 편집 잡지 방향 선택, 모바일 표지 검토',
   },
 };

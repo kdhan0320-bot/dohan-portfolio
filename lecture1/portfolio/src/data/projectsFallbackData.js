@@ -9,8 +9,8 @@
 
 export const fallbackProjects = [
   {
-    "id": "gongjeongbom",
-    "slug": "gongjeongbom",
+    "id": "gijunseon",
+    "slug": "gijunseon",
     "title": "기준선",
     "description": "검사 사례와 도입 과정을 보여주는 B2B 웹 디자인과 반응형 웹 구현",
     "category": "B2B 웹 디자인",
@@ -168,9 +168,9 @@ export const fallbackProjects = [
     "gradient": "linear-gradient(135deg, #F6F7F8 0%, #E7EFF8 100%)",
     "thumbnail_url": null,
     "thumbnailUrl": null,
-    "detail_url": "https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/",
-    "liveUrl": "https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/",
-    "demo_url": "https://kdhan0320-bot.github.io/dohan-portfolio/jobflow-dashboard/",
+    "detail_url": "https://kdhan0320-bot.github.io/dohan-portfolio/galpirok/",
+    "liveUrl": "https://kdhan0320-bot.github.io/dohan-portfolio/galpirok/",
+    "demo_url": "https://kdhan0320-bot.github.io/dohan-portfolio/galpirok/",
     "github_url": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/galpirok",
     "githubUrl": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/galpirok",
     "is_ai_project": true,
@@ -323,7 +323,7 @@ export const fallbackProjects = [
     "cardProblem": "음료의 인상과 메뉴 정보를 함께 보여주는 모바일 화면입니다.",
     "cardLimit": "스플래시~마이 전체 화면 시안 · 실제 주문·결제 미구현",
     "accentColor": "#456D95",
-    "figmaDesignUrl": "https://www.figma.com/design/cvfT9QazAFaXVAxZfeUdvr?node-id=1289-674"
+    "figmaDesignUrl": "https://www.figma.com/proto/cvfT9QazAFaXVAxZfeUdvr?node-id=1565-3&starting-point-node-id=1565-3&scaling=scale-down-width&content-scaling=fixed"
   },  {
     "id": "feedback-hub",
     "slug": "feedback-hub",
@@ -357,9 +357,9 @@ export const fallbackProjects = [
     "gradient": "linear-gradient(135deg, #1E3A5F 0%, #2563EB 60%, #0D9488 100%)",
     "thumbnail_url": null,
     "thumbnailUrl": null,
-    "detail_url": "https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/",
-    "liveUrl": "https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/",
-    "demo_url": "https://kdhan0320-bot.github.io/dohan-portfolio/portfolio-feedback-hub/",
+    "detail_url": "https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/",
+    "liveUrl": "https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/",
+    "demo_url": "https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/",
     "github_url": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/pumuiseon",
     "githubUrl": "https://github.com/kdhan0320-bot/dohan-portfolio/tree/main/lecture1/pumuiseon",
     "is_ai_project": true,

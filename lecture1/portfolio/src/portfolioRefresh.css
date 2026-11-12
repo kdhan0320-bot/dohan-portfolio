@@ -1,0 +1,44 @@
+.portfolio-refresh { --ink:#20303a; --muted:#53636b; --accent:#486d83; --paper:#f8f9f6; --mist:#e6ecee; --line:#ccd5d8; color:var(--ink); background:var(--paper); }
+.portfolio-refresh .portfolio-shell { max-width:1400px; }
+.portfolio-refresh .work-edition { padding-top:clamp(56px,7vw,104px); padding-bottom:80px; }
+.portfolio-refresh .section-heading h2 { font-size:clamp(32px,3.5vw,52px); letter-spacing:-.06em; }
+.portfolio-refresh .lead-case { grid-template-columns:minmax(0,4fr) minmax(0,8fr); padding-block:40px 56px; }
+.portfolio-refresh .case-index { display:inline-block; margin-right:14px; color:var(--accent); font-variant-numeric:tabular-nums; font-size:12px; }
+.portfolio-refresh .case-brief h3 { letter-spacing:-.06em; }
+.portfolio-refresh .case-reason { max-width:38ch; line-height:1.7; }
+.portfolio-refresh .slip-board { background:#dae3e6; background-image:linear-gradient(90deg,transparent calc(50% - .5px),#c3cfd5 50%,transparent calc(50% + .5px)); }
+.portfolio-refresh .case-read { border-bottom:1px solid currentColor; text-decoration:none; min-height:40px; }
+.portfolio-refresh .companion-cases { gap:40px; }
+.portfolio-refresh .companion-case { border-top:1px solid var(--ink); padding-top:24px; }
+.portfolio-refresh .companion-case .case-brief { padding-top:28px; }
+.portfolio-refresh .request-board { background:#e6ecee; padding:16px; }
+.portfolio-refresh .scene-frame { aspect-ratio:1.65; }
+.portfolio-refresh .industrial-heading { padding-block:32px; }
+.portfolio-refresh .remaining-work { margin-top:64px; }
+.portfolio-refresh .remaining-thumb { background:#e6ecee; }
+.portfolio-refresh .remaining-work li:not(:first-child) .remaining-thumb img { padding:18px; }
+.portfolio-refresh .remaining-copy { align-items:start; flex-wrap:wrap; }
+.portfolio-refresh .design-notes { background:#203441; color:#f4f7f7; padding-block:64px; }
+.portfolio-refresh .design-notes :is(h2,dt,dd,.text-link) { color:#f4f7f7; }
+.portfolio-refresh .design-notes :is(.notes-copy p,.notes-roles dd span,.notes-roles dt span) { color:#c5d2da; }
+.portfolio-refresh .notes-roles { border-color:#627580; }
+.portfolio-refresh .contact-top h2 { font-size:clamp(42px,5vw,72px); letter-spacing:-.06em; }
+.portfolio-refresh .works-intro h1 { font-size:clamp(48px,7vw,96px); letter-spacing:-.065em; }
+.portfolio-refresh .works-card .project-cover { border-radius:0; aspect-ratio:1.45; padding:24px; }
+.portfolio-refresh .works-card .project-cover--mobile { padding:24px; }
+.portfolio-refresh .works-card__heading h2 { font-size:30px; }
+.portfolio-refresh .works-grid { row-gap:56px; }
+.portfolio-refresh .case-title h1 { font-size:clamp(52px,7vw,96px); letter-spacing:-.065em; }
+.portfolio-refresh .case-figure__surface { border-radius:0; }
+.portfolio-refresh .case-decision__number { color:var(--accent); }
+.portfolio-refresh .about-intro h1 { letter-spacing:-.065em; }
+.portfolio-refresh .about-work__image { border-radius:0; }
+@media (max-width:760px) { .portfolio-refresh .lead-case { gap:24px; padding-block:24px 40px; } .portfolio-refresh .work-edition { padding-block:44px 48px; } .portfolio-refresh .companion-cases { gap:40px; } .portfolio-refresh .case-brief h3 { font-size:40px; } .portfolio-refresh .case-prompt { font-size:21px; } .portfolio-refresh .design-notes { padding-block:40px; } .portfolio-refresh .remaining-work { margin-top:40px; } .portfolio-refresh .works-card .project-cover { padding:18px; } }
+@media (prefers-reduced-motion:reduce) { .portfolio-refresh .project-cover__screens,.portfolio-refresh .scene-frame img { transition:none; transform:none; } }
+
+.portfolio-refresh .case-page .case-action--primary { color:#fff; }
+.portfolio-refresh .fold-heading h1 { word-break:keep-all; }
+
+.portfolio-refresh .remaining-work li:not(:first-child) .remaining-thumb { display:flex; justify-content:center; align-items:flex-start; padding-top:20px; }
+.portfolio-refresh .remaining-work li:not(:first-child) .remaining-thumb img { width:64%; max-width:240px; height:auto; padding:0; }
+.portfolio-refresh .case-page[data-project-slug="seolbiit"] .case-decision:nth-child(2) > .case-figure { max-width:784px; margin-inline:auto; }

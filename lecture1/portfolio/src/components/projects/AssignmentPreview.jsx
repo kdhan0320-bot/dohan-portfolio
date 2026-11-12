@@ -93,7 +93,7 @@ function AssigneePicker({ selected, onSelect, compact }) {
       </div>
       <figcaption>
         <span>담당자 선택 시연{compact && ' · 모바일 재구성'}</span>
-        <a href={assets + 'seolbigyeol-mobile-assignee-picker.png'} target="_blank" rel="noopener noreferrer"
+        <a href={assets + 'seolbigyeol-picker-mobile-20261112.png'} target="_blank" rel="noopener noreferrer"
           aria-label="담당자 선택 Figma 모바일 시안 새 탭에서 보기">Figma 모바일 시안 보기</a>
       </figcaption>
     </figure>
@@ -117,7 +117,7 @@ export default function AssignmentPreview({ children, showPicker = false }) {
       </div>
       <figcaption>
         <span>설비결 시안 · 모바일 재구성</span>
-        <a href={assets + 'seolbigyeol-mobile-overview.png'} target="_blank" rel="noopener noreferrer"
+        <a href={assets + 'seolbigyeol-mobile-20261112.png'} target="_blank" rel="noopener noreferrer"
           aria-label="설비결 Figma 모바일 시안 새 탭에서 보기">Figma 모바일 시안 보기</a>
       </figcaption>
     </figure>

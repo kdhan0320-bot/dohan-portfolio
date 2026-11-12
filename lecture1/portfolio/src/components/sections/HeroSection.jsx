@@ -82,6 +82,7 @@ function FoldedSheet() {
 
   return (
     <figure className="fold-art">
+      <div className="fold-art-label"><span>경험에서 화면으로</span><span>01 / 품의선</span></div>
       <button ref={button} type="button" className="fold-cover" onClick={openReceipt}
         onFocus={() => { if (!cancel.current) setOpened(false); }}
         aria-label="표지 펼치기 · 품의선 전표 보기" aria-controls="receipt-feature">
@@ -94,6 +95,7 @@ function FoldedSheet() {
           표지 펼치기
         </span>
       </button>
+      <figcaption>접힌 도면을 펼쳐, 하나의 전표가 되기까지.</figcaption>
     </figure>
   );
 }
@@ -103,8 +105,8 @@ export default function HeroSection() {
     <section id="home" className="portfolio-hero" aria-labelledby="home-title">
       <div className="portfolio-shell fold-layout">
         <div className="fold-heading" data-hero-reveal>
-          <p className="fold-role">웹·UI 디자인 <span>신입 지원</span></p>
-          <h1 id="home-title">김도한</h1>
+          <p className="fold-role">김도한 <span>웹·UI 디자인</span></p>
+          <h1 id="home-title">일의 맥락을,<br /><span>명확한</span><br /> 화면으로.</h1>
         </div>
         <FoldedSheet />
         <div className="fold-intro">
@@ -113,7 +115,7 @@ export default function HeroSection() {
             <button type="button" className="text-link fold-shortcut" onClick={() => scrollToSection('projects')}>대표 작업 바로 보기 <span aria-hidden="true">↓</span></button>
             <Link className="text-link" to="/about">소개 보기</Link>
           </div>
-          <p className="fold-scope">Figma 직접 편집 · AI 협업 웹 제작</p>
+          <p className="fold-scope">Figma · AI 협업 웹 제작</p>
         </div>
       </div>
     </section>

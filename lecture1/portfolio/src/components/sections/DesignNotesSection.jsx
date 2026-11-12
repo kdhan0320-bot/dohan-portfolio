@@ -17,15 +17,15 @@ const DesignNotesSection = () => (
         <dl className="notes-roles">
           <div>
             <dt><span>01</span>작업 수</dt>
-            <dd>7개<span>구매·설비·영화 등 업무를 주제로 삼았습니다.</span></dd>
+            <dd>7개<span>업무 관리·생활 서비스·콘텐츠 탐색.</span></dd>
           </div>
           <div>
             <dt><span>02</span>제가 맡은 일</dt>
-            <dd>요구사항 정리 · Figma 편집<span>발주 순서와 정비 배정 흐름을 먼저 그렸습니다.</span></dd>
+            <dd>주제 · 요구사항 · 방향 선택<span>업무 순서와 먼저 보여줄 정보를 제안했습니다.</span></dd>
           </div>
           <div>
             <dt><span>03</span>AI와 함께한 일</dt>
-            <dd>코드 작성 · 화면 구현<span>제안한 시안을 실제 웹 화면으로 옮겼습니다.</span></dd>
+            <dd>시각 제안 · 화면 제작<span>Figma 편집과 웹 코드 작성·검사를 함께했습니다.</span></dd>
           </div>
         </dl>
       </RevealOnScroll>

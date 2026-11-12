@@ -142,6 +142,9 @@ const ProjectDetailPage = () => {
   const project = projects.find(item => projectSlug(item) === slug);
   const ready = PROJECT_DETAIL_READY[slug === 'jansang-cinema' ? 'ott-service' : slug];
   if (slug === 'ott-service') return <Navigate to={'/projects/jansang-cinema' + location.search + location.hash} replace />;
+  // gongjeongbom은 기준선의 이전 slug다. id/slug를 gijunseon으로 정리하며
+  // 기존 외부 링크가 끊기지 않도록 새 주소로 돌려보낸다(2026-11-07).
+  if (slug === 'gongjeongbom') return <Navigate to={'/projects/gijunseon' + location.search + location.hash} replace />;
   if (!project || !ready) return <Navigate to="/projects" replace />;
   const index = projects.indexOf(project);
   const next = projects[(index + 1) % projects.length];

@@ -8,14 +8,14 @@ const relatedWork = [
     slug: 'seolbiit',
     title: '설비결',
     type: '정비 요청과 담당자 배정',
-    image: 'detail/current/seolbigyeol-overview-2x.webp',
+    image: 'detail/current/seolbigyeol-home-20261112.png',
     alt: '설비결의 설비 점검 현황과 요청을 보여주는 실제 디자인 화면',
   },
   {
     slug: 'feedback-hub',
     title: '품의선',
     type: '입고·지급 후 남은 재고',
-    image: 'detail/current/pumuiseon-home-20261105.jpg',
+    image: 'detail/current/pumuiseon-home-1440-20261112.jpg',
     alt: '품의선의 발주·입고·지급과 현재 보유량',
   },
 ];

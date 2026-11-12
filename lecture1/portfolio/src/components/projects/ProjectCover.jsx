@@ -1,13 +1,13 @@
 import './projectCovers.css';
 const BASE=import.meta.env.BASE_URL;
 const COVERS={
- seolbiit:{theme:'equipment',width:2880,height:2160},
- jobflow:{theme:'record',width:1363,height:936},
- 'ott-service':{theme:'cinema',width:1348,height:926},
- gongjeongbom:{theme:'industry',width:1363,height:936},
- 'feedback-hub':{theme:'feedback',width:1348,height:926},
+ seolbiit:{theme:'equipment',width:1440,height:1080},
+ jobflow:{theme:'record',width:1440,height:1000},
+ 'ott-service':{theme:'cinema',width:1440,height:1000},
+ gijunseon:{theme:'industry',width:1440,height:1000},
+ 'feedback-hub':{theme:'feedback',width:1440,height:1000},
  'bus-arrival-app':{theme:'transit',width:390,height:844,mobile:true},
- brewstep:{theme:'cafe',width:370,height:1024,mobile:true},
+ brewstep:{theme:'cafe',width:390,height:844,mobile:true},
 };
 const ProjectCover=({project,eager=false,image,imageAlt})=>{
  const cover=COVERS[project.id]||{};

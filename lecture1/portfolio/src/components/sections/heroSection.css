@@ -1,114 +1,32 @@
-.portfolio-hero {
-  border-block-end: 1px solid var(--line);
-  background: var(--paper);
-}
-
-.fold-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
-  grid-template-areas: "name art" "intro art";
-  gap: 0 clamp(24px, 4vw, 72px);
-  align-content: center;
-  padding-block: clamp(32px, 4.2vw, 72px) clamp(24px, 3vw, 48px);
-}
-
-.fold-heading { grid-area: name; align-self: end; }
-.fold-role {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(20px, 1.7vw, 26px);
-  font-weight: 660;
-  letter-spacing: -.025em;
-}
-.fold-role span { color: var(--muted); font-size: 14px; font-weight: 500; }
-.fold-heading h1 {
-  margin: 16px 0 0 -.045em;
-  color: var(--ink);
-  font-size: clamp(80px, 8vw, 124px);
-  font-weight: 730;
-  letter-spacing: -.085em;
-  line-height: 1.06;
-}
-
-.fold-intro { grid-area: intro; align-self: start; min-width: 0; }
-.fold-description {
-  margin: 24px 0 0;
-  color: var(--ink);
-  font-size: clamp(17px, 1.45vw, 22px);
-  line-height: 1.65;
-  letter-spacing: -.035em;
-}
-.fold-actions {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  margin-top: 32px;
-}
-.fold-shortcut {
-  gap: 8px;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--ink);
-  cursor: pointer;
-}
-.fold-scope { margin-top: 16px; color: var(--muted); font-size: 14px; line-height: 1.5; }
-
-.fold-art { grid-area: art; min-width: 0; margin: 0; }
-.fold-cover {
-  position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 0;
-  background: #dfe3e0; text-align: left; cursor: pointer;
-}
-.fold-frame { position: relative; display: block; width: 100%; overflow: hidden; aspect-ratio: 3 / 2; background: #dfe3e0; }
-.fold-image { display: block; width: 100%; height: auto; }
-.fold-canvas { display: block; position: absolute; inset: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; }
-.fold-frame[data-open="true"] .fold-canvas { visibility: visible; }
-.fold-handle {
-  position: absolute; right: 0; bottom: 0;
-  display: inline-flex; align-items: center; gap: 16px; min-height: 52px;
-  padding: 0 20px 0 32px; color: white; background: #243848;
-  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
-  font-size: 16px; line-height: 1.4; font-weight: 650;
-  transition: background .18s ease, opacity .15s ease;
-}
-.fold-handle::before {
-  content: ''; position: absolute; top: 0; left: 0; width: 12px; height: 12px; background: #8195a4;
-}
-.fold-cover:is(:hover,:focus-visible) .fold-handle { background: #364f63; }
-.fold-frame[data-open="true"] + .fold-handle { opacity: 0; }
-::view-transition-group(unfolded-slip) {
-  animation-duration: 380ms;
-  animation-timing-function: cubic-bezier(.25, .75, .2, 1);
-}
-.fold-role::before {
-  content: ''; width: 18px; height: 12px; align-self: center;
-  background: linear-gradient(-27deg, var(--accent) 48%, transparent 50%),linear-gradient(-27deg, transparent 47%, var(--ink) 50%);
-  background-size: 52% 100%; background-position: right, left; background-repeat: no-repeat;
-}
-@media (min-width: 681px) and (max-width: 999px) {
-  .fold-layout { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
-  .fold-art { align-self: center; }
-  .fold-heading h1 { font-size: 78px; }
-  .fold-break { display: none; }
-  .fold-actions { margin-top: 20px; }
-}
-@media (max-width: 680px) {
-  .fold-layout {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "name" "art" "intro";
-    row-gap: 16px;
-    padding-block: 24px 32px;
-  }
-  .fold-heading h1 { margin-top: 6px; font-size: clamp(60px, 13vw, 88px); }
-  .fold-handle { min-height: 44px; gap: 10px; padding: 0 14px 0 24px; font-size: 15px; }
-  .fold-actions { margin-top: 16px; }
-  .fold-description { margin: 0; font-size: 18px; }
-  .fold-scope { margin-top: 10px; font-size: 13px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .fold-handle { transition: none; }
-}
+.portfolio-hero { border-bottom: 1px solid var(--line); background: #f0f2ef; }
+.fold-layout { display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); grid-template-areas:"name art" "intro art"; gap:0 clamp(32px,5vw,80px); align-content:center; padding-block:clamp(40px,5vw,80px); }
+.fold-heading { grid-area:name; align-self:end; }
+.fold-role { display:flex; gap:16px; align-items:center; margin:0 0 24px; font-size:17px; font-weight:700; }
+.fold-role span { color:var(--muted); font-size:14px; font-weight:500; border-left:1px solid #acb7bc; padding-left:16px; }
+.fold-heading h1 { margin:0 0 0 -.045em; color:var(--ink); font-size:clamp(54px,5.5vw,84px); font-weight:760; letter-spacing:-.075em; line-height:1.13; }
+.fold-heading h1 span { color:#527488; position:relative; }
+.fold-heading h1 span::after { content:''; position:absolute; left:.045em; right:0; bottom:.03em; height:2px; background:currentColor; transform-origin:left; animation:draw-fold-rule 1s .3s both; }
+.fold-intro { grid-area:intro; align-self:start; min-width:0; }
+.fold-description { margin:28px 0 0; color:var(--ink); font-size:clamp(16px,1.3vw,19px); line-height:1.7; letter-spacing:-.035em; }
+.fold-actions { display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center; margin-top:24px; }
+.fold-shortcut { gap:8px; padding:0; border:0; background:none; color:var(--ink); cursor:pointer; }
+.fold-scope { margin:12px 0 0; color:var(--muted); font-size:13px; }
+.fold-art { grid-area:art; min-width:0; align-self:center; margin:0; padding:24px; background:#203441; color:#f1f4f4; box-shadow:0 20px 44px #23344012; }
+.fold-art-label { display:flex; justify-content:space-between; gap:12px; margin-bottom:20px; font-size:12px; letter-spacing:.02em; color:#d0dade; }
+.fold-art figcaption { margin:20px 0 0; font-size:13px; line-height:1.5; color:#d0dade; }
+.fold-cover { position:relative; display:block; width:100%; padding:0; border:0; border-radius:0; background:#dfe3e0; text-align:left; cursor:pointer; }
+.fold-frame { position:relative; display:block; width:100%; overflow:hidden; aspect-ratio:3/2; background:#dfe3e0; }
+.fold-image { display:block; width:100%; height:auto; }
+.fold-canvas { display:block; position:absolute; inset:0; width:100%; height:100%; visibility:hidden; pointer-events:none; }
+.fold-frame[data-open="true"] .fold-canvas { visibility:visible; }
+.fold-handle { position:absolute; right:0; bottom:0; display:flex; align-items:center; min-height:56px; padding:0 24px 0 36px; background:#f4f6f3; color:#203441; clip-path:polygon(14px 0,100% 0,100% 100%,0 100%,0 14px); font-size:17px; font-weight:750; transition:background .2s,opacity .15s; }
+.fold-handle::before { content:''; position:absolute; top:0; left:0; width:14px; height:14px; background:#9eb2bd; }
+.fold-cover:is(:hover,:focus-visible) .fold-handle { background:#dae7ef; }
+.fold-cover:focus-visible { outline:3px solid #c9dce8; outline-offset:5px; }
+.fold-frame[data-open="true"] + .fold-handle { opacity:0; }
+::view-transition-group(unfolded-slip) { animation-duration:380ms; animation-timing-function:cubic-bezier(.25,.75,.2,1); }
+@keyframes draw-fold-rule { from { transform:scaleX(0); } to { transform:scaleX(1); } }
+@media (min-width:701px) and (max-width:1000px) { .fold-layout { column-gap:28px; grid-template-columns:minmax(0,1fr) minmax(0,1.1fr); } .fold-heading h1 { font-size:54px; } .fold-art { padding:16px; } .fold-break { display:none; } }
+@media (max-width:700px) { .fold-layout { grid-template-columns:minmax(0,1fr); grid-template-areas:"name" "art" "intro"; gap:28px; padding-block:28px 40px; } .fold-role { margin-bottom:18px; font-size:16px; } .fold-heading h1 { font-size:clamp(48px,11vw,72px); line-height:1.1; } .fold-heading h1 br:nth-of-type(2) { display:none; } .fold-art { padding:16px; } .fold-art-label { margin-bottom:14px; font-size:11px; } .fold-art figcaption { margin-top:14px; font-size:12px; } .fold-handle { min-height:48px; padding-inline:28px 18px; font-size:16px; } .fold-description { margin:0; font-size:17px; } .fold-actions { margin-top:16px; } }
+@media (max-width:360px) { .fold-heading h1 { font-size:43px; } .fold-art-label { font-size:10px; } }
+@media (prefers-reduced-motion:reduce) { .fold-heading h1 span::after { animation:none; } .fold-handle { transition:none; } }
