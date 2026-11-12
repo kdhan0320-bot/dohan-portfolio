@@ -28,19 +28,22 @@ function CinemaScene() {
   const active = reduced && !manual ? 'ui' : view;
   return <>
     <div ref={surface} className="cinema-scene" data-view={active} id="cinema-scene-screen">
-      <img className="cinema-scene__art" src={`${BASE}detail/current/bluehour-scene.webp`} alt={active === 'scene' ? '잔상관 파란 오후의 AI 생성 장면 — 바닷가에서 자전거를 탄 두 친구' : ''} aria-hidden={active !== 'scene'} width="1774" height="887" fetchPriority="high" />
+      <picture className="cinema-scene__art" aria-hidden={active !== 'scene'}>
+        <source media="(max-width:700px)" srcSet={`${BASE}detail/current/bluehour-cover-scene-390-20261113.jpg`} width="375" height="227" />
+        <img src={`${BASE}detail/current/bluehour-cover-scene-1440-20261113.jpg`} alt={active === 'scene' ? '파란 오후의 실제 표지에 사용한 AI 장면 — 바닷가에서 자전거를 탄 두 친구' : ''} width="1425" height="476" fetchPriority="high" />
+      </picture>
       <picture className="cinema-scene__ui" aria-hidden={active !== 'ui'}>
-        <source media="(max-width:700px)" srcSet={`${BASE}detail/current/jansang-explore-390-20261112.png`} width="390" height="440" />
-        <img src={`${BASE}detail/current/jansang-explore-1440-20261112.png`} alt={active === 'ui' ? '잔상관 공개 웹의 실제 탐색 화면 — 파란 오후 표지와 분위기·시간 선택, 영화 목록' : ''} width="1440" height="860" onLoad={() => setLoaded(true)} />
+        <source media="(max-width:700px)" srcSet={`${BASE}detail/current/bluehour-cover-ui-390-20261113.jpg`} width="375" height="227" />
+        <img src={`${BASE}detail/current/bluehour-cover-ui-1440-20261113.jpg`} alt={active === 'ui' ? '잔상관 공개 웹의 실제 파란 오후 표지 UI — 같은 장면 위에 영화 제목·장르·28분 정보가 표시됨' : ''} width="1425" height="476" onLoad={() => setLoaded(true)} />
       </picture>
     </div>
     <div className="cinema-scene__controls">
       <div role="group" aria-label="잔상관 장면과 실제 화면 선택">
-        {[['scene', '작품 장면'], ['ui', '실제 탐색 UI']].map(([id, label]) => <button key={id} type="button" aria-pressed={active === id} aria-controls="cinema-scene-screen" onClick={() => { setManual(true); setView(id); }}>{label}</button>)}
+        {[['scene', '작품 장면'], ['ui', '실제 표지 UI']].map(([id, label]) => <button key={id} type="button" aria-pressed={active === id} aria-controls="cinema-scene-screen" onClick={() => { setManual(true); setView(id); }}>{label}</button>)}
       </div>
       <a href="https://kdhan0320-bot.github.io/dohan-portfolio/jansang-cinema/" target="_blank" rel="noreferrer" aria-label="잔상관 웹에서 탐색 (새 탭)">웹에서 탐색</a>
     </div>
-    <p className="cinema-scene__caption">{active === 'scene' ? '파란 오후 · 공개 작품의 AI 생성 장면' : '공개 웹 캡처 · 분위기와 시간으로 고르는 화면'}</p>
+    <p className="cinema-scene__caption">{active === 'scene' ? '파란 오후 · 실제 표지의 AI 생성 장면' : '파란 오후 · 공개 웹 표지 UI 발췌'}</p>
   </>;
 }
 const scenes = [
@@ -63,6 +66,7 @@ export default function HeroSection() {
         <div className="scene-selector" role="group" aria-label="첫 화면 대표 작품 선택">
           {scenes.map((item, index) => <button type="button" key={item.id} aria-pressed={selected === index} aria-controls="scene-preview" onClick={() => setSelected(index)}><span>{String(index + 1).padStart(2, '0')}</span>{item.title}</button>)}
         </div>
+        <p className="scene-role" aria-live="polite" aria-atomic="true"><strong>김도한의 기여</strong><span>{scene.role}</span></p>
         <figure id="scene-preview" className={`scene-preview scene-preview--${scene.id}`}>
           <div className="scene-stage" key={scene.id}>
             {scene.id === 'cinema' ? <CinemaScene /> : scene.image ? <img src={`${BASE}detail/current/${scene.image}`} alt={scene.alt} width="1440" height="1080" /> : <ReceiptFlow compact />}
@@ -73,7 +77,6 @@ export default function HeroSection() {
           <p>{scene.description}</p>
           <Link className="scene-project-link" to={`/projects/${scene.slug}`}>{scene.title} 자세히 보기</Link>
         </div>
-        <p className="scene-role"><strong>김도한의 기여</strong><span>{scene.role}</span></p>
       </div>
       <div className="scene-bottom"><p>웹·UI 디자인 신입 지원 <span>시각 제안·화면 편집·구현에 AI 협업 포함</span></p><Link to="/about">경험과 기여</Link></div>
     </div>
