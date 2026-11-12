@@ -1,49 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ALL_PROJECTS } from '../../data/projectsData';
+import ProjectCover from '../projects/ProjectCover';
+import RevealOnScroll from '../ui/RevealOnScroll';
 import './moreWorks.css';
-
-const industrial = ALL_PROJECTS.find(project => project.id === 'gijunseon');
-const otherWork = ALL_PROJECTS.filter(project => ['jobflow', 'bus-arrival-app', 'brewstep'].includes(project.id));
-const media = `${import.meta.env.BASE_URL}detail/current/`;
-
-const MoreWorksSection = () => (
-  <section className="work-archive portfolio-shell" id="more-projects" aria-labelledby="more-title">
-    <article className="industrial-work">
-      <div className="industrial-heading">
-        <div><p className="case-category">{industrial.categoryLabel}</p><h2 id="more-title">{industrial.title}</h2></div>
-        <p>검사 사례에서 도입 상담까지 이어지는<br /> 산업용 비전 검사 웹사이트.</p>
-        <Link className="industrial-read" to={`/projects/${industrial.slug}`} aria-label="기준선 설계 과정 보기">설계 과정 보기</Link>
-      </div>
-      <figure>
-        <picture>
-          <source media="(max-width: 700px)" srcSet={media + 'gijunseon-hero-390-20261112.png'} width="390" height="567" />
-          <img src={media + 'gijunseon-hero-1440-20261112.png'} width="1440" height="560" loading="lazy" decoding="async"
-            alt="기준선 첫 화면의 비전 검사 카메라와 생산 라인" />
-        </picture>
-        <figcaption>
-          <span>기준선 웹사이트 · 첫 화면 발췌</span>
-          <div className="industrial-destinations">
-            <span className="industrial-destinations-label">기준선 사이트에서 더 보기</span>
-            <a href={industrial.liveUrl + '#solutions'} target="_blank" rel="noreferrer">검사 솔루션 보기</a>
-            <a href={industrial.liveUrl + 'adoption.html'} target="_blank" rel="noreferrer">도입 절차 알아보기</a>
-          </div>
-        </figcaption>
-      </figure>
-    </article>
-    <section className="remaining-work" aria-labelledby="remaining-title">
-      <h2 id="remaining-title">그 밖의 작업</h2>
-      <ul>{otherWork.map(project => (
-        <li key={project.id}>
-          <Link to={`/projects/${project.slug || project.id}`}>
-            <span className="remaining-thumb">
-              {project.thumbnailUrl && <img src={project.thumbnailUrl} alt={project.thumbnailAlt} loading="lazy" decoding="async" />}
-            </span>
-            <span className="remaining-copy"><strong>{project.title}</strong><span>{project.categoryLabel}</span></span>
-          </Link>
-        </li>
-      ))}</ul>
-    </section>
-  </section>
-);
-
-export default MoreWorksSection;
+const order=['gijunseon','jobflow','bus-arrival-app','brewstep'];
+export default function MoreWorksSection(){
+ return <section className="other-works portfolio-shell" id="more-projects" aria-labelledby="more-title">
+  <div className="editorial-heading"><div><p className="edition-label">02 / EXPLORATIONS</p><h2 id="more-title">그 밖의 작업<span>04</span></h2></div><p className="other-intro">산업·기록·이동·취향.<br/>{' '}서로 다른 맥락에서 찾은 화면의 답.</p></div>
+  <div className="other-grid">{order.map(id=>{const project=ALL_PROJECTS.find(p=>p.id===id);return <RevealOnScroll component="article" key={id} duration={.6}>
+    <Link to={`/projects/${project.slug||project.id}`} className="other-link"><ProjectCover project={project}/><div className="other-caption"><h3>{project.title}</h3><span>{project.categoryLabel}</span></div><p>{project.description}</p><span className="other-open">프로젝트 보기</span></Link>
+  </RevealOnScroll>})}</div>
+ </section>;
+}

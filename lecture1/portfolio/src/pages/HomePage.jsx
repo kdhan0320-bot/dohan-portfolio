@@ -21,8 +21,7 @@ const HomePage = () => {
    * 기다리는 명시적 완료 신호. 화면에는 아무 영향 없음(속성만 부여, 스타일 없음).
    *
    * review 캡처 모드(data-review-mode="true", addInitScript로 미리 심어짐)에서는
-   * Hero의 화면 패널 진입 애니메이션이 스킵되어 즉시 최종 상태로 렌더링되지만,
-   * 소개 문구가 보이는지 타이밍 추측 없이 실제 computed opacity로 확인한
+   * Hero 제목의 두 줄이 보이는지 실제 computed opacity로 확인한
    * 뒤에만 신호를 세운다. 일반 사용자 경로는 기존과 동일하게 두 번의 rAF로만 판단한다.
    *
    * 제한 시간 안에 Hero 텍스트가 실제로 보이지 않으면 data-review-ready를 세우지

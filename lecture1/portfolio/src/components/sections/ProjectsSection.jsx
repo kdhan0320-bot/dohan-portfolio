@@ -1,84 +1,27 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FEATURED_CASES, PROCUREMENT_RECEIPT } from '../../data/projectsData';
+import { ALL_PROJECTS } from '../../data/projectsData';
+import ProjectCover from '../projects/ProjectCover';
 import RevealOnScroll from '../ui/RevealOnScroll';
-import AssignmentPreview from '../projects/AssignmentPreview';
 import './selectedWorks.css';
 
-const media = `${import.meta.env.BASE_URL}detail/current/`;
-const receipt = FEATURED_CASES.find(item => item.project.id === 'feedback-hub');
-const maintenance = FEATURED_CASES.find(item => item.project.id === 'seolbiit');
-const cinema = FEATURED_CASES.find(item => item.project.id === 'ott-service');
-
-function CaseCopy({ item, number }) {
-  const { project, question, choice, scope } = item;
-  return (
-    <div className="case-brief">
-      <p className="case-category"><span className="case-index">{number}</span>{project.categoryLabel}</p>
-      <h3>{project.title}</h3>
-      <p className="case-prompt">{question}</p>
-      <p className="case-reason">{choice}</p>
-      <Link className="case-read" to={`/projects/${project.slug || project.id}`} aria-label={`${project.title} 설계 과정 보기`}>
-        설계 과정 보기
-      </Link>
-      <p className="case-credit">{scope}</p>
-    </div>
-  );
-}
-
-const scenes = [
-  { title: '파란 오후', info: '애니메이션 · 28분', src: 'bluehour-scene.webp', alt: '바다가 보이는 길에 자전거를 세운 두 친구' },
-  { title: '새벽 두 시의 식탁', info: '드라마 · 23분', src: 'nocturne-scene.webp', alt: '늦은 식당에서 마주 앉은 손님과 주인' },
+const selected = [
+  { id:'feedback-hub', category:'WORKFLOW UI', title:'발주에서 현장 지급까지,', subtitle:'숫자의 흐름을 읽는 화면.', role:'발주·입고·지급 요구사항 정리', scope:'AI 협업 웹 제작 · 브라우저 저장 시연' },
+  { id:'seolbiit', category:'OPERATION UI', title:'지금 처리할 요청과', subtitle:'다음 담당자가 보이도록.', role:'설비 점검 요구사항 · 상태 우선순위 검토', scope:'Figma 디자인 · 가상 설비 예시' },
+  { id:'ott-service', category:'CONTENT EXPERIENCE', title:'분위기로 고르고,', subtitle:'메모로 기억하는 영화.', role:'편집 방향 · 단독 표지 · 메모 흐름 선택', scope:'AI 협업 반응형 웹 · 가상 영화 콘텐츠' },
 ];
-
-function CinemaScenes() {
-  const [selected, setSelected] = useState(0);
-  return (
-    <div className="scene-editor">
-      <Link className="scene-frame" to="/projects/jansang-cinema" aria-label="잔상관 설계 과정 보기">
-        {scenes.map((scene, i) => <img key={scene.src} src={media + scene.src} loading="lazy"
-          className={selected === i ? 'active' : ''} alt={selected === i ? scene.alt : ''} aria-hidden={selected !== i} />)}
-        <p className="scene-caption" aria-live="polite">{scenes[selected].title} <span>{scenes[selected].info}</span></p>
-      </Link>
-      <div className="scene-choices" role="group" aria-label="잔상관 영화 장면 선택">
-        {scenes.map((scene, i) => <button key={scene.title} type="button" aria-pressed={i === selected}
-          onClick={() => setSelected(i)}>{scene.title}</button>)}
-      </div>
-    </div>
-  );
-}
-
 export default function ProjectsSection() {
-  return (
-    <section className="work-edition portfolio-shell" id="projects" aria-labelledby="selected-title">
-      <div className="section-heading">
-        <h2 id="selected-title">대표 작업</h2>
-        <Link className="text-link" to="/projects">전체 작업 보기</Link>
-      </div>
-      <article id="receipt-feature" className="lead-case" aria-label="품의선 · 자재 입출고 전표" tabIndex="-1">
-        <CaseCopy item={receipt} number="01" />
-        <figure className="receipt-proof">
-          <Link to="/projects/feedback-hub" className="slip-board" aria-label="품의선 전표의 설계 과정 보기">
-            <span className="slip-print"><img id="sample-receipt" {...PROCUREMENT_RECEIPT} /></span>
-          </Link>
-          <figcaption>품의선 웹에서 발췌한 자재 입출고 전표 <span>예시 데이터</span></figcaption>
-        </figure>
-      </article>
-      <div className="companion-cases">
-        <RevealOnScroll component="article" className="companion-case" duration={0.55}>
-          <AssignmentPreview>
-            <Link className="request-board" to="/projects/seolbiit" aria-label="설비결의 정비 요청 배정 과정 보기">
-              <img src={media + 'seolbigyeol-assignment-20261112.png'} width="784" height="520"
-                loading="lazy" alt="냉각수 펌프의 증상, 담당자와 완료 기한을 모은 배정 대기 요청" />
-            </Link>
-          </AssignmentPreview>
-          <CaseCopy item={maintenance} number="02" />
-        </RevealOnScroll>
-        <RevealOnScroll component="article" className="companion-case" duration={0.55}>
-          <CinemaScenes />
-          <CaseCopy item={cinema} number="03" />
-        </RevealOnScroll>
-      </div>
-    </section>
-  );
+  return <section className="selected-works portfolio-shell" id="projects" aria-labelledby="selected-title">
+    <div className="editorial-heading"><div><p className="edition-label">01 / SELECTED WORKS</p><h2 id="selected-title">대표 작업<span>03</span></h2></div><Link className="text-link" to="/projects">전체 작업 보기</Link></div>
+    <div className="selected-rows">{selected.map((item,index)=>{
+      const project=ALL_PROJECTS.find(p=>p.id===item.id);
+      return <RevealOnScroll component="article" className="selected-row" key={item.id} y={20} duration={.65}>
+        <Link className="selected-row-link" to={`/projects/${project.slug||project.id}`} aria-label={`${project.title} · 프로젝트 보기`}>
+          <span className="selected-number">{String(index+1).padStart(2,'0')}</span>
+          <div className="selected-art"><ProjectCover project={project}/></div>
+          <div className="selected-copy"><p className="selected-category">{item.category}</p><h3>{project.title}</h3><p className="selected-description">{item.title}<br/>{' '}{item.subtitle}</p><p className="selected-role"><span>김도한의 기여</span>{item.role}</p><p className="selected-scope">{item.scope}</p></div>
+          <span className="selected-open">프로젝트 보기</span>
+        </Link>
+      </RevealOnScroll>;
+    })}</div>
+  </section>;
 }
