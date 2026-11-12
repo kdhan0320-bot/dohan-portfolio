@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PROJECT_DETAIL_READY } from '../../data/portfolioMeta';
+import { projectNumber } from '../../data/posterProjects';
 import './projectPosters.css';
 
 const media = `${import.meta.env.BASE_URL}detail/current/`;
@@ -14,10 +15,10 @@ export default function ProjectPoster({ project, index = 0, heading = 'h3' }) {
   const Heading = heading;
   const mobile = Boolean(secondScreens[id]);
   const loading = index < 3 ? 'eager' : 'lazy';
-  return <article className="poster-card" data-project={id}>
+  return <article className={`poster-card${['feedback-hub', 'seolbiit'].includes(id) ? ' poster-card--lead' : ''}`} data-project={id}>
     <Link className="poster-card__link" to={`/projects/${slug}`} aria-label={`${project.title} · 작품 상세 보기`}>
       <div className={`project-poster project-poster--${id}`} aria-hidden="true">
-        <div className="poster-edition"><span>{String(index + 1).padStart(2, '0')}</span><span>{id === 'ott-service' ? '단편영화 큐레이션' : project.is_figma_project && !project.liveUrl ? 'Figma 디자인' : '웹·UI 프로젝트'}</span></div>
+        <div className="poster-edition"><span>{projectNumber(id)}</span><span>{id === 'ott-service' ? '단편영화 큐레이션' : project.is_figma_project && !project.liveUrl ? 'Figma 디자인' : '웹·UI 프로젝트'}</span></div>
         <p className="poster-title">{titles[id].map(line => <span key={line}>{line}</span>)}</p>
         {id === 'ott-service' ? <img className="poster-scene" src={media+'bluehour-cover-original-20261113.webp'} alt="" width="1942" height="809" loading={loading} />
           : id === 'feedback-hub' ? <><div className="poster-numbers"><span><small>입고</small>3</span><span><small>지급</small>2</span><span><small>보유</small>1</span></div><img className="poster-receipt" src={media+'pumuiseon-opening-slip.png'} alt="" loading={loading} width="1044" height="591" /></>

@@ -1,5 +1,6 @@
 import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-router-dom';
-import { ALL_PROJECTS, FEATURED_CASES } from '../data/projectsData';
+import { FEATURED_CASES } from '../data/projectsData';
+import { POSTER_PROJECTS, projectNumber } from '../data/posterProjects';
 import ProcurementCase from './ProcurementCase';
 import AssignmentPreview from '../components/projects/AssignmentPreview';
 import CinemaScene from '../components/projects/CinemaScene';
@@ -139,7 +140,7 @@ const ProjectDetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const projects = ALL_PROJECTS.filter(item => item.is_featured || item.moreWorksPublished);
+  const projects = POSTER_PROJECTS;
   const project = projects.find(item => projectSlug(item) === slug);
   const ready = PROJECT_DETAIL_READY[slug === 'jansang-cinema' ? 'ott-service' : slug];
   if (slug === 'ott-service') return <Navigate to={'/projects/jansang-cinema' + location.search + location.hash} replace />;
@@ -154,7 +155,7 @@ const ProjectDetailPage = () => {
   const register = (
     <div className="case-register">
       <button className="case-back" onClick={goBack} type="button">작업으로 돌아가기</button>
-      <span>PROJECT / {String(index + 1).padStart(2, '0')}</span>
+      <span>PROJECT / {projectNumber(project.id)}</span>
     </div>
   );
   return <article className="case-page" data-page-id="project-detail" data-project-slug={slug}><div className="portfolio-shell">
