@@ -1,14 +1,14 @@
 import { createTheme } from '@mui/material/styles';
 
-// 사용자 요청에 따른 밝은 편집형 디자인. 이전 Human Signal 컴포넌트의
-// export 계약은 유지하지만, 현재 화면은 SUIT와 중성 배경·블루 팔레트로 구성한다.
+// 승인된 소프트 차콜 테마. CSS 토큰은 index.css에서 관리한다.
+// 이전 Human Signal export 계약은 유지한다.
 export const FONT_SANS = '"SUIT Variable", "SUIT", sans-serif';
 export const FONT_MONO = FONT_SANS;
 export const HUMAN_SIGNAL = {
-  inkNavy: '#1b1d22', deepHarbor: '#202e55', warmPaper: '#f5f4ee',
-  paperDeep: '#d1d2d1', softWhite: '#FFFFFF', inkText: '#1b1d22',
-  burntOrange: '#304fc6', brightOrange: '#304fc6', brightOrangeOnDark: '#e9ebef',
-  mutedSage: '#b8c7d0', steelMist: '#e9ebef', deepSage: '#585b63', mutedInk: '#585b63',
+  inkNavy: '#f2f1ed', deepHarbor: '#354050', warmPaper: '#25272a',
+  paperDeep: '#494d54', softWhite: '#FFFFFF', inkText: '#f2f1ed',
+  burntOrange: '#b6c4e5', brightOrange: '#b6c4e5', brightOrangeOnDark: '#b6c4e5',
+  mutedSage: '#b8c7d0', steelMist: '#303337', deepSage: '#b4b7be', mutedInk: '#b4b7be',
 };
 export const ULTRAWIDE_CONTENT_MAX_WIDTH = 1280;
 export const HOME_WIDE_MAX_WIDTH = 1376;
@@ -16,17 +16,17 @@ export const HOME_PROJECT_MAX_WIDTH = 1280;
 export const HOME_READING_MAX_WIDTH = 680;
 export const QHD_DECORATION_MIN_WIDTH = 2480;
 export const SECTION_SIGNAL_TONES = {
-  light: { indexColor: '#1b1d22', indexOpacity: .18, labelColor: '#304fc6', circleStroke: '#d1d2d1', lineStroke: '#d1d2d1', fragmentBg: '#e9ebef', fragmentBorder: '#d1d2d1' },
-  dark: { indexColor: '#FFFFFF', indexOpacity: .24, labelColor: '#e9ebef', circleStroke: '#585b63', lineStroke: '#585b63', fragmentBg: '#202e55', fragmentBorder: '#585b63' },
+  light: { indexColor: '#f2f1ed', indexOpacity: .18, labelColor: '#b6c4e5', circleStroke: '#494d54', lineStroke: '#494d54', fragmentBg: '#303337', fragmentBorder: '#494d54' },
+  dark: { indexColor: '#FFFFFF', indexOpacity: .24, labelColor: '#b6c4e5', circleStroke: '#b4b7be', lineStroke: '#b4b7be', fragmentBg: '#354050', fragmentBorder: '#b4b7be' },
 };
 export const getDesignTokens = () => ({
   palette: {
-    mode: 'light',
-    primary: { main: '#304fc6', contrastText: '#FFFFFF' },
-    secondary: { main: '#1b1d22', contrastText: '#FFFFFF' },
-    background: { default: '#f5f4ee', paper: '#FFFFFF' },
-    text: { primary: '#1b1d22', secondary: '#585b63' },
-    divider: '#d1d2d1',
+    mode: 'dark',
+    primary: { main: '#b6c4e5', contrastText: '#25272a' },
+    secondary: { main: '#f2f1ed', contrastText: '#25272a' },
+    background: { default: '#25272a', paper: '#303337' },
+    text: { primary: '#f2f1ed', secondary: '#b4b7be' },
+    divider: '#494d54',
   },
   typography: {
     fontFamily: FONT_SANS,

@@ -27,6 +27,8 @@ export default function FlowGraphic() {
     let frame, last = 0, width = 1, height = 1;
     let hidden = document.hidden;
     const position = { x: pointer.current.x, y: pointer.current.y };
+    const styles = getComputedStyle(el);
+    const lineColors = [styles.getPropertyValue('--flow-primary').trim(), styles.getPropertyValue('--flow-secondary').trim()];
     function draw() {
       ctx.clearRect(0, 0, width, height);
       const t = phase.current;
@@ -47,8 +49,8 @@ export default function FlowGraphic() {
         ctx.moveTo(-10, left);
         ctx.bezierCurveTo(width * .23, row + drift, spine - width * .17, knot + bend, spine, knot);
         ctx.bezierCurveTo(spine + width * .18, knot - bend, width * .79, height - row + drift * .3, width + 10, height - row);
-        ctx.strokeStyle = i < 18 ? '#252c38' : '#3555cf';
-        ctx.globalAlpha = .52 + rank * .35;
+        ctx.strokeStyle = lineColors[i < 18 ? 0 : 1];
+        ctx.globalAlpha = .42 + rank * .28;
         ctx.lineWidth = width < 600 ? .85 : 1.15;
         ctx.stroke();
       }

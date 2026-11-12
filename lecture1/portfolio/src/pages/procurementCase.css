@@ -16,10 +16,10 @@
 .procurement-credits dt { font-weight: 650; color: var(--accent); }
 .procurement-scope { margin-top: 20px; color: var(--muted); font-size: 13px; line-height: 1.75; }
 .procurement-credits .case-actions { align-items: center; gap: 20px; }
-.procurement-case .case-action--primary { color: #fff; }
+.procurement-case .case-action--primary { color: var(--on-action); }
 .receipt-story { grid-area: story; min-width: 0; }
 .receipt-story > h2 { margin: 0 0 20px; font-size: clamp(21px, 2.15vw, 33px); line-height: 1.35; letter-spacing: -.055em; }
-.receipt-sheet { margin: 0; border: 1px solid #bac5cd; background: #fff; }
+.receipt-sheet { margin: 0; border: 1px solid var(--line); background: var(--surface); }
 .receipt-plate { position: relative; }
 .receipt-plate img { display: block; width: 100%; height: auto; }
 .receipt-trace { position: absolute; inset: 0; pointer-events: none; }
@@ -37,11 +37,11 @@
   28% { opacity: 1; } 58%, 85% { clip-path: inset(0); opacity: 1; }
   100% { clip-path: inset(0); opacity: var(--trace-end, 0); }
 }
-.receipt-sheet figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; padding: 0 16px; border-top: 1px solid #d5dfe5; color: var(--muted); font-size: 13px; }
+.receipt-sheet figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; padding: 0 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
 .receipt-sheet button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 0; padding: 0; font: inherit; font-weight: 650; color: var(--accent); background: none; cursor: pointer; }
 .receipt-sheet button:hover { text-decoration: underline; text-underline-offset: 4px; }
-.receipt-ledger { position: relative; margin-top: 26px; padding: 16px 0 0; border-top: 1px solid #91a3af; }
-.receipt-ledger::before { content: ''; position: absolute; right: 18%; bottom: 100%; width: 1px; height: 26px; background: #91a3af; }
+.receipt-ledger { position: relative; margin-top: 26px; padding: 16px 0 0; border-top: 1px solid var(--line-strong); }
+.receipt-ledger::before { content: ''; position: absolute; right: 18%; bottom: 100%; width: 1px; height: 26px; background: var(--line-strong); }
 .receipt-ledger[data-arrived="true"]::before { animation: ledger-connect .38s ease-out both; transform-origin: top; }
 @keyframes ledger-connect { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .receipt-ledger ol { padding: 0; margin: 12px 0 2px; list-style: none; }
@@ -49,7 +49,7 @@
 .ledger-record { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
 .ledger-event { display: flex; align-items: baseline; gap: 10px; font-size: 15px; }
 .ledger-event span { color: var(--muted); font-size: 13px; }
-.receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--navy); }
+.receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--accent); }
 .receipt-ledger .text-link, .procurement-credits .text-link { gap: 6px; text-decoration: underline; }
 @media (max-width: 799px) {
   .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
