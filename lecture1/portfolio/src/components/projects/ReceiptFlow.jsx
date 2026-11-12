@@ -35,7 +35,13 @@ export default function ReceiptFlow({ compact = false, onStart, onComplete }) {
     ];
   }, [clearTimers]);
   useEffect(() => {
-    if (reduced || !window.IntersectionObserver) return;
+    if (reduced) {
+      clearTimers();
+      setPhase('settled');
+      setRunning(false);
+      return;
+    }
+    if (!window.IntersectionObserver) return;
     const observer = new IntersectionObserver(([entry]) => {
       if (autoStarted.current) { observer.disconnect(); return; }
       clearTimers();
