@@ -17,10 +17,14 @@
 .receipt-flow[data-phase="received"] .receipt-flow__unit--1 { left:28%; background:#3c5a88; color:white; }
 .receipt-flow[data-phase="received"] .receipt-flow__unit--2 { left:44%; background:#3c5a88; color:white; }
 .receipt-flow__explanation { color:#586573; font-size:13px; line-height:1.7; padding-top:16px; }
-.receipt-flow__controls { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px 16px; padding-top:10px; }
+.receipt-flow__controls { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px 12px; padding-bottom:12px; }
 .receipt-flow__controls p { font-size:13px; color:var(--accent); line-height:1.6; }
-.receipt-flow__controls button { min-height:44px; border:0; padding:0; background:none; color:var(--ink); font:inherit; font-size:12px; text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
-.receipt-flow__controls button:disabled { color:var(--muted); cursor:default; text-decoration:none; }
+.receipt-flow__controls button { min-height:44px; border:1px solid var(--accent); padding:10px 14px; background:var(--action); color:var(--on-action); font:inherit; font-weight:600; font-size:13px; cursor:pointer; }
+.receipt-flow__controls button:hover { background:var(--action-hover); }
+.receipt-flow__controls>span { font-size:12px; color:var(--muted); }
+.receipt-flow__status { min-height:34px; padding-top:12px; color:var(--accent); font-size:13px; line-height:1.7; }
+/* Replaying resets instantly; only the two issued units travel forwards. */
+.receipt-flow[data-phase="received"] .receipt-flow__unit { transition:none; }
 .receipt-flow--compact .receipt-flow__board { padding:24px; }.receipt-flow--compact .receipt-flow__heading strong { font-size:20px; }.receipt-flow--compact .receipt-flow__quantities dd { font-size:54px; }
 @media(max-width:600px) { .receipt-flow__heading { flex-wrap:wrap; gap:4px; padding-bottom:16px; }.receipt-flow__heading strong { font-size:20px; }.receipt-flow__quantities { padding:20px 0; gap:6px; }.receipt-flow__quantities dt { font-size:12px; }.receipt-flow__quantities dd { font-size:44px; }.receipt-flow__unit { width:34px; height:36px; }.receipt-flow__controls p { font-size:12px; }.receipt-flow--compact .receipt-flow__board { padding:18px; }.receipt-flow--compact .receipt-flow__quantities dd { font-size:44px; }.receipt-flow--compact .receipt-flow__heading strong span { display:none; } }
 @media(prefers-reduced-motion:reduce) { .receipt-flow__unit { transition:none; } }

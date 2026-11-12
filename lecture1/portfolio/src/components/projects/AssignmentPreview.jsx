@@ -59,7 +59,7 @@ function AssignmentDetail({ compact, overview }) {
           </button>
         </div>
         <figure className="pending-request__photo" hidden={pickerOpen}>
-          <img src={assets + 'seolbigyeol-assignment-pump.webp'} alt="조립 라인에 설치된 냉각수 펌프" width="420" height="280" />
+          <img src={assets + 'seolbigyeol-pump-original.png'} alt="조립 라인에 설치된 냉각수 펌프" width="1536" height="1024" />
           <figcaption><strong>PU-118</strong> 조립 2라인</figcaption>
         </figure>
         <div id="pending-request-picker" className="pending-request__picker" hidden={!pickerOpen} onKeyDown={closeOnEscape}>

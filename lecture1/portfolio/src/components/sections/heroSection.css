@@ -74,3 +74,31 @@
 }
 @media(max-width:370px) { .scene-register p:last-child { display:none; }.scene-selector button { font-size:19px; gap:7px; }.scene-description { flex-direction:column; align-items:start; gap:12px; }.scene-stage { height:350px; } }
 @media(prefers-reduced-motion:reduce) { .scene-heading h1 span,.scene-stage,.scene-preview--cinema .scene-stage>img { animation:none; } }
+
+/* A real scene leads into a capture of the public film browser. */
+.scene-preview--cinema .scene-stage { height:auto; overflow:visible; background:none; }
+.cinema-scene { position:relative; height:clamp(360px,34vw,490px); overflow:hidden; background:#303337; }
+.cinema-scene__art,.cinema-scene__ui { position:absolute; inset:0; width:100%; height:100%; transition:opacity .85s var(--ease),transform .85s var(--ease); }
+.cinema-scene__art { object-fit:cover; }
+.cinema-scene__ui { display:block; opacity:0; transform:translateY(18px) scale(.98); }
+.cinema-scene__ui img { display:block; width:100%; height:100%; object-fit:cover; object-position:top; }
+.cinema-scene[data-view="ui"] .cinema-scene__art { opacity:0; transform:scale(.97); }
+.cinema-scene[data-view="ui"] .cinema-scene__ui { opacity:1; transform:none; }
+.cinema-scene__controls { display:flex; align-items:center; justify-content:space-between; gap:16px; padding-top:10px; }
+.cinema-scene__controls>div { display:flex; gap:6px; }
+.cinema-scene__controls button { min-height:44px; padding:8px 12px; border:1px solid transparent; background:none; color:var(--muted); font:inherit; font-size:13px; cursor:pointer; }
+.cinema-scene__controls button[aria-pressed="true"] { border-color:var(--line); background:var(--surface); color:var(--ink); }
+.cinema-scene__controls a { color:var(--ink); font-size:13px; min-height:44px; display:inline-flex; align-items:center; text-underline-offset:4px; }
+.cinema-scene__caption { font-size:12px; line-height:1.7; color:var(--muted); padding-top:4px; }
+.scene-preview--pumu .scene-stage { height:auto; min-height:460px; overflow:visible; }
+@media(max-width:700px) {
+ .cinema-scene { height:clamp(300px,87vw,340px); }
+ .cinema-scene__art { object-position:90% center; }
+ .cinema-scene__ui img { object-fit:cover; }
+ .cinema-scene__controls { gap:8px; }
+ .cinema-scene__controls button { padding-inline:8px; font-size:12px; }
+ .cinema-scene__controls a { font-size:12px; }
+ .cinema-scene__caption { font-size:11px; }
+ .scene-preview--pumu .scene-stage { min-height:0; }
+}
+@media(prefers-reduced-motion:reduce) { .cinema-scene__art,.cinema-scene__ui { transition:none; } }

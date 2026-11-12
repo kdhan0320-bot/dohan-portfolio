@@ -10,7 +10,7 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
   return (
     <section className="receipt-story" aria-labelledby="receipt-question">
       <h2 id="receipt-question">{question}</h2>
-      <ReceiptFlow onComplete={() => setArrived(true)} />
+      <ReceiptFlow onStart={() => setArrived(false)} onComplete={() => setArrived(true)} />
       <div className="receipt-story-links"><span>품의선 예시 전표 · 수량 흐름 재구성</span><button type="button" onClick={() => scrollToSection('receipt-history')}>입출고 이력 보기</button></div>
       <section className="receipt-ledger" data-arrived={arrived} aria-labelledby="receipt-history">
         <h3 id="receipt-history" tabIndex="-1">포토센서 입출고 이력</h3>

@@ -93,7 +93,7 @@ export const PROJECT_DETAIL_READY = {
       label: '설비결 Figma 시안 · 정비 작업 현황',
     }),
     [
-      evidence('요청을 읽은 자리에서 담당자를 선택.', '사진·증상·담당자·기한을 한 카드에 모으고, 바로 아래에 ‘요청 확인·배정’을 두었습니다.', '', media('detail/current/seolbigyeol-assignment-20261112.png', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '784 / 520', {
+      evidence('요청을 읽은 자리에서 담당자를 선택.', '사진·증상·담당자·기한을 한 카드에 모으고, 바로 아래에 ‘요청 확인·배정’을 두었습니다.', '', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '1568 / 1040', {
         original: 'detail/current/seolbigyeol-home-20261112.png',
       })),
       evidence('모바일은 상태 요약 다음에 요청 카드.', '상태 요약은 2×2, 요청과 처리 현황은 세로로 배치했습니다.', 'PC 화면을 축소하지 않고 390px 폭의 별도 시안으로 구성했습니다.', media('detail/current/seolbigyeol-mobile-20261112.png', '설비결 모바일 보완 시안 · 작업 현황', '390 / 844', {
