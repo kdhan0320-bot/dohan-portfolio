@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ALL_PROJECTS } from '../data/projectsData';
+
+import { POSTER_PROJECTS } from '../data/posterProjects';
 import { CONTACT_EMAIL } from '../constants/site';
-import ProjectCover from '../components/projects/ProjectCover';
+import ProjectPoster from '../components/projects/ProjectPoster';
 import './portfolioEditorial.css';
 
-const PUBLIC_PROJECTS = ALL_PROJECTS.filter((project) => project.is_featured || project.moreWorksPublished);
-const projectSlug = (project) => project.slug || (project.id === 'bus-arrival-app' ? 'bus-arrival' : project.id);
+const PUBLIC_PROJECTS = POSTER_PROJECTS;
 const PROJECT_TOPICS = {
   jobflow: 'work',
   seolbiit: 'work',
@@ -33,7 +32,7 @@ const ProjectsPage = () => {
       <div className="portfolio-shell">
         <header className="works-intro">
           <div><p className="case-eyebrow">PROJECTS</p><h1>작업 모음<span>{String(PUBLIC_PROJECTS.length).padStart(2, '0')}</span></h1></div>
-          <p>업무 관리부터 영화 탐색까지, 주제별로 살펴보세요.<br />각 작업에서 맡은 역할과 실제 화면을 함께 소개합니다.</p>
+          <p>업무 관리부터 영화 탐색까지, 주제별로 살펴보세요.<br />확인된 기여와 AI 협업 범위는 작품 상세에 정리했습니다.</p>
         </header>
 
         <div className="works-filter" role="group" aria-label="프로젝트 주제로 필터">
@@ -44,23 +43,8 @@ const ProjectsPage = () => {
         </div>
         <p className="works-announcement" aria-live="polite" aria-atomic="true">{activeFilter.label} {projects.length}개</p>
 
-        <section className="works-grid" aria-label={`${activeFilter.label} 목록`}>
-          {projects.map((project, index) => <article className="works-card" key={project.id}>
-            <Link className="works-card__link" to={`/projects/${projectSlug(project)}`}>
-              <ProjectCover project={project} eager={index < 2} />
-              <div className="works-card__meta"><span>{project.categoryLabel || project.category}</span><span className="works-card__status">{project.productionLabel || (project.is_figma_project ? '디자인 시안' : 'AI 협업 웹 제작')}</span></div>
-              <div className="works-card__heading"><h2>{project.title}</h2><span className="works-card__detail-label">프로젝트 보기</span></div>
-              <p className="works-card__description">{project.description}</p>
-            </Link>
-            <div className="works-card__foot">
-              <span>{(project.tools || []).slice(0, 3).join(' · ')}</span>
-              {project.liveUrl ? <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} 웹사이트 새 탭에서 보기`}>
-                웹사이트 보기
-              </a> : (project.figmaDesignUrl || project.figmaPrototypeUrl) && <a href={project.figmaDesignUrl || project.figmaPrototypeUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} Figma 새 탭에서 보기`}>
-                Figma 보기
-              </a>}
-            </div>
-          </article>)}
+        <section className="poster-grid" aria-label={`${activeFilter.label} 목록`}>
+          {projects.map(project => <ProjectPoster key={project.id} project={project} index={PUBLIC_PROJECTS.indexOf(project)} heading="h2" />)}
         </section>
 
         <footer className="works-footer">

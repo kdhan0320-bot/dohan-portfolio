@@ -1,0 +1,52 @@
+.poster-gallery { padding-block:64px 72px; }
+.poster-gallery__heading { display:flex; justify-content:space-between; align-items:baseline; gap:24px; margin-bottom:32px; }
+.poster-gallery__heading h2 { font-size:clamp(30px,3vw,44px); font-weight:600; letter-spacing:-.045em; }
+.poster-gallery__heading h2 span { font-size:13px; color:var(--accent); vertical-align:top; margin-left:12px; letter-spacing:0; }
+.poster-gallery__heading p { font-size:13px; color:var(--muted); }
+.poster-gallery__heading p span { display:block; text-align:right; line-height:1.7; }
+.poster-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:48px 28px; }
+.poster-card { min-width:0; }
+.poster-card__link { display:block; text-decoration:none; color:var(--ink); }
+.project-poster { container-type:inline-size; aspect-ratio:3 / 4; position:relative; overflow:hidden; isolation:isolate; background:#d9dfe5; color:#26343e; }
+.poster-edition { position:absolute; z-index:3; top:5%; left:7%; right:7%; display:flex; justify-content:space-between; gap:12px; font-size:clamp(9px,2.6cqw,12px); font-weight:550; }
+.poster-title { position:absolute; z-index:2; top:14%; left:7%; font-size:15cqw; line-height:1.08; font-weight:730; letter-spacing:-.075em; }
+.poster-title>span { display:block; }
+.project-poster img { display:block; transition:transform .6s cubic-bezier(.2,.7,.2,1); }
+.poster-open { position:absolute; bottom:5%; right:7%; z-index:4; background:#f2f1ed; color:#25272a; font-size:12px; font-weight:600; padding:10px 14px; opacity:0; transform:translateY(8px); transition:opacity .2s,transform .25s; }
+.poster-card__link:focus-visible { outline:2px solid var(--accent); outline-offset:6px; }
+.poster-card__link:is(:hover,:focus-visible) .poster-open { opacity:1; transform:none; }
+.poster-meta { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:4px 12px; margin-top:16px; }
+.poster-meta :is(h2,h3) { font-size:25px; line-height:1.35; font-weight:650; letter-spacing:-.045em; }
+.poster-meta>p { font-size:12px; color:var(--muted); }
+.poster-credit { margin-top:8px; font-size:12px; line-height:1.75; color:var(--muted); text-wrap:pretty; }
+.poster-credit>span { color:var(--accent); margin-right:8px; font-weight:600; white-space:nowrap; }
+.project-poster--ott-service { background:#152a39; color:#fff; }
+.poster-scene { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:78% center; }
+.project-poster--ott-service::after { content:''; position:absolute; inset:0; z-index:1; background:linear-gradient(#10253560,transparent 40%,#102535d0); }
+.project-poster--ott-service .poster-title { top:auto; bottom:7%; font-weight:650; font-size:20cqw; }
+.project-poster--feedback-hub { background:#d5dce8; color:#233957; }
+.project-poster--feedback-hub .poster-title { font-size:8cqw; line-height:1.25; top:14%; }
+.poster-numbers { position:absolute; inset:34% 7% auto; display:grid; grid-template-columns:repeat(3,1fr); gap:4%; font-size:21cqw; line-height:1; letter-spacing:-.08em; font-weight:550; }
+.poster-numbers>span { display:block; border-top:1px solid #9daac0; padding-top:6%; }.poster-numbers small { display:block; font-size:clamp(9px,3cqw,13px); letter-spacing:0; margin-bottom:12%; font-weight:500; }
+.poster-numbers>span:last-child { color:#324f80; }
+.poster-receipt { position:absolute; bottom:3%; left:7%; width:86%; height:auto; }
+.project-poster--seolbiit { background:#b9c9c2; color:#233e33; }
+.project-poster--seolbiit .poster-title { top:13%; font-size:15cqw; }
+.poster-picker { position:absolute; width:66%; height:auto; right:7%; top:37%; }
+.project-poster--gijunseon { background:#353a40; color:#f2f1ed; }
+.project-poster--gijunseon .poster-title { top:14%; font-size:16cqw; }
+.poster-screen { position:absolute; width:80%; height:auto; right:-1%; top:42%; }
+.project-poster--gijunseon .poster-screen { width:95%; top:43%; right:-3%; }
+.project-poster--jobflow { background:#d2c9dc; color:#40344d; }
+.project-poster--jobflow .poster-screen { right:7%; top:36%; width:62%; }
+.project-poster--bus-arrival-app { background:#ceddd7; color:#25473c; }
+.project-poster--brewstep { background:#e6d3bb; color:#4b3828; }
+.poster-phones { display:flex; gap:6%; position:absolute; top:40%; left:7%; right:-12%; align-items:start; }
+.poster-phones img { width:46%; height:auto; }.poster-phones img+img { margin-top:24%; }
+.project-poster--brewstep .poster-phones { top:43%; }
+@media(hover:hover) and (prefers-reduced-motion:no-preference) { .poster-card__link:hover .poster-scene { transform:scale(1.035); }.poster-card__link:hover :is(.poster-screen,.poster-picker,.poster-receipt) { transform:translateY(-8px); }.poster-card__link:hover .poster-phones img+img { transform:translateY(-10px); } }
+@media(max-width:1000px) { .poster-grid { gap:36px 20px; }.poster-meta { display:block; }.poster-meta>p { margin-top:4px; } }
+@media(max-width:760px) { .poster-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px 18px; }.poster-gallery { padding-block:40px 48px; }.poster-gallery__heading { margin-bottom:24px; }.poster-gallery__heading p { font-size:12px; }.poster-meta :is(h2,h3) { font-size:22px; } }
+@media(max-width:450px) { .poster-grid { gap:28px 14px; }.poster-meta { margin-top:12px; }.poster-meta :is(h2,h3) { font-size:21px; }.poster-meta>p { font-size:11px; }.poster-credit { font-size:12px; line-height:1.65; }.poster-open { display:none; }.poster-edition>span:last-child { display:none; } }
+@media(max-width:350px) { .poster-grid { grid-template-columns:1fr; }.poster-edition>span:last-child { display:inline; }.poster-meta { display:flex; } }
+@media(prefers-reduced-motion:reduce) { .project-poster img,.poster-open { transition:none; transform:none!important; } }

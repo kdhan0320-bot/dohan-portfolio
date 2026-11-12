@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import HeroSection from '../components/sections/HeroSection';
 import ProjectsSection from '../components/sections/ProjectsSection';
-import MoreWorksSection from '../components/sections/MoreWorksSection';
-import DesignNotesSection from '../components/sections/DesignNotesSection';
 import ContactSection from '../components/sections/ContactSection';
 import { scrollToSection } from '../hooks/useScrollNav';
 
@@ -96,8 +94,6 @@ const HomePage = () => {
     <>
       <HeroSection />
       <ProjectsSection />
-      <MoreWorksSection />
-      <DesignNotesSection />
       <ContactSection />
     </>
   );

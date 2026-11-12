@@ -2,6 +2,7 @@ import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-route
 import { ALL_PROJECTS, FEATURED_CASES } from '../data/projectsData';
 import ProcurementCase from './ProcurementCase';
 import AssignmentPreview from '../components/projects/AssignmentPreview';
+import CinemaScene from '../components/projects/CinemaScene';
 import RevealOnScroll from '../components/ui/RevealOnScroll';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
 import './portfolioEditorial.css';
@@ -73,7 +74,7 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
   ));
   const cover = <div className="case-cover">
-    {project.id === 'seolbiit' ? <AssignmentPreview showPicker>{figures}</AssignmentPreview> : figures}
+    {project.id === 'seolbiit' ? <AssignmentPreview showPicker>{figures}</AssignmentPreview> : project.id === 'ott-service' ? <CinemaScene /> : figures}
   </div>;
   const credits = (
     <dl className={ready.creditsOnCover ? 'case-cover-credits' : undefined} aria-label={ready.creditsOnCover ? '제작 기여' : undefined}>
