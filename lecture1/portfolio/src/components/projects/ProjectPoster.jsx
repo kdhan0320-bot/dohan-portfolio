@@ -29,6 +29,6 @@ export default function ProjectPoster({ project, index = 0, heading = 'h3' }) {
       </div>
       <div className="poster-meta"><Heading>{project.title}</Heading><p>{project.categoryLabel || project.category}</p></div>
     </Link>
-    <p className="poster-credit"><span>김도한</span>{contribution}</p>
+    <p className="poster-credit"><span>김도한의 기여</span>{contribution}</p>
   </article>;
 }
