@@ -88,7 +88,7 @@ export default function ContextScene() {
       <div className="context-introduction">
         <p className="context-signature"><span>김도한</span> 웹·UI 디자인</p>
         <h1 id="home-title" data-hero-reveal><span>현장의 맥락을 읽고,</span><span>화면의 순서를<br className="context-title-break" /> 정합니다.</span></h1>
-        <p className="context-background">구매·총무와 생산 현장의 경험에서<br /> 출발한 웹·UI 디자인.</p>
+        <p className="context-background">구매관리·총무 경험에서<br /> 출발한 웹·UI 디자인.</p>
       </div>
       <figure className="context-visual">
         <div ref={surface} className="context-surface" data-phase={playing && !reduced ? 'arranging' : 'settled'} onPointerMove={followPointer} onPointerLeave={resetPointer} role="img" aria-label="흩어진 세 개의 정보 면이 하나의 틀 안에 정돈되는 그래픽">

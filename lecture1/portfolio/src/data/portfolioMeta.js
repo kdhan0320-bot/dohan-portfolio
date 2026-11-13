@@ -6,7 +6,7 @@ export const HERO_BADGE = `${NAME} | 웹·UI 디자인`;
 export const HERO_EYEBROW = 'DOHAN KIM · SELECTED WORK';
 export const HERO_HEADLINE_LINES = ['김도한.'];
 export const HERO_DESCRIPTION_LINES = [
-  '구매·문서·현장 업무를 경험했습니다.',
+  '자동화설비회사에서 구매관리·총무를 담당했습니다.',
   '업무 UI 디자인과 반응형 웹 작업을 소개합니다.',
 ];
 export const POSITIONING_PREFIX = '복잡한 정보를,';
@@ -175,9 +175,9 @@ export const PROJECT_DETAIL_READY = {
     ] },
   ),
   'feedback-hub': {
-    role: '현장에서 쓰던 발주·입고·지급 순서를 웹앱의 요구사항으로 정리했습니다.',
+    role: '구매관리·총무 경험에서 주제를 선택하고, 웹앱의 요구사항 제시와 제안 검토·방향 선택을 맡았습니다.',
     aiCollaboration: [
-      { label: '업무 경험', value: '엑셀·메일로 구매 요청 정리, 종이 결재서 제출' },
+      { label: '김도한', value: '주제·요구사항 제시, 제안 검토·방향 선택' },
       { label: 'AI 협업', value: '시연 구조·화면 제안, 코드 작성·검사' },
     ],
     // 날짜는 싣지 않는다 — 품의선 샘플은 방문 시점 기준 상대 날짜(ago())로 매번

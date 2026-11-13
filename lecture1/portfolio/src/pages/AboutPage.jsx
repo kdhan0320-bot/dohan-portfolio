@@ -15,7 +15,7 @@ const relatedWork = [
     slug: 'feedback-hub',
     title: '품의선',
     type: '입고·지급 후 남은 재고',
-    image: 'detail/current/pumuiseon-home-1440-20261112.jpg',
+    image: 'detail/current/pumuiseon-work-copy-1440-20261113.png',
     alt: '품의선의 발주·입고·지급과 현재 보유량',
   },
 ];
@@ -30,7 +30,7 @@ const AboutPage = () => (
         </div>
         <div className="about-intro__copy">
           <p className="about-intro__role">웹·UI 디자인 <span>신입 지원</span></p>
-          <p>구매·총무와 생산 현장에서 일했습니다. 지금은 자재가 얼마나 남았고 어떤 정비가 급한지 판단하는 데 쓰이는 화면에 관심이 있습니다.</p>
+          <p>자동화설비회사에서 구매관리·총무를 담당했습니다. 지금은 자재가 얼마나 남았고 어떤 정비가 급한지 판단하는 데 쓰이는 화면에 관심이 있습니다.</p>
         </div>
       </header>
 
@@ -60,15 +60,10 @@ const AboutPage = () => (
         </div>
         <div className="about-jobs">
           <article className="about-job">
-            <h3>구매·회계·총무</h3>
-            <p className="about-job__company">청림엔지니어링</p>
+            <h3>구매관리·총무</h3>
+            <p className="about-job__company">자동화설비회사</p>
 
-            <p>공장 구매품 발주와 거래처 대응, 견적·문서 관리를 맡았습니다. 구매 요청은 엑셀과 메일로 정리해 종이 결재서로 올렸습니다.</p>
-          </article>
-          <article className="about-job">
-            <h3>생산 현장 업무</h3>
-            <p className="about-job__company">현대자동차 <span>· 계약직</span></p>
-
+            <p>구매관리·총무 업무를 담당했습니다. 이 경험을 개인 작품의 주제 선정에 연결했으며, UX/UI 분야의 실무 경력은 없습니다.</p>
           </article>
         </div>
       </section>
@@ -80,7 +75,7 @@ const AboutPage = () => (
             <dt>김도한</dt>
             <dd>
               <ul className="about-project-roles">
-                <li><Link to="/projects/feedback-hub">품의선</Link><span>발주·입고·지급 순서를 요구사항으로 정리했습니다.</span></li>
+                <li><Link to="/projects/feedback-hub">품의선</Link><span>주제·요구사항을 제시하고, 제안을 검토해 방향을 선택했습니다.</span></li>
                 <li><Link to="/projects/seolbiit">설비결</Link><span>설비 점검 주제와 요구사항을 제시하고, 어떤 작업 상태를 먼저 보여줄지 의견을 냈습니다.</span></li>
                 <li><Link to="/projects/jansang-cinema">잔상관</Link><span>편집 방향을 선택하고 홈의 단독 표지를 결정했습니다. 모바일 화면도 검토했습니다.</span></li>
               </ul>

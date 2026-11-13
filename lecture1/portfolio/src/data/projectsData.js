@@ -21,7 +21,7 @@ const THUMB_MAP = {
   'ott-service': `${BASE}detail/current/jansang-home-1440-20261112.jpg`,
   'bus-arrival-app': `${BASE}detail/current/onjeongryu-home-20261112.png`,
   brewstep: `${BASE}detail/current/soyobit-home-20261112.png`,
-  'feedback-hub': `${BASE}detail/current/pumuiseon-home-1440-20261112.jpg`,
+  'feedback-hub': `${BASE}detail/current/pumuiseon-work-copy-1440-20261113.png`,
 };
 
 const PROJECT_ORDER = ['feedback-hub', 'seolbiit', 'ott-service', 'jobflow', 'gijunseon', 'bus-arrival-app', 'brewstep'];

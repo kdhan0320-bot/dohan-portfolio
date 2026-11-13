@@ -28,9 +28,9 @@ export default function EditorialHero() {
       <span className="editorial-second-line"><em className="editorial-word editorial-word--screen" data-hero-reveal>화면</em>{' '}<span className="editorial-word editorial-word--between" data-hero-reveal>사이.</span></span>
     </h1>
     <div className="editorial-bottom">
-      <p className="editorial-context"><span>구매·총무</span><span>생산 현장</span></p>
+      <p className="editorial-context"><span>구매관리·총무</span><span>자동화설비회사</span></p>
       <div className="editorial-intro-end">
-        <p>구매·총무와 생산 현장의 경험을<br />웹·UI 디자인으로 이어갑니다.</p>
+        <p>구매관리·총무 경험을<br />웹·UI 디자인으로 이어갑니다.</p>
         <div className="editorial-actions">
           <button type="button" className="editorial-work-link" onClick={() => scrollToSection('projects')}>작업 살펴보기 <span>{String(POSTER_PROJECTS.length).padStart(2, '0')}</span></button>
           {!reduced && <button type="button" className="editorial-replay" onClick={replay} aria-label="첫 문장 애니메이션 다시 보기">다시 보기</button>}
