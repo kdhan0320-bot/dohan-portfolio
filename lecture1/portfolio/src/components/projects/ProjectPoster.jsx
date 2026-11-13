@@ -8,7 +8,7 @@ const titles = { 'ott-service': ['파란', '오후.'], 'feedback-hub': ['받고,
 // Short mobile excerpts only; full verified contribution remains on desktop and in each case.
 const mobileContributions = {
   'feedback-hub': '발주·입고·지급 요구사항 정리',
-  seolbiit: '작업 상태의 우선순위 검토',
+  seolbiit: '담당자·기한·배정 상태 우선 요청',
   'ott-service': '편집 방향·단독 표지 결정',
   gijunseon: '디자인 방향 선택',
   jobflow: '기록·조작 우선 요청',
