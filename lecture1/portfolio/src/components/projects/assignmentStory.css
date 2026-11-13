@@ -51,6 +51,7 @@
  .assignment-story__screen { max-width:390px; margin-inline:auto; display:flex; flex-direction:column; }
  .assignment-story__screen figcaption { order:1; padding:4px 0 0; }
  .assignment-story__request { margin-top:12px; padding-top:16px; border-top:1px solid var(--line); }
+ .assignment-story__controls > .assignment-story__request { margin-top:8px; padding-top:8px; }
  .assignment-story__request-quote { font-size:15px; }
  .assignment-story__pager { display:grid; grid-template-columns:48px minmax(0,1fr) 48px; gap:8px; padding:8px 0; background:var(--paper); }
  .assignment-story__pager select { width:100%; min-width:0; min-height:48px; border:1px solid var(--line-strong); border-radius:0; padding:8px; background:var(--surface); color:var(--ink); font:inherit; font-size:14px; }

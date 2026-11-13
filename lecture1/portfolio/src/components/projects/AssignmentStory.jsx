@@ -94,6 +94,13 @@ export default function AssignmentStory() {
     };
   }, [position, scene.id]);
 
+  // Keep one note per scene. The desktop grid retains its existing placement.
+  const requestNote = <div className="assignment-story__request">
+    <p className="assignment-story__request-label">김도한의 선택 기준 · {requestCriteria[scene.request]}</p>
+    <p className="assignment-story__request-quote">{scene.request}</p>
+    {scene.text && <p className="assignment-story__request-result">{scene.text}</p>}
+  </div>;
+
   return <section className="assignment-story" aria-labelledby="assignment-story-title">
     <div className="assignment-story__intro">
       <p className="case-eyebrow">모바일 배정 흐름</p>
@@ -116,6 +123,7 @@ export default function AssignmentStory() {
         <button type="button" aria-label="다음 장면" disabled={active === flow.scenes.length - 1} aria-controls="assignment-scene" onClick={() => changeScene(active + 1)}>다음</button>
       </nav>
       <div className="assignment-story__note" aria-live="polite" aria-atomic="true"><p className="assignment-story__position">{flow.label} · {active + 1} / {flow.scenes.length} · {scene.label}</p><h3>{scene.title}</h3></div>
+      {scene.id === 'list' && requestNote}
       </div>
       <figure className="assignment-story__screen" id="assignment-scene" data-condensed={condensed}>
         <figcaption><span className="assignment-caption--original">Figma 원본 · 가상 배정</span><span className="assignment-caption--condensed">빈 여백 축약 · 가상 배정</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
@@ -124,11 +132,7 @@ export default function AssignmentStory() {
           {condensed && <div className="assignment-story__footer-crop" aria-hidden="true"><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt="" width="390" height="844" /></div>}
         </div>
       </figure>
-      <div className="assignment-story__request">
-        <p className="assignment-story__request-label">김도한의 선택 기준 · {requestCriteria[scene.request]}</p>
-        <p className="assignment-story__request-quote">{scene.request}</p>
-        {scene.text && <p className="assignment-story__request-result">{scene.text}</p>}
-      </div>
+      {scene.id !== 'list' && requestNote}
     </div>
     <div className="assignment-story__actions">
       {active === flow.scenes.length - 1 && <button className="assignment-story__flow-switch" type="button" aria-controls="assignment-viewer" onClick={() => changeScene(0, position.flow === 'normal' ? 'recovery' : 'normal')}>{position.flow === 'normal' ? '실패·재시도 흐름 보기' : '정상 배정으로 돌아가기'}</button>}
