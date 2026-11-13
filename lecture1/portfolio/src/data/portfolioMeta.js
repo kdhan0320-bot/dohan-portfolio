@@ -97,13 +97,13 @@ export const PROJECT_DETAIL_READY = {
     {
       imageFirst: true,
       creditsOnCover: true,
-      hero: { summary: '정비 요청의 담당자 선택부터 저장·재시도·목록 복귀까지 연결한 Figma 디자인입니다.' },
+      hero: { summary: '가상 정비 요청으로 담당자 선택·저장·재시도·목록 복귀를 보여주는 Figma 시안입니다.' },
       scopeSummary: [
         { title: '작품 범위', text: '작업 현황·담당자 배정 흐름의 Figma 시안입니다. 390px·320px 화면과 저장·오류·목록 복귀 상태를 담았습니다.' },
-        { title: '시연 범위', text: '설비·담당자·직무는 가상 예시입니다. Figma 프로토타입이며 실제 배정 저장·센서·서버 연동과 현장 사용자 조사는 포함하지 않습니다.' },
+        { title: '시연 범위', text: '설비·담당자·직무는 가상 예시이며, 증상에 따른 담당자 적합성을 검증하지 않았습니다. 실제 배정 저장·센서·서버 연동·현장 사용자 조사는 포함하지 않습니다.' },
       ],
       aiCollaboration: [
-        { label: '김도한', value: '설비 점검 요구사항 제시, 작업 상태의 우선순위 검토' },
+        { label: '김도한', value: '설비 점검 요구사항 제시, 담당자·기한·배정 상태를 먼저 확인하도록 요청' },
         { label: 'AI 협업', value: 'Figma 화면 구성 제안·편집과 검토' },
       ],
     },

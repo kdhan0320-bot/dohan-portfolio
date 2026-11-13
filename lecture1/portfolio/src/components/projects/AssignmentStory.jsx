@@ -9,7 +9,7 @@ const recoveryRequest = '저장 중·실패·재시도 흐름을 구분해 주�
 const returnRequest = '배정 완료 후 목록으로 돌아가게.';
 const scenes = [
   { id: 'request', request: assignmentRequest, label: '요청 확인', title: '담당자·기한을 먼저 확인합니다.', text: '담당자·기한·선택 버튼을 사진보다 먼저 보여줍니다.', alt: '배정 대기 요청. 미배정 담당자와 완료 기한 바로 아래 담당자 선택 버튼이 있고, 설비 사진과 증상은 그 다음에 표시됩니다.' },
-  { id: 'selected', request: assignmentRequest, label: '담당자 선택', title: '이수진 선택 · 아직 배정 전', text: '선택한 이름을 실행 버튼에서 다시 확인하고, 아직 배정 전임을 표시합니다.', alt: '담당자 선택. 박성민 기계 정비와 이수진 전기·센서 중 이수진이 선택돼 있으며, 아직 배정 전 안내와 이수진에게 배정 버튼이 표시됩니다.' },
+  { id: 'selected', request: assignmentRequest, label: '담당자 선택', title: '가상 배정 예시 · 이수진 선택', text: '선택한 이름과 실행 버튼의 일치를 보여줍니다. 담당자 적합성을 검증한 배정은 아닙니다.', alt: '가상 배정 예시. 담당자 적합성은 검증하지 않았습니다. 박성민 기계 정비와 이수진 전기·센서 중 이수진이 선택돼 있으며, 아직 배정 전 안내와 이수진에게 배정 버튼이 표시됩니다.' },
   { id: 'saving', request: recoveryRequest, label: '저장 중', title: '선택은 유지하고 저장 중입니다.', text: '선택은 유지하고, 실행 버튼 자리에서 저장 상태를 보여줍니다.', alt: '이수진 선택을 유지한 담당자 선택 화면. 하단에 배정을 저장하고 있다는 안내와 저장 중 버튼이 표시됩니다.' },
   { id: 'failure', request: recoveryRequest, label: '실패·재시도', title: '저장 실패 · 선택은 유지됩니다.', text: '오류 안내 아래에서, 담당자를 다시 고르지 않고 재시도합니다.', alt: '저장 실패 화면. 이수진 선택을 유지하며 저장 실패 안내와 다시 시도 버튼이 표시됩니다.' },
   { id: 'success', request: returnRequest, label: '배정 완료', title: '배정 완료 · 정비 보고 대기', text: '배정과 정비 완료를 구분하고, 확인 후 요청 목록으로 돌아갑니다.', alt: '배정 완료 화면. 이수진에게 배정했다는 안내, 정비 보고 대기 상태, 요청 목록으로 버튼이 표시됩니다.' },
@@ -90,7 +90,7 @@ export default function AssignmentStory() {
     <div className="assignment-story__intro">
       <p className="case-eyebrow">모바일 배정 흐름</p>
       <h2 id="assignment-story-title"><span className="assignment-story__title-desktop">배정 대기 요청을<br /> 목록 반영까지.</span><span className="assignment-story__title-mobile">배정 흐름 · 화면 이미지</span></h2>
-      <p>담당자·기한, 저장 상태, 배정 결과를 순서대로 확인합니다.</p>
+      <p>가상 정비 요청으로 선택·저장·목록 복귀 상태를 보여줍니다.</p>
     </div>
     <div className="assignment-story__flows" role="group" aria-label="배정 흐름 선택">
       {Object.entries(flows).map(([id, item]) => <button key={id} ref={element => { flowButtonRefs.current[id] = element; }} type="button" aria-pressed={position.flow === id} aria-controls="assignment-viewer" onClick={() => changeScene(0, id)}>{item.label}<span>{item.scenes.length}장면</span></button>)}
@@ -110,16 +110,16 @@ export default function AssignmentStory() {
       <div className="assignment-story__note" aria-live="polite" aria-atomic="true"><p className="assignment-story__position">{flow.label} · {active + 1} / {flow.scenes.length} · {scene.label}</p><h3>{scene.title}</h3></div>
       </div>
       <figure className="assignment-story__screen" id="assignment-scene" data-condensed={condensed}>
-        <figcaption><span className="assignment-caption--original">Figma 원본 · {flow.label}</span><span className="assignment-caption--condensed">빈 여백 축약 · {flow.label}</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
+        <figcaption><span className="assignment-caption--original">Figma 원본 · 가상 배정</span><span className="assignment-caption--condensed">빈 여백 축약 · 가상 배정</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
         <div className="assignment-story__image" ref={pictureRef} key={scene.id} style={{ '--assignment-footer-height': footerHeight }}>
           <picture><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
           {condensed && <div className="assignment-story__footer-crop" aria-hidden="true"><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt="" width="390" height="844" /></div>}
         </div>
       </figure>
       <div className="assignment-story__request">
-        <p className="assignment-story__request-label">김도한의 요청과 기준</p>
+        <p className="assignment-story__request-label">김도한의 요청</p>
         <p className="assignment-story__request-quote">{scene.request}</p>
-        <p className="assignment-story__request-result"><span>화면에서 확인</span> {scene.text}</p>
+        <p className="assignment-story__request-result"><span>시안에 반영</span> {scene.text}</p>
       </div>
     </div>
     <div className="assignment-story__actions">
