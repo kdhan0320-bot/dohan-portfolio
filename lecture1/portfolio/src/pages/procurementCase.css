@@ -133,4 +133,4 @@
 }
 
 .procurement-request--screen { grid-area:request; max-width:44em; margin-top:0; padding-bottom:0; }
-.procurement-request--screen small { display:block; margin-top:4px; color:var(--muted); font-size:13px; line-height:1.7; }
+.procurement-request small { display:block; margin-top:4px; color:var(--muted); font-size:13px; line-height:1.7; }
