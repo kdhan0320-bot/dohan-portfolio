@@ -51,7 +51,7 @@ export default function ProcurementCase({ project, ready, question, register }) 
           <h1>{project.title}</h1>
           <div className="procurement-role">
             <p>김도한의 역할 · 업무 요구사항</p>
-            <p><span className="procurement-role__full">구매관리·총무 경험을 바탕으로 발주·입고·지급 요구사항을 정리했습니다.</span><span className="procurement-role__short">발주·입고·지급 요구사항 정리</span></p>
+            <p><span className="procurement-role__full">구매·결재와 자재 입출고·재고 관리를 함께 다루도록 요청했습니다.</span><span className="procurement-role__short">구매·결재와 자재 관리 연결 요청</span></p>
           </div>
           <div className="procurement-entry" aria-label="품의선 바로 보기">
             <a className="case-action case-action--primary" href={project.liveUrl} target="_blank" rel="noreferrer" aria-label="품의선 웹앱 열기 (새 탭)">웹앱 열기</a>
@@ -73,7 +73,7 @@ export default function ProcurementCase({ project, ready, question, register }) 
               <FocusedScreen src={media+'pumuiseon-work-copy-390-20261113.png'} alt="실제 품의선 모바일 화면 발췌. 보완할 품의 카드 아래 포토센서 전표가 이어지며 입고 3개·지급 2개·보유 1개가 표시됩니다." width={390} height={844} crop={{ x:16, y:304, width:344, height:474 }} />
               <figcaption><div><strong>모바일 · 실제 업무 화면 발췌</strong><p>보완할 품의를 확인하고 바로 아래에서 재고를 읽습니다.</p></div><a href={media+'pumuiseon-work-copy-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a><a className="procurement-desktop-link" href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer">PC 전체 화면 보기</a></figcaption>
             </figure>
-            <p className="procurement-request procurement-request--screen"><span>김도한의 요청 · 포트폴리오 구성</span>처리할 품의를 먼저, 전표를 다음에.<small>설명보다 실제 업무 화면을 먼저 보여달라는 요청을 반영했습니다.</small></p>
+            <p className="procurement-request procurement-request--screen"><span>김도한의 요청 · 업무 정보 구분</span>앞으로 받을 2개와 이미 지급한 2개를 구분하기.<small>포트폴리오 구성 요청 · 처리할 품의를 먼저, 전표를 다음에.</small></p>
           </div>
         </section>
         <ReceiptAndHistory ready={ready} liveUrl={project.liveUrl} question={question} />
