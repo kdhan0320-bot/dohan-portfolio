@@ -3,11 +3,26 @@
 .portfolio-refresh .site-header { background:#25272af2; border-color:var(--line); color:var(--ink); }
 .portfolio-refresh .site-header .site-wordmark .wordmark-name { font-size:15px; font-weight:750; letter-spacing:-.03em; }
 .portfolio-refresh .site-header .site-wordmark .wordmark-caption { font-size:11px; font-weight:500; letter-spacing:0; color:var(--muted); margin-left:16px; }
-.portfolio-refresh .site-nav .nav-contact { border:0; padding-inline:4px; border-radius:0; }
-.portfolio-refresh .site-nav a { font-size:13px; }
-.portfolio-refresh .site-nav .nav-contact::after { display:block; }
-.portfolio-refresh .site-nav .nav-contact:hover { background:none; }
+.portfolio-refresh .site-nav .nav-contact { border:0; padding-inline:8px; border-radius:4px; }
+.portfolio-refresh .site-nav a { font-size:13px; padding-inline:8px; border-radius:4px; transition:background .2s,color .2s; }
+.portfolio-refresh .site-nav a::after { display:none; }
+.portfolio-refresh .site-nav a:is(:hover,[aria-current]) { background:var(--surface); color:var(--ink); }
+.portfolio-refresh .site-nav a[aria-current] { font-weight:750; }
 .portfolio-refresh .text-link { color:inherit; }
+/* Standalone actions use a small button surface instead of text underlines. */
+.portfolio-refresh :is(.text-link,.experience-link,.case-list-link,.case-figure figcaption a,.assignment-preview figcaption a,.cinema-scene__controls a,.receipt-story-links button,.works-footer__contact a) {
+  min-height:44px; padding:8px 12px; border:1px solid var(--line); border-radius:0;
+  background:transparent; color:var(--ink); text-decoration:none; line-height:1.5;
+}
+.portfolio-refresh :is(.text-link,.experience-link,.case-list-link,.case-figure figcaption a,.assignment-preview figcaption a,.cinema-scene__controls a,.receipt-story-links button,.works-footer__contact a):hover {
+  background:var(--surface); border-color:var(--line-strong); color:var(--ink);
+}
+.portfolio-refresh .case-figure figcaption { align-items:center; }
+.portfolio-refresh .case-figure figcaption a { margin-top:0; }
+.portfolio-refresh .assignment-preview>figcaption { padding-top:12px; }
+.portfolio-refresh .case-next:hover strong,.portfolio-refresh .about-work:hover h3 { color:var(--accent); }
+.portfolio-refresh .contact-email:hover { color:var(--accent); }
+.portfolio-refresh .editorial-contact-actions>div { flex-wrap:wrap; gap:12px; }
 .experience-section { background:var(--section); color:var(--ink); padding-block:80px 88px; }
 .experience-section .edition-label { color:var(--muted); margin-bottom:32px; }
 .experience-layout { display:grid; grid-template-columns:1.1fr 1fr; gap:80px; }

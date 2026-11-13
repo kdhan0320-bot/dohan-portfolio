@@ -7,7 +7,7 @@
 .case-register{display:flex;justify-content:space-between;align-items:center;gap:24px}
 .case-register>span{font-size:12px;letter-spacing:.1em;color:var(--muted)}
 .case-back{min-height:44px;padding:10px 0;border:0;background:none;color:var(--muted);font-size:13px;cursor:pointer}
-.case-back:hover{color:var(--accent);text-decoration:underline;text-underline-offset:5px}
+.case-back:hover{color:var(--accent);text-decoration:none;}
 .case-intro__grid{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:center;margin-top:30px}
 .case-intro h1{font-size:clamp(50px,6vw,82px);font-weight:600;line-height:1.2;letter-spacing:-.065em;margin-top:15px}
 .case-production{font-size:12px;color:var(--muted);margin-top:18px}
@@ -31,7 +31,7 @@
 .case-figure--portrait .case-figure__surface{padding:32px}
 .case-figure--portrait img{max-width:var(--frame-width,390px)}
 .case-figure figcaption{display:flex;justify-content:space-between;gap:20px;align-items:start;padding-top:12px;color:var(--muted);font-size:12px;line-height:1.7}
-.case-figure figcaption a{display:inline-flex;align-items:center;min-height:44px;margin-top:-12px;white-space:nowrap;text-decoration:underline;text-underline-offset:4px}
+.case-figure figcaption a{display:inline-flex;align-items:center;min-height:44px;margin-top:-12px;white-space:nowrap;text-decoration:none;}
 .case-figure--cropped .case-figure__surface{position:relative;aspect-ratio:var(--crop-ratio);padding:0}
 .case-figure--cropped .case-figure__surface>img{position:absolute;width:var(--crop-image-width);max-width:none;left:var(--crop-left);top:var(--crop-top);height:auto}
 .case-figure--portrait.case-figure--cropped{max-width:var(--frame-width,390px);margin-inline:auto}
@@ -72,11 +72,11 @@
 .case-scope__column li+li{margin-top:8px}
 .case-limit{font-size:12px;color:var(--muted);line-height:1.85;margin-top:24px;padding:20px 24px;background:var(--mist)}
 .case-footer{padding:32px 0 60px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--ink);gap:40px}
-.case-list-link{display:inline-flex;min-height:44px;align-items:center;font-size:13px;text-decoration:underline!important;text-underline-offset:6px}
+.case-list-link{display:inline-flex;min-height:44px;align-items:center;font-size:13px;text-decoration:none;}
 .case-next{display:flex;gap:70px;align-items:center;padding:10px 0}
 .case-next small{display:block;font-size:12px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
 .case-next strong{font-size:32px;font-weight:550;letter-spacing:-.04em}
-.case-next-label{font-size:12px;text-decoration:underline;text-underline-offset:6px}
+.case-next-label{font-size:12px;text-decoration:none;}
 
 .works-page{padding-block:72px 0}
 .works-intro{display:flex;justify-content:space-between;align-items:end;gap:40px;padding-bottom:38px;border-bottom:1px solid var(--ink)}
@@ -97,14 +97,14 @@
 .works-card__status{color:var(--accent)}
 .works-card__heading{display:flex;gap:16px;justify-content:space-between;align-items:center;margin-top:12px}
 .works-card__heading h2{font-size:30px;letter-spacing:-.05em;font-weight:600}
-.works-card__detail-label{font-size:12px;text-decoration:underline;text-underline-offset:5px}
+.works-card__detail-label{font-size:12px;text-decoration:none;}
 .works-card__description{margin-top:12px;font-size:14px;color:var(--muted);line-height:1.85}
 .works-card__foot{display:flex;gap:18px;align-items:center;justify-content:space-between;padding-top:12px;margin-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
-.works-card__foot a{display:inline-flex;min-height:44px;align-items:center;text-decoration:underline;text-underline-offset:5px;color:var(--accent)}
+.works-card__foot a{display:inline-flex;min-height:44px;align-items:center;text-decoration:none;color:var(--accent)}
 .works-footer{display:flex;justify-content:space-between;align-items:center;gap:32px;margin-top:64px;padding:45px 0 54px;border-top:1px solid var(--line)}
 .works-footer h2{font-size:30px;letter-spacing:-.05em;font-weight:550;margin-top:13px}
 .works-footer__contact{font-size:17px;line-height:1.8}
-.works-footer__contact a{display:inline-flex;min-height:44px;align-items:center;font-size:13px;text-decoration:underline;text-underline-offset:5px}
+.works-footer__contact a{display:inline-flex;min-height:44px;align-items:center;font-size:13px;text-decoration:none;}
 
 @media(max-width:899px){.case-intro__grid,.case-context,.case-decision__copy{gap:36px}
 .case-decision dl{grid-template-columns:1fr;gap:14px}

@@ -5,6 +5,16 @@ import './projectPosters.css';
 
 const media = `${import.meta.env.BASE_URL}detail/current/`;
 const titles = { 'ott-service': ['파란', '오후.'], 'feedback-hub': ['받고, 건네고,', '남은 것을 읽다.'], seolbiit: ['다음', '사람.'], gijunseon: ['기술의', '기준.'], jobflow: ['다음', '기록.'], 'bus-arrival-app': ['곧,', '도착.'], brewstep: ['오늘의', '한 잔.'] };
+// Short mobile excerpts only; full verified contribution remains on desktop and in each case.
+const mobileContributions = {
+  'feedback-hub': '발주·입고·지급 요구사항 정리',
+  seolbiit: '작업 상태의 우선순위 검토',
+  'ott-service': '편집 방향·단독 표지 결정',
+  gijunseon: '디자인 방향 선택',
+  jobflow: '기록·조작 우선 요청',
+  'bus-arrival-app': '버스 도착 정보 요구사항 제시',
+  brewstep: '카페 모바일 시안 방향 선택',
+};
 const secondScreens = { 'bus-arrival-app': 'onjeongryu-busdetail-20261107.png', brewstep: 'soyobit-menu-20261112.png' };
 
 export default function ProjectPoster({ project, index = 0, heading = 'h3' }) {
@@ -29,6 +39,6 @@ export default function ProjectPoster({ project, index = 0, heading = 'h3' }) {
       </div>
       <div className="poster-meta"><Heading>{project.title}</Heading><p>{project.categoryLabel || project.category}</p></div>
     </Link>
-    <p className="poster-credit"><span>김도한의 기여</span>{contribution}</p>
+    <p className="poster-credit"><span className="poster-credit__label">김도한의 기여</span><span className="poster-credit__full">{contribution}</span><span className="poster-credit__short">{mobileContributions[id] || contribution}</span></p>
   </article>;
 }

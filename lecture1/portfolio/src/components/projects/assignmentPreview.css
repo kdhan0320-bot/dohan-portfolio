@@ -64,7 +64,7 @@
 }
 .assignment-preview figcaption a {
   display: inline-flex; align-items: center; min-height: 44px; color: var(--accent);
-  text-decoration: underline; text-underline-offset: 4px;
+  text-decoration: none;
 }
 
 .pending-request__sheet {
@@ -115,4 +115,4 @@
   width: fit-content; min-height: 44px; padding: 12px 4px; color: var(--accent);
   font-size: 14px; font-weight: 600; cursor: pointer;
 }
-.pending-request__overview summary:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pending-request__overview summary:hover { text-decoration:none;  }

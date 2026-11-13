@@ -39,7 +39,7 @@
 }
 .receipt-sheet figcaption { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0 12px; padding: 0 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
 .receipt-sheet button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; border: 0; padding: 0; font: inherit; font-weight: 650; color: var(--accent); background: none; cursor: pointer; }
-.receipt-sheet button:hover { text-decoration: underline; text-underline-offset: 4px; }
+.receipt-sheet button:hover { text-decoration:none;  }
 .receipt-ledger { position: relative; margin-top: 26px; padding: 16px 0 0; border-top: 1px solid var(--line-strong); }
 .receipt-ledger::before { content: ''; position: absolute; right: 18%; bottom: 100%; width: 1px; height: 26px; background: var(--line-strong); }
 .receipt-ledger[data-arrived="true"]::before { animation: ledger-connect .38s ease-out both; transform-origin: top; }
@@ -50,7 +50,7 @@
 .ledger-event { display: flex; align-items: baseline; gap: 10px; font-size: 15px; }
 .ledger-event span { color: var(--muted); font-size: 13px; }
 .receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--accent); }
-.receipt-ledger .text-link, .procurement-credits .text-link { gap: 6px; text-decoration: underline; }
+.receipt-ledger .text-link, .procurement-credits .text-link { gap: 6px; text-decoration:none; }
 @media (max-width: 799px) {
   .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
   .procurement-heading h1 { margin: 6px 0 8px; }
@@ -67,7 +67,7 @@
   .receipt-trace { display: none; }
 }
 .receipt-story-links { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px 16px; padding-top:6px; color:var(--muted); font-size:12px; }
-.receipt-story-links button { border:0; background:none; color:var(--accent); font:inherit; font-weight:600; min-height:44px; padding:0; cursor:pointer; text-decoration:underline; text-underline-offset:4px; }
+.receipt-story-links button { border:0; background:none; color:var(--accent); font:inherit; font-weight:600; min-height:44px; padding:0; cursor:pointer; text-decoration:none;  }
 .receipt-original { margin-top:24px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); }
 .receipt-original summary { cursor:pointer; padding:14px 0; min-height:44px; }.receipt-original>img { display:block; width:100%; height:auto; margin-top:8px; }
 .receipt-ledger[data-arrived="true"] li { animation:receipt-record-in .5s ease-out both; }.receipt-ledger[data-arrived="true"] li+li { animation-delay:.12s; }
