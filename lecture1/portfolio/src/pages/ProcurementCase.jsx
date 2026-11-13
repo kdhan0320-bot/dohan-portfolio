@@ -46,6 +46,19 @@ export default function ProcurementCase({ project, ready, question, register }) 
             <p>{ready.role}</p>
           </div>
         </header>
+        <section className="procurement-decisions" aria-labelledby="procurement-decisions-title">
+          <div className="procurement-decisions__heading"><p className="case-eyebrow">공개 웹의 실제 화면</p><h2 id="procurement-decisions-title">처리할 일과 재고.</h2></div>
+          <div className="procurement-decisions__screens">
+            <figure className="procurement-decisions__desktop">
+              <img src={media+'pumuiseon-work-1440-20261113.png'} alt="품의선 PC 업무 현황. 왼쪽 업무 단계 메뉴, 상단 전표와 업무 요약, 하단 처리할 품의와 입고 대기 목록." width="1440" height="1000" />
+              <figcaption><div><strong>PC · 전표와 업무 현황</strong><p>구매·결재, 발주·입고, 자재·지급을 구분해 보여줍니다.</p></div><a href={media+'pumuiseon-work-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 원본 이미지 보기 (새 탭)">원본 보기</a></figcaption>
+            </figure>
+            <figure className="procurement-decisions__mobile">
+              <img src={media+'pumuiseon-work-390-20261113.png'} alt="품의선 모바일 업무 현황. 보완이 필요한 품의 카드와 내용 보완 링크가 전표 위에 먼저 보입니다." width="390" height="844" />
+              <figcaption><div><strong>모바일 · 처리할 일부터</strong><p>보완할 품의를 전표 위에 두고 ‘내용 보완’으로 연결합니다.</p></div><a href={media+'pumuiseon-work-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 원본 이미지 보기 (새 탭)">원본 보기</a><a className="procurement-desktop-link" href={media+'pumuiseon-work-1440-20261113.png'} target="_blank" rel="noreferrer">PC 전체 화면 보기</a></figcaption>
+            </figure>
+          </div>
+        </section>
         <ReceiptAndHistory ready={ready} liveUrl={project.liveUrl} question={question} />
         <section className="procurement-credits" aria-labelledby="procurement-credit-title">
           <h2 id="procurement-credit-title">업무 경험과 제작 범위</h2>
@@ -59,19 +72,6 @@ export default function ProcurementCase({ project, ready, question, register }) 
           </div>
         </section>
       </div>
-      <section className="procurement-decisions" aria-labelledby="procurement-decisions-title">
-        <div className="procurement-decisions__heading"><p className="case-eyebrow">공개 웹의 실제 화면</p><h2 id="procurement-decisions-title">수량 다음에는,<br />지금 처리할 일.</h2></div>
-        <div className="procurement-decisions__screens">
-          <figure className="procurement-decisions__desktop">
-            <img src={media+'pumuiseon-work-1440-20261113.png'} alt="품의선 PC 업무 현황. 왼쪽 업무 단계 메뉴, 상단 전표와 업무 요약, 하단 처리할 품의와 입고 대기 목록." width="1440" height="1000" loading="lazy" />
-            <figcaption><div><strong>PC · 전표와 업무 현황</strong><p>구매·결재, 발주·입고, 자재·지급을 구분해 보여줍니다.</p></div><a href={media+'pumuiseon-work-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 원본 이미지 보기 (새 탭)">원본 보기</a></figcaption>
-          </figure>
-          <figure className="procurement-decisions__mobile">
-            <img src={media+'pumuiseon-work-390-20261113.png'} alt="품의선 모바일 업무 현황. 보완이 필요한 품의 카드와 내용 보완 링크가 전표 위에 먼저 보입니다." width="390" height="844" loading="lazy" />
-            <figcaption><div><strong>모바일 · 처리할 일부터</strong><p>보완할 품의를 전표 위에 두고 ‘내용 보완’으로 연결합니다.</p></div><a href={media+'pumuiseon-work-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 원본 이미지 보기 (새 탭)">원본 보기</a></figcaption>
-          </figure>
-        </div>
-      </section>
     </div>
   );
 }

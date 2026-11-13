@@ -1,10 +1,11 @@
 .procurement-case { padding: 24px 0 clamp(40px, 5vw, 72px); }
 .procurement-layout {
-  display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
-  grid-template-areas: "heading story" "credits story"; grid-template-rows: auto 1fr;
+  display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+  grid-template-areas: "heading heading" "screens screens" "story credits"; grid-template-rows: auto auto 1fr;
   gap: 38px clamp(36px, 6vw, 112px); margin-top: 32px;
 }
-.procurement-heading { grid-area: heading; }
+.procurement-heading { grid-area: heading; display:grid; grid-template-columns:1fr 1fr; column-gap:48px; align-items:center; }
+.procurement-heading > .case-eyebrow { grid-column:1 / -1; }
 .procurement-heading h1 { margin: 10px 0 20px; font-size: clamp(56px, 6vw, 88px); line-height: 1.1; letter-spacing: -.065em; }
 .procurement-role { border-inline-start: 2px solid var(--accent); padding-inline-start: 14px; }
 .procurement-role p:first-child { margin-bottom: 3px; color: var(--accent); font-size: 13px; font-weight: 650; }
@@ -52,7 +53,8 @@
 .receipt-ledger li b { min-width: 3ch; font-size: 18px; text-align: end; color: var(--accent); }
 .receipt-ledger .text-link, .procurement-credits .text-link { gap: 6px; text-decoration:none; }
 @media (max-width: 799px) {
-  .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
+  .procurement-layout { grid-template-columns: minmax(0,1fr); grid-template-areas: "heading" "screens" "story" "credits"; grid-template-rows: auto; gap: 26px; margin-top: 18px; }
+  .procurement-heading { display:block; }
   .procurement-heading h1 { margin: 6px 0 8px; }
   .procurement-role p:last-child { font-size: 16px; }
   .receipt-story > h2 { margin-bottom: 12px; }
@@ -74,10 +76,11 @@
 @keyframes receipt-record-in { from { background:var(--mist); transform:translateY(8px); } to { background:transparent; transform:translateY(0); } }
 @media(prefers-reduced-motion:reduce) { .receipt-ledger[data-arrived="true"] li { animation:none; } }
 
-.procurement-decisions { margin-top:64px; padding-top:40px; border-top:1px solid var(--line); }
+.procurement-decisions { grid-area:screens; min-width:0; margin:0; padding-bottom:32px; border-bottom:1px solid var(--line); }
+.procurement-desktop-link { display:none!important; }
 .procurement-decisions__heading { margin-bottom:24px; }
 .procurement-decisions__heading>.case-eyebrow { margin-bottom:12px; }
-.procurement-decisions h2 { font-size:clamp(30px,3.5vw,44px); line-height:1.2; font-weight:600; letter-spacing:-.05em; }
+.procurement-decisions h2 { font-size:clamp(24px,2.5vw,34px); line-height:1.2; font-weight:600; letter-spacing:-.05em; }
 .procurement-decisions__screens { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:24px; align-items:start; }
 .procurement-decisions figure { min-width:0; margin:0; }
 .procurement-decisions figure img { display:block; width:100%; height:auto; }
@@ -88,7 +91,10 @@
 .procurement-decisions figcaption a { min-height:44px; display:inline-flex; align-items:center; color:var(--accent); font-size:12px; }
 @media(max-width:1000px) { .procurement-decisions__screens { grid-template-columns:minmax(0,1fr) 220px; gap:16px; } }
 @media(max-width:760px) {
- .procurement-decisions { margin-top:40px; padding-top:28px; }
+ .procurement-decisions { padding-bottom:24px; }
+ .procurement-decisions__heading { margin-bottom:16px; }
+ .procurement-decisions__desktop { display:none; }
+ .procurement-decisions .procurement-desktop-link { display:inline-flex!important; flex-basis:100%; }
  .procurement-decisions__screens { grid-template-columns:1fr; gap:32px; }
  .procurement-decisions__mobile { order:-1; width:100%; max-width:390px; justify-self:center; }
 }

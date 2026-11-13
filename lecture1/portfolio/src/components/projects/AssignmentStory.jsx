@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import './assignmentStory.css';
 
 const media = `${import.meta.env.BASE_URL}detail/current/`;
@@ -13,36 +13,85 @@ const scenes = [
   { id: 'list', label: '목록 반영', title: '돌아온 목록에서도 결과 확인.', text: '냉각수 펌프 카드에 이수진과 기한, 정비 대기 상태를 표시합니다. 요청 상세로 다시 들어갈 수 있습니다.', alt: '정비 요청 목록. 냉각수 펌프에 담당자 이수진, 기한 2026년 10월 7일, 정비 대기 상태가 표시됩니다.' },
 ];
 
+const flows = {
+  normal: { label: '정상 배정', scenes: scenes.filter(scene => scene.id !== 'failure') },
+  recovery: {
+    label: '실패·재시도',
+    scenes: [
+      scenes.find(scene => scene.id === 'failure'),
+      { ...scenes.find(scene => scene.id === 'saving'), label: '재시도 중', title: '같은 선택으로 다시 저장.', text: '실패 후 다시 시도할 때의 저장 중 상태입니다. 선택한 담당자는 유지하고 저장이 끝날 때까지 기다립니다.' },
+      scenes.find(scene => scene.id === 'success'),
+      scenes.find(scene => scene.id === 'list'),
+    ],
+  },
+};
+
 // Native Figma exports are case-study evidence, not a working maintenance app.
 export default function AssignmentStory() {
-  const [active, setActive] = useState(0);
-  const scene = scenes[active];
+  const [position, setPosition] = useState({ flow: 'normal', index: 0 });
+  const viewerRef = useRef(null);
+  const pictureRef = useRef(null);
+  const pagerRef = useRef(null);
+  const selectRef = useRef(null);
+  const movePending = useRef(false);
+  const flow = flows[position.flow];
+  const active = position.index;
+  const scene = flow.scenes[active];
+
+  const changeScene = (index, flowId = position.flow) => {
+    if (flowId === position.flow && index === active) return;
+    movePending.current = true;
+    setPosition({ flow: flowId, index });
+  };
+
+  useLayoutEffect(() => {
+    if (!movePending.current) return;
+    movePending.current = false;
+    if (!window.matchMedia('(max-width: 760px)').matches) return;
+
+    // Keep the controls reachable while bringing this scene's decision into view.
+    // Saving/failure actions sit at the bottom of the original Figma frame.
+    const picture = pictureRef.current.getBoundingClientRect();
+    const controlsHeight = pagerRef.current.getBoundingClientRect().height;
+    const topOffset = 72 + controlsHeight + 8;
+    const available = Math.max(1, window.innerHeight - topOffset - 16);
+    const showAction = scene.id === 'saving' || scene.id === 'failure';
+    const focusOffset = showAction ? Math.max(0, picture.height - available) : 0;
+    if (!viewerRef.current.contains(document.activeElement) || document.activeElement?.disabled) {
+      selectRef.current.focus({ preventScroll: true });
+    }
+    window.scrollTo({
+      top: Math.max(0, picture.top + window.scrollY + focusOffset - topOffset),
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    });
+  }, [position, scene.id]);
+
   return <section className="assignment-story" aria-labelledby="assignment-story-title">
     <div className="assignment-story__intro">
       <p className="case-eyebrow">모바일 배정 흐름</p>
       <h2 id="assignment-story-title">배정 대기 요청을<br /> 목록 반영까지.</h2>
-      <p>확인, 선택, 저장 이후의 상태를 하나의 흐름으로 연결했습니다.</p>
+      <p>정상 배정과 저장 실패 후 재시도를 나누어 살펴봅니다.</p>
     </div>
-    <ol className="assignment-story__steps" aria-label="Figma 장면 선택">
-      {scenes.map((item, i) => <li key={item.id}><button type="button" aria-pressed={active === i} aria-controls="assignment-scene" onClick={() => setActive(i)}><span>{String(i+1).padStart(2,'0')}</span>{item.label}</button></li>)}
+    <div className="assignment-story__flows" role="group" aria-label="배정 흐름 선택">
+      {Object.entries(flows).map(([id, item]) => <button key={id} type="button" aria-pressed={position.flow === id} aria-controls="assignment-viewer" onClick={() => changeScene(0, id)}>{item.label}<span>{item.scenes.length}장면</span></button>)}
+    </div>
+    <ol className="assignment-story__steps" aria-label={`${flow.label} 장면 선택`}>
+      {flow.scenes.map((item, i) => <li key={item.id}><button type="button" aria-pressed={active === i} aria-controls="assignment-scene" onClick={() => changeScene(i)}><span>{String(i+1).padStart(2,'0')}</span>{item.label}</button></li>)}
     </ol>
-    <label className="assignment-story__select">장면 선택
-      <select value={active} onChange={event => setActive(Number(event.target.value))} aria-controls="assignment-scene">
-        {scenes.map((item,i) => <option key={item.id} value={i}>{String(i+1).padStart(2,'0')} · {item.label}</option>)}
-      </select>
-    </label>
-    <div className="assignment-story__note" aria-live="polite" aria-atomic="true"><h3>{scene.title}</h3><p>{scene.text}</p></div>
-    <figure className="assignment-story__screen" id="assignment-scene">
-      <picture key={scene.id}><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
-      <figcaption><span>Figma 원본 화면 · 이미지 미리보기</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
-    </figure>
-    <nav className="assignment-story__pager" aria-label="이전·다음 장면">
-      <p>{String(active + 1).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')} · {scene.label}</p>
-      <div>
-        <button type="button" disabled={active === 0} aria-controls="assignment-scene" onClick={() => setActive(index => Math.max(0, index - 1))}>이전 장면</button>
-        <button type="button" disabled={active === scenes.length - 1} aria-controls="assignment-scene" onClick={() => setActive(index => Math.min(scenes.length - 1, index + 1))}>다음 장면</button>
-      </div>
-    </nav>
+    <div className="assignment-story__viewer" id="assignment-viewer" ref={viewerRef}>
+      <nav className="assignment-story__pager" ref={pagerRef} aria-label="이전·다음 장면">
+        <button type="button" aria-label="이전 장면" disabled={active === 0} aria-controls="assignment-scene" onClick={() => changeScene(active - 1)}>이전</button>
+        <select ref={selectRef} aria-label={`${flow.label} 장면 선택`} value={active} onChange={event => changeScene(Number(event.target.value))} aria-controls="assignment-scene">
+          {flow.scenes.map((item,i) => <option key={item.id} value={i}>{String(i+1).padStart(2,'0')} / {String(flow.scenes.length).padStart(2,'0')} · {item.label}</option>)}
+        </select>
+        <button type="button" aria-label="다음 장면" disabled={active === flow.scenes.length - 1} aria-controls="assignment-scene" onClick={() => changeScene(active + 1)}>다음</button>
+      </nav>
+      <figure className="assignment-story__screen" id="assignment-scene">
+        <figcaption><span>Figma 원본 · {flow.label}</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
+        <picture ref={pictureRef} key={scene.id}><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
+      </figure>
+    </div>
+    <div className="assignment-story__note" aria-live="polite" aria-atomic="true"><p className="assignment-story__position">{flow.label} · {active + 1} / {flow.scenes.length} · {scene.label}</p><h3>{scene.title}</h3><p>{scene.text}</p></div>
     <div className="assignment-story__actions">
       <a className="case-action case-action--primary" href={prototypeUrl} target="_blank" rel="noopener noreferrer">Figma에서 직접 눌러보기</a><a className="assignment-story__design" href={SEOLBI_DESIGN_URL} target="_blank" rel="noopener noreferrer">Figma 설계 요약 보기</a>
       <p>위 장면은 화면 비교용 이미지입니다. 실제 클릭·스크롤은 Figma 프로토타입에서 확인할 수 있습니다.</p>
