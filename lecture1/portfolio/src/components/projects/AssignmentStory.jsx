@@ -49,21 +49,30 @@ export default function AssignmentStory() {
     movePending.current = false;
     if (!window.matchMedia('(max-width: 760px)').matches) return;
 
-    // Keep the controls reachable while bringing this scene's decision into view.
-    // Saving/failure actions sit at the bottom of the original Figma frame.
-    const picture = pictureRef.current.getBoundingClientRect();
-    const controlsHeight = pagerRef.current.getBoundingClientRect().height;
-    const topOffset = 72 + controlsHeight + 8;
-    const available = Math.max(1, window.innerHeight - topOffset - 16);
-    const showAction = scene.id === 'saving' || scene.id === 'failure';
-    const focusOffset = showAction ? Math.max(0, picture.height - available) : 0;
-    if (!viewerRef.current.contains(document.activeElement) || document.activeElement?.disabled) {
-      selectRef.current.focus({ preventScroll: true });
-    }
-    window.scrollTo({
-      top: Math.max(0, picture.top + window.scrollY + focusOffset - topOffset),
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+    let cancelled = false;
+    // Wait for the responsive source: a new 320px image can initially reserve
+    // the 390px image's taller ratio. Align only after its own size is available.
+    const frame = requestAnimationFrame(async () => {
+      try { await pictureRef.current.querySelector('img').decode(); } catch { /* Keep navigation usable if an image cannot load. */ }
+      if (cancelled) return;
+      const picture = pictureRef.current.getBoundingClientRect();
+      const controlsHeight = pagerRef.current.getBoundingClientRect().height;
+      const topOffset = 72 + controlsHeight + 8;
+      const available = Math.max(1, window.innerHeight - topOffset - 16);
+      const showAction = ['selected', 'saving', 'failure', 'success'].includes(scene.id);
+      const focusOffset = showAction ? Math.max(0, picture.height - available) : 0;
+      if (!viewerRef.current.contains(document.activeElement) || document.activeElement?.disabled) {
+        selectRef.current.focus({ preventScroll: true });
+      }
+      window.scrollTo({
+        top: Math.max(0, picture.top + window.scrollY + focusOffset - topOffset),
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+      });
     });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
   }, [position, scene.id]);
 
   return <section className="assignment-story" aria-labelledby="assignment-story-title">

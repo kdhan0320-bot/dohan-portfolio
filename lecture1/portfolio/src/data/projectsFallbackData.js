@@ -338,16 +338,16 @@ export const fallbackProjects = [
     "role": "목적·요구사항 · 개선 피드백 · AI 협업",
     "tools": [
       "React",
-      "MUI"
+      "Vite"
     ],
     "moreWorksTools": [
       "React",
-      "MUI"
+      "Vite"
     ],
     "tech_stack": [
       "React",
       "Vite",
-      "MUI"
+      "React Router"
     ],
     "tags": [
       "구매 품의",

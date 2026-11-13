@@ -65,7 +65,7 @@ export default function ProcurementCase({ project, ready, question, register }) 
           <dl>{ready.aiCollaboration.map(person => (
             <div key={person.label}><dt>{person.label}</dt><dd>{person.value}</dd></div>
           ))}</dl>
-          <p className="procurement-scope">React · MUI<br />가상 자재로 시연하며 입력한 기록은 이 브라우저에 저장됩니다.</p>
+          <p className="procurement-scope">{project.tools.join(' · ')}<br />가상 자재로 시연하며 입력한 기록은 이 브라우저에 저장됩니다.</p>
           <div className="case-actions">
             <a className="case-action case-action--primary" href={project.liveUrl} target="_blank" rel="noreferrer">웹사이트 보기</a>
             <a className="text-link" href={project.githubUrl} target="_blank" rel="noreferrer">코드 보기</a>
