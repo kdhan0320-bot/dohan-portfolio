@@ -67,3 +67,15 @@
  .assignment-story__pager select { font-size:13px; }
 }
 @media(prefers-reduced-motion:reduce) { .assignment-story__screen img { animation:none; } }
+
+/* Preserve exports: only omit empty rows between the selection and action.
+   390px originals: keep the content through y552 and actions from y735 / y692.
+   Only blank rows are omitted; 320px and desktop retain the full original. */
+.assignment-story__footer-crop, .assignment-caption--condensed { display:none; }
+@media(min-width:361px) and (max-width:760px) {
+ .assignment-story__screen[data-condensed="true"] picture { aspect-ratio:390 / 552; overflow:hidden; }
+ .assignment-story__footer-crop { display:block; position:relative; aspect-ratio:390 / var(--assignment-footer-height); overflow:hidden; background:white; }
+ .assignment-story__footer-crop img { position:absolute; bottom:0; left:0; }
+ .assignment-story__screen[data-condensed="true"] .assignment-caption--original { display:none; }
+ .assignment-story__screen[data-condensed="true"] .assignment-caption--condensed { display:inline; }
+}

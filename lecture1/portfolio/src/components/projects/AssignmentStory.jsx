@@ -9,9 +9,9 @@ const recoveryRequest = '저장 중·실패·재시도 흐름을 구분해 주�
 const returnRequest = '배정 완료 후 목록으로 돌아가게.';
 const scenes = [
   { id: 'request', request: assignmentRequest, label: '요청 확인', title: '담당자·기한을 먼저 확인합니다.', text: '담당자·기한·선택 버튼을 사진보다 먼저 보여줍니다.', alt: '배정 대기 요청. 미배정 담당자와 완료 기한 바로 아래 담당자 선택 버튼이 있고, 설비 사진과 증상은 그 다음에 표시됩니다.' },
-  { id: 'selected', request: assignmentRequest, label: '담당자 선택', title: '이수진 선택 · 아직 배정 전', text: '접수 증상과 직무를 확인하고, 선택한 이름을 실행 버튼에서 다시 확인합니다.', alt: '담당자 선택. 박성민 기계 정비와 이수진 전기·센서 중 이수진이 선택돼 있으며, 아직 배정 전 안내와 이수진에게 배정 버튼이 표시됩니다.' },
-  { id: 'saving', request: recoveryRequest, label: '저장 중', title: '선택은 유지하고 저장 중입니다.', text: '저장 중에는 같은 실행 영역에 진행 상태를 표시합니다.', alt: '이수진 선택을 유지한 담당자 선택 화면. 하단에 배정을 저장하고 있다는 안내와 저장 중 버튼이 표시됩니다.' },
-  { id: 'failure', request: recoveryRequest, label: '실패·재시도', title: '저장 실패 · 선택은 유지됩니다.', text: '담당자를 다시 고르지 않고 하단 버튼으로 저장을 재시도합니다.', alt: '저장 실패 화면. 이수진 선택을 유지하며 저장 실패 안내와 다시 시도 버튼이 표시됩니다.' },
+  { id: 'selected', request: assignmentRequest, label: '담당자 선택', title: '이수진 선택 · 아직 배정 전', text: '선택한 이름을 실행 버튼에서 다시 확인하고, 아직 배정 전임을 표시합니다.', alt: '담당자 선택. 박성민 기계 정비와 이수진 전기·센서 중 이수진이 선택돼 있으며, 아직 배정 전 안내와 이수진에게 배정 버튼이 표시됩니다.' },
+  { id: 'saving', request: recoveryRequest, label: '저장 중', title: '선택은 유지하고 저장 중입니다.', text: '선택은 유지하고, 실행 버튼 자리에서 저장 상태를 보여줍니다.', alt: '이수진 선택을 유지한 담당자 선택 화면. 하단에 배정을 저장하고 있다는 안내와 저장 중 버튼이 표시됩니다.' },
+  { id: 'failure', request: recoveryRequest, label: '실패·재시도', title: '저장 실패 · 선택은 유지됩니다.', text: '오류 안내 아래에서, 담당자를 다시 고르지 않고 재시도합니다.', alt: '저장 실패 화면. 이수진 선택을 유지하며 저장 실패 안내와 다시 시도 버튼이 표시됩니다.' },
   { id: 'success', request: returnRequest, label: '배정 완료', title: '배정 완료 · 정비 보고 대기', text: '배정과 정비 완료를 구분하고, 확인 후 요청 목록으로 돌아갑니다.', alt: '배정 완료 화면. 이수진에게 배정했다는 안내, 정비 보고 대기 상태, 요청 목록으로 버튼이 표시됩니다.' },
   { id: 'list', request: returnRequest, label: '목록 반영', title: '목록에 담당자와 기한이 반영됩니다.', text: '목록 카드에서 배정 결과와 정비 대기 상태를 확인합니다.', alt: '정비 요청 목록. 냉각수 펌프에 담당자 이수진, 기한 2026년 10월 7일, 정비 대기 상태가 표시됩니다.' },
 ];
@@ -41,6 +41,8 @@ export default function AssignmentStory() {
   const flow = flows[position.flow];
   const active = position.index;
   const scene = flow.scenes[active];
+  const condensed = ['selected', 'saving', 'failure'].includes(scene.id);
+  const footerHeight = scene.id === 'failure' ? 152 : 109;
 
   const changeScene = (index, flowId = position.flow) => {
     if (flowId === position.flow && index === active) return;
@@ -88,7 +90,7 @@ export default function AssignmentStory() {
     <div className="assignment-story__intro">
       <p className="case-eyebrow">모바일 배정 흐름</p>
       <h2 id="assignment-story-title"><span className="assignment-story__title-desktop">배정 대기 요청을<br /> 목록 반영까지.</span><span className="assignment-story__title-mobile">배정 흐름 · 화면 이미지</span></h2>
-      <p>화면 이미지로 정상 배정과 실패·재시도를 살펴봅니다.</p>
+      <p>담당자·기한, 저장 상태, 배정 결과를 순서대로 확인합니다.</p>
     </div>
     <div className="assignment-story__flows" role="group" aria-label="배정 흐름 선택">
       {Object.entries(flows).map(([id, item]) => <button key={id} ref={element => { flowButtonRefs.current[id] = element; }} type="button" aria-pressed={position.flow === id} aria-controls="assignment-viewer" onClick={() => changeScene(0, id)}>{item.label}<span>{item.scenes.length}장면</span></button>)}
@@ -107,20 +109,23 @@ export default function AssignmentStory() {
       </nav>
       <div className="assignment-story__note" aria-live="polite" aria-atomic="true"><p className="assignment-story__position">{flow.label} · {active + 1} / {flow.scenes.length} · {scene.label}</p><h3>{scene.title}</h3></div>
       </div>
-      <figure className="assignment-story__screen" id="assignment-scene">
-        <figcaption><span>Figma 원본 · {flow.label}</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
-        <picture ref={pictureRef} key={scene.id}><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
+      <figure className="assignment-story__screen" id="assignment-scene" data-condensed={condensed}>
+        <figcaption><span className="assignment-caption--original">Figma 원본 · {flow.label}</span><span className="assignment-caption--condensed">빈 여백 축약 · {flow.label}</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
+        <div className="assignment-story__image" ref={pictureRef} key={scene.id} style={{ '--assignment-footer-height': footerHeight }}>
+          <picture><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
+          {condensed && <div className="assignment-story__footer-crop" aria-hidden="true"><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt="" width="390" height="844" /></div>}
+        </div>
       </figure>
       <div className="assignment-story__request">
-        <p className="assignment-story__request-label">김도한의 요청</p>
+        <p className="assignment-story__request-label">김도한의 요청과 기준</p>
         <p className="assignment-story__request-quote">{scene.request}</p>
-        <p className="assignment-story__request-result"><span>화면 반영</span> {scene.text}</p>
+        <p className="assignment-story__request-result"><span>화면에서 확인</span> {scene.text}</p>
       </div>
     </div>
     <div className="assignment-story__actions">
       {active === flow.scenes.length - 1 && <button className="assignment-story__flow-switch" type="button" aria-controls="assignment-viewer" onClick={() => changeScene(0, position.flow === 'normal' ? 'recovery' : 'normal')}>{position.flow === 'normal' ? '실패·재시도 흐름 보기' : '정상 배정으로 돌아가기'}</button>}
-      <a className="case-action case-action--primary" href={prototypeUrl} target="_blank" rel="noopener noreferrer">Figma에서 직접 눌러보기</a><a className="assignment-story__design" href={SEOLBI_DESIGN_URL} target="_blank" rel="noopener noreferrer">Figma 설계 요약 보기</a>
-      <p>버튼 클릭·스크롤은 Figma 프로토타입에서 확인할 수 있습니다.</p>
+      <a className="case-action case-action--primary" href={prototypeUrl} target="_blank" rel="noopener noreferrer">프로토타입 열기</a><a className="assignment-story__design" href={SEOLBI_DESIGN_URL} target="_blank" rel="noopener noreferrer">설계 요약 보기</a>
+      <p>실제 화면 조작은 Figma 프로토타입에서 확인합니다.</p>
     </div>
   </section>;
 }
