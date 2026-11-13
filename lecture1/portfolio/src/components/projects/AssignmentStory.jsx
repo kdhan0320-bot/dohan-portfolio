@@ -7,11 +7,13 @@ const prototypeUrl = 'https://www.figma.com/proto/GInxTqHo6Y87DEe3vuhmMw?node-id
 const assignmentRequest = '담당자·기한·배정 버튼이 한눈에 보이게.';
 const recoveryRequest = '저장 중·실패·재시도 흐름을 구분해 주세요.';
 const returnRequest = '배정 완료 후 목록으로 돌아가게.';
+const recordRequest = '설비별 담당자를 기록으로 남겨 책임을 구분하기.';
 // Group the user's confirmed requests; these are not field-research findings.
 const requestCriteria = {
   [assignmentRequest]: '정보 우선',
   [recoveryRequest]: '상태 구분',
   [returnRequest]: '목록 복귀',
+  [recordRequest]: '기록과 책임',
 };
 const scenes = [
   { id: 'request', request: assignmentRequest, label: '요청 확인', title: '담당자·기한을 먼저 확인합니다.', alt: '배정 대기 요청. 미배정 담당자와 완료 기한 바로 아래 담당자 선택 버튼이 있고, 설비 사진과 증상은 그 다음에 표시됩니다.' },
@@ -19,7 +21,7 @@ const scenes = [
   { id: 'saving', request: recoveryRequest, label: '저장 중', title: '선택은 유지하고 저장 중입니다.', alt: '이수진 선택을 유지한 담당자 선택 화면. 하단에 배정을 저장하고 있다는 안내와 저장 중 버튼이 표시됩니다.' },
   { id: 'failure', request: recoveryRequest, label: '실패·재시도', title: '저장 실패 · 선택은 유지됩니다.', alt: '저장 실패 화면. 이수진 선택을 유지하며 저장 실패 안내와 다시 시도 버튼이 표시됩니다.' },
   { id: 'success', request: returnRequest, label: '배정 완료', title: '배정 완료 · 정비 보고 대기', alt: '배정 완료 화면. 이수진에게 배정했다는 안내, 정비 보고 대기 상태, 요청 목록으로 버튼이 표시됩니다.' },
-  { id: 'list', request: returnRequest, label: '목록 반영', title: '목록에 담당자와 기한이 반영됩니다.', alt: '정비 요청 목록. 냉각수 펌프에 담당자 이수진, 기한 2026년 10월 7일, 정비 대기 상태가 표시됩니다.' },
+  { id: 'list', request: recordRequest, label: '목록 반영', title: '목록에 담당자와 기한이 반영됩니다.', alt: '정비 요청 목록. 냉각수 펌프에 담당자 이수진, 기한 2026년 10월 7일, 정비 대기 상태가 표시됩니다.' },
 ];
 
 const flows = {
