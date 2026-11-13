@@ -2,7 +2,7 @@ import { useParams, useNavigate, useLocation, Navigate, Link } from 'react-route
 import { FEATURED_CASES } from '../data/projectsData';
 import { POSTER_PROJECTS, projectNumber } from '../data/posterProjects';
 import ProcurementCase from './ProcurementCase';
-import AssignmentPreview from '../components/projects/AssignmentPreview';
+import AssignmentStory, { SEOLBI_DESIGN_URL } from '../components/projects/AssignmentStory';
 import CinemaScene from '../components/projects/CinemaScene';
 import RevealOnScroll from '../components/ui/RevealOnScroll';
 import { PROJECT_DETAIL_READY } from '../data/portfolioMeta';
@@ -61,7 +61,7 @@ const ExternalAction = ({ href, children, primary = false }) => href ? <a classN
 const ScopeList = ({ title, items }) => items?.length ? <div className="case-scope__column"><h3>{title}</h3><ul>{items.map(item=><li key={item}>{item}</li>)}</ul></div> : null;
 
 const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
-  const figmaUrl = project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
+  const figmaUrl = project.id === 'seolbiit' ? SEOLBI_DESIGN_URL : project.figmaDesignUrl || project.figmaPrototypeUrl || project.prototypeUrl;
   const heroMedia = (ready.hero?.media || []).filter(item=>item.src);
   const portraitCover = heroMedia.length === 1 && isPortrait(heroMedia[0]);
   const usedImages = new Set(heroMedia.map(item=>`${item.src}:${JSON.stringify(item.crop||null)}`));
@@ -75,7 +75,7 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
     <ScreenFigure key={item.src} media={item} priority={index === 0} label={ready.hero.mediaLabel} />
   ));
   const cover = <div className="case-cover">
-    {project.id === 'seolbiit' ? <AssignmentPreview showPicker>{figures}</AssignmentPreview> : project.id === 'ott-service' ? <CinemaScene /> : figures}
+    {project.id === 'seolbiit' ? <AssignmentStory /> : project.id === 'ott-service' ? <CinemaScene /> : figures}
   </div>;
   const credits = (
     <dl className={ready.creditsOnCover ? 'case-cover-credits' : undefined} aria-label={ready.creditsOnCover ? '제작 기여' : undefined}>
@@ -92,7 +92,7 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
       {ready.creditsOnCover ? credits : <p className="case-production">{project.productionLabel || (project.is_figma_project ? 'Figma 디자인' : 'AI 협업 웹 제작')}</p>}
     </div>
   );
-  const introduction = (
+  const introduction = project.id === 'seolbiit' ? null : (
     <div className="case-introduction">
       {featuredCase && <p className="case-question">{featuredCase.question}</p>}
       <p className="case-lead">{ready.hero?.summary || project.description}</p>
@@ -108,11 +108,11 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
       {register}
       {ready.imageFirst ? <>{title}{cover}{introduction}</> : <div className="case-intro__grid">{title}{introduction}</div>}
 
-      <nav className="case-jumps" aria-label="프로젝트 상세 구간"><button type="button" onClick={() => scrollToSection('case-decisions')}><span>01</span>화면의 선택</button><button type="button" onClick={() => scrollToSection('case-scope')}><span>02</span>제작 범위</button></nav>
+      {decisions.length > 0 && <nav className="case-jumps" aria-label="프로젝트 상세 구간">{decisions.length > 0 && <button type="button" onClick={() => scrollToSection('case-decisions')}><span>01</span>화면의 선택</button>}<button type="button" onClick={() => scrollToSection('case-scope')}>제작 범위</button></nav>}
     </header>
     {!ready.creditsOnCover && <div className="case-opening-facts">{credits}{toolsLine}</div>}
     {!ready.imageFirst && cover}
-    <section id="case-decisions" className="case-section case-decisions" aria-labelledby="case-decisions-heading">
+    {decisions.length > 0 && <section id="case-decisions" className="case-section case-decisions" aria-labelledby="case-decisions-heading">
       <div className="case-section__heading"><p className="case-eyebrow">01 / DESIGN DECISIONS</p><h2 id="case-decisions-heading">{ready.decisionsTitle || '화면에서 읽는 설계.'}</h2></div>
       <div className="case-decisions__list">
         {decisions.map((item, i) => (
@@ -129,8 +129,8 @@ const StandardProjectCase = ({ project, ready, featuredCase, register }) => {
           </RevealOnScroll>
         ))}
       </div>
-    </section>
-    <RevealOnScroll component="section" id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><p className="case-eyebrow">02 / SCOPE & LIMITS</p><h2 id="case-scope-heading">제작 범위와 한계.</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}
+    </section>}
+    <RevealOnScroll component="section" id="case-scope" className="case-section case-scope" aria-labelledby="case-scope-heading"><div className="case-section__heading"><h2 id="case-scope-heading">제작 범위</h2></div>{ready.scopeSummary?<div className="case-scope__grid case-scope__grid--summary">{ready.scopeSummary.map(item=><div className="case-scope__column" key={item.title}><h3>{item.title}</h3><p>{item.text}</p></div>)}</div>:<div className="case-scope__grid"><ScopeList title="제작한 범위" items={ready.scope?.actual}/><ScopeList title="시연·데이터" items={ready.scope?.demoStatic}/><ScopeList title="포함하지 않은 범위" items={ready.scope?.notIncluded}/></div>}
       {ready.creditsOnCover && toolsLine}
     </RevealOnScroll>
   </>;

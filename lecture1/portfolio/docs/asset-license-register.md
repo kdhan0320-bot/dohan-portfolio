@@ -663,3 +663,26 @@ Figma 화면 8개는 텍스트·이미지를 재생성하지 않은 직접 expor
 ## 2026-10-07 이름·작업 중심 리파인
 
 첫 화면의 부드러운 사선 그림자는 CSS gradient·blur로 작성했다. 첨부 레퍼런스 이미지를 배경 자산으로 복사하지 않았다. 동일한 기존 프로젝트 캡처를 수평 프레임에 배치하며 상시 회전·겹침은 쓰지 않는다. 헤더와 `public/favicon.svg`는 이번에 직접 작성한 단순 D 형태(둥근 사각 배경과 한 개의 evenodd path)를 함께 사용한다. 과거 Figma D2 마크와 현행 마크는 다르며 Figma 파일은 수정하지 않았다. 신규 외부 이미지·서체·아이콘 라이브러리는 추가하지 않았다.
+
+
+## 2026-11-13 대표작 설계 근거 보강
+
+설비결은 같은 파일 `GInxTqHo6Y87DEe3vuhmMw`의 기존 B3 프레임을 Figma export로 보존한 사례 설명용 이미지입니다. 새 서비스 구현이나 사용자 직접 제작 증거가 아닙니다. 기존 AI 생성 설비 사진과 Figma 글꼴·컴포넌트를 포함합니다. 브라우저 캡처는 현재 공개 웹을 직접 렌더링한 PNG이며 변경·합성하지 않았습니다. 표시 날짜·수치는 가상 데이터입니다.
+
+| 파일 | 원본 | PNG 크기 | SHA-256 |
+| --- | --- | --- | --- |
+| `seolbigyeol-b3-request-390.png` | Figma `968:1192` · 원본 export | 390×844 | `5f66977a30c251b72e9e6104643ecd9ed5bcec12774d5cee8aebe6389aa61718` |
+| `seolbigyeol-b3-request-320.png` | Figma `968:1629` · 원본 export | 320×568 | `a044699afdabf3ddf4fd11687512eb86c61cee649322d758dcfdff6e9385c328` |
+| `seolbigyeol-b3-selected-390.png` | Figma `968:1405` · 원본 export | 390×844 | `0f1caf264bba01438a36b385dd6cef7a1dcb5e582c57cc16d01821b4ee323991` |
+| `seolbigyeol-b3-selected-320.png` | Figma `968:1926` · 원본 export | 320×568 | `48f872e1ec27deb1c1d09b247cac2fcbc8869bbc8b3f6e1ab95ebda14d5a69eb` |
+| `seolbigyeol-b3-saving-390.png` | Figma `968:1422` · 원본 export | 390×844 | `05cec6410a1b5d71ac60f8ab457b80b878f34af6796e5003af043729f5bce441` |
+| `seolbigyeol-b3-saving-320.png` | Figma `968:1955` · 원본 export | 320×568 | `ec84481adad1b148f3a6e407612e20a35459e30cb9958216f7feaac035f8a490` |
+| `seolbigyeol-b3-failure-390.png` | Figma `968:1565` · 원본 export | 390×844 | `0fc03bf75f6bbbe5ba43dedbc700e58e06234355e6520961c2911b7fb2cac0b8` |
+| `seolbigyeol-b3-failure-320.png` | Figma `968:2134` · 원본 export | 320×568 | `5994131956fd1ac93c096446a4d75d117c88569b81ec623097c2e5e00f5cef37` |
+| `seolbigyeol-b3-success-390.png` | Figma `968:1439` · 원본 export | 390×844 | `9dbf96660ef61711dae8a96ab1ee0c5dd1c3f36dc28535819fc375a5b5924145` |
+| `seolbigyeol-b3-success-320.png` | Figma `968:1984` · 원본 export | 320×568 | `3974d4cdd4317741fd1d815f765574dbe39ab6785e7aa7333afdd04870655c8c` |
+| `seolbigyeol-b3-list-390.png` | Figma `968:1484` · 원본 export | 390×844 | `bfee829fd917696006e46251f2e47acf36c62c65df5c623acc45c70b9b8fae6c` |
+| `seolbigyeol-b3-list-320.png` | Figma `968:2029` · 원본 export | 320×568 | `919e2057f15fa0c97d5b82fdc8eab8801a56747c04e8ae47b5b2de1b69f36803` |
+| `pumuiseon-work-1440-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/ · Edge 화면 캡처 | 1440×1000 | `e0fd4e21ad72b942fd951624707f2e7998c90f6f5468808475a493f7fe2afc93` |
+| `pumuiseon-work-390-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/ · Edge 화면 캡처 | 390×844 | `84f4d1396468abfd1379e37f35d7b09100de744af220f5e766651f6a1f4c3901` |
+| `gijunseon-sequence-1440-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/gijunseon/ · Edge 화면 캡처 | 1440×1100 | `8e5113f9283375f63adc835971836559d49349bfd98731528a9e01f27b6c9690` |

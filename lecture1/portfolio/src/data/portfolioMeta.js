@@ -62,7 +62,7 @@ function detail(id, image, decisions, scope, { contribution, ...extra } = {}) {
 const cinemaHome = media('detail/current/jansang-hero-1440-20261112.png', '바다가 내려다보이는 길에서 자전거를 탄 두 친구가 마주 보는 ‘파란 오후’ 표지', '1425 / 476', {
   mobile: { src: 'detail/current/jansang-hero-390-20261112.png', aspectRatio: '375 / 337', label: '모바일 홈 표지 · 파란 오후' },
 });
-const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '마지막 연주와 바통을 건네는 순간을 나란히 보여주는 기획전', '1918 / 1172', {
+const cinemaExhibition = media('detail/current/jansang-v63-exhibit-1440.webp', '두 개의 주제로 네 작품을 묶은 마음을 건네는 방식 기획전', '1918 / 1172', {
   mobile: { src: 'detail/current/jansang-v63-exhibit-390.webp', aspectRatio: '688 / 622', label: '모바일 기획전 발췌 · 마지막 두 작품' },
 });
 
@@ -83,7 +83,7 @@ export const PROJECT_DETAIL_READY = {
       ],
       scopeSummary: [
         { title: '제작과 데이터', text: '공개 체험은 가상 회사 데이터이며 편집 내용은 새로고침하면 초기화됩니다. 작성 요청문 도구는 로컬 템플릿으로, AI 모델을 호출하지 않습니다.' },
-        { title: '확인 범위', text: '2026.11.12 공개 웹의 홈·면접 화면을 확인해 소개를 갱신했습니다. 실제 계정 인증·DB 저장 유지, 모바일 실기기와 채용 효과는 이번 개편에서 검증하지 않았습니다.' },
+        { title: '확인 범위', text: '실제 계정 인증·DB 저장 유지와 채용 효과는 이 사례에서 검증하지 않았습니다.' },
       ], resultLimit: {},
     },
   ),
@@ -92,19 +92,16 @@ export const PROJECT_DETAIL_READY = {
     media('detail/current/seolbigyeol-home-20261112.png', '설비결 작업 현황에 표시된 정비 요청과 담당자 배정', '1440 / 1080', {
       label: '설비결 Figma 시안 · 정비 작업 현황',
     }),
-    [
-      evidence('요청을 읽은 자리에서 담당자를 선택.', '사진·증상·담당자·기한을 한 카드에 모으고, 바로 아래에 ‘요청 확인·배정’을 두었습니다.', '', media('detail/current/seolbigyeol-assignment-2x.webp', '설비결 작업 현황의 배정 대기 영역과 요청 확인 버튼', '1568 / 1040', {
-        original: 'detail/current/seolbigyeol-home-20261112.png',
-      })),
-      evidence('모바일은 상태 요약 다음에 요청 카드.', '상태 요약은 2×2, 요청과 처리 현황은 세로로 배치했습니다.', 'PC 화면을 축소하지 않고 390px 폭의 별도 시안으로 구성했습니다.', media('detail/current/seolbigyeol-mobile-20261112.png', '설비결 모바일 보완 시안 · 작업 현황', '390 / 844', {
-        label: '모바일 보완 시안 · 작업 현황', frameWidth: 390,
-      })),
-    ],
+    [],
     { actual: ['작업 현황과 정비 운영 UI', 'Figma 화면 디자인'], demoStatic: ['가상 설비·작업·담당자', '화면 구성용 상태와 수치'], notIncluded: ['실제 서비스 코드·서버', '센서 연동·현장 사용자 조사'] },
     {
       imageFirst: true,
       creditsOnCover: true,
-      decisionsTitle: '정비 요청에서 담당자 배정까지',
+      hero: { summary: '정비 요청의 담당자 선택부터 저장·재시도·목록 복귀까지 연결한 Figma 디자인입니다.' },
+      scopeSummary: [
+        { title: '제작', text: '작업 현황과 배정 흐름을 디자인했습니다. 최신 B안은 390px·320px 모바일 화면과 저장·오류·복귀 상태를 포함합니다.' },
+        { title: '시연 범위', text: '설비·담당자·직무는 가상 예시입니다. Figma 프로토타입이며 실제 배정 저장·센서·서버 연동과 현장 사용자 조사는 포함하지 않습니다.' },
+      ],
       aiCollaboration: [
         { label: '김도한', value: '설비 점검 요구사항 제시, 작업 상태의 우선순위 검토' },
         { label: 'AI 협업', value: 'Figma 화면 구성 제안·편집과 검토' },
@@ -122,7 +119,7 @@ export const PROJECT_DETAIL_READY = {
           { label: '기획전과의 차이', text: '두 장면을 나란히 싣는 구성은 함께 고른 이유를 설명할 수 있는 기획전에 남겼습니다.' },
         ],
       },
-      { title: '두 작품을 연결하는 기획전', layout: 'wide', summary: '연주와 바통을 건네는 장면을 ‘마지막에 건네는 마음’으로 묶었습니다. 장면과 짧은 글이 함께 읽히는 편집 구성입니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
+      { title: '두 편씩 묶어 읽는 기획전', layout: 'wide', summary: 'PC에서는 네 작품을 두 쌍으로 묶어 보여줍니다. 그중 연주와 바통을 건네는 두 장면은 ‘마지막에 건네는 마음’으로 연결했습니다.', media: cinemaExhibition, mediaLabel: '기획전 · 마음을 건네는 방식' },
       {
         title: '메모는 읽기부터, 수정은 선택해서',
         evidence: [
@@ -151,7 +148,7 @@ export const PROJECT_DETAIL_READY = {
       ],
       scopeSummary: [
         { title: '콘텐츠와 저장', text: '가상 단편영화 12편과 AI 생성 이미지입니다. 찜·메모·보기 설정은 브라우저에 저장하며, 영상 재생·예매·서버 저장은 포함하지 않습니다.' },
-        { title: '확인과 한계', text: 'PC·모바일 브라우저에서 탐색·상세 복귀·메모 저장과 읽기를 확인했습니다. 실기기·실제 이용자 사용성 조사는 진행하지 않았습니다.' },
+        { title: '확인과 한계', text: '실제 이용자 사용성 조사와 모바일 실기기 검증은 진행하지 않았습니다.' },
       ], resultLimit: {},
     },
   ),
@@ -162,14 +159,17 @@ export const PROJECT_DETAIL_READY = {
       mobile: { src: 'detail/current/gijunseon-hero-390-20261112.png', aspectRatio: '390 / 567', label: '기준선 공개 웹 · 모바일 첫 화면' },
     }),
     [
-      evidence('검사 사례를 먼저, 도입 절차를 다음에.', '흠집·부품 누락·바코드 사례로 검사 대상을 보여준 뒤 적용 공정·도입 절차·상담으로 이어집니다.', '기술 용어보다 사용 맥락을 먼저 이해하도록 정한 순서입니다.'),
+      evidence('검사 사례를 먼저, 도입 절차를 다음에.', '흠집·부품 누락·바코드 사례로 검사 대상을 보여준 뒤 적용 공정·도입 절차·상담으로 이어집니다.', '아래 공개 화면에서 검사 대상을 본 뒤 도입 검토로 이어지는 순서를 확인할 수 있습니다.', media('detail/current/gijunseon-sequence-1440-20261113.png', '기준선 공개 웹의 결함 예시 세 가지와 그 아래 도입 검토 세 단계', '1440 / 1100', { mobile: { src: 'detail/current/gijunseon-intro-390.webp', aspectRatio: '780 / 522', label: '모바일 도입 검토 과정 · 공개 웹 발췌' } })),
     ],
     {
       actual: ['Figma 디자인과 HTML·CSS·JavaScript 웹 구현', '검사 예시·적용 공정·도입 절차·상담 화면', '반응형 구성과 브라우저 내 입력 검증'],
       demoStatic: ['가상 기업 소개와 검사 예시 · AI 이미지 포함', '상담 입력·검사 선택 시연'],
       notIncluded: ['실제 검사·납품 실적', '상담 전송·메일·DB 저장', '사용자 조사·성과 측정'],
     },
-    { imageFirst: true, aiCollaboration: [
+    { imageFirst: true, scopeSummary: [
+      { title: '제작', text: 'Figma 디자인과 반응형 웹. 검사 예시·적용 공정·도입 절차·상담 입력 시연을 포함합니다.' },
+      { title: '예시와 한계', text: 'AI 이미지를 포함한 가상 기업입니다. 실제 검사 실적·상담 전송·DB 저장·사용자 조사 결과는 없습니다.' },
+    ], aiCollaboration: [
       { label: '김도한', value: '원본 Figma 작품·요구 범위 제시, 디자인 방향 선택, 수정 결과 확인' },
       { label: 'AI 협업', value: 'HTML·CSS·JavaScript 작성, 반응형·접근성 보완, 도식 정리와 검수' },
     ] },
@@ -201,7 +201,10 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['정적 노선·방향·도착 예시', 'Figma 화면 시안'],
       notIncluded: ['실시간 버스 API·차량 위치', 'Push·계정·앱 코드', '실제 운행 안내·사용성 검증'],
     },
-    { responsiveNotApplicable: true, contribution: '버스 도착 정보 요구사항 제시' },
+    { responsiveNotApplicable: true, contribution: '버스 도착 정보 요구사항 제시', scopeSummary: [
+      { title: '제작', text: 'Figma 모바일 디자인. 도착·탐색·빈 상태·오류 화면을 포함합니다.' },
+      { title: '예시와 한계', text: '정적 노선·도착 예시입니다. 실시간 API·위치·알림·앱 코드와 사용성 검증은 포함하지 않습니다.' },
+    ] },
   ),
   brewstep: detail(
     'brewstep',
@@ -214,6 +217,9 @@ export const PROJECT_DETAIL_READY = {
       demoStatic: ['음료·가격·프로모션 예시', '현재 Figma 화면 시안'],
       notIncluded: ['실제 주문·결제·재고 연동', '앱 코드 구현', '사용자 조사'],
     },
-    { responsiveNotApplicable: true, contribution: '카페 모바일 시안 방향 선택' },
+    { responsiveNotApplicable: true, contribution: '카페 모바일 시안 방향 선택', scopeSummary: [
+      { title: '제작', text: 'Figma 모바일 디자인. 홈·메뉴·즐겨찾기·소식·마이와 리워드·매장 정보를 구성했습니다.' },
+      { title: '예시와 한계', text: '음료·가격은 예시입니다. 실제 주문·결제·재고 연동, 앱 코드와 사용자 조사는 포함하지 않습니다.' },
+    ] },
   ),
 };

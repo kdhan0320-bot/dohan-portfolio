@@ -3,6 +3,7 @@ import { PROCUREMENT_RECEIPT } from '../data/projectsData';
 import { scrollToSection } from '../hooks/useScrollNav';
 import ReceiptFlow from '../components/projects/ReceiptFlow';
 import './procurementCase.css';
+const media = `${import.meta.env.BASE_URL}detail/current/`;
 
 function ReceiptAndHistory({ ready, liveUrl, question }) {
   const [arrived, setArrived] = useState(false);
@@ -58,6 +59,18 @@ export default function ProcurementCase({ project, ready, question, register }) 
           </div>
         </section>
       </div>
+      <section className="procurement-decisions" aria-labelledby="procurement-decisions-title">
+        <div className="procurement-decisions__heading"><p className="case-eyebrow">화면에서 읽는 설계</p><h2 id="procurement-decisions-title">수량 다음에는,<br />지금 처리할 일.</h2><p>발주·입고·지급 요구사항을 AI와 구체적인 화면으로 옮겼습니다. 아래는 현재 공개 웹에서 확인할 수 있는 배치입니다.</p></div>
+        <div className="procurement-decisions__rules">
+          <article><span>01</span><h3>업무 단계별로 이동</h3><p>구매·결재, 발주·입고, 자재·지급을 나눕니다. 주문한 양과 실제 받은 양을 다른 단계에서 관리합니다.</p></article>
+          <article><span>02</span><h3>작은 화면은 처리할 일부터</h3><p>PC는 전표와 업무 요약을 펼쳐 보여줍니다. 모바일은 ‘지금 처리할 품의’를 전표 위에 두고 보완 행동부터 연결합니다.</p></article>
+          <article><span>03</span><h3>현재 수량에서 근거로</h3><p>받은 양·지급한 양·현재 보유를 묶고, 같은 전표의 이력 보기에서 입출고 기록을 확인하게 합니다.</p></article>
+        </div>
+        <div className="procurement-decisions__screens">
+          <figure><img src={media+'pumuiseon-work-1440-20261113.png'} alt="품의선 PC 업무 현황. 왼쪽 업무 단계 메뉴, 상단 전표와 업무 요약, 하단 처리할 품의와 입고 대기 목록." width="1440" height="1000" loading="lazy" /><figcaption><span>PC · 전표와 업무 현황</span><a href={media+'pumuiseon-work-1440-20261113.png'} target="_blank" rel="noreferrer">원본 보기</a></figcaption></figure>
+          <figure><img src={media+'pumuiseon-work-390-20261113.png'} alt="품의선 모바일 업무 현황. 보완이 필요한 품의 카드와 내용 보완 링크가 전표 위에 먼저 보입니다." width="390" height="844" loading="lazy" /><figcaption><span>모바일 · 처리할 품의 우선</span><a href={media+'pumuiseon-work-390-20261113.png'} target="_blank" rel="noreferrer">원본 보기</a></figcaption></figure>
+        </div>
+      </section>
     </div>
   );
 }

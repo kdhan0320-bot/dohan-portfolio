@@ -84,8 +84,8 @@ const AboutPage = () => (
                 <li><Link to="/projects/seolbiit">설비결</Link><span>설비 점검 주제와 요구사항을 제시하고, 어떤 작업 상태를 먼저 보여줄지 의견을 냈습니다.</span></li>
                 <li><Link to="/projects/jansang-cinema">잔상관</Link><span>편집 방향을 선택하고 홈의 단독 표지를 결정했습니다. 모바일 화면도 검토했습니다.</span></li>
               </ul>
-              <p>Figma 화면을 직접 편집하며 웹퍼블리싱을 배우고 있습니다.</p>
-              <ul className="about-skill-badges" aria-label="직접 다루는 도구">
+              <p>Figma와 HTML·CSS를 배우며 화면 구성과 웹퍼블리싱을 연습하고 있습니다.</p>
+              <ul className="about-skill-badges" aria-label="학습 중인 도구">
                 <li>Figma</li>
                 <li>HTML</li>
                 <li>CSS</li>

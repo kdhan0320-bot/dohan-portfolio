@@ -268,3 +268,11 @@
  .case-decision--illustrated:not(:has(.case-screen-sequence))>.case-decision__copy { grid-row:2; }
  .case-decision--illustrated .case-decision__summary { padding-top:12px; }
 }
+
+/* Scope stays visible, but does not outweigh the design evidence. */
+.case-scope { padding:28px 0; }
+.case-scope .case-section__heading { margin-bottom:18px; }
+.case-scope .case-section__heading h2 { margin:0; font-size:22px; }
+.case-scope__column { padding-top:16px; }
+.case-scope__column h3 { font-size:15px; margin-bottom:8px; }
+.case-scope__column p { font-size:14px; line-height:1.8; }
