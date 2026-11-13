@@ -98,3 +98,18 @@
  .procurement-decisions__screens { grid-template-columns:1fr; gap:32px; }
  .procurement-decisions__mobile { order:-1; width:100%; max-width:390px; justify-self:center; }
 }
+
+/* Keep entry actions close to the actual screens without adding a mobile overlay. */
+.procurement-entry { grid-column:1 / -1; display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin-top:20px; }
+.procurement-entry button { display:inline-flex; align-items:center; justify-content:center; min-height:48px; padding:12px 18px; border:1px solid var(--line-strong); background:transparent; color:var(--ink); font:inherit; font-size:14px; line-height:20px; cursor:pointer; }
+.procurement-entry button:hover { background:var(--surface); border-color:var(--accent); }
+.procurement-entry button:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+.procurement-entry .case-action { min-height:48px; margin:0; }
+.procurement-entry p { color:var(--muted); font-size:12px; line-height:1.7; }
+@media(max-width:760px) {
+ .procurement-entry { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:16px; }
+ .procurement-entry p { grid-column:1 / -1; }
+ .procurement-entry .case-action { justify-content:center; padding-inline:12px; }
+ .procurement-entry button { padding-inline:8px; }
+ .procurement-case .receipt-flow__actions>button:only-child { grid-column:1 / -1; }
+}

@@ -10,9 +10,9 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
 
   return (
     <section className="receipt-story" aria-labelledby="receipt-question">
-      <h2 id="receipt-question">{question}</h2>
+      <h2 id="receipt-question" tabIndex="-1">{question}</h2>
       <ReceiptFlow onStart={() => setArrived(false)} onComplete={() => setArrived(true)} />
-      <div className="receipt-story-links"><span>품의선 예시 전표 · 수량 흐름 재구성</span><button type="button" onClick={() => scrollToSection('receipt-history')}>입출고 이력 보기</button></div>
+      <div className="receipt-story-links"><span>실제 화면의 수량을 재구성한 설명입니다.</span><button type="button" onClick={() => scrollToSection('receipt-history')}>입출고 이력 보기</button></div>
       <section className="receipt-ledger" data-arrived={arrived} aria-labelledby="receipt-history">
         <h3 id="receipt-history" tabIndex="-1">포토센서 입출고 이력</h3>
         <ol>
@@ -45,6 +45,11 @@ export default function ProcurementCase({ project, ready, question, register }) 
             <p>김도한의 역할</p>
             <p>{ready.role}</p>
           </div>
+          <div className="procurement-entry" aria-label="품의선 바로 보기">
+            <a className="case-action case-action--primary" href={project.liveUrl} target="_blank" rel="noreferrer" aria-label="품의선 웹앱 열기 (새 탭)">웹앱 열기</a>
+            <button type="button" onClick={() => scrollToSection('receipt-question')}>수량 흐름 보기</button>
+            <p>가상 자료로 체험하는 웹앱 · 기록은 브라우저에 저장</p>
+          </div>
         </header>
         <section className="procurement-decisions" aria-labelledby="procurement-decisions-title">
           <div className="procurement-decisions__heading"><p className="case-eyebrow">공개 웹의 실제 화면</p><h2 id="procurement-decisions-title">처리할 일과 재고.</h2></div>
@@ -65,9 +70,8 @@ export default function ProcurementCase({ project, ready, question, register }) 
           <dl>{ready.aiCollaboration.map(person => (
             <div key={person.label}><dt>{person.label}</dt><dd>{person.value}</dd></div>
           ))}</dl>
-          <p className="procurement-scope">{project.tools.join(' · ')}<br />가상 자재로 시연하며 입력한 기록은 이 브라우저에 저장됩니다.</p>
+          <p className="procurement-scope">{project.tools.join(' · ')}<br />실제 결재·메일·서버 저장은 연동하지 않았습니다.</p>
           <div className="case-actions">
-            <a className="case-action case-action--primary" href={project.liveUrl} target="_blank" rel="noreferrer">웹사이트 보기</a>
             <a className="text-link" href={project.githubUrl} target="_blank" rel="noreferrer">코드 보기</a>
           </div>
         </section>

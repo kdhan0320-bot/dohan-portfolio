@@ -7,6 +7,8 @@ export default function ReceiptFlow({ compact = false, onStart, onComplete }) {
   const id = useId();
   const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
   const timers = useRef([]);
+  const replayRef = useRef(null);
+  const resultRef = useRef(null);
   const callbacks = useRef({ onStart, onComplete });
   const [phase, setPhase] = useState('settled');
   const [running, setRunning] = useState(false);
@@ -25,6 +27,7 @@ export default function ReceiptFlow({ compact = false, onStart, onComplete }) {
     timers.current = [
       setTimeout(() => setPhase('issued'), 1400),
       setTimeout(() => {
+        if (document.activeElement === resultRef.current) replayRef.current?.focus({ preventScroll: true });
         setPhase('settled');
         setRunning(false);
         callbacks.current.onComplete?.();
@@ -33,6 +36,7 @@ export default function ReceiptFlow({ compact = false, onStart, onComplete }) {
   }, [clearTimers]);
   const showResult = useCallback(() => {
     clearTimers();
+    replayRef.current?.focus({ preventScroll: true });
     setPhase('settled');
     setRunning(false);
     callbacks.current.onStart?.();
@@ -53,8 +57,8 @@ export default function ReceiptFlow({ compact = false, onStart, onComplete }) {
     <div className="receipt-flow__controls">
       <p>{playing ? `과정 재생 · ${receiving ? '입고' : '지급'} 단계` : '현재 결과'}</p>
       {!reduced ? <div className="receipt-flow__actions">
-        <button type="button" onClick={play} aria-controls={`${id}-board`} aria-label="입고부터 수량 과정 재생">{playing ? '처음부터 재생' : played ? '과정 다시 보기' : '입고부터 재생'}</button>
-        {playing && <button className="receipt-flow__result" type="button" onClick={showResult} aria-controls={`${id}-board`}>현재 결과 보기</button>}
+        <button ref={replayRef} type="button" onClick={play} aria-controls={`${id}-board`} aria-label="입고부터 수량 과정 재생">{playing ? '처음부터 재생' : played ? '과정 다시 보기' : '입고부터 재생'}</button>
+        {playing && <button ref={resultRef} className="receipt-flow__result" type="button" onClick={showResult} aria-controls={`${id}-board`}>현재 결과 보기</button>}
       </div> : <span>움직임 없이 결과 보기</span>}
     </div>
     <div id={`${id}-board`} className="receipt-flow__board" role="group" aria-labelledby={id}>
