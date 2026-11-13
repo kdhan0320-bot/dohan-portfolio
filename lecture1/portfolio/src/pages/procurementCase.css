@@ -89,7 +89,10 @@
 .procurement-decisions figcaption strong { color:var(--ink); font-size:15px; font-weight:600; line-height:1.6; }
 .procurement-decisions figcaption p { margin-top:6px; color:var(--muted); font-size:14px; line-height:1.7; }
 .procurement-decisions figcaption a { min-height:44px; display:inline-flex; align-items:center; color:var(--accent); font-size:12px; }
-@media(max-width:1000px) { .procurement-decisions__screens { grid-template-columns:minmax(0,1fr) 220px; gap:16px; } }
+@media(min-width:761px) and (max-width:1100px) {
+ .procurement-decisions__screens { grid-template-columns:minmax(0,1fr); gap:28px; }
+ .procurement-decisions__mobile { width:100%; max-width:390px; justify-self:center; }
+}
 @media(max-width:760px) {
  .procurement-decisions { padding-bottom:24px; }
  .procurement-decisions__heading { margin-bottom:16px; }
@@ -112,4 +115,16 @@
  .procurement-entry .case-action { justify-content:center; padding-inline:12px; }
  .procurement-entry button { padding-inline:8px; }
  .procurement-case .receipt-flow__actions>button:only-child { grid-column:1 / -1; }
+}
+
+/* Crop coordinates are measured in the existing 1440×1000 / 390×844 captures. */
+.procurement-focus { position:relative; width:100%; overflow:hidden; background:#f4f5f7; }
+.procurement-focus img { position:absolute; max-width:none; height:auto; display:block; }
+.procurement-role__short { display:none; }
+.procurement-request { margin-top:18px; padding:14px 0; border-top:1px solid var(--line); color:var(--ink); font-size:14px; line-height:1.7; }
+.procurement-request>span { display:block; margin-bottom:4px; color:var(--accent); font-size:12px; font-weight:600; }
+@media(max-width:760px) {
+ .procurement-role__full { display:none; }
+ .procurement-role__short { display:inline; }
+ .procurement-layout { row-gap:22px; }
 }

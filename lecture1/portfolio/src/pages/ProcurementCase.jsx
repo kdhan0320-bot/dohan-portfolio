@@ -5,6 +5,13 @@ import ReceiptFlow from '../components/projects/ReceiptFlow';
 import './procurementCase.css';
 const media = `${import.meta.env.BASE_URL}detail/current/`;
 
+// Focus existing captures without changing the UI or the downloadable originals.
+function FocusedScreen({ src, alt, width, height, crop }) {
+  return <div className="procurement-focus" style={{ aspectRatio: `${crop.width} / ${crop.height}` }}>
+    <img src={src} alt={alt} width={width} height={height} style={{ width: `${width / crop.width * 100}%`, left: `${-crop.x / crop.width * 100}%`, top: `${-crop.y / crop.height * 100}%` }} />
+  </div>;
+}
+
 function ReceiptAndHistory({ ready, liveUrl, question }) {
   const [arrived, setArrived] = useState(false);
 
@@ -13,6 +20,7 @@ function ReceiptAndHistory({ ready, liveUrl, question }) {
       <h2 id="receipt-question" tabIndex="-1">{question}</h2>
       <ReceiptFlow onStart={() => setArrived(false)} onComplete={() => setArrived(true)} />
       <div className="receipt-story-links"><span>실제 화면의 수량을 재구성한 설명입니다.</span><button type="button" onClick={() => scrollToSection('receipt-history')}>입출고 이력 보기</button></div>
+      <p className="procurement-request"><span>김도한의 요청</span>입고 3개·지급 2개·보유 1개를 움직임으로 보여주고 이력으로 연결.</p>
       <section className="receipt-ledger" data-arrived={arrived} aria-labelledby="receipt-history">
         <h3 id="receipt-history" tabIndex="-1">포토센서 입출고 이력</h3>
         <ol>
@@ -43,7 +51,7 @@ export default function ProcurementCase({ project, ready, question, register }) 
           <h1>{project.title}</h1>
           <div className="procurement-role">
             <p>김도한의 역할</p>
-            <p>{ready.role}</p>
+            <p><span className="procurement-role__full">{ready.role}</span><span className="procurement-role__short">{ready.aiCollaboration.find(person => person.label === '김도한')?.value || ready.role}</span></p>
           </div>
           <div className="procurement-entry" aria-label="품의선 바로 보기">
             <a className="case-action case-action--primary" href={project.liveUrl} target="_blank" rel="noreferrer" aria-label="품의선 웹앱 열기 (새 탭)">웹앱 열기</a>
@@ -52,15 +60,15 @@ export default function ProcurementCase({ project, ready, question, register }) 
           </div>
         </header>
         <section className="procurement-decisions" aria-labelledby="procurement-decisions-title">
-          <div className="procurement-decisions__heading"><p className="case-eyebrow">공개 웹의 실제 화면</p><h2 id="procurement-decisions-title">처리할 일과 재고.</h2></div>
+          <div className="procurement-decisions__heading"><h2 id="procurement-decisions-title">처리할 품의와 전표.</h2></div>
           <div className="procurement-decisions__screens">
             <figure className="procurement-decisions__desktop">
-              <img src={media+'pumuiseon-work-copy-1440-20261113.png'} alt="품의선 PC 업무 현황. 왼쪽 업무 단계 메뉴, 상단 전표와 업무 요약, 하단 처리할 품의와 입고 대기 목록." width="1440" height="1000" />
-              <figcaption><div><strong>PC · 전표와 업무 현황</strong><p>구매·결재, 발주·입고, 자재·지급을 구분해 보여줍니다.</p></div><a href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 원본 이미지 보기 (새 탭)">원본 보기</a></figcaption>
+              <FocusedScreen src={media+'pumuiseon-work-copy-1440-20261113.png'} alt="실제 품의선 PC 화면 발췌. 포토센서 입출고 전표와 업무 요약, 처리할 품의·입고 대기 영역." width={1440} height={1000} crop={{ x:260, y:204, width:1132, height:610 }} />
+              <figcaption><div><strong>PC · 업무 현황 발췌</strong><p>전표·처리할 품의·입고 대기를 함께 확인합니다.</p></div><a href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a></figcaption>
             </figure>
             <figure className="procurement-decisions__mobile">
-              <img src={media+'pumuiseon-work-copy-390-20261113.png'} alt="품의선 모바일 업무 현황. 보완이 필요한 품의 카드와 내용 보완 링크가 전표 위에 먼저 보입니다." width="390" height="844" />
-              <figcaption><div><strong>모바일 · 처리할 일부터</strong><p>보완할 품의를 전표 위에 두고 ‘내용 보완’으로 연결합니다.</p></div><a href={media+'pumuiseon-work-copy-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 원본 이미지 보기 (새 탭)">원본 보기</a><a className="procurement-desktop-link" href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer">PC 전체 화면 보기</a></figcaption>
+              <FocusedScreen src={media+'pumuiseon-work-copy-390-20261113.png'} alt="실제 품의선 모바일 화면 발췌. 보완할 품의 카드 아래 포토센서 전표가 이어지며 입고 3개·지급 2개·보유 1개가 표시됩니다." width={390} height={844} crop={{ x:16, y:304, width:344, height:474 }} />
+              <figcaption><div><strong>모바일 · 실제 업무 화면 발췌</strong><p>보완할 품의를 확인하고 바로 아래에서 재고를 읽습니다.</p></div><a href={media+'pumuiseon-work-copy-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a><a className="procurement-desktop-link" href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer">PC 전체 화면 보기</a></figcaption>
             </figure>
           </div>
         </section>
