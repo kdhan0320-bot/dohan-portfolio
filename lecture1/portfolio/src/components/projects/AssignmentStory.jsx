@@ -19,7 +19,7 @@ export default function AssignmentStory() {
   const scene = scenes[active];
   return <section className="assignment-story" aria-labelledby="assignment-story-title">
     <div className="assignment-story__intro">
-      <p className="case-eyebrow">B안 · 모바일 배정 흐름</p>
+      <p className="case-eyebrow">모바일 배정 흐름</p>
       <h2 id="assignment-story-title">배정 대기 요청을<br /> 목록 반영까지.</h2>
       <p>확인, 선택, 저장 이후의 상태를 하나의 흐름으로 연결했습니다.</p>
     </div>
@@ -36,6 +36,13 @@ export default function AssignmentStory() {
       <picture key={scene.id}><source media="(max-width: 360px)" srcSet={`${media}seolbigyeol-b3-${scene.id}-320.png`} width="320" height="568" /><img src={`${media}seolbigyeol-b3-${scene.id}-390.png`} alt={scene.alt} width="390" height="844" /></picture>
       <figcaption><span>Figma 원본 화면 · 이미지 미리보기</span><a className="assignment-original--regular" href={`${media}seolbigyeol-b3-${scene.id}-390.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 원본 이미지 보기 (새 탭)`}>원본 보기</a><a className="assignment-original--small" href={`${media}seolbigyeol-b3-${scene.id}-320.png`} target="_blank" rel="noopener noreferrer" aria-label={`${scene.label} 320px 원본 이미지 보기 (새 탭)`}>원본 보기</a></figcaption>
     </figure>
+    <nav className="assignment-story__pager" aria-label="이전·다음 장면">
+      <p>{String(active + 1).padStart(2, '0')} / {String(scenes.length).padStart(2, '0')} · {scene.label}</p>
+      <div>
+        <button type="button" disabled={active === 0} aria-controls="assignment-scene" onClick={() => setActive(index => Math.max(0, index - 1))}>이전 장면</button>
+        <button type="button" disabled={active === scenes.length - 1} aria-controls="assignment-scene" onClick={() => setActive(index => Math.min(scenes.length - 1, index + 1))}>다음 장면</button>
+      </div>
+    </nav>
     <div className="assignment-story__actions">
       <a className="case-action case-action--primary" href={prototypeUrl} target="_blank" rel="noopener noreferrer">Figma에서 직접 눌러보기</a><a className="assignment-story__design" href={SEOLBI_DESIGN_URL} target="_blank" rel="noopener noreferrer">Figma 설계 요약 보기</a>
       <p>위 장면은 화면 비교용 이미지입니다. 실제 클릭·스크롤은 Figma 프로토타입에서 확인할 수 있습니다.</p>

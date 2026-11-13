@@ -99,7 +99,7 @@ export const PROJECT_DETAIL_READY = {
       creditsOnCover: true,
       hero: { summary: '정비 요청의 담당자 선택부터 저장·재시도·목록 복귀까지 연결한 Figma 디자인입니다.' },
       scopeSummary: [
-        { title: '제작', text: '작업 현황과 배정 흐름을 디자인했습니다. 최신 B안은 390px·320px 모바일 화면과 저장·오류·복귀 상태를 포함합니다.' },
+        { title: '제작', text: '작업 현황과 배정 흐름을 디자인했습니다. 390px·320px 모바일 화면과 저장·오류·복귀 상태를 포함합니다.' },
         { title: '시연 범위', text: '설비·담당자·직무는 가상 예시입니다. Figma 프로토타입이며 실제 배정 저장·센서·서버 연동과 현장 사용자 조사는 포함하지 않습니다.' },
       ],
       aiCollaboration: [
