@@ -686,3 +686,13 @@ Figma 화면 8개는 텍스트·이미지를 재생성하지 않은 직접 expor
 | `pumuiseon-work-1440-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/ · Edge 화면 캡처 | 1440×1000 | `e0fd4e21ad72b942fd951624707f2e7998c90f6f5468808475a493f7fe2afc93` |
 | `pumuiseon-work-390-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/ · Edge 화면 캡처 | 390×844 | `84f4d1396468abfd1379e37f35d7b09100de744af220f5e766651f6a1f4c3901` |
 | `gijunseon-sequence-1440-20261113.png` | https://kdhan0320-bot.github.io/dohan-portfolio/gijunseon/ · Edge 화면 캡처 | 1440×1100 | `8e5113f9283375f63adc835971836559d49349bfd98731528a9e01f27b6c9690` |
+
+
+## 품의선 업무 문구 갱신 캡처 — 2026-11-13
+
+제작자 설명을 업무 안내로 바꾼 현재 품의선의 공개용 빌드를 Edge에서 캡처했습니다. 로컬 미리보기 `http://127.0.0.1:4183/dohan-portfolio/pumuiseon/`의 기본 가상 데이터이며 실제 운영 데이터가 아닙니다. 이전 캡처는 보존하고 상세 화면의 참조만 아래 파일로 바꿉니다. 원본 PNG를 사용합니다. 공개 주소는 https://kdhan0320-bot.github.io/dohan-portfolio/pumuiseon/ 입니다.
+
+| 파일 | 크기 | SHA-256 |
+|---|---|---|
+| `pumuiseon-work-copy-1440-20261113.png` | 1440×1000 | `2923ff008e09b41e28d928534d93574f17514fdef6b403e15bdcf2df2b63c853` |
+| `pumuiseon-work-copy-390-20261113.png` | 390×844 | `a147af9223eafe8b41bfac0942239e00dcb80df2cbfd56e32753cb1e8b31d88c` |

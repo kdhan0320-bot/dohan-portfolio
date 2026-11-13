@@ -127,7 +127,7 @@ export function WorkOverview() {
 
   return (
     <>
-      <PageHead eyebrow="구매·자재 관리" title="업무 현황">엑셀·메일로 품의를 정리하고 센서를 현장에 지급했던 경험을 살려, 주문량과 지금 쓸 수 있는 재고를 구분했습니다.</PageHead>
+      <PageHead eyebrow="구매·자재 관리" title="업무 현황">처리할 품의와 입고 대기를 확인하세요. 보유 수량은 입고·지급 기록을 기준으로 표시합니다.</PageHead>
       {compact && taskQueue}
       <SensorSlip data={data} materials={materials}/>
       <section className="erp-stats" aria-label="업무 요약">
