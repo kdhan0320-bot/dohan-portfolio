@@ -63,13 +63,17 @@ export default function ProcurementCase({ project, ready, question, register }) 
           <div className="procurement-decisions__heading"><h2 id="procurement-decisions-title">처리할 품의와 전표.</h2></div>
           <div className="procurement-decisions__screens">
             <figure className="procurement-decisions__desktop">
-              <FocusedScreen src={media+'pumuiseon-work-copy-1440-20261113.png'} alt="실제 품의선 PC 화면 발췌. 포토센서 입출고 전표와 업무 요약, 처리할 품의·입고 대기 영역." width={1440} height={1000} crop={{ x:260, y:204, width:1132, height:610 }} />
-              <figcaption><div><strong>PC · 업무 현황 발췌</strong><p>전표·처리할 품의·입고 대기를 함께 확인합니다.</p></div><a href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a></figcaption>
+              <div className="procurement-decisions__pc-regions">
+                <FocusedScreen src={media+'pumuiseon-work-copy-1440-20261113.png'} alt="실제 품의선 PC 화면 발췌. 지금 처리할 품의의 검사 장비 스위치 교체, 보완 필요 상태와 내용 보완 링크. 오른쪽에는 입고 확인할 발주가 표시됩니다." width={1440} height={1000} crop={{ x:260, y:604, width:1132, height:212 }} />
+                <FocusedScreen src={media+'pumuiseon-work-copy-1440-20261113.png'} alt="같은 PC 화면의 포토센서 입출고 전표 발췌. 받은 수량 3개, 지급한 수량 2개, 현재 보유 1개와 이력 보기." width={1440} height={1000} crop={{ x:260, y:204, width:1132, height:262 }} />
+              </div>
+              <figcaption><div><strong>PC · 처리할 품의부터 보기</strong><p>같은 업무 화면의 처리 영역과 전표를 나눠 발췌했습니다.</p></div><a href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 PC 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a></figcaption>
             </figure>
             <figure className="procurement-decisions__mobile">
               <FocusedScreen src={media+'pumuiseon-work-copy-390-20261113.png'} alt="실제 품의선 모바일 화면 발췌. 보완할 품의 카드 아래 포토센서 전표가 이어지며 입고 3개·지급 2개·보유 1개가 표시됩니다." width={390} height={844} crop={{ x:16, y:304, width:344, height:474 }} />
               <figcaption><div><strong>모바일 · 실제 업무 화면 발췌</strong><p>보완할 품의를 확인하고 바로 아래에서 재고를 읽습니다.</p></div><a href={media+'pumuiseon-work-copy-390-20261113.png'} target="_blank" rel="noreferrer" aria-label="품의선 모바일 전체 원본 이미지 보기 (새 탭)">전체 원본 보기</a><a className="procurement-desktop-link" href={media+'pumuiseon-work-copy-1440-20261113.png'} target="_blank" rel="noreferrer">PC 전체 화면 보기</a></figcaption>
             </figure>
+            <p className="procurement-request procurement-request--screen"><span>김도한의 요청 · 포트폴리오 구성</span>처리할 품의를 먼저, 전표를 다음에.<small>선택 기준 · 설명을 줄이고 실제 업무 화면부터 보기.</small></p>
           </div>
         </section>
         <ReceiptAndHistory ready={ready} liveUrl={project.liveUrl} question={question} />
